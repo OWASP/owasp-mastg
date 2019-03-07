@@ -22,8 +22,11 @@ How exactly SafetyNet works is not well documented and may change at any time. W
 
 To use the API, an app may call the `SafetyNetApi.attest` method (which returns a JWS message with the *Attestation Result*) and then check the following fields:
 
-- ctsProfileMatch: If "true," the device profile matches one of Google's listed devices.
-- basicIntegrity: If "true", the device running the app likely hasn't been tampered with.
+- `ctsProfileMatch`: If 'true', the device profile matches one of Google's listed devices.
+- `basicIntegrity`: If 'true', the device running the app likely hasn't been tampered with.
+- `nonces`: To match the response to its request.
+- `timestampMs`: To check how much time has passed since you made the request and you got the response. A delayed response may suggest suspicious activity.
+- `apkPackageName`, `apkCertificateDigestSha256`, `apkDigestSha256`: Provide information about the APK, which is used to verify the identity of the calling app. These parameters are absent if the API cannot reliably determine the APK information.
 
 The following is a sample attestation result:
 
@@ -39,6 +42,32 @@ The following is a sample attestation result:
   "basicIntegrity": true,
 }
 ```
+
+**ctsProfileMatch Vs basicIntegrity**
+
+The SafetyNet Attestation API initially provided a single value called `basicIntegrity` to help developers determine the integrity of a device. As the API evolved, Google introduced a new, stricter check whose results appear in a value called `ctsProfileMatch`, which allows developers to more finely evaluate the devices on which their app is running.
+
+In broad terms, `basicIntegrity` gives you a signal about the general integrity of the device and its API. Many Rooted devices fail `basicIntegrity`, as do emulators, virtual devices, and devices with signs of tampering, such as API hooks.
+
+On the other hand, `ctsProfileMatch` gives you a much stricter signal about the compatibility of the device. Only unmodified devices that have been certified by Google can pass `ctsProfileMatch`. Devices that will fail `ctsProfileMatch` include the following:
+
+- Devices that fail `basicIntegrity`
+- Devices with an unlocked bootloader
+- Devices with a custom system image (custom ROM)
+- Devices for which the manufacturer didn't apply for, or pass, Google certification
+- Devices with a system image built directly from the Android Open Source Program source files
+- Devices with a system image distributed as part of a beta or developer preview program (including the Android Beta Program)
+
+**Recommendations when using** `SafetyNetApi.attest`
+
+-  Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
+- Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
+- The entire JWS response should be sent to your server, using a secure connection, for verification. It isn't recommended to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
+- The `verify()` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.   
+- The SafetyNet Attestation API gives you a snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommended to plan a strategy to use the least amount of attestations required to satisfy the use case.
+- To prevent inadvertently reaching your `SafetyNetApi.attest` quota and getting attestation errors, you should build a system that monitors your usage of the API and warns you well before you reach your quota so you can get it increased. You should also be prepared to handle attestation failures because of an exceeded quota and avoid blocking all your users in this situation. If you are close to reaching your quota, or expect a short-term spike that may lead you to exceed your quota, you can submit this [form](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request") to request short or long-term increases to the quota for your API key. This process, as well as the additional quota, is free of charge.
+
+Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklis "attestation checklist") to ensure that you've completed each of the steps needed to integrate the `SafetyNetApi.attest` API into the app.
 
 ###### Programmatic Detection
 
@@ -1435,7 +1464,8 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
+
 
 #### OWASP MASVS
 - V6.1: "The app only requests the minimum set of permissions necessary."
@@ -1449,8 +1479,15 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 - V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
 
+#### SafetyNet Attestation
+
+- [Developer Guideline](https://developer.android.com/training/safetynet/attestation.html "developer guideline")
+- [SafetyNet Attestation Checklist](https://developer.android.com/training/safetynet/attestation-checklist "checklist")
+- [Do's & Don'ts of SafetyNet Attestation](https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html "recommendations")
+- [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/ "safetynet sample")
+- [SafetyNet Attestation API - Quota Request](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request")
 
 #### Tools
 
-- Frida - https://www.frida.re/
+- [FRIDA](https://www.frida.re/ "Frida")
 - ADB & DDMS
