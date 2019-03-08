@@ -179,7 +179,7 @@ Would you like to install the APK on your device(y/N): y
 Finished
 ```
 
-##### Adding the Proxy's certificate among system trusted CAs
+##### Manually adding the Proxy's certificate among system trusted CAs
 
 In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems trusted certificates.
 The following steps illustrate how this could be done:
@@ -197,6 +197,14 @@ chmod 644 <hash>.0
 ```
 
 By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, of course unless the application uses SSL pinning.
+
+##### Adding the Proxy's certificate among system trusted CAs using Magisk
+
+There is a [Magisk module](https://github.com/NVISO-BE/MagiskTrustUserCerts) that will automatically add all user-installed CA certificates to the list of system trusted CAs. 
+
+Download the latest version of the module [here](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect. 
+
+From now on, any CA certificate that is installed by the user via "Settings", "Security & location", "Encryption & credentials", "Install from storage" (location may differ) is automatically pushed into the system's trust store by this Magisk module. Reboot and verify that the CA certificate is listed in "Settings", "Security & location", "Encryption & credentials", "Trusted credentials" (location may differ).
 
 #### Testing on the Emulator
 
