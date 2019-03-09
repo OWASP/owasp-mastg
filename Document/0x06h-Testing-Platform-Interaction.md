@@ -1780,7 +1780,8 @@ Now we can simply modify by hand the stubs we are interested in:
     // __handlers__/__AppDelegate_application_openUR_3679fadc.js
 
     onEnter: function (log, args, state) {
-        log("-[AppDelegate application: " + args[2] + " openURL: " + args[3] + " options: " + args[4] + "]");
+        log("-[AppDelegate application: " + args[2] + 
+                    " openURL: " + args[3] + " options: " + args[4] + "]");
         log("\tapplication :" + ObjC.Object(args[2]).toString());
         log("\topenURL :" + ObjC.Object(args[3]).toString());
         log("\toptions :" + ObjC.Object(args[4]).toString());
@@ -2006,24 +2007,24 @@ While the URL scheme is being fuzzed, watch the logs (in Xcode, go to Window -> 
 
 WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and Cross-Site Scripting attacks can affect them.
 
-##### `UIWebView`
+##### UIWebView
 
 [`UIWebView`](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") (for iOS versions 7.1.2 and older) is deprecated and should not be used. Make sure that either `WKWebView` or `SFSafariViewController` are used to embed web content. In addition to that, JavaScript cannot be disabled for `UIWebView` which is another reason to refrain from using it.
 
-##### `WKWebView`
+##### WKWebView
 
 [`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") (for iOS in version 8.0 and later) is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing.
 
 `WKWebView` comes with several security advantages over `UIWebView`:
 
 - JavaScript is enabled by default but thanks to the `JavaScriptEnabled` property of `WKWebView`, it can be completely disabled, preventing all script injection flaws.
-- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
+- the `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
 - the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
 `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#THIEL].
 
-###### `WKWebView`'s JavaScript Bridge
+###### WKWebView JavaScript Bridge
 
 JavaScript code can still send messages back to the native app but in contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system and using the `postMessage` function.
 
@@ -2032,33 +2033,289 @@ JavaScript code can still send messages back to the native app but in contrast t
 See Section "Determining Whether Native Methods Are Exposed Through WebViews" below for more information.
 
 
-##### `SFSafariViewController`
+##### SFSafariViewController
 
-[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller) should be used to provide a generalized web viewing experience. However, JavaScript cannot be disabled in `SFSafariViewController` and this is one of the reason why you should recommend usage of `WKWebView` when the goal is extending the app's user interface.
+[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller) should be used to provide a generalized web viewing experience. However, JavaScript cannot be disabled in `SFSafariViewController` and this is one of the reasons why you should recommend usage of `WKWebView` when the goal is extending the app's user interface.
 
 > Note that `SFSafariViewController` also shares cookies and other website data with Safari.
 
 
 #### Static Analysis
 
-Look out for usages of the above mentioned WebView classes.
+For the static analysis we will focus mostly on `UIWebView` and `WKWebView`.
+
+- [Identifying WebView Usage](#Identifying-WebView-Usage)
+- [Testing JavaScript Configuration](#Testing-JavaScript-Configuration)
+- [Testing for HTTPS-Only Content](#Testing-for-HTTPS-Only-Content)
+
+##### Identifying WebView Usage
+
+Look out for usages of the above mentioned WebView classes by searching in Xcode.
+
+In the compiled binary you can search in its symbols or strings like this:
+
+**UIWebView**
+
+```
+$ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
+489 0x0002fee9 0x10002fee9   9  10 (5.__TEXT.__cstring) ascii UIWebView
+896 0x0003c813 0x0003c813  24  25 () ascii @_OBJC_CLASS_$_UIWebView
+1754 0x00059599 0x00059599  23  24 () ascii _OBJC_CLASS_$_UIWebView
+```
+
+**WKWebView**
+
+```
+$ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
+490 0x0002fef3 0x10002fef3   9  10 (5.__TEXT.__cstring) ascii WKWebView
+625 0x00031670 0x100031670  17  18 (5.__TEXT.__cstring) ascii unwindToWKWebView
+904 0x0003c960 0x0003c960  24  25 () ascii @_OBJC_CLASS_$_WKWebView
+1757 0x000595e4 0x000595e4  23  24 () ascii _OBJC_CLASS_$_WKWebView
+```
+
+Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init)):
+
+```
+$ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
+0x5c3ac 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
+0x5d97a 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
+0x6b5d5 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
+0x6c3fa 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
+```
+
+You can also demangle it:
+
+```
+$ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
+
+---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect, 
+                                configuration: __C.WKWebViewConfiguration) -> __C.WKWebView
+```
 
 ##### Testing JavaScript Configuration
 
-As a best practice, JavaScript should be disabled in a `WKWebView` unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the `javaScriptEnabled` property is set to `false`:
+As a best practice, JavaScript should be disabled in a `WKWebView` unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled) property is set to `false`:
 
 ```swift
 let webPreferences = WKPreferences()
 webPreferences.javaScriptEnabled = false
 ```
-> Dynamic Analysis:
-In order to test this you could use Frida and verify that the `javaScriptEnabled` property is set to `false` for all instances.
 
-##### Testing for Local File Inclusion
+If only having the compiled binary you can search for this in it:
 
-WebViews can load content remotely and locally from the app data directory. If the content is loaded locally, users should not be able to change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
+```
+$ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
+391 0x0002f2c7 0x10002f2c7  17  18 (4.__TEXT.__objc_methname) ascii javaScriptEnabled
+392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
+```
 
-Check the source code for WebViews usage. If you can identify a WebView instance, check whether any local files have been loaded (`example_file.html` in the below example).
+If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller) and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript) for more information on injecting user scripts to WKWebViews.
+
+
+##### Testing for HTTPS-Only Content
+
+In `WKWebView`s it is possible to detect mixed content. By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent) it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#THIEL] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
+
+In the compiled binary:
+
+```
+$ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
+
+# nothing found
+```
+
+In this case, the app does not make use of this.
+
+#### Dynamic Analysis
+
+For the dynamic analysis we will address the same points from the static analysis.
+
+- [Enumerating WebView Instances](#Enumerating-WebView-Instances)
+- [Checking if JavaScript is Enabled](#Checking-if-JavaScript-is-Enabled)
+- [Verifying that Only Secure Content is Allowed](#Verifying-that-Only-Secure-Content-is-Allowed)
+
+It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code, you will be able to identify the kind of WebView being used and its properties.
+
+For the following examples, we will keep using the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/) app and Frida REPL.
+
+##### Enumerating WebView Instances
+
+Once you've identified a WebView in the app, you may inspect the heap in order to find instances of one or several of the WebViews that we have seen above.
+
+For example, if you use Frida you can do so by inspecting the heap via "ObjC.choose()"
+
+```javascript
+ObjC.choose(ObjC.classes['UIWebView'], {
+  onMatch: function (ui) {
+    console.log('onMatch: ', ui);
+    console.log('URL: ', ui.request().toString());
+  },
+  onComplete: function () {
+    console.log('done for UIWebView!');
+  }
+});
+
+ObjC.choose(ObjC.classes['WKWebView'], {
+  onMatch: function (wk) {
+    console.log('onMatch: ', wk);
+    console.log('URL: ', wk.URL().toString());
+  },
+  onComplete: function () {
+    console.log('done for WKWebView!');
+  }
+});
+
+ObjC.choose(ObjC.classes['SFSafariViewController'], {
+  onMatch: function (sf) {
+    console.log('onMatch: ', sf);
+  },
+  onComplete: function () {
+    console.log('done for SFSafariViewController!');
+  }
+});
+```
+
+For the `UIWebView` and `WKWebView` WebViews we also print the assotiated URL for the sake of completion.
+
+In order to ensure that you will be able to find the instances of the WebViwes in the heap, be sure to first navigate to the WebView you've found. Once there, run the code above, e.g. by copying into the Frida REPL:
+
+```javascript
+$ frida -U com.authenticationfailure.WheresMyBrowser
+
+# copy the code and wait ...
+
+onMatch:  <UIWebView: 0x14fd25e50; frame = (0 126; 320 393); autoresize = RM+BM; layer = <CALayer: 0x1c422d100>>
+URL:  <NSMutableURLRequest: 0x1c000ef00> { 
+  URL: file:///var/mobile/Containers/Data/Application/A654D169-1DB7-429C-9DB9-A871389A8BAA/
+          Library/UIWebView/scenario1.html, Method GET, Headers {
+    Accept =     (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    );
+    "Upgrade-Insecure-Requests" =     (
+        1
+    );
+    "User-Agent" =     (
+        "Mozilla/5.0 (iPhone; CPU iPhone ... AppleWebKit/604.3.5 (KHTML, like Gecko) Mobile/..."
+    );
+} }
+```
+
+Now we quit with `q` and open another WebView (`WKWebView` in this case), it also gets detected if we repeat the previous steps:
+
+```javascript
+$ frida -U com.authenticationfailure.WheresMyBrowser
+
+# copy the code and wait ...
+
+onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
+URL:  file:///var/mobile/Containers/Data/Application/A654D169-1DB7-429C-9DB9-A871389A8BAA/
+            Library/WKWebView/scenario1.html
+```
+
+We will extend this example in the following sections in order to get more information from the WebViews. We recommend to store this code to a file, e.g. webviews_inspector.js and run it like this:
+
+```javascript
+$ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
+```
+
+##### Checking if JavaScript is Enabled
+
+Remember that if a `UIWebView` is being used, JavaScript is enabled by default and there's no possibility to disable it.
+
+For `WKWebView`, you should verify if JavaScript is enabled. use [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled) from `WKPreferences` for this.
+
+Extend the previous script with the following line:
+
+```javascript
+ObjC.choose(ObjC.classes['WKWebView'], {
+  onMatch: function (wk) {
+    console.log('onMatch: ', wk);
+    console.log('javaScriptEnabled: ', wk.configuration().preferences().javaScriptEnabled());
+...
+```
+
+The output shows now that, in fact, JavaScript is enabled:
+
+```javascript
+$ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
+
+onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
+
+javaScriptEnabled:  true
+```
+
+
+##### Verifying that Only Secure Content is Allowed
+
+`UIWebView`s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" header by calling the `request` method of each `UIWebView` instance. See an example in the previous section "[Enumerating WebView Instances](#Enumerating-WebView-Instances)".
+
+For `WKWebView`s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent) for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
+
+Extend the previous script with the following line:
+
+```javascript
+ObjC.choose(ObjC.classes['WKWebView'], {
+  onMatch: function (wk) {
+    console.log('onMatch: ', wk);
+    console.log('hasOnlySecureContent: ', wk.hasOnlySecureContent().toString());
+...
+```
+
+The output shows that some of the resources on the page have been loaded through insecure connections:
+
+```javascript
+$ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
+
+onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
+
+hasOnlySecureContent:  false
+```
+
+
+### Testing WebView Protocol Handlers
+
+#### Overview
+
+Several default schemes are available that are being interpreted in a WebView on iOS, for example:
+
+- http(s)://
+- file://
+- tel://
+
+WebViews can load remote content from an endpoint, but they can also load local content from the app data directory. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
+
+Use the following best practices as defensive-in-depth measures:
+
+- create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
+- create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming)) to make them harder to read.
+
+#### Static Analysis
+
+- [Testing How WebViews are Loaded](#Testing-How-WebViews-are-Loaded)
+- [Testing WebView File Access](#Testing-WebView-File-Access)
+- [Checking Telephone Number Detection](#Checking-Telephone-Number-Detection)
+
+##### Testing How WebViews are Loaded
+
+If a WebView is loading content from the app data directory, users should not be able to change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
+
+This presents an issue especially in `UIWebView`s loading untrusted content via the deprecated methods `loadHTMLString:baseURL`](https://developer.apple.com/documentation/uikit/uiwebview/1617979-loadhtmlstring?language=objc) or [`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617941-loaddata?language=objc) and setting the `baseURL` parameter to `nil` or to a `file:` or `applewebdata:` URL schemes. In this case, in order to prevent unauthorized access to local files, the best option is to set it instead to `about:blank`. However, the recommendation is to avoid the use of `UIWebView`s and switch to `WKWebView`s instead. Here's an example of a vulnerable `UIWebView` from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/UIWebViewController.swift#L219):
+
+```swift
+let scenario2HtmlPath = Bundle.main.url(forResource: "web/UIWebView/scenario2.html", withExtension: nil)
+do {
+    let scenario2Html = try String(contentsOf: scenario2HtmlPath!, encoding: .utf8)
+    uiWebView.loadHTMLString(scenario2Html, baseURL: nil)
+} catch {}
+```
+
+The page loads resources from the internet using HTTP, enabling a potential MITM to exfiltrate secrets contained in local files, e.g. in shared preferences.
+
+When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc)/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc) to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods like [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc), [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init)
+
+Search the source code for the mentioned methods and inspect their parameters.
+
+Example in Objective-C:
 
 ```objc
 
@@ -2074,52 +2331,70 @@ Check the source code for WebViews usage. If you can identify a WebView instance
     [self.view addSubview:self.webView];
 
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"example_file" ofType:@"html"];
-    NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    NSString *html = [NSString stringWithContentsOfFile:filePath 
+                                encoding:NSUTF8StringEncoding error:nil];
     [self.webView loadHTMLString:html baseURL:[NSBundle mainBundle].resourceURL];
 }
 
 ```
 
-Check the `baseURL` for dynamic parameters that can be manipulated (leading to local file inclusion).
+Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L196):
 
-##### Testing for HTTPS-Only Content
+```swift
+let scenario2HtmlPath = Bundle.main.url(forResource: "web/WKWebView/scenario2.html", withExtension: nil)
+do {
+    let scenario2Html = try String(contentsOf: scenario2HtmlPath!, encoding: .utf8)
+    wkWebView.loadHTMLString(scenario2Html, baseURL: nil)
+} catch {}
+```
 
-In `WKWebView`s it is possible to detect mixed content or content that was completely loaded via HTTP. By using the method `hasOnlySecureContent` it can be ensured that only content via HTTPS is shown, otherwise an alert is displayed to the user, see page 159 and 160 in [#THIEL] for an example.  
+If only having the compiled binary, you can also search for these methods, e.g.:
 
-#### Dynamic Analysis
+```
+$ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
+231 0x0002df6c 0x10002df6c  23  24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
+```
 
-To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
+In a case like this, it is recommended to perform dynamic anaylsis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "[Checking How WebViews are Loaded](#Checking-How-WebViews-are-Loaded)" for an example about this.
 
-In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a MITM attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross-Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
+In addition, you should also verify if the app is using the method [`loadFileURL:allowingReadAccessToURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "loadFileURL"). Its first parameter is `URL` and contains the URL to be loaded in the WebView, its second parameter `allowingReadAccessToURL` may contain a single file or a directory. If containing a single file, that file will be available to the WebView. However, if it contains a directory, all files on that directory will be made available to the WebView. Therefore, it is worth inspecting this and in case it is a directory, verifying that no sensitive data can be found inside it.
 
+Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L186):
 
-### Testing WebView Protocol Handlers
+```swift
+var scenario1Url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
+scenario1Url = scenario1Url.appendingPathComponent("WKWebView/scenario1.html")
+wkWebView.loadFileURL(scenario1Url, allowingReadAccessTo: scenario1Url)
+```
 
-#### Overview
+In this case, the parameter `allowingReadAccessToURL` contains a single file "WKWebView/scenario1.html", meaning that the WebView has exclusively access to that file.
 
-Several default schemes are available that are being interpreted in a WebView on iOS, for example:
+In the compiled binary:
 
-- http(s)://
-- file://
-- tel://
+```
+$ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
+237 0x0002dff1 0x10002dff1  36  37 (4.__TEXT.__objc_methname) ascii loadFileURL:allowingReadAccessToURL:
+```
 
-WebViews can load remote content from an endpoint, but they can also load local content from the app data directory. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
+##### Testing WebView File Access
 
-#### Static Analysis
+If you have found a `UIWebView` being used, then you can be sure that:
 
-Check the source code for WebView usage.
+- the `file://` scheme is always enabled
+- file access from `file://` URLs is always enabled
+- universal access from `file://` URLs is always enabled
 
-On Android, there is an option to disable file scheme URLs (`setAllowFileAccess`). Unfortunately, on iOS it is enabled by default and **cannot be disabled**.
+Regarding `WKWebView`,
 
-The following WebView settings control resource access:
+- the `file://` scheme is also always enabled and it **cannot be disabled**
+- it disables file access from `file://` URLs by default but it can be enabled
 
-- `allowFileAccessFromFileURLs`
-- `allowUniversalAccessFromFileURLs`
-- `allowingReadAccessToURL`
+The following WebView properties can be used to configure file access:
 
-`WKWebView` default `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` option is `false`.
+- `allowFileAccessFromFileURLs` (`WKPreferences`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from other `file://` scheme URLs
+- `allowUniversalAccessFromFileURLs` (`WKWebViewConfiguration`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from any origin
 
-However, it is possible to set the [undocumented](https://github.com/WebKit/webkit/blob/master/Source/WebKit/UIProcess/API/Cocoa/WKPreferences.mm#L470) `allowFileAccessFromFileURLs` property in a WebView. Here is an example:
+For example, it is possible to set the **[undocumented](https://github.com/WebKit/webkit/blob/master/Source/WebKit/UIProcess/API/Cocoa/WKPreferences.mm#L470) `allowFileAccessFromFileURLs` property** by doing this:
 
 Objective-C:
 
@@ -2137,46 +2412,108 @@ webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFil
 
 ```
 
-By default `WKWebView` disables file access. If one or more of the above methods are activated, you should determine whether they are really necessary for the app to work properly.
+If one or more of the above properties are activated, you should determine whether they are really necessary for the app to work properly.
 
-Please also verify which WebView class is used. Remember that `WKWebView` should be used nowadays, as `UIWebView` is deprecated.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadFileURL(_:allowingReadAccessTo:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl "loadFileURL") method.
-
-Objective-C:
-
-```objc
-
-[self.wk_webview loadFileURL:url allowingReadAccessToURL:readAccessToURL];
-
-```
-
-Swift:
-
-```swift
-
-webview.loadFileURL(url, allowingReadAccessTo: bundle.resourceURL!)
-
-```
-
-The URL specified in `loadFileURL` should be checked for dynamic parameters that can be manipulated as that may lead to [local file inclusion](https://en.wikipedia.org/wiki/File_inclusion_vulnerability#Local_file_inclusion).
-
-##### telephone number detection
+##### Checking Telephone Number Detection
 
 In Safari on iOS, telephone number detection is on by default. However, you might want to turn it off if your HTML page contains numbers that can be interpreted as phone numbers, but are not phone numbers, or to prevent the DOM document from being modified when parsed by the browser. To turn off telephone number detection in Safari on iOS, use the format-detection meta tag (`<meta name = "format-detection" content = "telephone=no">`). An example of this can be found [here](https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW2). Phone links should be then used (e.g. `<a href="tel:1-408-555-5555">1-408-555-5555</a>`) to explicitly create a link.
 
-Use the following best practices as defensive-in-depth measures:
-
-- create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
-- create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming)) to make them harder to read.
 
 #### Dynamic Analysis
 
-To identify the usage of protocol handlers, look for ways to access files from the file system and trigger phone calls while you're using the app.
+One a WebView was identified, in order to identify the usage of protocol handlers, look for ways to access files from the file system and trigger phone calls from the WebView.
 
 If it's possible to load local files via a WebView, the app might be vulnerable to directory traversal attacks. This would allow access to all files within the sandbox or even to escape the sandbox with full access to the file system (if the device is jailbroken).  
 
 It should therefore be verified if a user can change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
+
+To simulate an attack, inject your own JavaScript into the WebView with an interception proxy. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
+
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a MITM attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross-Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
+
+For what concerns this section we will learn about:
+
+- [Checking How WebViews are Loaded](#Checking-How-WebViews-are-Loaded)
+- [Determining WebView File Access](#Determining-WebView-File-Access)
+
+##### Checking How WebViews are Loaded
+
+As we have seen above in "[Testing How WebViews are Loaded](#Testing-How-WebViews-are-Loaded)", if "scenario 2" of the WKWebViews is loaded, the app will do so by calling [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc) and `loadHTMLString:baseURL`.
+
+To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
+
+```
+$ frida-trace -U "Where's My Browser?" -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
+
+ 14131 ms  -[NSBundle URLForResource:0x1c0255390 withExtension:0x0]
+ 14131 ms  URLForResource: web/WKWebView/scenario2.html
+ 14131 ms  withExtension: 0x0
+ 14190 ms  -[WKWebView loadHTMLString:0x1c0255390 baseURL:0x0]
+ 14190 ms  	HTMLString: <!DOCTYPE html>
+<html>
+    ...
+  </html>
+
+ 14190 ms  	baseURL: nil
+```
+
+In this case, `baseURL` is set to `nil`, meaning that the effective origin is "null". You can obtain the effective origin by running `window.origin` from the JavaScript of the page (this app has an explotation helper that allows to write and run JavaScript, you could implement a MITM or simply use Frida to inject JavaScript, e.g. via `evaluateJavaScript:completionHandler` of `WKWebView`).
+
+As an additional note regarding `UIWebView`s, if you retrieve the effective origin from a `UIWebView` where `baseURL` is also set to `nil` you will see that it is not set to "null", instead you'll obtain something similar to the following:
+
+```
+applewebdata://5361016c-f4a0-4305-816b-65411fc1d780
+```
+
+This origin "applewebdata://" is similar to the "file://" origin as it does not implement Same-Origin Policy and allow access to local files and any web resources. In this case, it would be better to set `baseURL` to "about:blank", this way, the Same-Origin Policy would prevent cross-origin access. However, the recommendation here is to completely avoid using `UIWebView`s and go for `WKWebView`s instead.
+
+##### Determining WebView File Access
+
+Even if not having the original source code, you can quickly determine if the app's WebViews do allow file access and which kind. For this, simply navigate to the target WebView in the app and inspect all its instances, for each of them get the values mentioned in the static analysis, that is, `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs`. This only applies to `WKWebView`s (`UIWebVIew`s always allow file access).
+
+We continue with our example using the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/) app and Frida REPL, extend the script with the following content:
+
+```javascript
+ObjC.choose(ObjC.classes['WKWebView'], {
+  onMatch: function (wk) {
+    console.log('onMatch: ', wk);
+    console.log('URL: ', wk.URL().toString());
+    console.log('javaScriptEnabled: ', wk.configuration().preferences().javaScriptEnabled());
+    console.log('allowFileAccessFromFileURLs: ', 
+            wk.configuration().preferences().valueForKey_('allowFileAccessFromFileURLs').toString());
+    console.log('hasOnlySecureContent: ', wk.hasOnlySecureContent().toString());
+    console.log('allowUniversalAccessFromFileURLs: ', 
+            wk.configuration().valueForKey_('allowUniversalAccessFromFileURLs').toString());
+  },
+  onComplete: function () {
+    console.log('done for WKWebView!');
+  }
+});
+```
+
+If you run it now, you'll have all the information you need:
+
+```javascript
+$ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
+
+onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
+URL:  file:///var/mobile/Containers/Data/Application/A654D169-1DB7-429C-9DB9-A871389A8BAA/
+        Library/WKWebView/scenario1.html
+javaScriptEnabled:  true
+allowFileAccessFromFileURLs:  0
+hasOnlySecureContent:  false
+allowUniversalAccessFromFileURLs:  0
+```
+
+Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to `0`, meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to `1` this time:
+
+```javascript
+$ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
+...
+
+allowFileAccessFromFileURLs:  1
+```
 
 
 ### Determining Whether Native Methods Are Exposed Through WebViews
