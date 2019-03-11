@@ -52,7 +52,7 @@ Apps that target modern API levels, went through the following changes:
   - You should not use the `IvParameterSpec.class` anymore for GCM, but use the `GCMParameterSpec.class` instead.
   - Sockets have changed from `OpenSSLSocketImpl` to `ConscryptFileDescriptorSocket`, and `ConscryptEngineSocket`.
   - `SSLSession` with null parameters give an NullPointerException.
-  - You need to have large enough arrays as inputbytes for generating a key otherwise, an InvalidKeySpecException is thrown.
+  - You need to have large enough arrays as input bytes for generating a key otherwise, an InvalidKeySpecException is thrown.
   - If a Socket read is interrupted, you get an `SocketException`.
 - For Android Pie (9.0) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P
 ") shows even more aggressive changes:
@@ -222,7 +222,7 @@ public static void main (String args[]) {
 
 Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
 
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burpproxy its Sequencer") to see how good the quality of the randomness is.
+If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp's Sequencer") to see how good the quality of the randomness is.
 
 
 ### Testing Key Management
@@ -245,7 +245,7 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 
     //Generate the salt
     byte[] salt = new byte[saltLength];
-    randomb.nextBytes(salt);
+    random.nextBytes(salt);
 
     KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
     SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -264,9 +264,9 @@ When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.i
 
 Another API offered by Android is the `KeyChain`, which provides access to private keys and their corresponding certificate chains in credential storage, which is often not used due to the interaction necessary and the shared nature of the Keychain. See the [Developer Documentation](https://developer.android.com/reference/android/security/KeyChain "Keychain") for more details.
 
-A sligthly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether `MODE_PRIVATE` has been used or not. This is not the case for the AndroidKeyStore. Since AndroidKeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the AndroidKeyStore clearing or destroying the keys.
+A slightly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether `MODE_PRIVATE` has been used or not. This is not the case for the AndroidKeyStore. Since AndroidKeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the AndroidKeyStore clearing or destroying the keys.
 
-The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in public places like `/sdcard/`. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in Java/Kotlin. Consequently, he can decrypt any other data that he can obtain whic was encrypted by the application.
+The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in public places like `/sdcard/`. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in Java/Kotlin. Consequently, he can decrypt any other data that he can obtain which was encrypted by the application.
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
 
 #### Static Analysis
@@ -281,7 +281,7 @@ Locate uses of the cryptographic primitives in the code. Some of the most freque
 - `Key`, `PrivateKey`, `PublicKey`, `SecretKeySpec`, `KeyInfo`
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
-As an example we illustrate how to locate the use of a hardcoded encryption key. First disassmble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
+As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
 ```shell
 $ baksmali d file.apk -o smali_output/
 ```
