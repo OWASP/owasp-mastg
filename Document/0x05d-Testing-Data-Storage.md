@@ -112,18 +112,13 @@ The misconfigured firebase instance can be identified by making the following ne
 
 _https://\<firebaseProjectName\>.firebaseio.com/.json_
 
-The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use Firebase Scanner, a python script that automates the task above as shown below:
-
-
-Alternatively, the [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner) script can be used to automate the same:
+The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner), a python script that automates the task above as shown below:
 
 ```
 python FirebaseScanner.py -p <pathOfAPKFile>
 
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
-
-wherein the Firebase project names can be retrieved by reverse engineering the application.
 
 ##### Realm Databases
 
