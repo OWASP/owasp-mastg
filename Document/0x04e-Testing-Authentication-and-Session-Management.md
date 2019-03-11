@@ -31,7 +31,7 @@ There's no one-size-fits-all approach to authentication. When reviewing the auth
 
 The number of authentication procedures implemented by mobile apps depends on the sensitivity of the functions or accessed resources. Refer to industry best practices when reviewing authentication functions. Username/password authentication (combined with a reasonable password policy) is generally considered sufficient for apps that have a user login and aren't very sensitive. This form of authentication is used by most social media apps.
 
-For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that provide access to very sensitive information (such as credit card numbers) or allow users to transfer funds. In some industries, these apps must also comply with certain standards. For example, financial apps have to ensure compliance with the Payment Card Industry Data Security Standard (PCI DSS), the Gramm Leech Bliley Act, and the Sarbanes-Oxley Act (SOX). Compliance considerations for the US health care sector  include the Health Insurance Portability and Accountability Act (HIPAA)and the Patient Safety Rule.
+For sensitive apps, adding a second authentication factor is usually appropriate. This includes apps that provide access to very sensitive information (such as credit card numbers) or allow users to transfer funds. In some industries, these apps must also comply with certain standards. For example, financial apps have to ensure compliance with the Payment Card Industry Data Security Standard (PCI DSS), the Gramm Leach Bliley Act, and the Sarbanes-Oxley Act (SOX). Compliance considerations for the US health care sector  include the Health Insurance Portability and Accountability Act (HIPAA)and the Patient Safety Rule.
 
 You can also use the [OWASP Mobile AppSec Verification Standard](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x09-V4-Authentication_and_Session_Management_Requirements.md "OWASP MASVS: Authentication") as a guideline. For non-critical apps ("Level 1"), the MASVS lists the following authentication requirements:
 
@@ -64,7 +64,7 @@ Threats:
 
 -  Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
 - Trojans: Installed malicious applications with access to text messages may forward the OTP to another number or backend.
-- SIM SWAP Attack: In this attack, the adversary calls the phone company, or works for them, and has the victim's number moved to a sim card owned by the adversary. If successful, the adversary can see the SMS messages which are sent to the victim's phone number. This includes the messages used in the 2-factor authentication.
+- SIM SWAP Attack: In this attack, the adversary calls the phone company, or works for them, and has the victim's number moved to a SIM card owned by the adversary. If successful, the adversary can see the SMS messages which are sent to the victim's phone number. This includes the messages used in the 2-factor authentication.
 - Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.
 - Voicemail: Some 2-factor authentication schemes allow the OTP to be sent through a phone call when SMS is no longer preferred or available. Many of these calls, if not answered, send the information to voicemail. If an attacker was able to gain access to the voicemail, they could also use the OTP to gain access to a user's account.
 
@@ -342,7 +342,7 @@ For example, in Java applications, the expected algorithm should be requested ex
 // HMAC key - Block serialization and storage as String in JVM memory
 private transient byte[] keyHMAC = ...;
 
-//Create a verification context for the token requesting explicitly the use of the HMAC-256 hmac generation
+//Create a verification context for the token requesting explicitly the use of the HMAC-256 HMAC generation
 
 JWTVerifier verifier = JWT.require(Algorithm.HMAC256(keyHMAC)).build();
 
@@ -524,10 +524,10 @@ For applications which require L2 protection, the MASVS states that: "The app in
 3. The application provides an overview of the last session after login at all times.
 4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
 
-In all cases, the pentester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance. This togeter with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a pentester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+In all cases, the pentester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.(Note that starting at Android 8, `Android_ID` is no longer a device unique ID. Instead it becomes scoped by app-signing key, user and device. So checking `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices) This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a pentester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
 
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
-Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authenticaiton on a new device. Instead: warn the user already when a second instance of the app is registered.
+Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
 
 
 ### References

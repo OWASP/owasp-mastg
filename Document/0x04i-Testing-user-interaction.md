@@ -19,7 +19,7 @@ When additional data needs to be processed, you should ask the user for consent 
 ### Informing the user on the best security practices
 Here is a list of best practices where a user could be informed of:
 - Fingerprint usage: When an app uses a fingerprint for authentication and it provides access to high risk transactions/information, inform the user about the issues there can be when having multiple fingerprints of other people registered to the device as well.
-- Rooting/Jailbraking: When an app detects a rooted or jailbroken device, inform the user of the fact that certain high-risk actions will carry additional risk due to the jailbroken/rooted status of the device.
+- Rooting/Jailbreaking: When an app detects a rooted or jailbroken device, inform the user of the fact that certain high-risk actions will carry additional risk due to the jailbroken/rooted status of the device.
 - Specific credentials: When a user gets a recovery code, a password or a pin from the application (or sets one), instruct the user to never share this with anyone else and that only the app will request it.
 - Application distribution: In case of a high-risk application it is recommended to communicate what the official way of distributing the app is. Otherwise, users might use other channels in which they download a compromised version of the application.
 
