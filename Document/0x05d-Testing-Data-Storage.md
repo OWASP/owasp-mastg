@@ -106,24 +106,25 @@ Firebase is a development platform with more than 15 products, and one of them i
 
 ###### Identifying Misconfigured Firebase Instance
 
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://www.appthority.com/mobile-threat-center/) performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android and almost half(47%) of iOS apps that connect to a Firebase database were vulnerable.
+In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://www.appthority.com/mobile-threat-center/) performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
 
 The misconfigured firebase instance can be identified by making the following network call:
-_https://<firebaseProjectName>.firebaseio.com/.json_
+
+_https://\<firebaseProjectName\>.firebaseio.com/.json_
 
 The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use Firebase Scanner, a python script that automates the task above as shown below:
 
-![Firebase Scanner](Images/Chapters/0x05d/FirebaseScannerImage.png)
 
-
-Alternatively, for the iOS applications, the following option can be used:
+Alternatively, the [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner) script can be used to automate the same:
 
 ```
+python FirebaseScanner.py -p <pathOfAPKFile>
+
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
-wherein the Firebase project names can be retrieved from iOS application resources such as PLIST files.
-/home/shiv/Pictures/FirebaseScannerImage.png
+wherein the Firebase project names can be retrieved by reverse engineering the application.
+
 ##### Realm Databases
 
 The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
