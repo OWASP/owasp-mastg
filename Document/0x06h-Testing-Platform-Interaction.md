@@ -696,7 +696,7 @@ Like universal links, the Handoff Activity Continuation is defined in the `com.a
 
 Starting on iOS 6 it is possible for third-party apps to share information via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide *share activity sheet* that appears after clicking on the "Share" button.
 
-![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet_1.png)
+![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet.png)
 
 The available sharing mechanisms (aka. Activity Types) include:
 
