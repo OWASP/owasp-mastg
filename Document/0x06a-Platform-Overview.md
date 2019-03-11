@@ -18,7 +18,7 @@ In the past, sideloading was possible only with a jailbreak or complicated worka
 
 iOS apps are isolated from each other via Apple's iOS sandbox (historically called Seatbelt), a mandatory access control (MAC) mechanism describing the resources an app can and can't access. Compared to Android's extensive Binder IPC facilities, iOS offers very few IPC (Inter Process Communication) options, minimizing the potential attack surface.
 
-Uniform hardware and tight hardware/software integration create another security advantage. Every iOS device offers security features, such as secure boot, hardware-backed keychain, and file system encryption (referred as data protection in iOS). iOS updates are usually quickly rolled out to a large percentage of users, decreasing the need to support older, unprotected iOS versions.
+Uniform hardware and tight hardware/software integration create another security advantage. Every iOS device offers security features, such as secure boot, hardware-backed Keychain, and file system encryption (referred as data protection in iOS). iOS updates are usually quickly rolled out to a large percentage of users, decreasing the need to support older, unprotected iOS versions.
 
 In spite of the numerous strengths of iOS, iOS app developers still need to worry about security. Data protection, Keychain, Touch ID/Face ID authentication, and network security still leave a large margin for errors. In the following chapters, we describe iOS security architecture, explain a basic security testing methodology, and provide reverse engineering how-tos.
 
@@ -75,7 +75,7 @@ The [appsandbox](https://developer.apple.com/library/content/documentation/FileM
 Sandboxing has been a core security feature since the first release of iOS. All third-party apps run under the same user (`mobile`), and only a few system applications and services run as `root` (or other specific system users). Regular iOS apps are confined to a *container* that restricts access to the app's own files and a very limited number of system APIs. Access to all resources (such as files, network sockets, IPCs, and shared memory) are controlled by the sandbox. These restrictions work as follows [#levin]:
 
 - The app process is restricted to its own directory (under /var/mobile/Containers/Bundle/Application/ or /var/containers/Bundle/Application/, depending on the iOS version) via a chroot-like process.
-- The `mmap` and `mmprotect` system calls are modified to prevent apps from making writeable memory pages executable and stopping processes from executing dynamically generated code. In combination with code signing and FairPlay, this strictly limits what code can run under specific circumstances (e.g., all code in apps distributed via the App Store is approved by Apple).
+- The `mmap` and `mmprotect` system calls are modified to prevent apps from making writable memory pages executable and stopping processes from executing dynamically generated code. In combination with code signing and FairPlay, this strictly limits what code can run under specific circumstances (e.g., all code in apps distributed via the App Store is approved by Apple).
 - Processes are isolated from each other, even if they are owned by the same UID at the operating system level.
 - Hardware drivers can't be accessed directly. Instead, they must be accessed through Apple's public frameworks.
 
@@ -130,7 +130,7 @@ A language.lproj folder exists for each language that the application supports. 
 
 ![iOS App Folder Structure](Images/Chapters/0x06a/iOS_project_folder.png)
 
-On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. simirarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [Testflight](https://developer.apple.com/testflight/ "Testflight").
+On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [TestFlight](https://developer.apple.com/testflight/ "TestFlight").
 
 #### App Structure on the iOS File System
 

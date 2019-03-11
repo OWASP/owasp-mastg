@@ -13,7 +13,7 @@ The most commonly used Class for cryptographic operations is the CommonCrypto, w
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms
 - The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
 - The `CommonKeyDerivation.h` gives the parameters for supported KDF functions
-- The `CommonSymmetricKeywrap.h` gives the function used for wrappnig a symmetric key with a Key Encryption Key.
+- The `CommonSymmetricKeywrap.h` gives the function used for wrapping a symmetric key with a Key Encryption Key.
 
 Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
@@ -30,10 +30,10 @@ As noted before: some wrapper-libraries exist for both in order to provide conve
 ##### Third party libraries
 There are various third party libraries available, such as:
 - CJOSE: With the rise of JWE, and the lack of public support for AES GCM, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). CJOSE still requires a higher level wrapping as they only provide a C/C++ implementation.
-- CryptoSwift: A library in Swift, which can be found at [Github](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift"). The library supports various hash-functions, MAC-functions, CRC-functions, symmetric ciphers, and password-based key derivation functions. It is not a wrapper, but a fully self-implemented version of each of the ciphers. It is important to verify the effective implementation of a function.
-- OpenSSL: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in . Most of its cryptographic functions can be used to do the various cryptographic actions necessary, such as creating (H)MACs, signatures, symmetric- & assymmetric ciphers, hashing, etc.. There are various wrappers, such as [OpenSSL](https://github.com/ZewoGraveyard/OpenSSL "OpenSSL") and [MIHCrypto](https://github.com/hohl/MIHCrypto "MIHCrypto").
+- CryptoSwift: A library in Swift, which can be found at [GitHub](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift"). The library supports various hash-functions, MAC-functions, CRC-functions, symmetric ciphers, and password-based key derivation functions. It is not a wrapper, but a fully self-implemented version of each of the ciphers. It is important to verify the effective implementation of a function.
+- OpenSSL: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in . Most of its cryptographic functions can be used to do the various cryptographic actions necessary, such as creating (H)MACs, signatures, symmetric- & asymmetric ciphers, hashing, etc.. There are various wrappers, such as [OpenSSL](https://github.com/ZewoGraveyard/OpenSSL "OpenSSL") and [MIHCrypto](https://github.com/hohl/MIHCrypto "MIHCrypto").
 - LibSodium: Sodium is a modern, easy-to-use software library for encryption, decryption, signatures, password hashing and more. It is a portable, cross-compilable, installable, packageable fork of NaCl, with a compatible API, and an extended API to improve usability even further. See [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs") for more details. There are some wrapper libraries, such as [Swift-sodium](https://github.com/jedisct1/swift-sodium "Swift-sodium"), [NAChloride](https://github.com/gabriel/NAChloride "NAChloride"), and [libsodium-ios](https://github.com/mochtu/libsodium-ios "libsodium ios").
-- Tink: A new cryptography library by Google. Google explains its reasoning behind the library [in its security blog](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink"). The sources can be found at [Tinks Github repository](https://github.com/google/tink "Tink at Github").
+- Tink: A new cryptography library by Google. Google explains its reasoning behind the library [in its security blog](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink"). The sources can be found at [Tinks GitHub repository](https://github.com/google/tink "Tink at GitHub").
 - Themis: a Crypto library for storage and messaging for Swift, Obj-C, Android/Java, С++, JS, Python, Ruby, PHP, Go. [Themis](https://github.com/cossacklabs/themis "Themis") uses LibreSSL/OpenSSL engine libcrypto as a dependency. It supports Objective-C and Swift for key generation, secure messaging (e.g. payload encryption and signing), secure storage and setting up a secure session. See [their wiki](https://github.com/cossacklabs/themis/wiki/Objective-C-Howto "Themis wiki") for more details.
 - Others: There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity"), [Objective-C-RSA](https://github.com/ideawu/Objective-C-RSA "Objective-C-RSA"), and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto"). Some of these are no longer maintained and might never have been security reviewed. Like always, it is recommended to look for supported and maintained libraries.
 - DIY: An increasing amount of developers have created their own implementation of a cipher or a cryptographic function. This practice is _highly_ discouraged and should be vetted very thoroughly by a cryptography expert if used.
@@ -96,15 +96,15 @@ The following is an example of the APIs usage:
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
 
-Note: if other mechanims are used for random numbers in the code: verify that these are either wrappers around the APIs mentioned above or review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
+Note: if other mechanisms are used for random numbers in the code, verify that these are either wrappers around the APIs mentioned above or review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
 
 #### Dynamic Analysis
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burpsuite's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
+If you want to test for randomness, you can try to capture a large set of numbers and check with [Burp's sequencer plugin](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
 
 ### Testing Key Management
 
 #### Overview
-There are various methods on how to store the key on the device. Not storing a key at all will ensure that no keymaterial can be dumped. This can be archieved by using a Password Key Derivation function, such as PKBDF-2. See the example below:
+There are various methods on how to store the key on the device. Not storing a key at all will ensure that no key material can be dumped. This can be achieved by using a Password Key Derivation function, such as PKBDF-2. See the example below:
 
 ```swift
 
@@ -171,7 +171,7 @@ Next, when you have a predictable key derivation function based on identifiers w
 #### Static Analysis
 There are various keywords to look for: check the libraries mentioned in the overview and static analysis of the section "Verifying the Configuration of Cryptographic Standard Algorithms" for which keywords you can best check on how keys are stored.
 Always make sure that:
-- keys are not syncrhonized over devices if it is used to protect high-risk data.
+- keys are not synchronized over devices if it is used to protect high-risk data.
 - keys are not stored without additional protection.
 - keys are not hardcoded.
 - keys are not derived from stable features of the device.
