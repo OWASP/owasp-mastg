@@ -100,11 +100,11 @@ Secure ways to retrieve the key include:
 - Asking the user to decrypt the database with a PIN or password once the app is opened (weak passwords and PINs are vulnerable to brute force attacks)
 - Storing the key on the server and allowing it to be accessed from a web service only (so that the app can be used only when the device is online)
 
-#####Firebase Real-time Databases
+##### Firebase Real-time Databases
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
-######Identifying Misconfigured Firebase Instance
+###### Identifying Misconfigured Firebase Instance
 
 In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://www.appthority.com/mobile-threat-center/) performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android and almost half(47%) of iOS apps that connect to a Firebase database were vulnerable.
 
