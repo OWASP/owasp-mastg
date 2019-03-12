@@ -44,7 +44,7 @@ The [Apple Developer Documentation](https://developer.apple.com/library/archive/
 - the provisioning profile is embedded into the app bundle during the build (`embedded.mobileprovision`).
 - entitlements from Code Signing Entitlements files (`<appname>.entitlements`) are transferred to the app's signature.
 
-For example, if a developer wants to set the "Default Data Protection" capability, he would go to the "Capabilities" tab in Xcode and enable "Data Protection", this is directly written by Xcode to the `<appname>.entitlements` as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
+For example, if a developer wants to set the "Default Data Protection" capability, he would go to the "Capabilities" tab in Xcode and enable "Data Protection". This is directly written by Xcode to the `<appname>.entitlements` as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
 
 ```xml
 <key>Entitlements</key>
@@ -63,15 +63,15 @@ The following sections go more into detail about the mentioned files and how to 
 
 Since iOS 10, these are the main areas which you need to inspect for permissions:
 
-- [Purpose Strings in the Info.plist File](#Purpose-Strings-in-the-Info.plist-File)
-- [Code Signing Entitlements File](#Code-Signing-Entitlements-File)
-- [Embedded Provisioning Profile File](#Embedded-Provisioning-Profile-File)
-- [Entitlements Embedded in the Compiled App Binary](#Entitlements-Embedded-in-the-Compiled-App-Binary)
-- [Source Code Inspection](#Source-Code-Inspection)
+- Purpose Strings in the Info.plist File
+- Code Signing Entitlements File
+- Embedded Provisioning Profile File
+- Entitlements Embedded in the Compiled App Binary
+- Source Code Inspection
 
 ##### Purpose Strings in the Info.plist File
 
-An app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5) or *information property list* file contains, among others, the app's overview of protected data and resources as a set of key-value pairs. Each value contains the so-called *purpose string* or *usage description string* (mandatory from iOS 10 onward), which is a custom text that is offered to users in the system's permission request alert when requesting permission to access protected data or resources.
+An app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5) or *information property list* file contains, among others, the app's overview of protected data and resources as a set of key-value pairs. Each value contains the so-called *purpose string* or *usage description string* (mandatory from iOS 10 onwards), which is a custom text that is offered to users in the system's permission request alert when requesting permission to access protected data or resources.
 
 If having the original source code, you can verify the permissions included in the `Info.plist` file:
 
@@ -238,11 +238,11 @@ During implementation of a mobile application, developers may apply traditional 
 
 In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS offers some rather limited options for communication between apps. In fact, there's no way for apps to communicate directly. In this section we will present the different types of indirect communication offered by iOS and how to test them. Here's an overview:
 
-- [Custom URL Schemes](#Custom-URL-Schemes)
-- [Universal Links](#Universal-Links)
-- [UIActivity Sharing](#UIActivity-Sharing)
-- [App Extensions](#App-Extensions)
-- [UIPasteboard](#UIPasteboard)
+- Custom URL Schemes
+- Universal Links
+- UIActivity Sharing
+- App Extensions
+- UIPasteboard
 
 #### Custom URL Schemes
 
@@ -266,11 +266,11 @@ They were introduced as a way to *prevent* URL scheme hijacking attacks. Accordi
 
 Testing universal links on a static approach includes doing the following:
 
-- [Checking the Associated Domains](#Checking-the-Associated-Domains)
-- [Retrieving the App Site Association File](#Retrieving-the-App-Site-Association-File)
-- [Checking the Link Receiver Method](#Checking-the-Link-Receiver-Method)
-- [Checking the Data Handler Method](#Checking-the-Data-Handler-Method)
-- [Checking if the App is Calling Other App's Universal Links](#Checking-if-the-App-is-Calling-Other-App's-Universal-Links)
+- Checking the Associated Domains
+- Retrieving the App Site Association File
+- Checking the Link Receiver Method
+- Checking the Data Handler Method
+- Checking if the App is Calling Other App's Universal Links
 
 ###### Checking the Associated Domains
 
@@ -427,10 +427,10 @@ If an app is implementing universal links, you should have the following outputs
 
 You can use this now to dynamically test them:
 
-- [Triggering Universal Links](#Triggering-Universal-Links)
-- [Identifying Valid Universal Links](#Identifying-Valid-Universal-Links)
-- [Tracing the Link Receiver Method](#Tracing-the-Link-Receiver-Method)
-- [Checking How the Links Are Opened](#Checking-How-the-Links-Are-Opened)
+- Triggering Universal Links
+- Identifying Valid Universal Links
+- Tracing the Link Receiver Method
+- Checking How the Links Are Opened
 
 ###### Triggering Universal Links
 
@@ -1051,10 +1051,10 @@ In addition:
 
 The static analysis will take care of:
 
-- [Verifying if the App Contains App Extensions](#Verifying-if-the-App-Contains-App-Extensions)
-- [Determining the Supported Data Types](#Determining-the-Supported-Data-Types)
-- [Checking Data Sharing with the Containing App](#Checking-Data-Sharing-with-the-Containing-App)
-- [Verifying if the App Restricts the Use of App Extensions](#Verifying-if-the-App-Restricts-the-Use-of-App-Extensions)
+- Verifying if the App Contains App Extensions
+- Determining the Supported Data Types
+- Checking Data Sharing with the Containing App
+- Verifying if the App Restricts the Use of App Extensions
 
 ###### Verifying if the App Contains App Extensions
 
@@ -1134,8 +1134,8 @@ It is possible to reject a specific type of app extension by using the method [`
 
 For the dynamic analysis we can do the following to gain knowledge without having the source code:
 
-- [Inspecting the Items Being Shared](#Inspecting-the-Items-Being-Shared)
-- [Identifying the App Extensions Involved](#Identifying-the-App-Extensions-Involved)
+- Inspecting the Items Being Shared
+- Identifying the App Extensions Involved
 
 ###### Inspecting the Items Being Shared
 
@@ -1357,11 +1357,11 @@ All of this presents a wide attack surface that we will address in the static an
 
 There are a couple of things that we can do in the static analysis. In the next sections we will see the following:
 
-- [Testing Custom URL Schemes Registration](#Testing-Custom-URL-Schemes-Registration)
-- [Testing Application Query Schemes Registration](#Testing-Application-Query-Schemes-Registration)
-- [Testing URL Handling and Validation](#Testing-URL-Handling-and-Validation)
-- [Testing URL Requests to Other Apps](#Testing-URL-Requests-to-Other-Apps)
-- [Testing for Deprecated Methods](#Testing-for-Deprecated-Methods)
+- Testing Custom URL Schemes Registration
+- Testing Application Query Schemes Registration
+- Testing URL Handling and Validation
+- Testing URL Requests to Other Apps
+- Testing for Deprecated Methods
 
 ##### Testing Custom URL Schemes Registration
 
@@ -1607,10 +1607,10 @@ $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
 
 Once you've identified the custom URL schemes the app has registered, there are several methods that you can use to test them:
 
-- [Performing URL Requests](#Performing-URL-Requests)
-- [Identifying and Hooking the URL Handler Method](#Identifying-and-Hooking-the-URL-Handler-Method)
-- [Testing URL Schemes Source Validation](#Testing-URL-Schemes-Source-Validation)
-- [Fuzzing URL Schemes](#Fuzzing-URL-Schemes)
+- Performing URL Requests
+- Identifying and Hooking the URL Handler Method
+- Testing URL Schemes Source Validation
+- Fuzzing URL Schemes
 
 ##### Performing URL Requests
 
@@ -2087,9 +2087,9 @@ This should be sufficient for an app analysis and therefore, `SFSafariViewContro
 
 For the static analysis we will focus mostly on the following points having `UIWebView` and `WKWebView` under scope.
 
-- [Identifying WebView Usage](#Identifying-WebView-Usage)
-- [Testing JavaScript Configuration](#Testing-JavaScript-Configuration)
-- [Testing for Mixed Content](#Testing-for-Mixed-Content)
+- Identifying WebView Usage
+- Testing JavaScript Configuration
+- Testing for Mixed Content
 
 ##### Identifying WebView Usage
 
@@ -2177,9 +2177,9 @@ In addition, if you have the original source code or the IPA, you can inspect th
 
 For the dynamic analysis we will address the same points from the static analysis.
 
-- [Enumerating WebView Instances](#Enumerating-WebView-Instances)
-- [Checking if JavaScript is Enabled](#Checking-if-JavaScript-is-Enabled)
-- [Verifying that Only Secure Content is Allowed](#Verifying-that-Only-Secure-Content-is-Allowed)
+- Enumerating WebView Instances
+- Checking if JavaScript is Enabled
+- Verifying that Only Secure Content is Allowed
 
 It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code.
 
@@ -2339,9 +2339,9 @@ Use the following best practices as defensive-in-depth measures:
 
 #### Static Analysis
 
-- [Testing How WebViews are Loaded](#Testing-How-WebViews-are-Loaded)
-- [Testing WebView File Access](#Testing-WebView-File-Access)
-- [Checking Telephone Number Detection](#Checking-Telephone-Number-Detection)
+- Testing How WebViews are Loaded
+- Testing WebView File Access
+- Checking Telephone Number Detection
 
 ##### Testing How WebViews are Loaded
 
@@ -2480,8 +2480,8 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 For what concerns this section we will learn about:
 
-- [Checking How WebViews are Loaded](#Checking-How-WebViews-are-Loaded)
-- [Determining WebView File Access](#Determining-WebView-File-Access)
+- Checking How WebViews are Loaded
+- Determining WebView File Access
 
 ##### Checking How WebViews are Loaded
 
