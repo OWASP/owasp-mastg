@@ -57,6 +57,14 @@ Virtually any Android mobile can be rooted. Commercial versions of Android OS (w
 
 To root a mobile device, first unlock its boot loader. The unlocking procedure depends on the device manufacturer. However, for practical reasons, rooting some mobile devices is more popular than rooting others, particularly when it comes to security testing: devices created by Google and manufactured by companies like Samsung, LG, and Motorola are among the most popular, particularly because they are used by many developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself. A curated list of guides for rooting all major brand devices is posted on the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
 
+###### Rooting with Magisk
+
+Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way, the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
+
+You can get familiar with Magisk reading the official [documentation](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you should follow [this](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation") guidance. If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
+
+Furthermore, developers can use the power of Magisk to create own modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [XPosed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
+
 ##### Network Setup
 
 The available network setup options must be evaluated first. The mobile device used for testing and the machine running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
