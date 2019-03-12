@@ -157,9 +157,15 @@ and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
 ##### Entitlements Embedded in the Compiled App Binary
 
-If you only have the compiled app (IPA) or even only the running app, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you'll be able to extract the entitlements files from the app bundle yourself.
+If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself.
 
-First you need to find the path to the app's bundle. This can be easily done with objection, example using Telegram:
+The following two subsections will show you how to access the app binary and once it is accessible, how to extract the entitlements property lists.
+
+###### Accessing the App Binary
+
+If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
+
+If not, first of all you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to find the path to the app's bundle. This can be easily done with objection, example using Telegram:
 
 - open the app and leave it running on foreground
 - run the following command
@@ -170,14 +176,12 @@ First you need to find the path to the app's bundle. This can be easily done wit
 
 Now you have two options:
 
-- connect per SSH, `cd` to the bundle and locate the (encrypted) app binary and use grep directly on it
-- or decrypt and extract the binary to your computer and use other tools apart from grep like binwalk or radare2.
+- connect per SSH, `cd` to the bundle and locate the (encrypted) app binary, e.g. "Telegram X" for Telegram (you may copy it over to your computer or keep working on the device)
+- or decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar and inspect it on your computer using other tools apart from grep like binwalk or radare2
 
-> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
+###### Extracting the Entitlements Plist from the App Binary
 
-Now let's assume that you have the binary on your computer. For Telegram it's called "Telegram X".
-
-One approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
+If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
 ```
 $ binwalk -e -y=xml ./Telegram\ X
@@ -205,6 +209,25 @@ $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
 In both cases (binwalk or radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements).
 
+> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
+
+If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
+
+```bash
+$ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
+    15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/Telegram\ X
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>com.apple.security.application-groups</key>
+		<array>
+        ...
+```
+
+Play with the `-A num, --after-context=num` flag to display more or less lines. You may also use tools like the ones we presented above if you have them also installed on your jailbroken iOS device.
+
+> This method should work even if the app binary is still encrypted (it was tested against several App Store apps).
 
 ##### Source Code Inspection
 
