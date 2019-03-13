@@ -284,6 +284,13 @@ SecureKeyWrapper ::= SEQUENCE {
 }
 ```
 
+The code above present the diffrent parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the following [link](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
+
+When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security : 
+- The `algorithm` parameter Specifies the cryptographic algorithm with which the key is used
+- The `keySize` parameter Specifies the size, in bits, of the key, measuring in the normal way for the key's algorithm
+- The `digest` parameter Specifies the digest algorithms that may be used with the key to perform signing and verification operations
+
 #### decryption only on unlocked devices
 
 For more security Android pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
