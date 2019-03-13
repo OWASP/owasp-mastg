@@ -269,7 +269,7 @@ In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS 
 
 #### Custom URL Schemes
 
-Please refer to the next section ["Testing Custom URL Schemes"](#Testing-Custom-URL-Schemes) for more information on what custom URL schemes are and how to test them.
+Please refer to the next section "Testing Custom URL Schemes" for more information on what custom URL schemes are and how to test them.
 
 #### Universal Links
 
@@ -403,7 +403,7 @@ You can see there that it verifies if the received activity is of type `NSUserAc
 
 If you have the original source code, you can search it for the `openURL:options:completionHandler:` method.
 
-> Note that the `openURL:options:completionHandler:` method is not only used to open universal links but also to [call custom URL schemes](#Testing-URL-Requests-to-Other-Apps).
+> Note that the `openURL:options:completionHandler:` method is not only used to open universal links but also to call custom URL schemes.
 
 This is an example from the Telegram app:
 
@@ -466,7 +466,7 @@ Unlike custom URL schemes, unfortunately you cannot test universal links from Sa
 
 > To do it from Safari you will have to find an existing link on a website that once you click it it will be recognized as a Universal Link. This can be a bit time consuming.
 
-Alternatively you can also use Frida for this, see the section "[Performing URL Requests](#Performing-URL-Requests)" for more details.
+Alternatively you can also use Frida for this, see the section "Performing URL Requests" for more details.
 
 ###### Identifying Valid Universal Links
 
@@ -710,7 +710,7 @@ What we have seen above is also [the way Handoff works](https://developer.apple.
 
 > If the user is using a web browser on the originating device, and the receiving device is an iOS device with a native app that claims the domain portion of the `webpageURL` property, then iOS launches the native app and sends it an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The `webpageURL` property contains the URL the user was visiting, while the `userInfo` dictionary is empty.
 
-Like universal links, the Handoff Activity Continuation is defined in the `com.apple.developer.associated-domains` entitlement and in the `apple-app-site-association` file from the server, both using the keyword `"activitycontinuation":`. See ["Retrieving the App Site Association File"](#Retrieving-the-App-Site-Association-File) above for an example.
+Like universal links, the Handoff Activity Continuation is defined in the `com.apple.developer.associated-domains` entitlement and in the `apple-app-site-association` file from the server, both using the keyword `"activitycontinuation":`. See "Retrieving the App Site Association File" above for an example.
 
 
 #### UIActivity Sharing
@@ -1024,7 +1024,7 @@ RET: 0x1
 
 If you look at the stack trace, you can see how `application:openURL:options:` called `__handleOpenURL:`, which called `moveItemAtPath:toPath:error:`. Notice that we have now this information without having the source code for the target app. The first thing that we had to do was clear: hook `application:openURL:options:`. Regarding the rest, we had to think a little bit and come up with methods that we could start tracing and are related to the file manager, for example, all methods containing the strings "copy", "move", "remove", etc. until we have found that the one being called was `moveItemAtPath:toPath:error:`.
 
-A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to ["Testing Custom URL Schemes"](#Testing-Custom-URL-Schemes) for more information.
+A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to "Testing Custom URL Schemes" for more information.
 
 
 #### App Extensions
@@ -1606,9 +1606,9 @@ $ r2 -qc izz~iGoat:// iGoat-Swift
 
 Search for deprecated methods like:
 
-- [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc)
-- [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc)
-- [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application)
+- [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc "UIApplicationDelegate application:handleOpenURL:")
+- [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc "UIApplication openURL:")
+- [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:")
 
 
 For example, here we find those three:
@@ -1659,7 +1659,7 @@ $ frida -U iGoat-Swift
 true
 ```
 
-Or as in this example from [Frida CodeShare](https://codeshare.frida.re/@dki/ios-url-scheme-fuzzing/) where the author uses the non-public API `LSApplicationWorkspace.openSensitiveURL:withOptions:` to open the URLs (from the SpringBoard app):
+Or as in this example from [Frida CodeShare](https://codeshare.frida.re/@dki/ios-url-scheme-fuzzing/ "iOS URL Scheme Fuzzing Script") where the author uses the non-public API `LSApplicationWorkspace.openSensitiveURL:withOptions:` to open the URLs (from the SpringBoard app):
 
 ```javascript
 function openURL(url) {
@@ -1673,9 +1673,9 @@ function openURL(url) {
 
 ###### Using IDB
 
-For this you can also use [IDB](https://www.idbtool.com/):
+For this you can also use [IDB](https://www.idbtool.com/ "IDB"):
 
-- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](https://www.idbtool.com/documentation/setup.html).
+- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](https://www.idbtool.com/documentation/setup.html "IDB Setup").
 - Go to the "URL Handlers" section. In "URL schemes", click "Refresh", and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking "Open", on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
 
 ###### Using Needle
@@ -1704,7 +1704,7 @@ If you can't look into the original source code you will have to find out yourse
 
 ###### Crafting the Link Yourself and Letting Safari Open It
 
-For this we will use the [ObjC method observer](https://codeshare.frida.re/@mrmacete/objc-method-observer/) from Frida CodeShare, which is an extremely handy script that allows you to quickly observe any collection of methods or classes just by providing a simple pattern.
+For this we will use the [ObjC method observer](https://codeshare.frida.re/@mrmacete/objc-method-observer/ "ObjC method observer") from Frida CodeShare, which is an extremely handy script that allows you to quickly observe any collection of methods or classes just by providing a simple pattern.
 
 In this case we are interested into all methods containing "openURL", therefore our pattern will be `*[* *openURL*]`:
 
@@ -1759,7 +1759,7 @@ Now we know that:
 - it receives our URL as a parameter: `igoat://`
 - we also can verify the source application: `com.apple.mobilesafari`
 - we can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`
-- the method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value))
+- the method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value"))
 
 The call was successful and we see now that the iGoat app was open:
 
@@ -1935,15 +1935,15 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*op
 
 Search for deprecated methods like:
 
-- [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc)
-- [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc)
-- [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application)
+- [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc "UIApplicationDelegate application:handleOpenURL:")
+- [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc "UIApplication openURL:")
+- [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:")
 
 You may simply use frida-trace for this, to see if any of those methods are being used.
 
 ##### Testing URL Schemes Source Validation
 
-A way to discard or confirm validation could be by hooking typical methods that might be used for that. For example [`isEqualToString:`](https://developer.apple.com/documentation/foundation/nsstring/1407803-isequaltostring):
+A way to discard or confirm validation could be by hooking typical methods that might be used for that. For example [`isEqualToString:`](https://developer.apple.com/documentation/foundation/nsstring/1407803-isequaltostring "NSString isEqualToString:"):
 
 ```javascript
 // - (BOOL)isEqualToString:(NSString *)aString;
@@ -1984,17 +1984,17 @@ Nothing happens. This tells us already that this method is not being used for th
 
 If the app parses parts of the URL, you can also perform input fuzzing to detect memory corruption bugs.
 
-What we have learned above can be now used to build your own fuzzer on the language of your choice, e.g. in Python and call the `openURL` using [Frida's RPC](https://www.frida.re/docs/javascript-api/#rpc). That fuzzer should do the following:
+What we have learned above can be now used to build your own fuzzer on the language of your choice, e.g. in Python and call the `openURL` using [Frida's RPC](https://www.frida.re/docs/javascript-api/#rpc "Frida's RPC (JavaScript API)"). That fuzzer should do the following:
 
 - generate payloads
 - for each of them call `openURL`
 - and check if the app generates a crash report (`.ips`) in `/private/var/mobile/Library/Logs/CrashReporter`
 
-The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb) project offers fuzzing dictionaries that you can use as payloads.
+The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb "FuzzDB") project offers fuzzing dictionaries that you can use as payloads.
 
 ###### Using Frida
 
-Doing this with Frida is pretty easy, you can refer to this [blog post](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html) to see an example that fuzzes the iGoat-Swift app (working on iOS 11.1.2).
+Doing this with Frida is pretty easy, you can refer to this [blog post](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html "Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida") to see an example that fuzzes the iGoat-Swift app (working on iOS 11.1.2).
 
 Before running the fuzzer we need the URL schemes as inputs. From the static analysis we know that the iGoat-Swift app supports the following URL scheme and parameters: `iGoat://?contactNumber={0}&message={0}`.
 
@@ -2072,11 +2072,11 @@ WebViews are in-app browser components for displaying interactive web content. T
 
 ##### UIWebView
 
-[`UIWebView`](https://developer.apple.com/reference/uikit/uiwebview "UIWebView reference documentation") is deprecated starting on iOS 12 and should not be used. Make sure that either `WKWebView` or `SFSafariViewController` are used to embed web content. In addition to that, JavaScript cannot be disabled for `UIWebView` which is another reason to refrain from using it.
+[`UIWebView`](https://developer.apple.com/reference/uikit/uiwebview "UIWebView") is deprecated starting on iOS 12 and should not be used. Make sure that either `WKWebView` or `SFSafariViewController` are used to embed web content. In addition to that, JavaScript cannot be disabled for `UIWebView` which is another reason to refrain from using it.
 
 ##### WKWebView
 
-[`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView reference documentation") was introduced with iOS 8 and is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing. `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#THIEL].
+[`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView") was introduced with iOS 8 and is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing. `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#THIEL].
 
 `WKWebView` comes with several security advantages over `UIWebView`:
 
@@ -2085,11 +2085,11 @@ WebViews are in-app browser components for displaying interactive web content. T
 - the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
-A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](#Determining-Whether-Native-Methods-Are-Exposed-Through-WebViews)" below for more information.
+A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "Determining Whether Native Methods Are Exposed Through WebViews" below for more information.
 
 ##### SFSafariViewController
 
-[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller) is available starting on iOS 9 and should be used to provide a generalized web viewing experience. These WebViews can be easily spotted as they have a characteristic layout which includes:
+[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller "SFSafariViewController") is available starting on iOS 9 and should be used to provide a generalized web viewing experience. These WebViews can be easily spotted as they have a characteristic layout which includes:
 
 - A read-only address field with a security indicator
 - An Action ("Share") button
@@ -2139,7 +2139,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 1757 0x000595e4 0x000595e4  23  24 () ascii _OBJC_CLASS_$_WKWebView
 ```
 
-Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init)):
+Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init "WKWebView init(frame:configuration:)")):
 
 ```
 $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
@@ -2162,7 +2162,7 @@ $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC
 
 First of all, rememeber that JavaScript cannot be disabled for `UIWebVIews`.
 
-For `WKWebView`s, as a best practice, JavaScript should be disabled unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled) property is set to `false`:
+For `WKWebView`s, as a best practice, JavaScript should be disabled unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled "WKPreferences javaScriptEnabled") property is set to `false`:
 
 ```swift
 let webPreferences = WKPreferences()
@@ -2177,12 +2177,12 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
 ```
 
-If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller) and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript) for more information on injecting user scripts to WKWebViews.
+If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller) and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript "WKUserScript") for more information on injecting user scripts to WKWebViews.
 
 
 ##### Testing for Mixed Content
 
-In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en) (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent) it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#THIEL] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
+In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#THIEL] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
 
 In the compiled binary:
 
@@ -2194,7 +2194,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 In this case, the app does not make use of this.
 
-In addition, if you have the original source code or the IPA, you can inspect the embedded HTML files and verify that they do not include mixed content. Search for `http://` in the source and inside tag attributes, but remember that this might give false positives as, for example, finding an anchor tag `<a>` that includes a `http://` inside its `href` attribute does not always present a mixed content issue. Learn more about mixed content in [Google's Web Developers guide](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content).
+In addition, if you have the original source code or the IPA, you can inspect the embedded HTML files and verify that they do not include mixed content. Search for `http://` in the source and inside tag attributes, but remember that this might give false positives as, for example, finding an anchor tag `<a>` that includes a `http://` inside its `href` attribute does not always present a mixed content issue. Learn more about mixed content in [Google's Web Developers guide](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content?hl=en "What Is Mixed Content?").
 
 #### Dynamic Analysis
 
@@ -2206,7 +2206,7 @@ For the dynamic analysis we will address the same points from the static analysi
 
 It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code.
 
-For the following examples, we will keep using the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/) app and Frida REPL.
+For the following examples, we will keep using the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/ "Where's My Browser? GitHub Repository") app and Frida REPL.
 
 ##### Enumerating WebView Instances
 
@@ -2293,7 +2293,7 @@ $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 Remember that if a `UIWebView` is being used, JavaScript is enabled by default and there's no possibility to disable it.
 
-For `WKWebView`, you should verify if JavaScript is enabled. Use [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled) from `WKPreferences` for this.
+For `WKWebView`, you should verify if JavaScript is enabled. Use [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled "WKPreferences javaScriptEnabled") from `WKPreferences` for this.
 
 Extend the previous script with the following line:
 
@@ -2318,9 +2318,9 @@ javaScriptEnabled:  true
 
 ##### Verifying that Only Secure Content is Allowed
 
-`UIWebView`s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/) which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "[Enumerating WebView Instances](#Enumerating-WebView-Instances)".
+`UIWebView`s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "Enumerating WebView Instances".
 
-For `WKWebView`s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent) for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
+For `WKWebView`s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
 
 Extend the previous script with the following line:
 
@@ -2358,7 +2358,7 @@ WebViews can load remote content from an endpoint, but they can also load local 
 Use the following best practices as defensive-in-depth measures:
 
 - create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
-- create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming)) to make them harder to read.
+- create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming) "Minification (programming)") to make them harder to read.
 
 #### Static Analysis
 
@@ -2370,9 +2370,9 @@ Use the following best practices as defensive-in-depth measures:
 
 If a WebView is loading content from the app data directory, users should not be able to change the filename or path from which the file is loaded, and they shouldn't be able to edit the loaded file.
 
-This presents an issue especially in `UIWebView`s loading untrusted content via the deprecated methods [`loadHTMLString:baseURL`](https://developer.apple.com/documentation/uikit/uiwebview/1617979-loadhtmlstring?language=objc) or [`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617941-loaddata?language=objc) and setting the `baseURL` parameter to `nil` or to a `file:` or `applewebdata:` URL schemes. In this case, in order to prevent unauthorized access to local files, the best option is to set it instead to `about:blank`. However, the recommendation is to avoid the use of `UIWebView`s and switch to `WKWebView`s instead.
+This presents an issue especially in `UIWebView`s loading untrusted content via the deprecated methods [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617979-loadhtmlstring?language=objc "UIWebView loadHTMLString:baseURL:") or [`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/uikit/uiwebview/1617941-loaddata?language=objc "UIWebView loadData:MIMEType:textEncodingName:baseURL:") and setting the `baseURL` parameter to `nil` or to a `file:` or `applewebdata:` URL schemes. In this case, in order to prevent unauthorized access to local files, the best option is to set it instead to `about:blank`. However, the recommendation is to avoid the use of `UIWebView`s and switch to `WKWebView`s instead.
 
-Here's an example of a vulnerable `UIWebView` from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/UIWebViewController.swift#L219):
+Here's an example of a vulnerable `UIWebView` from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/UIWebViewController.swift#L219 "Where's My Browser? UIWebViewController.swift Line 219"):
 
 ```swift
 let scenario2HtmlPath = Bundle.main.url(forResource: "web/UIWebView/scenario2.html", withExtension: nil)
@@ -2384,7 +2384,7 @@ do {
 
 The page loads resources from the internet using HTTP, enabling a potential MITM to exfiltrate secrets contained in local files, e.g. in shared preferences.
 
-When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc)/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc) to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others:  [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc) or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init).
+When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:")/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others:  [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
 
 Search the source code for the mentioned methods and inspect their parameters.
 
@@ -2411,7 +2411,7 @@ Example in Objective-C:
 
 ```
 
-Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L196):
+Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L196 "Where's My Browser? WKWebViewController.swift Line 196"):
 
 ```swift
 let scenario2HtmlPath = Bundle.main.url(forResource: "web/WKWebView/scenario2.html", withExtension: nil)
@@ -2428,11 +2428,11 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 0x10002df6c  23  24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
 
-In a case like this, it is recommended to perform dynamic anaylsis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "[Checking How WebViews are Loaded](#Checking-How-WebViews-are-Loaded)" for an example about this.
+In a case like this, it is recommended to perform dynamic anaylsis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "Checking How WebViews are Loaded" for an example about this.
 
 In addition, you should also verify if the app is using the method [`loadFileURL:allowingReadAccessToURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "WKWebView loadFileURL:allowingReadAccessToURL:"). Its first parameter is `URL` and contains the URL to be loaded in the WebView, its second parameter `allowingReadAccessToURL` may contain a single file or a directory. If containing a single file, that file will be available to the WebView. However, if it contains a directory, all files on that directory will be made available to the WebView. Therefore, it is worth inspecting this and in case it is a directory, verifying that no sensitive data can be found inside it.
 
-Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L186):
+Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L186 "Where's My Browser? WKWebViewController.swift Line 186"):
 
 ```swift
 var scenario1Url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
@@ -2467,7 +2467,7 @@ The following WebView properties can be used to configure file access:
 - `allowFileAccessFromFileURLs` (`WKPreferences`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from other `file://` scheme URLs
 - `allowUniversalAccessFromFileURLs` (`WKWebViewConfiguration`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from any origin
 
-For example, it is possible to set the **[undocumented property](https://github.com/WebKit/webkit/blob/master/Source/WebKit/UIProcess/API/Cocoa/WKPreferences.mm#L470)** `allowFileAccessFromFileURLs` by doing this:
+For example, it is possible to set the **[undocumented property](https://github.com/WebKit/webkit/blob/master/Source/WebKit/UIProcess/API/Cocoa/WKPreferences.mm#L470 "WebKit WKPreferences.mm Line 470")** `allowFileAccessFromFileURLs` by doing this:
 
 Objective-C:
 
@@ -2490,7 +2490,7 @@ If one or more of the above properties are activated, you should determine wheth
 
 ##### Checking Telephone Number Detection
 
-In Safari on iOS, telephone number detection is on by default. However, you might want to turn it off if your HTML page contains numbers that can be interpreted as phone numbers, but are not phone numbers, or to prevent the DOM document from being modified when parsed by the browser. To turn off telephone number detection in Safari on iOS, use the format-detection meta tag (`<meta name = "format-detection" content = "telephone=no">`). An example of this can be found [here](https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW2). Phone links should be then used (e.g. `<a href="tel:1-408-555-5555">1-408-555-5555</a>`) to explicitly create a link.
+In Safari on iOS, telephone number detection is on by default. However, you might want to turn it off if your HTML page contains numbers that can be interpreted as phone numbers, but are not phone numbers, or to prevent the DOM document from being modified when parsed by the browser. To turn off telephone number detection in Safari on iOS, use the format-detection meta tag (`<meta name = "format-detection" content = "telephone=no">`). An example of this can be found [here](https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW2 "Phone Links: Turning telephone number detection off"). Phone links should be then used (e.g. `<a href="tel:1-408-555-5555">1-408-555-5555</a>`) to explicitly create a link.
 
 
 #### Dynamic Analysis
@@ -2508,7 +2508,7 @@ For what concerns this section we will learn about:
 
 ##### Checking How WebViews are Loaded
 
-As we have seen above in "[Testing How WebViews are Loaded](#Testing-How-WebViews-are-Loaded)", if "scenario 2" of the WKWebViews is loaded, the app will do so by calling [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc) and `loadHTMLString:baseURL`.
+As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of the WKWebViews is loaded, the app will do so by calling [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") and `loadHTMLString:baseURL`.
 
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
@@ -2541,7 +2541,7 @@ This origin "applewebdata://" is similar to the "file://" origin as it does not 
 
 Even if not having the original source code, you can quickly determine if the app's WebViews do allow file access and which kind. For this, simply navigate to the target WebView in the app and inspect all its instances, for each of them get the values mentioned in the static analysis, that is, `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs`. This only applies to `WKWebView`s (`UIWebVIew`s always allow file access).
 
-We continue with our example using the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/) app and Frida REPL, extend the script with the following content:
+We continue with our example using the ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/ "Where's My Browser?") app and Frida REPL, extend the script with the following content:
 
 ```javascript
 ObjC.choose(ObjC.classes['WKWebView'], {
@@ -2616,11 +2616,11 @@ In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as fol
 
 ##### Testing WKWebView JavaScript to Native Bridges
 
-JavaScript code in a `WKWebView` can still send messages back to the native app but in contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system and using the `postMessage` function, which automatically serializes JavaScript objects into native Objective-C or Swift objects. Message handlers are configured using the method [`add(_ scriptMessageHandler:name:)`](https://developer.apple.com/documentation/webkit/wkusercontentcontroller/1537172-add).
+JavaScript code in a `WKWebView` can still send messages back to the native app but in contrast to `UIWebView`, it is not possible to directly reference the `JSContext` of a `WKWebView`. Instead, communication is implemented using a messaging system and using the `postMessage` function, which automatically serializes JavaScript objects into native Objective-C or Swift objects. Message handlers are configured using the method [`add(_ scriptMessageHandler:name:)`](https://developer.apple.com/documentation/webkit/wkusercontentcontroller/1537172-add "WKUserContentController add(_ scriptMessageHandler:name:)").
 
 Verify if a JavaScript to native bridge exists by searching for `WKScriptMessageHandler` and check all exposed methods. Then verify how the methods are called.
 
-The following example from [WheresMyBrowser iOS App](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/WKWebViewPreferencesManager.swift#L98) demonstrates this.
+The following example from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/WKWebViewPreferencesManager.swift#L98 "Where's My Browser? WKWebViewPreferencesManager.swift Line 98") demonstrates this.
 
 First we see how the JavaScript bridge is enabled:
 
@@ -2637,7 +2637,7 @@ func enableJavaScriptBridge(_ enabled: Bool) {
 }
 ```
 
-Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in the  example above) causes the JavaScript function `window.webkit.messageHandlers.myJavaScriptMessageHandler.postMessage()` to be defined in all frames in all web views that use the user content controller. It can be then [used from the HTML file like this](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/d4e2d9efbde8841bf7e4a8800418dda6bb116ec6/WheresMyBrowser/web/WKWebView/scenario3.html#L33):
+Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in the  example above) causes the JavaScript function `window.webkit.messageHandlers.myJavaScriptMessageHandler.postMessage()` to be defined in all frames in all web views that use the user content controller. It can be then [used from the HTML file like this](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/d4e2d9efbde8841bf7e4a8800418dda6bb116ec6/WheresMyBrowser/web/WKWebView/scenario3.html#L33 "Where's My Browser? WKWebView/scenario3.html Line 33"):
 
 ```javascript
 function invokeNativeOperation() {
@@ -2647,7 +2647,7 @@ function invokeNativeOperation() {
 }
 ```
 
-The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/JavaScriptBridgeMessageHandler.swift#L29):
+The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/JavaScriptBridgeMessageHandler.swift#L29 "Where's My Browser? JavaScriptBridgeMessageHandler.swift Line 29"):
 
 ```swift
 class JavaScriptBridgeMessageHandler: NSObject, WKScriptMessageHandler {
@@ -2681,7 +2681,7 @@ Further dynamic analysis can help you exploit those functions and get sensitive 
 The procedure for exploiting the functions starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via various techniques, for example:
 
 - if some of the content is loaded insecurely from the Internet over HTTP (mixed content), you can try to implement a MITM attack
-- you can always perform dynamic instrumentation and inject the JavaScript payload by using frameworks like Frida and the corresponding JavaScript evaluation functions available for the iOS WebViews ([`stringByEvaluatingJavaScriptFromString:`](https://developer.apple.com/documentation/uikit/uiwebview/1617963-stringbyevaluatingjavascriptfrom?language=objc) for `UIWebView` and [`evaluateJavaScript:completionHandler:`](https://developer.apple.com/documentation/webkit/wkwebview/1415017-evaluatejavascript?language=objc) for `WKWebView`)
+- you can always perform dynamic instrumentation and inject the JavaScript payload by using frameworks like Frida and the corresponding JavaScript evaluation functions available for the iOS WebViews ([`stringByEvaluatingJavaScriptFromString:`](https://developer.apple.com/documentation/uikit/uiwebview/1617963-stringbyevaluatingjavascriptfrom?language=objc "UIWebView stringByEvaluatingJavaScriptFromString:") for `UIWebView` and [`evaluateJavaScript:completionHandler:`](https://developer.apple.com/documentation/webkit/wkwebview/1415017-evaluatejavascript?language=objc "WKWebView evaluateJavaScript:completionHandler:") for `WKWebView`)
 
 In order to get the secret from the previous example of the "Where's My Browser?" app, you can use one of these techniques to inject the following payload that will reveal the secret by writing it to the "result" field of the WebView:
 
@@ -2738,7 +2738,7 @@ class CustomPoint: NSObject, NSCoding {
 }
 ```
 
-The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSecureCoding` protocol has been introduced. When conforming to [`NSSecureCoding`](https://developer.apple.com/documentation/foundation/NSSecureCoding) you need to include:
+The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSecureCoding` protocol has been introduced. When conforming to [`NSSecureCoding`](https://developer.apple.com/documentation/foundation/NSSecureCoding "NSSecureCoding") you need to include:
 
 ```swift
 
@@ -2787,7 +2787,7 @@ struct CustomPointStruct:Codable {
 }
 ```
 
-By adding `Codable` to the inheritance list for the `CustomPointStruct` in the example, the methods `init(from:)` and `encode(to:)` are automatically supported. Fore more details about the workings of `Codable` check [the Apple Developer Documentation](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types "Codable").
+By adding `Codable` to the inheritance list for the `CustomPointStruct` in the example, the methods `init(from:)` and `encode(to:)` are automatically supported. Fore more details about the workings of `Codable` check [the Apple Developer Documentation](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types "Encoding and Decoding Custom Types").
 The `Codable`s can easily be encoded / decoded into various representations: `NSData` using `NSCoding`/`NSSecureCoding`, JSON, Property Lists, XML, etc. See the subsections below for more details.
 
 ##### JSON and Codable
@@ -2896,13 +2896,13 @@ When not using third party libraries, but Apple's `XMLParser`, be sure to let `s
 
 ##### Object-Relational Mapping (Coredata and Realm)
 
-There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Enable encryption"). This allows for handling secure data. Note that the encryption is turned off by default.
+There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Encryption with Realm"). This allows for handling secure data. Note that the encryption is turned off by default.
 
 Apple itself supplies `CoreData`, which is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's Persistent Store Types and Behaviors documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of data stores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in [project iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
 
 ##### Protocol Buffers
 
-[Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language-neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Encoding"). They are available for iOS by means of the [Protobuf](https://github.com/apple/swift-protobuf "Protobuf") library.
+[Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language-neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Protocol Buffers Encoding"). They are available for iOS by means of the [Protobuf](https://github.com/apple/swift-protobuf "Apple's swift-protobuf Plugin and Runtime library") library.
 There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
 Note that **Protocol Buffers do not provide any protection for confidentiality** as no built-in encryption is available.
 
@@ -2915,7 +2915,7 @@ All different flavors of object persistence share the following concerns:
 - Need to guarantee the integrity of the information? Use an HMAC mechanism or sign the information stored. Always verify the HMAC/signature before processing the actual information stored in the objects.
 - Make sure that keys used in the two notions above are safely stored in the KeyChain and well protected. See the "Data Storage on iOS" chapter for more details.
 - Ensure that the data within the deserialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic is possible).
-- Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C runtime reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (see the "iOS Anti-Reversing Defenses" chapter for more details).
+- Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C Runtime Reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (see the "iOS Anti-Reversing Defenses" chapter for more details).
 - Note that in Swift 2 and beyond, a [Mirror](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
 
 #### Dynamic Analysis
@@ -2929,8 +2929,8 @@ There are several ways to perform dynamic analysis:
 ### References
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
-- Security Flaw with UIWebView - (https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c "Security Flaw with UIWebView")
-- Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - (https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html)
+- [Security Flaw with UIWebView](https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c "Security Flaw with UIWebView")
+- [Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html "Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida")
 
 #### OWASP Mobile Top 10 2016
 
