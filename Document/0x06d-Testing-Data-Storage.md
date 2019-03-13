@@ -224,7 +224,9 @@ The misconfigured Firebase instance can be identified by making the following ne
 
 _https://\<firebaseProjectName\>.firebaseio.com/.json_
 
-The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, _PROJECT_ID_ key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
+The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, _PROJECT_ID_ key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
+
+Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
 
 ```
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
@@ -976,4 +978,5 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 - [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Misconfiguration Scanner")
 
 #### Others
+
 - Appthority Mobile Threat Team Research Paper - https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf
