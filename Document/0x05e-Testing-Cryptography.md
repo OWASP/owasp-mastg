@@ -284,7 +284,7 @@ SecureKeyWrapper ::= SEQUENCE {
 }
 ```
 
-The code above present the diffrent parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the following [link](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
+The code above present the diffrent parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the Android documentation on [WrappedKeyEntry](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
 
 When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security : 
 - The `algorithm` parameter Specifies the cryptographic algorithm with which the key is used
