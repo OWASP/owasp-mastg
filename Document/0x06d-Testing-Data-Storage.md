@@ -212,6 +212,26 @@ CoreData does not encrypt it's data by default. As part of a research project (i
 
 The SQLite 3 library must be added to an app if the app is to use SQLite. This library is a C++ wrapper that provides an API for the SQLite commands.
 
+##### Firebase Real-time Databases
+
+Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
+
+###### Identifying Misconfigured Firebase Instance
+
+In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
+
+The misconfigured Firebase instance can be identified by making the following network call:
+
+_https://\<firebaseProjectName\>.firebaseio.com/.json_
+
+The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, _PROJECT_ID_ key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
+
+Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
+
+```
+python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
+```
+
 ##### Realm databases
 
 [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") aren't supplied by Apple, but they are still worth noting. They store everything unencrypted, unless the configuration has encryption enabled.
@@ -955,3 +975,8 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 - [objection](https://github.com/sensepost/objection "objection")
 - [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 - [Burp Suite Professional](https://portswigger.net/burp)
+- [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Misconfiguration Scanner")
+
+#### Others
+
+- Appthority Mobile Threat Team Research Paper - https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf
