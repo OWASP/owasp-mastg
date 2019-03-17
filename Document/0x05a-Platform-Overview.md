@@ -527,7 +527,7 @@ When an application is installed on the Android device, the Package Manager ensu
 
 #### APK Signing Schemes
 
-Android supports three application signing schemes. Starting with Android 9.0, APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compability, APKs signed with a given signing scheme can be installed on older Android devices as long as the former are signed with prior scheme verions too. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports three application signing schemes. Starting with Android 9.0, APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 Scheme)
 
@@ -543,6 +543,9 @@ With the APK signature scheme, the complete APK is hashed and signed, and an APK
 #### APK Signature Scheme (v3 Scheme)
 
 The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
+
+The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatiility work, the old signing certs sign the new set of certs, thus providing each new key with evidence that it should be as trusted as the older key(s).
+It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certs signing the new set of certs, rather than signing them one-by-one.  
 
 ![apk-validation-process-v3-scheme](Images/Chapters/0x05a/apk-validation-process-v3-scheme)
 [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process")
