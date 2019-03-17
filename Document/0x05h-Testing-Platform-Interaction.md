@@ -17,7 +17,7 @@ Note that starting at Android 8, If an app requests a permission at runtime, the
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
 Note that starting at Android 8 the permissions bellow contain the following changes:
-- READ_CONTACTS : When an app request this permission, queries for usage data will return aproximations rather than exact values.
+- READ_CONTACTS : When an app request this permission, queries for usage data will return approximations rather than exact values.
 - GET_ACCOUNTs : Apps no longer get access to user accounts with this permission unless the authenticator owns the accounts or the user grants that access.
 
 #### Activity Permission Enforcement
@@ -229,7 +229,7 @@ Permissions should be explicitly requested for every needed permission, even if 
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
 
-#### Permisson Analysis
+#### Permission Analysis
 
 Always check whether the application is requesting permissions it actually needs. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
@@ -269,7 +269,7 @@ $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 
 Note that this method can't be used for `signature` level permissions because Drozer would need to be signed by the certificate used to sign the target application.
 
-When doing the dynamic analysis: validate whether the permission requisted by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
 
 ### Testing Custom URL Schemes
@@ -1011,8 +1011,8 @@ String json = gson.toJson(obj);
 ```
 ##### XML
 
-There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [this blogpost](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
-Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the data storage chapter for more details. As stated earlier: the true danger in XML lies in the XML eXternal Entity attack (XXE) as it might allow for reading external data sources that are still acecssible within the application.
+There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [this blog post](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
+Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the data storage chapter for more details. As stated earlier: the true danger in XML lies in the XML eXternal Entity attack (XXE) as it might allow for reading external data sources that are still accessible within the application.
 
 ##### ORM
 
@@ -1167,7 +1167,7 @@ Make sure that appropriate security measures are taken when sensitive informatio
 There are several ways to perform dynamic analysis:
 
 1.	For the actual persistence: Use the techniques described in the data storage chapter.
-2.	For reflection-based approaches: Use Xposed to hook into the de-serialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+2.	For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 ### References
 

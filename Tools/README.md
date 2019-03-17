@@ -24,6 +24,7 @@ Files:
 2. Update the Changelog.md
 3. Commit the changes (with message "Release <version>")
 4. Push a tag with the new version (git tag -a <version> -m "Release message that will be on github")
-5. Update the Leanpub Files
+5. Update the Leanpub Files at Leanpub
 6. Update OWASP Wiki if necessary
-7. Tweet about it with @OWASP-MSTG.
+7. Update the book at lulu.com (Ask @sushi2k)
+8. Tweet about it with @OWASP-MSTG.
