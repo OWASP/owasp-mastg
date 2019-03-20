@@ -103,7 +103,7 @@ For an overview of the different *purpose strings Info.plist keys* available see
 
 Following these guidelines should make it relatively simple to evaluate each and every entry in the `Info.plist` file to check if the permission makes sense.
 
-For example, the following lines were extracted from a `Info.plist` file used by a Solitaire game:
+For example, imagine the following lines were extracted from a `Info.plist` file used by a Solitaire game:
 
 ```xml
 <key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
@@ -275,12 +275,19 @@ Please refer to the next section "Testing Custom URL Schemes" for more informati
 
 ##### Overview
 
-Universal links the iOS equivalent to the Android App Links (aka. Digital Asset Links) and are used for deep linking. When a user taps a link to the app's website he will get seamlessly redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
+Universal links are the iOS equivalent to Android App Links (aka. Digital Asset Links) and are used for deep linking. When a user taps a universal link (to the app's website) he will get seamlessly redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
 
-They were introduced as a way to *prevent* URL scheme hijacking attacks. According to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"), universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking. Specifically, universal links are:
+Universal links are standard web links (HTTP/HTTPS) and are not to be confused with custom URL schemes, which originally were also used for deep linking.
 
-- **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website.
-- **Secure**: When users install the app, iOS checks a file that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the developers can create and upload this file, so the association of their website with the app is secure.
+For example, the Telegram app supports both custom URL schemes and universal links:
+
+- `tg://resolve?domain=fridadotre` is a custom URL scheme and uses the `tg://` scheme
+- `https://telegram.me/fridadotre` is a universal link and uses the `https://` scheme
+
+Both result in the same action, the user will be redirected to the specified chat in Telegram ("fridadotre" in this case). However, universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking, according to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"). Specifically, universal links are:
+
+- **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to *prevent* URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
+- **Secure**: When users install the app, iOS downloads and checks a file (`apple-app-site-association`) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the developers can create and upload this file, so the association of their website with the app is secure.
 - **Flexible**: Universal links work even when the app is not installed. Tapping a link to the website would open the content in Safari, as users expect.
 - **Simple**: One URL works for both the website and the app.
 - **Private**: Other apps can communicate with the app without needing to know whether it is installed.
@@ -319,7 +326,7 @@ If you don't have the original source code you still can search for this (as we 
 
 Try to retrieve the `apple-app-site-association` file from the server using the associated domains you got from the previous step. This file needs to be accessible via HTTPS, without any redirects, at `https://<domain>/apple-app-site-association` or `https://<domain>/.well-known/apple-app-site-association`.
 
-You can retrieve it yourself with your browser or use this tool: <https://branch.io/resources/aasa-validator/>. After entering the domain, it will display the file. 
+You can retrieve it yourself with your browser or use this tool: <https://branch.io/resources/aasa-validator/>. After entering the domain, it will display the file.
 
 Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association "Apple's apple-app-site-association file"):
 
@@ -462,9 +469,9 @@ Unlike custom URL schemes, unfortunately you cannot test universal links from Sa
 - open the Notes app and create a new note
 - write the links including the domain
 - leave the editing mode in the Notes app
-- long-press the links to open them
+- long press the links to open them (remember that a standard click triggers the default option)
 
-> To do it from Safari you will have to find an existing link on a website that once you click it it will be recognized as a Universal Link. This can be a bit time consuming.
+> To do it from Safari you will have to find an existing link on a website that once clicked, it will be recognized as a Universal Link. This can be a bit time consuming.
 
 Alternatively you can also use Frida for this, see the section "Performing URL Requests" for more details.
 
@@ -483,13 +490,15 @@ From the `apple-app-site-association` of apple.com we have seen above we chose t
 
 One of them should offer the "Open in app" option and the other should not.
 
-If we click on the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
+If we long press on the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
 
 ![Forbidden Universal Link](Images/Chapters/0x06h/forbidden_universal_link.png)
 
-If we click on the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
+If we long press on the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
 
 ![Allowed Universal Link](Images/Chapters/0x06h/allowed_universal_link.png)
+
+> Note that there is a difference between a click and a long press. Once we long press a link and select an option, e.g. "Open in Safari", this will become the default option for all future clicks until we long press again and select another option.
 
 If we repeat the process and hook or trace the `application:continueUserActivity:restorationHandler:` method we will see how it gets called as soon as we open the allowed universal link. For this you can use frida-trace for example:
 
@@ -1642,6 +1651,10 @@ Once you've identified the custom URL schemes the app has registered, there are 
 To quickly test one URL scheme you can open the URLs on Safari and observe how the app behaves. For example, if you write `tel://123456789` in the address bar of Safari, a pop up will appear with the *telephone number* and the options "Cancel" and "Call". If you press "Call" it will open the Phone app and directly make the call.
 
 You may also know already about pages that trigger custom URL schemes, you can just navigate normally to those pages and Safari will automatically ask when it finds a custom URL scheme.
+
+###### Using the Notes App
+
+As already seen in "Triggering Universal Links", you may use the Notes app and long press the links you've written in order to test custom URL schemes. Remember to exit the editing mode in order to be able to open them. Note that you can click or long press links including custom URL schemes only if the app is installed, if not they won't be highlighted as *clickable links*.
 
 ###### Using Frida
 
