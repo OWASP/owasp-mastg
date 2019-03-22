@@ -4,7 +4,7 @@ echo "Do not forget to install npm, gitbookcli (https://www.npmjs.com/package/gi
 echo 'Versiontag is' $1
 cp book.json ../book.json
 cp ../CHANGELOG.MD ../Document/Changelog.md
-sed  "s/\.\.\/Changelog\.md/Changelog\.md/g" ../Document/SUMMARY.md
+sed -i.bak "s/\.\.\/Changelog\.md/Changelog\.md/g" ../Document/SUMMARY.md
 sed -i.bak "s/\[\]/$1/g" ../book.json
 rm ../book.json.bak
 gitbook install ../
