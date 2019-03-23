@@ -32,7 +32,27 @@ Even though Apple urges to protect the privacy of the user and be [very clear on
 
 ##### Device Capabilities
 
-An app might have a set of device capabilities (`UIRequiredDeviceCapabilities`), which can be required by the developer in order to run the app. These capabilities are listed at the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/plist/info/UIRequiredDeviceCapabilities "UIRequiredDeviceCapabilities") and are used by App Store and by iTunes to ensure that only compatible devices are listed. Many of these capabilities do not require the user to provide permission. Note that the actual available capabilities differ per type of developer profile used to sign the application. See the [Apple Developer Documentation](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities") for more details.
+An app might have a set of device capabilities, which can be required by the developer in order to run the app. They are used by App Store and by iTunes to ensure that only compatible devices are listed and therefore are allowed to download the app. For example, a developer might want to exclude devices like e.g. iPod or iPads lacking of the `telephony` capability or which are non-BLE (Bluetooth Low Energy) capable because the app is completely BLE dependent. According to the [archived iOS Device Compatibility Reference](https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html "iOS Device Compatibility Matrix"), BLE is available on the iPhone 4S and up, so nowadays this restriction would not be of much help apart from the case of apps targeting very old devices. However, this might be still relevant for newer capabilities like `nfc` which are only available starting on the iPhone 7 (and iOS 11). See the app "NFC TagInfo" [in the App Store](https://itunes.apple.com/us/app/nfc-taginfo-by-nxp/id1246143596 "NFC TagInfo by NXP") for an example of this restriction.
+
+Device capabilities are specified in the `Info.plist` file of the app. For example, typically you'll find the `armv7` capability, meaning that the app is compiled only for the armv7 instruction set, or if it’s a 32/64-bit universal app.
+
+```xml
+<key>UIRequiredDeviceCapabilities</key>
+<array>
+    <string>armv7</string>
+</array>
+```
+
+You can find a list of `UIRequiredDeviceCapabilities` in the "Information Property List Key Reference" of the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/plist/info/UIRequiredDeviceCapabilities "UIRequiredDeviceCapabilities"). Note that the actual available capabilities differ per type of developer profile used to sign the application. See the "Advanced App Capabilities" section of the [Apple Developer Documentation](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities") for more details.
+
+Regarding testing, you can take `UIRequiredDeviceCapabilities` as a mere indication that the app is using some specific capabilities. However, it is important to notice that this does not confer any permission or entitlement. This has to be done in addition to the configuration steps, which are very specific to each capability.
+
+For example, if BLE is a core feature of the app, Apple's [Core Bluetooth Programming Guide](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothOverview/CoreBluetoothOverview.html#//apple_ref/doc/uid/TP40013257-CH2-SW1 "Core Bluetooth Overview") explains the different things to be considered:
+
+- the `bluetooth-le` capability can be set in order to *restrict* non-BLE capable devices from downloading their app
+- some `UIBackgroundModes` like `bluetooth-peripheral` or `bluetooth-central` should be added if [BLE background processing](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html "Core Bluetooth Background Processing for iOS Apps") is required
+
+However, none of these will work if the app does not include the key `NSBluetoothPeripheralUsageDescription` in its `Info.plist`, meaning that the user has to actively give permission to use a Bluetooth peripheral. See "Purpose Strings in the Info.plist File" below for more information.
 
 ##### Entitlements
 
@@ -114,10 +134,11 @@ For example, imagine the following lines were extracted from a `Info.plist` file
 
 It should be suspicious that a regular solitaire game requests this kind of resource access as it probably does not have any need for [accessing the camera](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW24 "NSCameraUsageDescription") nor a [user's health-records](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW76 "NSHealthClinicalHealthRecordsShareUsageDescription").
 
+Apart from simply checking if the permissions make sense, further analysis steps might be derived from analyzing purpose strings e.g. if they are related to storage sensitive data. For example, `NSPhotoLibraryUsageDescription` can be considered as a storage permission giving access to files that are outside of the app's sandbox and might also be accessible by other apps. In this case, it should be tested that no sensitive data is being stored there (photos in this case). For other purpose strings like `NSLocationAlwaysUsageDescription`, it must be also considered if the app is storing this data securely. Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 ##### Code Signing Entitlements File
 
-Certain capabilities require a [code signing entitlements file](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-ENTITLEMENTSFILE "Code Signing Entitlements files") (`<appname>.entitlements`). It is automatically generated by Xcode but may be also manually edited and/or extended by the developer.
+Certain capabilities require a [code signing entitlements file](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-ENTITLEMENTSFILE "Code Signing Entitlements files") (`<appname>.entitlements`). It is automatically generated by Xcode but may be manually edited and/or extended by the developer as well.
 
 Here is an example of entitlements file of the [open source app Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements#L23 "Telegram-iOS-AppStoreLLC.entitlements Line 23") including the [App Groups entitlement](https://developer.apple.com/documentation/foundation/com_apple_security_application-groups "App Groups entitlement") (`application-groups`):
 
@@ -136,7 +157,7 @@ Here is an example of entitlements file of the [open source app Telegram](https:
 </plist>
 ```
 
-When using some entitlements like this one, no additional permissions provided by the user are required. Therefore, it is important to properly verify them as the app could be potentially leaking information to other apps if this entitlement is not properly configured.
+The entitlement outlined above does not require any additional permissions from the user. However, it is always a good practice to check all entitlements, as the app might overask the user in terms of permissions and thereby leak information.
 
 As documented at [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group"), the App Groups entitlement is required to share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps.
 This entitlement is also required if an app extension requires to [share information with its containing app](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Sharing Data with Your Containing App").
@@ -145,7 +166,7 @@ Depending on the data to-be-shared it might be more appropriate to share it usin
 
 ##### Embedded Provisioning Profile File
 
-If not having the original source code project you should then analyze the IPA and search inside for the *embedded provisioning profile* that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
+When you do not have the original source code, you should analyze the IPA and search inside for the *embedded provisioning profile* that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
 
 This file is not a `.plist`, it is encoded using [Cryptographic Message Syntax](https://en.wikipedia.org/wiki/Cryptographic_Message_Syntax "Cryptographic Message Syntax"). On macOS you can [inspect an embedded provisioning profile's entitlements](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-PROFILESENTITLEMENTS "Inspecting a profile's entitlements") using the following command:
 
@@ -165,7 +186,7 @@ The following two subsections will show you how to access the app binary and onc
 
 If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
 
-If not, first of all you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to find the path to the app's bundle. This can be easily done with objection, example using Telegram:
+If not, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to find the path to the app's bundle. This can be easily done with objection, example using Telegram:
 
 - open the app and leave it running on foreground
 - run the following command
@@ -177,11 +198,11 @@ If not, first of all you need a jailbroken device where you will install the app
 Now you have two options:
 
 - connect per SSH, `cd` to the bundle and locate the (encrypted) app binary, e.g. "Telegram X" for Telegram (you may copy it over to your computer or keep working on the device)
-- or decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar and inspect it on your computer using other tools apart from grep like binwalk or radare2
+- or decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar and inspect it on your computer using other tools apart from grep like Binwalk or Radare2
 
 ###### Extracting the Entitlements Plist from the App Binary
 
-If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
+If you have the app binary in your computer, one approach is to use Binwalk to extract (`-e`) all XML files (`-y=xml`):
 
 ```
 $ binwalk -e -y=xml ./Telegram\ X
@@ -192,7 +213,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 1458814       0x16427E        XML document, version: "1.0"
 ```
 
-Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
+Or you can use Radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
 ```
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
@@ -207,9 +228,9 @@ $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 <dict>\n\t<key>cdhashes</key>...
 ```
 
-In both cases (binwalk or radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements "Telegram-iOS-AppStoreLLC.entitlements original file").
+In both cases (Binwalk or Radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements "Telegram-iOS-AppStoreLLC.entitlements original file").
 
-> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
+> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use Radare2 (`izz`)/Rabin2 (`-zz`).
 
 If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
 
@@ -378,7 +399,7 @@ From the note above we can highlight that:
 - the mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above
 - the scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this
 
-If you don't have the original source code you can use radare2 or rabin2 to search the whole binary strings for the link receiver method:
+If you don't have the original source code you can use Radare2 or Rabin2 to search the whole binary strings for the link receiver method:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
@@ -1603,7 +1624,7 @@ You can do that by first verifying that the app binary contains those strings by
 $ strings <yourapp> | grep "someURLscheme://"
 ```
 
-or even better, use radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
+or even better, use Radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
 
 ```bash
 $ r2 -qc izz~iGoat:// iGoat-Swift
