@@ -230,7 +230,7 @@ $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
 In both cases (Binwalk or Radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements "Telegram-iOS-AppStoreLLC.entitlements original file").
 
-> Note: don't rely on the `strings` command for this kind of things as it won't be able to find this information. Better use grep with the `-a` flag directly on the binary or use Radare2 (`izz`)/Rabin2 (`-zz`).
+> Note: the `strings` command will not help here as it will not be able to find this information. Better use grep with the `-a` flag directly on the binary or use Radare2 (`izz`)/Rabin2 (`-zz`).
 
 If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
 
@@ -246,7 +246,7 @@ $ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
         ...
 ```
 
-Play with the `-A num, --after-context=num` flag to display more or less lines. You may also use tools like the ones we presented above if you have them also installed on your jailbroken iOS device.
+Play with the `-A num, --after-context=num` flag to display more or less lines. You may use tools like the ones we presented above as well, if you have them also installed on your jailbroken iOS device.
 
 > This method should work even if the app binary is still encrypted (it was tested against several App Store apps).
 
@@ -269,11 +269,11 @@ The way to go here is different for each capability. For example:
 - when using location services you might want to check which [`CLAuthorizationStatus`](https://developer.apple.com/documentation/corelocation/clauthorizationstatus "CLAuthorizationStatus") is being returned by [`CLLocationManager.authorizationStatus()`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423523-authorizationstatus "CLLocationManager.authorizationStatus()").
 - you could also verify the correct usage of the App Groups entitlement by hooking the [`containerURL(forSecurityApplicationGroupIdentifier:)`](https://developer.apple.com/documentation/foundation/filemanager/1412643-containerurl "FileManager containerURL(forSecurityApplicationGroupIdentifier:)") method which returns the container directory associated with the specified security application group identifier.
 
-There is also a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to *trigger* them in order to be listed on that screen.
+Next, there is a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to *trigger* them in order to be listed on that screen.
 
 ![Settings Allow App Screen](Images/Chapters/0x06h/settings_allow_screen.png)
  
-For example, if you're testing a messaging app, try to share something. As you do it, surely the app will offer options to share photos or your location. If you click, for example, on share location, this will trigger the permission dialogue and the permission will be visible in "Settings" as well.
+For example, if you're testing a messaging app, try to share something. As you do it, surely the app will offer options to share photos or your location. If you click, for example, on `share location`, this will trigger the permission dialogue and the permission will be visible in "Settings" as well.
 
 
 ### Testing for Sensitive Functionality Exposure Through IPC
@@ -347,7 +347,7 @@ If you don't have the original source code you still can search for this (as we 
 
 Try to retrieve the `apple-app-site-association` file from the server using the associated domains you got from the previous step. This file needs to be accessible via HTTPS, without any redirects, at `https://<domain>/apple-app-site-association` or `https://<domain>/.well-known/apple-app-site-association`.
 
-You can retrieve it yourself with your browser or use this tool: <https://branch.io/resources/aasa-validator/>. After entering the domain, it will display the file.
+You can retrieve it yourself with your browser or use the [Apple App Site Association (AASA) Validator](https://branch.io/resources/aasa-validator/ "AASA"). After entering the domain, it will display the file.
 
 Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association "Apple's apple-app-site-association file"):
 
@@ -425,7 +425,7 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
 }
 ```
 
-You can see there that it verifies if the received activity is of type `NSUserActivityTypeBrowsingWeb` before obtaining the URL from `userActivity.webpageURL` and opening it.
+You can see there that it verifies if the received activity is of type `NSUserActivityTypeBrowsingWeb` before obtaining the URL from `userActivity.webpageURL` and opening it. However, depending on the app, it would be a good idea to additionally apply a URL whitelist at this point.
 
 ###### Checking if the App is Calling Other App's Universal Links
 
@@ -567,7 +567,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 
 > `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming) "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *restorationHandler*]"` means "include any Objective-C method of any class containing 'restorationHandler'")
 
-Write https://t.me/addstickers/radare (got from some quick Internet research) and open it.
+Write https://t.me/addstickers/radare (got from some quick Internet research) and open it from the Notes app.
 
 ![Add Stickers](Images/Chapters/0x06h/telegram_add_stickers_universal_link.png)
 
@@ -736,12 +736,30 @@ In some cases, you might find data in `userInfo` of the `NSUserActivity` object.
 
 **Final Notes about Universal Links and Handoff**
 
-What we have seen above is also [the way Handoff works](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338 "Handoff Fundamentals: About Handoff") and how you could also see the received data. Actually, this is very similar to the ["Web Browser–to–Native App Handoff"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser–to–Native App") scenario:
+Universal links and Apple's [Handoff feature](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338 "Handoff Fundamentals: About Handoff") are related:
+
+- both rely on the same method when receiving data (`application:continueUserActivity:restorationHandler:`)
+- like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the App Site Association File" above for an example.
+
+Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser–to–Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser–to–Native App"):
 
 > If the user is using a web browser on the originating device, and the receiving device is an iOS device with a native app that claims the domain portion of the `webpageURL` property, then iOS launches the native app and sends it an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The `webpageURL` property contains the URL the user was visiting, while the `userInfo` dictionary is empty.
 
-Like universal links, the Handoff Activity Continuation is defined in the `com.apple.developer.associated-domains` entitlement and in the `apple-app-site-association` file from the server, both using the keyword `"activitycontinuation":`. See "Retrieving the App Site Association File" above for an example.
+In the detailed output above you can see that `NSUserActivity` object we've received meets exactly the mentioned points:
 
+```
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
+                restorationHandler:0x16f27a898]
+298382 ms  	application:<Application: 0x10556b3c0>
+298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
+298382 ms  		webpageURL:http://t.me/addstickers/radare
+298382 ms  		activityType:NSUserActivityTypeBrowsingWeb
+298382 ms  		userInfo:{
+}
+298382 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
+```
+
+This knowledge should help you when testing apps supporting Handoff.
 
 #### UIActivity Sharing
 
@@ -2988,12 +3006,14 @@ There are several ways to perform dynamic analysis:
 
 #### Tools
 
+- Apple App Site Association (AASA) Validator - https://branch.io/resources/aasa-validator
 - Frida - https://www.frida.re/
 - frida-trace - https://www.frida.re/docs/frida-trace/
 - objection - https://github.com/sensepost/objection
 - ObjC Method Observer - https://codeshare.frida.re/@mrmacete/objc-method-observer/
 - IDB - https://www.idbtool.com/
-- Needle  https://github.com/mwrlabs/needle
+- Needle - https://github.com/mwrlabs/needle
+- Radare2 - https://rada.re
 
 #### Regarding Object Persistence in iOS
 
