@@ -575,7 +575,7 @@ The following section summarizes keywords that you should look for to identify I
 
 ##### XPC Services
 
-Several classes may be to implement the NSXPCConnection API:
+Several classes may be used to implement the NSXPCConnection API:
 
 - NSXPCConnection
 - NSXPCInterface
