@@ -500,7 +500,7 @@ We can look up the declaration of this method on the [Apple Developer Website](h
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
+The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
 
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
