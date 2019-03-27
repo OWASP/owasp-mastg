@@ -61,7 +61,7 @@ To root a mobile device, first unlock its boot loader. The unlocking procedure d
 
 Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way, the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
 
-You can get familiar with Magisk reading the official [documentation](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you should follow [this](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation") guidance. If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
+You can get familiar with Magisk reading the official [documentation](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you should follow [this](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation") guidance. If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial at GitHub](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
 
 Furthermore, developers can use the power of Magisk to create own modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [XPosed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
 
@@ -209,9 +209,9 @@ By following the steps described above you allow any application to trust the pr
 
 ##### Adding the Proxy's certificate among system trusted CAs using Magisk
 
-There is a [Magisk module](https://github.com/NVISO-BE/MagiskTrustUserCerts "Magisk Trust User Certs") that will automatically add all user-installed CA certificates to the list of system trusted CAs. 
+There is a [Magisk module](https://github.com/NVISO-BE/MagiskTrustUserCerts "Magisk Trust User Certs") that will automatically add all user-installed CA certificates to the list of system trusted CAs.
 
-Download the latest version of the module [here](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases "Magisk Trust User Certs - Releases"), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect. 
+Download the latest version of the module [here](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases "Magisk Trust User Certs - Releases"), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect.
 
 From now on, any CA certificate that is installed by the user via "Settings", "Security & location", "Encryption & credentials", "Install from storage" (location may differ) is automatically pushed into the system's trust store by this Magisk module. Reboot and verify that the CA certificate is listed in "Settings", "Security & location", "Encryption & credentials", "Trusted credentials" (location may differ).
 
