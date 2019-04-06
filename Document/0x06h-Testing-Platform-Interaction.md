@@ -316,6 +316,7 @@ Following an approach like the one presented below should help you spotting the 
 5. Get a backtrace for those methods and try to build a call graph.
 
 Once all methods were identified, you might use this knowledge to reverse engineer the app and try to find out how the data is being handled. While doing that you might spot new methods involved in the process which you can again feed to step 3. above and keep iterating between static and dynamic analysis.
+<<<<<<< HEAD
 
 In the following example we use Telegram to open the share dialog from a chat and frida-trace to identify which methods are being called.
 
@@ -352,6 +353,44 @@ Use the auto-generated stubs of frida-trace to get more information like the ret
 ```
 // __handlers__/__CLLocationManager_authorizationStatus_.js
 
+=======
+
+In the following example we use Telegram to open the share dialog from a chat and frida-trace to identify which methods are being called.
+
+First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
+
+```
+$ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
+```
+
+> `-U` connects to the USB device. `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming) "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *authorizationStatus*]"` means "include any Objective-C method of any class containing 'authorizationStatus'"). Type `frida-trace -h` for more information.
+
+Now we open the share dialog:
+
+![Telegram Share Dialog](Images/Chapters/0x06h/telegram_share_something.png)
+
+The following methods are displayed:
+
+```
+  1942 ms  +[PHPhotoLibrary authorizationStatus]
+  1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
+  1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
+```
+
+If we click on "Location", another method will be traced:
+
+```
+ 11186 ms  +[CLLocationManager authorizationStatus]
+ 11186 ms     | +[CLLocationManager _authorizationStatus]
+ 11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
+```
+
+Use the auto-generated stubs of frida-trace to get more information like the return values and a backtrace. Do the following modifications to the JavaScript file below (the path is relative to the current directory):
+
+```
+// __handlers__/__CLLocationManager_authorizationStatus_.js
+
+>>>>>>> a1bfd9d54c0965e6fe671ec7bb9425afd9819eee
   onEnter: function (log, args, state) {
     log("+[CLLocationManager authorizationStatus]");
     log("Called from:\n" +
