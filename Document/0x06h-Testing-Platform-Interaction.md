@@ -25,11 +25,15 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 - Speech recognition
 - the TV provider
 
-As you can see, both types of app capabilities mostly involve personal data, therefore being a matter of protecting the user's privacy. See the articles ["Protecting the User's Privacy"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User's Privacy") and ["Accessing Protected Resources"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources") in Apple Developer Documentation for more details.
-
 Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
-In addition, when collecting or simply handling (e.g. caching) sensitive data, an app should provide proper mechanisms to give the user control over it, e.g. to be able to revoke access or to delete it. However, sensitive data might not only be stored or cached but also sent over the network. In both cases, it has to be ensured that the app properly follows the appropriate best practices, which in this case involve implementing proper data protection and transport security. More information on how to protect this kind of data can be found in the chapters "Data Storage" and "Network APIs", respectively.
+Some permissions like camera, photos, calendar data, motion, contacts or speech recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. For example, a QR Code scanning app [requires the camera](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_ios "Requesting Authorization for Media Capture on iOS") to function but might be [requesting the photos permission](https://developer.apple.com/documentation/photokit/requesting_authorization_to_access_photos "Requesting Authorization to Access Photos") as well which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos). A malicious app could use this to leak the user pictures. For this reason, apps using the camera permission might rather want to avoid requesting the photos permission and store the taken pictures inside the app sandbox to avoid other apps (having the photos permission) to access them. Additional steps might be required if the pictures are considered sensitive, e.g. corporate data, passwords or credit cards. See the chapter "Data Storage" for more information.
+
+Other permissions like Bluetooth or Location require deeper verification steps. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected. For more information and some examples please refer to the "Source Code Inspection" in the "Static Analysis" section below and to the "Dynamic Analysis" section.
+
+When collecting or simply handling (e.g. caching) sensitive data, an app should provide proper mechanisms to give the user control over it, e.g. to be able to revoke access or to delete it. However, sensitive data might not only be stored or cached but also sent over the network. In both cases, it has to be ensured that the app properly follows the appropriate best practices, which in this case involve implementing proper data protection and transport security. More information on how to protect this kind of data can be found in the chapter "Network APIs".
+
+As you can see, using app capabilities and permissions mostly involve handling personal data, therefore being a matter of protecting the user's privacy. See the articles ["Protecting the User's Privacy"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User's Privacy") and ["Accessing Protected Resources"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources") in Apple Developer Documentation for more details.
 
 
 ##### Device Capabilities
@@ -272,28 +276,114 @@ Play with the `-A num, --after-context=num` flag to display more or less lines. 
 
 ##### Source Code Inspection
 
-After having checked the `<appname>.entitlements` file and the `Info.plist` file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code review should be enough.
+After having checked the `<appname>.entitlements` file and the `Info.plist` file, it is time to verify how the requested permissions and assigned capabilities are put to use. For this, a source code review should be enough. However, if you don't have the original source code, verifying the use of permissions might be specially challenging as you might need to reverse engineer the app, refer to the "Dynamic Analysis" for more details on how to proceed.
 
-Pay attention to:
+When doing a source code review, pay attention to:
 
 - whether the *purpose strings* in the `Info.plist` file match the programmatic implementations.
 - whether the capabilities registered are used in such a way that no confidential information is leaking.
 
+Users can grant or revoke authorization at any time via "Settings", therefore apps normally check the authorization status of a feature before accessing it. This can be done by using dedicated APIs available for many system frameworks that provide access to protected resources.
+
+You can use the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037319 "Check for Authorization") as a starting point. For example:
+
+- Bluetooth: the [`state`](https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state?language=objc "CBManager state") property of the [`CBCentralManager`](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager?language=objc "CBCentralManager") class is used to check system-authorization status for using Bluetooth peripherals.
+- Location: search for methods of `CLLocationManager`, e.g. [`locationServicesEnabled`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423648-locationservicesenabled?language=objc "CLLocationManager locationServicesEnabled").
+    ```swift
+    func checkForLocationServices() {
+        if CLLocationManager.locationServicesEnabled() {
+            // Location services are available, so query the user’s location.
+        } else {
+            // Update your app’s UI to show that the location is unavailable.
+        }
+    }
+
+    ```
+    See Table1 in ["Determining the Availability of Location Services"](https://developer.apple.com/documentation/corelocation/determining_the_availability_of_location_services?language=objc#2854917 "Getting the availability of Core Location services") (Apple Developer Documentation) for a complete list.
+
+Go through the application searching for usages of these APIs and check what happens to sensitive data that might be obtained from them. For example, it might be stored or transmitted over the network, if this is the case, proper data protection and transport security should be additionally verified.
+
 #### Dynamic Analysis
 
-Use static analysis first to take note of the included permissions included in the relevant files. After that, go through the application and check whether the application communicates with other applications or with back ends. Check whether the information retrieved using the permissions and capabilities is used for malicious purposes or the permissions and capabilities themselves are over-asked/under-utilized.
+With help of the static analysis you should already have a list of the included permissions and app capabilities in use. However, as mentioned in "Source Code Inspection", spotting the sensitive data and APIs related to those permissions and app capabilities might be a challenging task when you don't have the original source code. Dynamic analysis can help here getting inputs to iterate onto the static analysis.
 
-The way to go here is different for each capability. For example:
+Following an approach like the one presented below should help you spotting the mentioned sensitive data and APIs:
 
-- in order to check the authorization of the *photo library*, you could start by using Frida to trace or hook [`PHPhotoLibrary.authorizationStatus()`](https://developer.apple.com/documentation/photokit/phphotolibrary/1620745-authorizationstatus "PHPhotoLibrary.authorizationStatus()") and check its return value [`PHAuthorizationStatus`](https://developer.apple.com/documentation/photokit/phauthorizationstatus "PHAuthorizationStatus").
-- when using location services you might want to check which [`CLAuthorizationStatus`](https://developer.apple.com/documentation/corelocation/clauthorizationstatus "CLAuthorizationStatus") is being returned by [`CLLocationManager.authorizationStatus()`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423523-authorizationstatus "CLLocationManager.authorizationStatus()").
-- you could also verify the correct usage of the App Groups entitlement by hooking the [`containerURL(forSecurityApplicationGroupIdentifier:)`](https://developer.apple.com/documentation/foundation/filemanager/1412643-containerurl "FileManager containerURL(forSecurityApplicationGroupIdentifier:)") method which returns the container directory associated with the specified security application group identifier.
+1. Consider the list of permissions / capabilities identified in the static analysis (e.g. `NSLocationWhenInUseUsageDescription`).
+2. Map them to the dedicated APIs available for the corresponding system frameworks (e.g. `Core Location`). You may use the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037319 "Check for Authorization") for this.
+3. Trace classes or specific methods of those APIs (e.g. `CLLocationManager`), for example, using [`frida-trace`](https://www.frida.re/docs/frida-trace/ "frida-trace").
+4. Identify which methods are being really used by the app while accessing the related feature (e.g. "Share your location").
+5. Get a backtrace for those methods and try to build a call graph.
+
+Once all methods were identified, you might use this knowledge to reverse engineer the app and try to find out how the data is being handled. While doing that you might spot new methods involved in the process which you can again feed to step 3. above and keep iterating between static and dynamic analysis.
+
+In the following example we use Telegram to open the share dialog from a chat and frida-trace to identify which methods are being called.
+
+First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
+
+```
+$ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
+```
+
+> `-U` connects to the USB device. `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming) "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *authorizationStatus*]"` means "include any Objective-C method of any class containing 'authorizationStatus'"). Type `frida-trace -h` for more information.
+
+Now we open the share dialog:
+
+![Telegram Share Dialog](Images/Chapters/0x06h/telegram_share_something.png)
+
+The following methods are displayed:
+
+```
+  1942 ms  +[PHPhotoLibrary authorizationStatus]
+  1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
+  1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
+```
+
+If we click on "Location", another method will be traced:
+
+```
+ 11186 ms  +[CLLocationManager authorizationStatus]
+ 11186 ms     | +[CLLocationManager _authorizationStatus]
+ 11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
+```
+
+Use the auto-generated stubs of frida-trace to get more information like the return values and a backtrace. Do the following modifications to the JavaScript file below (the path is relative to the current directory):
+
+```
+// __handlers__/__CLLocationManager_authorizationStatus_.js
+
+  onEnter: function (log, args, state) {
+    log("+[CLLocationManager authorizationStatus]");
+    log("Called from:\n" +
+        Thread.backtrace(this.context, Backtracer.ACCURATE)
+        .map(DebugSymbol.fromAddress).join("\n\t") + "\n");
+  },
+  onLeave: function (log, retval, state) {
+    console.log('RET :' + retval.toString());
+  }
+```
+
+Clicking again on "Location" reveals more information:
+
+```
+  3630 ms  -[CLLocationManager init]
+  3630 ms     | -[CLLocationManager initWithEffectiveBundleIdentifier:0x0 bundle:0x0]
+  3634 ms  -[CLLocationManager setDelegate:0x14c9ab000]
+  3641 ms  +[CLLocationManager authorizationStatus]
+RET: 0x4
+  3641 ms  Called from:
+0x1031aa158 TelegramUI!+[TGLocationUtils requestWhenInUserLocationAuthorizationWithLocationManager:]
+	0x10337e2c0 TelegramUI!-[TGLocationPickerController initWithContext:intent:]
+	0x101ee93ac TelegramUI!0x1013ac
+```
+
+We see that `+[CLLocationManager authorizationStatus]` returned `0x4` ([CLAuthorizationStatus.authorizedWhenInUse](https://developer.apple.com/documentation/corelocation/clauthorizationstatus/authorizedwheninuse "CLAuthorizationStatus.authorizedWhenInUse")) and was called by `+[TGLocationUtils requestWhenInUserLocationAuthorizationWithLocationManager:]`. As we anticipated before, you might use this kind of information as an entry point when reverse engineering the app and from there get inputs (e.g. names of classes or methods) to keep feeding the dynamic analysis.
 
 Next, there is a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to *trigger* them in order to be listed on that screen.
 
 ![Settings Allow App Screen](Images/Chapters/0x06h/settings_allow_screen.png)
  
-For example, if you're testing a messaging app, try to share something. As you do it, surely the app will offer options to share photos or your location. If you click, for example, on `share location`, this will trigger the permission dialogue and the permission will be visible in "Settings" as well.
+For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.
 
 
 ### Testing for Sensitive Functionality Exposure Through IPC
@@ -367,9 +457,9 @@ If you don't have the original source code you still can search for this (as we 
 
 Try to retrieve the `apple-app-site-association` file from the server using the associated domains you got from the previous step. This file needs to be accessible via HTTPS, without any redirects, at `https://<domain>/apple-app-site-association` or `https://<domain>/.well-known/apple-app-site-association`.
 
-You can retrieve it yourself with your browser or use the [Apple App Site Association (AASA) Validator](https://branch.io/resources/aasa-validator/ "AASA"). After entering the domain, it will display the file.
+You can retrieve it yourself with your browser or use the [Apple App Site Association (AASA) Validator](https://branch.io/resources/aasa-validator/ "AASA"). After entering the domain, it will display the file, verify it for you and show the results (e.g. if it is not being properly served over HTTPS). See the following example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association "Apple's apple-app-site-association file"):
 
-Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association "Apple's apple-app-site-association file"):
+![`apple-app-site-association-file` Validation](Images/Chapters/0x06h/apple-app-site-association-file_validation.png)
 
 ```
 {
@@ -379,32 +469,37 @@ Example from [apple.com](https://www.apple.com/.well-known/apple-app-site-associ
     ]
     },
     "applinks": {
-    "apps": [],
-    "details": [
-        {
-        "appID": "W74U47NE8E.com.apple.store.Jolly",
-        "paths": [
-            "NOT /shop/buy-iphone/*",
-            "NOT /us/shop/buy-iphone/*",
-            "/xc/*",
-            "/shop/buy-*",
-            "/shop/product/*",
-            "/shop/bag/shared_bag/*",
-            "/shop/order/list",
-            ...
-            "/today",
-            ...
-            "/shop/watch/watch-accessories",
-            "/shop/watch/watch-accessories/*",
-            "/shop/watch/bands",
-            ...
+        "apps": [],
+        "details": [
+            {
+            "appID": "W74U47NE8E.com.apple.store.Jolly",
+            "paths": [
+                "NOT /shop/buy-iphone/*",
+                "NOT /us/shop/buy-iphone/*",
+                "/xc/*",
+                "/shop/buy-*",
+                "/shop/product/*",
+                "/shop/bag/shared_bag/*",
+                "/shop/order/list",
+                ...
+                "/today",
+                ...
+                "/shop/watch/watch-accessories",
+                "/shop/watch/watch-accessories/*",
+                "/shop/watch/bands",
+                ...
+            }
 ```
 
-Note how the "paths" key implements a white- or blacklist of relative paths. Some apps, like Telegram do not implement any (`"paths": ["*"]`), allowing all possible paths.
+The "details" key inside "applinks" contains a JSON representation of an array that might contain one or more apps. The "appID" should match the “application-identifier” key from the app’s entitlements. Next, using the "paths" key, the developers can specify certain paths to be handled on a per app basis. Some apps, like Telegram use a standalone * (`"paths": ["*"]`) in order to allow all possible paths. Only if specific areas of the website should **not** be handled by some app, the developer can restrict access by excluding them by prepending a `"NOT "` (note the whitespace after the T) to the corresponding path. Also remember that the system will look for matches by following the order of the dictionaries in the array (first match wins).
 
-It will also verify the file for you and show the results (e.g. if it is not being properly served over HTTPS):
+This path exclusion mechanism is not to be seen as a security feature but rather as a filter that developer might use to specify which apps open which links. By default, iOS does not open any unverified links.
 
-![`apple-app-site-association-file` Validation](Images/Chapters/0x06h/apple-app-site-association-file_validation.png)
+Remember that universal links verification occurs at installation time. iOS retrieves the AASA file for the declared domains (`applinks`) in its `com.apple.developer.associated-domains` entitlement. iOS will refuse to open those links if the verification did not succeed. Some reasons to fail verification might include:
+
+- the AASA file is not served over HTTPS
+- the AASA is not available
+- the `appID`s do not match (this would be the case of a *malicious* app. iOS would successfully prevent any possible hijacking attacks)
 
 ###### Checking the Link Receiver Method
 
@@ -449,7 +544,9 @@ You can see there that it verifies if the received activity is of type `NSUserAc
 
 ###### Checking if the App is Calling Other App's Universal Links
 
-If you have the original source code, you can search it for the `openURL:options:completionHandler:` method.
+An app might be calling other apps via universal links in order to simply trigger some actions or to transfer information, in that case, it should be verified that it is not leaking sensitive information.
+
+If you have the original source code, you can search it for the `openURL:options:completionHandler:` method and check the data being handled.
 
 > Note that the `openURL:options:completionHandler:` method is not only used to open universal links but also to call custom URL schemes.
 
@@ -485,7 +582,7 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
 0x1000df772 35 34 openURL:options:completionHandler:
 ```
 
-As expected, `openURL:options:completionHandler:` is among the ones found.
+As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "Identifying and Hooking the URL Handler Method" in the "Dynamic Analysis" of "Testing Custom URL Schemes" section for some examples on hooking and tracing this method.
 
 ##### Dynamic Analysis
 
@@ -584,8 +681,6 @@ In order to open the links we will also use the Notes app and frida-trace with t
 ```
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
-
-> `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming) "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *restorationHandler*]"` means "include any Objective-C method of any class containing 'restorationHandler'")
 
 Write https://t.me/addstickers/radare (got from some quick Internet research) and open it from the Notes app.
 
