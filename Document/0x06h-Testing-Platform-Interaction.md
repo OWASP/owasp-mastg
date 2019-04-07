@@ -2086,8 +2086,8 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 7310 ms  -[UIApplication _applicationOpenURLAction: 0x1c44ff900 payload: 0x10c5ee4c0 origin: 0x0]
 7311 ms     | -[AppDelegate application: 0x105a59980 openURL: 0x1c46ebb80 options: 0x1c0e222c0]
 7312 ms     | $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
-            18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContext
-            OSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF()
+            18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14Open
+            URLContextOSSSbAA012PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF()
 ```
 
 Now we can simply modify by hand the stubs we are interested in:
@@ -2679,7 +2679,7 @@ If only having the compiled binary, you can also search for these methods, e.g.:
 
 ```
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
-231 0x0002df6c 0x10002df6c  23  24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
+231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
 
 In a case like this, it is recommended to perform dynamic anaylsis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "Checking How WebViews are Loaded" for an example about this.
@@ -2700,7 +2700,7 @@ In the compiled binary:
 
 ```
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
-237 0x0002dff1 0x10002dff1  36  37 (4.__TEXT.__objc_methname) ascii loadFileURL:allowingReadAccessToURL:
+237 0x0002dff1 37 (4.__TEXT.__objc_methname) ascii loadFileURL:allowingReadAccessToURL:
 ```
 
 ##### Testing WebView File Access
@@ -2767,7 +2767,8 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
 ```
-$ frida-trace -U "Where's My Browser?" -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
+$ frida-trace -U "Where's My Browser?" 
+    -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
  14131 ms  -[NSBundle URLForResource:0x1c0255390 withExtension:0x0]
  14131 ms  URLForResource: web/WKWebView/scenario2.html
@@ -2880,14 +2881,14 @@ First we see how the JavaScript bridge is enabled:
 
 ```swift
 func enableJavaScriptBridge(_ enabled: Bool) {
-        options_dict["javaScriptBridge"]?.value = enabled
-        let userContentController = wkWebViewConfiguration.userContentController
-        userContentController.removeScriptMessageHandler(forName: "javaScriptBridge")
+    options_dict["javaScriptBridge"]?.value = enabled
+    let userContentController = wkWebViewConfiguration.userContentController
+    userContentController.removeScriptMessageHandler(forName: "javaScriptBridge")
 
-        if enabled {
-                let javaScriptBridgeMessageHandler = JavaScriptBridgeMessageHandler()
-                userContentController.add(javaScriptBridgeMessageHandler, name: "javaScriptBridge")
-        }
+    if enabled {
+            let javaScriptBridgeMessageHandler = JavaScriptBridgeMessageHandler()
+            userContentController.add(javaScriptBridgeMessageHandler, name: "javaScriptBridge")
+    }
 }
 ```
 
@@ -2895,9 +2896,9 @@ Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in t
 
 ```javascript
 function invokeNativeOperation() {
-        value1 = document.getElementById("value1").value
-        value2 = document.getElementById("value2").value
-        window.webkit.messageHandlers.javaScriptBridge.postMessage(["multiplyNumbers", value1, value2]);
+    value1 = document.getElementById("value1").value
+    value2 = document.getElementById("value2").value
+    window.webkit.messageHandlers.javaScriptBridge.postMessage(["multiplyNumbers", value1, value2]);
 }
 ```
 
@@ -3022,7 +3023,8 @@ Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the
 NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
 
 // unarchiving:
-guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as? CustomPoint else { return nil }
+guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as? 
+    CustomPoint else { return nil }
 
 ```
 
