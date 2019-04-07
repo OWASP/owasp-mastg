@@ -55,8 +55,8 @@ Regarding testing, you can consider `UIRequiredDeviceCapabilities` as a mere ind
 
 For example, if BLE is a core feature of the app, Apple's [Core Bluetooth Programming Guide](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothOverview/CoreBluetoothOverview.html#//apple_ref/doc/uid/TP40013257-CH2-SW1 "Core Bluetooth Overview") explains the different things to be considered:
 
-- the `bluetooth-le` device capability can be set in order to *restrict* non-BLE capable devices from downloading their app
-- app capabilities like `bluetooth-peripheral` or `bluetooth-central` (both `UIBackgroundModes`) should be added if [BLE background processing](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html "Core Bluetooth Background Processing for iOS Apps") is required
+- The `bluetooth-le` device capability can be set in order to *restrict* non-BLE capable devices from downloading their app.
+- App capabilities like `bluetooth-peripheral` or `bluetooth-central` (both `UIBackgroundModes`) should be added if [BLE background processing](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html "Core Bluetooth Background Processing for iOS Apps") is required.
 
 However, this is not yet enough for the app to get access to the Bluetooth peripheral, the `NSBluetoothPeripheralUsageDescription` key has to be included in the `Info.plist` file, meaning that the user has to actively give permission. See "Purpose Strings in the Info.plist File" below for more information.
 
@@ -68,13 +68,26 @@ According to [Apple's iOS Security Guide](https://www.apple.com/business/site/do
 
 Many entitlements can be set using the "Summary" tab of the Xcode target editor. Other entitlements require editing a target’s entitlements property list file or are inherited from the iOS provisioning profile used to run the app.
 
-The [Apple Developer Documentation](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-APPENTITLEMENTS "Inspect the entitlements of a built app") also explains that:
+[Entitlement Sources](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-SOURCES "Entitlement Sources"):
 
-- during code signing, the entitlements corresponding to the app’s enabled Capabilities/Services are transferred to the app's signature from the provisioning profile Xcode chose to sign the app.
-- the provisioning profile is embedded into the app bundle during the build (`embedded.mobileprovision`).
-- entitlements from Code Signing Entitlements files (`<appname>.entitlements`) are transferred to the app's signature.
+1. Entitlements embedded in a provisioning profile that is used to code sign the app, which are composed of:
+   - Capabilities defined on the Xcode project's target Capabilities tab, and/or:
+   - Enabled Services on the app's App ID which are configured on the Identifiers section of the Certificates, ID's and Profiles website.
+   - Other entitlements that are injected by the profile generation service.
+2. Entitlements from a code signing entitlements file.
 
-For example, if a developer wants to set the "Default Data Protection" capability, he would go to the "Capabilities" tab in Xcode and enable "Data Protection". This is directly written by Xcode to the `<appname>.entitlements` as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
+[Entitlement Destinations](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-DESTINATIONS "Entitlement Destinations"):
+
+1. The app's signature.
+2. The app's embedded provisioning profile.
+
+The [Apple Developer Documentation](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-APPENTITLEMENTS "Inspect the entitlements of a built app") also explains:
+
+- During code signing, the entitlements corresponding to the app’s enabled Capabilities/Services are transferred to the app's signature from the provisioning profile Xcode chose to sign the app.
+- The provisioning profile is embedded into the app bundle during the build (`embedded.mobileprovision`).
+- Entitlements from the "Code Signing Entitlements" section in Xcode's "Build Settings" tab are transferred to the app's signature.
+
+For example, if a developer wants to set the "Default Data Protection" capability, he would go to the "Capabilities" tab in Xcode and enable "Data Protection". This is directly written by Xcode to the `<appname>.entitlements` file as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
 
 ```xml
 <key>Entitlements</key>
@@ -109,18 +122,19 @@ If linking on or after iOS 10, developers are required to include purpose string
 
 If having the original source code, you can verify the permissions included in the `Info.plist` file:
 
-- open the project with Xcode
-- find and open the `Info.plist` file in the default editor and search for the keys starting with `"Privacy -"`
-- you may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`)
+- Open the project with Xcode.
+- Find and open the `Info.plist` file in the default editor and search for the keys starting with `"Privacy -"`.
+
+You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
 ![Checking Purpose Strings in Xcode](Images/Chapters/0x06h/purpose_strings_xcode.png)
 
 
 If only having the IPA:
 
-- unzip the IPA
-- the `Info.plist` is located in `Payload/<appname>.app/Info.plist`
-- if the file comes in binary format (bplist), convert it to XML format
+- Unzip the IPA.
+- The `Info.plist` is located in `Payload/<appname>.app/Info.plist`.
+- If the file comes in binary format (bplist), convert it to XML format:
 
     On macOS:
 
@@ -134,7 +148,7 @@ If only having the IPA:
     $ apt install libplist-utils
     $ plistutil -i Info.plist -o Info_xml.plist
     ```
-- inspect all *purpose strings Info.plist keys*, usually ending with `UsageDescription`
+- Inspect all *purpose strings Info.plist keys*, usually ending with `UsageDescription`:
 
 ```
 <plist version="1.0">
@@ -186,7 +200,7 @@ The entitlement outlined above does not require any additional permissions from 
 As documented at [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group"), the App Groups entitlement is required to share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps.
 This entitlement is also required if an app extension requires to [share information with its containing app](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Sharing Data with Your Containing App").
 
-Depending on the data to-be-shared it might be more appropriate to share it using another method such as through a back end were this data could be potentially verified, avoiding tampering by e.g. the user himself.
+Depending on the data to-be-shared it might be more appropriate to share it using another method such as through a back end where this data could be potentially verified, avoiding tampering by e.g. the user himself.
 
 ##### Embedded Provisioning Profile File
 
@@ -210,19 +224,58 @@ The following two subsections will show you how to access the app binary and onc
 
 If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
 
-If not, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to find the path to the app's bundle. This can be easily done with objection, example using Telegram:
+> On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
 
-- open the app and leave it running on foreground
-- run the following command
+If not, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, example using Telegram:
+
+- Open the app and leave it running on foreground.
+- Start an objection session by running the following command:
     ```bash
-    $ objection --gadget Telegram run env | grep BundlePath
-    BundlePath  /var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app
+    $ objection --gadget Telegram explore
+    Using USB device `iPhone`
+    ```
+- Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
+    ```
+    ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
+
+    Name               Path
+    -----------------  -------------------------------------------------------------------------
+    BundlePath         /var/containers/Bundle/Application/B0E38F10-8F30.../Telegram X.app
+    CachesDirectory    /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library/Caches
+    DocumentDirectory  /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Documents
+    LibraryDirectory   /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library
+    ```
+- `BundlePath` is also the current directory by default, run `ls` to list the contents:
+    ```
+    ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
+
+    NSFileType      Perms  NSFileProtection   ... Size       Name
+    ------------  -------  ------------------ ... ---------  ----------------------------------
+    Directory         493  None               ... 224.0 B    PlugIns
+    Directory         493  None               ... 96.0 B     Base.lproj
+    Directory         493  None               ... 96.0 B     _CodeSignature
+    Directory         493  None               ... 1.3 KiB    Frameworks
+    ...
+    Regular           493  None               ... 1.4 MiB    Telegram X
+    ...
+    Readable: True  Writable: False
+    ```
+    The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
+- Download the app binary using the command `file download`:
+    ```
+    ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
+
+    Downloading /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
+        Telegram X.app/Telegram X to Telegram X
+    Streaming file from device...
+    Writing bytes to destination...
+    Successfully downloaded /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
+        Telegram X.app/Telegram X to Telegram X
     ```
 
-Now you have two options:
+Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via SCP for example) or keep working on the device.
 
-- connect per SSH, `cd` to the bundle and locate the (encrypted) app binary, e.g. "Telegram X" for Telegram (you may copy it over to your computer or keep working on the device)
-- or decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar and inspect it on your computer using other tools apart from grep like Binwalk or Radare2
+The following steps should work even when targeting an encrypted binary. If for some reason they don't, you'll have to decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar.
 
 ###### Extracting the Entitlements Plist from the App Binary
 
@@ -281,7 +334,7 @@ After having checked the `<appname>.entitlements` file and the `Info.plist` file
 When doing a source code review, pay attention to:
 
 - whether the *purpose strings* in the `Info.plist` file match the programmatic implementations.
-- whether the capabilities registered are used in such a way that no confidential information is leaking.
+- whether the registered capabilities are used in such a way that no confidential information is leaking.
 
 Users can grant or revoke authorization at any time via "Settings", therefore apps normally check the authorization status of a feature before accessing it. This can be done by using dedicated APIs available for many system frameworks that provide access to protected resources.
 
@@ -316,7 +369,6 @@ Following an approach like the one presented below should help you spotting the 
 5. Get a backtrace for those methods and try to build a call graph.
 
 Once all methods were identified, you might use this knowledge to reverse engineer the app and try to find out how the data is being handled. While doing that you might spot new methods involved in the process which you can again feed to step 3. above and keep iterating between static and dynamic analysis.
-<<<<<<< HEAD
 
 In the following example we use Telegram to open the share dialog from a chat and frida-trace to identify which methods are being called.
 
@@ -353,44 +405,6 @@ Use the auto-generated stubs of frida-trace to get more information like the ret
 ```
 // __handlers__/__CLLocationManager_authorizationStatus_.js
 
-=======
-
-In the following example we use Telegram to open the share dialog from a chat and frida-trace to identify which methods are being called.
-
-First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
-
-```
-$ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
-```
-
-> `-U` connects to the USB device. `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming) "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *authorizationStatus*]"` means "include any Objective-C method of any class containing 'authorizationStatus'"). Type `frida-trace -h` for more information.
-
-Now we open the share dialog:
-
-![Telegram Share Dialog](Images/Chapters/0x06h/telegram_share_something.png)
-
-The following methods are displayed:
-
-```
-  1942 ms  +[PHPhotoLibrary authorizationStatus]
-  1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
-  1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
-```
-
-If we click on "Location", another method will be traced:
-
-```
- 11186 ms  +[CLLocationManager authorizationStatus]
- 11186 ms     | +[CLLocationManager _authorizationStatus]
- 11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
-```
-
-Use the auto-generated stubs of frida-trace to get more information like the return values and a backtrace. Do the following modifications to the JavaScript file below (the path is relative to the current directory):
-
-```
-// __handlers__/__CLLocationManager_authorizationStatus_.js
-
->>>>>>> a1bfd9d54c0965e6fe671ec7bb9425afd9819eee
   onEnter: function (log, args, state) {
     log("+[CLLocationManager authorizationStatus]");
     log("Called from:\n" +
@@ -451,13 +465,13 @@ Universal links are standard web links (HTTP/HTTPS) and are not to be confused w
 
 For example, the Telegram app supports both custom URL schemes and universal links:
 
-- `tg://resolve?domain=fridadotre` is a custom URL scheme and uses the `tg://` scheme
-- `https://telegram.me/fridadotre` is a universal link and uses the `https://` scheme
+- `tg://resolve?domain=fridadotre` is a custom URL scheme and uses the `tg://` scheme.
+- `https://telegram.me/fridadotre` is a universal link and uses the `https://` scheme.
 
 Both result in the same action, the user will be redirected to the specified chat in Telegram ("fridadotre" in this case). However, universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking, according to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"). Specifically, universal links are:
 
 - **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to *prevent* URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
-- **Secure**: When users install the app, iOS downloads and checks a file (`apple-app-site-association`) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the developers can create and upload this file, so the association of their website with the app is secure.
+- **Secure**: When users install the app, iOS downloads and checks a file (`apple-app-site-association`) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the legitimate owners of the URL can upload this file, so the association of their website with the app is secure.
 - **Flexible**: Universal links work even when the app is not installed. Tapping a link to the website would open the content in Safari, as users expect.
 - **Simple**: One URL works for both the website and the app.
 - **Private**: Other apps can communicate with the app without needing to know whether it is installed.
@@ -474,7 +488,7 @@ Testing universal links on a static approach includes doing the following:
 
 ###### Checking the Associated Domains
 
-Universal links require the developer to add the Associated Domains entitlement and include in it a list of the domains that the app supports (no more than about 20 to 30 domains).
+Universal links require the developer to add the Associated Domains entitlement and include in it a list of the domains that the app supports.
 
 In Xcode, go to the "Capabilities" tab and search for "Associated Domains". You can also inspect the `.entitlements` file looking for `com.apple.developer.associated-domains`. Each of the domains must be prefixed with `applinks:`, such as `applinks:www.mywebsite.com`.
 
@@ -490,7 +504,7 @@ Here's an example from Telegram's `.entitlements` file:
 
 More detailed information can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW2 "Preparing Your App to Handle Universal Links").
 
-If you don't have the original source code you still can search for this (as we did in "Entitlements Embedded in the Compiled App Binary").
+If you don't have the original source code you can still search for them, as explained in "Entitlements Embedded in the Compiled App Binary".
 
 ###### Retrieving the App Site Association File
 
@@ -536,9 +550,9 @@ This path exclusion mechanism is not to be seen as a security feature but rather
 
 Remember that universal links verification occurs at installation time. iOS retrieves the AASA file for the declared domains (`applinks`) in its `com.apple.developer.associated-domains` entitlement. iOS will refuse to open those links if the verification did not succeed. Some reasons to fail verification might include:
 
-- the AASA file is not served over HTTPS
-- the AASA is not available
-- the `appID`s do not match (this would be the case of a *malicious* app. iOS would successfully prevent any possible hijacking attacks)
+- The AASA file is not served over HTTPS.
+- The AASA is not available.
+- The `appID`s do not math (this would be the case of a *malicious* app. iOS would successfully prevent any possible hijacking attacks
 
 ###### Checking the Link Receiver Method
 
@@ -550,10 +564,10 @@ Please note that if the app uses [`openURL:options:completionHandler:`](https://
 
 From the note above we can highlight that:
 
-- the mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above
-- the scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this
+- the mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above.
+- the scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this.
 
-If you don't have the original source code you can use Radare2 or Rabin2 to search the whole binary strings for the link receiver method:
+If you don't have the original source code you can use Radare2 or Rabin2 to search the binary strings for the link receiver method:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
@@ -563,9 +577,11 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
 
 ###### Checking the Data Handler Method
 
-You should check how the received data is validated. This can be also part of the method `application:continueUserActivity:restorationHandler:` method or might occur on a separate method being called from it. 
+You should check how the received data is validated. Apple [explicitly warns about this](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"):
 
-Here's an example in Swift from the Telegram app:
+> Universal links offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow universal links to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
+
+As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift from the Telegram app verifies exactly this before opening the URL:
 
 ```swift
 func application(_ application: UIApplication, continue userActivity: NSUserActivity, 
@@ -579,7 +595,38 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
 }
 ```
 
-You can see there that it verifies if the received activity is of type `NSUserActivityTypeBrowsingWeb` before obtaining the URL from `userActivity.webpageURL` and opening it. However, depending on the app, it would be a good idea to additionally apply a URL whitelist at this point.
+However, depending on the app, it would be a good idea to additionally apply a URL whitelist at this point and, if the URL includes parameters, ensure that they are properly sanitized and all malformed URLs are discarded. The `NSURLComponents` API can be used to parse and manipulate the components of the URL. This can be also part of the method `application:continueUserActivity:restorationHandler:` itself or might occur on a separate method being called from it. The following [example](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links#3001935 "An example of handling a universal link") demonstrates this:
+
+```swift
+func application(_ application: UIApplication,
+                 continue userActivity: NSUserActivity,
+                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool
+{
+    guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+        let incomingURL = userActivity.webpageURL,
+        let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+        let path = components.path,
+        let params = components.queryItems else {
+            return false
+    }
+    
+    print("path = \(path)")
+    
+    if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
+        let photoIndex = params.first(where: { $0.name == "index" })?.value {
+        
+        print("album = \(albumName)")
+        print("photoIndex = \(photoIndex)")
+        return true
+        
+    } else {
+        print("Either album name or photo index missing")
+        return false
+    }
+}
+```
+
+Finally, as stated above, be sure to verify that the actions triggered by the URL do not expose sensitive information or risk the user’s data on any way.
 
 ###### Checking if the App is Calling Other App's Universal Links
 
@@ -628,7 +675,7 @@ As expected, `openURL:options:completionHandler:` is among the ones found (remem
 If an app is implementing universal links, you should have the following outputs from the static analysis:
 
 - the Associated Domains
-- the App Site Association file including a white- and blacklist of paths
+- the App Site Association file
 - the link receiver method
 - the data handler method
 
@@ -643,10 +690,10 @@ You can use this now to dynamically test them:
 
 Unlike custom URL schemes, unfortunately you cannot test universal links from Safari just by typing them in the search bar directly as this is not allowed by Apple. But you can test them anytime using other apps like the Notes app:
 
-- open the Notes app and create a new note
-- write the links including the domain
-- leave the editing mode in the Notes app
-- long press the links to open them (remember that a standard click triggers the default option)
+- Open the Notes app and create a new note.
+- Write the links including the domain.
+- Leave the editing mode in the Notes app.
+- Long press the links to open them (remember that a standard click triggers the default option).
 
 > To do it from Safari you will have to find an existing link on a website that once clicked, it will be recognized as a Universal Link. This can be a bit time consuming.
 
@@ -685,7 +732,7 @@ $ frida-trace -U "Apple Store" -m "*[* *restorationHandler*]"
 
 ###### Tracing the Link Receiver Method
 
-Now we will show how to trace the link receiver method and how to extract additional information. For this we will use now Telegram, where all links are allowed, see its `apple-app-site-association` file:
+This section explains how to trace the link receiver method and how to extract additional information. For this example, we will use Telegram, as there are no restrictions in its `apple-app-site-association` file:
 
 ```
 {
@@ -785,7 +832,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 > `-i` includes any method. You can also use a glob pattern here (e.g. `-i "*open*Url*"` means "include any function containing 'open', then 'Url' and something else")
 
-Again, we let first frida-trace generate the stubs in `__handlers__/`:
+Again, we first let frida-trace generate the stubs in `__handlers__/`:
 
 ```
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
@@ -811,7 +858,9 @@ Now you can see a long list of functions but we still don't know which ones will
 
 Apart from the Objective-C method, now there is one Swift function that is also of your interest.
 
-There is probably no documentation for that Swift function but you can just demangle its symbol using `swift-demangle`:
+There is probably no documentation for that Swift function but you can just demangle its symbol using `swift-demangle` via [`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page"):
+
+> xcrun can be used invoke Xcode developer tools from the command-line, without having them in the path. In this case it will locate and run swift-demangle, an Xcode tool that demangles Swift symbols.
 
 ```bash
 $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
@@ -852,7 +901,7 @@ For now we will use this information to properly print the parameters by editing
   },
 ```
 
-This way, the next time we run it we get an much more detailed output:
+This way, the next time we run it we get a much more detailed output:
 
 ```
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
@@ -880,9 +929,9 @@ dismissInput: () -> ()) -> ()
 
 There you can observe the following:
 
-- it calls `application:continueUserActivity:restorationHandler:` from the app delegate as expected
-- `application:continueUserActivity:restorationHandler:` handles the URL but does not open it, it calls `TelegramUI.openExternalUrl` for that
-- the URL being opened is `https://t.me/addstickers/radare`
+- It calls `application:continueUserActivity:restorationHandler:` from the app delegate as expected.
+- `application:continueUserActivity:restorationHandler:` handles the URL but does not open it, it calls `TelegramUI.openExternalUrl` for that.
+- The URL being opened is `https://t.me/addstickers/radare`.
 
 You can now keep going and try to trace and verify how the data is being validated. For example, if you have two apps that *communicate* via universal links you can use this to see if the sending app is leaking sensitive data by hooking these methods in the receiving app. This is especially useful when you don't have the source code as you will be able to retrieve the full URL that you wouldn't see other way as it might be the result of clicking some button or triggering some functionality.
 
@@ -892,8 +941,8 @@ In some cases, you might find data in `userInfo` of the `NSUserActivity` object.
 
 Universal links and Apple's [Handoff feature](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338 "Handoff Fundamentals: About Handoff") are related:
 
-- both rely on the same method when receiving data (`application:continueUserActivity:restorationHandler:`)
-- like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the App Site Association File" above for an example.
+- Both rely on the same method when receiving data (`application:continueUserActivity:restorationHandler:`).
+- Like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the App Site Association File" above for an example.
 
 Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser–to–Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser–to–Native App"):
 
@@ -919,11 +968,11 @@ This knowledge should help you when testing apps supporting Handoff.
 
 ##### Overview
 
-Starting on iOS 6 it is possible for third-party apps to share information via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide *share activity sheet* that appears after clicking on the "Share" button.
+Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide *share activity sheet* that appears after clicking on the "Share" button.
 
 ![Share Activity Sheet](Images/Chapters/0x06h/share_activity_sheet.png)
 
-The available sharing mechanisms (aka. Activity Types) include:
+The available built-in sharing mechanisms (aka. Activity Types) include:
 
 - airDrop
 - assignToContact
@@ -937,23 +986,23 @@ A full list can be found in [UIActivity.ActivityType](https://developer.apple.co
 
 ##### Static Analysis
 
-###### Sending Files
+###### Sending Items
 
-When testing `UIActivity` Sharing you should pay especial attention to:
+When testing `UIActivity` Sharing you should pay special attention to:
 
-- the data being shared,
+- the data (items) being shared,
 - the custom activities,
 - the excluded activity types.
   
-Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired data (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)").
+Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired items (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)").
 
 As we mentioned before, it is possible to exclude some of the sharing mechanisms via the controller's [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes "UIActivityViewController excludedActivityTypes"). It is highly recommended to do the tests using the latest versions of iOS as the number of activity types that can be excluded can increase. The developers have to be aware of this and **explicitely exclude** the ones that are not appropriate for the app data. Some activity types might not be even documented like "Create Watch Face".
 
-If having the source code, you should take a look at the `UIActivityViewController` and:
+If having the source code, you should take a look at the `UIActivityViewController`:
 
-- inspect the activities passed to the `init(activityItems:applicationActivities:)` method
-- check if it defines custom activities (also being passed to the previous method)
-- verify the `excludedActivityTypes` if any
+- Inspect the activities passed to the `init(activityItems:applicationActivities:)` method.
+- Check if it defines custom activities (also being passed to the previous method).
+- Verify the `excludedActivityTypes`, if any.
 
 If you only have the compiled/installed app, try searching for the previous method and property, for example:
 
@@ -962,9 +1011,9 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep -i activityItems
 0x1000df034 45 44 initWithActivityItems:applicationActivities:
 ```
 
-###### Receiving Files
+###### Receiving Items
 
-When receiving files, you should check:
+When receiving items, you should check:
 
 - if the app declares *custom document types* by looking into Exported/Imported UTIs ("Info" tab of the Xcode project). The list of all system declared UTIs (Uniform Type Identifiers) can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259 "System-Declared Uniform Type Identifiers").
 - if the app specifies any *document types that it can open* by looking into Document Types ("Info" tab of the Xcode project). If present, they consist of name and one or more UTIs that represent the data type (e.g. "public.png" for PNG files). iOS uses this to determine if the app is eligible to open a given document (specifying Exported/Imported UTIs is not enough).
@@ -1038,18 +1087,18 @@ We can see that this File Manager will try to open anything that conforms to any
 
 ##### Dynamic Analysis
 
-###### Sending Files
+###### Sending Items
 
 There are three main things you can easily inspect by performing dynamic instrumentation:
 
-- the `activityItems`: an array of the items being shared. They might be of different types, e.g. one string and one picture to be shared via a messaging app
-- the `applicationActivities`: an array of `UIActivity` objects representing the app's custom services
-- the `excludedActivityTypes`: an array of the Activity Types that are not supported, e.g. `postToFacebook`
+- The `activityItems`: an array of the items being shared. They might be of different types, e.g. one string and one picture to be shared via a messaging app.
+- The `applicationActivities`: an array of `UIActivity` objects representing the app's custom services.
+- The `excludedActivityTypes`: an array of the Activity Types that are not supported, e.g. `postToFacebook`.
 
 To achieve this you can do two things:
 
-- hook the method we have seen in the static analysis ([`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)")) to get the `activityItems` and `applicationActivities`
-- find out the excluded activities by hooking [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes "UIActivityViewController excludedActivityTypes")
+- Hook the method we have seen in the static analysis ([`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)")) to get the `activityItems` and `applicationActivities`.
+- Find out the excluded activities by hooking [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes "UIActivityViewController excludedActivityTypes").
 
 Let's see an example using Telegram to share a picture and a text file. First prepare the hooks, we will use the Frida REPL and write a script for this:
 
@@ -1170,24 +1219,23 @@ RET @ 0x14797c3e0:
 )
 ```
 
-###### Receiving Files
+###### Receiving Items
 
-After performing the static analysis you would know the *document types that the app can open* and *if it declares any custom document types* and (part of) the methods involved. You can use this now to test the receiving part by:
+After performing the static analysis you would know the *document types that the app can open* and *if it declares any custom document types* and (part of) the methods involved. You can use this now to test the receiving part:
 
-- sending a file that will trigger the "Open with..." dialogue (via AirDrop or e-mail) or *share* a file with the app from another app
-- hooking `application:openURL:options:` and any other methods that we have identified in a previous static analysis
-- observing the app behaviour
-- in addition, you could send specific malformed files and/or use a fuzzing technique
+- *Share* a file with the app from another app or send it via AirDrop or e-mail. Choose the file so that it will trigger the "Open with..." dialogue (that is, there is no default app that will open the file, a PDF for example).
+- Hook `application:openURL:options:` and any other methods that were identified in a previous static analysis.
+- Observe the app behaviour.
+- In addition, you could send specific malformed files and/or use a fuzzing technique.
 
-To illustrate this with an example we have chosen the same real-world file manager app from the static analysis section and do the following:
+To illustrate this with an example we have chosen the same real-world file manager app from the static analysis section and followed these steps:
 
-1. send a PDF file from our MacBook via Airdrop
-2. the "AirDrop" popup appears
-3. if we accept, as there is no default app that will open the file, it switches to the "Open with..." popup
-4. we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
+1. Send a PDF file from another Apple device (e.g. a MacBook) via Airdrop.
+2. Wait for the "AirDrop" popup to appear and click on Accept.
+3. As there is no default app that will open the file, it switches to the "Open with..." popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
    
     ![AirDrop Open With Dialog](Images/Chapters/0x06h/airdrop_openwith.png)
-5. After selecting "SomeFileManager" we can see the following:
+4. After selecting "SomeFileManager" we can see the following:
     ```
     (0x1c4077000)  -[AppDelegate application:openURL:options:]
     application: <UIApplication: 0x101c00950>
@@ -1267,10 +1315,10 @@ From the security point of view it is important to note that
 
 In addition:
 
-- app extensions cannot access some APIs, for example, HealthKit.
-- they cannot receive data using AirDrop but do can send data.
-- no long-running background tasks are allowed but uploads or downloads can be initiated.
-- app extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
+- App extensions cannot access some APIs, for example, HealthKit.
+- They cannot receive data using AirDrop but do can send data.
+- No long-running background tasks are allowed but uploads or downloads can be initiated.
+- App extensions cannot access the camera or microphone on an iOS device (except for iMessage app extensions).
 
 ##### Static Analysis
 
@@ -1394,7 +1442,7 @@ RET: (
 
 Here we can observe that:
 
-- this occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework
+- this occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework.
 - the UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist "Info.plist` of the "Share Extension" of Telegram").
 
 ###### Identifying the App Extensions Involved
@@ -1417,8 +1465,8 @@ F90A1414DC 1(2) /private/var/containers/Bundle/Application/5E267B56-F104-41D0-83
 
 As you can see there are two app extensions involved:
 
-- `Share.appex` is sending the text file (`public.plain-text` and `public.file-url`)
-- `com.apple.mobilenotes.SharingExtension.appex` which is receiving and will process the text file
+- `Share.appex` is sending the text file (`public.plain-text` and `public.file-url`).
+- `com.apple.mobilenotes.SharingExtension.appex` which is receiving and will process the text file.
 
 If you want to learn more about what's happening under-the-hood in terms of XPC, we recommend to take a look at the internal calls from "libxpc.dylib". For example you can use [`frida-trace`](https://www.frida.re/docs/frida-trace/ "frida-trace") and then dig deeper into the methods that you find more interesting by extending the automatically generated stubs.
 
@@ -1434,10 +1482,10 @@ The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboar
 
 Some security considerations:
 
-- Users cannot grant or deny permission for apps to read the pasteboard
-- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the *malicious* app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user
-- [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used
-- Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data
+- Users cannot grant or deny permission for apps to read the pasteboard.
+- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the *malicious* app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
+- [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
+- Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
 
 
 ##### Static Analysis
@@ -1449,8 +1497,8 @@ The **systemwide general pasteboard** can be obtained by using [`generalPasteboa
 In addition, the following can be inspected:
 
 - Check if pasteboards are being removed with [`removePasteboardWithName:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622072-removepasteboardwithname?language=objc "UIPasteboard removePasteboardWithName:"), which invalidates an app pasteboard, freeing up all resources used by it (no effect for the general pasteboard).
-- Check if there are excluded pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionLocalOnly` option
-- Check if there are expiring pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionExpirationDate` option
+- Check if there are excluded pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionLocalOnly` option.
+- Check if there are expiring pasteboards, there should be a call to `setItems:options:` with the `UIPasteboardOptionExpirationDate` option.
 - Check if the app swipes the pasteboard items when going to background or when terminating. This is done by some password manager apps trying to restrict sensitive data exposure.
 
 ##### Dynamic Analysis
@@ -1459,8 +1507,8 @@ In addition, the following can be inspected:
 
 Hook or trace the following:
 
-- `generalPasteboard` for the systemwide general pasteboard
-- `pasteboardWithName:create:` and `pasteboardWithUniqueName` for custom pasteboards
+- `generalPasteboard` for the system-wide general pasteboard.
+- `pasteboardWithName:create:` and `pasteboardWithUniqueName` for custom pasteboards.
 
 ###### Detect Persistent Pasteboard Usage
 
@@ -1470,12 +1518,12 @@ Hook or trace the deprecated [`setPersistent:`](https://developer.apple.com/docu
 
 When monitoring the pasteboards, there is several details that may be dynamically retrieved:
 
-- Obtain pasteboard name by hooking `pasteboardWithName:create:` and inspecting its input parameters or `pasteboardWithUniqueName` and inspecting its return value
-- Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275 "Getting and Setting Pasteboard Items of Standard Data Types")
-- Get the number of items with `numberOfItems`
-- Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142 "Checking for Data Types on a Pasteboard"), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10)
+- Obtain pasteboard name by hooking `pasteboardWithName:create:` and inspecting its input parameters or `pasteboardWithUniqueName` and inspecting its return value.
+- Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275 "Getting and Setting Pasteboard Items of Standard Data Types").
+- Get the number of items with `numberOfItems`.
+- Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142 "Checking for Data Types on a Pasteboard"), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10).
 - Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](https://developer.apple.com/documentation/mobilecoreservices/uttype?language=objc "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "UIActivity Sharing" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
-- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`
+- Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`.
 
 If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
 
@@ -1553,8 +1601,8 @@ They also suggest using universal links instead, if the purpose is to implement 
 
 Supporting a custom URL scheme is done by:
 
-- defining the format for the app's URLs
-- register the scheme so that the system directs appropriate URLs to the app
+- defining the format for the app's URLs,
+- registering the scheme so that the system directs appropriate URLs to the app,
 - handling the URLs that the app receives.
 
 Security issues arise when an app processes calls to its URL scheme without properly validating the URL and its parameters and when users aren't prompted for confirmation before triggering an important action.
@@ -1565,16 +1613,16 @@ As a developer, you should carefully validate any URL before calling it. You can
 
 All URLs are passed to the app delegate, either at launch time or while the app is running or in the background. To handle incoming URLs, the delegate should implement methods to:
 
-- retrieve information about the URL and decide whether you want to open it
-- open the resource specified by the URL
+- retrieve information about the URL and decide whether you want to open it,
+- open the resource specified by the URL.
 
 More information can be found in the [archived App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW13 "Handling URL Requests") and in the [Apple Secure Coding Guide](https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/Articles/ValidatingInput.html "Validating Input and Interprocess Communication").
 
 In addition, an app may also want to send URL requests (aka. queries) to other apps. This is done by:
 
-- registering the application query schemes that the app wants to query
-- optionally querying other apps to know if they can open a certain URL
-- sending the URL requests
+- registering the application query schemes that the app wants to query,
+- optionally querying other apps to know if they can open a certain URL,
+- sending the URL requests.
 
 All of this presents a wide attack surface that we will address in the static and dynamic analysis sections.
 
@@ -1668,7 +1716,7 @@ As an example, Telegram declares in its [`Info.plist`](https://github.com/peter-
 
 In order to determine how a URL path is built and validated, if you have the original source code, you can search for the following methods:
 
-- `application:didFinishLaunchingWithOptions:` method or `application:will-FinishLaunchingWithOptions:`: verify how the decision is made and how the information about the URL is retrieved
+- `application:didFinishLaunchingWithOptions:` method or `application:will-FinishLaunchingWithOptions:`: verify how the decision is made and how the information about the URL is retrieved.
 - [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc "UIApplicationDelegate application:openURL:options:"): verify how the resource is being opened, i.e. how the data is being parsed, verify the [options](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey "UIApplicationOpenURLOptionsKey"), especially if the calling app ([`sourceApplication`](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey/1623128-sourceapplication "UIApplicationOpenURLOptionsSourceApplicationKey")) is being verified or checked against a white- or blacklist. The app might also need user permission when using the custom URL scheme.
 
 In Telegram you will [find four different methods being used](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1250 "Telegram's AppDelegate.swift Line 1250"):
@@ -1699,9 +1747,9 @@ func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
 
 We can observe some things here:
 
-- the app implements also deprecated methods like [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc "UIApplicationDelegate application:handleOpenURL:") and [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:")
-- the source application is not being verified in any of those methods
-- all of them call a private `openUrl` method. You can [inspect it](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1270 "Telegram's AppDelegate.swift Line 1270") to learn more about how the URL request is handled
+- The app implements also deprecated methods like [`application:handleOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622964-application?language=objc "UIApplicationDelegate application:handleOpenURL:") and [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:").
+- The source application is not being verified in any of those methods.
+- All of them call a private `openUrl` method. You can [inspect it](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1270 "Telegram's AppDelegate.swift Line 1270") to learn more about how the URL request is handled.
 
 ##### Testing URL Requests to Other Apps
 
@@ -1785,10 +1833,10 @@ openUrl: { url in
 
 Before opening a URL, the scheme is validated, "https" will be added if necessary and it won't open any URL with the "tg" scheme. When ready it will use the deprecated `openURL` method.
 
-If only having the compiled application (IPA) you can still try to identify which URL schemes are being used to query other apps.
+If only having the compiled application (IPA) you can still try to identify which URL schemes are being used to query other apps:
 
-- check if `LSApplicationQueriesSchemes` was declared or search for common URL schemes
-- also use the string `://` or build a regular expression to match URLs as the app might not be declaring some schemes
+- Check if `LSApplicationQueriesSchemes` was declared or search for common URL schemes.
+- Also use the string `://` or build a regular expression to match URLs as the app might not be declaring some schemes.
 
 You can do that by first verifying that the app binary contains those strings by e.g. using unix `strings` command:
 
@@ -1914,9 +1962,9 @@ For this we will use the [ObjC method observer](https://codeshare.frida.re/@mrma
 
 In this case we are interested into all methods containing "openURL", therefore our pattern will be `*[* *openURL*]`:
 
-- the first asterisk will match all instance `-` and class `+` methods
-- the second matches all Objective-C classes
-- the third and forth allow to match any method containing the string `openURL`
+- The first asterisk will match all instance `-` and class `+` methods.
+- The second matches all Objective-C classes.
+- The third and forth allow to match any method containing the string `openURL`.
 
 
 ```javascript
@@ -1962,10 +2010,10 @@ RET: 0x1
 Now we know that:
 
 - the method `-[iGoat_Swift.AppDelegate application:openURL:options:]` gets called. As we have seen before, it is the recommended way and it is not deprecated.
-- it receives our URL as a parameter: `igoat://`
-- we also can verify the source application: `com.apple.mobilesafari`
-- we can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`
-- the method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value"))
+- it receives our URL as a parameter: `igoat://`.
+- we also can verify the source application: `com.apple.mobilesafari`.
+- we can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`.
+- the method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
 
 The call was successful and we see now that the iGoat app was open:
 
@@ -2044,7 +2092,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 Now we can simply modify by hand the stubs we are interested in:
 
-- the Objective-C method `application:openURL:options:`:
+- The Objective-C method `application:openURL:options:`:
     ```javascript
     // __handlers__/__AppDelegate_application_openUR_3679fadc.js
 
@@ -2056,7 +2104,7 @@ Now we can simply modify by hand the stubs we are interested in:
         log("\toptions :" + ObjC.Object(args[4]).toString());
     },
     ```
-- the Swift method `$S10TelegramUI15openExternalUrl...`:
+- The Swift method `$S10TelegramUI15openExternalUrl...`:
     ```javascript
     // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
 
@@ -2098,11 +2146,11 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 There you can observe the following:
 
-- it calls `application:openURL:options:` from the app delegate as expected
-- the source application is Safari ("com.apple.mobilesafari")
-- `application:openURL:options:` handles the URL but does not open it, it calls `TelegramUI.openExternalUrl` for that
-- the URL being opened is `tg://resolve?domain=fridadotre`
-- it uses the `tg://` custom URL scheme from Telegram
+- It calls `application:openURL:options:` from the app delegate as expected.
+- The source application is Safari ("com.apple.mobilesafari").
+- `application:openURL:options:` handles the URL but does not open it, it calls `TelegramUI.openExternalUrl` for that.
+- The URL being opened is `tg://resolve?domain=fridadotre`.
+- It uses the `tg://` custom URL scheme from Telegram.
 
 
 It is interesting to see that if you navigate again to "https://telegram.me/fridadotre", click on cancel and then click on the link offered by the page itself "Open in the Telegram app". Instead of opening via custom URL scheme it will open via universal links.
@@ -2192,9 +2240,9 @@ If the app parses parts of the URL, you can also perform input fuzzing to detect
 
 What we have learned above can be now used to build your own fuzzer on the language of your choice, e.g. in Python and call the `openURL` using [Frida's RPC](https://www.frida.re/docs/javascript-api/#rpc "Frida's RPC (JavaScript API)"). That fuzzer should do the following:
 
-- generate payloads
-- for each of them call `openURL`
-- and check if the app generates a crash report (`.ips`) in `/private/var/mobile/Library/Logs/CrashReporter`
+- Generate payloads.
+- For each of them call `openURL`.
+- Check if the app generates a crash report (`.ips`) in `/private/var/mobile/Library/Logs/CrashReporter`.
 
 The [FuzzDB](https://github.com/fuzzdb-project/fuzzdb "FuzzDB") project offers fuzzing dictionaries that you can use as payloads.
 
@@ -2287,28 +2335,28 @@ WebViews are in-app browser components for displaying interactive web content. T
 `WKWebView` comes with several security advantages over `UIWebView`:
 
 - JavaScript is enabled by default but thanks to the `javaScriptEnabled` property of `WKWebView`, it can be completely disabled, preventing all script injection flaws.
-- the `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
-- the `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
+- The `JavaScriptCanOpenWindowsAutomatically` can be used to prevent JavaScript from opening new windows, such as pop-ups.
+- The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
 A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "Determining Whether Native Methods Are Exposed Through WebViews" below for more information.
 
 ##### SFSafariViewController
 
-[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller "SFSafariViewController") is available starting on iOS 9 and should be used to provide a generalized web viewing experience. These WebViews can be easily spotted as they have a characteristic layout which includes:
+[`SFSafariViewController`](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller "SFSafariViewController") is available starting on iOS 9 and should be used to provide a generalized web viewing experience. These WebViews can be easily spotted as they have a characteristic layout which includes the following elements:
 
-- A read-only address field with a security indicator
-- An Action ("Share") button
-- A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari
+- A read-only address field with a security indicator.
+- An Action ("Share") button.
+- A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
 
 ![SFSafariViewController](Images/Chapters/0x06h/sfsafariviewcontroller.png)
 
 There are a couple of things to consider:
 
-- JavaScript cannot be disabled in `SFSafariViewController` and this is one of the reasons why the usage of `WKWebView` is recommended when the goal is extending the app's user interface
-- `SFSafariViewController` also shares cookies and other website data with Safari
-- the user's activity and interaction with a `SFSafariViewController` are not visible to the app, which cannot access AutoFill data, browsing history, or website data
-- according to the App Store Review Guidelines, `SFSafariViewController`s may not be hidden or obscured by other views or layers
+- JavaScript cannot be disabled in `SFSafariViewController` and this is one of the reasons why the usage of `WKWebView` is recommended when the goal is extending the app's user interface.
+- `SFSafariViewController` also shares cookies and other website data with Safari.
+- The user's activity and interaction with a `SFSafariViewController` are not visible to the app, which cannot access AutoFill data, browsing history, or website data.
+- According to the App Store Review Guidelines, `SFSafariViewController`s may not be hidden or obscured by other views or layers.
 
 This should be sufficient for an app analysis and therefore, `SFSafariViewController`s are out of scope for the Static and Dynamic Analysis sections.
 
@@ -2563,8 +2611,8 @@ WebViews can load remote content from an endpoint, but they can also load local 
 
 Use the following best practices as defensive-in-depth measures:
 
-- create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
-- create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming) "Minification (programming)") to make them harder to read.
+- Create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
+- Create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming) "Minification (programming)") to make them harder to read.
 
 #### Static Analysis
 
@@ -2657,21 +2705,21 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
 
 ##### Testing WebView File Access
 
-If you have found a `UIWebView` being used, then you can be sure that:
+If you have found a `UIWebView` being used, then the following applies:
 
-- the `file://` scheme is always enabled
-- file access from `file://` URLs is always enabled
-- universal access from `file://` URLs is always enabled
+- The `file://` scheme is always enabled.
+- File access from `file://` URLs is always enabled.
+- Universal access from `file://` URLs is always enabled.
 
-Regarding `WKWebView`,
+Regarding `WKWebView`s:
 
-- the `file://` scheme is also always enabled and it **cannot be disabled**
-- it disables file access from `file://` URLs by default but it can be enabled
+- The `file://` scheme is also always enabled and it **cannot be disabled**.
+- It disables file access from `file://` URLs by default but it can be enabled.
 
 The following WebView properties can be used to configure file access:
 
-- `allowFileAccessFromFileURLs` (`WKPreferences`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from other `file://` scheme URLs
-- `allowUniversalAccessFromFileURLs` (`WKWebViewConfiguration`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from any origin
+- `allowFileAccessFromFileURLs` (`WKPreferences`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from other `file://` scheme URLs.
+- `allowUniversalAccessFromFileURLs` (`WKWebViewConfiguration`, `false` by default): it enables JavaScript running in the context of a `file://` scheme URL to access content from any origin.
 
 For example, it is possible to set the **[undocumented property](https://github.com/WebKit/webkit/blob/master/Source/WebKit/UIProcess/API/Cocoa/WKPreferences.mm#L470 "WebKit WKPreferences.mm Line 470")** `allowFileAccessFromFileURLs` by doing this:
 
@@ -2886,8 +2934,8 @@ Further dynamic analysis can help you exploit those functions and get sensitive 
 
 The procedure for exploiting the functions starts with producing a JavaScript payload and injecting it into the file that the app is requesting. The injection can be accomplished via various techniques, for example:
 
-- if some of the content is loaded insecurely from the Internet over HTTP (mixed content), you can try to implement a MITM attack
-- you can always perform dynamic instrumentation and inject the JavaScript payload by using frameworks like Frida and the corresponding JavaScript evaluation functions available for the iOS WebViews ([`stringByEvaluatingJavaScriptFromString:`](https://developer.apple.com/documentation/uikit/uiwebview/1617963-stringbyevaluatingjavascriptfrom?language=objc "UIWebView stringByEvaluatingJavaScriptFromString:") for `UIWebView` and [`evaluateJavaScript:completionHandler:`](https://developer.apple.com/documentation/webkit/wkwebview/1415017-evaluatejavascript?language=objc "WKWebView evaluateJavaScript:completionHandler:") for `WKWebView`)
+- If some of the content is loaded insecurely from the Internet over HTTP (mixed content), you can try to implement a MITM attack.
+- You can always perform dynamic instrumentation and inject the JavaScript payload by using frameworks like Frida and the corresponding JavaScript evaluation functions available for the iOS WebViews ([`stringByEvaluatingJavaScriptFromString:`](https://developer.apple.com/documentation/uikit/uiwebview/1617963-stringbyevaluatingjavascriptfrom?language=objc "UIWebView stringByEvaluatingJavaScriptFromString:") for `UIWebView` and [`evaluateJavaScript:completionHandler:`](https://developer.apple.com/documentation/webkit/wkwebview/1415017-evaluatejavascript?language=objc "WKWebView evaluateJavaScript:completionHandler:") for `WKWebView`).
 
 In order to get the secret from the previous example of the "Where's My Browser?" app, you can use one of these techniques to inject the following payload that will reveal the secret by writing it to the "result" field of the WebView:
 
