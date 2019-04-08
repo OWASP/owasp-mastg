@@ -220,66 +220,70 @@ If you only have the app's IPA or simply the installed app on a jailbroken devic
 
 The following two subsections will show you how to access the app binary and once it is accessible, how to extract the entitlements property lists.
 
-###### Accessing the App Binary
+###### Acquiring the App Binary
 
-If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
+1. From an IPA:
+   
+   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
 
-> On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
+    > On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
 
-If not, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, example using Telegram:
+2. From a Jailbroken device:
+   
+    If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, example using Telegram:
 
-- Open the app and leave it running on foreground.
-- Start an objection session by running the following command:
-    ```bash
-    $ objection --gadget Telegram explore
-    Using USB device `iPhone`
-    ```
-- Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
-    ```
-    ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
+    - Open the app and leave it running on foreground.
+    - Start an objection session by running the following command:
+        ```bash
+        $ objection --gadget Telegram explore
+        Using USB device `iPhone`
+        ```
+    - Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
+        ```
+        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
 
-    Name               Path
-    -----------------  -------------------------------------------------------------------------
-    BundlePath         /var/containers/Bundle/Application/B0E38F10-8F30.../Telegram X.app
-    CachesDirectory    /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library/Caches
-    DocumentDirectory  /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Documents
-    LibraryDirectory   /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library
-    ```
-- `BundlePath` is also the current directory by default, run `ls` to list the contents:
-    ```
-    ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
+        Name               Path
+        -----------------  -------------------------------------------------------------------------
+        BundlePath         /var/containers/Bundle/Application/B0E38F10-8F30.../Telegram X.app
+        CachesDirectory    /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library/Caches
+        DocumentDirectory  /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Documents
+        LibraryDirectory   /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library
+        ```
+    - `BundlePath` is also the current directory by default, run `ls` to list the contents:
+        ```
+        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
 
-    NSFileType      Perms  NSFileProtection   ... Size       Name
-    ------------  -------  ------------------ ... ---------  ----------------------------------
-    Directory         493  None               ... 224.0 B    PlugIns
-    Directory         493  None               ... 96.0 B     Base.lproj
-    Directory         493  None               ... 96.0 B     _CodeSignature
-    Directory         493  None               ... 1.3 KiB    Frameworks
-    ...
-    Regular           493  None               ... 1.4 MiB    Telegram X
-    ...
-    Readable: True  Writable: False
-    ```
-    The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
-- Download the app binary using the command `file download`:
-    ```
-    ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
+        NSFileType      Perms  NSFileProtection   ... Size       Name
+        ------------  -------  ------------------ ... ---------  ----------------------------------
+        Directory         493  None               ... 224.0 B    PlugIns
+        Directory         493  None               ... 96.0 B     Base.lproj
+        Directory         493  None               ... 96.0 B     _CodeSignature
+        Directory         493  None               ... 1.3 KiB    Frameworks
+        ...
+        Regular           493  None               ... 1.4 MiB    Telegram X
+        ...
+        Readable: True  Writable: False
+        ```
+        The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
+    - Download the app binary using the command `file download`:
+        ```
+        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
 
-    Downloading /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
-        Telegram X.app/Telegram X to Telegram X
-    Streaming file from device...
-    Writing bytes to destination...
-    Successfully downloaded /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
-        Telegram X.app/Telegram X to Telegram X
-    ```
+        Downloading /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
+            Telegram X.app/Telegram X to Telegram X
+        Streaming file from device...
+        Writing bytes to destination...
+        Successfully downloaded /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
+            Telegram X.app/Telegram X to Telegram X
+        ```
 
-Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via SCP for example) or keep working on the device.
+    Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via SCP for example) or keep working on the device.
 
 The following steps should work even when targeting an encrypted binary. If for some reason they don't, you'll have to decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar.
 
 ###### Extracting the Entitlements Plist from the App Binary
 
-If you have the app binary in your computer, one approach is to use Binwalk to extract (`-e`) all XML files (`-y=xml`):
+If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
 ```
 $ binwalk -e -y=xml ./Telegram\ X
@@ -290,7 +294,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 1458814       0x16427E        XML document, version: "1.0"
 ```
 
-Or you can use Radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
+Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
 ```
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
@@ -305,9 +309,9 @@ $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 <dict>\n\t<key>cdhashes</key>...
 ```
 
-In both cases (Binwalk or Radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements "Telegram-iOS-AppStoreLLC.entitlements original file").
+In both cases (binwalk or radare2) we were able to extract the same two `plist` files. If we inspect the first one (0x0015d2a4) we see that we were able to completely recover the [original entitlements file from Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/77ee5c4dabdd6eb5f1e2ff76219edf7e18b45c00/Telegram-iOS/Telegram-iOS-AppStoreLLC.entitlements "Telegram-iOS-AppStoreLLC.entitlements original file").
 
-> Note: the `strings` command will not help here as it will not be able to find this information. Better use grep with the `-a` flag directly on the binary or use Radare2 (`izz`)/Rabin2 (`-zz`).
+> Note: the `strings` command will not help here as it will not be able to find this information. Better use grep with the `-a` flag directly on the binary or use radare2 (`izz`)/rabin2 (`-zz`).
 
 If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
 
@@ -471,7 +475,7 @@ For example, the Telegram app supports both custom URL schemes and universal lin
 Both result in the same action, the user will be redirected to the specified chat in Telegram ("fridadotre" in this case). However, universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking, according to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"). Specifically, universal links are:
 
 - **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to *prevent* URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
-- **Secure**: When users install the app, iOS downloads and checks a file (`apple-app-site-association`) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the legitimate owners of the URL can upload this file, so the association of their website with the app is secure.
+- **Secure**: When users install the app, iOS downloads and checks a file (the Apple App Site Association or AASA) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the legitimate owners of the URL can upload this file, so the association of their website with the app is secure.
 - **Flexible**: Universal links work even when the app is not installed. Tapping a link to the website would open the content in Safari, as users expect.
 - **Simple**: One URL works for both the website and the app.
 - **Private**: Other apps can communicate with the app without needing to know whether it is installed.
@@ -480,13 +484,13 @@ Both result in the same action, the user will be redirected to the specified cha
 
 Testing universal links on a static approach includes doing the following:
 
-- Checking the Associated Domains
-- Retrieving the App Site Association File
-- Checking the Link Receiver Method
-- Checking the Data Handler Method
-- Checking if the App is Calling Other App's Universal Links
+- Checking the Associated Domains entitlement
+- Retrieving the Apple App Site Association file
+- Checking the link receiver method
+- Checking the data handler method
+- Checking if the app is calling other app's universal links
 
-###### Checking the Associated Domains
+###### Checking the Associated Domains Entitlement
 
 Universal links require the developer to add the Associated Domains entitlement and include in it a list of the domains that the app supports.
 
@@ -506,7 +510,7 @@ More detailed information can be found in the [archived Apple Developer Document
 
 If you don't have the original source code you can still search for them, as explained in "Entitlements Embedded in the Compiled App Binary".
 
-###### Retrieving the App Site Association File
+###### Retrieving the Apple App Site Association File
 
 Try to retrieve the `apple-app-site-association` file from the server using the associated domains you got from the previous step. This file needs to be accessible via HTTPS, without any redirects, at `https://<domain>/apple-app-site-association` or `https://<domain>/.well-known/apple-app-site-association`.
 
@@ -567,7 +571,7 @@ From the note above we can highlight that:
 - the mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above.
 - the scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this.
 
-If you don't have the original source code you can use Radare2 or Rabin2 to search the binary strings for the link receiver method:
+If you don't have the original source code you can use radare2 or rabin2 to search the binary strings for the link receiver method:
 
 ```bash
 $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep restorationHan
@@ -595,7 +599,9 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
 }
 ```
 
-However, depending on the app, it would be a good idea to additionally apply a URL whitelist at this point and, if the URL includes parameters, ensure that they are properly sanitized and all malformed URLs are discarded. The `NSURLComponents` API can be used to parse and manipulate the components of the URL. This can be also part of the method `application:continueUserActivity:restorationHandler:` itself or might occur on a separate method being called from it. The following [example](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links#3001935 "An example of handling a universal link") demonstrates this:
+In addition, remember that if the URL includes parameters, they should not be trusted before being carefully sanitized and validated (even when including a whitelist of trusted domains here). For example, they might have been spoofed by an attacker or might include malformed data. If that is the case, the whole URL and therefore the universal link request must be discarded.
+
+The `NSURLComponents` API can be used to parse and manipulate the components of the URL. This can be also part of the method `application:continueUserActivity:restorationHandler:` itself or might occur on a separate method being called from it. The following [example](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links#3001935 "An example of handling a universal link") demonstrates this:
 
 ```swift
 func application(_ application: UIApplication,
@@ -674,17 +680,17 @@ As expected, `openURL:options:completionHandler:` is among the ones found (remem
 
 If an app is implementing universal links, you should have the following outputs from the static analysis:
 
-- the Associated Domains
-- the App Site Association file
+- the associated domains
+- the Apple App Site Association file
 - the link receiver method
 - the data handler method
 
 You can use this now to dynamically test them:
 
-- Triggering Universal Links
-- Identifying Valid Universal Links
-- Tracing the Link Receiver Method
-- Checking How the Links Are Opened
+- Triggering universal links
+- Identifying valid universal links
+- Tracing the link receiver method
+- Checking how the links are opened
 
 ###### Triggering Universal Links
 
@@ -942,7 +948,7 @@ In some cases, you might find data in `userInfo` of the `NSUserActivity` object.
 Universal links and Apple's [Handoff feature](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338 "Handoff Fundamentals: About Handoff") are related:
 
 - Both rely on the same method when receiving data (`application:continueUserActivity:restorationHandler:`).
-- Like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the App Site Association File" above for an example.
+- Like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the Apple App Site Association File" above for an example.
 
 Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser–to–Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser–to–Native App"):
 
@@ -1324,10 +1330,10 @@ In addition:
 
 The static analysis will take care of:
 
-- Verifying if the App Contains App Extensions
-- Determining the Supported Data Types
-- Checking Data Sharing with the Containing App
-- Verifying if the App Restricts the Use of App Extensions
+- Verifying if the app contains app extensions
+- Determining the supported data types
+- Checking data sharing with the containing app
+- Verifying if the app restricts the use of app extensions
 
 ###### Verifying if the App Contains App Extensions
 
@@ -1407,8 +1413,8 @@ It is possible to reject a specific type of app extension by using the method [`
 
 For the dynamic analysis we can do the following to gain knowledge without having the source code:
 
-- Inspecting the Items Being Shared
-- Identifying the App Extensions Involved
+- Inspecting the items being shared
+- Identifying the app extensions involved
 
 ###### Inspecting the Items Being Shared
 
@@ -1630,11 +1636,11 @@ All of this presents a wide attack surface that we will address in the static an
 
 There are a couple of things that we can do in the static analysis. In the next sections we will see the following:
 
-- Testing Custom URL Schemes Registration
-- Testing Application Query Schemes Registration
-- Testing URL Handling and Validation
-- Testing URL Requests to Other Apps
-- Testing for Deprecated Methods
+- Testing custom URL schemes registration
+- Testing application query schemes registration
+- Testing URL handling and validation
+- Testing URL requests to other apps
+- Testing for deprecated methods
 
 ##### Testing Custom URL Schemes Registration
 
@@ -1844,7 +1850,7 @@ You can do that by first verifying that the app binary contains those strings by
 $ strings <yourapp> | grep "someURLscheme://"
 ```
 
-or even better, use Radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
+or even better, use radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
 
 ```bash
 $ r2 -qc izz~iGoat:// iGoat-Swift
@@ -1880,10 +1886,10 @@ $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
 
 Once you've identified the custom URL schemes the app has registered, there are several methods that you can use to test them:
 
-- Performing URL Requests
-- Identifying and Hooking the URL Handler Method
-- Testing URL Schemes Source Validation
-- Fuzzing URL Schemes
+- Performing URL requests
+- Identifying and hooking the URL handler method
+- Testing URL schemes source validation
+- Fuzzing URL schemes
 
 ##### Performing URL Requests
 
@@ -2364,9 +2370,9 @@ This should be sufficient for an app analysis and therefore, `SFSafariViewContro
 
 For the static analysis we will focus mostly on the following points having `UIWebView` and `WKWebView` under scope.
 
-- Identifying WebView Usage
-- Testing JavaScript Configuration
-- Testing for Mixed Content
+- Identifying WebView usage
+- Testing JavaScript configuration
+- Testing for mixed content
 
 ##### Identifying WebView Usage
 
@@ -2454,9 +2460,9 @@ In addition, if you have the original source code or the IPA, you can inspect th
 
 For the dynamic analysis we will address the same points from the static analysis.
 
-- Enumerating WebView Instances
-- Checking if JavaScript is Enabled
-- Verifying that Only Secure Content is Allowed
+- Enumerating WebView instances
+- Checking if JavaScript is enabled
+- Verifying that only secure content is allowed
 
 It is possible to identify WebViews and obtain all their properties on runtime by performing dynamic instrumentation. This is very useful when you don't have the original source code.
 
@@ -2616,9 +2622,9 @@ Use the following best practices as defensive-in-depth measures:
 
 #### Static Analysis
 
-- Testing How WebViews are Loaded
-- Testing WebView File Access
-- Checking Telephone Number Detection
+- Testing how WebViews are loaded
+- Testing WebView file access
+- Checking telephone number detection
 
 ##### Testing How WebViews are Loaded
 
@@ -2757,8 +2763,8 @@ In a real-world scenario, JavaScript can only be injected through a permanent ba
 
 For what concerns this section we will learn about:
 
-- Checking How WebViews are Loaded
-- Determining WebView File Access
+- Checking how WebViews are loaded
+- Determining WebView file access
 
 ##### Checking How WebViews are Loaded
 
