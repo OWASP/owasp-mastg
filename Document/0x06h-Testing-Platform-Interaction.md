@@ -568,8 +568,8 @@ Please note that if the app uses [`openURL:options:completionHandler:`](https://
 
 From the note above we can highlight that:
 
-- the mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above.
-- the scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this.
+- The mentioned `NSUserActivity` object comes from the `continueUserActivity` parameter, as seen in the method above.
+- The scheme of the `webpageURL` must be HTTP or HTTPS (any other scheme should throw an exception). The [`scheme` instance property](https://developer.apple.com/documentation/foundation/urlcomponents/1779624-scheme "URLComponents scheme") of `URLComponents` / `NSURLComponents` can be used to verify this.
 
 If you don't have the original source code you can use radare2 or rabin2 to search the binary strings for the link receiver method:
 
@@ -1194,10 +1194,10 @@ RET @ 0x1c001b1d0:
 )
 ```
 
-You can see that,
+You can see that:
 
-- for the picture, the activity item is a `UIImage` and there are no excluded activities.
-- for the text file there are two different activity items and "com.apple.UIKit.activity.MarkupAsPDF" is excluded.
+- For the picture, the activity item is a `UIImage` and there are no excluded activities.
+- For the text file there are two different activity items and "com.apple.UIKit.activity.MarkupAsPDF" is excluded.
 
 In the previous example, there were no custom `applicationActivities` and only one excluded activity. However, to better illustrate what you can expect from other apps we have shared a picture using another app, here you can see a bunch of application activities and excluded activities (output was edited to hide the name of the originating app):
 
@@ -1311,13 +1311,13 @@ For example, the user selects text in the *host app*, clicks on the "Share" butt
 
 ###### Security Considerations
 
-From the security point of view it is important to note that
+From the security point of view it is important to note that:
 
-- an app extension does never communicate directly with its containing app (typically, it isn’t even running while the contained app extension is running).
-- an app extension and the host app communicate via inter-process communication.
-- an app extension’s containing app and the host app don’t communicate at all.
-- a Today widget (and no other app extension type) can ask the system to open its containing app by calling the `openURL:completionHandler:` method of the `NSExtensionContext` class.
-- any app extension and its containing app can access shared data in a privately defined shared container.
+- An app extension does never communicate directly with its containing app (typically, it isn’t even running while the contained app extension is running).
+- An app extension and the host app communicate via inter-process communication.
+- An app extension’s containing app and the host app don’t communicate at all.
+- A Today widget (and no other app extension type) can ask the system to open its containing app by calling the `openURL:completionHandler:` method of the `NSExtensionContext` class.
+- Any app extension and its containing app can access shared data in a privately defined shared container.
 
 In addition:
 
@@ -1448,8 +1448,8 @@ RET: (
 
 Here we can observe that:
 
-- this occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework.
-- the UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist "Info.plist` of the "Share Extension" of Telegram").
+- This occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework.
+- The UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist "Info.plist` of the "Share Extension" of Telegram").
 
 ###### Identifying the App Extensions Involved
 
@@ -2015,11 +2015,11 @@ RET: 0x1
 
 Now we know that:
 
-- the method `-[iGoat_Swift.AppDelegate application:openURL:options:]` gets called. As we have seen before, it is the recommended way and it is not deprecated.
-- it receives our URL as a parameter: `igoat://`.
-- we also can verify the source application: `com.apple.mobilesafari`.
-- we can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`.
-- the method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
+- The method `-[iGoat_Swift.AppDelegate application:openURL:options:]` gets called. As we have seen before, it is the recommended way and it is not deprecated.
+- It receives our URL as a parameter: `igoat://`.
+- We also can verify the source application: `com.apple.mobilesafari`.
+- We can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`.
+- The method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
 
 The call was successful and we see now that the iGoat app was open:
 
