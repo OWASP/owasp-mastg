@@ -790,7 +790,7 @@ If the app implements certificate pinning, X.509 certificates provided by an int
 
 There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
 
-- Frida: [Objection https://github.com/sensepost/objection "Objection"]
+- Frida: [Objection](https://github.com/sensepost/objection "Objection")
 - Xposed: [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready"), [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning")
 - Cydia Substrate: [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller")
  
