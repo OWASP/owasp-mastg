@@ -100,32 +100,12 @@ Secure ways to retrieve the key include:
 - Asking the user to decrypt the database with a PIN or password once the app is opened (weak passwords and PINs are vulnerable to brute force attacks)
 - Storing the key on the server and allowing it to be accessed from a web service only (so that the app can be used only when the device is online)
 
-##### Firebase Real-time Databases
-
-Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
-
-###### Identifying Misconfigured Firebase Instance
-
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
-
-The misconfigured Firebase instance can be identified by making the following network call:
-
-_https://\<firebaseProjectName\>.firebaseio.com/.json_
-
-The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
-
-```
-python FirebaseScanner.py -p <pathOfAPKFile>
-
-python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
-```
-
 ##### Realm Databases
 
 The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
 ```java
-//the getKey() method either gets the key from the server or from a KeyStore, or is deferred from a password.
+//the getKey() method either gets the key from the server or from a Keystore, or is deferred from a password.
 RealmConfiguration config = new RealmConfiguration.Builder()
   .encryptionKey(getKey())
   .build();
@@ -323,7 +303,7 @@ For any publicly accessible data storage, any process can override the data. Thi
 #### Static analysis
 
 ##### Using Shared Preferences
-When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaining the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
+When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaning the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
 Using reflection based persistence? Check the section on "Testing Object Persistence" for Android to see how it should be validated.
 Using the `SharedPreferences.Editor` to store and read certificates or keys? Make sure you have patched your security provider given vulnerabilities such as found in [Bouncy Castle](https://www.cvedetails.com/cve/CVE-2018-1000613/ "Key reading vulnerability due to unsafe reflection").
 
@@ -347,6 +327,7 @@ Use a centralized logging class and mechanism and remove logging statements from
 
 #### Static Analysis
 
+You should check the apps' source code for logging mechanisms by searching for the following keywords:
 Check the app's source code for logging mechanisms by searching for the following keywords:
 
 - Functions and classes, such as:
@@ -456,7 +437,7 @@ To intercept traffic between the client and server, you can perform dynamic anal
 
 #### Overview
 
-When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. Hovewer, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
 
 #### Static Analysis
 
@@ -1189,13 +1170,9 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
 - Fridump - https://github.com/Nightbringer21/fridump
 - LiME - https://github.com/504ensicsLabs/LiME
-- Firebase Scanner - https://github.com/shivsahni/FireBaseScanner
 
 #### Libraries
 
 - Java AES Crypto - https://github.com/tozny/java-aes-crypto
 - SQL Cipher - https://www.zetetic.net/sqlcipher/sqlcipher-for-android
 - Secure Preferences - https://github.com/scottyab/secure-preferences
-
-#### Others
-- Appthority Mobile Threat Team Research Paper - https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf
