@@ -152,11 +152,11 @@ Ex: United States (U.S.)
 
 Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
 
-**Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous.
+**Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: ...
 
 **Wrong:** The AndroidManifest.xml file contains an Application tag, with the following attributes: atr1, atr2 and atr3. The command below shows that atr1 is dangerous: ...
 
-**Wrong:** If we open the AndroidManifest.xml file, we will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If we run the following command, we will see that atr1 is actually dangerous.
+**Wrong:** If we open the AndroidManifest.xml file, we will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If we run the following command, we will see that atr1 is actually dangerous: ...
 
 ## 3. External References
 
