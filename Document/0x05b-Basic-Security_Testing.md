@@ -202,7 +202,7 @@ From now on, any CA certificate that is installed by the user via "Settings", "S
 
 Alternatively, you can follow the following steps manually in order to achieve the same result:
 
-- Mae the /system partition writable, which is only possible on a rooted device. Instructions on how to [root](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Basic-Security_Testing.md#connecting-to-an-android-virtual-device-avd-as-root) your device can be found later in this chapter. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command 'mount -o rw,remount -t ext4 /system'
+- Make the /system partition writable, which is only possible on a rooted device. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command 'mount -o rw,remount -t ext4 /system'
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 ```shell
 $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
@@ -778,13 +778,13 @@ This will install any module that matches your query. Newly installed modules ar
 
 #### Potential Obstacles
 
-Applications often implement security controls that make it more difficult to perform a security review of the application, such as root detection and Certificate pinning. Ideally, you would acquire both a version of the application that has these controls enabled, and one where the controls are disabled. This allows you to analyze the proper implementation of the controls, after which you can continue with the less-secure version for further tests.
+Applications often implement security controls that make it more difficult to perform a security review of the application, such as root detection and certificate pinning. Ideally, you would acquire both a version of the application that has these controls enabled, and one where the controls are disabled. This allows you to analyze the proper implementation of the controls, after which you can continue with the less-secure version for further tests.
 
-Of course, this is not always possible, and you may need to perform a black-box assessment on an application where all security controls are enabled. The section below shows you how you can circumvent Certificate pinning for different applications.
+Of course, this is not always possible, and you may need to perform a black-box assessment on an application where all security controls are enabled. The section below shows you how you can circumvent certificate pinning for different applications.
 
 ##### Certificate Pinning
 
-Different ways of implementing Certificate Pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning". 
+Different ways of implementing certificate pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning". 
 
 If the app implements certificate pinning, X.509 certificates provided by an intercepting proxy will be declined and the app will refuse to make any requests through the proxy. To perform an efficient white box test, use a debug build with deactivated certificate pinning.
 
@@ -847,6 +847,9 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
 - Android Platform Tools - https://developer.android.com/studio/releases/platform-tools.html
 - Android Studio - https://developer.android.com/studio/index.html
+- Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
+- Android 8.0 Behavior Changes - https://developer.android.com/about/versions/oreo/android-8.0-changes
+- Android 9.0 Behavior Changes - https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes
 - apktool -https://ibotpeaches.github.io/Apktool/
 - apkx - https://github.com/b-mueller/apkx
 - Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
@@ -854,6 +857,7 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
 - Frida - https://www.frida.re/docs/android/
 - JAADAS - https://github.com/flankerhqd/JAADAS
+- Magisk Trust User Certs module - https://github.com/NVISO-BE/MagiskTrustUserCerts/releases
 - Mitm-relay - https://github.com/jrmdev/mitm_relay
 - Objection - https://github.com/sensepost/objection
 - OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
@@ -861,6 +865,3 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 - SDK tools - https://developer.android.com/studio/index.html#downloads
 - SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
 - Wireshark - https://www.wireshark.org/
-- Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
-- Android 8.0 Behavior Changes - https://developer.android.com/about/versions/oreo/android-8.0-changes
-- Android 9.0 Behavior Changes - https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes
