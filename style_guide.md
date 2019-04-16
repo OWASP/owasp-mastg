@@ -24,11 +24,7 @@ Consider creating a supporting document and linking to it from the page rather t
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
 
-Update pages in order to keep information, such as data and statistics, timely and accurate.
-
-When using statistical data on your page
-
-Ensure that the information is current and up-to-date and is accompanied by the source from which   it was derived, along with the date the data was compiled.
+When using statistical data on your page, ensure that the information is current and up-to-date and is accompanied by the source from which it was derived, along with the date the data was compiled.
 
 ### Content for the digital platform versus for print
 
@@ -81,7 +77,6 @@ When presenting your content in a list format:
 - - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
 - - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
 - - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
-
 
 
 ### Numbering conventions
@@ -147,6 +142,12 @@ you will -> you'll
 Spell out abbreviations the first time they are used.
 
 Ex: United States (U.S.)
+
+### Referencing Android versions
+
+Use the following format when referring to an Android version: Android X (API level YY). Usage of the descriptive name (Ex: Oreo) is discouraged.
+
+Ex: Android 9 (API level 28)
 
 ### Addressing the reader in test cases
 
