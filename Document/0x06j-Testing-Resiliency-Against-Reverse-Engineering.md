@@ -285,10 +285,7 @@ iOS runs on an XNU kernel. The XNU kernel implements a `ptrace` system call that
 
 The Mac Hacker's Handbook description of PT_DENY_ATTACH:
 
-```
-PT_DENY_ATTACH
-This request is the other operation used by the traced process; it allows a process that's not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.
-```
+> This request is the other operation used by the traced process; it allows a process that's not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.
 
 In other words, using `ptrace` with PT_DENY_ATTACH ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate.
 
@@ -320,9 +317,7 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 
 Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation:
 
-```
-The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
-```
+> The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
 
 `sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I'm being run under the debugger?"):
 
