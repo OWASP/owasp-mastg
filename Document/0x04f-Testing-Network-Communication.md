@@ -267,27 +267,28 @@ If you want to verify whether your server supports the right cipher suites, ther
 
 #### Overview
 
-For sensitive applications like banking apps, [OWASP MASVS](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md "The Mobile Application Security Verification Standard") introduces "Defense in Depth" verification levels. The critical operations (e.g., user enrolment and account recovery) of such applications are some of the most attractive targets to attackers. This requires implementation of advanced security controls, such as additional channels (e.g., SMS and e-mail) to confirm user actions.
+For sensitive applications like banking apps, [OWASP MASVS](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md "The Mobile Application Security Verification Standard") introduces "Defense in Depth" verification levels. The critical operations (e.g., user enrollment and account recovery) of such applications are some of the most attractive targets to attackers. This requires implementation of advanced security controls, such as additional channels besides email and/or SMS to confirm user actions.
+
+Note that using SMS as an additional factor for critical operations is not recommended. Attacks like SIM swap scams were used in many cases to attack Instagram accounts, financial institutions and cryptocurrency exchanges to bypass SMS verification. SIM swapping is a legitimate service offered by many carriers to switch your mobile number to a new SIM card. If an attacker manages to either convince the carrier or recruits retail workers at mobile shops to do a SIM swap, the mobile number will be transferred to a SIM the attacker owns.  As a result of this, the attacker will be able to receive all SMS and voice calls without the victim knowing it.
+
+There are different ways to [protect your SIM card](https://www.wired.com/story/sim-swap-attack-defend-phone/ "How to protect yourself against a SIM swap attack"), but this level of security maturity and awareness cannot be expected from a normal user and is also not enforced by the carriers.  
+
+Also the usage of emails shouldn't be considered as a secure communication channel.
 
 #### Static Analysis
 
 Review the code and identify the parts that refer to critical operations. Make sure that additional channels are used for such operation. The following are examples of additional verification channels:
 
-- Token (e.g., RSA token, yubikey),
+- Token (e.g., RSA token, YubiKey),
 - Push notification (e.g., Google Prompt),
-- E-mail,
 - Data from another website you visited or scanned or
 - Data from a physical letter or physical entry point (e.g., data you receive only after signing a document at a bank).
 
-> Note that using SMS as a 2nd factor for critical operations is not recommended. Many attackers are using nowadays attacks like SIM swap scams to get in posession of the mobile number of the target.
+Make sure that critical operations enforce the use of at least one additional channel to confirm user actions. These channels must not be bypassed when executing critical operations. If you're going to implement an additional factor to verify the user's identity, consider also one-time passcodes (OTP) via [Google Authenticator](https://github.com/google/google-authenticator-android "Google Authenticator for Android").
 
 #### Dynamic Analysis
 
-Identify all of the tested application's critical operations (e.g., user enrollment, account recovery, and money transfer). Ensure that each critical operation requires at least one additional channel (e.g., SMS, e-mail, or token). Make sure that directly calling the function bypasses usage of these channels.
-
-#### Remediation
-
-Make sure that critical operations enforce the use of at least one additional channel to confirm user actions. These channels must not be bypassed when executing critical operations. If you're going to implement an additional factor to verify the user's identity, consider [Infobip 2FA library](https://2-fa.github.io/libraries/android-library.html "Infobip 2FA library") or one-time passcodes (OTP) via [Google Authenticator](https://github.com/google/google-authenticator-android "Google Authenticator for Android").
+Identify all of the tested application's critical operations (e.g., user enrollment, account recovery, and financial transactions). Ensure that each critical operation requires at least one additional verification channel. Make sure that directly calling the function doesn't bypass the usage of these channels.
 
 ### References
 
