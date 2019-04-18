@@ -24,11 +24,7 @@ Consider creating a supporting document and linking to it from the page rather t
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
 
-Update pages in order to keep information, such as data and statistics, timely and accurate.
-
-When using statistical data on your page
-
-Ensure that the information is current and up-to-date and is accompanied by the source from which   it was derived, along with the date the data was compiled.
+When using statistical data on your page, ensure that the information is current and up-to-date and is accompanied by the source from which it was derived, along with the date the data was compiled.
 
 ### Content for the digital platform versus for print
 
@@ -83,7 +79,6 @@ When presenting your content in a list format:
 - - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
 
-
 ### Numbering conventions
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
 
@@ -115,7 +110,7 @@ When in doubt, you can verify proper capitalization on [www.titlecapitalization.
 
 ### Standardization 
 
-This is a list of words/abbrevations that are used inconsistently at the moment in the MSTG and need standardization:
+This is a list of words/abbreviations that are used inconsistently at the moment in the MSTG and need standardization:
 
 - man-in-the-middle attack (MITM)
 
@@ -148,9 +143,25 @@ Spell out abbreviations the first time they are used.
 
 Ex: United States (U.S.)
 
+### Referencing Android versions
+
+Use the following format when referring to an Android version: Android X (API level YY). Usage of the descriptive name (Ex: Oreo) is discouraged.
+
+Ex: Android 9 (API level 28)
+
+### Addressing the reader in test cases
+
+Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
+
+**Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: ...
+
+**Wrong:** The AndroidManifest.xml file contains an Application tag, with the following attributes: atr1, atr2 and atr3. The command below shows that atr1 is dangerous: ...
+
+**Wrong:** If we open the AndroidManifest.xml file, we will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If we run the following command, we will see that atr1 is actually dangerous: ...
+
 ## 3. External References
 
-For web links, use the normal markdown inline link format:
+For web links, use the normal markdown in-line link format:
 
 \[TEXT](URL "NAME")
 
@@ -196,11 +207,11 @@ e.g.
 - [myer] R. L. Myer, “Parametric oscillators and nonlinear materials,” in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160.
 - [abramowitz] M. Abramowitz and I. A. Stegun, Eds., Handbook of Mathematical Functions (Applied Mathematics Series 55). Washington, DC: NBS, 1964, pp. 32-33.
 
-## References Within The Guide
+## 4. References Within The Guide
 
 For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly.
 
-## Insert pictures
+## 5. Insert pictures
 
 Pictures should be uploaded to the Images/Chapters directory. Afterwards they should be embedded by using the image tag, a width of 500px should be specified. For example:
 
@@ -209,7 +220,7 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 - *iOS Data Protection Key Hierarchy*
 ```
 
-## Punctuation conventions
+## 6. Punctuation conventions
 
 **Lowercase or capital letter after a colon**
 
@@ -258,14 +269,14 @@ In order of preference, spell/punctuate **generic** technical terms according to
 | use case   |    *same*       |
 | white box  |    *same*       |
 
-## Comments
+## 7. Comments
 
 Markdown blockquotes can be used for comments in the documents by using ">"/
 
 > This is a blockquote
 
 
-## Code and Shell Commands
+## 8. Code and Shell Commands
 
 Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
 
