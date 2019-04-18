@@ -796,7 +796,7 @@ After executing all available app functions, attempt to back up via `adb`. If th
 ```shell
 $ adb backup -apk -nosystem <package-name>
 ```
-If the afore adb backup command gives the message  "Now unlock your device and confirm the backup operation", but the mobile phone does not ask for the password to encrypt the package. The mobile phone should promt the Full Backup windows and asks for a password, this password later used for tar extraction. If the phone does not promt, try afore command with qoutes:
+ADB should respond now with "Now unlock your device and confirm the backup operation" and you should be asked on the Android phone for a password. This is an optional step and you don't need to provide one. If the phone does not prompt this message, try the following command including the quotes:
 
 ```shell
 $ adb backup "-apk -nosystem <package-name>"
