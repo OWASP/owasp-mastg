@@ -306,12 +306,12 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - CWE-319 - Cleartext Transmission of Sensitive Information
 
 #### Tools
+- bettercap - https://www.bettercap.org
+- Burp Suite - https://portswigger.net/burp/
+- OWASP ZAP - https://www.owasp.org/index.php/
 - tcpdump - https://www.androidtcpdump.com/
 - Testssl.sh - https://github.com/drwetter/testssl.sh
 - Wireshark - https://www.wireshark.org/
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-- Burp Suite - https://portswigger.net/burp/
-- bettercap - https://www.bettercap.org
 
 #### Android
 - Android supported Cipher suites - https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites
@@ -327,6 +327,10 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 #### NIST
 - FIPS PUB 186 - Digital Signature Standard (DSS)
+
+#### SIM Swap Fraud
+
+- How to protect yourself against a SIM swap attack - https://www.wired.com/story/sim-swap-attack-defend-phone/
 
 #### IETF
 - RFC 6176 - https://tools.ietf.org/html/rfc6176
