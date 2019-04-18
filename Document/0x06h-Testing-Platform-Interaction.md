@@ -29,13 +29,13 @@ Next to the resources for which permission is requested there is a set of capabi
 
 #### Static analysis
 
-Since iOS 10, there are three areas which you need to inspect for permssions:
+Since iOS 10, there are three areas which you need to inspect for permissions:
 - the Info.plist file,
 - the `<appname>.enttitlements` file, where <appname> is the name of the application
 - the source-code.
 
 ##### Info.plist
-The Info.plist contains the texts offered to users when requesting permissioin to access the protected data or resources. The [Apple Documentation](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permission") gives a clear instruction on how the user should be asked for permission to access the given resource. Following these guidelines should make it relatively simple to evaluate each and every entry in the Info.plist file to check if the permission makes sense.
+The Info.plist contains the texts offered to users when requesting permission to access the protected data or resources. The [Apple Documentation](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permission") gives a clear instruction on how the user should be asked for permission to access the given resource. Following these guidelines should make it relatively simple to evaluate each and every entry in the Info.plist file to check if the permission makes sense.
 For example, when you have a Info.plist file, for a Solitair game which has, at least, the following content:
 
 ```xml
@@ -70,13 +70,13 @@ Pay attention to:
 - whether the permission explanation in the Info.plist file matches the programmatic implementation.
 - whether the capabilities registered are used in such a way that no confidential information is leaking.
 
-Note that apps should crash if a capability is requried to use which requires a permission without the permission-explanation-text being registered at the Info.plist file.
+Note that apps should crash if a capability is required to use which requires a permission without the permission-explanation-text being registered at the Info.plist file.
 
 #### Dynamic Analysis
 There are various steps in the analysis process:
 - Check the embedded.mobileprovision file and the <appname>.entitlements file and see which capbilities they contain.
 - Obtain the Info.plist file and check for which permissions it provided an explanation.
-- Go through the application and check whether the application communicates with other applications or with back-ends. Check whether the information retrieved using the permissions and capbilities are used for ill-purposed or are over-asked/under-utilized.
+- Go through the application and check whether the application communicates with other applications or with back-ends. Check whether the information retrieved using the permissions and capabilities are used for ill-purposed or are over-asked/under-utilized.
 
 
 ### Testing Custom URL Schemes
@@ -434,7 +434,7 @@ guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/arch
 
 ```
 
-When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain addditional data which is not detected by the program, unless the key for that given data is provided at a later stage.
+When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain additional data which is not detected by the program, unless the key for that given data is provided at a later stage.
 
 Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the Data Storage section for more details.
 
@@ -467,7 +467,7 @@ There are various ways to encode and decode JSON within iOS by using different 3
 - [JASON](https://github.com/delba/JASON "JASON"),
 - [Arrow](https://github.com/freshOS/Arrow "Arrow").
 
-The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)muttable results, speed, memory consumption and actual library size.
+The libraries differ in their support for certain versions of Swift and Objective-C, whether they return (im)mutable results, speed, memory consumption and actual library size.
 Again, note in case of immutability: confidential information cannot be removed from memory easily.
 
 Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
@@ -544,13 +544,13 @@ There are multiple ways to do XML encoding. Similar to JSON parsing, there are v
 - [SwiftyXMLParser](https://github.com/yahoojapan/SwiftyXMLParser "SwiftyXMLParser"),
 - [SWXMLHash](https://github.com/drmohundro/SWXMLHash "SWXMLHash").
 
-They vary in terms of speed, memory usage, object persistency and more important: differ in how they handle XML external entities. See [XXE in the Apple iOS Office viewer](https://nvd.nist.gov/vuln/detail/CVE-2015-3784 "CVE-2015-3784") as an example. Therefore, it is key to disable external entity parsing if possible. See the [OWASP XXE prevention cheatsheet](https://goo.gl/86epVd "XXE prevention cheatsheet") for more details.
+They vary in terms of speed, memory usage, object persistence and more important: differ in how they handle XML external entities. See [XXE in the Apple iOS Office viewer](https://nvd.nist.gov/vuln/detail/CVE-2015-3784 "CVE-2015-3784") as an example. Therefore, it is key to disable external entity parsing if possible. See the [OWASP XXE prevention cheatsheet](https://goo.gl/86epVd "XXE prevention cheatsheet") for more details.
 Next to the libraries, you can make use of Apple's [XMLParser class](https://developer.apple.com/documentation/foundation/xmlparser "XMLParser")
 
 When not using third party libraries, but Apple's `XMLParser`, be sure to let `shouldResolveExternalEntities` return false.
 
 ##### ORM (Coredata and Realm)
-There are various ORM-like solutiosn for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documetation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Enable encryption"). This allows for handling secure data. Note that the encryption is turned off by default.
+There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Enable encryption"). This allows for handling secure data. Note that the encryption is turned off by default.
 
 Apple itself supplies CoreData. CoreData is well explained in the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html#//apple_ref/doc/uid/TP40001075-CH2-SW1, "CoreData"). It supports various storage backends as described in [Apple's PersistentStoreFeatures documentation](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/PersistentStoreFeatures.html "PersistentStoreFeatures"). The issue with the storage backends recommended by Apple, is that none of the type of datastores is encrypted, nor checked for integrity. Therefore, additional actions are necessary in case of confidential data. An alternative can be found in project [iMas](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data"), which does supply out of the box encryption.
 
@@ -566,7 +566,7 @@ All different flavors of object persistence share the following concerns:
 - If you use object persistence to store sensitive information on the device, then make sure that the data is encrypted: either at the database level, or specifically at the value level.
 - Need to guarantee the integrity of the information? Use an HMAC mechanism or sign the information stored. Always verify the HMAC/signature before processing the actual information stored in the objects.
 - Make sure that keys used in the two notions above are safely stored in the KeyChain and well protected. See the Data Storage section for more details.
-- Ensure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
+- Ensure that the data within the deserialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
 - Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C runtime reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (See anti-reverse-engineering chapter for more details).
 - Note that in Swift 2 and beyond, the [Mirror](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
 
