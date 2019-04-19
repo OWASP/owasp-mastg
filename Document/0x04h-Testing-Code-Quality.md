@@ -312,7 +312,7 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 #### OWASP MASVS
 
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- 7.8: "In unmanaged code, memory is allocated, freed and used securely."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
 
 #### CWE
 
