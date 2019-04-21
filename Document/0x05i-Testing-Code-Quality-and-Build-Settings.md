@@ -20,7 +20,7 @@ Three APK signing schemes are available:
 The v2 signature, which is supported by Android 7.0 and above, offers improved security and performance compared to v1 scheme.
 The V3 signature, which is supported by Android 9.0 and above, gives apps the ability to change  their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availibility by allowing both the new and the old keys to be used.
 
-For each signing scheme the release builds should always be signed via all its previous schemes as well. 
+For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
 
 #### Static Analysis
@@ -689,10 +689,11 @@ The dynamic analysis of this section comprises validating whether the copyrights
 - Android Java Deserialization Vulnerability Tester - https://github.com/modzero/modjoda
 
 #### Memory Analysis References
-- [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization")
-- [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
-- [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android")
+
+- A brief history of Android deserialization vulnerabilities - https://lgtm.com/blog/android_deserialization
+- 9 ways to avoid memory leaks in Android - https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e
+- Memory Leak Patterns in Android - https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570
 
 #### Android Documentation
 
-- [APK signature scheme with key rotation](https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation)
+- APK signature scheme with key rotation - https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation
