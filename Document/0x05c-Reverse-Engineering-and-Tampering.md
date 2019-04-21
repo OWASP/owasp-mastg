@@ -26,14 +26,14 @@ Other tools are really a matter of preference and budget. A ton of free and comm
 
 Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
 
-- API 23: Android 6.0
-- API 24: Android 7.0
-- API 25: Android 7.1
-- API 26: Android 8.0
-- API 27: Android 8.1
-- API 28: Android 9
+- Android 9.0 (API level 28)
+- Android 8.1 (API level 27)
+- Android 8.0 (API level 26)
+- Android 7.1 (API level 25)
 
-![SDK Manager](Images/Chapters/0x05c/sdk_manager.jpg)
+An overview of all Android codenames, it's version number and API Levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
+
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager">
 
 Installed SDKs are found at the following locations:
 
@@ -128,7 +128,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/
 $ adb install UnCrackable-Level1.apk
 ```
 
-![Crackme](Images/Chapters/0x05c/crackme-1.jpg)
+<img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400">
 
 Seems like we're expected to find some kind of secret code!
 
@@ -185,7 +185,7 @@ In the next dialog, pick any API number; you don't actually want to compile the 
 
 Once you have created the project, expand the "1: Project" view on the left and navigate to the folder `app/src/main/java`. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-![Delete default package](Images/Chapters/0x05c/delete_package.jpg)
+<img src="Images/Chapters/0x05c/delete_package.jpg" alt="Delete default package" width="350">
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
@@ -193,7 +193,7 @@ Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the 
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
-![Final Structure](Images/Chapters/0x05c/final_structure.jpg)
+<img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300">
 
 As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of obfuscation that makes the bytecode a little more difficult to read, but with a fairly simple app like this one it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
 
@@ -246,7 +246,7 @@ A faster way to get the decrypted string is to add dynamic analysis—we'll revi
 
 #### Statically Analyzing Native Code
 
-Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged into ELF dynamic libraries ("*.so"), which the Android app loads at run time via the `System.load` method.
+Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method.
 
 Android JNI functions are written in native code that has been compiled into Linux ELF libraries. It's standard Linux fare. However, instead of relying on widely used C libraries (such as glibc) Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
 
@@ -259,7 +259,7 @@ $ adb install HelloWord-JNI.apk
 
 This app is not exactly spectacular—all it does is show a label with the text "Hello from C++." This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
 
-![Hello World](Images/Chapters/0x05c/helloworld.jpg)
+<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
 
 Decompile the APK with `apkx`. This extracts the source code into the `HelloWorld/src` directory.
 
@@ -301,7 +301,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the `lib` directory of the APK archive, you'll see eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library `libnative-lib.so` that has been compiled for the processor architecture in question. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on.
 
-![Architectures](Images/Chapters/0x05c/archs.jpg)
+<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200">
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
@@ -446,11 +446,11 @@ The UnCrackable App is not stupid: it notices that it has been run in debuggable
 
 Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
 
-![Debugger Detection](Images/Chapters/0x05c/debugger_detection.jpg)
+<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300">
 
 In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
 
-![Developer Options](Images/Chapters/0x05c/developer-options.jpg)
+<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
 
 Note: Even with `ro.debuggable` set to 1 in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `true` in the Manifest.
 
@@ -483,7 +483,7 @@ Initializing jdb ...
 
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
-- *classes: list all loaded classes
+- \*classes: list all loaded classes
 - class/method/fields <class id>: Print details about a class and list its method and fields
 - locals: print local variables in current stack frame
 - print/dump <expr>: print information about an object
@@ -579,7 +579,7 @@ To set up IDE debugging, first create your Android project in IntelliJ and copy 
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "wait for a debugger" mode.
 
-![Waiting for Debugger](Images/Chapters/0x05c/waitfordebugger.png)
+<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting for Debugger" width="300">
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
@@ -587,7 +587,7 @@ Now you can set breakpoints and attach to the Uncrackable1 app process with the 
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
-![Choose Process](Images/Chapters/0x05c/Choose_Process.png)
+<img src="Images/Chapters/0x05c/Choose_Process.png" alt="Choose Process" width="300">
 
 After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate()` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate()` method. That's why setting a breakpoint on the `onCreate()` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
@@ -627,7 +627,7 @@ Once you modify the binary name or the directory name, `File.exists` should retu
 
 This defeats the first root detection control of Uncrackable App Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
-![Anti Debugging and Tampering Defeated](Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png)
+<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300">
 
 ![MainActivity Verify](Images/Chapters/0x05c/MainActivity_verify.png)
 
@@ -639,7 +639,7 @@ You can see the secret string in the "Variables" view when you reach the `String
 
 ![Secret String](Images/Chapters/0x05c/secret_code.png)
 
-![Success](Images/Chapters/0x05c/success.png)
+<img src="Images/Chapters/0x05c/success.png" alt="Success" width="300">
 
 ##### Debugging Native Code
 
@@ -1158,7 +1158,7 @@ Frida makes it easy to solve the OWASP UnCrackable Crackme Level 1. You have alr
 
 When you start the App on an emulator or a rooted device, you'll find that the app presents a dialog box and exits as soon as you press "Ok" because it detected root:
 
-![Crackme Root Detected Dialog](Images/Chapters/0x05c/crackme-frida-1.png)
+<img src="Images/Chapters/0x05c/crackme-frida-1.png" alt="Crackme Root Detected Dialog" width="300">
 
 Let's see how we can prevent this.
 The main method (decompiled with CFR) looks like this:
@@ -1335,7 +1335,7 @@ setImmediate(function() {
 });
 ```
 
-After running the script in Frida and seeing the "[*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
+After running the script in Frida and seeing the "[\*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
 
 ```shell
 michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
@@ -1355,6 +1355,7 @@ michael@sixtyseven:~/Development/frida$ frida -U -l uncrackable1.js sg.vantagepo
 [*] onClick called.
 [*] Decrypted: I want to believe
 ```
+
 The hooked function outputted the decrypted string. You extracted the secret string without having to dive too deep into the application code and its decryption routines.
 
 You've now covered the basics of static/dynamic analysis on Android. Of course, the only way to *really* learn it is hands-on experience: build your own projects in Android Studio, observe how your code gets translated into bytecode and native code, and try to crack our challenges.
@@ -1377,7 +1378,7 @@ $ pip install angr
 
 Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
 
-Comprehensive documentation, including an installation guide, tutorials, and usage examples [5], is available on Gitbooks. A complete API reference is also available [6].
+Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
 #### Using the Disassembler Backends - Symbolic Execution
 
@@ -1749,7 +1750,7 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to Settings->About phone and check the "kernel version" field.
 
-![Custom Kernel](Images/Chapters/0x05c/custom_kernel.jpg)
+<img src="Images/Chapters/0x05c/custom_kernel.jpg" alt="Custom Kernel" width="300">
 
 #### System Call Hooking with Kernel Modules
 
@@ -1814,7 +1815,7 @@ int new_openat(int dirfd, const char \__user* pathname, int flags)
 int init_module() {
 
   sys_call_table = (void*)0xc000f984;
-  real_openat = (void*)(sys_call_table[__NR_openat]);
+  real_openat = (void*)(sys_call_table[\__NR_openat]);
 
 return 0;
 
@@ -1955,5 +1956,14 @@ Voilà! The file "nowyouseeme" is now somewhat hidden from all usermode processe
 File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of [Bernhard Mueller's Hacking Soft Tokens Paper](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf).
 
 
-[5]: https://docs.angr.io
-[6]: https://angr.io/api-doc/
+### References
+
+- Hacking Soft Tokens Paper by Bernhard Mueller - https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf
+- OWASP MSTG Crackmes - https://github.com/OWASP/owasp-mstg/tree/master/Crackmes
+
+#### Tools
+
+- Angr - https://docs.angr.io
+- Angro API Documenation -
+- apkx - https://github.com/b-mueller/apkx
+- Frida - https://www.frida.re/docs/android/

@@ -536,20 +536,19 @@ The original version of app signing implements the signed APK as a standard sign
 
 ##### APK Signature Scheme (v2 Scheme)
 
-With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification.
+With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification. You can see the [APK signature verification process for v2 Scheme](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process") below.
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" alt="Android Software Stack" width="450">
-[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
 
 #### APK Signature Scheme (v3 Scheme)
 
 The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
 
-The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatiility work, the old signing certs sign the new set of certs, thus providing each new key with evidence that it should be as trusted as the older key(s).
-It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certs signing the new set of certs, rather than signing them one-by-one.  
+The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certs sign the new set of certs, thus providing each new key with evidence that it should be as trusted as the older key(s).
+It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certs signing the new set of certs, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
 
 <img src="Images/Chapters/0x05a/apk-validation-process-v3-scheme.png" alt="apk-validation-process-v3-scheme" width="450">
-[APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process")
+
 ##### Creating Your Certificate
 
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
