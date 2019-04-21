@@ -571,17 +571,17 @@ All different flavors of object persistence share the following concerns:
 - Note that in Swift 2 and beyond, the [Mirror](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
 
 #### Dynamic Analysis
+
 There are several ways to perform dynamic analysis:
 
 - For the actual persistence: Use the techniques described in the data storage chapter.
 - For the serialization itself: use a debug build or use Frida/Objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 
-
 ### References
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
-- Security Flaw with UIWebView - (https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c "Security Flaw with UIWebView")
+- Security Flaw with UIWebView - https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c
 
 #### OWASP Mobile Top 10 2016
 
@@ -597,19 +597,18 @@ There are several ways to perform dynamic analysis:
 - V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
 
-
 #### CWE
 
 - CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
 - CWE-200 - Information Leak / Disclosure
 - CWE-939 - Improper Authorization in Handler for Custom URL Scheme
 
-
 #### Tools
 
 - IDB - https://www.idbtool.com/
 
-#### Regarding Object Persistence in iOS
+#### Object Persistence in iOS
+
 - https://developer.apple.com/documentation/foundation/NSSecureCoding
 - https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
 - https://developer.apple.com/documentation/foundation/nskeyedarchiver

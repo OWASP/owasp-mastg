@@ -190,44 +190,42 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 ### References
 
 #### General Security Documentation
-- [Apple Developer Documentation on Security](https://developer.apple.com/documentation/security "Documentation on Security")
-- [Apple Security Guide](https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf "Apple Security Guide")
+- Apple Developer Documentation on Security - https://developer.apple.com/documentation/security
+- Apple Security Guide - https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf
 
 
 #### Configuration of Cryptographic algorithms
-- [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide")
-- [Apple Developer Documentation on randomization SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey")
-- [Apple Documentation on Secure Enclave](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave?language=objc "Secure Enclave")
-- [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h")
-- [GCM in CommonCrypto](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC")
-- [Apple Developer Documentation on SecKey ](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey")
-- [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"),
-- [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"),
-- [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA"),
-- [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"),
-- [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor"),
-- [Arcane](https://github.com/onmyway133/Arcane "Arcane")
-- [CJOSE](https://github.com/cisco/cjose "cjose")
-- [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift")
-- [OpenSSL](https://www.openssl.org/ "OpenSSL")
-- [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs")
-- [Google on Tink](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink")
-- [Themis](https://github.com/cossacklabs/themis "Themis")
-- [cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile "cartfile")
-- [podfile](https://guides.cocoapods.org/syntax/podfile.html "podfile")
+- Apple's Cryptographic Services Guide - https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html
+- Apple Developer Documentation on randomization SecKey - https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html
+- Apple Documentation on Secure Enclave - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave?language=objc
+- Source code of the header file - https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h
+- GCM in CommonCrypto - https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h
+- Apple Developer Documentation on SecKey - https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html
+- IDZSwiftCommonCrypto - https://github.com/iosdevzone/IDZSwiftCommonCrypto
+- Heimdall - https://github.com/henrinormak/Heimdall
+- SwiftyRSA - https://github.com/TakeScoop/SwiftyRSA
+- SwiftSSL - https://github.com/SwiftP2P/SwiftSSL
+- RNCryptor - https://github.com/RNCryptor/RNCryptor
+- Arcane - https://github.com/onmyway133/Arcane
+- CJOSE - https://github.com/cisco/cjose
+- CryptoSwift - https://github.com/krzyzanowskim/CryptoSwift
+- OpenSSL - https://www.openssl.org/
+- LibSodiums documentation - https://download.libsodium.org/doc/installation
+- Google on Tink - https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html
+- Themis - https://github.com/cossacklabs/themis
+- cartfile - https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile
+- Podfile - https://guides.cocoapods.org/syntax/podfile.html
 
 #### Random Number Documentation
-- [Apple Developer Documentation on randomization](https://developer.apple.com/documentation/security/randomization_services "randomizaiton")
-- [Apple Developer Documentation on secrandomcopybytes](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "secrandomcopybytes")
-- [BurpSuite's sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer")
+- Apple Developer Documentation on randomization - https://developer.apple.com/documentation/security/randomization_services
+- Apple Developer Documentation on secrandomcopybytes - https://developer.apple.com/reference/security/1399291-secrandomcopybytes
+- Burp Suite Sequencer  - https://portswigger.net/burp/documentation/desktop/tools/sequencer
 
 #### Key Management
-- [Apple Developer Documentation: Certificates and keys]( https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
-- [Apple Developer Documentation: Generating new keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys "Generating new keys")
-- [Apple Developer Documentation: Key generation attributes](
-https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
-
-
+- Apple Developer Documentation: Certificates and keys - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
+- Apple Developer Documentation: Generating new keys - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys 
+- Apple Developer Documentation: Key generation attributes -
+https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes
 
 #### OWASP Mobile Top 10 2016
 - M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography

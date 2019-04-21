@@ -50,7 +50,7 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
 
-```shell 
+```shell
 $ npm install -g itms-services
 ```
 
@@ -259,7 +259,8 @@ cy# [alertView show]
 cy# [alertView release]
 
 ```
-![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
+
+<img src="Images/Chapters/0x06c/cycript_sample.png" alt="Cycript Alert Sample" width="250">
 
 Find the document directory with Cycript:
 
