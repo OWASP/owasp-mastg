@@ -33,6 +33,10 @@ Jeroen is a principal security architect at Xebia with a passion for mobile secu
 
 Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
 
+#### Carlos Holguera
+
+Carlos is a security engineer leading the mobile penetration testing team at ESCRYPT. He has gained many years of hands-on experience in the field of security testing for mobile apps and embedded systems such as automotive control units and IoT devices. He is passionate about reverse engineering and dynamic instrumentation of mobile apps and is continuously learning and sharing his knowledge.
+
 #### Romuald Szkudlarek
 
 Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
