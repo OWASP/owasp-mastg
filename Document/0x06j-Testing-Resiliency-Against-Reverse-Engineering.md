@@ -173,7 +173,7 @@ Changing the return value to:0x0
 
 Please note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
 
-Frida is a very powerful and versatile tool. Refer to the [documentation](https://www.frida.re/docs/home/ "Frida Documentation") for more details.
+Frida is a very powerful and versatile tool. Refer to the [Frida documentation online](https://www.frida.re/docs/home/ "Frida Documentation") for more details.
 
 Please see below a Python script for hooking Objective-C methods and native functions:
 
