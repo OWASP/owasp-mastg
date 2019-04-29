@@ -34,6 +34,10 @@ Jeroen is a principal security architect at Xebia with a passion for mobile secu
 
 Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
 
+#### Carlos Holguera
+
+Carlos is a security engineer leading the mobile penetration testing team at ESCRYPT. He has gained many years of hands-on experience in the field of security testing for mobile apps and embedded systems such as automotive control units and IoT devices. He is passionate about reverse engineering and dynamic instrumentation of mobile apps and is continuously learning and sharing his knowledge.
+
 #### Romuald Szkudlarek
 
 Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
@@ -58,7 +62,7 @@ Top contributors have consistently contributed quality content and have at least
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Jin Kung Ong, Jeroen Beckers, Abderrahmane Aftahi, Koki Takeyama, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev,  Ryan Teoh, Denis Pilipchuk, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Dominique Righetto, José Carlos Andreu, Raul Siles, Daniel Ramirez Martin, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Emil Tostrup, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Carlos Holguera, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Sijo Abraham, David Fern, Pishu Mahtani, Anuruddha E.
+Jin Kung Ong, Jeroen Beckers, Abderrahmane Aftahi, Koki Takeyama, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev,  Ryan Teoh, Denis Pilipchuk, Dharshin De Silva, Anatoly Rosencrantz, Abhinav Sejpal, Dominique Righetto, José Carlos Andreu, Raul Siles, Daniel Ramirez Martin, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Emil Tostrup, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Sijo Abraham, David Fern, Pishu Mahtani, Anuruddha E.
 
 ### Reviewers
 
