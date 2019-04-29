@@ -77,18 +77,17 @@ To be able to get a man-in-the-middle position your machine should be in the sam
 
 #### ARP Poisoning with bettercap
 
-Start your preferred network analyzer tool first, then start bettercap with the following command and replace the IP address 192.168.0.103 with the target you want to execute the MITM attack against.
+Start your preferred network analyzer tool first, then start bettercap with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
 ```shell
-$ sudo bettercap -eval "set arp.spoof.targets 192.168.0.103; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
+$ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
 bettercap v2.22 (built for darwin amd64 with go1.12.1) [type 'help' for a list of commands]
 
 [19:21:39] [sys.log] [inf] arp.spoof enabling forwarding
 [19:21:39] [sys.log] [inf] arp.spoof arp spoofer started, probing 1 targets.
-192.168.0.0/24 > 192.168.0.100  »
 ```
 
-bettercap will automatically sent the packets then to the network gateway in the (wireless) network and you are able to sniff the traffic. Beginning of 2019 support for [full duplex ARP spoofing](https://github.com/bettercap/bettercap/issues/426 "Full Duplex ARP Spoofing") was added to bettercap.
+bettercap will then automatically send the packets to the network gateway in the (wireless) network and you are able to sniff the traffic. Beginning of 2019 support for [full duplex ARP spoofing](https://github.com/bettercap/bettercap/issues/426 "Full Duplex ARP Spoofing") was added to bettercap.
 
 On the mobile phone start the browser and navigate to http://example.com, you should see output like the following when you are using Wireshark.
 
@@ -235,7 +234,7 @@ Integrity Check Algorithms:
 
 Note that The efficiency of a cipher suite depends on the efficiency of its algorithms.
 
-In the following, we’ll present the updated recommended cipher suites list to use with TLS. These cipher suites are recommended by both, IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
+In the following, we’ll present the updated recommended cipher suites list to use with TLS. These cipher suites are recommended by both IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4).
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
@@ -254,8 +253,8 @@ Verify that the server or termination proxy at which the HTTPS connection termin
 
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP and Websocket traffic with an interception proxy like OWASP ZAP or Burp Suite and make sure all requests are made via HTTPS instead of HTTP.
-- Interception proxies like Burp and OWASP ZAP will show HTTP traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay) to decode and visualize communication via XMPP and other protocols.
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like OWASP ZAP or Burp Suite and make sure all requests are made via HTTPS instead of HTTP.
+- Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay) to decode and visualize communication via XMPP and other protocols.
 
 > Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning".
 
@@ -269,7 +268,7 @@ If you want to verify whether your server supports the right cipher suites, ther
 
 For sensitive applications like banking apps, [OWASP MASVS](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x03-Using_the_MASVS.md "The Mobile Application Security Verification Standard") introduces "Defense in Depth" verification levels. The critical operations (e.g., user enrollment and account recovery) of such applications are some of the most attractive targets to attackers. This requires implementation of advanced security controls, such as additional channels besides email and/or SMS to confirm user actions.
 
-Note that using SMS as an additional factor for critical operations is not recommended. Attacks like SIM swap scams were used in many cases to attack Instagram accounts, financial institutions and cryptocurrency exchanges to bypass SMS verification. SIM swapping is a legitimate service offered by many carriers to switch your mobile number to a new SIM card. If an attacker manages to either convince the carrier or recruits retail workers at mobile shops to do a SIM swap, the mobile number will be transferred to a SIM the attacker owns.  As a result of this, the attacker will be able to receive all SMS and voice calls without the victim knowing it.
+Note that using SMS as an additional factor for critical operations is not recommended. Attacks like SIM swap scams were used in many cases to [attack Instagram accounts, cryptocurrency exchanges](https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin "The SIM Hijackers") and of course [financial institutions](https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/ "SIM swapping") to bypass SMS verification. SIM swapping is a legitimate service offered by many carriers to switch your mobile number to a new SIM card. If an attacker manages to either convince the carrier or recruits retail workers at mobile shops to do a SIM swap, the mobile number will be transferred to a SIM the attacker owns.  As a result of this, the attacker will be able to receive all SMS and voice calls without the victim knowing it.
 
 There are different ways to [protect your SIM card](https://www.wired.com/story/sim-swap-attack-defend-phone/ "How to protect yourself against a SIM swap attack"), but this level of security maturity and awareness cannot be expected from a normal user and is also not enforced by the carriers.  
 
@@ -277,11 +276,11 @@ Also the usage of emails shouldn't be considered as a secure communication chann
 
 #### Static Analysis
 
-Review the code and identify the parts that refer to critical operations. Make sure that additional channels are used for such operation. The following are examples of additional verification channels:
+Review the code and identify the parts that refer to critical operations. Make sure that additional channels are used for such operations. The following are examples of additional verification channels:
 
 - Token (e.g., RSA token, YubiKey),
 - Push notification (e.g., Google Prompt),
-- Data from another website you visited or scanned or
+- Data from another website you have visited or scanned (e.g. QR code) or
 - Data from a physical letter or physical entry point (e.g., data you receive only after signing a document at a bank).
 
 Make sure that critical operations enforce the use of at least one additional channel to confirm user actions. These channels must not be bypassed when executing critical operations. If you're going to implement an additional factor to verify the user's identity, consider also one-time passcodes (OTP) via [Google Authenticator](https://github.com/google/google-authenticator-android "Google Authenticator for Android").
@@ -325,11 +324,17 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 #### OWASP TLS Cipher String Cheat Sheet
 - Recommendations for a cipher string - https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md
 
+#### SIM Swapping attacks
+
+- The SIM Hijackers - https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin
+- SIM swapping: how the mobile security feature can lead to a hacked bank account - https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/
+
 #### NIST
 - FIPS PUB 186 - Digital Signature Standard (DSS)
 
 #### SIM Swap Fraud
 
+- https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin
 - How to protect yourself against a SIM swap attack - https://www.wired.com/story/sim-swap-attack-defend-phone/
 
 #### IETF

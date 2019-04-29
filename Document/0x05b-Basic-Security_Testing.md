@@ -17,7 +17,7 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 - Android 8.0 (API level 26)
 - Android 7.1 (API level 25)
 
-An overview of all Android codenames, it's version number and API Levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
+An overview of all Android codenames, their version number and API Levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
 <img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager">
 
@@ -73,7 +73,7 @@ Once you've configured the network and established a connection between the test
 
 - The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
 - The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
-- Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in a [blog post on nvisio.be](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
+- Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in a [blog post on nviso.be](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
@@ -437,15 +437,14 @@ $ iptables -t nat -F
 
 Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running bettercap.
 
-The machine where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP addresses below with the IP addresses of your Android device.
+The machine where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
 
 ```shell
-$ sudo bettercap -eval "set arp.spoof.targets 192.168.0.103; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
+$ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
 bettercap v2.22 (built for darwin amd64 with go1.12.1) [type 'help' for a list of commands]
 
 [19:21:39] [sys.log] [inf] arp.spoof enabling forwarding
 [19:21:39] [sys.log] [inf] arp.spoof arp spoofer started, probing 1 targets.
-192.168.0.0/24 > 192.168.0.100  »
 ```
 
 ##### Bypassing Proxy Detection

@@ -120,7 +120,7 @@ To prevent tampering cryptographic signatures are added to client-side tokens. O
 
 #### Best Practices for Passwords
 
-Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describes key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
+Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
 **Password Length**
 
@@ -136,7 +136,7 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character
 
-Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
 [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength, inspired by password crackers. It is available in JavaScript but also for many other programming languages on the server side. There are different methods of installation, please check the Github repo for your preferred method. Once installed, zxcvbn can be used to calculate the complexity and the amount of guesses to crack the password.
 
@@ -207,7 +207,7 @@ function(password) {
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
-> Please keep in mind that when using Burp Suite Community Edition, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no build-in passwords lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or OWASP ZAP.
+> Please keep in mind that when using Burp Suite Community Edition, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or OWASP ZAP.
 
 Execute the following steps for a wordlist based brute force attack with Burp Intruder:
 
@@ -217,7 +217,7 @@ Execute the following steps for a wordlist based brute force attack with Burp In
 - Right-click this request on the 'Proxy/HTTP History' tab and select 'Send to Intruder' in the context menu.
 - Select the 'Intruder' tab in Burp Suite. For further information on how to use [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using "Using Burp Intruder") read the official documentation on Portswigger.
 - Make sure all parameters in the 'Target', 'Positions', and 'Options' tabs are appropriately set and select the 'Payload' tab.
-- Load or paste the list of passwords you want to try. There are several resources available that offer password lists, like [FuzzDB](https://github.com/fuzzdb-project/fuzzdb/ "FuzzDB"), the build-in lists in Burp Intruder or the files available in `/usr/share/wordlists` on Kali Linux.
+- Load or paste the list of passwords you want to try. There are several resources available that offer password lists, like [FuzzDB](https://github.com/fuzzdb-project/fuzzdb/ "FuzzDB"), the built-in lists in Burp Intruder or the files available in `/usr/share/wordlists` on Kali Linux.
 
 Once everything is configured and you have a word-list selected, you're ready to start the attack!
 
@@ -231,9 +231,9 @@ A new window will open. Site requests are sent sequentially, each request corres
 
 In this example, you can identify the successful attempt according to the different length and the HTTP status code, which reveals the password 12345.
 
-To test if your own test account are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
+To test if your own test accounts are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
 
-> Tip: Do these kind of testing only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and then asking to unlock it. For some projects unlocking accounts might be more difficult than you think.  
+> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
 
 **Login Throttling**
 
