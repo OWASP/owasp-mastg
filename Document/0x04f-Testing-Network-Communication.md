@@ -53,14 +53,14 @@ bettercap is available for all major Linux and Unix operating systems and should
 $ brew install bettercap
 ```
 
-For Kali Linux you can install bettercap with apt-get:
+For Kali Linux you can install bettercap with `apt-get`:
 
 ```shell
 $ apt-get update
 $ apt-get install bettercap
 ```
 
-There are also installation instructions for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
+There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
 
 **Network Analyzer Tool**
 
