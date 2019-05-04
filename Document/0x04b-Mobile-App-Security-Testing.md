@@ -150,7 +150,7 @@ When no data classification policy is available, use the following list of infor
 
  A definition of "sensitive data" must be decided before testing begins because detecting sensitive data leakage without a definition may be impossible.
 
-##### Intelligence Gathering
+###### Intelligence Gathering
 
 Intelligence gathering involves the collection of information about the app's architecture, the business use cases the app serves, and the context in which the app operates. Such information may be classified as "environmental" or "architectural."
 
