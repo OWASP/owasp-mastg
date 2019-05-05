@@ -62,9 +62,9 @@ To perform security testing different tools are available in order to be able to
 - [logcat-color](https://github.com/marshall/logcat-color "Logcat color") - A colorful and highly configurable alternative to the adb logcat command from the Android SDK.
 - [VirtualHook](https://github.com/rk700/VirtualHook "VirtualHook") - VirtualHook is a hooking tool for applications on Android ART(>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks.
 - [Xposed Framework](https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053 "Xposed Framework") - Xposed framework enables you to modify the system or application aspect and behavior at runtime, without modifying any Android application package(APK) or re-flashing.
-- [jdb](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jdb.html) - The jdb is a Java Debugger, You can set breakpoint and catch application variables. (jdb worked on jdwp protocol)
-- [Andbug](https://github.com/swdunlop/AndBug) - A Scriptable Android Debugger, AndBug is a debugger targeting the Android platform's Dalvik virtual machine intended for reverse engineers and developers. (andbug worked on jdwp protocol)
-- [Introspy-Android](https://github.com/iSECPartners/Introspy-Android) - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues.
+- [jdb](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jdb.html) - The jdb tool is a Java Debugger which allows you to set breakpoints and print application variables. Jdb uses the JDWP protocol.
+- [Andbug](https://github.com/swdunlop/AndBug) - A Scriptable Android Debugger; AndBug is a debugger targeting the Android platform's Dalvik virtual machine intended for reverse engineers and developers. andbug is using the Java Debug Wire Protocol (JDWP
+- [Introspy-Android](https://github.com/iSECPartners/Introspy-Android) - Blackbox tool to help understand what an Android application is doing at runtime and assist in the identification of potential security issues. Limitations: Introspy worked based on 'Cydia Substrate', so to work we need the Cydia and based on the app website Cydia, Supported Android on versions 2.3 through 4.3. On the mentioned version the Introspy does working correctly. (http://www.cydiasubstrate.com/)
 
 #### Bypassing Root Detection and Certificate Pinning
 
