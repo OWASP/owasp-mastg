@@ -30,8 +30,11 @@
 
 ### リバースエンジニアリングおよび静的解析
 
+- [Binary ninja](https://binary.ninja/ "Binary ninja") - Binary ninja はいくつかの実行可能ファイル形式に対して使用できるマルチプラットフォーム逆アセンブラです。IR (中間表現) リフティングが可能です。
+- [Ghidra](https://ghidra-sre.org/ "Ghidra") - Ghidra は国家安全保障局 (NSA) により開発されたツールのオープンソースリバースエンジニアリングスイートです。主な機能には逆アセンブリ、アセンブリ、逆コンパイル、グラフ表示、スクリプト対応があります。
 - [IDA Pro](https://www.hex-rays.com/products/ida/index.shtml "IDA Pro") (商用ツール) - IDA は Windows, Linux, macOS でホストされているマルチプロセッサ逆アセンブラおよびデバッガです。
 - [Radare2](https://www.radare.org/r/ "Radare2") - Radare2 は Unix ライクなリバースエンジニアリングフレームワークおよびコマンドラインツールです。
+- [Retargetable decompiler](https://retdec.com/ "Retdec") - RetDec は LLVM をベースとするオープンソースマシンコード逆コンパイラです。スタンドアロンプログラムとしても、IDA Pro や Radare2 のプラグインとしても使用できます。
 
 ### Android 用ツール
 
