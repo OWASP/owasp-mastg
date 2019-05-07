@@ -74,13 +74,13 @@ Reassure that the lock screen is set:
             }
         }
     }
-
 ```
 
 Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
 
 
 #### Dynamic Analysis
+
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 

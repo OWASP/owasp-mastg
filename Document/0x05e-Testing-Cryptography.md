@@ -266,7 +266,7 @@ When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.i
 
 Android Pie adds the ability to import keys securely into the `AndroidKeystore`. First `AndroidKeystore` generates a key pair using `PURPOSE_WRAP_KEY` which should also be protected with an attestation certficate, this pair aims to protect the Keys being imported to `AndroidKeystore`. The encypted keys are generated as ASN.1-encoded message in the `SecureKeyWrapper` format which also contains a description of the ways the imported key is allowed to be used. The keys are then decrypted inside the `AndroidKeystore` hardware belonging to the specific device that generated the wrapping key so they never appear as plaintext in the device's host memory.
 
-![Secure key import into Keystore.](Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png).
+<img src="Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png" alt="Secure key import into Keystore" width="500">
 
 ```java
 KeyDescription ::= SEQUENCE {
@@ -286,7 +286,7 @@ SecureKeyWrapper ::= SEQUENCE {
 
 The code above present the diffrent parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the Android documentation on [WrappedKeyEntry](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
 
-When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security : 
+When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security :
 - The `algorithm` parameter Specifies the cryptographic algorithm with which the key is used
 - The `keySize` parameter Specifies the size, in bits, of the key, measuring in the normal way for the key's algorithm
 - The `digest` parameter Specifies the digest algorithms that may be used with the key to perform signing and verification operations
@@ -348,6 +348,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
 
 #### Cryptography references
+<<<<<<< HEAD
 - [Android Developer blog: Crypto provider deprecated]( https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Android Developer blog: Crypto provider deprecated")
 - [Android Developer blog: cryptography changes in android P]( https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Android Developer blog: cryptography changes in android P")
 - [Ida Pro](https://www.hex-rays.com/products/ida/ "IDA Pro")
@@ -358,18 +359,30 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [Android Developer documentation](https://developer.android.com/training/articles/keystore.html "Keystore")
 - [NIST keylength recommendations](https://www.keylength.com/en/4/ "NIST keylength recommendations")
 - [BSI recommendations - 2017](https://www.keylength.com/en/8/ "BSI recommendations - 2017")
+=======
+- Android Developer blog: Crypto provider deprecated - https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
+- Android Developer blog: cryptography changes in android P - https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+- Ida Pro - https://www.hex-rays.com/products/ida/
+- Android Developer blog: changes for NDK developers - https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html
+- security providers -  https://developer.android.com/reference/java/security/Provider.html
+- Spongy Castle  - https://rtyley.github.io/spongycastle/
+- Legion of the Bouncy Castle - https://www.bouncycastle.org/java.html
+- Android Developer documentation - https://developer.android.com/training/articles
+- NIST keylength recommendations - https://www.keylength.com/en/4/
+- BSI recommendations - 2017 - https://www.keylength.com/en/8/
+>>>>>>> master
 
 #### SecureRandom references
-- [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom")
-- [Burpproxy its Sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burpproxy its Sequencer")
+- Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
+- Burpproxy its Sequencer - https://portswigger.net/burp/documentation/desktop/tools/sequencer
 
 #### Testing Key Management references
-- [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API")
-- [Android Keychain API](https://developer.android.com/reference/android/security/KeyChain "Keychain")
-- [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API")
-- [KeyInfo documentation ](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo")
-- [Android Pie features and APIs](https://developer.android.com/about/versions/pie/android-9.0#secure-key-import)
-- [Android Keystore system](https://developer.android.com/training/articles/keystore#java)
+- Android KeyStore API - https://developer.android.com/reference/java/security/KeyStore.html
+- Android Keychain API - https://developer.android.com/reference/android/security/KeyChain
+- SharedPreferences - https://developer.android.com/reference/android/content/SharedPreferences.html
+- KeyInfo documentation - https://developer.android.com/reference/android/security/keystore/KeyInfo
+- Android Pie features and APIs - https://developer.android.com/about/versions/pie/android-9.0#secure-key-import
+- Android Keystore system - https://developer.android.com/training/articles/keystore#java
 
 ##### OWASP Mobile Top 10 2016
 

@@ -79,13 +79,13 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 #### Jailbroken Device Setup
 
-![Cydia Store](Images/Chapters/0x06b/cydia.png)
+<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
 
 - *Cydia Store*
 
-Once you've jailbroken your iOS device and Cydia has been installed (as shown in the screenshot above), proceed as follows:
+Once you've jailbroken your iOS device and Cydia has been installed (as shown in the previous screenshot), proceed as follows:
 
-1. From Cydia install aptitude and openssh.
+1. From Cydia install aptitude and OpenSSH.
 2. SSH into your iOS device.
   - The default users are `root` and `mobile`.
   - The default password is `alpine`.
@@ -213,7 +213,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 * If the setup process is successful, you'll find the NeedleAgent app on the home screen.
 
-![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_3.jpg)
+<img src="Images/Chapters/0x06b/needle_agent.png" alt="iOS App Folder Structure" width="250">
 
 ##### Start the Framework
 
@@ -222,7 +222,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 - Open the NeedleAgent app on your device.
 - Tap on "Listen" in the top left corner, and the NeedleAgent will start listening on port `4444` by default. The default port can be changed via the field in the top right.
 
-![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_4.jpg)
+<img src="Images/Chapters/0x06b/install_needle_agent.png" alt="iOS App Folder Structure" width="250">
 
 **Start Needle**
 
@@ -500,7 +500,7 @@ We can look up the declaration of this method on the [Apple Developer Website](h
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
+The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
 
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
@@ -645,10 +645,14 @@ It is important to note that changing this value will break the original signatu
 
 This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
 
-Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property").
+Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
 
 
-### References (Tools)
+### References
+
+- UIDeviceFamily - https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11
+
+#### Tools
 
 - Burp Suite - https://portswigger.net/burp/communitydownload
 - Frida - https://www.frida.re

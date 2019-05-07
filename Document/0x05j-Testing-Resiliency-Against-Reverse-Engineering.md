@@ -1464,7 +1464,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP Mobile Top 10 2016
 
-- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering 
 
 
 #### OWASP MASVS
@@ -1481,13 +1481,14 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### SafetyNet Attestation
 
-- [Developer Guideline](https://developer.android.com/training/safetynet/attestation.html "developer guideline")
-- [SafetyNet Attestation Checklist](https://developer.android.com/training/safetynet/attestation-checklist "checklist")
-- [Do's & Don'ts of SafetyNet Attestation](https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html "recommendations")
-- [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/ "safetynet sample")
-- [SafetyNet Attestation API - Quota Request](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request")
+- Developer Guideline - https://developer.android.com/training/safetynet/attestation.html
+- SafetyNet Attestation Checklist - https://developer.android.com/training/safetynet/attestation-checklist
+- Do's & Don'ts of SafetyNet Attestation - https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html
+- SafetyNet Verification Samples - https://github.com/googlesamples/android-play-safetynet/
+- SafetyNet Attestation API - Quota Request - https://support.google.com/googleplay/android-developer/contact/safetynetqr
 
 #### Tools
 
-- [FRIDA](https://www.frida.re/ "Frida")
-- ADB & DDMS
+- adb - https://developer.android.com/studio/command-line/adb
+- Frida  - https://www.frida.re
+- DDMS - https://developer.android.com/studio/profile/monitor

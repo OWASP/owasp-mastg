@@ -202,7 +202,7 @@ For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
-In the context of *native apps*, XSS risks are far less prevalent for the simple reason these kinds of applications do not rely on a web browser. However, apps using WebView components, such as ‘UIWebView’ on iOS and ‘WebView’ on Android, are potentially vulnerable to such attacks.
+In the context of *native apps*, XSS risks are far less prevalent for the simple reason these kinds of applications do not rely on a web browser. However, apps using WebView components, such as ‘WKWebView’ or the deprecated 'UIWebView' on iOS and ‘WebView’ on Android, are potentially vulnerable to such attacks.
 
 An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance]( https://superevr.com/blog/2011/xss-in-skype-for-ios). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
@@ -312,7 +312,7 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 #### OWASP MASVS
 
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- 7.8: "In unmanaged code, memory is allocated, freed and used securely."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
 
 #### CWE
 

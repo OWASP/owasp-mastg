@@ -295,4 +295,5 @@ Once you have extracted the certificate from the application (e.g. using Cycript
 - CWE-295 - Improper Certificate Validation
 
 ##### Nscurl
-- [Blog post by NowSecure on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS")
+
+- A guide to ATS - Blog post by NowSecure - https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/

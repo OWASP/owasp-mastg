@@ -74,6 +74,7 @@ Mitigation Suggestions:
 - Dedicated Channel: Send OTPs to a dedicated application that is only used to receive OTPs and that other applications can't access.
 - Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess.
 - Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail
+
 #### Transaction Signing with Push Notifications and PKI
 
 Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the device keystore. To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
@@ -119,7 +120,7 @@ To prevent tampering cryptographic signatures are added to client-side tokens. O
 
 #### Best Practices for Passwords
 
-Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible.
+Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
 **Password Length**
 
@@ -135,9 +136,30 @@ The password must meet at least three out of the following four complexity rules
 3. at least one digit (0-9)
 4. at least one special character
 
-Verify the existences of a password policy and password complexity requirements and verify also with the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a the verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
-Regular Expressions are often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
+[zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength, inspired by password crackers. It is available in JavaScript but also for many other programming languages on the server side. There are different methods of installation, please check the Github repo for your preferred method. Once installed, zxcvbn can be used to calculate the complexity and the amount of guesses to crack the password.
+
+After adding the zxcvbn JavaScript library to the HTML page, you can execute the command `zxcvbn` in the browser console, to get back detailed information about how likely it is to crack the password including a score.
+
+<img src="Images/Chapters/0x04e/zxcvbn.png" alt="A successful attack in Burp Suite">
+
+The score is defined as follows and can be used for a password strength bar for example:
+
+
+```
+0 # too guessable: risky password. (guesses < 10^3)
+
+1 # very guessable: protection from throttled online attacks. (guesses < 10^6)
+
+2 # somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)
+
+3 # safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
+
+4 # very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
+```
+
+Regular Expressions are also often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
 
 ```javascript
 function(password) {
@@ -181,33 +203,39 @@ function(password) {
 },
 ```
 
-For more details, check the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Implement_Proper_Password_Strength_Controls "OWASP Authentication Cheat Sheet"). [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength is. It is available for many programming languages.
-
-##### Running a Password Dictionary Attack
+**Running a Password Dictionary Attack**
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
-- Start Burp Suite.
+> Please keep in mind that when using Burp Suite Community Edition, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or OWASP ZAP.
+
+Execute the following steps for a wordlist based brute force attack with Burp Intruder:
+
+- Start Burp Suite Professional.
 - Create a new project (or open an existing one).
 - Set up your mobile device to use Burp as the HTTP/HTTPS proxy. Log into the mobile app and intercept the authentication request sent to the backend service.
 - Right-click this request on the 'Proxy/HTTP History' tab and select 'Send to Intruder' in the context menu.
-- Select the 'Intruder' tab in Burp Suite.
+- Select the 'Intruder' tab in Burp Suite. For further information on how to use [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using "Using Burp Intruder") read the official documentation on Portswigger.
 - Make sure all parameters in the 'Target', 'Positions', and 'Options' tabs are appropriately set and select the 'Payload' tab.
-- Load or upload the list of passwords you'll try. You're ready to start the attack!
+- Load or paste the list of passwords you want to try. There are several resources available that offer password lists, like [FuzzDB](https://github.com/fuzzdb-project/fuzzdb/ "FuzzDB"), the built-in lists in Burp Intruder or the files available in `/usr/share/wordlists` on Kali Linux.
 
-![List of passwords in Burp Suite](Images/Chapters/0x04e/BurpIntruderInputList.gif)
+Once everything is configured and you have a word-list selected, you're ready to start the attack!
+
+<img src="Images/Chapters/0x04e/BurpIntruderInputList.png" alt="List of passwords in Burp Suite" width="450">
 
 - Click the 'Start attack' button to attack the authentication.
 
-A new window will open. Site requests are sent sequentially, each request corresponding to a password from the list. Information about the response (length, status code, ...) is provided for each request, allowing you to distinguish successful and unsuccessful attempts:
+A new window will open. Site requests are sent sequentially, each request corresponding to a password from the list. Information about the response (length, status code etc.) is provided for each request, allowing you to distinguish successful and unsuccessful attempts:
 
-![A successful attack in Burp Suite](Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.gif)
+<img src="Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.png" alt="A successful attack in Burp Suite" width="450">
 
-In this example, you can identify the successful attempt by length (password = "P@ssword1").
+In this example, you can identify the successful attempt according to the different length and the HTTP status code, which reveals the password 12345.
 
-> Tip: Append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without locking the account, that means the account isn't protected against brute force attacks.
+To test if your own test accounts are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
 
-##### Login Throttling
+> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
+
+**Login Throttling**
 
 Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
 
@@ -451,7 +479,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
 
-![Abstract Protocol Flow](Images/Chapters/0x04e/abstract_oath2_flow.png)
+<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" alt="Abstract Protocol Flow" width="450">
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
@@ -568,12 +596,12 @@ Note: in case of an application which requires L2 protection, it can be a good i
 -Siadati, Hossein, Toan Nguyen, and Nasir Memon. "Verification code forwarding attack (short paper)." International Conference on Passwords. Springer, Cham, 2015.
 
 
-
 ##### Tools
 
 - Free and Professional Burp Suite editions - https://portswigger.net/burp/
 Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
-- [jwtbrute](https://github.com/jmaxxz/jwtbrute)
-- [crackjwt](https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py)
-- [John the ripper](https://github.com/magnumripper/JohnTheRipper)
+- Using Burp Intruder - https://portswigger.net/burp/documentation/desktop/tools/intruder/using
+- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
+- jwtbrute - https://github.com/jmaxxz/jwtbrute
+- crackjwt - https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py
+- John the ripper - https://github.com/magnumripper/JohnTheRipper

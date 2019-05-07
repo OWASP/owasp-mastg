@@ -30,8 +30,11 @@ To perform security testing different tools are available in order to be able to
 
 ### Reverse Engineering and Static Analysis
 
+- [Binary ninja](https://binary.ninja/ "Binary ninja") - Binary ninja is a multi-platform software disassembler that can be used against several executable file formats. It is capable of IR (intermediate representation) lifting. 
+- [Ghidra](https://ghidra-sre.org/ "Ghidra") - Ghidra is an open source software reverse engineering suite of tools developed by the National Security Agency (NSA). Its main capabilities include disassembly, assembly, decompilation, graphing, and scripting.
 - [IDA Pro](https://www.hex-rays.com/products/ida/index.shtml "IDA Pro") (Commercial Tool) - IDA is a Windows, Linux or macOS hosted multi-processor disassembler and debugger.
 - [Radare2](https://www.radare.org/r/ "Radare2") - Radare2 is a unix-like reverse engineering framework and command line tools.
+- [Retargetable decompiler](https://retdec.com/ "Retdec") - RetDec is an open source machine-code decompiler based on LLVM. It can be used as a standalone program or as a plugin for IDA Pro or Radare2.
 
 ### Tools for Android
 
