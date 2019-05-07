@@ -22,9 +22,10 @@ Files:
 ## Release process:
 1. Sync @sushi2k's repository
 2. Update the Changelog.md
-3. Commit the changes (with message "Release <version>")
-4. Push a tag with the new version (git tag -a <version> -m "Release message that will be on github")
-5. Update the Leanpub Files at Leanpub
-6. Update OWASP Wiki if necessary
-7. Update the book at lulu.com (Ask @sushi2k)
-8. Tweet about it with @OWASP-MSTG.
+3. Generate new PDFS with the new version
+4. Commit the changes (with message "Release <version>")
+5. Push a tag with the new version (git tag -a <version> -m "Release message that will be on github")
+6. Update the Leanpub Files at Leanpub
+7. Update OWASP Wiki if necessary
+8. Update the book at lulu.com (Ask @sushi2k)
+9. Tweet about it with @OWASP-MSTG.
