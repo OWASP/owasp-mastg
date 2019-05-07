@@ -108,7 +108,7 @@ cy# a=choose(JailbreakDetectionVC)
 []
 ```
 
-Ooops! The return value is an empty array. That means that there are no instances of this class registered in the runtime. In fact, we haven't clicked the second "Jailbreak Test" button, which initializes this class:
+Oops! The return value is an empty array. That means that there are no instances of this class registered in the runtime. In fact, we haven't clicked the second "Jailbreak Test" button, which initializes this class:
 
 ```sh
 cy# a=choose(JailbreakDetectionVC)
@@ -314,7 +314,7 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 
 ![Ptrace Patched](Images/Chapters/0x06j/ptracePatched.png)
 
-[Armconverter.com](Armconverter.com) is a handy tool for conversion between byte-code and instruction mnemonics.
+[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between byte-code and instruction mnemonics.
 
 ##### Using sysctl
 
@@ -393,7 +393,7 @@ There are two topics related to file integrity:
 
  1. _Application source code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add an internal run-time check that determines whether the signatures still match at run time.
 
- 2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
+ 2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the Keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
 
 ##### Sample Implementation - Application Source Code
 
@@ -463,7 +463,7 @@ If you need encryption, make sure that you encrypt and then HMAC as described in
 When you generate an HMAC with CC:
 
 1. Get the data as `NSMutableData`.
-2. Get the data key (from the keychain if possible).
+2. Get the data key (from the Keychain if possible).
 3. Calculate the hash value.
 4. Append the hash value to the actual data.
 5. Store the results of step 4.
@@ -534,7 +534,7 @@ A similar approach works. Answer the following questions:
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the keychain, or using Google's InstanceID for iOS. See the "Remediation" section for more details.
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "Remediation" section for more details.
 
 #### Static Analysis
 
@@ -543,7 +543,7 @@ When the source code is available, there are a few bad coding practices you can 
 - MAC addresses: there are several ways to find the MAC address. When you use `CTL_NET` (a network subsystem) or `NET_RT_IFLIST` (getting the configured interfaces) or when the mac-address gets formatted, you'll often see formatting code for printing, such as `"%x:%x:%x:%x:%x:%x"`.
 - using the UDID: `[[[UIDevice currentDevice] identifierForVendor] UUIDString];` and `UIDevice.current.identifierForVendor?.uuidString in Swift3.
 `
-- Any keychain- or filesystem-based binding, which isn't protected by `SecAccessControlCreateFlags` or and doesn't use protection classes, such as `kSecAttrAccessibleAlways` and `kSecAttrAccessibleAlwaysThisDeviceOnly`.
+- Any Keychain- or filesystem-based binding, which isn't protected by `SecAccessControlCreateFlags` or and doesn't use protection classes, such as `kSecAttrAccessibleAlways` and `kSecAttrAccessibleAlwaysThisDeviceOnly`.
 
 #### Dynamic Analysis
 
@@ -559,7 +559,7 @@ Take the following steps when you want to verify app-binding in a simulator:
   - Because simulators use UUIDs to identify themselves, you can make locating the storage easier by creating a debug point and executing `po NSHomeDirectory()` on that point, which will reveal the location of the simulator's stored contents. You can also execute `find ~/Library/Developer/CoreSimulator/Devices/ | grep <appname>` for the suspected plist file.
   - Go to the directory indicated by the given command's output.
   - Copy all three found folders (Documents, Library, tmp).
-  - Copy the contents of the keychain. Since iOS 8, this has been in `~/Library/Developer/CoreSimulator/Devices/<Simulator Device ID>/data/Library/Keychains`.
+  - Copy the contents of the Keychain. Since iOS 8, this has been in `~/Library/Developer/CoreSimulator/Devices/<Simulator Device ID>/data/Library/Keychains`.
 4.	Start the application on another simulator and find its data location as described in step 3.
 5.	Stop the application on the second simulator. Overwrite the existing data with the data copied in step 3.
 6.	Can you continue in an authenticated state? If so, then binding may not be working properly.
@@ -577,7 +577,7 @@ Take the following steps when you want to verify app-binding with two jailbroken
   - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
   - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
 4.	Install the application on the second jailbroken device.
-5.	Overwrite the application data extracted during step 3. The keychain data must be added manually.
+5.	Overwrite the application data extracted during step 3. The Keychain data must be added manually.
 6.	Can you continue in an authenticated state? If so, then binding may not be working properly.
 
 #### Remediation
@@ -585,10 +585,10 @@ Take the following steps when you want to verify app-binding with two jailbroken
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods for device binding in iOS:
 
 - You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). These may not be available after you reinstall the application if no other applications from the same vendor are installed.
-- You can store something in the keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or touch-id requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
+- You can store something in the Keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or touch-id requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
 - You can use Google and its Instance ID for [iOS](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation Google Instance ID").
 
-Any scheme based on these methods will be more secure the moment a passcode and/or touch-id is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode or touchid), `kSecAccessControlTouchIDAny` (Touch ID) or `kSecAccessControlTouchIDCurrentSet` (Touch ID: but current fingerprints only).
+Any scheme based on these methods will be more secure the moment a passcode and/or touch-id is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode or Touch ID), `kSecAccessControlTouchIDAny` (Touch ID) or `kSecAccessControlTouchIDCurrentSet` (Touch ID: but current fingerprints only).
 
 ### References
 
