@@ -50,7 +50,7 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
 
-```shell 
+```shell
 $ npm install -g itms-services
 ```
 
@@ -259,7 +259,8 @@ cy# [alertView show]
 cy# [alertView release]
 
 ```
-![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
+
+<img src="Images/Chapters/0x06c/cycript_sample.png" alt="Cycript Alert Sample" width="250">
 
 Find the document directory with Cycript:
 
@@ -563,7 +564,7 @@ We can look up the declaration of this method on the [Apple Developer Website](h
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
+The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
 
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 

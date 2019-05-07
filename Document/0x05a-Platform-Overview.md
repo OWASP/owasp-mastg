@@ -12,17 +12,17 @@ Visit the official [Android developer documentation website](https://developer.a
 
 ### Android Security Architecture
 
-Android is a Linux-based open source platform developed by Google as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other "smart" devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+Android is a Linux-based open source platform developed by Google, which serves as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other "smart" devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
 
 Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services.
 
-![Android Software Stack](Images/Chapters/0x05a/android_software_stack.png)
+<img src="Images/Chapters/0x05a/android_software_stack.png" alt="Android Software Stack" width="400">
 
 At the lowest level, Android is based on a variation of the Linux Kernel. On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware—for example, it allows a stock phone application to use a device's microphone and speaker.
 
 Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat  different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, then converting the JVM bytecode to the Dalvik .dex format with the `dx` tool.
 
-![Java vs Dalvik](Images/Chapters/0x05a/java_vs_dalvik.png)
+<img src="Images/Chapters/0x05a/java_vs_dalvik.png" alt="Java vs Dalvik" width="350">
 
 The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik and ART is the way the bytecode is executed.
 
@@ -67,14 +67,14 @@ The API specifications change with every new Android release. Critical bug fixes
 
 Noteworthy API versions:
 
-- Android 4.2 Jelly Bean (API 16) in November 2012 (introduction of SELinux)
-- Android 4.3 Jelly Bean (API 18) in July 2013 (SELinux became enabled by default)
-- Android 4.4 KitKat (API 19) in October 2013 (several new APIs and ART introduced)
-- Android 5.0 Lollipop (API 21) in November 2014 (ART used by default and many other features added)
-- Android 6.0 Marshmallow (API 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
-- Android 7.0 Nougat (API 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 Oreo (API 26-27) in August 2017 (A lot of security improvements)
-- Android 9 Pie (API 28) in August 2018.
+- Android 4.2 (API Level 16) in November 2012 (introduction of SELinux)
+- Android 4.3 (API Level 18) in July 2013 (SELinux became enabled by default)
+- Android 4.4 (API Level 19) in October 2013 (several new APIs and ART introduced)
+- Android 5.0 (API Level 21) in November 2014 (ART used by default and many other features added)
+- Android 6.0 (API Level 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
+- Android 7.0 (API Level 24-25) in August 2016 (new JIT compiler on ART)
+- Android 8.0 (API Level 26-27) in August 2017 (A lot of security improvements)
+- Android 9 (API Level 28) in August 2018.
 
 #### App Folder Structure
 
@@ -202,7 +202,7 @@ Apps are executed in the Android Application Sandbox, which separates the app da
 
 Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
-![Sandbox](Images/Chapters/0x05a/Selection_003.png)
+<img src="Images/Chapters/0x05a/Selection_003.png" alt="Sandbox" width="400">
 
 We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
 
@@ -319,7 +319,7 @@ An app may not explicitly implement all event managers, in which case default ac
 
 ##### Fragments
 
-A fragment represents a behavior or a portion of the user interface within the activity. Fragments were introduced Android with the version Honeycomb 3.0 (API level 11).
+A fragment represents a behavior or a portion of the user interface within the activity. Fragments were introduced Android with the version Honeycomb 3.0 (API Level level 11).
 
 Fragments are meant to encapsulate parts of the interface to facilitate re-usability and adaptation to different screen sizes. Fragments are autonomous entities in that they include all their required components (they have their own layout, buttons, etc.). However, they must be integrated with activities to be useful: fragments can't exist on their own. They have their own life cycle, which is tied to the life cycle of the Activities that implement them.
 
@@ -360,8 +360,9 @@ The term *Binder* stands for a lot of different things, including:
 
 The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently *marshall* the call parameters into a *parcel* and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call—all the heavy lifting is done by the Binder framework.
 
-![Binder Overview](Images/Chapters/0x05a/binder.jpg)
-*Binder Overview. Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
+<img src="Images/Chapters/0x05a/binder.jpg" alt="Binder Overview" width="400">
+
+*Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf)*
 
 Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface to clients. Developers use the Android Interface Descriptor Language (AIDL) to write interfaces for remote services.
 
@@ -390,7 +391,7 @@ Found 99 services:
 - Starting an activity
     - An activity represents a single screen in an app. You can start a new instance of an activity by passing an intent to `startActivity`. The intent describes the activity and carries necessary data.
 - Starting a service
-    - A Service is a component that performs operations in the background, without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler.
+    - A Service is a component that performs operations in the background, without a user interface. With Android 5.0 (API Level level 21) and later, you can start a service with JobScheduler.
 - Delivering a broadcast
     - A broadcast is a message that any app can receive. The system delivers broadcasts for system events, including system boot and charging initialization. You can deliver a broadcast to other apps by passing an intent to `sendBroadcast` or `sendOrderedBroadcast`.
 
@@ -456,7 +457,7 @@ Services are Android OS components (based on the Service class) that perform tas
 
 Because Android apps are installed in a sandbox and initially can't access user information and system components (such as the camera and the microphone), Android provides a system with a predefined set of permissions for certain tasks that the app can request.
 For example, if you want your app to use a phone's camera, you have to request the ` android.permission.CAMERA ` permission.
-Prior to Marshmallow (API 23), all permissions an app requested were granted at installation. From Android Marshmallow onwards, the user must approve some permissions requests during app execution.
+Prior to Marshmallow (API Level 23), all permissions an app requested were granted at installation. From Android Marshmallow onwards, the user must approve some permissions requests during app execution.
 
 ###### Protection Levels
 
@@ -535,20 +536,19 @@ The original version of app signing implements the signed APK as a standard sign
 
 ##### APK Signature Scheme (v2 Scheme)
 
-With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification.
+With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification. You can see the [APK signature verification process for v2 Scheme](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process") below.
 
-![Preparation](Images/Chapters/0x05a/apk-validation-process.png)
-[APK signature verification process](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process")
+<img src="Images/Chapters/0x05a/apk-validation-process.png" alt="Android Software Stack" width="450">
 
 #### APK Signature Scheme (v3 Scheme)
 
 The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
 
-The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatiility work, the old signing certs sign the new set of certs, thus providing each new key with evidence that it should be as trusted as the older key(s).
-It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certs signing the new set of certs, rather than signing them one-by-one.  
+The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certificates sign the new set of certificates, thus providing each new key with evidence that it should be as trusted as the older key(s).
+It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certificates signing the new set of certificates, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
 
-![apk-validation-process-v3-scheme](Images/Chapters/0x05a/apk-validation-process-v3-scheme)
-[APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process")
+<img src="Images/Chapters/0x05a/apk-validation-process-v3-scheme.png" alt="apk-validation-process-v3-scheme" width="450">
+
 ##### Creating Your Certificate
 
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
@@ -566,8 +566,8 @@ An Android certificate must have a validity period that's longer than that of th
 The goal of the signing process is to associate the app file (.apk) with the developer's public key.  To achieve this, the developer calculates a hash of the APK file and encrypts it with their own private key. Third parties can then verify the app's authenticity (e.g., the fact that the app really comes from the user who claims to be the originator) by decrypting the encrypted hash with the author’s public key and verifying that it matches the actual hash of the APK file.
 
 Many Integrated Development Environments (IDE) integrate the app signing process to make it easier for the user. Be aware that some IDEs store private keys in clear text in configuration files; double-check this in case others are able to access such files and remove the information if necessary.
-Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
-```shell 
+Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API Level 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
+```shell
 $ apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
 ```
 In this example, an unsigned app ('myUnsignedApp.apk') will be signed with a private key from the developer KeyStore 'myKeyStore.jks' (located in the current directory). The app will become a signed app called 'mySignedApp.apk' and will be ready to release to stores.

@@ -347,7 +347,7 @@ Use a centralized logging class and mechanism and remove logging statements from
 
 #### Static Analysis
 
-Check the app's source code for logging mechanisms by searching for the following keywords:
+You should check the apps' source code for logging mechanisms by searching for the following keywords:
 
 - Functions and classes, such as:
   * `android.util.Log`

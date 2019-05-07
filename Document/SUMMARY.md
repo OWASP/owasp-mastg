@@ -1,6 +1,6 @@
 # Summary
 
-- [Changelog](../Changelog.md)
+- [Changelog](CHANGELOG.md)
 - [Frontispiece](0x02-Frontispiece.md)
 
 ### Overview

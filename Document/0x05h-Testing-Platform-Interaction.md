@@ -461,6 +461,8 @@ By reversing the target application, we can see that the service `AuthService` p
                         sendUnrecognisedMessage();
                         return;
                     }
+           }
+   }
 ```
 
 ##### Broadcast Receivers
@@ -513,6 +515,10 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
                 SmsManager smsManager = SmsManager.getDefault();
                 System.out.println("For the changepassword - phonenumber: "+textPhoneno+" password is: "+textMessage);
 smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
+          }
+     }
+  }
+}
 ```
 
 BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://goo.gl/ViRYPC "SendBroadcast"). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
@@ -900,6 +906,8 @@ public class MyPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+}
 ```
 
 The following examples show the isValidFragment method being overridden with an implementation that allows the loading of MyPreferenceFragment only:
@@ -912,8 +920,6 @@ return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
 }
 
 ```
-
-
 
 #### Example of Vulnerable App and Exploitation
 
@@ -1209,7 +1215,7 @@ There are several ways to perform dynamic analysis:
 
 #### CWE
 
-- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-79 - Improper Neutralization of Input During Web Page Generation
 - CWE-200 - Information Leak / Disclosure
 - CWE-749 - Exposed Dangerous Method or Function
 - CWE-939 - Improper Authorization in Handler for Custom URL Scheme

@@ -3187,12 +3187,11 @@ There are several ways to perform dynamic analysis:
 - For the actual persistence: Use the techniques described in the "Data Storage on iOS" chapter.
 - For the serialization itself: use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
-
 ### References
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
-- [Security Flaw with UIWebView](https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c "Security Flaw with UIWebView")
-- [Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html "Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida")
+- Security Flaw with UIWebView - https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c
+- Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html
 
 #### OWASP Mobile Top 10 2016
 
