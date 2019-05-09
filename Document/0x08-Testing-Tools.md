@@ -34,8 +34,8 @@ To perform security testing different tools are available in order to be able to
  - Ghidra: An open source software reverse engineering suite of tools developed by the National Security Agency (NSA). Its main capabilities include disassembly, assembly, decompilation, graphing, and scripting - https://ghidra-sre.org/
  - HopperApp (Commercial Tool): A reverse engineering tool for macOS and Linux used to disassemble, decompile and debug 32/64bits Intel Mac, Linux, Windows and iOS executables - https://www.hopperapp.com/
  - IDA Pro (Commercial Tool): A Windows, Linux or macOS hosted multi-processor disassembler and debugger - https://www.hex-rays.com/products/ida/index.shtml
- - Radare2: Radare2 is a unix-like reverse engineering framework and command line tools - https://www.radare.org/r/
- - Retargetable Decompiler (RetDec): An open source machine-code decompiler based on LLVM. It can be used as a standalone program or as a plugin for IDA Pro or Radare2 - https://retdec.com/
+ - radare2: radare2 is a unix-like reverse engineering framework and command line tools - https://www.radare.org/r/
+ - Retargetable Decompiler (RetDec): An open source machine-code decompiler based on LLVM. It can be used as a standalone program or as a plugin for IDA Pro or radare2 - https://retdec.com/
 
 ### Tools for Android
 
