@@ -386,6 +386,59 @@ A JDWP debugger allows you to step through Java code, set breakpoints on Java me
 
 In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with JDB alone. Note that this is not an *efficient* way to solve this crackme—you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
 
+### How to prevent tampering signatures of APK-files using C (Native check of a signature of APKs)
+
+It may be helpful only for  non-rooted devices (and of course reverse-engineer always wins).
+
+The example of obtaining apk's signature on the native layer (without jni).
+
+This example was created to help developers stand against one type of an attack.
+The attack inserts code into Application class (or creates it),
+hooks the getPackageInfo method of the PackageManager then returns an original signature on demand.
+This attack is implemented in `'nkstool'` tool.
+After user has applied `'nkstool'` tool on your APK, the application always gets its own signature
+in Java layer or through JNI when it's requested in APK even though it is not true.
+
+The source code of this attacking tool can be found here:
+https://github.com/L-JINBIN/ApkSignatureKiller
+
+Working example of this tool is in the [`'/nkstool'`](./nkstool) directory
+only for testing and educational purposes!
+
+To test this example (nkstool) just dot he following:
+* edit [config.txt](https://github.com/DimaKoz/stunning-signature/tree/master/nkstool/config.txt)
+
+* copy your APK (the one to be hacked) to the same directory [`'/nkstool'`](https://github.com/DimaKoz/stunning-signature/tree/master/nkstool)
+
+* run script either `'run.bat'` or `'run.sh'`
+
+Finally you can see results of the checks:
+
+#### Before the attack  - all signatures are equal
+
+
+![image](https://github.com/DimaKoz/stunning-signature/tree/master/image/before_attack.png)
+
+#### After the attack - signatures are not equal. Native layer (C-code) gives you the real signature of the APK.
+
+
+![image](https://github.com/DimaKoz/stunning-signature/tree/master/image/after_attack.png)
+
+
+#### How do we get a real signature:
+
+* Get a path of our APK
+
+* Extract `'META-INF/CERT.RSA'` from the APK
+
+* Parse `'META-INF/CERT.RSA'`
+
+* We pass a signature through JNI from native layer to Java (just for convenience)
+
+
+
+#### [Here](https://stackoverflow.com/a/50976883/3166697) is an example how we can get MD5 from a signature(using [mbed TLS](https://tls.mbed.org/))
+
 ###### Repackaging
 
 Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.

@@ -12,7 +12,7 @@ For Android, we define "root detection" a bit more broadly, including custom ROM
 
 In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [crackme examples](https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md "OWASP Mobile Crackmes") that accompany the OWASP Mobile Testing Guide.
 
-Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer").
+Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer") or the native way ([here is an example](https://github.com/DimaKoz/meat-grinder)) .
 
 ###### SafetyNet
 
@@ -1464,7 +1464,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering 
+- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
 
 
 #### OWASP MASVS
