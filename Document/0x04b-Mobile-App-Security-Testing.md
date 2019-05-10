@@ -362,3 +362,6 @@ The security of an application developed with DevOps must be considered during o
 
 - [paul] - M. Paul. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press), 2014
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
+
+#### OWASP MASVS
+- V1.3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
