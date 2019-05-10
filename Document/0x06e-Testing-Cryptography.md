@@ -165,7 +165,11 @@ Even when the sync of CoreData or Realm is protected by using `NSFileProtectionC
 The KeyChain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Secure Enclave") for more details on its implementation.
 
 The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in objective-C/Swift. Consequently, he can decrypt any other data that he can obtain which was encrypted by the application.
-Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged.
+Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing symmetric encryption keys publicly also is highly discouraged.
+
+Two more notions you should never forget when it comes to cryptography:
+.1 Always encrypt/verify with the public key and always decrypt/sign with the private key.
+.2 Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate keypair for signing and a separate key(pair) for encryption.
 
 
 #### Static Analysis
@@ -223,7 +227,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 #### Key Management
 - Apple Developer Documentation: Certificates and keys - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys
-- Apple Developer Documentation: Generating new keys - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys 
+- Apple Developer Documentation: Generating new keys - https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys
 - Apple Developer Documentation: Key generation attributes -
 https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes
 
@@ -234,6 +238,7 @@ https://developer.apple.com/documentation/security/certificate_key_and_trust_ser
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use case, configured with parameters that adhere to industry best practices."
 - V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
+- V3.5: "The app doesn't re-use the same cryptographic key for multiple purposes."
 - V3.6: "All random values are generated using a sufficiently secure random number generator."
 
 #### CWE
