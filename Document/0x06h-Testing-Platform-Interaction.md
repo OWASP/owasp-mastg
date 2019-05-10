@@ -223,13 +223,13 @@ The following two subsections will show you how to access the app binary and onc
 ###### Acquiring the App Binary
 
 1. From an IPA:
-   
+
    If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
 
     > On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
 
 2. From a Jailbroken device:
-   
+
     If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, example using Telegram:
 
     - Open the app and leave it running on foreground.
@@ -299,12 +299,12 @@ Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search a
 ```
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
-0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC 
+0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC
 "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">
 ...<key>com.apple.security.application-groups</key>\n\t\t<array>
 \n\t\t\t<string>group.ph.telegra.Telegraph</string>...
 
-0x0016427d ascii H<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC 
+0x0016427d ascii H<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC
 "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0">\n
 <dict>\n\t<key>cdhashes</key>...
 ```
@@ -439,7 +439,7 @@ We see that `+[CLLocationManager authorizationStatus]` returned `0x4` ([CLAuthor
 Next, there is a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to *trigger* them in order to be listed on that screen.
 
 ![Settings Allow App Screen](Images/Chapters/0x06h/settings_allow_screen.png)
- 
+
 For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.
 
 
@@ -588,13 +588,13 @@ You should check how the received data is validated. Apple [explicitly warns abo
 As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift from the Telegram app verifies exactly this before opening the URL:
 
 ```swift
-func application(_ application: UIApplication, continue userActivity: NSUserActivity, 
+func application(_ application: UIApplication, continue userActivity: NSUserActivity,
                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
     ...
     if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
         self.openUrl(url: url)
     }
-    
+
     return true
 }
 ```
@@ -615,16 +615,16 @@ func application(_ application: UIApplication,
         let params = components.queryItems else {
             return false
     }
-    
+
     print("path = \(path)")
-    
+
     if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
         let photoIndex = params.first(where: { $0.name == "index" })?.value {
-        
+
         print("album = \(albumName)")
         print("photoIndex = \(photoIndex)")
         return true
-        
+
     } else {
         print("Either album name or photo index missing")
         return false
@@ -653,10 +653,10 @@ This is an example from the Telegram app:
                 parsedUrl = URL(string: "https://\(url)")
             }
         }
-        
+
         if let parsedUrl = parsedUrl {
-            return UIApplication.shared.open(parsedUrl, 
-                        options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber], 
+            return UIApplication.shared.open(parsedUrl,
+                        options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber],
                         completionHandler: { value in completion.completion(value)}
             )
 ```
@@ -789,7 +789,7 @@ Instrumenting functions...
 You can see that only one function was found and is being instrumented. Trigger now the universal link and observe the traces.
 
 ```
-298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 ```
 
@@ -799,7 +799,7 @@ You can observe that the function is in fact being called. You can now add code 
 // __handlers__/__AppDelegate_application_contin_8e36bbb1.js
 
   onEnter: function (log, args, state) {
-    log("-[AppDelegate application: " + args[2] + " continueUserActivity: " + args[3] + 
+    log("-[AppDelegate application: " + args[2] + " continueUserActivity: " + args[3] +
                      " restorationHandler: " + args[4] + "]");
     log("\tapplication: " + ObjC.Object(args[2]).toString());
     log("\tcontinueUserActivity: " + ObjC.Object(args[3]).toString());
@@ -813,7 +813,7 @@ You can observe that the function is in fact being called. You can now add code 
 The new output is:
 
 ```
-298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
 298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
@@ -854,7 +854,7 @@ Now you can see a long list of functions but we still don't know which ones will
 
 ```
            /* TID 0x303 */
-298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298619 ms     | $S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
                 18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA
@@ -878,9 +878,9 @@ Resulting in:
 
 ```swift
 ---> TelegramUI.openExternalUrl(
-    account: TelegramCore.Account, context: TelegramUI.OpenURLContext, url: Swift.String, 
-    forceExternal: Swift.Bool, presentationData: TelegramUI.PresentationData, 
-    applicationContext: TelegramUI.TelegramApplicationContext, 
+    account: TelegramCore.Account, context: TelegramUI.OpenURLContext, url: Swift.String,
+    forceExternal: Swift.Bool, presentationData: TelegramUI.PresentationData,
+    applicationContext: TelegramUI.TelegramApplicationContext,
     navigationController: Display.NavigationController?, dismissInput: () -> ()) -> ()
 ```
 
@@ -893,10 +893,10 @@ For now we will use this information to properly print the parameters by editing
 
   onEnter: function (log, args, state) {
 
-    log("TelegramUI.openExternalUrl(account: TelegramCore.Account, 
-        context: TelegramUI.OpenURLContext, url: Swift.String, forceExternal: Swift.Bool, 
-        presentationData: TelegramUI.PresentationData, 
-        applicationContext: TelegramUI.TelegramApplicationContext, 
+    log("TelegramUI.openExternalUrl(account: TelegramCore.Account,
+        context: TelegramUI.OpenURLContext, url: Swift.String, forceExternal: Swift.Bool,
+        presentationData: TelegramUI.PresentationData,
+        applicationContext: TelegramUI.TelegramApplicationContext,
         navigationController: Display.NavigationController?, dismissInput: () -> ()) -> ()");
     log("\taccount: " + ObjC.Object(args[0]).toString());
     log("\tcontext: " + ObjC.Object(args[1]).toString());
@@ -910,7 +910,7 @@ For now we will use this information to properly print the parameters by editing
 This way, the next time we run it we get a much more detailed output:
 
 ```
-298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
 298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
@@ -920,10 +920,10 @@ This way, the next time we run it we get a much more detailed output:
 }
 298382 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
 
-298619 ms     | TelegramUI.openExternalUrl(account: TelegramCore.Account, 
-context: TelegramUI.OpenURLContext, url: Swift.String, forceExternal: Swift.Bool, 
-presentationData: TelegramUI.PresentationData, applicationContext: 
-TelegramUI.TelegramApplicationContext, navigationController: Display.NavigationController?, 
+298619 ms     | TelegramUI.openExternalUrl(account: TelegramCore.Account,
+context: TelegramUI.OpenURLContext, url: Swift.String, forceExternal: Swift.Bool,
+presentationData: TelegramUI.PresentationData, applicationContext:
+TelegramUI.TelegramApplicationContext, navigationController: Display.NavigationController?,
 dismissInput: () -> ()) -> ()
 298619 ms     | 	account: TelegramCore.Account
 298619 ms     | 	context: nil
@@ -957,7 +957,7 @@ Actually, the previous example in "Checking How the Links Are Opened" is very si
 In the detailed output above you can see that `NSUserActivity` object we've received meets exactly the mentioned points:
 
 ```
-298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780 
+298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
 298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
@@ -999,7 +999,7 @@ When testing `UIActivity` Sharing you should pay special attention to:
 - the data (items) being shared,
 - the custom activities,
 - the excluded activity types.
-  
+
 Data sharing via `UIActivity` works by creating a `UIActivityViewController` and passing it the desired items (URLs, text, a picture) on [`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)").
 
 As we mentioned before, it is possible to exclude some of the sharing mechanisms via the controller's [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes "UIActivityViewController excludedActivityTypes"). It is highly recommended to do the tests using the latest versions of iOS as the number of activity types that can be excluded can increase. The developers have to be aware of this and **explicitely exclude** the ones that are not appropriate for the app data. Some activity types might not be even documented like "Create Watch Face".
@@ -1239,7 +1239,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 1. Send a PDF file from another Apple device (e.g. a MacBook) via Airdrop.
 2. Wait for the "AirDrop" popup to appear and click on Accept.
 3. As there is no default app that will open the file, it switches to the "Open with..." popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
-   
+
     ![AirDrop Open With Dialog](Images/Chapters/0x06h/airdrop_openwith.png)
 4. After selecting "SomeFileManager" we can see the following:
     ```
@@ -1253,7 +1253,7 @@ To illustrate this with an example we have chosen the same real-world file manag
         };
         UIApplicationOpenURLOptionsOpenInPlaceKey = 0;
         UIApplicationOpenURLOptionsSourceApplicationKey = "com.apple.sharingd";
-        "_UIApplicationOpenURLOptionsSourceProcessHandleKey" = "<FBSProcessHandle: 0x1c3a63140; 
+        "_UIApplicationOpenURLOptionsSourceProcessHandleKey" = "<FBSProcessHandle: 0x1c3a63140;
                                                                     sharingd:605; valid: YES>";
     }
     0x18c7930d8 UIKit!__58-[UIApplication _applicationOpenURLAction:payload:origin:]_block_invoke
@@ -1459,7 +1459,7 @@ We run the same example again:
 
 ```
 (0x1c0370200) NSExtension - _plugIn
-RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785 
+RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785
 1(2) /private/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35
 /Telegram X.app/PlugIns/Share.appex>
 
@@ -1554,9 +1554,9 @@ setInterval(function () {
       items = currentItems;
       count = currentCount;
 
-      console.log('[* Pasteboard changed] count: ' + count + 
-      ' hasStrings: ' + Pasteboard.hasStrings().toString() + 
-      ' hasURLs: ' + Pasteboard.hasURLs().toString() + 
+      console.log('[* Pasteboard changed] count: ' + count +
+      ' hasStrings: ' + Pasteboard.hasStrings().toString() +
+      ' hasURLs: ' + Pasteboard.hasURLs().toString() +
       ' hasImages: ' + Pasteboard.hasImages().toString());
       console.log(items);
 
@@ -1733,13 +1733,13 @@ func application(_ application: UIApplication, open url: URL, sourceApplication:
     return true
 }
 
-func application(_ application: UIApplication, open url: URL, sourceApplication: String?, 
+func application(_ application: UIApplication, open url: URL, sourceApplication: String?,
 annotation: Any) -> Bool {
     self.openUrl(url: url)
     return true
 }
 
-func application(_ app: UIApplication, open url: URL, 
+func application(_ app: UIApplication, open url: URL,
 options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
     self.openUrl(url: url)
     return true
@@ -1781,11 +1781,11 @@ We search for this method in the Telegram source code, this time without using X
 ```
 $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
-./AppDelegate.swift:552: return UIApplication.shared.open(parsedUrl, 
-    options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber], 
+./AppDelegate.swift:552: return UIApplication.shared.open(parsedUrl,
+    options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber],
     completionHandler: { value in
-./AppDelegate.swift:556: return UIApplication.shared.open(parsedUrl, 
-    options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber], 
+./AppDelegate.swift:556: return UIApplication.shared.open(parsedUrl,
+    options: [UIApplicationOpenURLOptionUniversalLinksOnly: true as NSNumber],
     completionHandler: { value in
 ```
 
@@ -1810,12 +1810,12 @@ When just searching for `://` we see:
 ```
 if documentUri.hasPrefix("file://"), let path = URL(string: documentUri)?.path {
 if !url.hasPrefix("mt-encrypted-file://?") {
-guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.index(url.startIndex, 
+guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.index(url.startIndex,
     offsetBy: "mt-encrypted-file://?".count)...])) else {
 parsedUrl = URL(string: "https://\(url)")
 if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreId)") {
 } else if let url = url as? String, url.lowercased().hasPrefix("tg://") {
-[[WKExtension sharedExtension] openSystemURL:[NSURL URLWithString:[NSString 
+[[WKExtension sharedExtension] openSystemURL:[NSURL URLWithString:[NSString
     stringWithFormat:@"tel://%@", userHandle.data]]];
 ```
 
@@ -1832,7 +1832,7 @@ openUrl: { url in
                     return
                 }
             }
-            
+
             if let parsedUrl = parsedUrl {
                 UIApplication.shared.openURL(parsedUrl)
 ```
@@ -2085,7 +2085,7 @@ We do it now with Safari and Telegram, but instead of giving it manually into th
 First of all we let frida-trace generate the stubs for us:
 
 ```bash
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*" 
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
     -m "*[* *application*URL*]" -m "*[* openURL]"
 
 ...
@@ -2103,7 +2103,7 @@ Now we can simply modify by hand the stubs we are interested in:
     // __handlers__/__AppDelegate_application_openUR_3679fadc.js
 
     onEnter: function (log, args, state) {
-        log("-[AppDelegate application: " + args[2] + 
+        log("-[AppDelegate application: " + args[2] +
                     " openURL: " + args[3] + " options: " + args[4] + "]");
         log("\tapplication :" + ObjC.Object(args[2]).toString());
         log("\topenURL :" + ObjC.Object(args[3]).toString());
@@ -2129,7 +2129,7 @@ Now we can simply modify by hand the stubs we are interested in:
 The next time we run it, we see the following output:
 
 ```javascript
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*" 
+$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
     -m "*[* *application*URL*]" -m "*[* openURL]"
 
   8144 ms  -[UIApplication _applicationOpenURLAction: 0x1c44ff900 payload: 0x10c5ee4c0 origin: 0x0]
@@ -2140,7 +2140,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
                         UIApplicationOpenURLOptionsOpenInPlaceKey = 0;
                         UIApplicationOpenURLOptionsSourceApplicationKey = "com.apple.mobilesafari";
                     }
-  8269 ms     |    | TelegramUI.openExternalUrl(account, url, presentationData, 
+  8269 ms     |    | TelegramUI.openExternalUrl(account, url, presentationData,
                                         applicationContext, navigationController, dismissInput)
   8269 ms     |    | 	account: nil
   8269 ms     |    | 	url: tg://resolve?domain=fridadotre
@@ -2169,7 +2169,7 @@ You can try this while tracing both methods:
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*openURL*options*]"
 
 // After clicking "Open" on the pop-up
-           
+
  16374 ms  -[AppDelegate application :0x10556b3c0 openURL :0x1c4ae0080 options :0x1c7a28400]
  16374 ms  	application :<Application: 0x10556b3c0>
  16374 ms  	openURL :tg://resolve?domain=fridadotre
@@ -2180,7 +2180,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*op
 
 // After clicking "Cancel" on the pop-up and "OPEN" in the page
 
-406575 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c063d0c0 
+406575 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c063d0c0
                 restorationHandler:0x16f27a898]
 406575 ms  	application:<Application: 0x10556b3c0>
 406575 ms  	continueUserActivity:<NSUserActivity: 0x1c063d0c0>
@@ -2414,7 +2414,7 @@ You can also demangle it:
 ```
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
----> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect, 
+---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
                                 configuration: __C.WKWebViewConfiguration) -> __C.WKWebView
 ```
 
@@ -2514,9 +2514,9 @@ $ frida -U com.authenticationfailure.WheresMyBrowser
 
 # copy the code and wait ...
 
-onMatch:  <UIWebView: 0x14fd25e50; frame = (0 126; 320 393); 
+onMatch:  <UIWebView: 0x14fd25e50; frame = (0 126; 320 393);
                 autoresize = RM+BM; layer = <CALayer: 0x1c422d100>>
-URL:  <NSMutableURLRequest: 0x1c000ef00> { 
+URL:  <NSMutableURLRequest: 0x1c000ef00> {
   URL: file:///var/mobile/Containers/Data/Application/A654D169-1DB7-429C-9DB9-A871389A8BAA/
           Library/UIWebView/scenario1.html, Method GET, Headers {
     Accept =     (
@@ -2657,14 +2657,14 @@ Example in Objective-C:
     [super viewDidLoad];
     WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
 
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20, 
-        CGRectGetWidth([UIScreen mainScreen].bounds) - 20, 
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(10, 20,
+        CGRectGetWidth([UIScreen mainScreen].bounds) - 20,
         CGRectGetHeight([UIScreen mainScreen].bounds) - 84) configuration:configuration];
     self.webView.navigationDelegate = self;
     [self.view addSubview:self.webView];
 
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"example_file" ofType:@"html"];
-    NSString *html = [NSString stringWithContentsOfFile:filePath 
+    NSString *html = [NSString stringWithContentsOfFile:filePath
                                 encoding:NSUTF8StringEncoding error:nil];
     [self.webView loadHTMLString:html baseURL:[NSBundle mainBundle].resourceURL];
 }
@@ -2773,7 +2773,7 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
 ```
-$ frida-trace -U "Where's My Browser?" 
+$ frida-trace -U "Where's My Browser?"
     -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
  14131 ms  -[NSBundle URLForResource:0x1c0255390 withExtension:0x0]
@@ -2810,10 +2810,10 @@ ObjC.choose(ObjC.classes['WKWebView'], {
     console.log('onMatch: ', wk);
     console.log('URL: ', wk.URL().toString());
     console.log('javaScriptEnabled: ', wk.configuration().preferences().javaScriptEnabled());
-    console.log('allowFileAccessFromFileURLs: ', 
+    console.log('allowFileAccessFromFileURLs: ',
             wk.configuration().preferences().valueForKey_('allowFileAccessFromFileURLs').toString());
     console.log('hasOnlySecureContent: ', wk.hasOnlySecureContent().toString());
-    console.log('allowUniversalAccessFromFileURLs: ', 
+    console.log('allowUniversalAccessFromFileURLs: ',
             wk.configuration().valueForKey_('allowUniversalAccessFromFileURLs').toString());
   },
   onComplete: function () {
@@ -2849,7 +2849,7 @@ allowFileAccessFromFileURLs:  1
 ### Determining Whether Native Methods Are Exposed Through WebViews
 
 #### Overview
- 
+
 Since iOS 7, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious scripts into the WebView (e.g., through a successful Cross-Site Scripting attack).
 
 #### Static Analysis
@@ -3029,7 +3029,7 @@ Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the
 NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
 
 // unarchiving:
-guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as? 
+guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/archive") as?
     CustomPoint else { return nil }
 
 ```
@@ -3201,7 +3201,9 @@ There are several ways to perform dynamic analysis:
 #### OWASP MASVS
 
 - V6.1: "The app only requests the minimum set of permissions necessary."
+- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
 - V6.5: "JavaScript is disabled in WebViews unless explicitly required."
 - V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
