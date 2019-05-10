@@ -433,7 +433,7 @@ In case you want to reset the iptables configuration you can flush the rules:
 $ iptables -t nat -F
 ```
 
-**Ettercap**
+**bettercap**
 
 Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running bettercap.
 
