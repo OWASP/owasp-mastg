@@ -44,7 +44,7 @@ To perform security testing different tools are available in order to be able to
  - Androguard: A python based tool, which can use to disassemble and decompile Android apps - https://github.com/androguard/androguard
  - Android Backup Extractor: Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP - https://github.com/nelenkov/android-backup-extractor
  - Android Debug Bridge (adb): A versatile command line tool used to communicate with an emulator instance or connected Android device - https://developer.android.com/studio/command-line/adb.html
- - APKTool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - https://ibotpeaches.github.io/Apktool/
+ - ApkTool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - https://ibotpeaches.github.io/Apktool/
  - android-classyshark: A standalone binary inspection tool for Android developers - https://github.com/google/android-classyshark
  - ByteCodeViewer: Java 8 Jar and Android APK Reverse Engineering Suite (e.g. Decompiler, Editor and Debugger) - https://bytecodeviewer.com/
  - ClassNameDeobfuscator: Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines - https://github.com/HamiltonianCycle/ClassNameDeobfuscator
@@ -162,7 +162,7 @@ The applications listed below can be used as training materials. Note: only the 
 
  - Crackmes: A set of applications to test your iOS application hacking skills - https://github.com/OWASP/owasp-mstg/tree/master/Crackmes
  - Myriam: A vulnerable iOS app with iOS security challenges - https://github.com/GeoSn0w/Myriam
- - DVIA: A vulnerable iOS app which provides a platform to mobile security enthusiasts/professionals or students to test their iOS penetration testing skills - http://damnvulnerableiosapp.com/
+ - DVIA: A vulnerable iOS app written in Objective-C which provides a platform to mobile security enthusiasts/professionals or students to test their iOS penetration testing skills - http://damnvulnerableiosapp.com/
  - DVIA-v2: A vulnerable iOS app, written in Swift with over 15 vulnerabilities - https://github.com/prateek147/DVIA-v2
- - iGoat: An iOS app serving as a learning tool for iOS developers (iPhone, iPad, etc.) and mobile app pentesters. It was inspired by the WebGoat project, and has a similar conceptual flow to it - https://github.com/owasp/igoat
+ - iGoat: An iOS Objective-C app serving as a learning tool for iOS developers (iPhone, iPad, etc.) and mobile app pentesters. It was inspired by the WebGoat project, and has a similar conceptual flow to it - https://github.com/owasp/igoat
  - iGoat-Swift: A Swift version of original iGoat project - https://github.com/owasp/igoat-swift
