@@ -167,6 +167,7 @@ While same basic cryptographic principles apply independent of the particular OS
 
 ##### OWASP MASVS
 
+- V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - V3.2: "The app uses proven implementations of cryptographic primitives."
 - V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."

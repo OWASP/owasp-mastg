@@ -565,7 +565,7 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 #### OWASP MASVS
-
+- V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
 - V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
 - V4.3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."

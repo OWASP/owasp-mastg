@@ -168,8 +168,8 @@ The last three options are to use hardcoded encryption keys in the source code, 
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing symmetric encryption keys publicly also is highly discouraged.
 
 Two more notions you should never forget when it comes to cryptography:
-.1 Always encrypt/verify with the public key and always decrypt/sign with the private key.
-.2 Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate keypair for signing and a separate key(pair) for encryption.
+1. Always encrypt/verify with the public key and always decrypt/sign with the private key.
+2. Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate keypair for signing and a separate key(pair) for encryption.
 
 
 #### Static Analysis
