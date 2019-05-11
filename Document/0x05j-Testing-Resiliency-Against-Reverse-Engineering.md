@@ -1080,7 +1080,6 @@ Launch the app with various apps and frameworks installed. Include at least the 
 - Substrate for Android
 - Xposed
 - Frida
-- Introspy-Android
 - Drozer
 - RootCloak
 - Android SSL Trust Killer
