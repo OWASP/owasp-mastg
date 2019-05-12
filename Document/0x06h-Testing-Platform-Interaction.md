@@ -3138,7 +3138,7 @@ if let data = UserDefaults.standard.value(forKey:"points") as? Data {
 
 ```
 
-Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
+Note that `plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
 
 ##### XML
 
@@ -3186,6 +3186,9 @@ There are several ways to perform dynamic analysis:
 
 - For the actual persistence: Use the techniques described in the "Data Storage on iOS" chapter.
 - For the serialization itself: use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+
+### Testing enforced updating
+HVG!
 
 ### References
 
