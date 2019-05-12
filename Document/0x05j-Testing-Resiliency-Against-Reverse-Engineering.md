@@ -1241,7 +1241,19 @@ The goal of device binding is to impede an attacker who tries to both copy an ap
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods that allow device binding:
 
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
-- Obfuscating the data stored on the device by using device identifiers as keys for encryption methods. This can help with binding to a device when the app does a lot of offline work or when access to APIs depends on access-tokens stored by the application.
+
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can help in the implementation of the device binding. The Android Keystore can be leveraged for the same to generate and manage the key material which is strongly coupled with the device. This would prevent the malicious actor to perform operations from the device to which the data is copied since the key material with which the data is encrypted would not be present to decrypt the encrypted data. This can be implemented using the following way:
+
+  - Generating the key pair in the Android keystore using KeyPairGeneratorSpec API.
+  - Generating a secret key for AES-GCM using a Secure Pseudo Random Number Generator(SPRNG) such as java.security.SecureRandom API
+  - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher
+  - Encrypt the secret key using public key stored in Android keystore and store the same in the private storage of the application
+  - Whenever authentication data or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the same to decrypt the ciphertext
+
+  Note: For API level 23 and above, the KeyGenParameterSpec API can be leveraged directly to generate and manage secret key through Android keystore.
+
+  For the detailed implementation guidelines, [Securely Storing Secrets in an Android Application](https://medium.com/@ericfu/securely-storing-secrets-in-an-android-application-501f030ae5a3 "Securely Storing Secrets in an Android Application") blog can be referred.
+ 
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
 
