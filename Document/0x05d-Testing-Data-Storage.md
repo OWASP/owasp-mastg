@@ -29,6 +29,7 @@ Disclosing sensitive information has several consequences, including decrypted i
 The following code snippets demonstrate bad practices that disclose sensitive information. They also illustrate Android storage mechanisms in detail. For more information, check out the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
 
 ##### Shared Preferences
+
 The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
 
@@ -114,7 +115,7 @@ _https://\<firebaseProjectName\>.firebaseio.com/.json_
 
 The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
 
-```
+```shell
 python FirebaseScanner.py -p <pathOfAPKFile>
 
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
@@ -153,10 +154,10 @@ try {
    e.printStackTrace();
 }
 ```
+
 You should check the file mode to make sure that only the app can access the file. You can set this access with `MODE_PRIVATE`. Modes such as `MODE_WORLD_READABLE` (deprecated) and `MODE_WORLD_WRITEABLE` (deprecated) may pose a security risk.
 
 Search for the class `FileInputStream` to find out which files are opened and read within the app.
-
 
 ##### External Storage
 
@@ -186,15 +187,15 @@ As previously mentioned, there are several ways to store information on an Andro
 
 - Check `AndroidManifest.xml` for read/write external storage permissions, for example, `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`.
 - Check the source code for keywords and API calls that are used to store data:
-    - File permissions, such as:
-      - `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`: You should avoid using `MODE_WORLD_WRITEABLE` and `MODE_WORLD_READABLE` for files because any app will be able to read from or write to the files, even if they are stored in the app's private data directory. If data must be shared with other applications, consider a content provider. A content provider offers read and write permissions to other apps and can grant dynamic permission on a case-by-case basis.
-    - Classes and functions, such as:
-      - the `SharedPreferences` class ( stores key-value pairs)
-      - the `FileOutPutStream` class (uses internal or external storage)
-      - the `getExternal*` functions (use external storage)
-      - the `getWritableDatabase` function (returns a SQLiteDatabase for writing)
-      - the `getReadableDatabase` function (returns a SQLiteDatabase for reading)
-      - the `getCacheDir` and `getExternalCacheDirs` function (use cached files)
+  - File permissions, such as:
+    - `MODE_WORLD_READABLE` or `MODE_WORLD_WRITABLE`: You should avoid using `MODE_WORLD_WRITEABLE` and `MODE_WORLD_READABLE` for files because any app will be able to read from or write to the files, even if they are stored in the app's private data directory. If data must be shared with other applications, consider a content provider. A content provider offers read and write permissions to other apps and can grant dynamic permission on a case-by-case basis.
+  - Classes and functions, such as:
+    - the `SharedPreferences` class ( stores key-value pairs)
+    - the `FileOutPutStream` class (uses internal or external storage)
+    - the `getExternal*` functions (use external storage)
+    - the `getWritableDatabase` function (returns a SQLiteDatabase for writing)
+    - the `getReadableDatabase` function (returns a SQLiteDatabase for reading)
+    - the `getCacheDir` and `getExternalCacheDirs` function (use cached files)
 
 Encryption should implemented using proven SDK functions. The following describes bad practices to look for in the source code:
 
