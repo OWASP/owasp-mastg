@@ -3204,7 +3204,8 @@ Similarly, when a user is not forced to update, do not forget to test older vers
 
 #### Static Analysis
 First see whethere there is an update mechanism at all: if it is not yet present, it might mean that users cannot be forced to update.
-If the mechanism is present, see HVG!
+If the mechanism is present, see whether it enforces "always latest" and whether that is indeed in line with the business strategy. Otherwise check if the mechanism is supporting to update to a given version.
+Make sure that every entry of the application goes through the updating mechanism in order to make sure that the update-mechanism cannot be bypassed.
 
 
 #### Dynamic analysis
@@ -3225,6 +3226,7 @@ Last, see if you can play with the version number of a man-in-the-middled app an
 
 #### OWASP MASVS
 
+- V1.9: "A mechanism for enforcing updates of the mobile app exists."
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
