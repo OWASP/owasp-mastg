@@ -500,22 +500,29 @@ Are there native code parts? If so: check for the given issues in the general me
 Is Objective-C or Swift in use? Check for the following items:
 - The doubleFree issue: when `free()` is called twice for a given region instead of once.
 - Retaining cycles: look for cyclic dependencies by means of strong references of components to one another which keep materials in memory.
-- Using instances of `Unsafe<*>Pointer` can be managed wrongly, which will allow for various memory corruption issues.
+- Using instances of `UnsafePointer` can be managed wrongly, which will allow for various memory corruption issues.
+- Trying to manage the reference count to an object by `Unmanaged` manually, leading to wrong counter numbers and a too late/too soon release.
 
+[A great talk is given on this subject at Realm academy](https://academy.realm.io/posts/russ-bishop-unsafe-swift/ "Russh Bishop on Unsafe Swift") and [a nice tutorial to see what is actually happening](https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c "Unsafe Swift: Using Pointers And Interacting With C") is provided by Ray Wenderlich on this subject.
+
+>Please note that with Swift 5 you can only deallocate full blocks, which means the playground has changed a bit.
 
 #### Dynamic Analysis
 There are various tools provided which which memory bugs can be found:
 - Apple its Debug Memory graph introduced in XCode 8.
 - The Allocations and Leaks instrument in XCode.
 - Check whether memory is freed too fast or to slow by enabling `NSAutoreleaseFreedObjectCheckEnabled`, `NSZombieEnabled`, `NSDebugEnabled` in Xcode while testing the application.
-<TODO: HVG>
 
-https://developer.ibm.com/tutorials/mo-ios-memory/
-https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html / https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15 / http://www.phrack.org/issues/69/9.html#article, https://books.google.nl/books?id=nucRXjCYpN8C&pg=PA212&lpg=PA212&dq=memory+corruption+in+objective-c&source=bl&ots=dINvpq6NvV&sig=jx4ofktFwg4QhfYViLqmEjSB9ZI&hl=nl&sa=X&ved=2ahUKEwjlqeaipJLfAhWKJVAKHSXjDOY4ChDoATACegQIBBAB#v=onepage&q=memory%20corruption%20in%20objective-c&f=false,
-https://stackoverflow.com/questions/8592289/arc-the-meaning-of-unsafe-unretained
- https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c, https://academy.realm.io/posts/russ-bishop-unsafe-swift/
+There are various well written explanations which can help with taking care of memory management. These can be found in the reference list of this chapter.
+
 
 ### References
+
+#### Memory management - dynamic analysis examples
+- https://developer.ibm.com/tutorials/mo-ios-memory/
+- https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html
+- https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15
+
 
 #### OWASP Mobile Top 10 2016
 
