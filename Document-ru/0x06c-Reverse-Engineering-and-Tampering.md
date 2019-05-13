@@ -50,7 +50,7 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 
 Вы можете использовать [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) чтобы загрузить IPS через OTA ссылку. Установите через npm таким образом:
 
-```
+```shell
 npm install -g itms-services
 ```
 
@@ -92,7 +92,7 @@ iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
 
 Помимо подписи кода, приложения, распространяемые через магазин приложений, также защищены с помощью системы Apple FairPlay DRM. Эта система использует асимметричную криптографию, чтобы гарантировать, что любое приложение (включая бесплатные приложения), полученное из магазина приложений, выполняется только на определенном устройстве, которое одобрено для запуска. Ключ дешифрования уникален для устройства и записывается в процессор. На данный момент единственный способ получить дешифрованный код из приложения с расшифровкой FairPlay - это копирование его из памяти во время работы приложения. На устройстве с джейлбрейком это можно сделать с помощью инструмента Clutch, который входит в стандартный репозиторий Cydia [2]. Используйте Clutch в интерактивном режиме, чтобы получить список установленных приложений, расшифровать их и упаковать в файл IPA:
 
-```
+```shell
 # Clutch -i
 ```
 
@@ -264,7 +264,7 @@ cy# [UIApplication sharedApplication].delegate
 
 Команда [[UIApp keyWindow] recursiveDescription].toString() возвращает иерархию view для keyWindow. Описание каждого subview и sub-subview для keyWindow будет показано, а отступ будет отражать взаимоотношения каждого view. Например, UILabel, UITextField и UIButton являются subviews UIView.
 
-```
+```shell
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
    | <UIView: 0x16e935f0; frame = (0 0; 320 568); autoresize = W+H; layer = <CALayer: 0x16e93680>>

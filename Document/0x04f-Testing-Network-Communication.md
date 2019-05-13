@@ -295,6 +295,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 #### OWASP MASVS
+- V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
 - V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."

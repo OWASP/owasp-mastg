@@ -589,7 +589,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 Once gradle has invoked the plugin, you can create a report by running:
 
-```sh
+``shell
 $ gradle assemble
 $ gradle dependencyCheckAnalyze --info
 ```
@@ -622,7 +622,7 @@ plugins {
 
 Now, after the plugin is picked up, use the following commands:
 
-```sh
+``shell
 $ gradle assemble
 $ gradle downloadLicenses
 ```
