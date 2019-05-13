@@ -12,7 +12,7 @@ After you get the application's .ipa file, re-save it as a ZIP file and decompre
 
 Execute the following `codesign` command:
 
-```sh
+``shell
 $ codesign -dvvv <yourapp.app>
 Executable=/Users/Documents/<yourname>/Payload/<yourname.app>/<yourname>
 Identifier=com.example.example
@@ -411,7 +411,7 @@ $ pod install
 ```
 
 2. Now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
-```sh
+``shell
 $ sudo gem install CocoaPods-dependencies
 $ pod dependencies
 ```
@@ -425,7 +425,7 @@ $ pod dependencies
 
 In case Carthage is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities:
 1. At the root of the project, where the Cartfile is located, type
-```sh
+``shell
 $ brew install carthage
 $ carthage update --platform iOS
 ```
@@ -452,7 +452,7 @@ In order to ensure that the copyright laws are not infringed, one can best check
 
 When the application sources are available and CocoaPods is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Podfile is located, type
-```sh
+``shell
 $ sudo gem install CocoaPods
 $ pod install
 ```
@@ -460,7 +460,7 @@ $ pod install
 
 When the application sources are available and Carthage is used, then execute the following steps to get the different licenses:
 1. At the root of the project, where the Cartfile is located, type
-```sh
+``shell
 $ brew install carthage
 $ carthage update --platform iOS
 ```

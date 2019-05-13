@@ -164,7 +164,7 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
 Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
-Last, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
+Lastly, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
 
 ### Testing Random Number Generation
 

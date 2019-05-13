@@ -227,7 +227,7 @@ The _firebaseProjectName_ can be retrieved from the property list(.plist) file. 
 
 Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
 
-```
+```shell
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
@@ -318,7 +318,7 @@ Important file system locations are:
 The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS."
 
 The path to the Keychain file is
-```
+```shell
 /private/var/Keychains/keychain-2.db
 ```
 
@@ -356,7 +356,7 @@ On a jailbroken device, you can use the iOS security assessment framework Needle
 
 To use Needle to read the Keychain, execute the following command:
 
-```
+```shell
 [needle] > use storage/data/keychain_dump
 [needle][keychain_dump] > run
 ```  
@@ -365,7 +365,7 @@ To use Needle to read the Keychain, execute the following command:
 
 iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Needle to convert these files to a readable format and inspect the data. Use the following Needle module, which searches for binary cookie files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```
+```shell
 [needle] > use storage/data/files_binarycookies
 [needle][files_binarycookies] > run
 ```
@@ -374,7 +374,7 @@ iOS applications often store binary cookie files in the application sandbox. Coo
 
 iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the following Needle module, which searches for plist files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```
+```shell
 [needle] > use storage/data/files_plist
 [needle][files_plist] > run
 ```
@@ -383,7 +383,7 @@ iOS applications often store data in property list (plist) files that are stored
 
 iOS applications can store data in cache databases. These databases contain data such as web requests and responses. Sometimes the data is sensitive. Use the following Needle module, which searches for cache files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```
+```shell
 [needle] > use storage/data/files_cachedb
 [needle][files_cachedb] > run
 ```
@@ -392,7 +392,7 @@ iOS applications can store data in cache databases. These databases contain data
 
 iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Use the following Needle module, which searches for SQLite databases stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```
+```shell
 [needle] > use storage/data/files_sql
 [needle][files_sql] >
 ```
@@ -450,7 +450,7 @@ After starting either method one or two, fill in the input fields. If sensitive 
 
 To capture the logs of an iOS application, you can monitor log files with Needle:
 
-```
+```shell
 [needle] > use dynamic/monitor/syslog
 [needle][syslog] > run
 ```
@@ -515,7 +515,7 @@ If a jailbroken iPhone is available, execute the following steps:
 
 With Needle:
 
-```
+```shell
 [needle] > use storage/caching/keyboard_autocomplete
 [needle] > run
 
@@ -829,7 +829,7 @@ On a non-jailbroken device, you can dump the app's process memory with [objectio
 With objection it is possible to dump all memory of the running process on the device.
 
 
-```
+```shell
 (virtual-python3) ➜ objection explore
 
      _     _         _   _
@@ -857,7 +857,7 @@ Open `strings.txt` in your favorite editor and dig through it to identify sensit
 
 You can also display the current process' loaded modules.
 
-```
+```shell
 iPhone on (iPhone: 10.3.1) [usb] # memory list modules
 Name                              Base         Size                 Path
 --------------------------------  -----------  -------------------  ---------------------------------------------------------------------------------
@@ -881,7 +881,7 @@ The original version of Fridump is no longer maintained, and the tool works only
 
 If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
 
-```
+```shell
 ➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
 
         ______    _     _
@@ -898,7 +898,7 @@ Can't connect to App. Have you connected the device?
 
 Once Fridump is working, you need the name of the app you want to dump, which you can get with `frida-ps`. Afterwards, specify the app name in Fridump.
 
-```
+```shell
 ➜  fridump git:(master) ✗ frida-ps -U
  PID  Name
 ----  ------

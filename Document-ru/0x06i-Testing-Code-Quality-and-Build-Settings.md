@@ -12,7 +12,7 @@
 
 Выполните команду `codesign`:
 
-```sh
+``shell
 $ codesign -dvvv <yourapp.app>
 Executable=/Users/Documents/<yourname>/Payload/<yourname.app>/<yourname>
 Identifier=com.example.example
