@@ -234,12 +234,12 @@ The following two subsections will show you how to access the app binary and onc
 
     - Open the app and leave it running on foreground.
     - Start an objection session by running the following command:
-        ```bash
+        ```shell
         $ objection --gadget Telegram explore
         Using USB device `iPhone`
         ```
     - Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
-        ```
+        ```shell
         ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
 
         Name               Path
@@ -266,7 +266,7 @@ The following two subsections will show you how to access the app binary and onc
         ```
         The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
     - Download the app binary using the command `file download`:
-        ```
+        ```shell
         ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
 
         Downloading /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
@@ -285,7 +285,7 @@ The following steps should work even when targeting an encrypted binary. If for 
 
 If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
-```
+```shell
 $ binwalk -e -y=xml ./Telegram\ X
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
@@ -296,7 +296,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
-```
+```shell
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
 0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC
@@ -315,7 +315,7 @@ In both cases (binwalk or radare2) we were able to extract the same two `plist` 
 
 If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
 
-```bash
+```shell
 $ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
     15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/Telegram\ X
 
@@ -378,7 +378,7 @@ In the following example we use Telegram to open the share dialog from a chat an
 
 First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
 
-```
+``shell
 $ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 ```
 
@@ -390,7 +390,7 @@ Now we open the share dialog:
 
 The following methods are displayed:
 
-```
+``shell
   1942 ms  +[PHPhotoLibrary authorizationStatus]
   1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
   1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
@@ -398,7 +398,7 @@ The following methods are displayed:
 
 If we click on "Location", another method will be traced:
 
-```
+``shell
  11186 ms  +[CLLocationManager authorizationStatus]
  11186 ms     | +[CLLocationManager _authorizationStatus]
  11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
@@ -406,7 +406,8 @@ If we click on "Location", another method will be traced:
 
 Use the auto-generated stubs of frida-trace to get more information like the return values and a backtrace. Do the following modifications to the JavaScript file below (the path is relative to the current directory):
 
-```
+```javascript
+
 // __handlers__/__CLLocationManager_authorizationStatus_.js
 
   onEnter: function (log, args, state) {
@@ -740,7 +741,7 @@ $ frida-trace -U "Apple Store" -m "*[* *restorationHandler*]"
 
 This section explains how to trace the link receiver method and how to extract additional information. For this example, we will use Telegram, as there are no restrictions in its `apple-app-site-association` file:
 
-```
+```json
 {
     "applinks": {
         "apps": [],
@@ -770,7 +771,7 @@ This section explains how to trace the link receiver method and how to extract a
 
 In order to open the links we will also use the Notes app and frida-trace with the following pattern:
 
-```
+```shell
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
@@ -780,7 +781,7 @@ Write https://t.me/addstickers/radare (got from some quick Internet research) an
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
-```
+```shell
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -788,7 +789,7 @@ Instrumenting functions...
 
 You can see that only one function was found and is being instrumented. Trigger now the universal link and observe the traces.
 
-```
+```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 ```
@@ -812,7 +813,7 @@ You can observe that the function is in fact being called. You can now add code 
 
 The new output is:
 
-```
+```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
@@ -840,7 +841,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 Again, we first let frida-trace generate the stubs in `__handlers__/`:
 
-```
+```shell
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -852,7 +853,7 @@ $S10TelegramUI31AuthorizationSequenceControllerC7account7strings7openUrl5apiId0J
 
 Now you can see a long list of functions but we still don't know which ones will be called. Trigger the universal link again and observe the traces.
 
-```
+```shell
            /* TID 0x303 */
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
@@ -868,7 +869,7 @@ There is probably no documentation for that Swift function but you can just dema
 
 > xcrun can be used invoke Xcode developer tools from the command-line, without having them in the path. In this case it will locate and run swift-demangle, an Xcode tool that demangles Swift symbols.
 
-```bash
+```shell
 $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
 18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA0
 12PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF
@@ -888,7 +889,7 @@ This not only gives you the class (or module) of the method, its name and the pa
 
 For now we will use this information to properly print the parameters by editing the stub file:
 
-```
+```javascript
 // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
 
   onEnter: function (log, args, state) {
@@ -909,7 +910,7 @@ For now we will use this information to properly print the parameters by editing
 
 This way, the next time we run it we get a much more detailed output:
 
-```
+```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
@@ -931,6 +932,7 @@ dismissInput: () -> ()) -> ()
 298619 ms     | 	presentationData: 0x1c4e40fd1
 298619 ms     | 	applicationContext: nil
 298619 ms     | 	navigationController: TelegramUI.PresentationData
+
 ```
 
 There you can observe the following:
@@ -956,7 +958,7 @@ Actually, the previous example in "Checking How the Links Are Opened" is very si
 
 In the detailed output above you can see that `NSUserActivity` object we've received meets exactly the mentioned points:
 
-```
+```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  	application:<Application: 0x10556b3c0>
@@ -966,6 +968,7 @@ In the detailed output above you can see that `NSUserActivity` object we've rece
 298382 ms  		userInfo:{
 }
 298382 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
+
 ```
 
 This knowledge should help you when testing apps supporting Handoff.
@@ -1778,7 +1781,7 @@ Notes — mobilenotes://
 
 We search for this method in the Telegram source code, this time without using Xcode, just with `egrep`:
 
-```
+```shell
 $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
 ./AppDelegate.swift:552: return UIApplication.shared.open(parsedUrl,
@@ -1791,7 +1794,7 @@ $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
 If we inspect the results we will see that `openURL:options:completionHandler:` is actually being used for universal links, so we have to keep searching. For example, we can search for `openURL(`:
 
-```
+```shell
 $ egrep -nr "openURL\(" ./Telegram-iOS/
 
 ./ApplicationContext.swift:763:  UIApplication.shared.openURL(parsedUrl)
@@ -1942,7 +1945,7 @@ For this you can also use [IDB](https://www.idbtool.com/ "IDB"):
 
 Needle can be used to test custom URL schemes, the following module can be used to open the URLs (URIs):
 
-```
+```shell
 [needle] >
 [needle] > use dynamic/ipc/open_uri
 [needle][open_uri] > show options
@@ -2382,7 +2385,7 @@ In the compiled binary you can search in its symbols or strings like this:
 
 **UIWebView**
 
-```
+``shell
 $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 489 0x0002fee9 0x10002fee9   9  10 (5.__TEXT.__cstring) ascii UIWebView
 896 0x0003c813 0x0003c813  24  25 () ascii @_OBJC_CLASS_$_UIWebView
@@ -2391,7 +2394,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 
 **WKWebView**
 
-```
+``shell
 $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 490 0x0002fef3 0x10002fef3   9  10 (5.__TEXT.__cstring) ascii WKWebView
 625 0x00031670 0x100031670  17  18 (5.__TEXT.__cstring) ascii unwindToWKWebView
@@ -2401,7 +2404,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 
 Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init "WKWebView init(frame:configuration:)")):
 
-```
+``shell
 $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 0x5c3ac 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
 0x5d97a 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
@@ -2411,7 +2414,7 @@ $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 
 You can also demangle it:
 
-```
+``shell
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
 ---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
@@ -2431,7 +2434,7 @@ webPreferences.javaScriptEnabled = false
 
 If only having the compiled binary you can search for this in it:
 
-```
+``shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 391 0x0002f2c7 0x10002f2c7  17  18 (4.__TEXT.__objc_methname) ascii javaScriptEnabled
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
@@ -2446,7 +2449,7 @@ In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [m
 
 In the compiled binary:
 
-```
+``shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 # nothing found
@@ -2558,29 +2561,35 @@ For `WKWebView`, you should verify if JavaScript is enabled. Use [`javaScriptEna
 Extend the previous script with the following line:
 
 ```javascript
+
 ObjC.choose(ObjC.classes['WKWebView'], {
   onMatch: function (wk) {
     console.log('onMatch: ', wk);
-    console.log('javaScriptEnabled: ', wk.configuration().preferences().javaScriptEnabled());
-...
+    console.log('javaScriptEnabled:', wk.configuration().preferences().javaScriptEnabled());
+//...
+  }
+});
+
 ```
 
 The output shows now that, in fact, JavaScript is enabled:
 
-```javascript
+``shell
+
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
 
 javaScriptEnabled:  true
+
 ```
 
 
 ##### Verifying that Only Secure Content is Allowed
 
-`UIWebView`s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "Enumerating WebView Instances".
+`UIWebView`'s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "Enumerating WebView Instances".
 
-For `WKWebView`s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
+For `WKWebView`'s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
 
 Extend the previous script with the following line:
 
@@ -2589,12 +2598,14 @@ ObjC.choose(ObjC.classes['WKWebView'], {
   onMatch: function (wk) {
     console.log('onMatch: ', wk);
     console.log('hasOnlySecureContent: ', wk.hasOnlySecureContent().toString());
-...
+    //...
+      }
+    });
 ```
 
 The output shows that some of the resources on the page have been loaded through insecure connections:
 
-```javascript
+``shell
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
@@ -2683,7 +2694,7 @@ do {
 
 If only having the compiled binary, you can also search for these methods, e.g.:
 
-```
+``shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
@@ -2772,7 +2783,7 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
-```
+``shell
 $ frida-trace -U "Where's My Browser?"
     -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
@@ -2838,7 +2849,7 @@ allowUniversalAccessFromFileURLs:  0
 
 Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to `0`, meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to `1` this time:
 
-```javascript
+``shell
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 ...
 
@@ -2913,14 +2924,14 @@ The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://
 ```swift
 class JavaScriptBridgeMessageHandler: NSObject, WKScriptMessageHandler {
 
-...
+//...
 
 case "multiplyNumbers":
 
         let arg1 = Double(messageArray[1])!
         let arg2 = Double(messageArray[2])!
         result = String(arg1 * arg2)
-...
+//...
 
 let javaScriptCallBack = "javascriptBridgeCallBack('\(functionFromJS)','\(result)')"
 message.webView?.evaluateJavaScript(javaScriptCallBack, completionHandler: nil)
@@ -3120,25 +3131,25 @@ In this first example, the `NSUserDefaults` are used, which is the primary *prop
 
 ```swift
 
-struct CustomPointStruct:Codable {
-    var x: Double
-    var name: String
-}
+  struct CustomPointStruct:Codable {
+      var x: Double
+      var name: String
+  }
 
-var points: [CustomPointStruct] = [
-    CustomPointStruct(x: 1, name "test"),
-    CustomPointStruct(x: 2, name "test"),
-    CustomPointStruct(x: 3, name "test"),
-]
+  var points: [CustomPointStruct] = [
+      CustomPointStruct(x: 1, name "test"),
+      CustomPointStruct(x: 2, name "test"),
+      CustomPointStruct(x: 3, name "test"),
+  ]
 
-UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
-if let data = UserDefaults.standard.value(forKey:"points") as? Data {
-    let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
-}
+  UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
+  if let data = UserDefaults.standard.value(forKey:"points") as? Data {
+      let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
+  }
 
 ```
 
-Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
+Note that `plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
 
 ##### XML
 
@@ -3187,6 +3198,24 @@ There are several ways to perform dynamic analysis:
 - For the actual persistence: Use the techniques described in the "Data Storage on iOS" chapter.
 - For the serialization itself: use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
+### Testing enforced updating
+Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
+The challenge with iOS however, is that Apple does not provide any APIs yet to automate this proces, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libaries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truely there.
+
+Please note that newer versions of an application will not fix security issues that are living in the back-ends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
+Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
+
+#### Static Analysis
+First see whethere there is an update mechanism at all: if it is not yet present, it might mean that users cannot be forced to update.
+If the mechanism is present, see whether it enforces "always latest" and whether that is indeed in line with the business strategy. Otherwise check if the mechanism is supporting to update to a given version.
+Make sure that every entry of the application goes through the updating mechanism in order to make sure that the update-mechanism cannot be bypassed.
+
+
+#### Dynamic analysis
+In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
+Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the back-end will stop calls to vulnerable back-ends and/or whether the vulnerable app-version itself is blocked by the back-end.
+Finally, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
+
 ### References
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
@@ -3200,6 +3229,7 @@ There are several ways to perform dynamic analysis:
 
 #### OWASP MASVS
 
+- V1.9: "A mechanism for enforcing updates of the mobile app exists."
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."

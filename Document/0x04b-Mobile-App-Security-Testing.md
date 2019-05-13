@@ -324,7 +324,7 @@ Infrastructure as Code also facilitates the construction of the environments req
 
 Infrastructure as Code is commonly used for projects that have Cloud-based resources because many vendors provide APIs that can be used for provisioning items (such as virtual machines, storage spaces, etc.) and working on configurations (e.g., modifying memory sizes or the number of CPUs used by virtual machines). These APIs provide alternatives to administrators' performing these activities from monitoring consoles.
 
-The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"),  [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
+The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"), [Packer](https://www.packer.io/ "Packer"), [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
 
 ###### Deployment
 
@@ -362,3 +362,12 @@ The security of an application developed with DevOps must be considered during o
 
 - [paul] - M. Paul. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press), 2014
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
+
+#### OWASP MASVS
+- V1.1: "All app components are identified and known to be needed."
+- V1.3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
+- V1.4: "Data considered sensitive in the context of the mobile app is clearly identified."
+- V1.5: "All app components are defined in terms of the business functions and/or security functions they provide."
+- V1.6: "A threat model for the mobile app and the associated remote services has been produced that identifies potential threats and countermeasures."
+- V1.7: "All security controls have a centralized implementation."
+- V1.10: "Security is addressed within all parts of the software development lifecycle."
