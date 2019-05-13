@@ -348,18 +348,6 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
 
 #### Cryptography references
-<<<<<<< HEAD
-- [Android Developer blog: Crypto provider deprecated]( https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Android Developer blog: Crypto provider deprecated")
-- [Android Developer blog: cryptography changes in android P]( https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Android Developer blog: cryptography changes in android P")
-- [Ida Pro](https://www.hex-rays.com/products/ida/ "IDA Pro")
-- [Android Developer blog: changes for NDK developers]( https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android Developer blog: changes for NDK developers")
-- [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers")
-- [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle")
-- [Legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java")
-- [Android Developer documentation](https://developer.android.com/training/articles/keystore.html "Keystore")
-- [NIST keylength recommendations](https://www.keylength.com/en/4/ "NIST keylength recommendations")
-- [BSI recommendations - 2017](https://www.keylength.com/en/8/ "BSI recommendations - 2017")
-=======
 - Android Developer blog: Crypto provider deprecated - https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
 - Android Developer blog: cryptography changes in android P - https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
 - Ida Pro - https://www.hex-rays.com/products/ida/
@@ -370,7 +358,6 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - Android Developer documentation - https://developer.android.com/training/articles
 - NIST keylength recommendations - https://www.keylength.com/en/4/
 - BSI recommendations - 2017 - https://www.keylength.com/en/8/
->>>>>>> master
 
 #### SecureRandom references
 - Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
