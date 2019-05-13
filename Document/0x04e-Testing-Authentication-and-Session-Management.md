@@ -409,13 +409,13 @@ For apps that handle sensitive data, make sure that the refresh token expires af
 Investigate the following JWT vulnerabilities while performing dynamic analysis:
 
 - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
-  *  JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
+  - JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
 - Token Storage on the client:
-  * The token storage location should be verified for mobile apps that use JWT.
+  - The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
-  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
+  - Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
 - Information Disclosure:
-  * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
+  - Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
 Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
 
@@ -446,14 +446,13 @@ If access and refresh tokens are used with stateless authentication, they should
 
 Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
 
-1.  Log into the application.
-2.  Perform a couple of operations that require authentication inside the application.
-3.  Log out.
-4.  Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
- 
+1. Log into the application.
+2. Perform a couple of operations that require authentication inside the application.
+3. Log out.
+4. Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
+
 If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
 The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")) includes a detailed explanation and more test cases.
-
 
 ### Testing OAuth 2.0 Flows
 
@@ -554,7 +553,6 @@ In all cases, the pentester should verify whether different devices are detected
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
 
-
 ### References
 
 #### OWASP Mobile Top 10 2016
@@ -562,6 +560,7 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
 
 #### OWASP MASVS
+
 - V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
 - V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."

@@ -30,7 +30,6 @@ return c.getCount() != 0;
 
 Let's further assume an attacker enters the following values into the "username" and "password" fields:
 
-
 ```sql
 username = 1' or '1' = '1
 password = 1' or '1' = '1
@@ -217,6 +216,7 @@ Java
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
+
 Kotlin
 
 ```kotlin
@@ -234,6 +234,7 @@ public boolean shouldOverrideUrlLoading(WebView view, String url) {
   }
 }
 ```
+
 Kotlin
 
 ```kotlin

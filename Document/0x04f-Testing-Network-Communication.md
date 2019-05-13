@@ -89,7 +89,7 @@ bettercap v2.22 (built for darwin amd64 with go1.12.1) [type 'help' for a list o
 
 bettercap will then automatically send the packets to the network gateway in the (wireless) network and you are able to sniff the traffic. Beginning of 2019 support for [full duplex ARP spoofing](https://github.com/bettercap/bettercap/issues/426 "Full Duplex ARP Spoofing") was added to bettercap.
 
-On the mobile phone start the browser and navigate to http://example.com, you should see output like the following when you are using Wireshark.
+On the mobile phone start the browser and navigate to `http://example.com`, you should see output like the following when you are using Wireshark.
 
 <img src="Images/Chapters/0x04f/bettercap.png" alt="Wireshark">
 
@@ -180,6 +180,7 @@ This structure can be described as follows:
 Example: `TLS_RSA_WITH_3DES_EDE_CBC_SHA`
 
 In the example above the cipher suites uses:
+
 - TLS as protocol
 - RSA Asymmetric encryption for Authentication
 - 3DES for Symmetric encryption with EDE_CBC mode
@@ -190,6 +191,7 @@ Note that in TLSv1.3 the KeyExchangeAlgorithm is not part of the cipher suite, i
 In the following listing, we’ll present the different algorithms of each part of the cipher suite.
 
 Protocols:
+
 - `SSLv1`
 - `SSLv2` - [RFC 6176](https://tools.ietf.org/html/rfc6176)
 - `SSLv3` - [RFC 6101](https://tools.ietf.org/html/rfc6101)
@@ -199,6 +201,7 @@ Protocols:
 - `TLSv1.3` - [RFC 8446](https://tools.ietf.org/html/rfc8446)
 
 Key Exchange Algorithms:
+
 - `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979)
 - `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979)
 - `RSA` - [RFC 8017](https://tools.ietf.org/html/rfc8017)
@@ -214,6 +217,7 @@ Key Exchange Algorithms:
 - `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422)
 
 Block Ciphers:
+
 - `DES`  - [RFC 4772](https://tools.ietf.org/html/rfc4772)
 - `DES_CBC`  - [RFC 1829](https://tools.ietf.org/html/rfc1829)
 - `3DES`  - [RFC 2420](https://tools.ietf.org/html/rfc2420)
@@ -224,9 +228,10 @@ Block Ciphers:
 - `AES_256_GCM` - [RFC 5288](https://tools.ietf.org/html/rfc5288)
 - `RC4_40`  - [RFC 7465](https://tools.ietf.org/html/rfc7465)
 - `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465)
-- `CHACHA20_POLY1305 `  - [RFC 7905](https://tools.ietf.org/html/rfc7905)  - [RFC 7539](https://tools.ietf.org/html/rfc7539)
+- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905)  - [RFC 7539](https://tools.ietf.org/html/rfc7539)
 
 Integrity Check Algorithms:
+
 - `MD5`  - [RFC 6151](https://tools.ietf.org/html/rfc6151)
 - `SHA`  - [RFC 6234](https://tools.ietf.org/html/rfc6234)
 - `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234)
@@ -259,6 +264,7 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 > Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning".
 
 If you want to verify whether your server supports the right cipher suites, there are various tools you can use:
+
 - nscurl - see Testing Network Communication for iOS for more details.
 - [testssl.sh](https://github.com/drwetter/testssl.sh) which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
@@ -272,7 +278,7 @@ Note that using SMS as an additional factor for critical operations is not recom
 
 There are different ways to [protect your SIM card](https://www.wired.com/story/sim-swap-attack-defend-phone/ "How to protect yourself against a SIM swap attack"), but this level of security maturity and awareness cannot be expected from a normal user and is also not enforced by the carriers.  
 
-Also the usage of emails shouldn't be considered as a secure communication channel. Encrypting emails is usually not offered by service providers and even when available not used by the average user, therefore the confidentiality of data when using emails cannot be guaranteed. Spoofing, (spear|dynamite) phishing and spamming are additional ways to trick users by abusing emails. Therefore other secure communication channels should be considered besides SMS and email.    
+Also the usage of emails shouldn't be considered as a secure communication channel. Encrypting emails is usually not offered by service providers and even when available not used by the average user, therefore the confidentiality of data when using emails cannot be guaranteed. Spoofing, (spear|dynamite) phishing and spamming are additional ways to trick users by abusing emails. Therefore other secure communication channels should be considered besides SMS and email.
 
 #### Static Analysis
 
@@ -292,9 +298,11 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 ### References
 
 #### OWASP Mobile Top 10 2016
+
 - M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
 
 #### OWASP MASVS
+
 - V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
 - V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
@@ -302,10 +310,12 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - V5.5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
 
 #### CWE
+
 - CWE-308 - Use of Single-factor Authentication
 - CWE-319 - Cleartext Transmission of Sensitive Information
 
 #### Tools
+
 - bettercap - https://www.bettercap.org
 - Burp Suite - https://portswigger.net/burp/
 - OWASP ZAP - https://www.owasp.org/index.php/
@@ -314,15 +324,19 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - Wireshark - https://www.wireshark.org/
 
 #### Android
+
 - Android supported Cipher suites - https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites
 
 #### iOS
+
 - iOS supported Cipher suites - https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc
 
 #### IANA Transport Layer Security (TLS) Parameters
+
 - TLS Cipher Suites - https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4
 
 #### OWASP TLS Cipher String Cheat Sheet
+
 - Recommendations for a cipher string - https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md
 
 #### SIM Swapping attacks
@@ -331,6 +345,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - SIM swapping: how the mobile security feature can lead to a hacked bank account - https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/
 
 #### NIST
+
 - FIPS PUB 186 - Digital Signature Standard (DSS)
 
 #### SIM Swap Fraud
@@ -339,6 +354,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - How to protect yourself against a SIM swap attack - https://www.wired.com/story/sim-swap-attack-defend-phone/
 
 #### IETF
+
 - RFC 6176 - https://tools.ietf.org/html/rfc6176
 - RFC 6101 - https://tools.ietf.org/html/rfc6101
 - RFC 2246 - https://www.ietf.org/rfc/rfc2246
