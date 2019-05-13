@@ -1,5 +1,26 @@
 This document is automatically generated at {{gitbook.time}}
 
+1.1.1 7 May 2019:
+
+- Improvements on various tool related parts, such as how to use ondeviceconsole, adb, nscurl, Frida & Needle
+- Updated 0x4e regarding SMS communication
+- Many grammer/style updates
+- Added Android description regarding MASVS requirement 7.8
+- Updated contributorlist
+- Various updates on instructions regarding TLS & encryption
+- Removed some erroneous Information
+- Fixed parts of the allignment of the MASVS requirements with the MSTG
+- Updated information on various topics such as jailbreaking & network Interception on both iOS and Android
+- Added some steps for Frida detection
+- Added writeups on Android changes, regarding permissions, application signing, device identifiers, key-attestation, and more.
+- Extended guidance on Safetynet attestation
+- Added information on Magisk
+- Added Firebase misconfiguration information
+- Added references to more testing tools
+- Updated contributorlist
+- Added a lot of information to iOS platform testing
+- Added a lot of fixes for our book-release
+
 1.1.0 30 Nov 2018:
 
 - Added more samples in Kotlin.
