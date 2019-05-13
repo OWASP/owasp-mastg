@@ -23,13 +23,15 @@ An overview of all Android codenames, their version number and API Levels can be
 
 Installed SDKs are on the following paths:
 
-```
 Windows:
 
+```shell
 C:\Users\<username>\AppData\Local\Android\sdk
+```
 
 MacOS:
 
+```shell
 /Users/<username>/Library/Android/sdk
 ```
 
@@ -110,7 +112,8 @@ There are different configurations available for the Network Security Configurat
 ```xml
 <certificates src=["system" | "user" | "raw resource"]
               overridePins=["true" | "false"] />
-```
+
+
 Each certificate can be one of the following:
 - a "raw resource" ID pointing to a file containing X.509 certificates
 - "system" for the pre-installed system CA certificates
@@ -159,7 +162,7 @@ Android CertKiller (v0.1)
 CertKiller Wizard Mode
 ---------------------------------
 List of devices attached
-4200dc72f27bc44d	device
+4200dc72f27bc44d    device
 
 ---------------------------------
 
@@ -236,6 +239,7 @@ The following procedure, which works on the Android emulator that ships with And
 
 1. Set up your proxy to listen on localhost and for example port 8080.
 2. Configure the HTTP proxy in the emulator settings:
+
  - Click on the three dots in the emulator menu bar
  - Open the Settings Menu
  - Click on the Proxy tab
@@ -272,7 +276,6 @@ $ adb push cacert.cer /sdcard/
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
 For Android 7 and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
-
 
 ##### Connecting to an Android Virtual Device (AVD) as Root
 
@@ -457,16 +460,16 @@ Below you can find boiler plate source code for a Frida script that will help yo
 
 ```javascript
 setTimeout(function(){
-	Java.perform(function (){
-		console.log("[*] Script loaded")
+    Java.perform(function (){
+        console.log("[*] Script loaded")
 
-		var Proxy = Java.use("<package-name>.<class-name>")
+        var Proxy = Java.use("<package-name>.<class-name>")
 
-		Proxy.isProxySet.overload().implementation = function() {
-			console.log("[*] isProxySet function invoked")
-			return false
-		}
-	});
+        Proxy.isProxySet.overload().implementation = function() {
+            console.log("[*] isProxySet function invoked")
+            return false
+        }
+    });
 });
 ```
 
@@ -516,6 +519,7 @@ $ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
 The tcpdump command above involves
+
 - listening on the wlan0 interface,
 - defining the size (snapshot length) of the capture in bytes to get everything (-s0), and
 - writing to a file (-w). Instead of a filename, we pass `-`, which will make tcpdump write to stdout.
@@ -547,6 +551,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 ##### Burp plugins to Process Non-HTTP Traffic
 
 Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+
 - [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
 - [Mitm-relay](https://github.com/jrmdev/mitm_relay).
 
@@ -710,35 +715,35 @@ $ drozer console connect
 
 - To list all the packages installed on the emulator, execute the following command:
 
-	`dz> run app.package.list`
+    `dz> run app.package.list`
 
- - To find the package name of a specific app, pass  "-f" and a search string:
+- To find the package name of a specific app, pass  "-f" and a search string:
 
-	`dz> run app.package.list –f (string to be searched)`
+    `dz> run app.package.list –f (string to be searched)`
 
 - To see basic information about the package, execute the following command:
 
-  	`dz> run app.package.info –a (package name)`
+    `dz> run app.package.info –a (package name)`
 
 - To identify the exported application components, execute the following command:
 
-  	`dz> run app.package.attacksurface (package name)`
+    `dz> run app.package.attacksurface (package name)`
 
 - To identify the list of exported Activities in the target application, execute the following command:
 
-  	`dz> run app.activity.info -a (package name)`
+    `dz> run app.activity.info -a (package name)`
 
 - To launch the exported Activities, execute the following command:
 
-   	`dz> run app.activity.start --component (package name) (component name)`
+    `dz> run app.activity.start --component (package name) (component name)`
 
 - To identify the list of exported Broadcast receivers in the target application, execute the following command:
 
     `dz> run app.broadcast.info -a (package name)`
 
-* To send a message to a Broadcast receiver, execute the following command:
+- To send a message to a Broadcast receiver, execute the following command:
 
-	`dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
+    `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
 
 **Using Modules:**
 
@@ -757,7 +762,7 @@ mwrlabs.tools.setup.sqlite3
 
 For more information about a module, pass the `–d` option to view the module's description:
 
-```
+```shell
 dz> module  search url -d
 mwrlabs.urls
     Finds URLs with the HTTP or HTTPS schemes by searching the strings
@@ -773,14 +778,13 @@ mwrlabs.urls
 
 You can install modules with the `module` command:
 
-```
+```shell
 dz> module install mwrlabs.tools.setup.sqlite3
 Processing mwrlabs.tools.setup.sqlite3... Already Installed.
 Successfully installed 1 modules, 0 already installed
 ```
 
 This will install any module that matches your query. Newly installed modules are dynamically loaded into the console and are available immediately.
-
 
 #### Potential Obstacles
 
@@ -829,7 +833,6 @@ For the Builder.add method, you can find the possible methods by running the fol
 This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
 
 Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
-
 
 ##### Root Detection
 

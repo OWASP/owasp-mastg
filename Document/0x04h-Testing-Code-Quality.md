@@ -222,6 +222,7 @@ Kotlin
 ```kotlin
 webView.loadUrl("javascript:initialize($myNumber);")
 ```
+
 Another example of XSS issues determined by user input is public overriden methods.
 
 Java
@@ -248,17 +249,22 @@ Kotlin
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the HTML parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
 
 - ADB
+
 ```shell
 $ adb shell
 $ am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
 ```
+
 - Clipboard Data
+
 ```shell
 $ am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
 ```
+
 - 3rd party Intent
 
 Java
+
 ```java
 Intent i = new Intent();
 i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
@@ -266,6 +272,7 @@ i.putExtra("url","http://test/test");
 i.putExtra("html","XSS PoC <script>alert(123)</script>");
 view.getContext().startActivity(i);
 ```
+
 Kotlin
 
 ```kotlin
@@ -294,7 +301,6 @@ Consider how data will be rendered in a response. For example, if data is render
 | " | &amp;quot;|
 | ' | &amp;#x27;|
 | / | &amp;#x2F;|
-
 
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://goo.gl/motVKX "OWASP XSS Prevention Cheat Sheet").
 
