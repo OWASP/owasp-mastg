@@ -62,7 +62,7 @@ Dangers of SMS-OTP
 
 Threats:
 
--  Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
+- Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
 - Trojans: Installed malicious applications with access to text messages may forward the OTP to another number or backend.
 - SIM SWAP Attack: In this attack, the adversary calls the phone company, or works for them, and has the victim's number moved to a SIM card owned by the adversary. If successful, the adversary can see the SMS messages which are sent to the victim's phone number. This includes the messages used in the 2-factor authentication.
 - Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.
@@ -102,7 +102,7 @@ Authentication bypass vulnerabilities exist when authentication state is not con
 
 Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
 
-```
+```html
 http://www.site.com/page.asp?authenticated=no
 ```
 
@@ -110,7 +110,7 @@ The client can arbitrarily change the GET parameters sent with the request. Noth
 
 Although this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. They assume that these parameters can't be tampered with. Consider, for example, the following [classic vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on the cookie "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access by simply setting the cookie value as follows:
 
-```
+```html
 isAdmin=True
 ```
 
@@ -146,8 +146,7 @@ After adding the zxcvbn JavaScript library to the HTML page, you can execute the
 
 The score is defined as follows and can be used for a password strength bar for example:
 
-
-```
+```html
 0 # too guessable: risky password. (guesses < 10^3)
 
 1 # very guessable: protection from throttled online attacks. (guesses < 10^6)
@@ -317,14 +316,13 @@ Use the app extensively (going through all UI flows) while using an interception
 
 Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information testing session management.
 
-
 ### Testing Stateless (Token-Based) Authentication
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
 JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
 
-```
+```base64
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
 ```
 
@@ -386,7 +384,6 @@ Once signed, a stateless authentication token is valid forever unless the signin
 A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token, if the access token expires.
 
 For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
-
 
 ```Java
  app.post('/refresh_token', function (req, res) {

@@ -69,6 +69,7 @@ For longer pages, use the following tools to make the page easily scannable:
 ### Effective use of lists
 
 When presenting your content in a list format:
+
 - Use numbered lists when the order of entries is important.
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
@@ -78,8 +79,8 @@ When presenting your content in a list format:
 - - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
 - - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
-
 ### Numbering conventions
+
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
 
 When using any number higher than ten, use the numeric version (e.g., "12" or “300”).
@@ -108,7 +109,7 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
 
-### Standardization 
+### Standardization
 
 This is a list of words/abbreviations that are used inconsistently at the moment in the MSTG and need standardization:
 
@@ -134,7 +135,7 @@ were not -> weren't
 will not -> wont  
 would not -> wouldn't  
 you are -> you're  
-you have + *verb* -> you've + *verb* 
+you have + *verb* -> you've + *verb*
 you will -> you'll  
 
 ### Abbreviations
@@ -239,6 +240,7 @@ Use straight double quotes, straight single quotes, and straight apostrophes (no
 Spell/punctuate **specific** technical terms as they are used by the company (e.g., use the company website).
 
 In order of preference, spell/punctuate **generic** technical terms according to
+
 1. Merriam Webster's Collegiate Dictionary, 11th edition.
 2. Microsoft Manual of Style, 4th edition
 3. foldoc.org (Free Online Dictionary of Computing)
@@ -275,7 +277,6 @@ Markdown blockquotes can be used for comments in the documents by using ">"/
 
 > This is a blockquote
 
-
 ## 8. Code and Shell Commands
 
 Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
@@ -294,9 +295,11 @@ public static void main(String[] args) { System.out.println(" Hello World!"); } 
 
 When including shell commands, make sure to remove any host names and usernames from the command prompt, e.g.:
 
-```
+```shell
 $ echo 'Hello World'
+Hello World
 ```
+
 **In-text keywords**
 
 When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
