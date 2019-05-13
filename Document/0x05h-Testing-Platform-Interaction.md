@@ -1176,8 +1176,95 @@ There are several ways to perform dynamic analysis:
 
 ### Testing enforced updating
 
+Starting from API level 21 (Android 5.0), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change.
+Enforced updatinc can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
+
+Please note that newer versions of an application will not fix security issues that are living in the back-ends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
+Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
+
+#### Static analysis
+
+The code sample below shows the example of an app-update:
+```java
+//Part 1: check for update
+// Creates instance of the manager.
+AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(context);
+
+// Returns an intent object that you use to check for an update.
+Task<AppUpdateInfo> appUpdateInfo = appUpdateManager.getAppUpdateInfo();
+
+// Checks that the platform will allow the specified type of update.
+if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+      // For a flexible update, use AppUpdateType.FLEXIBLE
+      && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                  // Request the update.
+
+
+                  //...Part 2: request update
+                  appUpdateManager.startUpdateFlowForResult(
+                     // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                     appUpdateInfo,
+                     // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                     AppUpdateType.IMMEDIATE,
+                     // The current activity making the update request.
+                     this,
+                     // Include a request code to later monitor this update request.
+                     MY_REQUEST_CODE);
+
+
+                     //...Part 3: check if update completed succesfully
+ @Override
+ public void onActivityResult(int requestCode, int resultCode, Intent data) {
+   if (myRequestCode == MY_REQUEST_CODE) {
+     if (myRequestCode != RESULT_OK) {
+       log("Update flow failed! Result code: " + resultCode);
+       // If the update is cancelled or fails,
+       // you can request to start the update again in case of forced updates
+     }
+   }
+ }
+
+ //..Part 4:
+ // Checks that the update is not stalled during 'onResume()'.
+// However, you should execute this check at all entry points into the app.
+@Override
+protected void onResume() {
+  super.onResume();
+
+  appUpdateManager
+      .getAppUpdateInfo()
+      .addOnSuccessListener(
+          appUpdateInfo -> {
+            ...
+            if (appUpdateInfo.updateAvailability()
+                == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                // If an in-app update is already running, resume the update.
+                manager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    IMMEDIATE,
+                    this,
+                    MY_REQUEST_CODE);
+            }
+          });
+}
+}
+```
+>Source: https://developer.android.com/guide/app-bundle/in-app-updates
+
+When checking for a proper update mechanism, make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
+Next, pay attention to the `AppUpdateType.IMMEDIATE` use: if a security update comes in, then this flag should be used in order to make sure that the user cannot go forward with using the app without updating it.
+Last, in part 3 of the example: make sure that cancelations or errors do end up in re-checks and that a user cannot move forward in case of a critical security update.
+
+#### Dynamic analysis
+In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store. Next, see if it requires the enforced updating and if you are able to cancel the update one way or another and if you can then still continue to use the app / exploit the vulnerability.
+
 
 ### References
+
+
+#### Android App Bundles and updates
+
+- https://developer.android.com/guide/app-bundle/in-app-updates
 
 #### Android Fragment Injection
 
@@ -1205,7 +1292,7 @@ There are several ways to perform dynamic analysis:
 - M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
-
+- V1.9: "A mechanism for enforcing updates of the mobile app exists."
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."

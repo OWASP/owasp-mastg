@@ -2382,7 +2382,7 @@ In the compiled binary you can search in its symbols or strings like this:
 
 **UIWebView**
 
-```
+```sh
 $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 489 0x0002fee9 0x10002fee9   9  10 (5.__TEXT.__cstring) ascii UIWebView
 896 0x0003c813 0x0003c813  24  25 () ascii @_OBJC_CLASS_$_UIWebView
@@ -2391,7 +2391,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 
 **WKWebView**
 
-```
+```sh
 $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 490 0x0002fef3 0x10002fef3   9  10 (5.__TEXT.__cstring) ascii WKWebView
 625 0x00031670 0x100031670  17  18 (5.__TEXT.__cstring) ascii unwindToWKWebView
@@ -2401,7 +2401,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 
 Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init "WKWebView init(frame:configuration:)")):
 
-```
+```sh
 $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 0x5c3ac 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
 0x5d97a 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
@@ -2411,7 +2411,7 @@ $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 
 You can also demangle it:
 
-```
+```sh
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
 ---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
@@ -2431,7 +2431,7 @@ webPreferences.javaScriptEnabled = false
 
 If only having the compiled binary you can search for this in it:
 
-```
+```sh
 $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 391 0x0002f2c7 0x10002f2c7  17  18 (4.__TEXT.__objc_methname) ascii javaScriptEnabled
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
@@ -2446,7 +2446,7 @@ In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [m
 
 In the compiled binary:
 
-```
+```sh
 $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 # nothing found
@@ -2558,29 +2558,35 @@ For `WKWebView`, you should verify if JavaScript is enabled. Use [`javaScriptEna
 Extend the previous script with the following line:
 
 ```javascript
+
 ObjC.choose(ObjC.classes['WKWebView'], {
   onMatch: function (wk) {
     console.log('onMatch: ', wk);
-    console.log('javaScriptEnabled: ', wk.configuration().preferences().javaScriptEnabled());
-...
+    console.log('javaScriptEnabled:', wk.configuration().preferences().javaScriptEnabled());
+//...
+  }
+});
+
 ```
 
 The output shows now that, in fact, JavaScript is enabled:
 
-```javascript
+```sh
+
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
 
 javaScriptEnabled:  true
+
 ```
 
 
 ##### Verifying that Only Secure Content is Allowed
 
-`UIWebView`s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "Enumerating WebView Instances".
+`UIWebView`'s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "Enumerating WebView Instances".
 
-For `WKWebView`s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
+For `WKWebView`'s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
 
 Extend the previous script with the following line:
 
@@ -2589,12 +2595,14 @@ ObjC.choose(ObjC.classes['WKWebView'], {
   onMatch: function (wk) {
     console.log('onMatch: ', wk);
     console.log('hasOnlySecureContent: ', wk.hasOnlySecureContent().toString());
-...
+    //...
+      }
+    });
 ```
 
 The output shows that some of the resources on the page have been loaded through insecure connections:
 
-```javascript
+```sh
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
@@ -2683,7 +2691,7 @@ do {
 
 If only having the compiled binary, you can also search for these methods, e.g.:
 
-```
+```sh
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
@@ -2772,7 +2780,7 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
-```
+```sh
 $ frida-trace -U "Where's My Browser?"
     -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
@@ -2838,7 +2846,7 @@ allowUniversalAccessFromFileURLs:  0
 
 Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to `0`, meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to `1` this time:
 
-```javascript
+```sh
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 ...
 
@@ -2913,14 +2921,14 @@ The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://
 ```swift
 class JavaScriptBridgeMessageHandler: NSObject, WKScriptMessageHandler {
 
-...
+//...
 
 case "multiplyNumbers":
 
         let arg1 = Double(messageArray[1])!
         let arg2 = Double(messageArray[2])!
         result = String(arg1 * arg2)
-...
+//...
 
 let javaScriptCallBack = "javascriptBridgeCallBack('\(functionFromJS)','\(result)')"
 message.webView?.evaluateJavaScript(javaScriptCallBack, completionHandler: nil)
@@ -3120,21 +3128,21 @@ In this first example, the `NSUserDefaults` are used, which is the primary *prop
 
 ```swift
 
-struct CustomPointStruct:Codable {
-    var x: Double
-    var name: String
-}
+  struct CustomPointStruct:Codable {
+      var x: Double
+      var name: String
+  }
 
-var points: [CustomPointStruct] = [
-    CustomPointStruct(x: 1, name "test"),
-    CustomPointStruct(x: 2, name "test"),
-    CustomPointStruct(x: 3, name "test"),
-]
+  var points: [CustomPointStruct] = [
+      CustomPointStruct(x: 1, name "test"),
+      CustomPointStruct(x: 2, name "test"),
+      CustomPointStruct(x: 3, name "test"),
+  ]
 
-UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
-if let data = UserDefaults.standard.value(forKey:"points") as? Data {
-    let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
-}
+  UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
+  if let data = UserDefaults.standard.value(forKey:"points") as? Data {
+      let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
+  }
 
 ```
 
