@@ -8,7 +8,7 @@ In the "Cryptography for Mobile Apps" chapter, we introduced general cryptograph
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
 ##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
-The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCrypto.h "CommonCrypto.h"):
+The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file ](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 - The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
 - The `CommonDigest.h` gives the parameters for the hashing Algorithms
 - The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
