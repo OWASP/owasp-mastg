@@ -4,22 +4,20 @@
 
 Contributing to the MSTG can be done in many different ways:
 
-### Creating issues
-
 * Create [Issues] for missing content or errors. Explain what you think is missing and give a suggestion as to where it could be added. 
 * Create a [Pull Request (PR)](https://github.com/OWASP/owasp-mstg/pulls "Create a pull request"). This is a direct contribution to the guide and your PR may be merged after review. Be sure to follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide") when writing content. You should ideally create an issue for any PR you would like to submit, as we can first review the merit of the PR and avoid any unnecessary work. This is of course not needed for small modifications such as correcting typos.
 * Review pull requests. If you are a fluent speaker in any of the different languages that the MSTG is available in, feel free to give feedback on any of the submitted PRs.
 * Proofread and fix errors. If you are studying the MSTG, write down any error, no matter how small, and submit them in an Issue or fix them yourself through a PR.
 
-//todo; check https://github.com/OWASP/CheatSheetSeries/blob/master/CONTRIBUTING.md : spelling, full setup or issues
+## Making sure your PR is accepted
 
-//add reference to the style-guide: Quality of written content is just as important as the content
+In order to increase the chances of your PR being accepted, please make sure that:
 
-//add We review before merge (e.g. line out process and max response time at )
+* Your submission is compliant with our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide").
+* Your code snippets are well-tested and provide comments for key code lines
+* Your test cases explain issues on open-source or specifically designed vulnerable applications. Do not show vulnerabilities or bad coding practices on commercial applications. Example applications you can use are [OWASP iGOAT](https://www.owasp.org/index.php/OWASP_iGoat_Tool_Project "OWASP iGOAT"), applications from the [MSTG Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground") or any of the [MSTG CrackMes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG CrackMes").
 
-// add that the code snippets must be well tested and maybe give some hints on the target apps people is allowed to use, e.g. open source apps, give preference to the hacking playground app or other OWASP apps like iGoat
-
-//Use PR template: make sure that you fullfill all requirements (and check them)
+After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 14 days have passed.
 
 ## How to set up my contributor environment
 
