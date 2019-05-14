@@ -268,7 +268,7 @@ $ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
 
 An easy way to install a CA certificate is to push the certificate to the device and add it to the certificate store via Security Settings. For example, you can install the PortSwigger (Burp) CA certificate as follows:
 
-1. Start Burp and use a web browser on the host to navigate to http://burp/, then download `cacert.der` by clicking the "CA Certificate" button.
+1. Start Burp and use a web browser on the host to navigate to burp/, then download `cacert.der` by clicking the "CA Certificate" button.
 2. Change the file extension from `.der` to `.cer`.
 3. Push the file to the emulator:
 

@@ -324,7 +324,3 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 #### XSS via start ContentActivity
 
 - https://hackerone.com/reports/189793
-
-#### Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?
-
-- http://blog.ostorlab.co/2016/03/android-sql-and-contentproviders-or-why.html

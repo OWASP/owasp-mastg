@@ -156,8 +156,8 @@ The applications listed below can be used as training materials. Note: only the 
  - DIVA Android: An app intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges - https://github.com/payatu/diva-android
  - DodoVulnerableBank: An insecure Android app from 2015 - https://github.com/CSPF-Founder/DodoVulnerableBank
  - InsecureBankv2: A vulnerable Android app made for security enthusiasts and developers to learn the Android insecurities by testing a vulnerable application. It has been updated in 2018 and contains a lot of vulnerabilities - https://github.com/dineshshetty/Android-InsecureBankv2
- - MSTG Android app: Java - A vulnerable Android app with vulnerabilities similar to the test cases described in this document - https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/OMTG-Android-App
- - MSTG Android app: Kotlin - A vulnerable Android app with vulnerabilities similar to the test cases described in this document - https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Kotlin-App
+ - MSTG Android app: Java - A vulnerable Android app with vulnerabilities similar to the test cases described in this document - https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App
+ - MSTG Android app: Kotlin - A vulnerable Android app with vulnerabilities similar to the test cases described in this document - https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App
 
 #### iOS
 

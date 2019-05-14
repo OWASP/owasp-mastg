@@ -362,7 +362,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - security providers -  https://developer.android.com/reference/java/security/Provider.html
 - Spongy Castle  - https://rtyley.github.io/spongycastle/
 - Legion of the Bouncy Castle - https://www.bouncycastle.org/java.html
-- Android Developer documentation - https://developer.android.com/training/articles
+- Android Developer documentation - https://developer.android.com/guide
 - NIST keylength recommendations - https://www.keylength.com/en/4/
 - BSI recommendations - 2017 - https://www.keylength.com/en/8/
 

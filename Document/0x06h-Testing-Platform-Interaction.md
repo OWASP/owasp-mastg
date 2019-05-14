@@ -3073,7 +3073,7 @@ There are various ways to encode and decode JSON within iOS by using different 3
 - [Mantle](https://github.com/Mantle/Mantle "Mantle")
 - [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel")
 - [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON")
-- [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper, "ObjectMapper library")
+- [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper "ObjectMapper library")
 - [JSONKit](https://github.com/johnezang/JSONKit "JSONKit")
 - [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel")
 - [YYModel](https://github.com/ibireme/YYModel "YYModel")

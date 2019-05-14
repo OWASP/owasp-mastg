@@ -94,7 +94,7 @@ Better security is achieved by using the fingerprint API in conjunction with the
 
 An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the KeyStore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key. The advantage of this is that transactions can be signed using KeyStore APIs without ever extracting the private key from the KeyStore. Consequently, it is impossible for attackers to obtain the key from memory dumps or by using instrumentation.
 
-Note that there are quiet some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. See the Samsung Pass SDK for instance, which uses an `onComplete` handler with no cryptographic binding. See [the Samsung Programming Guide](https://developer.samsung.com/common/download/check.do?actId=1106 "Pass programming guide") for more details.
+Note that there are quite some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. Be very cautious when using third party SDKs to handle sensitive authentication logic.
 
 #### Static Analysis
 
@@ -281,4 +281,3 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 #### Request App Permissions
 
 - Runtime Permissions - https://developer.android.com/training/permissions/requesting
-- Samsung Pass Developer Guide - https://developer.samsung.com/galaxy/pass/guide

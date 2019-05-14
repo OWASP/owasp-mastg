@@ -206,7 +206,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 (For nonessential prerequisites, please refer to [Device Dependencies](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide#device-dependencies)).
 
-- Add the following repository to the Cydia Sources: http://mobiletools.mwrinfosecurity.com/cydia/  
+- Add the following repository to the Cydia Sources: mobiletools.mwrinfosecurity.com/cydia/  
 - Search for the NeedleAgent package and install it.
 
 ![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_1.jpg)  ![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_2.jpg)
