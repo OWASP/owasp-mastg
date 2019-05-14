@@ -42,9 +42,3 @@ Although we greatly appreciate any and all contributions to the project, there a
 
 
 //TODO: add markdown stylesheet to root so that studio is ok.
-//TODO: add markdown checker as part of the build process
-  - sudo apt-get install python3.5
-  - npm install -g markdownlint-cli
-  - npm install -g markdown-link-check
-  - npm install -g gitbook-cli
-//todo: add shellscripts as shown at https://github.com/OWASP/CheatSheetSeries/tree/master/scripts
