@@ -363,7 +363,6 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
 
-
 ### Testing for Sensitive Functionality Exposure Through IPC
 
 #### Overview
@@ -372,21 +371,21 @@ During implementation of a mobile application, developers may apply traditional 
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
 
--  [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
--  [Services](https://developer.android.com/guide/components/services.html "IPCServices")
--  [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
--  [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
--  [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
--  [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
+- [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
+- [Services](https://developer.android.com/guide/components/services.html "IPCServices")
+- [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
+- [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
+- [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
+- [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
 
 #### Static Analysis
 
 We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the source code must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
 
--	[`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
--	[`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
--	[`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
--	[`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
+- [`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
+- [`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
+- [`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
+- [`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
 
 An "exported" activity, service, or content  can be accessed by other apps. There are two common ways to designate a component as exported. The obvious one is setting the export tag to true `android:exported="true"`. The second way involves defining an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When this is done, the export tag is automatically set to "true." To prevent all other Android apps from interacting with the IPC component element, be sure that the `android:exported="true"` value and an `<intent-filter>` aren't in their `AndroidManifest.xml` files unless this is necessary.
 
@@ -528,7 +527,6 @@ smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
 ```
 
 BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://goo.gl/ViRYPC "SendBroadcast"). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
-
 
 #### Dynamic Analysis
 
@@ -674,7 +672,6 @@ Extra: phonenumber=07123456789 (java.lang.String)
 Extra: newpass=12345 (java.lang.String)`
 ```
 
-
 ### Testing JavaScript Execution in WebViews
 
 #### Overview
@@ -724,16 +721,15 @@ To address these attack vectors, check the following:
   - the certificate is checked properly (see test case "Testing Endpoint Identify Verification"), and/or
   - the certificate should be pinned (see "Testing Custom Certificate Stores and SSL Pinning").
 
-
 ### Testing WebView Protocol Handlers
 
 #### Overview
 
 Several default [schemas](https://developer.android.com/guide/appendix/g-app-intents.html "Intent List") are available for Android URLs. They can be triggered within a WebView with the following:
 
--	http(s)://
--	file://
--	tel://
+- http(s)://
+- file://
+- tel://
 
 WebViews can load remote content from an endpoint, but they can also load local content from the app data directory or external storage. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
 

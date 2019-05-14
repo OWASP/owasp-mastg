@@ -423,7 +423,6 @@ Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "
 
 Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 
-
 ### User Logout and Session Timeouts
 
 Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking. The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
@@ -590,7 +589,6 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - Mulliner, Collin, et al. "SMS-based one-time passwords: attacks and defense." International Conference on Detection of Intrusions and Malware, and Vulnerability Assessment. Springer, Berlin, Heidelberg, 2013.
 - Siadati, Hossein, et al. "Mind your SMSes: Mitigating social engineering in second factor authentication." Computers & Security 65 (2017): 14-28.
 -Siadati, Hossein, Toan Nguyen, and Nasir Memon. "Verification code forwarding attack (short paper)." International Conference on Passwords. Springer, Cham, 2015.
-
 
 ##### Tools
 
