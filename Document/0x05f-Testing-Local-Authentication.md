@@ -7,6 +7,7 @@ In Android, there are two mechanisms supported by the Android Runtime for local 
 ### Testing Confirm Credentials
 
 #### Overview
+
 The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
@@ -51,6 +52,7 @@ Reassure that the lock screen is set:
 ```
 
 - setup the lock screen to confirm:
+
 ```java
   private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
   Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
@@ -59,8 +61,8 @@ Reassure that the lock screen is set:
         }
 ```
 
-
 - use the key after lock screen
+
 ```java
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -77,7 +79,6 @@ Reassure that the lock screen is set:
 ```
 
 Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
-
 
 #### Dynamic Analysis
 

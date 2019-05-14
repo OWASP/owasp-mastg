@@ -13,7 +13,7 @@
 
 
 # How to setup my contributor environment?
-
+//START FROM GIT TO VISUAL STUDIO CODE
 
 # What not to do
 //We do NOT support writeups with commercial tools, other than referring to a security tool in the tools section. But write-ups to detect an issue SHOULD first be based on Free or Open Source tooling.

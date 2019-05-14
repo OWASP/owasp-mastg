@@ -432,7 +432,7 @@ Failing to destroy the server-side session is one of the most common logout func
 
 Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
 
-##### Verifying Best Practices
+#### Verifying Best Practices
 
 If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
 

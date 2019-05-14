@@ -111,7 +111,7 @@ In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubf
 
 The misconfigured Firebase instance can be identified by making the following network call:
 
-_https://\<firebaseProjectName\>.firebaseio.com/.json_
+`https://\<firebaseProjectName\>.firebaseio.com/.json`
 
 The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner, "Firebase Scanner"), a python script that automates the task above as shown below:
 
@@ -199,7 +199,7 @@ As previously mentioned, there are several ways to store information on an Andro
 
 Encryption should implemented using proven SDK functions. The following describes bad practices to look for in the source code:
 
--  Locally stored sensitive information "encrypted" via simple bit operations like XOR or bit flipping. These operations should be avoided because the encrypted data can be recovered easily.
+- Locally stored sensitive information "encrypted" via simple bit operations like XOR or bit flipping. These operations should be avoided because the encrypted data can be recovered easily.
 - Keys used or created without Android onboard features, such as the Android KeyStore
 - Keys disclosed by hard-coding
 
@@ -238,29 +238,30 @@ public void useXorStringHiding(String myHiddenMessage) {
 ```
 
 Verify common locations of secrets:
-- resources (typically at res/values/strings.xml)
 
-Example:
-```xml
-<resources>
-    <string name="app_name">SuperApp</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="secret_key">My_Secret_Key</string>
-  </resources>
-```
+- resources (typically at res/values/strings.xml)
+  Example:
+
+  ```xml
+  <resources>
+      <string name="app_name">SuperApp</string>
+      <string name="hello_world">Hello world!</string>
+      <string name="action_settings">Settings</string>
+      <string name="secret_key">My_Secret_Key</string>
+    </resources>
+  ```
 
 - build configs, such as in local.properties or gradle.properties
+  Example:
 
-Example:
-```
-buildTypes {
-  debug {
-    minifyEnabled true
-    buildConfigField "String", "hiddenPassword", "\"${hiddenPassword}\""
+  ```groovy
+  buildTypes {
+    debug {
+      minifyEnabled true
+      buildConfigField "String", "hiddenPassword", "\"${hiddenPassword}\""
+    }
   }
-}
-```
+  ```
 
 ##### KeyStore
 
@@ -318,12 +319,14 @@ Install and use the app, executing all functions at least once. Data can be gene
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
 
 ### Testing Local Storage for Input Validation
+
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
 > Note: Similar holds for private accessible data on a rooted device
 
 #### Static analysis
 
 ##### Using Shared Preferences
+
 When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaining the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
 Using reflection based persistence? Check the section on "Testing Object Persistence" for Android to see how it should be validated.
 Using the `SharedPreferences.Editor` to store and read certificates or keys? Make sure you have patched your security provider given vulnerabilities such as found in [Bouncy Castle](https://www.cvedetails.com/cve/CVE-2018-1000613/ "Key reading vulnerability due to unsafe reflection").
@@ -331,8 +334,8 @@ Using the `SharedPreferences.Editor` to store and read certificates or keys? Mak
 In all cases, having the content HMACed can help to ensure that no additions and/or changes have been applied.
 
 ##### Using Other Storage Mechanisms
-In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
+In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
 ### Testing Logs for Sensitive Data
 
@@ -351,15 +354,15 @@ Use a centralized logging class and mechanism and remove logging statements from
 You should check the apps' source code for logging mechanisms by searching for the following keywords:
 
 - Functions and classes, such as:
-  * `android.util.Log`
-  * `Log.d` | `Log.e` | `Log.i` | `Log.v` | `Log.w` | `Log.wtf`
-  * `Logger`
+  - `android.util.Log`
+  - `Log.d` | `Log.e` | `Log.i` | `Log.v` | `Log.w` | `Log.wtf`
+  - `Logger`
 
 - Keywords and system output:
-  * `System.out.print` | `System.err.print`
-  * logfile
-  * logging
-  * logs
+  - `System.out.print` | `System.err.print`
+  - logfile
+  - logging
+  - logs
 
 While preparing the production release, you can use tools like `ProGuard` (included in Android Studio). [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
 
@@ -402,7 +405,6 @@ SecureLog.v("Private key [byte format]: ", key);
 
 Then configure ProGuard to strip its calls.
 
-
 #### Dynamic Analysis
 
 Use all the mobile app functions at least once, then identify the application's data directory and look for log files (`/data/data/<package-name>`). Check the application logs to determine whether log data has been generated; some mobile applications create and store their own logs in the data directory.  
@@ -434,6 +436,7 @@ You can embed third-party services in apps. These services can implement tracker
 The downside is a lack of visibility: you can't know exactly what code third-party libraries execute. Consequently, you should make sure that only necessary, non-sensitive information will be sent to the service.
 
 Most third-party services are implemented in one of two ways:
+
 - With a standalone library, such as an Android project Jar that is included in the APK
 - With a full SDK
 
@@ -451,7 +454,6 @@ All data sent to third-party services should be anonymized. Data (such as applic
 
 Check all requests to external services for embedded sensitive information.
 To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with _Burp Suite Professional_ or _OWASP ZAP_. Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
-
 
 ### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields
 
@@ -471,11 +473,9 @@ In the layout definition of an activity, you can define `TextViews` that have XM
 
 The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions"):
 
-
 #### Dynamic Analysis
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
-
 
 ### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms
 
@@ -488,10 +488,11 @@ As part of Android's IPC mechanisms, content providers allow an app's stored dat
 The first step is to look at `AndroidManifest.xml` to detect content providers exposed by the app. You can identify content providers by the `<provider>` element. Complete the following steps:
 
 - Determine whether the value of the export tag is "true" (`android:exported="true"`). Even if it is not, the tag will be set to "true" automatically if an `<intent-filter>` has been defined for the tag. If the content is meant to be accessed only by the app itself, set `android:exported` to "false." If not, set the flag to "true" and define proper read/write permissions.
--  Determine whether the data is being protected by a permission tag (`android:permission`). Permission tags limit exposure to other apps.
+- Determine whether the data is being protected by a permission tag (`android:permission`). Permission tags limit exposure to other apps.
 - Determine whether the `android:protectionLevel` attribute has the value `signature`. This setting indicates that the data is intended to be accessed only by apps from the same enterprise (i.e., signed with the same key). To make the data accessible to other apps, apply a security policy with the `<permission>` element and set a proper `android:protectionLevel`. If you use `android:permission`, other applications must declare corresponding `<uses-permission>` elements in their manifests to interact with your content provider. You can use the `android:grantUriPermissions` attribute to grant more specific access to other apps; you can limit access with the `<grant-uri-permission>` element.
 
 Inspect the source code to understand how the content provider is meant to be used. Search for the following keywords:
+
 - `android.content.ContentProvider`
 - `android.database.Cursor`
 - `android.database.sqlite`
@@ -506,6 +507,7 @@ Inspect the source code to understand how the content provider is meant to be us
 We will use the vulnerable password manager app [Sieve](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve - Vulnerable Password Manager") as an example of a vulnerable content provider.
 
 ##### Inspect the Android Manifest
+
 Identify all defined `<provider>` elements:
 
 ```xml
@@ -518,6 +520,7 @@ Identify all defined `<provider>` elements:
 As shown in the `AndroidManifest.xml` above, the application exports two content providers. Note that one path ("/Keys") is protected by read and write permissions.
 
 ##### Inspect the source code
+
 Inspect the `query` function in the `DBContentProvider.java` file to determine whether any sensitive information is being leaked:
 
 ```java
@@ -538,14 +541,13 @@ Here we see that there are actually two paths, "/Keys" and "/Passwords", and the
 
  When accessing a URI, the query statement returns all passwords and the path `Passwords/`. We will address this in the "Dynamic Analysis" section and show the exact URI that is required.
 
-
 #### Dynamic Analysis
 
 ##### Testing Content Providers
 
 To dynamically analyze an application's content providers, first enumerate the attack surface: pass the app's package name to the Drozer module `app.provider.info`:
 
-```
+```shell
 dz> run app.provider.info -a com.mwr.example.sieve
   Package: com.mwr.example.sieve
   Authority: com.mwr.example.sieve.DBContentProvider
@@ -571,7 +573,7 @@ In this example, two content providers are exported. Both can be accessed withou
 
 To identify content provider URIs within the application, use Drozer's `scanner.provider.finduris` module. This module guesses paths and determines accessible content URIs in several ways:
 
-```
+```shell
 dz> run scanner.provider.finduris -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Unable to Query content://com.mwr.example.sieve.DBContentProvider/
@@ -585,7 +587,7 @@ content://com.mwr.example.sieve.DBContentProvider/Passwords/
 
 Once you have a list of accessible content providers, try to extract data from each provider with the `app.provider.query` module:
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --vertical
 _id: 1
 service: Email
@@ -598,35 +600,35 @@ You can also use Drozer to insert, update, and delete records from a vulnerable 
 
 - Insert record
 
-```
-dz> run app.provider.insert content://com.vulnerable.im/messages
-                --string date 1331763850325
-                --string type 0
-                --integer _id 7
-```
+  ```shell
+  dz> run app.provider.insert content://com.vulnerable.im/messages
+                  --string date 1331763850325
+                  --string type 0
+                  --integer _id 7
+  ```
 
 - Update record
 
-```
-dz> run app.provider.update content://settings/secure
-                --selection "name=?"
-                --selection-args assisted_gps_enabled
-                --integer value 0
-```
+  ```shell
+  dz> run app.provider.update content://settings/secure
+                  --selection "name=?"
+                  --selection-args assisted_gps_enabled
+                  --integer value 0
+  ```
 
 - Delete record
 
-```
-dz> run app.provider.delete content://settings/secure
-                --selection "name=?"
-                --selection-args my_setting
-```
+  ```shell
+  dz> run app.provider.delete content://settings/secure
+                  --selection "name=?"
+                  --selection-args my_setting
+  ```
 
 ##### SQL Injection in Content Providers
 
 The Android platform promotes SQLite databases for storing user data. Because these databases are based on SQL, they may be vulnerable to SQL injection. You can use the Drozer module `app.provider.query` to test for SQL injection by manipulating the projection and selection fields that are passed to the content provider:
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "'"
 unrecognized token: "' FROM Passwords" (code 1): , while compiling: SELECT ' FROM Passwords
 
@@ -636,7 +638,7 @@ unrecognized token: "')" (code 1): , while compiling: SELECT * FROM Passwords WH
 
 If an application is vulnerable to SQL Injection, it will return a verbose error message. SQL Injection on Android may be used to modify or query data from the vulnerable content provider. In the following example, the Drozer module `app.provider.query` is used to list all the database tables:
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
 FROM SQLITE_MASTER WHERE type='table';--"
 | type  | name             | tbl_name         | rootpage | sql              |
@@ -647,7 +649,7 @@ FROM SQLITE_MASTER WHERE type='table';--"
 
 SQL Injection may also be used to retrieve data from otherwise protected tables:
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "* FROM Key;--"
 | Password | pin |
 | thisismypassword | 9876 |
@@ -655,7 +657,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 
 You can automate these steps with the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
 
-```
+```shell
 dz> run scanner.provider.injection -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Injection in Projection:
@@ -672,14 +674,14 @@ Injection in Selection:
 
 Content providers can provide access to the underlying filesystem. This allows apps to share files (the Android sandbox normally prevents this). You can use the Drozer modules `app.provider.read` and `app.provider.download` to read and download files, respectively, from exported file-based content providers. These content providers are susceptible to directory traversal, which allows otherwise protected files in the target application's sandbox to be read.
 
-```
+```shell
 dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
 Written 24488 bytes
 ```
 
 Use the `scanner.provider.traversal` module to automate the process of finding content providers that are susceptible to directory traversal:
 
-```
+```shell
 dz> run scanner.provider.traversal -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Vulnerable Providers:
@@ -695,7 +697,6 @@ Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
 ...
 ```
-
 
 ### Checking for Sensitive Data Disclosure Through the User Interface
 
@@ -721,7 +722,6 @@ To determine whether the application leaks any sensitive information to the user
 
 If the information is masked by, for example, replacing input with asterisks or dots, the app isn't leaking data to the user interface.
 
-
 ### Testing Backups for Sensitive Data
 
 #### Overview
@@ -736,9 +736,9 @@ Given its diverse ecosystem, Android supports many backup options:
 
 - Two Backup APIs are available to app developers:
 
- * [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
+  - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
 
-  * [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature." This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature." This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
 
 - OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
 
@@ -763,6 +763,7 @@ If the flag value is **true**, determine whether the app saves any kind of sensi
 ##### Cloud
 
 Regardless of  whether you use key/value backup or auto backup, you must determine the following:
+
 - which files are sent to the cloud (e.g., SharedPreferences)
 - whether the files contain sensitive information
 - whether sensitive information is encrypted before being sent to the cloud.
@@ -784,11 +785,11 @@ android:backupAgent
 ```
 
 To implement key/value backup, extend one of the following classes:
+
 - [BackupAgent](https://developer.android.com/reference/android/app/backup/BackupAgent.html "BackupAgent")
--  [BackupAgentHelper](https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html "BackupAgentHelper")
+- [BackupAgentHelper](https://developer.android.com/reference/android/app/backup/BackupAgentHelper.html "BackupAgentHelper")
 
 To check for key/value backup implementations, look for these classes in the source code.
-
 
 #### Dynamic Analysis
 
@@ -797,11 +798,13 @@ After executing all available app functions, attempt to back up via `adb`. If th
 ```shell
 $ adb backup -apk -nosystem <package-name>
 ```
+
 ADB should respond now with "Now unlock your device and confirm the backup operation" and you should be asked on the Android phone for a password. This is an optional step and you don't need to provide one. If the phone does not prompt this message, try the following command including the quotes:
 
 ```shell
 $ adb backup "-apk -nosystem <package-name>"
 ```
+
 The problem happens when your device has an adb version prior to 1.0.31. If that's the case you must use an adb version of 1.0.31 also on your host machine. Versions of adb after 1.0.32 [broke the backwards compatibility.](https://issuetracker.google.com/issues/37096097 "adb backup is broken since ADB version 1.0.32")
 
 Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, the file _.ab_ will be in your working directory.
@@ -822,22 +825,24 @@ The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extr
 ```shell
 $ java -jar abe.jar unpack backup.ab
 ```
+
 if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
 ```shell
 $ abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
 ```
+
 [password]: is the password when your android device asked you earlier. For example here is: 123
 
 ```shell
 $ java -jar abe.jar unpack backup.ab backup.tar 123
 ```
+
 Extract the tar file to your working directory.
 
 ```shell
 $ tar xvf mybackup.tar
 ```
-
 
 ### Finding Sensitive Information in Auto-Generated Screenshots
 
@@ -1205,4 +1210,5 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Secure Preferences - https://github.com/scottyab/secure-preferences
 
 #### Others
+
 - Appthority Mobile Threat Team Research Paper - https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf

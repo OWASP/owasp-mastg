@@ -404,6 +404,7 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 ```
 
 After the certificate is available, you can repackage the UnCrackable-Level1.apk according to the following steps. Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
+
 1. Use `apktool` to unpack the app and decode AndroidManifest.xml:
 
 ```shell
@@ -1016,7 +1017,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 ![Frida](Images/Chapters/0x04/frida.png)
 
-*FRIDA Architecture, source: https://www.frida.re/docs/hacking/*
+*FRIDA Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -1026,7 +1027,7 @@ Here are some more APIs FRIDA offers on Android:
 - Scan process memory for occurrences of a string
 - Intercept native function calls to run your own code at function entry and exit
 
-The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 (https://www.frida.re/news/2017/08/25/frida-10-5-released/). Some features have limitted support on current Android devices, such as support for ART (https://www.frida.re/docs/android/), so it is recommended to start out with the Dalvik runtime.
+The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limitted support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
 
 ##### Installing Frida
 
@@ -1387,7 +1388,7 @@ Symbolic execution allows you to determine the conditions necessary to reach a s
 
 Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. The crackme takes the form of a native ELF binary that you can download here:
 
-https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation
+[https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
 
 Running the executable on any Android device should give you the following output:
 
@@ -1652,7 +1653,7 @@ The most straightforward way to intercept system calls is to inject your own cod
 
 For hacking, I recommend an AOSP-supported device. Google's Nexus smartphones and tablets are the most logical candidates because kernels and system components built from the AOSP run on them without issues. Sony's Xperia series is also known for its openness. To build the AOSP kernel, you need a toolchain (a set of programs for cross-compiling the sources) and the appropriate version of the kernel sources. Follow Google's instructions to identify the correct git repo and branch for a given device and Android version.
 
-https://source.android.com/source/building-kernels.html#id-version
+[https://source.android.com/source/building-kernels.html#id-version](https://source.android.com/source/building-kernels.html#id-version)
 
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the `msm` repository and check out one of the `android-msm-hammerhead` branches (hammerhead is the codename of the Nexus 5, and finding the right branch is confusing). Once you have downloaded the sources, create the default kernel config with the command `make hammerhead_defconfig` (replacing "hammerhead" with your target device).
 

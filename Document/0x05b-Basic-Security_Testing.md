@@ -4,7 +4,7 @@ By now, you should have a basic understanding of the way Android apps are struct
 
 You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS.
 
-#### Software Needed on the Host PC or Mac
+### Software Needed on the Host PC or Mac
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
 
@@ -53,7 +53,7 @@ You should not root a personal device that you store your private information on
 
 **You need to understand that rooting your device is ultimately YOUR decision and that OWASP shall in no way be held responsible for any damage. If you're uncertain, seek expert advice before starting the rooting process.**
 
-###### Which Mobiles Can Be Rooted?
+##### Which Mobiles Can Be Rooted?
 
 Virtually any Android mobile can be rooted. Commercial versions of Android OS (which are Linux OS evolutions at the kernel level) are optimized for the mobile world. Some features have been removed or disabled for these versions, for example, non-privileged users' ability to become the 'root' user (who has elevated privileges). Rooting a phone means allowing users to become the root user, e.g., adding a standard Linux executable called `su`, which is used to change to another user account.
 
@@ -136,14 +136,18 @@ The CA certificates trusted by the app can be a system trusted CA as well as a u
 To implement this new setting you must follow the steps below:
 
 - Decompile the app using a decompilation tool like apktool:
+
 ```bash
 $ apktool d <filename>.apk
 ```
+
 - Make the application trust user certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
+
 ```bash
 $ apktool b
 ```
+
 - You need to repackage the app, as explained in the [repackaging chapter](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging"). For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
@@ -209,12 +213,15 @@ Alternatively, you can follow the following steps manually in order to achieve t
 
 - Make the /system partition writable, which is only possible on a rooted device. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command 'mount -o rw,remount -t ext4 /system'
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
+
 ```shell
 $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
 $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
 mv cacert.pem <hash>.0
 ```
-- Finally, copy the <hash>.0 file into the directory /system/etc/security/cacerts and then run the following command:
+
+- Finally, copy the `<hash>.0` file into the directory /system/etc/security/cacerts and then run the following command:
+
 ```shell
 chmod 644 <hash>.0
 ```
@@ -240,12 +247,12 @@ The following procedure, which works on the Android emulator that ships with And
 1. Set up your proxy to listen on localhost and for example port 8080.
 2. Configure the HTTP proxy in the emulator settings:
 
- - Click on the three dots in the emulator menu bar
- - Open the Settings Menu
- - Click on the Proxy tab
- - Select "Manual proxy configuration"
- - Enter "127.0.0.1" in the "Host Name" field and your proxy port in the "Port number" field (e.g., "8080")
- - Tap "Apply"
+    - Click on the three dots in the emulator menu bar
+    - Open the Settings Menu
+    - Click on the Proxy tab
+    - Select "Manual proxy configuration"
+    - Enter "127.0.0.1" in the "Host Name" field and your proxy port in the "Port number" field (e.g., "8080")
+    - Tap "Apply"
 
 <img width=600px src="Images/Chapters/0x05b/emulator-proxy.png"/>
 
@@ -256,7 +263,6 @@ A proxy for an AVD can also be configured on the command line by using the [emul
 ```shell
 $ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
 ```
-
 
 ##### Installing a CA Certificate on the Virtual Device
 
@@ -839,7 +845,6 @@ Hook each method with Frida and print the arguments. One of them will print out 
 An extensive list of root detection methods is presented in the "Testing Anti-Reversing Defenses on Android" chapter.
 
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
-
 
 ### References
 
