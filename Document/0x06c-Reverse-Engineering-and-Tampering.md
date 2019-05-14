@@ -302,18 +302,22 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 - Hook into the running process with the command `cycript -p PID`.
 - The Cycript interpreter will be provided after successful hooking. You can get the application instance by using the Objective-C syntax: `[UIApplication sharedApplication]`.
 
-```
-cy# [UIApplication sharedApplication]
-cy# var a = [UIApplication sharedApplication]
-```
+  ```shell
+  cy# [UIApplication sharedApplication]
+  cy# var a = [UIApplication sharedApplication]
+  ```
+
 - To find this application's delegate class:
-```
-cy# a.delegate
-```
+
+  ```shell
+  cy# a.delegate
+  ```
+
 - Let's print out the `AppDelegate` class' methods :
-```
-cy# printMethods ("AppDelegate")
-```
+
+  ```shell
+  cy# printMethods ("AppDelegate")
+  ```
 
 #### Installing Frida
 

@@ -109,36 +109,37 @@ Safely implementing fingerprint authentication requires following a few simple p
 
 - The permission must be requested in the Android Manifest:
 
-```xml
-	<uses-permission
-        android:name="android.permission.USE_FINGERPRINT" />
-```
+    ```xml
+        <uses-permission
+            android:name="android.permission.USE_FINGERPRINT" />
+    ```
+
 - Fingerprint hardware must be available:
 
-```Java
-	 FingerprintManager fingerprintManager = (FingerprintManager)
-                    context.getSystemService(Context.FINGERPRINT_SERVICE);
-    fingerprintManager.isHardwareDetected();                
-```
+    ```Java
+        FingerprintManager fingerprintManager = (FingerprintManager)
+                        context.getSystemService(Context.FINGERPRINT_SERVICE);
+        fingerprintManager.isHardwareDetected();                
+    ```
 
 - The user must have a protected lock screen:
 
-```Java
-	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
-```
+    ```Java
+        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
+    ```
 
 - At least one finger should be registered:
 
-```java
-	fingerprintManager.hasEnrolledFingerprints();
-```
+    ```java
+        fingerprintManager.hasEnrolledFingerprints();
+    ```
 
 - The application should have permission to ask for a user fingerprint:
 
-```java
-	context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
-```
+    ```java
+        context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
+    ```
 
 If any of the above checks fail, the option for fingerprint authentication should not be offered.
 

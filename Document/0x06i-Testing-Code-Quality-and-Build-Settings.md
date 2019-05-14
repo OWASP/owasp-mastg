@@ -207,28 +207,30 @@ func dosomething(argumentx:TypeX) throws {
 	try functionThatThrows(argumentx: argumentx)
 }
 ```
+
 - Handle the error with a `do-catch` statement. You can use the following pattern:
 
-```swift
-do {
-    try functionThatThrows()
-    defer {
-    	//use this as your finally block as with Objective-c
+    ```swift
+    do {
+        try functionThatThrows()
+        defer {
+            //use this as your finally block as with Objective-c
+        }
+        statements
+    } catch pattern 1 {
+        statements
+    } catch pattern 2 where condition {
+        statements
     }
-    statements
-} catch pattern 1 {
-    statements
-} catch pattern 2 where condition {
-    statements
-}
-```
+    ```
 
 - Handle the error as an optional value:
 
-```swift
-	let x = try? functionThatThrows()
-	//In this case the value of x is nil in case of an error.
-```  
+    ```swift
+        let x = try? functionThatThrows()
+        //In this case the value of x is nil in case of an error.
+    ```
+
 - Use the `try!` expression to assert that the error won't occur.
 
 #### Static Analysis

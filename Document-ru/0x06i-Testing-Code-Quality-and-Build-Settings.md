@@ -182,34 +182,34 @@ Gobjdump - часть [binutils](https://www.gnu.org/s/binutils/ "Binutils") и 
 
 - Вы можете передавать ошибку из функции в код, который ее вызвал: в данном случае нет do-catch, а есть только `throw`, выдающий действительную ошибку или же есть `try` для исполнения метода, который выкидывает ошибку. Метод, содержащий `try` также должен использовать ключевое слово `throws`:
 
-```swift
-func dosomething(argumentx:TypeX) throws {
-	try functionThatThrows(argumentx: argumentx)
-}
-```
+    ```swift
+    func dosomething(argumentx:TypeX) throws {
+        try functionThatThrows(argumentx: argumentx)
+    }
+    ```
 
 - Обработать ошибку, используя do-catch: 
 
-```swift
-do {
-    try functionThatThrows()
-    defer {
-    	//use this as your finally block as with Objective-c
+    ```swift
+    do {
+        try functionThatThrows()
+        defer {
+            //use this as your finally block as with Objective-c
+        }
+        statements
+    } catch pattern 1 {
+        statements
+    } catch pattern 2 where condition {
+        statements
     }
-    statements
-} catch pattern 1 {
-    statements
-} catch pattern 2 where condition {
-    statements
-}
-```
+    ```
 
 - Обработать ошибку, как опциональное значение:
 
-```swift
-	let x = try? functionThatThrows()
-	//In this case the value of x is nil in case of an error.
-```  
+    ```swift
+        let x = try? functionThatThrows()
+        //In this case the value of x is nil in case of an error.
+    ```  
 
 - Декларировать, что ошибка не возникнет: используя выражение `try!`.
 
@@ -310,50 +310,50 @@ do {
 
 -   PIE:
 
-```shell
-$ unzip DamnVulnerableiOSApp.ipa
-$ cd Payload/DamnVulnerableIOSApp.app
-$ otool -hv DamnVulnerableIOSApp
-DamnVulnerableIOSApp (architecture armv7):
-Mach header
-magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
-WEAK_DEFINES BINDS_TO_WEAK PIE
-DamnVulnerableIOSApp (architecture arm64):
-Mach header
-magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
-WEAK_DEFINES BINDS_TO_WEAK PIE
+    ```shell
+    $ unzip DamnVulnerableiOSApp.ipa
+    $ cd Payload/DamnVulnerableIOSApp.app
+    $ otool -hv DamnVulnerableIOSApp
+    DamnVulnerableIOSApp (architecture armv7):
+    Mach header
+    magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+    MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
+    WEAK_DEFINES BINDS_TO_WEAK PIE
+    DamnVulnerableIOSApp (architecture arm64):
+    Mach header
+    magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+    MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
+    WEAK_DEFINES BINDS_TO_WEAK PIE
 ```
 
 -   Stack Canary:
 
-```shell
-$ otool -Iv DamnVulnerableIOSApp | grep stack
-0x0046040c 83177 ___stack_chk_fail
-0x0046100c 83521 _sigaltstack
-0x004fc010 83178 ___stack_chk_guard
-0x004fe5c8 83177 ___stack_chk_fail
-0x004fe8c8 83521 _sigaltstack
-0x00000001004b3fd8 83077 ___stack_chk_fail
-0x00000001004b4890 83414 _sigaltstack
-0x0000000100590cf0 83078 ___stack_chk_guard
-0x00000001005937f8 83077 ___stack_chk_fail
-0x0000000100593dc8 83414 _sigaltstack
-```
+    ```shell
+    $ otool -Iv DamnVulnerableIOSApp | grep stack
+    0x0046040c 83177 ___stack_chk_fail
+    0x0046100c 83521 _sigaltstack
+    0x004fc010 83178 ___stack_chk_guard
+    0x004fe5c8 83177 ___stack_chk_fail
+    0x004fe8c8 83521 _sigaltstack
+    0x00000001004b3fd8 83077 ___stack_chk_fail
+    0x00000001004b4890 83414 _sigaltstack
+    0x0000000100590cf0 83078 ___stack_chk_guard
+    0x00000001005937f8 83077 ___stack_chk_fail
+    0x0000000100593dc8 83414 _sigaltstack
+    ```
 
 -   Automatic Reference Counting:
 
-```shell
-$ otool -Iv DamnVulnerableIOSApp | grep release
-0x0045b7dc 83156 ___cxa_guard_release
-0x0045fd5c 83414 _objc_autorelease
-0x0045fd6c 83415 _objc_autoreleasePoolPop
-0x0045fd7c 83416 _objc_autoreleasePoolPush
-0x0045fd8c 83417 _objc_autoreleaseReturnValue
-0x0045ff0c 83441 _objc_release
-[SNIP]
-```
+    ```shell
+    $ otool -Iv DamnVulnerableIOSApp | grep release
+    0x0045b7dc 83156 ___cxa_guard_release
+    0x0045fd5c 83414 _objc_autorelease
+    0x0045fd6c 83415 _objc_autoreleasePoolPop
+    0x0045fd7c 83416 _objc_autoreleasePoolPush
+    0x0045fd8c 83417 _objc_autoreleaseReturnValue
+    0x0045ff0c 83441 _objc_release
+    [SNIP]
+    ```
 
 ##### с idb
 

@@ -436,13 +436,16 @@ Navigate to a screen that displays input fields that take sensitive user informa
 
 1. Connect to the iOS device and use one of the following options:
 - Install tail via the Core Utilities from Cydia and run the following command:
-```shell
-$ tail -f /var/log/syslog
-```
+
+  ```shell
+  $ tail -f /var/log/syslog
+  ```
+
 - Install ondeviceconsole via cydia.suarik.com and run the following command:
-```shell
-$ ondeviceconsole
-```
+
+  ```shell
+  $ ondeviceconsole
+  ```
 
 2. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
 
@@ -463,6 +466,7 @@ The downside to third-party services is that developers don't know the details o
 The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more than the information needed is sent to the service and that no sensitive information is disclosed.
 
 Most third-party services are implemented in two ways:
+
 - with a standalone library
 - with a full SDK
 

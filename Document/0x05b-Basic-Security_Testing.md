@@ -137,16 +137,16 @@ To implement this new setting you must follow the steps below:
 
 - Decompile the app using a decompilation tool like apktool:
 
-```bash
-$ apktool d <filename>.apk
-```
+    ```bash
+    $ apktool d <filename>.apk
+    ```
 
 - Make the application trust user certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
 
-```bash
-$ apktool b
-```
+    ```bash
+    $ apktool b
+    ```
 
 - You need to repackage the app, as explained in the [repackaging chapter](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging"). For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
@@ -214,17 +214,17 @@ Alternatively, you can follow the following steps manually in order to achieve t
 - Make the /system partition writable, which is only possible on a rooted device. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command 'mount -o rw,remount -t ext4 /system'
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 
-```shell
-$ openssl x509 -inform DER -in cacert.der -out cacert.pem  
-$ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
-mv cacert.pem <hash>.0
-```
+    ```shell
+    $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
+    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
+    mv cacert.pem <hash>.0
+    ```
 
 - Finally, copy the `<hash>.0` file into the directory /system/etc/security/cacerts and then run the following command:
 
-```shell
-chmod 644 <hash>.0
-```
+    ```shell
+    chmod 644 <hash>.0
+    ```
 
 By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, of course unless the application uses SSL pinning.
 

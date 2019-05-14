@@ -120,17 +120,17 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 - Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate()` or `Main()` method and re-create the app:
 
-```csharp
-WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
-```
+    ```csharp
+    WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
+    ```
 
 - Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
-```shell
-$ echo "
-rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
-" | sudo pfctl -ef -
-```
+    ```shell
+    $ echo "
+    rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
+    " | sudo pfctl -ef -
+    ```
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 

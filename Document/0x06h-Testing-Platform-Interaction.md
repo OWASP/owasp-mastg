@@ -148,14 +148,15 @@ If only having the IPA:
     $ apt install libplist-utils
     $ plistutil -i Info.plist -o Info_xml.plist
     ```
+
 - Inspect all *purpose strings Info.plist keys*, usually ending with `UsageDescription`:
 
-```
-<plist version="1.0">
-<dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to provide turn-by-turn directions to your destination.</string>
-```
+    ```xml
+    <plist version="1.0">
+    <dict>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Your location is used to provide turn-by-turn directions to your destination.</string>
+    ```
 
 For an overview of the different *purpose strings Info.plist keys* available see Table 1-2 at the [Apple App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"). Click on the provided links to see the full description of each key in the [CocoaKeys reference](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Cocoa Keys").
 
@@ -2113,7 +2114,9 @@ Now we can simply modify by hand the stubs we are interested in:
         log("\toptions :" + ObjC.Object(args[4]).toString());
     },
     ```
+
 - The Swift method `$S10TelegramUI15openExternalUrl...`:
+
     ```javascript
     // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
 
