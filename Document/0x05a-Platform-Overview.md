@@ -221,7 +221,7 @@ Developers who want their apps to share a common sandbox can sidestep sandboxing
 
 ##### Zygote
 
-The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service for launching apps. The Zygote process is a "base" process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket ` /dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
+The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service for launching apps. The Zygote process is a "base" process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket `/dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
 
 ##### App Lifeycle
 
@@ -457,7 +457,7 @@ Services are Android OS components (based on the Service class) that perform tas
 ##### Permissions
 
 Because Android apps are installed in a sandbox and initially can't access user information and system components (such as the camera and the microphone), Android provides a system with a predefined set of permissions for certain tasks that the app can request.
-For example, if you want your app to use a phone's camera, you have to request the ` android.permission.CAMERA ` permission.
+For example, if you want your app to use a phone's camera, you have to request the `android.permission.CAMERA` permission.
 Prior to Marshmallow (API Level 23), all permissions an app requested were granted at installation. From Android Marshmallow onwards, the user must approve some permissions requests during app execution.
 
 ###### Protection Levels

@@ -8,25 +8,29 @@ Android assigns a distinct system identity (Linux user ID and group ID) to every
 
 Android permissions are classified into four different categories on the basis of the protection level they offer:
 
--	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting SDK 23 or higher, these permissions are granted automatically at install time. For apps targeting a lower SDK, the user needs to approve them at install time. Example: `android.permission.INTERNET`
--	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
+- **Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting SDK 23 or higher, these permissions are granted automatically at install time. For apps targeting a lower SDK, the user needs to approve them at install time. Example: `android.permission.INTERNET`
+- **Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
 Note that starting at Android 8, If an app requests a permission at runtime, the system will grant the explicit permission, instead of all the permissions which belong to the same permission group as the requested one.
--	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
--	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
+- **Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
+- **SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
 Note that starting at Android 8 the permissions bellow contain the following changes:
+
 - READ_CONTACTS : When an app request this permission, queries for usage data will return approximations rather than exact values.
 - GET_ACCOUNTs : Apps no longer get access to user accounts with this permission unless the authenticator owns the accounts or the user grants that access.
 
 #### Activity Permission Enforcement
+
 Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest. These permissions restrict which applications can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
 
 #### Service Permission Enforcement
+
 Permissions applied via `android:permission` attribute within the `<service>` tag in the manifest restrict who can start or bind to the associated Service. The permission is checked during `Context.startService()`, `Context.stopService()` and `Context.bindService()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
 
 #### Broadcast Permission Enforcement
+
 Permissions applied via `android:permission` attribute within the `<receiver>` tag restrict access to send broadcasts to the associated BroadcastReceiver. The held permissions are checked after `Context.sendBroadcast()` returns, while trying to deliver the sent broadcast to the given receiver. Please note failure to hold proper permissions doesn't throw an exception, the result is an unsent broadcast.
 
 A permission can be supplied to `Context.registerReceiver()` to control who can broadcast to a programmatically registered receiver. Going the other way, a permission can be supplied when calling `Context.sendBroadcast()` to restrict which broadcast receivers are allowed to receive the broadcast.
@@ -42,6 +46,7 @@ The permissions are checked when you first retrieve a provider (if you don't hav
 Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
 
 #### Content Provider URI Permissions
+
 The standard permission system is not sufficient when being used with content providers. For example a content provider may want to limit permissions to READ permissions in order to protect itself, while using custom URIs to retrieve information. An application should only have the permission for that specific URI.
 
 The solution is per-URI permissions. When starting or returning a result from an activity, the method can set `Intent.FLAG_GRANT_READ_URI_PERMISSION` and/or `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. This grants permission to the activity for
@@ -55,9 +60,7 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
 **Custom Permissions**
 
-Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes:
-- `android:name` and
-- `android:protectionLevel`.
+Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes: `android:name` and `android:protectionLevel`.
 
 It is crucial to create custom permissions that adhere to the *Principle of Least Privilege*: permission should be defined explicitly for its purpose, with a meaningful and accurate label and description.
 
@@ -94,7 +97,6 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 #### Static Analysis
 
-
 **Android Permissions**
 
 Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. Because a user can revoke an application's right to use a dangerous permission, the developer should check whether the application has the appropriate permission each time an action is performed that would require that permission.
@@ -114,9 +116,10 @@ uses-permission: android.permission.CHANGE_CONFIGURATION
 uses-permission: android.permission.SYSTEM_ALERT_WINDOW
 uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 ```
+
 Please reference this [permissions overview](https://developer.android.com/guide/topics/permissions/overview#permission-groups) for descriptions of the listed permissions that are considered dangerous.
 
-`
+```text
 READ_CALENDAR,
 WRITE_CALENDAR,
 READ_CALL_LOG,
@@ -143,7 +146,7 @@ RECEIVE_WAP_PUSH,
 RECEIVE_MMS,
 READ_EXTERNAL_STORAGE,
 WRITE_EXTERNAL_STORAGE.
-`
+```
 
 **Custom Permissions**
 
@@ -155,6 +158,7 @@ int canProcess = checkCallingOrSelfPermission("com.example.perm.READ_INCOMING_MS
 if (canProcess != PERMISSION_GRANTED)
 throw new SecurityException();
 ```
+
 Or with `ContextCompat.checkSelfPermission()` which compares it to the manifest file.
 
 ```java
@@ -164,6 +168,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMIN
             Log.v(TAG, "Permission denied");
         }
 ```
+
 #### Requesting Permissions
 
 If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions()` method in order to obtain them. The app passes the permissions needed and an integer request code you have specified to the user asynchronously, returning once the user chooses to accept or deny the request in the same thread. After the response is returned the same request code is passed to the app's callback method.
@@ -195,8 +200,8 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
     // Permission already granted debug message printed in terminal.
     Log.v(TAG, "Permission already granted.");
 }
-
 ```
+
 Please note that if you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
 
 #### Handling the permissions response
@@ -225,6 +230,7 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 }
 
 ```
+
 Permissions should be explicitly requested for every needed permission, even if a similar permission from the same group has already been requested. For applications targeting Android 7.1 (API level 25) and older, Android will automatically give an application all the permissions from a permission group, if the user grants one of the requested permissions of that group. Starting with Android 8.0 (API level 26), permissions will still automatically be granted if a user has already granted a permission from the same permission group, but the application still needs to explicitly request the permission. In this case, the `onRequestPermissionsResult` handler will automatically be triggered without any user interaction.
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
@@ -271,7 +277,6 @@ Note that this method can't be used for `signature` level permissions because Dr
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
-
 ### Testing Custom URL Schemes
 
 #### Overview
@@ -288,6 +293,7 @@ Once a URL scheme has been defined, multiple apps can register for any available
 URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
+
 - When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
 - Using the data for queries? Make sure you make parameterized queries.
 - Using the data to do authenticated actions? Make sure that the user is in an authenticated state before the data is processed.
@@ -328,7 +334,7 @@ Verify the usage of [`toUri`](https://developer.android.com/reference/android/co
 
 To enumerate URL schemes within an app that can be called by a web browser, use the Drozer module `scanner.activity.browsable`:
 
-```
+```shell
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
 Package: com.google.android.apps.messaging
   Invocable URIs:
@@ -340,7 +346,7 @@ Package: com.google.android.apps.messaging
 
 You can call custom URL schemes with the Drozer module `app.activity.start`:
 
-```
+```shell
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 

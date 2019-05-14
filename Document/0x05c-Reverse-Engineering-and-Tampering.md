@@ -407,40 +407,40 @@ After the certificate is available, you can repackage the UnCrackable-Level1.apk
 
 1. Use `apktool` to unpack the app and decode AndroidManifest.xml:
 
-```shell
-$ apktool d --no-src UnCrackable-Level1.apk
-```
+    ```shell
+    $ apktool d --no-src UnCrackable-Level1.apk
+    ```
 
 2. Add android:debuggable = "true" to the manifest using a text editor:
 
-```xml
-<application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
-```
+    ```xml
+    <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
+    ```
 
 Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `debuggable="true"` to the AndroidManifest file.
 
 3. Repackage and sign the APK.
 
-```shell
-$ cd UnCrackable-Level1
-$ apktool b
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
-$ cd ..
-$ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
-```
+    ```shell
+    $ cd UnCrackable-Level1
+    $ apktool b
+    $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+    $ cd ..
+    $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
+    ```
 
-Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` is called *after* signing.
+    Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` is called *after* signing.
 
-```shell
-$ jarsigner -verbose -keystore ~/.android/debug.keystore UnCrackable-Repackaged.apk signkey
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
-```
+    ```shell
+    $ jarsigner -verbose -keystore ~/.android/debug.keystore UnCrackable-Repackaged.apk signkey
+    $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+    ```
 
 4. Reinstall the app:
 
-```shell
-$ adb install UnCrackable-Repackaged.apk
-```
+    ```shell
+    $ adb install UnCrackable-Repackaged.apk
+    ```
 
 ##### The “Wait For Debugger” Feature
 

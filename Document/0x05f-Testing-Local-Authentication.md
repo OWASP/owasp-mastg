@@ -84,7 +84,6 @@ Make sure that the unlocked key is used during the application flow. For example
 
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
-
 ### Testing Biometric Authentication
 
 #### Overview
@@ -119,7 +118,7 @@ Safely implementing fingerprint authentication requires following a few simple p
     ```Java
         FingerprintManager fingerprintManager = (FingerprintManager)
                         context.getSystemService(Context.FINGERPRINT_SERVICE);
-        fingerprintManager.isHardwareDetected();                
+        fingerprintManager.isHardwareDetected();
     ```
 
 - The user must have a protected lock screen:
@@ -154,7 +153,7 @@ secetkeyInfo.isInsideSecureHardware()
 On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
 
 ```java
-	keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
+    keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
 ```
 
 ##### Fingerprint Authentication using a Symmetric Key
@@ -162,23 +161,23 @@ On certain systems, it is possible to enforce the policy for biometric authentic
 Fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
 
 ```java
-	generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
+    generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
 
-	generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
-	      KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-	      .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-	      .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-	      .setUserAuthenticationRequired(true)
-	      .build()
-	);
+    generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
+            KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            .setUserAuthenticationRequired(true)
+            .build()
+    );
 
-	generator.generateKey();
+    generator.generateKey();
 ```
 
 To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
 
-```
-	SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
+```java
+    SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
 
     if (mode == Cipher.ENCRYPT_MODE) {
         cipher.init(mode, keyspec);
@@ -187,17 +186,17 @@ To perform encryption or decryption with the protected key, create a `Cipher` ob
 Keep in mind, a new key cannot be used immediately - it has to be authenticated through the `FingerprintManager` first. This involves wrapping the `Cipher` object into `FingerprintManager.CryptoObject` which is passed to `FingerprintManager.authenticate()` before it will be recognized.
 
 ```java
-	cryptoObject = new FingerprintManager.CryptoObject(cipher);
-	fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
+    cryptoObject = new FingerprintManager.CryptoObject(cipher);
+    fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
 ```
 
 When the authentication succeeds, the callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called at which point, the authenticated `CryptoObject` can be retrieved from the result.
 
 ```java
 public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-	cipher = result.getCryptoObject().getCipher();
+    cipher = result.getCryptoObject().getCipher();
 
-	(... do something with the authenticated cipher object ...)
+    //(... do something with the authenticated cipher object ...)
 }
 ```
 
@@ -251,6 +250,7 @@ byte[] signed = signature.sign();
 
 Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to "true" (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
 Android Oreo (API 26) adds two additional error-codes:
+
 - `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
 - `FINGERPRINT_ERROR_VENDOR` – A vendor-specific fingerprint reader error occurred.
 
@@ -263,7 +263,6 @@ Make sure that fingerprint authentication and/or other types of biometric authen
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onAuthenticationSucceeded` callback method directly. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 ### References
-
 
 #### OWASP Mobile Top 10 2016
 

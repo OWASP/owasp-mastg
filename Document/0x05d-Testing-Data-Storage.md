@@ -875,7 +875,6 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 |---|---|
 | ![OMTG_DATAST_010_1_FLAG_SECURE](Images/Chapters/0x05d/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](Images/Chapters/0x05d/2.png) |
 
-
 ### Checking Memory for Sensitive Data
 
 #### Overview
@@ -914,6 +913,7 @@ The RSA key pair is based on the `BigInteger` type and therefore resides in memo
 User-provided data (credentials, social security numbers, credit card information, etc.) is another type of data that may be exposed in memory. Regardless of whether you flag it as a password field, `EditText` delivers content to the app via the `Editable` interface. If your app doesn't provide `Editable.Factory`, user-provided data will probably be exposed in memory for longer than necessary. The default `Editable` implementation, the `SpannableStringBuilder`, causes the same issues as Java's `StringBuilder` and `StringBuffer` cause (discussed above).
 
 In summary, when performing static analysis to identify sensitive data that is exposed in memory, you should:
+
 - Try to identify application components and map where data is used.
 - Make sure that sensitive data is handled by as few components as possible.
 - Make sure that object references are properly removed once the object containing the sensitive data is no longer needed.
@@ -924,7 +924,6 @@ In summary, when performing static analysis to identify sensitive data that is e
   - Overwrite references before removing them, outside the `finalize` method.
   - Pay attention to third-party components (libraries and frameworks).
     Public APIs are good indicators. Determine whether the public API handles the sensitive data as described in this chapter.
-
 
 **The following section describes pitfalls of data leakage in memory and best practices for avoiding them.**
 
@@ -944,6 +943,7 @@ try{
     }
 }
 ```
+
 This doesn't, however, guarantee that the content will be overwritten at run time. To optimize the bytecode, the compiler will analyze and decide not to overwrite data because it will not be used afterwards (i.e., it is an unnecessary operation). Even if the code is in the compiled DEX, the optimization may occur during the just-in-time or ahead-of-time compilation in the VM.
 
 There is no silver bullet for this problem because different solutions have different consequences. For example, you may perform additional calculations (e.g., XOR the data into a dummy buffer), but you'll have no way to know the extent of the compiler's optimization analysis. On the other hand, using the overwritten data outside the compiler's scope (e.g., serializing it in a temp file) guarantees that it will be overwritten but obviously impacts performance and maintenance.
@@ -978,68 +978,68 @@ For more information, take a look at [Securely Storing Sensitive Data in RAM](ht
 In the "Static Analysis" section, we mentioned the proper way to handle cryptographic keys when you are using `AndroidKeyStore` or `SecretKey`.
 
 For a better implementation of `SecretKey`, look at the `SecureSecretKey` class below. Although the implementation is probably missing some boilerplate code that would make the class compatible with `SecretKey`, it addresses the main security concerns:
+
 - No cross-context handling of sensitive data. Each copy of the key can be cleared from within the scope in which it was created.
 - The local copy is cleared according to the recommendations given above.
 
-```java
-public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
-    private byte[] key;
-    private final String algorithm;
+  ```java
+  public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
+      private byte[] key;
+      private final String algorithm;
 
-    /** Constructs SecureSecretKey instance out of a copy of the provided key bytes.
-      * The caller is responsible of clearing the key array provided as input.
-      * The internal copy of the key can be cleared by calling the destroy() method.
-      */
-    public SecureSecretKey(final byte[] key, final String algorithm) {
-        this.key = key.clone();
-        this.algorithm = algorithm;
-    }
+      /** Constructs SecureSecretKey instance out of a copy of the provided key bytes.
+        * The caller is responsible of clearing the key array provided as input.
+        * The internal copy of the key can be cleared by calling the destroy() method.
+        */
+      public SecureSecretKey(final byte[] key, final String algorithm) {
+          this.key = key.clone();
+          this.algorithm = algorithm;
+      }
 
-    public String getAlgorithm() {
-        return this.algorithm;
-    }
+      public String getAlgorithm() {
+          return this.algorithm;
+      }
 
-    public String getFormat() {
-        return "RAW";
-    }
+      public String getFormat() {
+          return "RAW";
+      }
 
-    /** Returns a copy of the key.
-      * Make sure to clear the returned byte array when no longer needed.
-      */
-    public byte[] getEncoded() {
-        if(null == key){
-            throw new NullPointerException();
-        }
+      /** Returns a copy of the key.
+        * Make sure to clear the returned byte array when no longer needed.
+        */
+      public byte[] getEncoded() {
+          if(null == key){
+              throw new NullPointerException();
+          }
 
-        return key.clone();
-    }
+          return key.clone();
+      }
 
-    /** Overwrites the key with dummy data to ensure this copy is no longer present in memory.*/
-    public void destroy() {
-        if (isDestroyed()) {
-            return;
-        }
+      /** Overwrites the key with dummy data to ensure this copy is no longer present in memory.*/
+      public void destroy() {
+          if (isDestroyed()) {
+              return;
+          }
 
-        byte[] nonSecret = new String("RuntimeException").getBytes("ISO-8859-1");
-        for (int i = 0; i < key.length; i++) {
-          key[i] = nonSecret[i % nonSecret.length];
-        }
+          byte[] nonSecret = new String("RuntimeException").getBytes("ISO-8859-1");
+          for (int i = 0; i < key.length; i++) {
+            key[i] = nonSecret[i % nonSecret.length];
+          }
 
-        FileOutputStream out = new FileOutputStream("/dev/null");
-        out.write(key);
-        out.flush();
-        out.close();
+          FileOutputStream out = new FileOutputStream("/dev/null");
+          out.write(key);
+          out.flush();
+          out.close();
 
-        this.key = null;
-        System.gc();
-    }
+          this.key = null;
+          System.gc();
+      }
 
-    public boolean isDestroyed() {
-        return key == null;
-    }
-}
-
-```
+      public boolean isDestroyed() {
+          return key == null;
+      }
+  }
+  ```
 
 Secure user-provided data is the final secure information type usually found in memory. This is often managed by implementing a custom input method, for which you should follow the recommendations given here. However, Android allows information to be partially erased from `EditText` buffers via a custom `Editable.Factory`.
 
@@ -1083,6 +1083,7 @@ _Object Query Language_ studio is a MAT that allows you to query objects from th
 ```sql
 SELECT * FROM java.lang.String
 ```
+
 In the example above, all `String` objects present in the memory dump will be selected. The results will include the object's class, memory address, value, and retain count. To filter this information and see only the value of each string, use the following code:
 
 ```sql
@@ -1114,13 +1115,13 @@ SELECT password FROM ".*" WHERE (null != password)
 ```
 
 During your analysis, search for:
+
 - Indicative field names: "password", "pass", "pin", "secret", "private", etc.
 - Indicative patterns (e.g., RSA footprints) in strings, char arrays, byte arrays, etc.
 - Known secrets (e.g., a credit card number that you've entered or an authentication token provided by the backend)
 - etc.
 
 Repeating tests and memory dumps will help you obtain statistics about the length of data exposure. Furthermore, observing the way a particular memory segment (e.g., a byte array) changes may lead you to some otherwise unrecognizable sensitive data (more on this in the "Remediation" section below).
-
 
 ### Testing the Device-Access-Security Policy
 
@@ -1145,7 +1146,6 @@ You can implement checks on the Android device by querying  [_Settings.Secure_](
 #### Dynamic Analysis
 
 The dynamic analysis depends on the checks enforced by the app and their expected behavior. If the checks can be bypassed, they must be validated.
-
 
 ### References
 
