@@ -23,7 +23,6 @@ The V3 signature, which is supported by Android 9.0 and above, gives apps the ab
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
-
 #### Static Analysis
 
 Make sure that the release build has been signed via both the v1 and v2 schemes for Android 7 and above and via all the three schemes for android 9 and above, and that the code-signing certificate in the APK belongs to the developer.
@@ -60,7 +59,7 @@ Ignore the "CertPath not validated" error. This error occurs with Java SDK 7 and
 
 The signing configuration can be managed through Android Studio or the `signingConfig` block in `build.gradle`. To activate both the v1 and v2 and v3 schemes, the following values must be set:
 
-```
+```groovy
 v1SigningEnabled true
 v2SigningEnabled true
 v3SigningEnabled true
@@ -71,8 +70,6 @@ Several best practices for [configuring the app for release](https://developer.a
 #### Dynamic Analysis
 
 Static analysis should be used to verify the APK signature.
-
-
 
 ### Determining Whether the App is Debuggable
 
@@ -96,7 +93,7 @@ For a release build, this attribute should always be set to "false" (the default
 
 Drozer can be used to determine whether an application is debuggable. The Drozer module `app.package.attacksurface` also displays information about IPC components exported by the application.
 
-```
+```shell
 dz> run app.package.attacksurface com.mwr.dz
 Attack Surface:
   1 activities exported
@@ -135,30 +132,31 @@ The following procedure can be used to start a debug session with `jdb`:
 
 1. Using `adb` and `jdwp`, identify the PID of the active application that you want to debug:
 
-```shell
-$ adb jdwp
-2355
-16346  <== last launched, corresponds to our application
-```
+    ```shell
+    $ adb jdwp
+    2355
+    16346  <== last launched, corresponds to our application
+    ```
 
 2. Create a communication channel by using `adb` between the application process (with the PID) and the analysis workstation by using a specific local port:
 
-```shell
-# adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]
-$ adb forward tcp:55555 jdwp:16346
-```
+    ```shell
+    # adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]
+    $ adb forward tcp:55555 jdwp:16346
+    ```
 
 3. Using `jdb`, attach the debugger to the local communication channel port and start a debug session:
 
-```shell
-$ jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=55555
-Set uncaught java.lang.Throwable
-Set deferred uncaught java.lang.Throwable
-Initializing jdb ...
-> help
-```
+    ```shell
+    $ jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=55555
+    Set uncaught java.lang.Throwable
+    Set deferred uncaught java.lang.Throwable
+    Initializing jdb ...
+    > help
+    ```
 
 A few notes about debugging:
+
 - The tool [`JADX`](https://github.com/skylot/jadx "JADX") can be used to identify interesting locations for breakpoint insertion.
 - Help with `jdb` is available [here](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "JDB basic commands").
 - If a "the connection to the debugger has been closed" error occurs while `jdb` is being binded to the local communication channel port, kill all `adb` sessions and start a single new session.
@@ -212,7 +210,6 @@ externalNativeBuild {
 
 Static analysis should be used to verify debugging symbols.
 
-
 ### Finding Debugging Code and Verbose Error Logging
 
 #### Overview
@@ -249,7 +246,7 @@ To determine whether `StrictMode` is enabled, you can look for the `StrictMode.s
 
 The [detection methods for the thread policy](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
 
-```
+```java
 detectDiskWrites()
 detectDiskReads()
 detectNetwork()
@@ -257,7 +254,7 @@ detectNetwork()
 
 The [penalties for thread policy violation](https://javabeat.net/strictmode-android-1/ "What is StrictMode in Android?") are
 
-```
+```java
 penaltyLog() // Logs a message to LogCat
 penaltyDeath() // Crashes application, runs at the end of all enabled penalties
 penaltyDialog() // Shows a dialog
@@ -273,7 +270,6 @@ There are several ways of detecting `StrictMode`; the best choice depends on how
 - a warning dialog,
 - application crash.
 
-
 ### Testing for Injection Flaws
 
 #### Overview
@@ -284,7 +280,6 @@ Android apps can expose functionality through custom URL schemes (which are a pa
 - the user (via the user interface).
 
 None of the input from these sources can be trusted; it must be validated and/or sanitized. Validation ensures processing of data that the app is expecting only. If validation is not enforced, any input can be sent to the app, which may allow an attacker or malicious app to exploit app functionality.
-
 
 The following portions of the source code should be checked if any app functionality has been exposed:
 
@@ -396,11 +391,11 @@ Review the source code to understand the application and identify how it handles
 ```java
 byte[] secret;
 try{
-	//use secret
+    //use secret
 } catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2  e) {
-	// handle any issues
+    // handle any issues
 } finally {
-	//clean the secret.
+    //clean the secret.
 }
 ```
 
@@ -412,13 +407,13 @@ public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
     private static final MemoryCleanerOnCrash S_INSTANCE = new MemoryCleanerOnCrash();
     private final List<Thread.UncaughtExceptionHandler> mHandlers = new ArrayList<>();
 
-	//initialize the handler and set it as the default exception handler
+    //initialize the handler and set it as the default exception handler
     public static void init() {
         S_INSTANCE.mHandlers.add(Thread.getDefaultUncaughtExceptionHandler());
         Thread.setDefaultUncaughtExceptionHandler(S_INSTANCE);
     }
 
-	 //make sure that you can still add exception handlers on top of it (required for ACRA for instance)
+     //make sure that you can still add exception handlers on top of it (required for ACRA for instance)
     public void subscribeCrashHandler(Thread.UncaughtExceptionHandler handler) {
         mHandlers.add(handler);
     }
@@ -426,9 +421,9 @@ public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
 
-			//handle the cleanup here
-			//....
-			//and then show a message to the user if possible given the context
+            //handle the cleanup here
+            //....
+            //and then show a message to the user if possible given the context
 
         for (Thread.UncaughtExceptionHandler handler : mHandlers) {
             handler.uncaughtException(thread, ex);
@@ -462,7 +457,6 @@ The application should never crash; it should
 - if necessary, tell the user to take appropriate action (The message should not leak sensitive information.),
 - not provide any information in logging mechanisms used by the application.
 
-
 ### Make Sure That Free Security Features Are Activated
 
 #### Overview
@@ -491,7 +485,8 @@ android {
 ```
 
 proguard-rules.pro
-```
+
+```groovy
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
@@ -530,38 +525,44 @@ class a$b
 ```
 
 ### Memory Corruption Bugs
+
 Android applications often run on a VM where most of the memory corruption issues have been taken care off.
 This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
 
 A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
 
 #### Static Analysis
+
 There are various items to look for:
+
 - Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
 - Is there Java code or Kotlin code? Look for Serialization/deserialization issues, such as described in [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization").
 
 Note that there can be Memory leaks in Java/Kottline code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details, please check:
+
 - [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
 - [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android").
 
 #### Dynamic Analysis
+
 There are various steps to take:
+
 - In case of native code: use Valgrind or Mempatrol to analyse the memory usage and memory calls made by the code.
 - In case of Java/Kotlin code, try to recompile the app and use it with [Squares leak canary](https://github.com/square/leakcanary "Leakcanary").
 - Check with the [Memory Profiler from Android Studio](https://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
 - Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Android Java Deserialization Vulnerability Tester"), for serialization vulnerabilities.
-
-
 
 ### Checking for Weaknesses in Third Party Libraries
 
 #### Overview
 
 Android apps often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
+
 - Libraries that are not (or should not) be packed within the actual production application, such as `Mockito` used for testing and libraries like `JavaAssist` used to compile certain other libraries.
 - Libraries that are packed within the actual production application, such as `Okhttp3`.
 
 These libraries can have the following two classes of unwanted side-effects:
+
 - A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain pollution was possible to bypass SSL pinning.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intellectual property (IP) of the application.
 
@@ -590,7 +591,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 Once gradle has invoked the plugin, you can create a report by running:
 
-``shell
+```shell
 $ gradle assemble
 $ gradle dependencyCheckAnalyze --info
 ```
@@ -604,6 +605,7 @@ Alternatively there are commercial tools which might have a better coverage of t
 Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
 When a library is found to contain vulnerabilities, then the following reasoning applies:
+
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
@@ -623,7 +625,7 @@ plugins {
 
 Now, after the plugin is picked up, use the following commands:
 
-``shell
+```shell
 $ gradle assemble
 $ gradle downloadLicenses
 ```
@@ -644,7 +646,6 @@ When the sources are not available, one can decompile the app and check the jar 
 
 The dynamic analysis of this section comprises validating whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-
 ### References
 
 #### OWASP Mobile Top 10 2016
@@ -652,6 +653,7 @@ The dynamic analysis of this section comprises validating whether the copyrights
 - M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
+
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V7.1: "The app is signed and provisioned with valid certificate."
 - V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."

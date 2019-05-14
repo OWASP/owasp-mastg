@@ -737,10 +737,10 @@ WebViews can load remote content from an endpoint, but they can also load local 
 
 Check the source code for WebView usage. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") control resource access:
 
--	`setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
--	`setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
--	`setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
--	`setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
+- `setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
+- `setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
+- `setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
+- `setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
@@ -780,7 +780,6 @@ webView.getSettings().setAllowContentAccess(false);
 #### Dynamic Analysis
 
 To identify the usage of protocol handlers, look for ways to trigger phone calls and ways to access files from the file system while you're using the app.
-
 
 ### Determining Whether Java Objects Are Exposed Through WebViews
 
@@ -866,8 +865,6 @@ Dynamic analysis of the app can show you which HTML or JavaScript files are load
 
 A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
-
-
 ### Testing for Fragment Injection
 
 #### Overview
@@ -886,18 +883,14 @@ To prevent this vulnerability, a new method called `isValidFragment` was added i
 
 The default implementation returns true on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
 
-
 #### Static Analysis
 
 Steps:
+
 - Check if targetSdkVersion less than 19.
-
 - Find exported Activities that extend the `PreferenceActivity` class.
-
 - Determine whether the method isValidFragment has been overridden.
-
 - If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
-
 - In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as described.
 
 The following example shows an Activity that extends this activity:
@@ -925,6 +918,7 @@ return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
 #### Example of Vulnerable App and Exploitation
 
 MainActivity.class
+
 ```Java
 public class MainActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
@@ -934,6 +928,7 @@ public class MainActivity extends PreferenceActivity {
 ```
 
 MyFragment.class
+
 ```Java
 public class MyFragment extends Fragment {
     public void onCreate (Bundle savedInstanceState) {
@@ -948,6 +943,7 @@ public class MyFragment extends Fragment {
     }
 }
 ```
+
 To exploit this vulnerable Activity, you can create an application with the following code:
 
 ```Java
@@ -960,7 +956,6 @@ startActivity(i);
 ```
 
 The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
-
 
 ### Testing Object Persistence
 
@@ -982,7 +977,7 @@ public class Person implements Serializable {
   public Person(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-	}
+    }
   //..
   //getters, setters, etc
   //..
@@ -1016,6 +1011,7 @@ String json = gson.toJson(obj);
 // ==> json is {"value1":1,"value2":"abc"}
 
 ```
+
 ##### XML
 
 There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [a blogpost from ibm.com](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
@@ -1024,6 +1020,7 @@ Similarly to JSON, XML has the issue of working mostly String based, which means
 ##### ORM
 
 There are libraries that provide functionality for directly storing the contents of an object in a database and then instantiating the object with the database contents. This is called Object-Relational Mapping (ORM). Libraries that use the SQLite database include
+
 - [OrmLite](http://ormlite.com/ "OrmLite"),
 - [SugarORM](https://satyan.github.io/sugar/ "Sugar ORM"),
 - [GreenDAO](http://greenrobot.org/greendao/ "GreenDAO") and
@@ -1066,7 +1063,8 @@ public class MyParcelable implements Parcelable {
 
 Because this mechanism that involves Parcels and Intents may change over time, and the `Parcelable` may contain `IBinder` pointers, storing data to disk via `Parcelable` is not recommended.
 
-#####Protocol Buffers
+##### Protocol Buffers
+
 [Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Encoding").
 There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
 Note that Protocol Buffers do not provide any protection for confidentiality: there is no built in encryption.
@@ -1075,13 +1073,11 @@ Note that Protocol Buffers do not provide any protection for confidentiality: th
 
 If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
 
-
-
 There are a few generic remediation steps that you can always take:
 
-1.	Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter about cryptography for more details.
-2.	Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the data storage chapter for more details.
-3.	Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
+1. Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter about cryptography for more details.
+2. Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the data storage chapter for more details.
+3. Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
 
 For high-risk applications that focus on availability, we recommend that you use `Serializable` only when the serialized classes are stable. Second, we recommend not using reflection-based persistence because
 
@@ -1094,8 +1090,8 @@ See the anti-reverse-engineering chapter for more details.
 
 Search the source code for the following keywords:
 
--	`import java.io.Serializable`
--	`implements Serializable`
+- `import java.io.Serializable`
+- `implements Serializable`
 
 ##### JSON
 
@@ -1103,22 +1099,22 @@ If you need to counter memory-dumping, make sure that very sensitive information
 
 **`JSONObject`** Search the source code for the following keywords:
 
--	`import org.json.JSONObject;`
--	`import org.json.JSONArray;`
+- `import org.json.JSONObject;`
+- `import org.json.JSONArray;`
 
 **`GSON`** Search the source code for the following keywords:
 
--	`import com.google.gson`
--	`import com.google.gson.annotations`
--	`import com.google.gson.reflect`
--	`import com.google.gson.stream`
--	`new Gson();`
--	Annotations such as `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, and `@Until`
+- `import com.google.gson`
+- `import com.google.gson.annotations`
+- `import com.google.gson.reflect`
+- `import com.google.gson.stream`
+- `new Gson();`
+- Annotations such as `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, and `@Until`
 
 **`Jackson`** Search the source code for the following keywords:
 
--	`import com.fasterxml.jackson.core`
--	`import org.codehaus.jackson` for the older version.
+- `import com.fasterxml.jackson.core`
+- `import org.codehaus.jackson` for the older version.
 
 ##### ORM
 
@@ -1144,26 +1140,26 @@ Make sure that `QUERY_LOG` is set to false.
 
 **`GreenDAO`** Search the source code for the following keywords:
 
--	`import org.greenrobot.greendao.annotation.Convert`
--	`import org.greenrobot.greendao.annotation.Entity`
--	`import org.greenrobot.greendao.annotation.Generated`
--	`import org.greenrobot.greendao.annotation.Id`
--	`import org.greenrobot.greendao.annotation.Index`
--	`import org.greenrobot.greendao.annotation.NotNull`
--	`import org.greenrobot.greendao.annotation.*`
--	`import org.greenrobot.greendao.database.Database`
--	`import org.greenrobot.greendao.query.Query`
+- `import org.greenrobot.greendao.annotation.Convert`
+- `import org.greenrobot.greendao.annotation.Entity`
+- `import org.greenrobot.greendao.annotation.Generated`
+- `import org.greenrobot.greendao.annotation.Id`
+- `import org.greenrobot.greendao.annotation.Index`
+- `import org.greenrobot.greendao.annotation.NotNull`
+- `import org.greenrobot.greendao.annotation.*`
+- `import org.greenrobot.greendao.database.Database`
+- `import org.greenrobot.greendao.query.Query`
 
 **`ActiveAndroid`** Search the source code for the following keywords:
 
--	`ActiveAndroid.initialize(<contextReference>);`
--	`import com.activeandroid.Configuration`
--	`import com.activeandroid.query.*`
+- `ActiveAndroid.initialize(<contextReference>);`
+- `import com.activeandroid.Configuration`
+- `import com.activeandroid.query.*`
 
 **`Realm`** Search the source code for the following keywords:
 
--	`import io.realm.RealmObject;`
--	`import io.realm.annotations.PrimaryKey;`
+- `import io.realm.RealmObject;`
+- `import io.realm.annotations.PrimaryKey;`
 
 ##### Parcelable
 
@@ -1173,8 +1169,8 @@ Make sure that appropriate security measures are taken when sensitive informatio
 
 There are several ways to perform dynamic analysis:
 
-1.	For the actual persistence: Use the techniques described in the data storage chapter.
-2.	For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+1. For the actual persistence: Use the techniques described in the data storage chapter.
+2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 ### Testing enforced updating
 
@@ -1187,6 +1183,7 @@ Similarly, when a user is not forced to update, do not forget to test older vers
 #### Static analysis
 
 The code sample below shows the example of an app-update:
+
 ```java
 //Part 1: check for update
 // Creates instance of the manager.
@@ -1252,7 +1249,8 @@ protected void onResume() {
 }
 }
 ```
->Source: https://developer.android.com/guide/app-bundle/in-app-updates
+
+>Source: [https://developer.android.com/guide/app-bundle/in-app-updates](https://developer.android.com/guide/app-bundle/in-app-updates)
 
 When checking for a proper update mechanism, make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
 Next, pay attention to the `AppUpdateType.IMMEDIATE` use: if a security update comes in, then this flag should be used in order to make sure that the user cannot go forward with using the app without updating it.
@@ -1260,13 +1258,12 @@ As you can see, in part 3 of the example: make sure that cancellations or errors
 Finally, in part 4: you can see that for every entrypoint in the application, an update-mechanism should be enforced, so that bypassing it will be harder.
 
 #### Dynamic analysis
+
 In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the back-end will stop calls to vulnerable back-ends and/or whether the vulnerable app-version itself is blocked by the back-end.
 Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
-
 ### References
-
 
 #### Android App Bundles and updates
 
@@ -1298,6 +1295,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
 
 #### OWASP MASVS
+
 - V1.9: "A mechanism for enforcing updates of the mobile app exists."
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
@@ -1314,7 +1312,6 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - CWE-200 - Information Leak / Disclosure
 - CWE-749 - Exposed Dangerous Method or Function
 - CWE-939 - Improper Authorization in Handler for Custom URL Scheme
-
 
 #### Tools
 
