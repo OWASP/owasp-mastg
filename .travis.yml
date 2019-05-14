@@ -5,6 +5,8 @@ before_install:
 - rvm install 2.5.1 --disable-binary
 - brew install pandoc
 - brew cask install calibre
+- npm install -g markdownlint-cli
+- npm install -g markdown-link-check
 - npm install -g gitbook-cli
 - gem install asciidoctor
 script:
