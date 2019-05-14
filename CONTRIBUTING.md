@@ -4,7 +4,7 @@
 
 Contributing to the MSTG can be done in many different ways:
 
-* Create [Issues] for missing content or errors. Explain what you think is missing and give a suggestion as to where it could be added. 
+* Create [issues](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues") for missing content or errors. Explain what you think is missing and give a suggestion as to where it could be added. 
 * Create a [Pull Request (PR)](https://github.com/OWASP/owasp-mstg/pulls "Create a pull request"). This is a direct contribution to the guide and your PR may be merged after review. Be sure to follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide") when writing content. You should ideally create an issue for any PR you would like to submit, as we can first review the merit of the PR and avoid any unnecessary work. This is of course not needed for small modifications such as correcting typos.
 * Review pull requests. If you are a fluent speaker in any of the different languages that the MSTG is available in, feel free to give feedback on any of the submitted PRs.
 * Proofread and fix errors. If you are studying the MSTG, write down any error, no matter how small, and submit them in an Issue or fix them yourself through a PR.
@@ -17,7 +17,7 @@ In order to increase the chances of your PR being accepted, please make sure tha
 * Your code snippets are well-tested and provide comments for key code lines
 * Your test cases explain issues on open-source or specifically designed vulnerable applications. Do not show vulnerabilities or bad coding practices on commercial applications. Example applications you can use are [OWASP iGOAT](https://www.owasp.org/index.php/OWASP_iGoat_Tool_Project "OWASP iGOAT"), applications from the [MSTG Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground") or any of the [MSTG CrackMes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG CrackMes").
 
-After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 14 days have passed.
+After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the size of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 14 days have passed.
 
 ## How to set up my contributor environment
 
