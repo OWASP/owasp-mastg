@@ -1,8 +1,9 @@
 #!/bin/bash
 # Script taken from https://github.com/OWASP/CheatSheetSeries/blob/master/scripts/Apply_Linter_Check.sh
 # Script in charge of auditing the released MD files with the linter policy defined at project level
+
 cd ..
-markdownlint -c .markdownlint.json -o linter-result.out Document
+markdownlint -c ../.markdownlint.json -o linter-result.out Document
 errors=`wc -m linter-result.out | cut -d' ' -f1`
 content=`cat linter-result.out`
 if [[ $errors != "0" ]]
