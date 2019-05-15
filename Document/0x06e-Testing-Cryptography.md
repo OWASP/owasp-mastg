@@ -229,7 +229,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - Heimdall - <https://github.com/henrinormak/Heimdall>
 - SwiftyRSA - <https://github.com/TakeScoop/SwiftyRSA>
 - SwiftSSL - <https://github.com/SwiftP2P/SwiftSSL>
-- RNCryptor - <<https://github.com/RNCryptor/RNCrypto>r>
+- RNCryptor - <https://github.com/RNCryptor/RNCryptor>
 - Arcane - <https://github.com/onmyway133/Arcane>
 - CJOSE - <https://github.com/cisco/cjose>
 - CryptoSwift - <https://github.com/krzyzanowskim/CryptoSwift>
