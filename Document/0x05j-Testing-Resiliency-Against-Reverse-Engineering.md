@@ -75,7 +75,7 @@ Follow this [checklist](https://developer.android.com/training/safetynet/attesta
 
 Perhaps the most widely used method of programmatic detection is checking for files typically found on rooted devices, such as package files of common rooting apps and their associated files and directories, including the following:
 
-```
+```text
 /system/app/Superuser.apk
 /system/etc/init.d/99SuperSUDaemon
 /dev/com.koushikdutta.superuser.daemon/
@@ -84,7 +84,7 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
-```
+```text
 /sbin/su  
 /system/bin/su  
 /system/bin/failsafe/su  
@@ -163,7 +163,7 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
-```
+```text
 com.thirdparty.superuser
 eu.chainfire.supersu
 com.noshufou.android.su
@@ -223,7 +223,6 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
 
-
 ### Testing Anti-Debugging
 
 #### Overview
@@ -249,6 +248,7 @@ We have already encountered the `android:debuggable` attribute. This flag in the
 
     }
 ```
+
 ###### isDebuggerConnected
 
 The `Android Debug` system class offers a static method to determine whether a debugger is connected. The method returns a boolean value.
@@ -560,8 +560,8 @@ However, if we terminate the child process at this point, the parent exits as we
 
 ```shell
 root@android:/ # kill -9 20301
-130|root@hammerhead:/ # cd /data/local/tmp                                     
-root@android:/ # ./gdbserver --attach localhost:12345 20267   
+130|root@hammerhead:/ # cd /data/local/tmp
+root@android:/ # ./gdbserver --attach localhost:12345 20267
 gdbserver: unable to open /proc file '/proc/20267/status'
 Cannot attach to lwp 20267: No such file or directory (2)
 Exiting
@@ -644,7 +644,6 @@ Integrity checks often calculate a checksum or hash over selected files. Commonl
 
 The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
 
-
 ```java
 private void crcTest() throws IOException {
  boolean modified = false;
@@ -665,6 +664,7 @@ private void crcTest() throws IOException {
  }
 }
 ```
+
 ##### Sample Implementation - Storage
 
 When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
@@ -795,11 +795,11 @@ Run the app in an unmodified state and make sure that everything works. Apply si
 *For storage integrity checks*
 
 An approach similar to that for application-source integrity checks applies. Answer the following questions:
+
 - Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value)?
 - How difficult is getting the HMAC key or the asymmetric private key?
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
-
 
 ### Testing The Detection of Reverse Engineering Tools
 
@@ -880,7 +880,7 @@ boolean is_frida_server_listening() {
       /* Frida server detected. Do something… */
     }
 
-}   
+}
 ```
 
 Again, this code detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial. This method can be improved with an `nmap -sV`. `frida-server` uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself.
@@ -1090,7 +1090,6 @@ The app should respond in some way to the presence of each of those tools. At th
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-
 ### Testing Emulator Detection
 
 #### Overview
@@ -1103,7 +1102,7 @@ There are several indicators that the device in question is being emulated. Alth
 
 The first set of indicators are in the file `build.prop`.
 
-```
+```text
 API Method          Value           Meaning
 Build.ABI           armeabi         possibly emulator
 BUILD.ABI2          unknown         possibly emulator
@@ -1126,7 +1125,7 @@ You can edit the file `build.prop` on a rooted Android device or modify it while
 
 The next set of static indicators utilize the Telephony manager. All Android emulators have fixed values that this API can query.
 
-```
+```text
 API                                                     Value                   Meaning
 TelephonyManager.getDeviceId()                          0's                     emulator
 TelephonyManager.getLine1 Number()                      155552155               emulator
@@ -1161,7 +1160,6 @@ Work on bypassing the defenses and answer the following questions:
 - Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-
 ### Testing Run Time Integrity Checks
 
 #### Overview
@@ -1175,7 +1173,7 @@ There's some overlap with the category "detecting reverse engineering tools and 
 
 ##### Run Time Integrity Check Examples
 
-**Detecting tampering with the Java Runtime**
+###### Detecting tampering with the Java Runtime**
 
 This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
@@ -1209,7 +1207,7 @@ catch(Exception e) {
 }
 ```
 
-**Detecting Native Hooks**
+###### Detecting Native Hooks
 
 By using ELF binaries, native function hooks can be installed by overwriting function pointers in memory (e.g., Global Offset Table or PLT hooking) or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one way to detect this kind of hook.
 
@@ -1230,7 +1228,6 @@ Work on bypassing the checks with the following techniques:
 
 Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
 
-
 ### Testing Device Binding
 
 #### Overview
@@ -1242,7 +1239,6 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
 - Obfuscating the data stored on the device by using device identifiers as keys for encryption methods. This can help with binding to a device when the app does a lot of offline work or when access to APIs depends on access-tokens stored by the application.
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
-
 
 #### Static Analysis
 
@@ -1462,10 +1458,10 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering 
-
+- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### OWASP MASVS
+
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
@@ -1479,14 +1475,14 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### SafetyNet Attestation
 
-- Developer Guideline - https://developer.android.com/training/safetynet/attestation.html
-- SafetyNet Attestation Checklist - https://developer.android.com/training/safetynet/attestation-checklist
-- Do's & Don'ts of SafetyNet Attestation - https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html
-- SafetyNet Verification Samples - https://github.com/googlesamples/android-play-safetynet/
-- SafetyNet Attestation API - Quota Request - https://support.google.com/googleplay/android-developer/contact/safetynetqr
+- Developer Guideline - <https://developer.android.com/training/safetynet/attestation.html>
+- SafetyNet Attestation Checklist - <https://developer.android.com/training/safetynet/attestation-checklist>
+- Do's & Don'ts of SafetyNet Attestation - <https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html>
+- SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
+- SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
 
 #### Tools
 
-- adb - https://developer.android.com/studio/command-line/adb
-- Frida  - https://www.frida.re
-- DDMS - https://developer.android.com/studio/profile/monitor
+- adb - <https://developer.android.com/studio/command-line/adb>
+- Frida  - <https://www.frida.re>
+- DDMS - <https://developer.android.com/studio/profile/monitor>
