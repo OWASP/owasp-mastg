@@ -154,7 +154,7 @@ Life is easy with a jailbroken device: not only do you gain easy access to the a
 
 ##### Installing Needle
 
-**On Linux**
+###### On Linux
 
 The following commands install the dependencies required to run Needle on Linux.
 
@@ -170,7 +170,7 @@ $ git clone https://github.com/mwrlabs/needle.git
 
 ```
 
-**On Mac**
+###### On Mac
 
 The following commands install the dependencies required to run Needle on macOS.
 
@@ -210,7 +210,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 - Add the following repository to the Cydia Sources: mobiletools.mwrinfosecurity.com/cydia/  
 - Search for the NeedleAgent package and install it.
 
-![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_1.jpg)  ![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_2.jpg)
+![Installing the Needle agent (1)](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_1.jpg)  ![Installing the Needle agent (2)](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_2.jpg)
 
 - If the setup process is successful, you'll find the NeedleAgent app on the home screen.
 
@@ -218,16 +218,14 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 ##### Start the Framework
 
-**Start NeedleAgent**
+First, the NeedleAgent needs to be started on the device. This can be accomplished by following these steps:
 
 - Open the NeedleAgent app on your device.
 - Tap on "Listen" in the top left corner, and the NeedleAgent will start listening on port `4444` by default. The default port can be changed via the field in the top right.
 
 <img src="Images/Chapters/0x06b/install_needle_agent.png" alt="iOS App Folder Structure" width="250">
 
-**Start Needle**
-
-To launch Needle, just open a console and type:
+Next, Needle needs to be launched on the host machine. To launch Needle, open a console and type:
 
 ```shell
 $ python needle.py
@@ -279,8 +277,6 @@ The tool has the following global options (list them via the `show options` comm
 - **SAVE_HISTORY**: If set to "true," the command history will persist across sessions.
 - **VERBOSE, DEBUG**: If set to "true," this will enable verbose and debug logging, respectively.
 
-**Troubleshooting**
-
 In order to use the modules in Needle, you may have to install its dependencies. Use this command in Needle:
 
 ```shell
@@ -319,22 +315,23 @@ You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecur
 
 We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
-1. First we need to create the SSH connection
+First we need to create the SSH connection
 
 ```bash
 $ iproxy 2222 22
 waiting for connection
 ```
 
-2. The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
+The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
 
 ```bash
 ssh -R 8080:localhost:8080 root@localhost -p 2222
 ```
 
-3. You should be able to reach now Burp on your iOS device. Just open Safari and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+You should now be able to reach Burp on your iOS device. Open Safari and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
 
-4. The last step would be to set the proxy globally on your iOS device.
+The last step would be to set the proxy globally on your iOS device.
+
 - Go to Settings
 - Wi-Fi
 - Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
