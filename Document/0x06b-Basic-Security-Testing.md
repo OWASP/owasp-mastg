@@ -33,6 +33,7 @@ Developing a jailbreak for a given version of iOS is not easy. As a security tes
 #### Benefits of Jailbreaking
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
+
 - root access to the file system
 - possibility of executing applications that haven't been signed by Apple (which includes many security tools)
 - unrestricted debugging and dynamic analysis
@@ -87,21 +88,21 @@ Once you've jailbroken your iOS device and Cydia has been installed (as shown in
 
 1. From Cydia install aptitude and OpenSSH.
 2. SSH into your iOS device.
-  - The default users are `root` and `mobile`.
-  - The default password is `alpine`.
+    - The default users are `root` and `mobile`.
+    - The default password is `alpine`.
 3. Change the default password for both users `root` and `mobile`.
 4. Add the following repository to Cydia: `https://build.frida.re`.
 5. Install Frida from Cydia.
 
 Cydia allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL:
 
-```
+```http
 http://apt.thebigboss.org/repofiles/cydia/
 ```
 
 You may also want to add the HackYouriPhone repository to get the AppSync package:
 
-```
+```http
 http://repo.hackyouriphone.org
 ```
 
@@ -211,7 +212,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 ![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_1.jpg)  ![](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_2.jpg)
 
-* If the setup process is successful, you'll find the NeedleAgent app on the home screen.
+- If the setup process is successful, you'll find the NeedleAgent app on the home screen.
 
 <img src="Images/Chapters/0x06b/needle_agent.png" alt="iOS App Folder Structure" width="250">
 
@@ -287,6 +288,7 @@ use device/dependency_installer
 
 run
 ```
+
 Other modules may prompt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it.
 
 #### SSH Connection via USB
@@ -342,7 +344,6 @@ ssh -R 8080:localhost:8080 root@localhost -p 2222
 - Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
-
 
 #### App Folder Structure
 
@@ -428,6 +429,7 @@ Label: (null)
 Generic Field: (null)
 Keychain Data: WOg1DfuH
 ```
+
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
@@ -443,7 +445,7 @@ $ pip install frida-tools
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
 
-Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering https://build.frida.re. You should then be able to find and install the Frida package.
+Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering <https://build.frida.re.> You should then be able to find and install the Frida package.
 
 Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
 
@@ -476,7 +478,7 @@ Run Safari on the device and make sure the device is connected via USB. Then sta
 
 ```shell
 $ frida-trace -U -m "-[NSURL *]" Safari
-Instrumenting functions...                                              
+Instrumenting functions...
 -[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
 -[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
 (...)
@@ -504,7 +506,6 @@ The method is called with a single argument of type `NSURL`. According to the [A
 
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
-
 ```python
 
 import sys
@@ -514,14 +515,14 @@ import frida
 // JavaScript to be injected
 frida_code = """
 
-	// Obtain a reference to the initWithURL: method of the NSURLRequest class
+    // Obtain a reference to the initWithURL: method of the NSURLRequest class
     var URL = ObjC.classes.NSURLRequest["- initWithURL"];
 
     // Intercept the method
     Interceptor.attach(URL.implementation, {
       onEnter: function(args) {
 
-      	// We should always initialize an autorelease pool before interacting with Objective-C APIs
+        // We should always initialize an autorelease pool before interacting with Objective-C APIs
 
         var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
 
@@ -575,7 +576,7 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
-PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device ](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 #### Bypassing Certificate Pinning
 
@@ -598,8 +599,8 @@ Certificate pinning is a good security practice and should be used for all appli
 
 It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection. As a prerequisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection GitHub Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable SSL Pinning:
 
-```
-# ios sslpinning disable
+```shell
+$ ios sslpinning disable
 ```
 
 See also the [GitHub Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" )
@@ -647,24 +648,23 @@ This bypass might not work if the application requires capabilities that are spe
 
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
 
-
 ### References
 
-- UIDeviceFamily - https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11
+- UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
 
 #### Tools
 
-- Burp Suite - https://portswigger.net/burp/communitydownload
-- Frida - https://www.frida.re
-- IDB - https://www.idbtool.com
-- Introspy - https://github.com/iSECPartners/Introspy-iOS
-- ipainstaller - https://github.com/autopear/ipainstaller
-- iProxy - https://iphonedevwiki.net/index.php/SSH_Over_USB
-- Keychain-dumper - https://github.com/ptoomey3/Keychain-Dumper/
-- MobSF - https://github.com/MobSF/Mobile-Security-Framework-MobSF
-- Needle - https://github.com/mwrlabs/needle
-- Objection - https://github.com/sensepost/objection
-- SSL Kill Switch 2 - https://github.com/nabla-c0d3/ssl-kill-switch2
-- Usbmuxd - https://github.com/libimobiledevice/usbmuxd
-- Wireshark - https://www.wireshark.org/download.html
-- Xcode - https://developer.apple.com/xcode/
+- Burp Suite - <https://portswigger.net/burp/communitydownload>
+- Frida - <https://www.frida.re>
+- IDB - <https://www.idbtool.com>
+- Introspy - <https://github.com/iSECPartners/Introspy-iOS>
+- ipainstaller - <https://github.com/autopear/ipainstaller>
+- iProxy - <https://iphonedevwiki.net/index.php/SSH_Over_USB>
+- Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
+- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Needle - <https://github.com/mwrlabs/needle>
+- Objection - <https://github.com/sensepost/objection>
+- SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
+- Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
+- Wireshark - <https://www.wireshark.org/download.html>
+- Xcode - <https://developer.apple.com/xcode/>
