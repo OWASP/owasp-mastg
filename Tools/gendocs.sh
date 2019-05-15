@@ -5,8 +5,8 @@ sh ./Apply_Link_Check.sh
 echo "Applying Linter check"
 sh ./Apply_Linter_Check.sh
 echo "Counting amount of linter issues:"
-wc -l ../linter-result.out
-
+export $RESULT=${wc -l ../linter-result.out}
+echo $RESULT
 if [ -z "$TRAVIS_TAG" ]; then 
 exit 0; 
 fi
