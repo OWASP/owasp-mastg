@@ -1291,63 +1291,71 @@ There are several ways to test the application binding:
 
 [Google Instance ID](https://developers.google.com/instance-id/ "Google Instance ID documentation") uses tokens to authenticate the running application instance. The moment the application is reset, uninstalled, etc., the Instance ID is reset, meaning that you'll have a new "instance" of the app.
 Go through the following steps for Instance ID:
+
 1. Configure your Instance ID for the given application in your Google Developer Console. This includes managing the PROJECT_ID.
 
 2. Setup Google Play services. In the file `build.gradle`, add
-```groovy
-  apply plugin: 'com.android.application'
-    ...
 
-    dependencies {
-        compile 'com.google.android.gms:play-services-gcm:10.2.4'
-    }
-```
+    ```groovy
+    apply plugin: 'com.android.application'
+        ...
+
+        dependencies {
+            compile 'com.google.android.gms:play-services-gcm:10.2.4'
+        }
+    ```
+
 3. Get an Instance ID.
-```java
-  String iid = Instance ID.getInstance(context).getId();
-  //now submit this iid to your server.
-```
+
+    ```java
+    String iid = Instance ID.getInstance(context).getId();
+    //now submit this iid to your server.
+    ```
 
 4. Generate a token.
-```java
-String authorizedEntity = PROJECT_ID; // Project id from Google Developer Console
-String scope = "GCM"; // e.g. communicating using GCM, but you can use any
-                      // URL-safe characters up to a maximum of 1000, or
-                      // you can also leave it blank.
-String token = Instance ID.getInstance(context).getToken(authorizedEntity,scope);
-//now submit this token to the server.
-```
+
+    ```java
+    String authorizedEntity = PROJECT_ID; // Project id from Google Developer Console
+    String scope = "GCM"; // e.g. communicating using GCM, but you can use any
+                        // URL-safe characters up to a maximum of 1000, or
+                        // you can also leave it blank.
+    String token = Instance ID.getInstance(context).getToken(authorizedEntity,scope);
+    //now submit this token to the server.
+    ```
+
 5. Make sure that you can handle callbacks from Instance ID, in case of invalid device information, security issues, etc. This requires extending `Instance IDListenerService` and handling the callbacks there:
 
-```java
-public class MyInstance IDService extends Instance IDListenerService {
-  public void onTokenRefresh() {
-    refreshAllTokens();
-  }
-
-  private void refreshAllTokens() {
-    // assuming you have defined TokenList as
-    // some generalized store for your tokens for the different scopes.
-    // Please note that for application validation having just one token with one scopes can be enough.
-    ArrayList<TokenList> tokenList = TokensList.get();
-    Instance ID iid = Instance ID.getInstance(this);
-    for(tokenItem : tokenList) {
-      tokenItem.token =
-        iid.getToken(tokenItem.authorizedEntity,tokenItem.scope,tokenItem.options);
-      // send this tokenItem.token to your server
+    ```java
+    public class MyInstance IDService extends Instance IDListenerService {
+    public void onTokenRefresh() {
+        refreshAllTokens();
     }
-  }
-};
 
-```
+    private void refreshAllTokens() {
+        // assuming you have defined TokenList as
+        // some generalized store for your tokens for the different scopes.
+        // Please note that for application validation having just one token with one scopes can be enough.
+        ArrayList<TokenList> tokenList = TokensList.get();
+        Instance ID iid = Instance ID.getInstance(this);
+        for(tokenItem : tokenList) {
+        tokenItem.token =
+            iid.getToken(tokenItem.authorizedEntity,tokenItem.scope,tokenItem.options);
+        // send this tokenItem.token to your server
+        }
+    }
+    };
+
+    ```
+
 6. Register the service in your Android manifest:
-```xml
-<service android:name=".MyInstance IDService" android:exported="false">
-  <intent-filter>
-        <action android:name="com.google.android.gms.iid.Instance ID"/>
-  </intent-filter>
-</service>
-```
+
+    ```xml
+    <service android:name=".MyInstance IDService" android:exported="false">
+    <intent-filter>
+            <action android:name="com.google.android.gms.iid.Instance ID"/>
+    </intent-filter>
+    </service>
+    ```
 
 When you submit the Instance ID (iid) and the tokens to your server, you can use that server with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, you can trigger a safeguard procedure (e.g., informing the server of possible copying or security issues or removing the data from the app and asking for a re-registration).
 
@@ -1366,31 +1374,35 @@ For pre-Android O devices, you can request the serial as follows:
 For devices running Android version O and later, you can request the device's serial as follows:
 
 1. Set the permission in your Android manifest:
-```xml
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-```
-2. Request the permission at run time from the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+
+    ```xml
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    ```
+
+2. Request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html) for more details.
 3. Get the serial:
 
-```java
-  String serial = android.os.Build.getSerial();
-```
+    ```java
+    String serial = android.os.Build.getSerial();
+    ```
 
 Retrieve the IMEI:
 
 1. Set the required permission in your Android manifest:
-```xml
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-```
 
-2. If you're using Android version M or later, request the permission at run time from the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+    ```xml
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    ```
+
+2. If you're using Android version M or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html) for more details.
 
 3. Get the IMEI:
-```java
-  TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-  String IMEI = tm.getDeviceId();
-```
+
+    ```java
+    TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    String IMEI = tm.getDeviceId();
+    ```
 
 ##### SSAID
 
@@ -1405,6 +1417,7 @@ The behavior of the SSAID has changed since Android O, and the behavior of MAC a
 #### Effectiveness Assessment
 
 There are a few key terms you can look for when the source code is available:
+
 - Unique identifiers that will no longer work:
   - `Build.SERIAL` without `Build.getSerial`
   - `htc.camera.sensor.front_SN` for HTC devices
