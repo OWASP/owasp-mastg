@@ -43,7 +43,7 @@ Include a clear and concise introduction where possible.
 
 Link to background information where necessary.
 
-### Write so people will read with joy!
+### Write so people will read with joy
 
 Use the following methods to increase scannability:
 
@@ -223,20 +223,22 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 
 ## 6. Punctuation conventions
 
-**Lowercase or capital letter after a colon**
+### Lowercase or capital letter after a colon
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
 
-**Serial comma use**
+### Serial comma use
 
 Use a serial comma before "and" for the last item in a run-in list of three or more items. For example:
 
 We bought apples, oranges, and tomatoes from the store.
 
-**Quote Marks and Apostrophes**
+### Quote Marks and Apostrophes
+
 Use straight double quotes, straight single quotes, and straight apostrophes (not curly quotes/apostrophes).
 
-**Technical Terms**
+### Technical Terms
+
 Spell/punctuate **specific** technical terms as they are used by the company (e.g., use the company website).
 
 In order of preference, spell/punctuate **generic** technical terms according to
@@ -300,7 +302,7 @@ $ echo 'Hello World'
 Hello World
 ```
 
-**In-text keywords**
+### In-text keywords
 
 When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
 
