@@ -22,7 +22,6 @@ Uniform hardware and tight hardware/software integration create another security
 
 In spite of the numerous strengths of iOS, iOS app developers still need to worry about security. Data protection, Keychain, Touch ID/Face ID authentication, and network security still leave a large margin for errors. In the following chapters, we describe iOS security architecture, explain a basic security testing methodology, and provide reverse engineering how-tos.
 
-
 ### iOS Security Architecture
 
 The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide"), officially documented by Apple in the iOS Security Guide, consists of six core features. This security guide is updated by Apple for each major iOS version:
@@ -124,6 +123,7 @@ Let's take a closer look at the different files in the IPA container. Apple uses
 - **Custom resource files**: Non-localized resources are placed in the top-level directory and localized resources are placed in language-specific subdirectories of the application bundle. Resources include nib files, images, sound files, configuration files, strings files, and any other custom data files the application uses.
 
 A language.lproj folder exists for each language that the application supports. It contains a storyboard and strings file.
+
 - A storyboard is a visual representation of the iOS application's user interface. It shows screens and the connections between those screens.
 - The strings file format consists of one or more key-value pairs and optional comments.
 
@@ -186,11 +186,12 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 ### iOS Application Attack surface
 
 The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application may be vulnerable to attack if it does not:
+
 - Validate all input by means of IPC communication or URL-schemes. See
   - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
 - Validate all input by the user in input fields.
 - Validate the content loaded inside a webview. See:
-  -  [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
+  - [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
   - [Determining Whether Native Methods Are Exposed Through WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#determining-whether-native-methods-are-exposed-through-webviews "Determining Whether Native Methods Are Exposed Through WebViews")
 - Securely communicate with backend servers or is susceptible to man-in-the-middle (MitM) attacks between the server and the mobile application. See:
   - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
