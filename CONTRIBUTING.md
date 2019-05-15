@@ -18,7 +18,7 @@ In order to increase the chances of your PR being accepted, please make sure tha
 - Your code snippets are well-tested and provide comments for key code lines
 - Your test cases explain issues on open-source or specifically designed vulnerable applications. Do not show vulnerabilities or bad coding practices on commercial applications. Example applications you can use are [OWASP iGOAT](https://www.owasp.org/index.php/OWASP_iGoat_Tool_Project "OWASP iGOAT"), applications from the [MSTG Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground") or any of the [MSTG Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes").
 
-After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the size of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 7 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 7 days have passed.
+After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the size of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 7 days have passed.
 
 ## How to set up my contributor environment
 
