@@ -518,9 +518,9 @@ For any managed code (Objective-C / Swift) in the project, check the following i
 
 #### Dynamic Analysis
 
-There are various tools provided which help to identify memory bugs within Xcode, such as the Debug Memory graph introduced in XCode 8 and the Allocations and Leaks instrument in XCode.
+There are various tools provided which help to identify memory bugs within Xcode, such as the Debug Memory graph introduced in Xcode 8 and the Allocations and Leaks instrument in Xcode.
 
-Next, you can check whether memory is freed too fast or to slow by enabling `NSAutoreleaseFreedObjectCheckEnabled`, `NSZombieEnabled`, `NSDebugEnabled` in Xcode while testing the application.
+Next, you can check whether memory is freed too fast or too slow by enabling `NSAutoreleaseFreedObjectCheckEnabled`, `NSZombieEnabled`, `NSDebugEnabled` in Xcode while testing the application.
 
 There are various well written explanations which can help with taking care of memory management. These can be found in the reference list of this chapter.
 

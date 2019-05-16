@@ -124,7 +124,7 @@ Gobjdump - часть [binutils](https://www.gnu.org/s/binutils/ "Binutils") и 
 #endif
 ```
 
-В Swift 2, при использовании  XCode 7, необходимо выставить нестандартный флаг компилятора для каждой цели(target) сборки, где флаг компилятора должен начинаться с -D. Таким образом, если флаг отладки -DMSTG-DEBUG установлен, можете использовать следующую аннотацию:
+В Swift 2, при использовании  Xcode 7, необходимо выставить нестандартный флаг компилятора для каждой цели(target) сборки, где флаг компилятора должен начинаться с -D. Таким образом, если флаг отладки -DMSTG-DEBUG установлен, можете использовать следующую аннотацию:
 
 ```swift
 #if MSTG-DEBUG
@@ -132,7 +132,7 @@ Gobjdump - часть [binutils](https://www.gnu.org/s/binutils/ "Binutils") и 
 #endif
 ```
 
-В Swift 3, при использовании  XCode 8, вы можете выставить Active Compilation Conditions в Build settings/Swift compiler - Custom flags. Swift3 не использует препроцессор, но вместо этого использует [условные блоки компиляции](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks"), основанные на предопределенных условиях:
+В Swift 3, при использовании  Xcode 8, вы можете выставить Active Compilation Conditions в Build settings/Swift compiler - Custom flags. Swift3 не использует препроцессор, но вместо этого использует [условные блоки компиляции](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks"), основанные на предопределенных условиях:
 
 ```swift
 #if DEBUG_LOGGING
@@ -277,7 +277,7 @@ Gobjdump - часть [binutils](https://www.gnu.org/s/binutils/ "Binutils") и 
 
 #### Статический анализ
 
-##### XCode настройки проекта
+##### Xcode настройки проекта
 
 - Защита от Stack smashing
 
