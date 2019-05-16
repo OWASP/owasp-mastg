@@ -213,7 +213,7 @@ func dosomething(argumentx:TypeX) throws {
 do {
     try functionThatThrows()
     defer {
-    	//use this as your finally block as with Objective-c
+    	//use this as your finally block as with Objective-C
     }
     statements
 } catch pattern 1 {
@@ -492,12 +492,12 @@ $ ./class-dump <Executable> -r
 ```
 
 ### Memory Corruption Bugs
-iOS applications have various ways to run into memory corruption bugs: first there are the native code issues which have been mentioned in the general Memory Corruption Bugs section. Next, there are various unsafe operations with both Objective-c and Swift to actually wrap around native code which can create issues. Last, both Swift and Objective-C implementations can result in memory leaks due to retaining objects which are no longer in use.
+iOS applications have various ways to run into memory corruption bugs: first there are the native code issues which have been mentioned in the general Memory Corruption Bugs section. Next, there are various unsafe operations with both Objective-C and Swift to actually wrap around native code which can create issues. Last, both Swift and Objective-C implementations can result in memory leaks due to retaining objects which are no longer in use.
 
 #### Static Analysis
 Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code is a little harder to spot when compiled. If you have the sources then you can see that C files use .c source files and .h header files and C++ uses .cpp files and .h files. This is a little different from the .swift and the .m source files for Swift and Objective-C. These files can be part of the sources, or part of third party libraries, registered as frameworks and imported through various tools, such as Carthage, the Swift Package Manager or Cocoapods.
 
-Is Objective-C or Swift in use? Check for the following items:
+For any managed code (Objective-C / Swift) in the project, check the following items:
 - The doubleFree issue: when `free()` is called twice for a given region instead of once.
 - Retaining cycles: look for cyclic dependencies by means of strong references of components to one another which keep materials in memory.
 - Using instances of `UnsafePointer` can be managed wrongly, which will allow for various memory corruption issues.
@@ -508,10 +508,9 @@ Is Objective-C or Swift in use? Check for the following items:
 >Please note that with Swift 5 you can only deallocate full blocks, which means the playground has changed a bit.
 
 #### Dynamic Analysis
-There are various tools provided which which memory bugs can be found:
-- Apple its Debug Memory graph introduced in XCode 8.
-- The Allocations and Leaks instrument in XCode.
-- Check whether memory is freed too fast or to slow by enabling `NSAutoreleaseFreedObjectCheckEnabled`, `NSZombieEnabled`, `NSDebugEnabled` in Xcode while testing the application.
+There are various tools provided which help to identify memory bugs within Xcode, such as the Debug Memory graph introduced in XCode 8 and the Allocations and Leaks instrument in XCode.
+
+Next, you can check whether memory is freed too fast or to slow by enabling `NSAutoreleaseFreedObjectCheckEnabled`, `NSZombieEnabled`, `NSDebugEnabled` in Xcode while testing the application.
 
 There are various well written explanations which can help with taking care of memory management. These can be found in the reference list of this chapter.
 

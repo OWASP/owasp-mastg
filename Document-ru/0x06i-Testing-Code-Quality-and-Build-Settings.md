@@ -194,7 +194,7 @@ func dosomething(argumentx:TypeX) throws {
 do {
     try functionThatThrows()
     defer {
-    	//use this as your finally block as with Objective-c
+    	//use this as your finally block as with Objective-C
     }
     statements
 } catch pattern 1 {
