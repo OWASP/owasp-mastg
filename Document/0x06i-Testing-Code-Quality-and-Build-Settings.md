@@ -554,10 +554,11 @@ There are various well written explanations which can help with taking care of m
 
 ##### Tools
 
-- Carthage - <https://github.com/carthage/carthage>
-- CocoaPods - <https://CocoaPods.org>
-- OWASP Dependency Checker - <https://jeremylong.github.io/DependencyCheck/>
-- Sourceclear -<https://sourceclear.com>
-- Class-dump - <https://github.com/nygard/class-dump>
-- RetireJS - <https://retirejs.github.io/retire.js/>
-- idb  - <https://github.com/dmayer/idb>
+- Carthage - [https://github.com/carthage/carthage](https://github.com/carthage/carthage)
+- CocoaPods - [https://CocoaPods.org](https://CocoaPods.org)
+- OWASP Dependency Checker - [https://jeremylong.github.io/DependencyCheck/](https://jeremylong.github.io/DependencyCheck/)
+- Sourceclear - [https://sourceclear.com](https://sourceclear.com)
+- Class-dump - [https://github.com/nygard/class-dump](https://github.com/nygard/class-dump)
+- RetireJS - [https://retirejs.github.io/retire.js/](https://retirejs.github.io/retire.js/)
+- idb  - [https://github.com/dmayer/idb](https://github.com/dmayer/idb)
+- Codesign - [https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html)
