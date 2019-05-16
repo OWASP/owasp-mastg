@@ -561,4 +561,3 @@ There are various well written explanations which can help with taking care of m
 - Class-dump - <https://github.com/nygard/class-dump>
 - RetireJS - <https://retirejs.github.io/retire.js/>
 - idb  - <https://github.com/dmayer/idb>
-- Codesign - <https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html>

@@ -379,4 +379,3 @@ IDB автоматизирует процесс проверки сразу дл
 #### Инструменты
 
 - idb - <https://github.com/dmayer/idb>
-- Codesign - <https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html>
