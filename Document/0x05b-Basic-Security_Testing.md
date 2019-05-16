@@ -751,11 +751,11 @@ $ drozer console connect
 
     `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
 
-####### Using Modules
+###### Using Modules
 
 Out of the box, Drozer provides modules for investigating various aspects of the Android platform and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
 
-####### Finding Modules
+###### Finding Modules
 
 The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
 
@@ -780,7 +780,7 @@ mwrlabs.urls
 
 ```
 
-####### Installing Modules
+###### Installing Modules
 
 You can install modules with the `module` command:
 
