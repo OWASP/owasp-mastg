@@ -628,7 +628,7 @@ As an additional layer of security, push notifications can be encrypted by using
 
 ###### Installing Drozer
 
-####### On Linux:
+**On Linux:**
 
 Pre-built packages for many Linux distributions are available on the [Drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website"). If your distribution is not listed, you can build Drozer from source as follows:
 
@@ -641,7 +641,7 @@ $ python setup.py build
 $ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 ```
 
-####### On Mac:
+**On Mac:**
 
 On Mac, Drozer is a bit more difficult to install due to missing dependencies. Mac OS versions from El Capitan onwards don't have OpenSSL installed, so compiling pyOpenSSL won't work. You can resolve this issue by [installing OpenSSL manually]. To install openSSL, run:
 
@@ -692,7 +692,7 @@ $ tar xzf drozer-2.3.4.tar.gz
 $ easy_install drozer-2.3.4-py2.7.egg
 ```
 
-####### Installing the Agent
+###### Installing the Agent
 
 Drozer agent is the software component that runs on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/) and install it with adb.
 
@@ -700,7 +700,7 @@ Drozer agent is the software component that runs on the device itself. Download 
 $ adb install drozer.apk
 ```
 
-####### Starting a Session
+###### Starting a Session
 
 You should now have the Drozer console installed on your host machine and the Agent running on your USB-connected device or emulator. Now you need to connect the two to start exploring.
 
@@ -717,7 +717,7 @@ $ drozer console connect
 
  Use the "list" command to view all Drozer modules that can be executed in the current session.
 
-####### Basic Drozer Commands
+###### Basic Drozer Commands
 
 - To list all the packages installed on the emulator, execute the following command:
 
