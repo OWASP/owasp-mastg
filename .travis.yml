@@ -28,5 +28,3 @@ deploy:
   on:
     repo: OWASP/owasp-mstg
     tags: true
-after_success:
-- "./Tools/report_to_github.sh"
