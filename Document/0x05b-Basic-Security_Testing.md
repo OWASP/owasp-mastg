@@ -272,9 +272,9 @@ An easy way to install a CA certificate is to push the certificate to the device
 2. Change the file extension from `.der` to `.cer`.
 3. Push the file to the emulator:
 
-```shell
-$ adb push cacert.cer /sdcard/
-```
+    ```shell
+    $ adb push cacert.cer /sdcard/
+    ```
 
 4. Navigate to "Settings" -> "Security" -> "Install from SD Card."
 5. Scroll down and tap `cacert.cer`.
