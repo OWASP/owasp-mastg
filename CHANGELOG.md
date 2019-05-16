@@ -51,7 +51,6 @@ This document is automatically generated at {{gitbook.time}}
 - Added fix for Fragment Injection on older Android versions
 - Improved sections on iOS webview related testing.
 
-
 1.0.1 17 Sept 2018:
 
 - Updated guiding documentation (README, PR templates, improved styleguide, issue templates).

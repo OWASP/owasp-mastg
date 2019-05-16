@@ -286,18 +286,22 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 - Осуществите внедрение в приложение, написав: `cycript -p PID`.
 - Интерпретатор Cycript будет предоставлен, в случае успеха. Вы можете получить сущность приложения, использовав синтаксис Objective-C `[UIApplication sharedApplication]`.
 
-```
-cy# [UIApplication sharedApplication]
-cy# var a = [UIApplication sharedApplication]
-```
+    ```
+    cy# [UIApplication sharedApplication]
+    cy# var a = [UIApplication sharedApplication]
+    ```
+
 - Чтобы получить делегат приложения:
-```
-cy# a.delegate
-```
+
+    ```
+    cy# a.delegate
+    ```
+
 - Для печати методов класса AppDelegate:
-```
-cy# printMethods (“AppDelegate”)
-```
+
+    ```
+    cy# printMethods (“AppDelegate”)
+    ```
 
 #### Установка Frida
 

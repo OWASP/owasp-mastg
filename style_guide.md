@@ -43,7 +43,7 @@ Include a clear and concise introduction where possible.
 
 Link to background information where necessary.
 
-### Write so people will read with joy!
+### Write so people will read with joy
 
 Use the following methods to increase scannability:
 
@@ -69,6 +69,7 @@ For longer pages, use the following tools to make the page easily scannable:
 ### Effective use of lists
 
 When presenting your content in a list format:
+
 - Use numbered lists when the order of entries is important.
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
@@ -78,8 +79,8 @@ When presenting your content in a list format:
 - - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
 - - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
-
 ### Numbering conventions
+
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
 
 When using any number higher than ten, use the numeric version (e.g., "12" or “300”).
@@ -108,7 +109,7 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
 
-### Standardization 
+### Standardization
 
 This is a list of words/abbreviations that are used inconsistently at the moment in the MSTG and need standardization:
 
@@ -134,7 +135,7 @@ were not -> weren't
 will not -> wont  
 would not -> wouldn't  
 you are -> you're  
-you have + *verb* -> you've + *verb* 
+you have + *verb* -> you've + *verb*
 you will -> you'll  
 
 ### Abbreviations
@@ -222,23 +223,26 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 
 ## 6. Punctuation conventions
 
-**Lowercase or capital letter after a colon**
+### Lowercase or capital letter after a colon
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
 
-**Serial comma use**
+### Serial comma use
 
 Use a serial comma before "and" for the last item in a run-in list of three or more items. For example:
 
 We bought apples, oranges, and tomatoes from the store.
 
-**Quote Marks and Apostrophes**
+### Quote Marks and Apostrophes
+
 Use straight double quotes, straight single quotes, and straight apostrophes (not curly quotes/apostrophes).
 
-**Technical Terms**
+### Technical Terms
+
 Spell/punctuate **specific** technical terms as they are used by the company (e.g., use the company website).
 
 In order of preference, spell/punctuate **generic** technical terms according to
+
 1. Merriam Webster's Collegiate Dictionary, 11th edition.
 2. Microsoft Manual of Style, 4th edition
 3. foldoc.org (Free Online Dictionary of Computing)
@@ -275,7 +279,6 @@ Markdown blockquotes can be used for comments in the documents by using ">"/
 
 > This is a blockquote
 
-
 ## 8. Code and Shell Commands
 
 Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
@@ -294,10 +297,12 @@ public static void main(String[] args) { System.out.println(" Hello World!"); } 
 
 When including shell commands, make sure to remove any host names and usernames from the command prompt, e.g.:
 
-```
+```shell
 $ echo 'Hello World'
+Hello World
 ```
-**In-text keywords**
+
+### In-text keywords
 
 When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
 

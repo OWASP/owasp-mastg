@@ -62,7 +62,7 @@ Dangers of SMS-OTP
 
 Threats:
 
--  Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
+- Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
 - Trojans: Installed malicious applications with access to text messages may forward the OTP to another number or backend.
 - SIM SWAP Attack: In this attack, the adversary calls the phone company, or works for them, and has the victim's number moved to a SIM card owned by the adversary. If successful, the adversary can see the SMS messages which are sent to the victim's phone number. This includes the messages used in the 2-factor authentication.
 - Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.
@@ -100,9 +100,9 @@ Perform the following steps when testing authentication and authorization:
 
 Authentication bypass vulnerabilities exist when authentication state is not consistently enforced on the server and when the client can tamper with the state. While the backend service is processing requests from the mobile client, it must consistently enforce authorization checks: verifying that the user is logged in and authorized every time a resource is requested.
 
-Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%27OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
+Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%28OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
 
-```
+```html
 http://www.site.com/page.asp?authenticated=no
 ```
 
@@ -110,7 +110,7 @@ The client can arbitrarily change the GET parameters sent with the request. Noth
 
 Although this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. They assume that these parameters can't be tampered with. Consider, for example, the following [classic vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on the cookie "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access by simply setting the cookie value as follows:
 
-```
+```html
 isAdmin=True
 ```
 
@@ -122,12 +122,12 @@ To prevent tampering cryptographic signatures are added to client-side tokens. O
 
 Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
-**Password Length**
+##### Password Length
 
 - Minimum password length (10 characters) should be enforced.
 - Maximum password length should not be too short because it will prevent users from creating passphrases. The typical maximum length is 128 characters.
 
-**Password Complexity**
+##### Password Complexity
 
 The password must meet at least three out of the following four complexity rules:
 
@@ -146,8 +146,7 @@ After adding the zxcvbn JavaScript library to the HTML page, you can execute the
 
 The score is defined as follows and can be used for a password strength bar for example:
 
-
-```
+```html
 0 # too guessable: risky password. (guesses < 10^3)
 
 1 # very guessable: protection from throttled online attacks. (guesses < 10^6)
@@ -203,7 +202,7 @@ function(password) {
 },
 ```
 
-**Running a Password Dictionary Attack**
+#### Running a Password Dictionary Attack
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
@@ -235,7 +234,7 @@ To test if your own test accounts are prone to brute forcing, append the correct
 
 > Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
 
-**Login Throttling**
+#### Login Throttling
 
 Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
 
@@ -278,7 +277,7 @@ Make sure that:
 Authentication shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made authentication and session management functionality. If the app uses framework APIs for authentication, check the framework security documentation for best practices. Security guides for common frameworks are available at the following links:
 
 - [Spring (Java)](https://projects.spring.io/spring-security "Spring (Java)")
-- [Struts (Java)](https://struts.apache.org/docs/security.html "Struts (Java)")
+- [Struts (Java)](https://struts.apache.org/security/ "Struts (Java)")
 - [Laravel (PHP)](https://laravel.com/docs/5.4/authentication "Laravel (PHP)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 
@@ -317,14 +316,13 @@ Use the app extensively (going through all UI flows) while using an interception
 
 Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information testing session management.
 
-
 ### Testing Stateless (Token-Based) Authentication
 
-Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
+Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined in [RFC7519](https://tools.ietf.org/html/rfc7519 "RFC7519"). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
 JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
 
-```
+```base64
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
 ```
 
@@ -387,7 +385,6 @@ A common method of granting tokens combines [access tokens and refresh tokens](h
 
 For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
 
-
 ```Java
  app.post('/refresh_token', function (req, res) {
   // verify the existing token
@@ -412,20 +409,19 @@ For apps that handle sensitive data, make sure that the refresh token expires af
 Investigate the following JWT vulnerabilities while performing dynamic analysis:
 
 - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
-  *  JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
+  - JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
 - Token Storage on the client:
-  * The token storage location should be verified for mobile apps that use JWT.
+  - The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
-  * Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
+  - Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
 - Information Disclosure:
-  * Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
+  - Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 
 Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
 
 ##### Tampering with the Hashing Algorithm
 
 Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
-
 
 ### User Logout and Session Timeouts
 
@@ -435,11 +431,11 @@ Failing to destroy the server-side session is one of the most common logout func
 
 Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
 
-##### Verifying Best Practices
+#### Verifying Best Practices
 
 If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
 
-- [Spring (Java)](https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
+- [Spring (Java)](https://docs.spring.io/autorepo/docs/spring-security/4.1.x/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 - [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
 
@@ -449,14 +445,13 @@ If access and refresh tokens are used with stateless authentication, they should
 
 Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
 
-1.  Log into the application.
-2.  Perform a couple of operations that require authentication inside the application.
-3.  Log out.
-4.  Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
- 
-If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality "OTG-SESS-006")) includes a detailed explanation and more test cases.
+1. Log into the application.
+2. Perform a couple of operations that require authentication inside the application.
+3. Log out.
+4. Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
 
+If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
+The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
 
 ### Testing OAuth 2.0 Flows
 
@@ -557,14 +552,14 @@ In all cases, the pentester should verify whether different devices are detected
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
 
-
 ### References
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
 
 #### OWASP MASVS
+
 - V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
 - V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
@@ -595,13 +590,12 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - Siadati, Hossein, et al. "Mind your SMSes: Mitigating social engineering in second factor authentication." Computers & Security 65 (2017): 14-28.
 -Siadati, Hossein, Toan Nguyen, and Nasir Memon. "Verification code forwarding attack (short paper)." International Conference on Passwords. Springer, Cham, 2015.
 
-
 ##### Tools
 
-- Free and Professional Burp Suite editions - https://portswigger.net/burp/
+- Free and Professional Burp Suite editions - <https://portswigger.net/burp/>
 Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- Using Burp Intruder - https://portswigger.net/burp/documentation/desktop/tools/intruder/using
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-- jwtbrute - https://github.com/jmaxxz/jwtbrute
-- crackjwt - https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py
-- John the ripper - https://github.com/magnumripper/JohnTheRipper
+- Using Burp Intruder - <https://portswigger.net/burp/documentation/desktop/tools/intruder/using>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- jwtbrute - <https://github.com/jmaxxz/jwtbrute>
+- crackjwt - <https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py>
+- John the ripper - <https://github.com/magnumripper/JohnTheRipper>

@@ -29,17 +29,21 @@ We will work with the [OMTG app][OMTGApp]. For this to work we will use Android 
   `Nexus 5 API 22        1080 × 1920: xxhdpi    22    Android 5.1    x86_64    4 GB`
 
 - Download the Android 5 APK:
-  <https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug-Android5.apk>
+  `https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug-Android5.apk`
 - and install it:
+
   ```shell
   adb install ~/Downloads/app-x86-debug_android5.apk
   ```
 
 - Download the [x86 version of frida-server][x86fridaserver] and push it to the emulator:
+
   ```shell
   adb push ./Downloads/frida-server-11.0.3-android-x86 /data/local/tmp/
   ```
+  
 - Run the frida-server on the emulator:
+
   ```shell
   adb shell
   su # if needed
@@ -64,13 +68,16 @@ You can get both APKs here, both for the emulator and for real devices:
 - Download the Android 7 APK:
   <https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug.apk>
 - and install it:
+  
   ```shell
   adb install ~/Downloads/app-x86-debug.apk
   ```
+
 - Download the [x86_64 version of frida-server][x8664fridaserver] and push it to the emulator:
   ```shell
   adb push ./Downloads/frida-server-11.0.3-android-x86_64 /data/local/tmp/
   ```
+
 - Run the frida-server on the emulator:
   ```shell
   adb shell
