@@ -164,15 +164,15 @@ The following code snippet shows a simple example for a condition resulting in a
 
 To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
-    - `strcat`
-    - `strcpy`
-    - `strncat`
-    - `strlcat`
-    - `strncpy`
-    - `strlcpy`
-    - `sprintf`
-    - `snprintf`
-    - `gets`
+- `strcat`
+- `strcpy`
+- `strncat`
+- `strlcat`
+- `strncpy`
+- `strlcpy`
+- `sprintf`
+- `snprintf`
+- `gets`
 
 Also, look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly.
 
