@@ -53,7 +53,7 @@ You should not root a personal device that you store your private information on
 
 **You need to understand that rooting your device is ultimately YOUR decision and that OWASP shall in no way be held responsible for any damage. If you're uncertain, seek expert advice before starting the rooting process.**
 
-##### Which Mobiles Can Be Rooted?
+##### Which Mobiles Can Be Rooted
 
 Virtually any Android mobile can be rooted. Commercial versions of Android OS (which are Linux OS evolutions at the kernel level) are optimized for the mobile world. Some features have been removed or disabled for these versions, for example, non-privileged users' ability to become the 'root' user (who has elevated privileges). Rooting a phone means allowing users to become the root user, e.g., adding a standard Linux executable called `su`, which is used to change to another user account.
 
@@ -404,7 +404,7 @@ You could also use an access point that is under your control to redirect the tr
 
 > For both solutions you need to activate "Support invisible proxying" in Burp, in Proxy Tab/Options/Edit Interface.
 
-**iptables**
+###### iptables
 
 You can use iptables on the Android device to  redirect all traffic to your interception proxy. The following command would redirect port 80 to your proxy running on port 8080
 
@@ -442,7 +442,7 @@ In case you want to reset the iptables configuration you can flush the rules:
 $ iptables -t nat -F
 ```
 
-**bettercap**
+###### bettercap
 
 Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running bettercap.
 
@@ -575,13 +575,13 @@ Downstream messages (push notifications) are sent from the application server to
 
 FCM is available for Android, iOS, and Chrome. FCM currently provides two connection server protocols: HTTP and XMPP. As described in the [official documentation](https://firebase.google.com/docs/cloud-messaging/server#choose "Differences of HTTP and XMPP in FCM"), these protocols are implemented differently. The following example demonstrates how to intercept both protocols.
 
-**Preparation of Test Setup**
+###### Preparation of Test Setup
 
 You need to either configure iptables on your phone or use bettercap to be able to intercept traffic.
 
 FCM can use either XMPP or HTTP to communicate with the Google backend.
 
-**HTTP**
+###### HTTP
 
 FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only port 5228 is used.
 
@@ -597,7 +597,7 @@ rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
 
 - The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
 
-**XMPP**
+###### XMPP
 
 For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") 5235 (Production) and 5236 (Testing).
 
@@ -610,7 +610,7 @@ rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
-**Intercepting the Requests**
+###### Intercepting the Requests
 
 The interception proxy must listen to the port specified in the port forwarding rule above (port 8080).
 
@@ -618,7 +618,7 @@ Start the app and trigger a function that uses FCM. You should see HTTP messages
 
 ![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
 
-**End-to-End Encryption for Push Notifications**
+###### End-to-End Encryption for Push Notifications
 
 As an additional layer of security, push notifications can be encrypted by using [Capillary](https://github.com/google/capillary "Capillary"). Capillary is a library to simplify the sending of end-to-end (E2E) encrypted push messages from Java-based application servers to Android clients.
 
@@ -628,7 +628,7 @@ As an additional layer of security, push notifications can be encrypted by using
 
 ###### Installing Drozer
 
-**On Linux:**
+####### On Linux:
 
 Pre-built packages for many Linux distributions are available on the [Drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website"). If your distribution is not listed, you can build Drozer from source as follows:
 
@@ -641,7 +641,7 @@ $ python setup.py build
 $ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
 ```
 
-**On Mac:**
+####### On Mac:
 
 On Mac, Drozer is a bit more difficult to install due to missing dependencies. Mac OS versions from El Capitan onwards don't have OpenSSL installed, so compiling pyOpenSSL won't work. You can resolve this issue by [installing OpenSSL manually]. To install openSSL, run:
 
@@ -692,7 +692,7 @@ $ tar xzf drozer-2.3.4.tar.gz
 $ easy_install drozer-2.3.4-py2.7.egg
 ```
 
-**Installing the Agent:**
+####### Installing the Agent
 
 Drozer agent is the software component that runs on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/) and install it with adb.
 
@@ -700,7 +700,7 @@ Drozer agent is the software component that runs on the device itself. Download 
 $ adb install drozer.apk
 ```
 
-**Starting a Session:**
+####### Starting a Session
 
 You should now have the Drozer console installed on your host machine and the Agent running on your USB-connected device or emulator. Now you need to connect the two to start exploring.
 
@@ -717,7 +717,7 @@ $ drozer console connect
 
  Use the "list" command to view all Drozer modules that can be executed in the current session.
 
-**Basic Drozer Commands:**
+####### Basic Drozer Commands
 
 - To list all the packages installed on the emulator, execute the following command:
 
@@ -751,11 +751,11 @@ $ drozer console connect
 
     `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
 
-**Using Modules:**
+####### Using Modules
 
 Out of the box, Drozer provides modules for investigating various aspects of the Android platform and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
 
-**Finding Modules:**
+####### Finding Modules
 
 The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
 
@@ -780,7 +780,7 @@ mwrlabs.urls
 
 ```
 
-**Installing Modules:**
+####### Installing Modules
 
 You can install modules with the `module` command:
 
@@ -848,34 +848,34 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 ### References
 
-- Signing Manually (Android developer documentation) - https://developer.android.com/studio/publish/app-signing#signing-manually
-- Custom Trust - https://developer.android.com/training/articles/security-config#CustomTrust
-- Google Android Codelabs - https://codelabs.developers.google.com/codelabs/android-network-security-config/#3
-- Security Analyst’s Guide to Network Security Configuration in Android P - https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/
+- Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
+- Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
+- Google Android Codelabs - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
+- Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
 
 #### Tools
 
-- Androbugs - https://github.com/AndroBugs/AndroBugs_Framework
-- Android-CertKiller - https://github.com/51j0/Android-CertKiller
-- Android tcpdump - https://www.androidtcpdump.com/
-- Android-SSL-TrustKiller - https://github.com/iSECPartners/Android-SSL-TrustKiller
-- Android Platform Tools - https://developer.android.com/studio/releases/platform-tools.html
-- Android Studio - https://developer.android.com/studio/index.html
-- Android developer documentation - https://developer.android.com/studio/publish/app-signing#signing-manually
-- Android 8.0 Behavior Changes - https://developer.android.com/about/versions/oreo/android-8.0-changes
-- Android 9.0 Behavior Changes - https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes
-- apktool -https://ibotpeaches.github.io/Apktool/
-- apkx - https://github.com/b-mueller/apkx
-- Burp-non-HTTP-Extension - https://github.com/summitt/Burp-Non-HTTP-Extension
-- Burp Suite Professional - https://portswigger.net/burp/
-- Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
-- Frida - https://www.frida.re/docs/android/
-- JAADAS - https://github.com/flankerhqd/JAADAS
-- Magisk Trust User Certs module - https://github.com/NVISO-BE/MagiskTrustUserCerts/releases
-- Mitm-relay - https://github.com/jrmdev/mitm_relay
-- Objection - https://github.com/sensepost/objection
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-- QARK - https://github.com/linkedin/qark/
-- SDK tools - https://developer.android.com/studio/index.html#downloads
-- SSLUnpinning - https://github.com/ac-pm/SSLUnpinning_Xposed
-- Wireshark - https://www.wireshark.org/
+- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
+- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
+- Android tcpdump - <https://www.androidtcpdump.com/>
+- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
+- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
+- Android Studio - <https://developer.android.com/studio/index.html>
+- Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
+- Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
+- Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
+- apktool - <https://ibotpeaches.github.io/Apktool/>
+- apkx - <https://github.com/b-mueller/apkx>
+- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
+- Burp Suite Professional - <https://portswigger.net/burp/>
+- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
+- Frida - <https://www.frida.re/docs/android/>
+- JAADAS - <https://github.com/flankerhqd/JAADAS>
+- Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
+- Mitm-relay - <https://github.com/jrmdev/mitm_relay>
+- Objection - <https://github.com/sensepost/objection>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- QARK - <https://github.com/linkedin/qark/>
+- SDK tools - <https://developer.android.com/studio/index.html#downloads>
+- SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
+- Wireshark - <https://www.wireshark.org/>

@@ -125,7 +125,7 @@ To customize their network security settings in a safe, declarative configuratio
 
 The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. If an application uses this feature, two things should be checked to identify the defined configuration:
 
-1. Specification of the file reference in the Android application manifest via the "android:networkSecurityConfig" attribute on the application tag:
+First, find the Network Security Configuration file in the Android application manifest via the "android:networkSecurityConfig" attribute on the application tag:
 
   ```xml
   <?xml version="1.0" encoding="utf-8"?>
@@ -136,7 +136,7 @@ The Network Security Configuration can also be used to pin [declarative certific
   </manifest>
   ```
 
-2. Contents of the file stored in "res/xml/network_security_config.xml":
+Open the identified file. In this case, the file can be found at "res/xml/network_security_config.xml":
 
   ```xml
   <?xml version="1.0" encoding="utf-8"?>
@@ -581,7 +581,7 @@ When you do not have the source code:
 
 #### OWASP Mobile Top 10 2016
 
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
 
 ##### OWASP MASVS
 
@@ -592,19 +592,19 @@ When you do not have the source code:
 ##### CWE
 
 - CWE-295 - Improper Certificate Validation
-- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - <https://cwe.mitre.org/data/definitions/296.html>
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - <https://cwe.mitre.org/data/definitions/297.html>
+- CWE-298 - Improper Validation of Certificate Expiration - <https://cwe.mitre.org/data/definitions/298.html>
 
 ##### Android Developer Documentation
 
-- Network Security Config - https://developer.android.com/training/articles/security-config
+- Network Security Config - <https://developer.android.com/training/articles/security-config>
 
 ##### Xamarin Certificate Pinning
 
-- Certificate and Public Key Pinning with Xamarin - https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin
-- ServicePointManager - https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx
+- Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
+- ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
 
 ##### Cordova Certificate Pinning
 
-PhoneGap SSL Certificate Checker plugin - https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin
+PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>

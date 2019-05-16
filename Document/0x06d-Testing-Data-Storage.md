@@ -222,7 +222,7 @@ In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubf
 
 The misconfigured Firebase instance can be identified by making the following network call:
 
-_https://\<firebaseProjectName\>.firebaseio.com/.json_
+`https://\<firebaseProjectName\>.firebaseio.com/.json`
 
 The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, _PROJECT_ID_ key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
 

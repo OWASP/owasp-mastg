@@ -650,7 +650,7 @@ The dynamic analysis of this section comprises validating whether the copyrights
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
@@ -676,27 +676,27 @@ The dynamic analysis of this section comprises validating whether the copyrights
 
 #### Tools
 
-- ProGuard - https://www.guardsquare.com/en/proguard
-- jarsigner - http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html
-- Xposed - http://repo.xposed.info/
-- Drozer - https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf
-- GNU nm - https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html
-- Black Duck - https://www.blackducksoftware.com/
-- Sourceclear -  https://www.sourceclear.com/
-- Snyk - https://snyk.io/
-- Gradle license plugn - https://github.com/hierynomus/license-gradle-plugin
-- Dependency-check-gradle - https://github.com/jeremylong/dependency-check-gradle
-- MobSF - https://www.github.com/MobSF/Mobile-Security-Framework-MobSF
-- Squares leak canary - https://github.com/square/leakcanary
-- Memory Profiler from Android Studio - https://developer.android.com/studio/profile/memory-profiler
-- Android Java Deserialization Vulnerability Tester - https://github.com/modzero/modjoda
+- ProGuard - <https://www.guardsquare.com/en/proguard>
+- jarsigner - <http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html>
+- Xposed - <http://repo.xposed.info/>
+- Drozer - <https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf>
+- GNU nm - <https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html>
+- Black Duck - <https://www.blackducksoftware.com/>
+- Sourceclear -  <https://www.sourceclear.com/>
+- Snyk - <https://snyk.io/>
+- Gradle license plugn - <https://github.com/hierynomus/license-gradle-plugin>
+- Dependency-check-gradle - <https://github.com/jeremylong/dependency-check-gradle>
+- MobSF - <https://www.github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Squares leak canary - <https://github.com/square/leakcanary>
+- Memory Profiler from Android Studio - <https://developer.android.com/studio/profile/memory-profiler>
+- Android Java Deserialization Vulnerability Tester - <https://github.com/modzero/modjoda>
 
 #### Memory Analysis References
 
-- A brief history of Android deserialization vulnerabilities - https://lgtm.com/blog/android_deserialization
-- 9 ways to avoid memory leaks in Android - https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e
-- Memory Leak Patterns in Android - https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570
+- A brief history of Android deserialization vulnerabilities - <https://lgtm.com/blog/android_deserialization>
+- 9 ways to avoid memory leaks in Android - <https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e>
+- Memory Leak Patterns in Android - <https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570>
 
 #### Android Documentation
 
-- APK signature scheme with key rotation - https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation
+- APK signature scheme with key rotation - <https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation>

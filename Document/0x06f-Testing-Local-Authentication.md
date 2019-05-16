@@ -58,7 +58,7 @@ The Keychain allows saving items with the special `SecAccessControl` attribute, 
 
 In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
 
-**Swift**
+##### Swift
 
 ```swift
 
@@ -94,7 +94,7 @@ if status == noErr {
 }
 ```
 
-**Objective-C**
+##### Objective-C
 
 ```objc
 
@@ -127,7 +127,7 @@ if status == noErr {
 
 Now we can request the saved item from the Keychain. Keychain Services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
 
-**Swift**
+##### Swift
 
 ```swift
 // 1. define query
@@ -152,7 +152,7 @@ if status == noErr {
 }
 ```
 
-**Objective-C**
+##### Objective-C
 
 ```objc
 // 1. define query

@@ -45,7 +45,7 @@ In these cases you need to monitor and analyze the network traffic first in orde
 
 For a full dynamic analysis of a mobile app, all network traffic should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
 
-**bettercap Installation**
+##### bettercap Installation
 
 bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your machine that will act as the MITM. On macOS it can be installed by using brew.
 
@@ -62,7 +62,7 @@ $ apt-get install bettercap
 
 There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
 
-**Network Analyzer Tool**
+##### Network Analyzer Tool
 
 Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your machine. The two most common network monitoring (or capturing) tools are:
 
@@ -71,7 +71,7 @@ Install a tool that allows you to monitor and analyze the network traffic that w
 
 Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
 
-**Network Setup**
+##### Network Setup
 
 To be able to get a man-in-the-middle position your machine should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of mobile phone.
 
@@ -134,7 +134,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
-**CA Certificates**
+##### CA Certificates
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
 
@@ -142,7 +142,7 @@ If not already done, install the CA certificates in your mobile device which wil
 Note that starting with Android Nougat 7.0 (API Level 24) the OS no longer trusts a user supplied CA certificate unless specified in the app. Bypassing this security measure will be addressed in the "Basic Security Testing" chapters.
 - [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
 
-**Intercepting Traffic**
+##### Intercepting Traffic
 
 Start using the app and trigger it's functions. You should see HTTP messages showing up in your interception proxy.
 
@@ -164,11 +164,9 @@ When both the client and server are controlled by the same organization and used
 
 If a mobile application connects to a specific server, its networking stack can be tuned to ensure the highest possible security level for the server's configuration. Lack of support in the underlying operating system may force the mobile application to use a weaker configuration.
 
-**Cipher Suites Terminology**
+###### Cipher Suites Terminology
 
-Cipher suites have the following structure:
-
-**Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm**
+Cipher suites have the following structure: **Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm**
 
 This structure can be described as follows:
 
@@ -299,7 +297,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 #### OWASP Mobile Top 10 2016
 
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
 
 #### OWASP MASVS
 
@@ -316,33 +314,33 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 #### Tools
 
-- bettercap - https://www.bettercap.org
-- Burp Suite - https://portswigger.net/burp/
-- OWASP ZAP - https://www.owasp.org/index.php/
-- tcpdump - https://www.androidtcpdump.com/
-- Testssl.sh - https://github.com/drwetter/testssl.sh
-- Wireshark - https://www.wireshark.org/
+- bettercap - <https://www.bettercap.org>
+- Burp Suite - <https://portswigger.net/burp/>
+- OWASP ZAP - <https://www.owasp.org/index.php/>
+- tcpdump - <https://www.androidtcpdump.com/>
+- Testssl.sh - <https://github.com/drwetter/testssl.sh>
+- Wireshark - <https://www.wireshark.org/>
 
 #### Android
 
-- Android supported Cipher suites - https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites
+- Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>
 
 #### iOS
 
-- iOS supported Cipher suites - https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc
+- iOS supported Cipher suites - <https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc>
 
 #### IANA Transport Layer Security (TLS) Parameters
 
-- TLS Cipher Suites - https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4
+- TLS Cipher Suites - <https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4>
 
 #### OWASP TLS Cipher String Cheat Sheet
 
-- Recommendations for a cipher string - https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md
+- Recommendations for a cipher string - <https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md>
 
 #### SIM Swapping attacks
 
-- The SIM Hijackers - https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin
-- SIM swapping: how the mobile security feature can lead to a hacked bank account - https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/
+- The SIM Hijackers - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
+- SIM swapping: how the mobile security feature can lead to a hacked bank account - <https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/>
 
 #### NIST
 
@@ -350,34 +348,34 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 #### SIM Swap Fraud
 
-- https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin
-- How to protect yourself against a SIM swap attack - https://www.wired.com/story/sim-swap-attack-defend-phone/
+- <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
+- How to protect yourself against a SIM swap attack - <https://www.wired.com/story/sim-swap-attack-defend-phone/>
 
 #### IETF
 
-- RFC 6176 - https://tools.ietf.org/html/rfc6176
-- RFC 6101 - https://tools.ietf.org/html/rfc6101
-- RFC 2246 - https://www.ietf.org/rfc/rfc2246
-- RFC 4346 - https://tools.ietf.org/html/rfc4346
-- RFC 5246 - https://tools.ietf.org/html/rfc5246
-- RFC 8446 - https://tools.ietf.org/html/rfc8446
-- RFC 6979 - https://tools.ietf.org/html/rfc6979
-- RFC 8017 - https://tools.ietf.org/html/rfc8017
-- RFC 2631 - https://tools.ietf.org/html/rfc2631
-- RFC 7919 - https://tools.ietf.org/html/rfc7919
-- RFC 4492 - https://tools.ietf.org/html/rfc4492
-- RFC 4279 - https://tools.ietf.org/html/rfc4279
-- RFC 2631 - https://tools.ietf.org/html/rfc2631
-- RFC 8422 - https://tools.ietf.org/html/rfc8422
-- RFC 5489 - https://tools.ietf.org/html/rfc5489
-- RFC 4772 - https://tools.ietf.org/html/rfc4772
-- RFC 1829 - https://tools.ietf.org/html/rfc1829
-- RFC 2420 - https://tools.ietf.org/html/rfc2420
-- RFC 3268 - https://tools.ietf.org/html/rfc3268
-- RFC 5288 - https://tools.ietf.org/html/rfc5288
-- RFC 7465 - https://tools.ietf.org/html/rfc7465
-- RFC 7905 - https://tools.ietf.org/html/rfc7905
-- RFC 7539 - https://tools.ietf.org/html/rfc7539
-- RFC 6151 - https://tools.ietf.org/html/rfc6151
-- RFC 6234 - https://tools.ietf.org/html/rfc6234
-- RFC 8447 - https://tools.ietf.org/html/rfc8447#section-8
+- RFC 6176 - <https://tools.ietf.org/html/rfc6176>
+- RFC 6101 - <https://tools.ietf.org/html/rfc6101>
+- RFC 2246 - <https://www.ietf.org/rfc/rfc2246>
+- RFC 4346 - <https://tools.ietf.org/html/rfc4346>
+- RFC 5246 - <https://tools.ietf.org/html/rfc5246>
+- RFC 8446 - <https://tools.ietf.org/html/rfc8446>
+- RFC 6979 - <https://tools.ietf.org/html/rfc6979>
+- RFC 8017 - <https://tools.ietf.org/html/rfc8017>
+- RFC 2631 - <https://tools.ietf.org/html/rfc2631>
+- RFC 7919 - <https://tools.ietf.org/html/rfc7919>
+- RFC 4492 - <https://tools.ietf.org/html/rfc4492>
+- RFC 4279 - <https://tools.ietf.org/html/rfc4279>
+- RFC 2631 - <https://tools.ietf.org/html/rfc2631>
+- RFC 8422 - <https://tools.ietf.org/html/rfc8422>
+- RFC 5489 - <https://tools.ietf.org/html/rfc5489>
+- RFC 4772 - <https://tools.ietf.org/html/rfc4772>
+- RFC 1829 - <https://tools.ietf.org/html/rfc1829>
+- RFC 2420 - <https://tools.ietf.org/html/rfc2420>
+- RFC 3268 - <https://tools.ietf.org/html/rfc3268>
+- RFC 5288 - <https://tools.ietf.org/html/rfc5288>
+- RFC 7465 - <https://tools.ietf.org/html/rfc7465>
+- RFC 7905 - <https://tools.ietf.org/html/rfc7905>
+- RFC 7539 - <https://tools.ietf.org/html/rfc7539>
+- RFC 6151 - <https://tools.ietf.org/html/rfc6151>
+- RFC 6234 - <https://tools.ietf.org/html/rfc6234>
+- RFC 8447 - <https://tools.ietf.org/html/rfc8447#section-8>

@@ -122,12 +122,12 @@ To prevent tampering cryptographic signatures are added to client-side tokens. O
 
 Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
-**Password Length**
+##### Password Length
 
 - Minimum password length (10 characters) should be enforced.
 - Maximum password length should not be too short because it will prevent users from creating passphrases. The typical maximum length is 128 characters.
 
-**Password Complexity**
+##### Password Complexity
 
 The password must meet at least three out of the following four complexity rules:
 
@@ -202,7 +202,7 @@ function(password) {
 },
 ```
 
-**Running a Password Dictionary Attack**
+#### Running a Password Dictionary Attack
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
@@ -234,7 +234,7 @@ To test if your own test accounts are prone to brute forcing, append the correct
 
 > Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
 
-**Login Throttling**
+#### Login Throttling
 
 Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
 
@@ -318,7 +318,7 @@ Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Se
 
 ### Testing Stateless (Token-Based) Authentication
 
-Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined at (https://tools.ietf.org/html/rfc7519). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
+Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined in [RFC7519](https://tools.ietf.org/html/rfc7519 "RFC7519"). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
 JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
 
@@ -556,7 +556,7 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - <<https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authenticatio>n>
 
 #### OWASP MASVS
 
@@ -592,10 +592,10 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 ##### Tools
 
-- Free and Professional Burp Suite editions - https://portswigger.net/burp/
+- Free and Professional Burp Suite editions - <https://portswigger.net/burp/>
 Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
-- Using Burp Intruder - https://portswigger.net/burp/documentation/desktop/tools/intruder/using
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-- jwtbrute - https://github.com/jmaxxz/jwtbrute
-- crackjwt - https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py
-- John the ripper - https://github.com/magnumripper/JohnTheRipper
+- Using Burp Intruder - <https://portswigger.net/burp/documentation/desktop/tools/intruder/using>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- jwtbrute - <https://github.com/jmaxxz/jwtbrute>
+- crackjwt - <https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py>
+- John the ripper - <https://github.com/magnumripper/JohnTheRipper>
