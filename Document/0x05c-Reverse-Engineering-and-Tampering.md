@@ -37,13 +37,15 @@ An overview of all Android codenames, it's version number and API Levels can be 
 
 Installed SDKs are found at the following locations:
 
-```
 Windows:
 
+```shell
 C:\Users\<username>\AppData\Local\Android\sdk
+```
 
 MacOS:
 
+```shell
 /Users/<username>/Library/Android/sdk
 ```
 
@@ -68,7 +70,6 @@ One possibility for setting up the build system is exporting the compiler path a
 
 To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
 
-
 ```shell
 $ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
 ```
@@ -88,7 +89,7 @@ Once USB debugging is enabled, connected devices can be viewed with the followin
 ```shell
 $ adb devices
 List of devices attached
-BAZ5ORFARKOZYDFA	device
+BAZ5ORFARKOZYDFA    device
 ```
 
 ### Building a Reverse Engineering Environment for Free
@@ -403,13 +404,14 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 ```
 
 After the certificate is available, you can repackage the UnCrackable-Level1.apk according to the following steps. Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
-1. Use `apktool` to unpack the app and decode AndroidManifest.xml:
+
+**Step 1:** Use `apktool` to unpack the app and decode AndroidManifest.xml
 
 ```shell
 $ apktool d --no-src UnCrackable-Level1.apk
 ```
 
-2. Add android:debuggable = "true" to the manifest using a text editor:
+**Step 2:** Add android:debuggable = "true" to the manifest using a text editor
 
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
@@ -417,7 +419,7 @@ $ apktool d --no-src UnCrackable-Level1.apk
 
 Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `debuggable="true"` to the AndroidManifest file.
 
-3. Repackage and sign the APK.
+**Step 3:** Repackage and sign the APK
 
 ```shell
 $ cd UnCrackable-Level1
@@ -434,7 +436,7 @@ $ jarsigner -verbose -keystore ~/.android/debug.keystore UnCrackable-Repackaged.
 $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
-4. Reinstall the app:
+**Step 4:** Reinstall the app
 
 ```shell
 $ adb install UnCrackable-Repackaged.apk
@@ -484,12 +486,12 @@ Initializing jdb ...
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
 - \*classes: list all loaded classes
-- class/method/fields <class id>: Print details about a class and list its method and fields
+- class/method/fields _class id_: Print details about a class and list its method and fields
 - locals: print local variables in current stack frame
-- print/dump <expr>: print information about an object
-- stop in <method>: set a method breakpoint
-- clear <method>: remove a method breakpoint
-- set <lvalue> = <expr>:  assign new value to field/variable/array element
+- print/dump _expr_: print information about an object
+- stop in _method_: set a method breakpoint
+- clear _method_: remove a method breakpoint
+- set _lvalue_ = _expr_:  assign new value to field/variable/array element
 
 Let's revisit the decompiled code from the UnCrackable App Level 1 and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
 
@@ -508,8 +510,8 @@ Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.Mai
 
 You can bypass this with a little run time tampering. With the app still suspended, set a method breakpoint on `android.app.Dialog.setCancelable` and resume the app.
 
-```
-> stop in android.app.Dialog.setCancelable                        
+```shell
+> stop in android.app.Dialog.setCancelable
 Set breakpoint android.app.Dialog.setCancelable
 > resume
 All threads resumed.
@@ -520,7 +522,7 @@ main[1]
 
 The app is now suspended at the first instruction of the `setCancelable` method. You can print the arguments passed to `setCancelable` with the `locals` command (the arguments are shown incorrectly under "local variables").
 
-```
+```shell
 main[1] locals
 Method arguments:
 Local variables:
@@ -529,7 +531,7 @@ flag = true
 
 `setCancelable(true)` was called, so this can't be the call we're looking for. Resume the process with the `resume` command.
 
-```
+```shell
 main[1] resume
 Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bci=0
 main[1] locals
@@ -538,7 +540,7 @@ flag = false
 
 You've now reached a call to `setCancelable` with the argument `false`. Set the variable to true with the `set` command and resume.
 
-```
+```shell
 main[1] set flag = true
  flag = true = true
 main[1] resume
@@ -548,10 +550,10 @@ Repeat this process, setting `flag` to `true` each time the breakpoint is reache
 
 Now that the anti-tampering is out of the way, you're ready to extract the secret string! In the "static analysis" section, you saw that the string is decrypted with AES, then compared with the string input to the message box. The method `equals` of the `java.lang.String` class compares the string input with the secret string. Set a method breakpoint on `java.lang.String.equals`, enter an arbitrary text string in the edit field, and tap the "verify" button. Once the breakpoint is reached, you can read the method argument with the `locals` command.
 
-```
+```shell
 > stop in java.lang.String.equals
 Set breakpoint java.lang.String.equals
->    
+>
 Breakpoint hit: "thread=main", java.lang.String.equals(), line=639 bci=2
 
 main[1] locals
@@ -566,7 +568,7 @@ main[1] locals
 Method arguments:
 Local variables:
 other = "I want to believe"
-main[1] cont     
+main[1] cont
 ```
 
 This is the plaintext string you're looking for!
@@ -677,7 +679,7 @@ $ adb forward tcp:1234 tcp:1234
 
 You'll now use the prebuilt version of `gdb` included in the NDK toolchain (if you haven't already, follow the instructions above to install it).
 
-```
+```shell
 $ $TOOLCHAIN/bin/gdb libnative-lib.so
 GNU gdb (GDB) 7.11
 (...)
@@ -702,7 +704,7 @@ $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 
 Next, suspend the process where the Java runtime loads `libnative-lib.so`. In JDB, set a breakpoint at the `java.lang.System.loadLibrary` method and resume the process. After the breakpoint has been reached, execute the `step up` command, which will resume the process until `loadLibrary()`returns. At this point, `libnative-lib.so` has been loaded.
 
-```
+```shell
 > stop in java.lang.System.loadLibrary
 > resume
 All threads resumed.
@@ -716,7 +718,6 @@ main[1]
 ```
 
 Execute `gdbserver` to attach to the suspended app. This will cause the app to be suspended by both the Java VM and the Linux kernel (creating a state of “double-suspension”).
-
 
 ```shell
 $ adb forward tcp:1234 tcp:1234
@@ -750,7 +751,7 @@ Breakpoint 1 at 0xa3522e78
 
 Your breakpoint should be reached when the first instruction of the JNI function is executed. You can now display a disassembled version of the function with the `disassemble` command.
 
-```
+```shell
 Breakpoint 1, 0xa3522e78 in Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI() from libnative-lib.so
 (gdb) disass $pc
 Dump of assembler code for function Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI:
@@ -777,7 +778,7 @@ Set uncaught java.lang.Throwable
 Set deferred uncaught java.lang.Throwable
 Initializing jdb ...
 > All threads suspended.
-> stop in com.acme.bob.mobile.android.core.BobMobileApplication.<clinit>()          
+> stop in com.acme.bob.mobile.android.core.BobMobileApplication.<clinit>()
 Deferring breakpoint com.acme.bob.mobile.android.core.BobMobileApplication.<clinit>().
 It will be set after the class is loaded.
 > resume
@@ -912,7 +913,7 @@ To bypass the pinning check, add the `return-void` opcode to the first line of e
   .param p1, "chain"  # [Ljava/security/cert/X509Certificate;
   .param p2, "authType"   # Ljava/lang/String;
 
-  .prologue     
+  .prologue
   return-void      # <-- OUR INSERTED OPCODE!
   .line 102
   iget-object v1, p0, Lasdf/t$a;->a:Ljava/util/ArrayList;
@@ -1016,7 +1017,7 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 ![Frida](Images/Chapters/0x04/frida.png)
 
-*FRIDA Architecture, source: https://www.frida.re/docs/hacking/*
+*FRIDA Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
 
 Here are some more APIs FRIDA offers on Android:
 
@@ -1026,15 +1027,15 @@ Here are some more APIs FRIDA offers on Android:
 - Scan process memory for occurrences of a string
 - Intercept native function calls to run your own code at function entry and exit
 
-The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 (https://www.frida.re/news/2017/08/25/frida-10-5-released/). Some features have limitted support on current Android devices, such as support for ART (https://www.frida.re/docs/android/), so it is recommended to start out with the Dalvik runtime.
+The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limitted support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
 
 ##### Installing Frida
 
 To install Frida locally, simply use PyPI:
 
-~~~
+```shell
 $ sudo pip install frida
-~~~
+```
 
 Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
@@ -1049,6 +1050,7 @@ Or you can run the following command to automatically detect frida version and d
 ```shell
 $ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
 ```
+
 Copy frida-server to the device and run it:
 
 ```shell
@@ -1129,7 +1131,7 @@ setImmediate(function() {
 
 The output would look like this:
 
-```
+```shell
 [*] Starting script
 [*] Instance found: android.view.View{7ccea78 G.ED..... ......ID 0,0-0,0 #7f0c01fc app:id/action_bar_black_background}
 [*] Instance found: android.view.View{2809551 V.ED..... ........ 0,1731-0,1731 #7f0c01ff app:id/menu_anchor_stub}
@@ -1386,7 +1388,7 @@ Symbolic execution allows you to determine the conditions necessary to reach a s
 
 Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. The crackme takes the form of a native ELF binary that you can download here:
 
-https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation
+[https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
 
 Running the executable on any Android device should give you the following output:
 
@@ -1579,7 +1581,7 @@ Working on real devices has advantages, especially for interactive, debugger-sup
 Initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot, before the actual root file system is mounted. On Android, initramfs stays mounted indefinitely. It contains an important configuration file, default.prop, that defines some basic system properties. Changing this file can make the Android environment easier to reverse engineer. For our purposes, the most important settings in default.prop are `ro.debuggable` and `ro.secure`.
 
 ```shell
-$ cat /default.prop                                         
+$ cat /default.prop
 #
 # ADDITIONAL_DEFAULT_PROPERTIES
 #
@@ -1651,7 +1653,7 @@ The most straightforward way to intercept system calls is to inject your own cod
 
 For hacking, I recommend an AOSP-supported device. Google's Nexus smartphones and tablets are the most logical candidates because kernels and system components built from the AOSP run on them without issues. Sony's Xperia series is also known for its openness. To build the AOSP kernel, you need a toolchain (a set of programs for cross-compiling the sources) and the appropriate version of the kernel sources. Follow Google's instructions to identify the correct git repo and branch for a given device and Android version.
 
-https://source.android.com/source/building-kernels.html#id-version
+[https://source.android.com/source/building-kernels.html#id-version](https://source.android.com/source/building-kernels.html#id-version)
 
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the `msm` repository and check out one of the `android-msm-hammerhead` branches (hammerhead is the codename of the Nexus 5, and finding the right branch is confusing). Once you have downloaded the sources, create the default kernel config with the command `make hammerhead_defconfig` (replacing "hammerhead" with your target device).
 
@@ -1667,7 +1669,7 @@ $ vim .config
 
 I recommend using the following settings to add loadable module support, enable the most important tracing facilities, and open kernel memory for patching.
 
-```
+```shell
 CONFIG_MODULES=Y
 CONFIG_STRICT_MEMORY_RWX=N
 CONFIG_DEVMEM=Y
@@ -1712,7 +1714,7 @@ $ make
 Before booting into the new kernel, make a copy of your device's original boot image. Find the boot partition:
 
 ```shell
-root@hammerhead:/dev # ls -al /dev/block/platform/msm_sdcc.1/by-name/         
+root@hammerhead:/dev # ls -al /dev/block/platform/msm_sdcc.1/by-name/
 lrwxrwxrwx root     root              1970-08-30 22:31 DDR -> /dev/block/mmcblk0p24
 lrwxrwxrwx root     root              1970-08-30 22:31 aboot -> /dev/block/mmcblk0p6
 lrwxrwxrwx root     root              1970-08-30 22:31 abootb -> /dev/block/mmcblk0p11
@@ -1773,7 +1775,7 @@ This is the only memory address you need for writing your kernel module—you ca
 In this how-to, we will use a Kernel module to hide a file. Create a file on the device so you can hide it later:
 
 ```shell
-$ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"             
+$ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"
 $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
 ```
@@ -1897,7 +1899,7 @@ int main(int argc, char *argv[]) {
   sscanf(argv[1], "%x", &sys_call_table); sscanf(argv[2], "%d", &sys_call_number);
   sscanf(argv[3], "%x", &addr_ptr); char buf[256];
   memset (buf, 0, 256); read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
-  printf("Original value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);       
+  printf("Original value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);
   write_kmem2((void*)&addr_ptr,sys_call_table+(sys_call_number*4),4);
   read_kmem2(buf,sys_call_table+(sys_call_number*4),4);
   printf("New value: %02x%02x%02x%02x\n", buf[3], buf[2], buf[1], buf[0]);
@@ -1943,7 +1945,6 @@ Original value: c017a390
 New value: bf000000
 ```
 
-
 Assuming that everything worked, /bin/cat shouldn't be able to "see" the file.
 
 ```shell
@@ -1955,15 +1956,14 @@ Voilà! The file "nowyouseeme" is now somewhat hidden from all usermode processe
 
 File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of [Bernhard Mueller's Hacking Soft Tokens Paper](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf).
 
-
 ### References
 
-- Hacking Soft Tokens Paper by Bernhard Mueller - https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf
-- OWASP MSTG Crackmes - https://github.com/OWASP/owasp-mstg/tree/master/Crackmes
+- Hacking Soft Tokens Paper by Bernhard Mueller - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
+- OWASP MSTG Crackmes - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
 
 #### Tools
 
-- Angr - https://docs.angr.io
+- Angr - <https://docs.angr.io>
 - Angro API Documenation -
-- apkx - https://github.com/b-mueller/apkx
-- Frida - https://www.frida.re/docs/android/
+- apkx - <https://github.com/b-mueller/apkx>
+- Frida - <https://www.frida.re/docs/android/>

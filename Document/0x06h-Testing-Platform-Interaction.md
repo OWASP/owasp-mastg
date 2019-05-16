@@ -35,7 +35,6 @@ When collecting or simply handling (e.g. caching) sensitive data, an app should 
 
 As you can see, using app capabilities and permissions mostly involve handling personal data, therefore being a matter of protecting the user's privacy. See the articles ["Protecting the User's Privacy"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User's Privacy") and ["Accessing Protected Resources"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources") in Apple Developer Documentation for more details.
 
-
 ##### Device Capabilities
 
 Device capabilities are used by App Store and by iTunes to ensure that only compatible devices are listed and therefore are allowed to download the app. They are specified in the `Info.plist` file of the app under the [`UIRequiredDeviceCapabilities`](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/plist/info/UIRequiredDeviceCapabilities "UIRequiredDeviceCapabilities") key.
@@ -129,7 +128,6 @@ You may switch the view to display the raw values by right-clicking and selectin
 
 ![Checking Purpose Strings in Xcode](Images/Chapters/0x06h/purpose_strings_xcode.png)
 
-
 If only having the IPA:
 
 - Unzip the IPA.
@@ -148,14 +146,15 @@ If only having the IPA:
     $ apt install libplist-utils
     $ plistutil -i Info.plist -o Info_xml.plist
     ```
+
 - Inspect all *purpose strings Info.plist keys*, usually ending with `UsageDescription`:
 
-```
-<plist version="1.0">
-<dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to provide turn-by-turn directions to your destination.</string>
-```
+    ```xml
+    <plist version="1.0">
+    <dict>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Your location is used to provide turn-by-turn directions to your destination.</string>
+    ```
 
 For an overview of the different *purpose strings Info.plist keys* available see Table 1-2 at the [Apple App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"). Click on the provided links to see the full description of each key in the [CocoaKeys reference](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Cocoa Keys").
 
@@ -234,11 +233,14 @@ The following two subsections will show you how to access the app binary and onc
 
     - Open the app and leave it running on foreground.
     - Start an objection session by running the following command:
+
         ```shell
         $ objection --gadget Telegram explore
         Using USB device `iPhone`
         ```
+
     - Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
+
         ```shell
         ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
 
@@ -249,8 +251,10 @@ The following two subsections will show you how to access the app binary and onc
         DocumentDirectory  /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Documents
         LibraryDirectory   /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library
         ```
+
     - `BundlePath` is also the current directory by default, run `ls` to list the contents:
-        ```
+
+        ```shell
         ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
 
         NSFileType      Perms  NSFileProtection   ... Size       Name
@@ -264,8 +268,10 @@ The following two subsections will show you how to access the app binary and onc
         ...
         Readable: True  Writable: False
         ```
+
         The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
     - Download the app binary using the command `file download`:
+
         ```shell
         ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
 
@@ -321,9 +327,9 @@ $ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
 
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>com.apple.security.application-groups</key>
-		<array>
+    <dict>
+        <key>com.apple.security.application-groups</key>
+        <array>
         ...
 ```
 
@@ -346,6 +352,7 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
 
 - Bluetooth: the [`state`](https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state?language=objc "CBManager state") property of the [`CBCentralManager`](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager?language=objc "CBCentralManager") class is used to check system-authorization status for using Bluetooth peripherals.
 - Location: search for methods of `CLLocationManager`, e.g. [`locationServicesEnabled`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423648-locationservicesenabled?language=objc "CLLocationManager locationServicesEnabled").
+
     ```swift
     func checkForLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
@@ -354,8 +361,8 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
             // Update your app’s UI to show that the location is unavailable.
         }
     }
-
     ```
+
     See Table1 in ["Determining the Availability of Location Services"](https://developer.apple.com/documentation/corelocation/determining_the_availability_of_location_services?language=objc#2854917 "Getting the availability of Core Location services") (Apple Developer Documentation) for a complete list.
 
 Go through the application searching for usages of these APIs and check what happens to sensitive data that might be obtained from them. For example, it might be stored or transmitted over the network, if this is the case, proper data protection and transport security should be additionally verified.
@@ -378,7 +385,7 @@ In the following example we use Telegram to open the share dialog from a chat an
 
 First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
 
-``shell
+```shell
 $ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 ```
 
@@ -390,7 +397,7 @@ Now we open the share dialog:
 
 The following methods are displayed:
 
-``shell
+```shell
   1942 ms  +[PHPhotoLibrary authorizationStatus]
   1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
   1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
@@ -398,7 +405,7 @@ The following methods are displayed:
 
 If we click on "Location", another method will be traced:
 
-``shell
+```shell
  11186 ms  +[CLLocationManager authorizationStatus]
  11186 ms     | +[CLLocationManager _authorizationStatus]
  11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
@@ -423,7 +430,7 @@ Use the auto-generated stubs of frida-trace to get more information like the ret
 
 Clicking again on "Location" reveals more information:
 
-```
+```shell
   3630 ms  -[CLLocationManager init]
   3630 ms     | -[CLLocationManager initWithEffectiveBundleIdentifier:0x0 bundle:0x0]
   3634 ms  -[CLLocationManager setDelegate:0x14c9ab000]
@@ -431,8 +438,8 @@ Clicking again on "Location" reveals more information:
 RET: 0x4
   3641 ms  Called from:
 0x1031aa158 TelegramUI!+[TGLocationUtils requestWhenInUserLocationAuthorizationWithLocationManager:]
-	0x10337e2c0 TelegramUI!-[TGLocationPickerController initWithContext:intent:]
-	0x101ee93ac TelegramUI!0x1013ac
+    0x10337e2c0 TelegramUI!-[TGLocationPickerController initWithContext:intent:]
+    0x101ee93ac TelegramUI!0x1013ac
 ```
 
 We see that `+[CLLocationManager authorizationStatus]` returned `0x4` ([CLAuthorizationStatus.authorizedWhenInUse](https://developer.apple.com/documentation/corelocation/clauthorizationstatus/authorizedwheninuse "CLAuthorizationStatus.authorizedWhenInUse")) and was called by `+[TGLocationUtils requestWhenInUserLocationAuthorizationWithLocationManager:]`. As we anticipated before, you might use this kind of information as an entry point when reverse engineering the app and from there get inputs (e.g. names of classes or methods) to keep feeding the dynamic analysis.
@@ -442,7 +449,6 @@ Next, there is a *visual* way to inspect the status of some app permissions when
 ![Settings Allow App Screen](Images/Chapters/0x06h/settings_allow_screen.png)
 
 For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.
-
 
 ### Testing for Sensitive Functionality Exposure Through IPC
 
@@ -519,7 +525,7 @@ You can retrieve it yourself with your browser or use the [Apple App Site Associ
 
 ![`apple-app-site-association-file` Validation](Images/Chapters/0x06h/apple-app-site-association-file_validation.png)
 
-```
+```json
 {
     "activitycontinuation": {
     "apps": [
@@ -712,7 +718,7 @@ First of all we will see the difference between opening an allowed Universal Lin
 
 From the `apple-app-site-association` of apple.com we have seen above we chose the following paths:
 
-```
+```json
 "paths": [
     "NOT /shop/buy-iphone/*",
     ...
@@ -775,7 +781,7 @@ In order to open the links we will also use the Notes app and frida-trace with t
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
-Write https://t.me/addstickers/radare (got from some quick Internet research) and open it from the Notes app.
+Write `https://t.me/addstickers/radare` (found through a quick Internet research) and open it from the Notes app.
 
 ![Add Stickers](Images/Chapters/0x06h/telegram_add_stickers_universal_link.png)
 
@@ -816,13 +822,13 @@ The new output is:
 ```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
-298382 ms  	application:<Application: 0x10556b3c0>
-298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
-298382 ms  		webpageURL:http://t.me/addstickers/radare
-298382 ms  		activityType:NSUserActivityTypeBrowsingWeb
-298382 ms  		userInfo:{
+298382 ms  application:<Application: 0x10556b3c0>
+298382 ms  continueUserActivity:<NSUserActivity: 0x1c4237780>
+298382 ms       webpageURL:http://t.me/addstickers/radare
+298382 ms       activityType:NSUserActivityTypeBrowsingWeb
+298382 ms       userInfo:{
 }
-298382 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
+298382 ms  restorationHandler:<__NSStackBlock__: 0x16f27a898>
 ```
 
 Apart from the function parameters we have added more information by calling some methods from them to get more details, in this case about the `NSUserActivity`. If we look in the [Apple Developer Documentation](https://developer.apple.com/documentation/foundation/nsuseractivity?language=objc "NSUserActivity") we can see what else we can call from this object.
@@ -913,25 +919,25 @@ This way, the next time we run it we get a much more detailed output:
 ```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
-298382 ms  	application:<Application: 0x10556b3c0>
-298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
-298382 ms  		webpageURL:http://t.me/addstickers/radare
-298382 ms  		activityType:NSUserActivityTypeBrowsingWeb
-298382 ms  		userInfo:{
+298382 ms  application:<Application: 0x10556b3c0>
+298382 ms  continueUserActivity:<NSUserActivity: 0x1c4237780>
+298382 ms       webpageURL:http://t.me/addstickers/radare
+298382 ms       activityType:NSUserActivityTypeBrowsingWeb
+298382 ms       userInfo:{
 }
-298382 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
+298382 ms  restorationHandler:<__NSStackBlock__: 0x16f27a898>
 
 298619 ms     | TelegramUI.openExternalUrl(account: TelegramCore.Account,
 context: TelegramUI.OpenURLContext, url: Swift.String, forceExternal: Swift.Bool,
 presentationData: TelegramUI.PresentationData, applicationContext:
 TelegramUI.TelegramApplicationContext, navigationController: Display.NavigationController?,
 dismissInput: () -> ()) -> ()
-298619 ms     | 	account: TelegramCore.Account
-298619 ms     | 	context: nil
-298619 ms     | 	url: http://t.me/addstickers/radare
-298619 ms     | 	presentationData: 0x1c4e40fd1
-298619 ms     | 	applicationContext: nil
-298619 ms     | 	navigationController: TelegramUI.PresentationData
+298619 ms     |     account: TelegramCore.Account
+298619 ms     |     context: nil
+298619 ms     |     url: http://t.me/addstickers/radare
+298619 ms     |     presentationData: 0x1c4e40fd1
+298619 ms     |     applicationContext: nil
+298619 ms     |     navigationController: TelegramUI.PresentationData
 
 ```
 
@@ -945,7 +951,7 @@ You can now keep going and try to trace and verify how the data is being validat
 
 In some cases, you might find data in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other scenarios. To see this, be sure to hook the `userInfo` property or access it directly from the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
 
-**Final Notes about Universal Links and Handoff**
+###### Final Notes about Universal Links and Handoff
 
 Universal links and Apple's [Handoff feature](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html#//apple_ref/doc/uid/TP40014338 "Handoff Fundamentals: About Handoff") are related:
 
@@ -961,13 +967,13 @@ In the detailed output above you can see that `NSUserActivity` object we've rece
 ```shell
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
-298382 ms  	application:<Application: 0x10556b3c0>
-298382 ms  	continueUserActivity:<NSUserActivity: 0x1c4237780>
-298382 ms  		webpageURL:http://t.me/addstickers/radare
-298382 ms  		activityType:NSUserActivityTypeBrowsingWeb
-298382 ms  		userInfo:{
+298382 ms  application:<Application: 0x10556b3c0>
+298382 ms  continueUserActivity:<NSUserActivity: 0x1c4237780>
+298382 ms       webpageURL:http://t.me/addstickers/radare
+298382 ms       activityType:NSUserActivityTypeBrowsingWeb
+298382 ms       userInfo:{
 }
-298382 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
+298382 ms  restorationHandler:<__NSStackBlock__: 0x16f27a898>
 
 ```
 
@@ -1245,7 +1251,8 @@ To illustrate this with an example we have chosen the same real-world file manag
 
     ![AirDrop Open With Dialog](Images/Chapters/0x06h/airdrop_openwith.png)
 4. After selecting "SomeFileManager" we can see the following:
-    ```
+
+    ```shell
     (0x1c4077000)  -[AppDelegate application:openURL:options:]
     application: <UIApplication: 0x101c00950>
     openURL: file:///var/mobile/Library/Application%20Support
@@ -1267,7 +1274,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 
 As you can see, the sending application is `com.apple.sharingd` and the URL's scheme is `file://`. Note that once we select the app that should open the file, the system already moved the file to the corresponding destination, that is to the app's Inbox. The apps are then responsible for deleting the files inside their Inboxes. This app, for example, moves the file to `/var/mobile/Documents/` and removes it from the Inbox.
 
-```
+```shell
 (0x1c002c760)  -[XXFileManager moveItemAtPath:toPath:error:]
 moveItemAtPath: /var/mobile/Library/Application Support/Containers
                             /com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
@@ -1285,12 +1292,11 @@ If you look at the stack trace, you can see how `application:openURL:options:` c
 
 A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to "Testing Custom URL Schemes" for more information.
 
-
 #### App Extensions
 
 ##### Overview
 
-###### What are app extensions?
+###### What are app extensions
 
 Together with iOS 8, Apple introduced App Extensions. According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1 "App Extensions Increase Your Impact"), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
 
@@ -1300,7 +1306,7 @@ Depending on the task, the app extension will have a particular type (and only o
 - Share: post to a sharing website or share content with others.
 - Today: also called widgets, they offer content or perform quick tasks in the Today view of Notification Center.
 
-###### How do app extensions interact with other apps?
+###### How do app extensions interact with other apps
 
 There are three important elements here:
 
@@ -1361,7 +1367,7 @@ Binary file Payload/Telegram X.app//Watch/Watch.app/PlugIns/Watch Extension.appe
 
 You can also access per SSH, find the app bundle and list all inside PlugIns (they are placed there by default) or do it with objection:
 
-```
+```shell
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
     /var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/
     Telegram X.app/PlugIns
@@ -1429,7 +1435,7 @@ Following the previous example of Telegram we will now use the "Share" button on
 
 If we run a trace, we'd see the following output:
 
-```
+```shell
 (0x1c06bb420) NSExtensionContext - inputItems
 0x18284355c Foundation!-[NSExtension _itemProviderForPayload:extensionContext:]
 0x1828447a4 Foundation!-[NSExtension _loadItemForPayload:contextIdentifier:completionHandler:]
@@ -1452,7 +1458,7 @@ RET: (
 Here we can observe that:
 
 - This occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework.
-- The UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist "Info.plist` of the "Share Extension" of Telegram").
+- The UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist "Info.plist of the 'Share Extension' of Telegram").
 
 ###### Identifying the App Extensions Involved
 
@@ -1460,7 +1466,7 @@ You can also find out which app extension is taking care of your the requests an
 
 We run the same example again:
 
-```
+```shell
 (0x1c0370200) NSExtension - _plugIn
 RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785
 1(2) /private/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35
@@ -1479,7 +1485,6 @@ As you can see there are two app extensions involved:
 
 If you want to learn more about what's happening under-the-hood in terms of XPC, we recommend to take a look at the internal calls from "libxpc.dylib". For example you can use [`frida-trace`](https://www.frida.re/docs/frida-trace/ "frida-trace") and then dig deeper into the methods that you find more interesting by extending the automatically generated stubs.
 
-
 #### UIPasteboard
 
 ##### Overview
@@ -1495,7 +1500,6 @@ Some security considerations:
 - Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the *malicious* app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
 - [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
 - Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
-
 
 ##### Static Analysis
 
@@ -1687,7 +1691,6 @@ Note from the [App Programming Guide for iOS](https://developer.apple.com/librar
 
 This could lead to a URL scheme hijacking attack (see page 136 in [#THIEL]).
 
-
 ##### Testing Application Query Schemes Registration
 
 Before calling the `openURL:options:completionHandler:` method, apps can call [`canOpenURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl?language=objc "UIApplication canOpenURL:") to verify that the target app is available. However, as this method was being used by malicious app as a way to enumerate installed apps, [from iOS 9.0 the URL schemes passed to it must be also declared](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl?language=objc#discussion "Discussion about UIApplication canOpenURL:") by adding the `LSApplicationQueriesSchemes` key to the app's `Info.plist` file and an array of up to 50 URL schemes.
@@ -1766,7 +1769,7 @@ The method [`openURL:options:completionHandler:`](https://developer.apple.com/do
 
 Additionally, if you are interested into knowing if the app is querying specific services or apps, and if the app is well-known, you can also search for common URL schemes online and include them in your greps. For example, a [quick Google search reveals](https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/ "Always-Updated List of iOS App URL Scheme Names"):
 
-```
+```text
 Apple Music — music:// or musics:// or audio-player-event://
 Calendar — calshow:// or x-apple-calevent://
 Contacts — contacts://
@@ -1810,7 +1813,7 @@ If we inspect those lines we will see how this method is also being used to open
 
 When just searching for `://` we see:
 
-```
+```Swift
 if documentUri.hasPrefix("file://"), let path = URL(string: documentUri)?.path {
 if !url.hasPrefix("mt-encrypted-file://?") {
 guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.index(url.startIndex,
@@ -1860,7 +1863,6 @@ $ r2 -qc izz~iGoat:// iGoat-Swift
 37436 0x001ee610 0x001ee610  23  24 (4.__TEXT.__cstring) ascii iGoat://?contactNumber=
 ```
 
-
 ##### Testing for Deprecated Methods
 
 Search for deprecated methods like:
@@ -1869,10 +1871,9 @@ Search for deprecated methods like:
 - [`openURL:`](https://developer.apple.com/documentation/uikit/uiapplication/1622961-openurl?language=objc "UIApplication openURL:")
 - [`application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application "UIApplicationDelegate application:openURL:sourceApplication:annotation:")
 
-
 For example, here we find those three:
 
-```
+```shell
 $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
 
 0x1000d9e90 31 30 UIApplicationOpenURLOptionsKey
@@ -1974,7 +1975,6 @@ In this case we are interested into all methods containing "openURL", therefore 
 - The first asterisk will match all instance `-` and class `+` methods.
 - The second matches all Objective-C classes.
 - The third and forth allow to match any method containing the string `openURL`.
-
 
 ```javascript
 $ frida -U iGoat-Swift --codeshare mrmacete/objc-method-observer
@@ -2081,7 +2081,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 ###### Opening a Link by Navigating to a Page and Letting Safari Open It
 
-We do it now with Safari and Telegram, but instead of giving it manually into the search bar, we will let Safari identify and process the URL scheme from a page containing one. Opening this link "https://telegram.me/fridadotre" will trigger this behaviour.
+You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "[https://telegram.me/fridadotre](https://telegram.me/fridadotre)" will trigger this behaviour.
 
 ![Open this page in "Telegram"?](Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png)
 
@@ -2102,6 +2102,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 Now we can simply modify by hand the stubs we are interested in:
 
 - The Objective-C method `application:openURL:options:`:
+
     ```javascript
     // __handlers__/__AppDelegate_application_openUR_3679fadc.js
 
@@ -2113,7 +2114,9 @@ Now we can simply modify by hand the stubs we are interested in:
         log("\toptions :" + ObjC.Object(args[4]).toString());
     },
     ```
+
 - The Swift method `$S10TelegramUI15openExternalUrl...`:
+
     ```javascript
     // __handlers__/TelegramUI/_S10TelegramUI15openExternalUrl7_b1a3234e.js
 
@@ -2137,19 +2140,19 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
   8144 ms  -[UIApplication _applicationOpenURLAction: 0x1c44ff900 payload: 0x10c5ee4c0 origin: 0x0]
   8145 ms     | -[AppDelegate application: 0x105a59980 openURL: 0x1c46ebb80 options: 0x1c0e222c0]
-  8145 ms     | 	application: <Application: 0x105a59980>
-  8145 ms     | 	openURL: tg://resolve?domain=fridadotre
-  8145 ms     | 	options :{
+  8145 ms     |     application: <Application: 0x105a59980>
+  8145 ms     |     openURL: tg://resolve?domain=fridadotre
+  8145 ms     |     options :{
                         UIApplicationOpenURLOptionsOpenInPlaceKey = 0;
                         UIApplicationOpenURLOptionsSourceApplicationKey = "com.apple.mobilesafari";
                     }
   8269 ms     |    | TelegramUI.openExternalUrl(account, url, presentationData,
                                         applicationContext, navigationController, dismissInput)
-  8269 ms     |    | 	account: nil
-  8269 ms     |    | 	url: tg://resolve?domain=fridadotre
-  8269 ms     |    | 	presentationData: 0x1c4c51741
-  8269 ms     |    | 	applicationContext: nil
-  8269 ms     |    | 	navigationController: TelegramUI.PresentationData
+  8269 ms     |    |    account: nil
+  8269 ms     |    |    url: tg://resolve?domain=fridadotre
+  8269 ms     |    |    presentationData: 0x1c4c51741
+  8269 ms     |    |    applicationContext: nil
+  8269 ms     |    |    navigationController: TelegramUI.PresentationData
   8274 ms     | -[UIApplication applicationOpenURL:0x1c46ebb80]
 ```
 
@@ -2161,8 +2164,7 @@ There you can observe the following:
 - The URL being opened is `tg://resolve?domain=fridadotre`.
 - It uses the `tg://` custom URL scheme from Telegram.
 
-
-It is interesting to see that if you navigate again to "https://telegram.me/fridadotre", click on cancel and then click on the link offered by the page itself "Open in the Telegram app". Instead of opening via custom URL scheme it will open via universal links.
+It is interesting to see that if you navigate again to "[https://telegram.me/fridadotre](https://telegram.me/fridadotre)", click on cancel and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
 
 ![Open in the Telegram app](Images/Chapters/0x06h/open_in_telegram_via_universallink.png)
 
@@ -2174,9 +2176,9 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*op
 // After clicking "Open" on the pop-up
 
  16374 ms  -[AppDelegate application :0x10556b3c0 openURL :0x1c4ae0080 options :0x1c7a28400]
- 16374 ms  	application :<Application: 0x10556b3c0>
- 16374 ms  	openURL :tg://resolve?domain=fridadotre
- 16374 ms  	options :{
+ 16374 ms   application :<Application: 0x10556b3c0>
+ 16374 ms   openURL :tg://resolve?domain=fridadotre
+ 16374 ms   options :{
     UIApplicationOpenURLOptionsOpenInPlaceKey = 0;
     UIApplicationOpenURLOptionsSourceApplicationKey = "com.apple.mobilesafari";
 }
@@ -2185,13 +2187,13 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -m "*[* *application*op
 
 406575 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c063d0c0
                 restorationHandler:0x16f27a898]
-406575 ms  	application:<Application: 0x10556b3c0>
-406575 ms  	continueUserActivity:<NSUserActivity: 0x1c063d0c0>
+406575 ms  application:<Application: 0x10556b3c0>
+406575 ms  continueUserActivity:<NSUserActivity: 0x1c063d0c0>
 406575 ms       webpageURL:https://telegram.me/fridadotre
 406575 ms       activityType:NSUserActivityTypeBrowsingWeb
 406575 ms       userInfo:{
 }
-406575 ms  	restorationHandler:<__NSStackBlock__: 0x16f27a898>
+406575 ms  restorationHandler:<__NSStackBlock__: 0x16f27a898>
 ```
 
 ###### Testing for Deprecated Methods
@@ -2242,7 +2244,6 @@ nil
 
 Nothing happens. This tells us already that this method is not being used for that as we cannot find any *app-package-looking* string like `OWASP.iGoat-Swift` or `com.apple.mobilesafari` between the hook and the text of the tweet. However, consider that we are just probing one method, the app might be using other approach for the comparison.
 
-
 ##### Fuzzing URL Schemes
 
 If the app parses parts of the URL, you can also perform input fuzzing to detect memory corruption bugs.
@@ -2261,8 +2262,7 @@ Doing this with Frida is pretty easy, you can refer to this [blog post](https://
 
 Before running the fuzzer we need the URL schemes as inputs. From the static analysis we know that the iGoat-Swift app supports the following URL scheme and parameters: `iGoat://?contactNumber={0}&message={0}`.
 
-
-```
+```shell
 $ frida -U SpringBoard -l ios-url-scheme-fuzzing.js
 [iPhone::SpringBoard]-> fuzz("iGoat", "iGoat://?contactNumber={0}&message={0}")
 Watching for crashes from iGoat...
@@ -2320,12 +2320,11 @@ The script will detect if a crash occurred. On this run it did not detect any cr
 
 In the "URL Handlers" section, go to the "Fuzzer" tab. On the left side default IDB payloads are listed. Once you have generated your payload list (e.g. using FuzzDB), go to the "Fuzz Template" section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
-```
+```shell
 myURLscheme://$@$
 ```
 
 While the URL scheme is being fuzzed, watch the logs (in Xcode, go to Window -> Devices -> *click on your device* -> *bottom console contains logs*) to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
-
 
 ### Testing iOS WebViews
 
@@ -2383,18 +2382,18 @@ Look out for usages of the above mentioned WebView classes by searching in Xcode
 
 In the compiled binary you can search in its symbols or strings like this:
 
-**UIWebView**
+###### UIWebView
 
-``shell
+```shell
 $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 489 0x0002fee9 0x10002fee9   9  10 (5.__TEXT.__cstring) ascii UIWebView
 896 0x0003c813 0x0003c813  24  25 () ascii @_OBJC_CLASS_$_UIWebView
 1754 0x00059599 0x00059599  23  24 () ascii _OBJC_CLASS_$_UIWebView
 ```
 
-**WKWebView**
+###### WKWebView
 
-``shell
+```shell
 $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 490 0x0002fef3 0x10002fef3   9  10 (5.__TEXT.__cstring) ascii WKWebView
 625 0x00031670 0x100031670  17  18 (5.__TEXT.__cstring) ascii unwindToWKWebView
@@ -2404,7 +2403,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 
 Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init "WKWebView init(frame:configuration:)")):
 
-``shell
+```shell
 $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 0x5c3ac 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
 0x5d97a 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
@@ -2414,7 +2413,7 @@ $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 
 You can also demangle it:
 
-``shell
+```shell
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
 ---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
@@ -2434,7 +2433,7 @@ webPreferences.javaScriptEnabled = false
 
 If only having the compiled binary you can search for this in it:
 
-``shell
+```shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 391 0x0002f2c7 0x10002f2c7  17  18 (4.__TEXT.__objc_methname) ascii javaScriptEnabled
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
@@ -2442,14 +2441,13 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 
 If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller) and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript "WKUserScript") for more information on injecting user scripts to WKWebViews.
 
-
 ##### Testing for Mixed Content
 
 In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#THIEL] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
 
 In the compiled binary:
 
-``shell
+```shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 # nothing found
@@ -2574,7 +2572,7 @@ ObjC.choose(ObjC.classes['WKWebView'], {
 
 The output shows now that, in fact, JavaScript is enabled:
 
-``shell
+```shell
 
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
@@ -2583,7 +2581,6 @@ onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1
 javaScriptEnabled:  true
 
 ```
-
 
 ##### Verifying that Only Secure Content is Allowed
 
@@ -2605,14 +2602,13 @@ ObjC.choose(ObjC.classes['WKWebView'], {
 
 The output shows that some of the resources on the page have been loaded through insecure connections:
 
-``shell
+```shell
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
 
 hasOnlySecureContent:  false
 ```
-
 
 ### Testing WebView Protocol Handlers
 
@@ -2694,7 +2690,7 @@ do {
 
 If only having the compiled binary, you can also search for these methods, e.g.:
 
-``shell
+```shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
@@ -2715,7 +2711,7 @@ In this case, the parameter `allowingReadAccessToURL` contains a single file "WK
 
 In the compiled binary:
 
-```
+```shell
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
 237 0x0002dff1 37 (4.__TEXT.__objc_methname) ascii loadFileURL:allowingReadAccessToURL:
 ```
@@ -2758,11 +2754,9 @@ webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFil
 
 If one or more of the above properties are activated, you should determine whether they are really necessary for the app to work properly.
 
-
 ##### Checking Telephone Number Detection
 
 In Safari on iOS, telephone number detection is on by default. However, you might want to turn it off if your HTML page contains numbers that can be interpreted as phone numbers, but are not phone numbers, or to prevent the DOM document from being modified when parsed by the browser. To turn off telephone number detection in Safari on iOS, use the format-detection meta tag (`<meta name = "format-detection" content = "telephone=no">`). An example of this can be found [here](https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW2 "Phone Links: Turning telephone number detection off"). Phone links should be then used (e.g. `<a href="tel:1-408-555-5555">1-408-555-5555</a>`) to explicitly create a link.
-
 
 #### Dynamic Analysis
 
@@ -2783,7 +2777,7 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
-``shell
+```shell
 $ frida-trace -U "Where's My Browser?"
     -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
@@ -2791,19 +2785,19 @@ $ frida-trace -U "Where's My Browser?"
  14131 ms  URLForResource: web/WKWebView/scenario2.html
  14131 ms  withExtension: 0x0
  14190 ms  -[WKWebView loadHTMLString:0x1c0255390 baseURL:0x0]
- 14190 ms  	HTMLString: <!DOCTYPE html>
-<html>
-    ...
-  </html>
+ 14190 ms   HTMLString: <!DOCTYPE html>
+    <html>
+        ...
+        </html>
 
- 14190 ms  	baseURL: nil
+ 14190 ms  baseURL: nil
 ```
 
 In this case, `baseURL` is set to `nil`, meaning that the effective origin is "null". You can obtain the effective origin by running `window.origin` from the JavaScript of the page (this app has an explotation helper that allows to write and run JavaScript, but you could also implement a MITM or simply use Frida to inject JavaScript, e.g. via `evaluateJavaScript:completionHandler` of `WKWebView`).
 
 As an additional note regarding `UIWebView`s, if you retrieve the effective origin from a `UIWebView` where `baseURL` is also set to `nil` you will see that it is not set to "null", instead you'll obtain something similar to the following:
 
-```
+```shell
 applewebdata://5361016c-f4a0-4305-816b-65411fc1d780
 ```
 
@@ -2849,13 +2843,12 @@ allowUniversalAccessFromFileURLs:  0
 
 Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to `0`, meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to `1` this time:
 
-``shell
+```shell
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 ...
 
 allowFileAccessFromFileURLs:  1
 ```
-
 
 ### Determining Whether Native Methods Are Exposed Through WebViews
 
@@ -2970,7 +2963,6 @@ Of course, you may also use the Expoitation Helper it provides:
 
 See another example for a vulnerable iOS app and function that is exposed to a WebView in [#THIEL] page 156.
 
-
 ### Testing Object Persistence
 
 #### Overview
@@ -3029,7 +3021,6 @@ The conformance to `NSSecureCoding` ensures that objects being instantiated are 
 
 Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the data is immutable in memory and cannot be easily removed.
 
-
 ##### Object Archiving with NSKeyedArchiver
 
 `NSKeyedArchiver` is a concrete subclass of `NSCoder` and provides a way to encode objects and store them in a file. The `NSKeyedUnarchiver` decodes the data and recreates the original data. Let's take the example of the `NSCoding` section and now archive and unarchive them:
@@ -3070,7 +3061,7 @@ There are various ways to encode and decode JSON within iOS by using different 3
 - [Mantle](https://github.com/Mantle/Mantle "Mantle")
 - [JSONModel library](https://github.com/jsonmodel/jsonmodel "JSONModel")
 - [SwiftyJSON library](https://github.com/SwiftyJSON/SwiftyJSON "SwiftyJSON")
-- [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper, "ObjectMapper library")
+- [ObjectMapper library](https://github.com/Hearst-DD/ObjectMapper "ObjectMapper library")
 - [JSONKit](https://github.com/johnezang/JSONKit "JSONKit")
 - [JSONModel](https://github.com/JSONModel/JSONModel "JSONModel")
 - [YYModel](https://github.com/ibireme/YYModel "YYModel")
@@ -3107,7 +3098,6 @@ print(String(data: data, encoding: .utf8)!)
 ```
 
 JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the "Data Storage on iOS" chapter for more details.
-
 
 ##### Property Lists and Codable
 
@@ -3179,7 +3169,6 @@ Apple itself supplies `CoreData`, which is well explained in the [Apple Develope
 There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
 Note that **Protocol Buffers do not provide any protection for confidentiality** as no built-in encryption is available.
 
-
 #### Static Analysis
 
 All different flavors of object persistence share the following concerns:
@@ -3199,6 +3188,7 @@ There are several ways to perform dynamic analysis:
 - For the serialization itself: use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 ### Testing enforced updating
+
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
 The challenge with iOS however, is that Apple does not provide any APIs yet to automate this proces, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libaries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truely there.
 
@@ -3206,12 +3196,13 @@ Please note that newer versions of an application will not fix security issues t
 Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
 
 #### Static Analysis
+
 First see whethere there is an update mechanism at all: if it is not yet present, it might mean that users cannot be forced to update.
 If the mechanism is present, see whether it enforces "always latest" and whether that is indeed in line with the business strategy. Otherwise check if the mechanism is supporting to update to a given version.
 Make sure that every entry of the application goes through the updating mechanism in order to make sure that the update-mechanism cannot be bypassed.
 
-
 #### Dynamic analysis
+
 In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the back-end will stop calls to vulnerable back-ends and/or whether the vulnerable app-version itself is blocked by the back-end.
 Finally, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
@@ -3219,13 +3210,13 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 ### References
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
-- Security Flaw with UIWebView - https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c
-- Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html
+- Security Flaw with UIWebView - [https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c](https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c)
+- Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - [https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html)
 
 #### OWASP Mobile Top 10 2016
 
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M1 - Improper Platform Usage - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage](https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage)
+- M7 - Poor Code Quality - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality](https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality)
 
 #### OWASP MASVS
 
@@ -3241,29 +3232,30 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 
 #### CWE
 
-- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
-- CWE-200 - Information Leak / Disclosure
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
+- CWE-79 - Improper Neutralization of Input During Web Page Generation - [https://cwe.mitre.org/data/definitions/79.html](https://cwe.mitre.org/data/definitions/79.html)
+- CWE-200 - Information Leak / Disclosure - [https://cwe.mitre.org/data/definitions/200.html](https://cwe.mitre.org/data/definitions/200.html)
+- CWE-939 - Improper Authorization in Handler for Custom URL Scheme - [https://cwe.mitre.org/data/definitions/939.html](https://cwe.mitre.org/data/definitions/939.html)
 
 #### Tools
 
-- Apple App Site Association (AASA) Validator - https://branch.io/resources/aasa-validator
-- Frida - https://www.frida.re/
-- frida-trace - https://www.frida.re/docs/frida-trace/
-- objection - https://github.com/sensepost/objection
-- ObjC Method Observer - https://codeshare.frida.re/@mrmacete/objc-method-observer/
-- IDB - https://www.idbtool.com/
-- Needle - https://github.com/mwrlabs/needle
-- Radare2 - https://rada.re
+- Apple App Site Association (AASA) Validator - [https://branch.io/resources/aasa-validator](https://branch.io/resources/aasa-validator)
+- Frida - [https://www.frida.re/](https://www.frida.re/)
+- frida-trace - [https://www.frida.re/docs/frida-trace/](https://www.frida.re/docs/frida-trace/)
+- objection - [https://github.com/sensepost/objection](https://github.com/sensepost/objection)
+- ObjC Method Observer - [https://codeshare.frida.re/@mrmacete/objc-method-observer/](https://codeshare.frida.re/@mrmacete/objc-method-observer/)
+- IDB - [https://www.idbtool.com/](https://www.idbtool.com/)
+- Needle - [https://github.com/mwrlabs/needle](https://github.com/mwrlabs/needle)
+- Radare2 - [https://rada.re](https://rada.re)
 
 #### Regarding Object Persistence in iOS
 
-- https://developer.apple.com/documentation/foundation/NSSecureCoding
-- https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift
-- https://developer.apple.com/documentation/foundation/nskeyedarchiver
-- https://developer.apple.com/documentation/foundation/nscoding?language=swift,https://developer.apple.com/documentation/foundation/NSSecureCoding?language=swift
-- https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
-- https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types
-- https://developer.apple.com/documentation/foundation/jsonencoder
-- https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4
-- https://developer.apple.com/documentation/foundation/xmlparser
+- [https://developer.apple.com/documentation/foundation/NSSecureCoding](https://developer.apple.com/documentation/foundation/NSSecureCoding)
+- [https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift](https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift)
+- [https://developer.apple.com/documentation/foundation/nskeyedarchiver](https://developer.apple.com/documentation/foundation/nskeyedarchiver)
+- [https://developer.apple.com/documentation/foundation/nscoding?language=swift](https://developer.apple.com/documentation/foundation/nscoding?language=swift)
+- [https://developer.apple.com/documentation/foundation/NSSecureCoding?language=swift](https://developer.apple.com/documentation/foundation/NSSecureCoding?language=swift)
+- [https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types)
+- [https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types](https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types)
+- [https://developer.apple.com/documentation/foundation/jsonencoder](https://developer.apple.com/documentation/foundation/jsonencoder)
+- [https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4](https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4)
+- [https://developer.apple.com/documentation/foundation/xmlparser](https://developer.apple.com/documentation/foundation/xmlparser)

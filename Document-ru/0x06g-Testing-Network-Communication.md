@@ -129,27 +129,27 @@ $ plutil -convert xml1 Info.plist
 - ATS должен быть настроен, в соответствии с лучшими практиками, рекомендуемыми Apple и может быть отключен только из-за определенных обстоятельств.
 - Если приложение подключается к известному количеству доменов, которые контролирует разработчик приложения, тогда настройте сервера, чтобы они соответствовали требованиям ATS и откажитесь от этих требований в приложении. В следующем примере, доменом `example.com` владеет разработчик приложения и ATS включено для этого домена.
 
-```xml
-<key>NSAppTransportSecurity</key>
-<dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-    <key>NSExceptionDomains</key>
+    ```xml
+    <key>NSAppTransportSecurity</key>
     <dict>
-        <key>example.com</key>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSExceptionDomains</key>
         <dict>
-            <key>NSIncludesSubdomains</key>
-            <true/>
-            <key>NSExceptionMinimumTLSVersion</key>
-            <string>TLSv1.2</string>
-            <key>NSExceptionAllowsInsecureHTTPLoads</key>
-            <false/>
-            <key>NSExceptionRequiresForwardSecrecy</key>
-            <true/>
+            <key>example.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionMinimumTLSVersion</key>
+                <string>TLSv1.2</string>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <false/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <true/>
+            </dict>
         </dict>
     </dict>
-</dict>
-```
+    ```
 
 - Если же происходит подключения к домену третьей стороны, то необходимо выявить какие настройки ATS не поддерживаются и могут ли они быть отключены.
 - Если приложение открывает сайт третьей стороны в WebView, то начиная с iOS 10 `NSAllowsArbitraryLoadsInWebContent` может быть использована для отключения ограничений ATS для контента, загружаемого через WebViews.

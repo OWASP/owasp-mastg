@@ -30,7 +30,6 @@ return c.getCount() != 0;
 
 Let's further assume an attacker enters the following values into the "username" and "password" fields:
 
-
 ```sql
 username = 1' or '1' = '1
 password = 1' or '1' = '1
@@ -165,15 +164,15 @@ The following code snippet shows a simple example for a condition resulting in a
 
 To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
-    - `strcat`
-    - `strcpy`
-    - `strncat`
-    - `strlcat`
-    - `strncpy`
-    - `strlcpy`
-    - `sprintf`
-    - `snprintf`
-    - `gets`
+- `strcat`
+- `strcpy`
+- `strncat`
+- `strlcat`
+- `strncpy`
+- `strlcpy`
+- `sprintf`
+- `snprintf`
+- `gets`
 
 Also, look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly.
 
@@ -217,11 +216,13 @@ Java
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
+
 Kotlin
 
 ```kotlin
 webView.loadUrl("javascript:initialize($myNumber);")
 ```
+
 Another example of XSS issues determined by user input is public overriden methods.
 
 Java
@@ -234,6 +235,7 @@ public boolean shouldOverrideUrlLoading(WebView view, String url) {
   }
 }
 ```
+
 Kotlin
 
 ```kotlin
@@ -247,33 +249,35 @@ Kotlin
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the HTML parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
 
 - ADB
-```shell
-$ adb shell
-$ am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
-```
+
+  ```shell
+  $ adb shell
+  $ am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
+  ```
+
 - Clipboard Data
-```shell
-$ am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
-```
-- 3rd party Intent
 
-Java
-```java
-Intent i = new Intent();
-i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
-i.putExtra("url","http://test/test");
-i.putExtra("html","XSS PoC <script>alert(123)</script>");
-view.getContext().startActivity(i);
-```
-Kotlin
+  ```shell
+  $ am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
+  ```
 
-```kotlin
-val i = Intent()
-i.component = ComponentName("com.quora.android", "com.quora.android.ActionBarContentActivity")
-i.putExtra("url", "http://test/test")
-i.putExtra("html", "XSS PoC <script>alert(123)</script>")
-view.context.startActivity(i)
-```
+- 3rd party Intent in Java or kotlin:
+
+  ```java
+  Intent i = new Intent();
+  i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
+  i.putExtra("url","http://test/test");
+  i.putExtra("html","XSS PoC <script>alert(123)</script>");
+  view.getContext().startActivity(i);
+  ```
+
+  ```kotlin
+  val i = Intent()
+  i.component = ComponentName("com.quora.android", "com.quora.android.ActionBarContentActivity")
+  i.putExtra("url", "http://test/test")
+  i.putExtra("html", "XSS PoC <script>alert(123)</script>")
+  view.context.startActivity(i)
+  ```
 
 If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
 
@@ -294,7 +298,6 @@ Consider how data will be rendered in a response. For example, if data is render
 | ' | &amp;#x27;|
 | / | &amp;#x2F;|
 
-
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://goo.gl/motVKX "OWASP XSS Prevention Cheat Sheet").
 
 #### Dynamic Analysis
@@ -307,7 +310,7 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
@@ -320,8 +323,4 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 
 #### XSS via start ContentActivity
 
-- https://hackerone.com/reports/189793
-
-#### Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?
-
-- http://blog.ostorlab.co/2016/03/android-sql-and-contentproviders-or-why.html
+- <https://hackerone.com/reports/189793>
