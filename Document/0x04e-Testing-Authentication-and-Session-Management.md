@@ -556,7 +556,7 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - <<https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authenticatio>n>
+- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
 
 #### OWASP MASVS
 
