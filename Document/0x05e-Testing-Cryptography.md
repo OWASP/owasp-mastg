@@ -341,7 +341,7 @@ This will highlight all the classes that use the `SecretKeySpec` class, we now e
 When you have access to the sourcecode, check at least for the following:
 
 - Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
-- Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation ](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
+- Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 - In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
 - Make sure that keys are not used for different purposes: for instance, make sure that encryption keys are not used for signing and vise a versa.
 
@@ -355,34 +355,34 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 #### Cryptography references
 
-- Android Developer blog: Crypto provider deprecated - https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
-- Android Developer blog: cryptography changes in android P - https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
-- Ida Pro - https://www.hex-rays.com/products/ida/
-- Android Developer blog: changes for NDK developers - https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html
-- security providers -  https://developer.android.com/reference/java/security/Provider.html
-- Spongy Castle  - https://rtyley.github.io/spongycastle/
-- Legion of the Bouncy Castle - https://www.bouncycastle.org/java.html
-- Android Developer documentation - https://developer.android.com/guide
-- NIST keylength recommendations - https://www.keylength.com/en/4/
-- BSI recommendations - 2017 - https://www.keylength.com/en/8/
+- Android Developer blog: Crypto provider deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
+- Android Developer blog: cryptography changes in android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
+- Ida Pro - <https://www.hex-rays.com/products/ida/>
+- Android Developer blog: changes for NDK developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
+- security providers -  <https://developer.android.com/reference/java/security/Provider.html>
+- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
+- Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
+- Android Developer documentation - <https://developer.android.com/guide>
+- NIST keylength recommendations - <https://www.keylength.com/en/4/>
+- BSI recommendations - 2017 - <https://www.keylength.com/en/8/>
 
 #### SecureRandom references
 
-- Proper seeding of SecureRandom - https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded
-- Burpproxy its Sequencer - https://portswigger.net/burp/documentation/desktop/tools/sequencer
+- Proper seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
+- Burpproxy its Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
 
 #### Testing Key Management references
 
-- Android KeyStore API - https://developer.android.com/reference/java/security/KeyStore.html
-- Android Keychain API - https://developer.android.com/reference/android/security/KeyChain
-- SharedPreferences - https://developer.android.com/reference/android/content/SharedPreferences.html
-- KeyInfo documentation - https://developer.android.com/reference/android/security/keystore/KeyInfo
-- Android Pie features and APIs - https://developer.android.com/about/versions/pie/android-9.0#secure-key-import
-- Android Keystore system - https://developer.android.com/training/articles/keystore#java
+- Android KeyStore API - <https://developer.android.com/reference/java/security/KeyStore.html>
+- Android Keychain API - <https://developer.android.com/reference/android/security/KeyChain>
+- SharedPreferences - <https://developer.android.com/reference/android/content/SharedPreferences.html>
+- KeyInfo documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
+- Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
+- Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
 
 ##### OWASP Mobile Top 10 2016
 
-- M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
+- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
 
 ##### OWASP MASVS
 

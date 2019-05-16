@@ -266,7 +266,7 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
 
 #### OWASP MASVS
 
@@ -280,4 +280,4 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 #### Request App Permissions
 
-- Runtime Permissions - https://developer.android.com/training/permissions/requesting
+- Runtime Permissions - <https://developer.android.com/training/permissions/requesting>

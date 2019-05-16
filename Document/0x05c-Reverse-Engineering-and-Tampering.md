@@ -405,13 +405,13 @@ $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg 
 
 After the certificate is available, you can repackage the UnCrackable-Level1.apk according to the following steps. Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
 
-1. Use `apktool` to unpack the app and decode AndroidManifest.xml:
+**Step 1:** Use `apktool` to unpack the app and decode AndroidManifest.xml:
 
     ```shell
     $ apktool d --no-src UnCrackable-Level1.apk
     ```
 
-2. Add android:debuggable = "true" to the manifest using a text editor:
+**Step 2:** Add android:debuggable = "true" to the manifest using a text editor:
 
     ```xml
     <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
@@ -419,7 +419,7 @@ After the certificate is available, you can repackage the UnCrackable-Level1.apk
 
 Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `debuggable="true"` to the AndroidManifest file.
 
-3. Repackage and sign the APK.
+**Step 3:** Repackage and sign the APK.
 
     ```shell
     $ cd UnCrackable-Level1
@@ -436,7 +436,7 @@ Note: To get `apktool` to do this for you automatically, use the `-d` or `--debu
     $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
     ```
 
-4. Reinstall the app:
+**Step 4:** Reinstall the app:
 
     ```shell
     $ adb install UnCrackable-Repackaged.apk
@@ -486,12 +486,12 @@ Initializing jdb ...
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
 - \*classes: list all loaded classes
-- class/method/fields <class id>: Print details about a class and list its method and fields
+- class/method/fields _class id_: Print details about a class and list its method and fields
 - locals: print local variables in current stack frame
-- print/dump <expr>: print information about an object
-- stop in <method>: set a method breakpoint
-- clear <method>: remove a method breakpoint
-- set <lvalue> = <expr>:  assign new value to field/variable/array element
+- print/dump _expr_: print information about an object
+- stop in _method_: set a method breakpoint
+- clear _method_: remove a method breakpoint
+- set _lvalue_ = _expr_:  assign new value to field/variable/array element
 
 Let's revisit the decompiled code from the UnCrackable App Level 1 and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
 
@@ -1958,12 +1958,12 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 ### References
 
-- Hacking Soft Tokens Paper by Bernhard Mueller - https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf
-- OWASP MSTG Crackmes - https://github.com/OWASP/owasp-mstg/tree/master/Crackmes
+- Hacking Soft Tokens Paper by Bernhard Mueller - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
+- OWASP MSTG Crackmes - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
 
 #### Tools
 
-- Angr - https://docs.angr.io
+- Angr - <https://docs.angr.io>
 - Angro API Documenation -
-- apkx - https://github.com/b-mueller/apkx
-- Frida - https://www.frida.re/docs/android/
+- apkx - <https://github.com/b-mueller/apkx>
+- Frida - <https://www.frida.re/docs/android/>

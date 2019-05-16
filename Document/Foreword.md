@@ -5,7 +5,7 @@ Welcome to the OWASP Mobile Security Testing Guide. Feel free to explore the exi
 
 If you have feedback or suggestions, or want to contribute, create an issue on GitHub or ping us on Slack. See the README for instructions:
 
-https://www.github.com/OWASP/owasp-mstg/
+<https://www.github.com/OWASP/owasp-mstg/>
 
 ---
 

@@ -58,7 +58,7 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
  [grantUriPermission()](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn), [revokeUriPermission()](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)), and [checkUriPermission()](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)).
 
-**Custom Permissions**
+##### Custom Permissions
 
 Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes: `android:name` and `android:protectionLevel`.
 
@@ -97,7 +97,7 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 #### Static Analysis
 
-**Android Permissions**
+##### Android Permissions
 
 Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. Because a user can revoke an application's right to use a dangerous permission, the developer should check whether the application has the appropriate permission each time an action is performed that would require that permission.
 
@@ -148,7 +148,7 @@ READ_EXTERNAL_STORAGE,
 WRITE_EXTERNAL_STORAGE.
 ```
 
-**Custom Permissions**
+##### Custom Permissions
 
 Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the ContextCompat.checkSelfPermission() method is called to check if an activity has a specified permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file.
 
@@ -1267,32 +1267,32 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 #### Android App Bundles and updates
 
-- https://developer.android.com/guide/app-bundle/in-app-updates
+- <https://developer.android.com/guide/app-bundle/in-app-updates>
 
 #### Android Fragment Injection
 
-- https://www.synopsys.com/blogs/software-security/fragment-injection/
-- https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf
+- <https://www.synopsys.com/blogs/software-security/fragment-injection/>
+- <https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf>
 
 #### Android Permissions Documentation
 
-- https://developer.android.com/training/permissions/usage-notes
-- https://developer.android.com/training/permissions/requesting#java
-- https://developer.android.com/guide/topics/permissions/overview#permission-groups
-- https://developer.android.com/guide/topics/manifest/provider-element#gprmsn
-- https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)
-- https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)
-- https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions
-- https://developer.android.com/guide/topics/permissions/overview
-- https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct
+- <https://developer.android.com/training/permissions/usage-notes>
+- <https://developer.android.com/training/permissions/requesting#java>
+- <https://developer.android.com/guide/topics/permissions/overview#permission-groups>
+- <https://developer.android.com/guide/topics/manifest/provider-element#gprmsn>
+- <https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)>
+- <https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)>
+- <https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions>
+- <https://developer.android.com/guide/topics/permissions/overview>
+- <https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct>
 
 #### Android permissions changes in Android 8
 
-- https://developer.android.com/about/versions/oreo/android-8.0-changes
+- <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
@@ -1315,4 +1315,4 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 #### Tools
 
-- Drozer - https://github.com/mwrlabs/drozer
+- Drozer - <https://github.com/mwrlabs/drozer>

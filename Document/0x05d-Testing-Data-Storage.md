@@ -1151,8 +1151,8 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 #### OWASP Mobile Top 10 2016
 
-- M1 - Improper Platform Usage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage
-- M2 - Insecure Data Storage - https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage
+- M1 - Improper Platform Usage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage>
+- M2 - Insecure Data Storage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage>
 
 #### OWASP MASVS
 
@@ -1188,27 +1188,27 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 #### Tools
 
-- Sqlite3 - http://www.sqlite.org/cli.html
-- Realm Browser - Realm Browser - https://github.com/realm/realm-browser-osx
-- ProGuard - http://proguard.sourceforge.net/
-- Logcat - http://developer.android.com/tools/help/logcat.html
-- Burp Suite Professional - https://portswigger.net/burp/
-- OWASP ZAP - https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-- Drozer - https://labs.mwrinfosecurity.com/tools/drozer/
-- Android Backup Extractor - https://github.com/nelenkov/android-backup-extractor
-- Memory Monitor - http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap
-- Eclipse’s MAT (Memory Analyzer Tool) standalone - https://eclipse.org/mat/downloads.php
-- Memory Analyzer which is part of Eclipse - https://www.eclipse.org/downloads/
-- Fridump - https://github.com/Nightbringer21/fridump
-- LiME - https://github.com/504ensicsLabs/LiME
-- Firebase Scanner - https://github.com/shivsahni/FireBaseScanner
+- Sqlite3 - <http://www.sqlite.org/cli.html>
+- Realm Browser - Realm Browser - <https://github.com/realm/realm-browser-osx>
+- ProGuard - <http://proguard.sourceforge.net/>
+- Logcat - <http://developer.android.com/tools/help/logcat.html>
+- Burp Suite Professional - <https://portswigger.net/burp/>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
+- Android Backup Extractor - <https://github.com/nelenkov/android-backup-extractor>
+- Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
+- Eclipse’s MAT (Memory Analyzer Tool) standalone - <https://eclipse.org/mat/downloads.php>
+- Memory Analyzer which is part of Eclipse - <https://www.eclipse.org/downloads/>
+- Fridump - <https://github.com/Nightbringer21/fridump>
+- LiME - <https://github.com/504ensicsLabs/LiME>
+- Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 
 #### Libraries
 
-- Java AES Crypto - https://github.com/tozny/java-aes-crypto
-- SQL Cipher - https://www.zetetic.net/sqlcipher/sqlcipher-for-android
-- Secure Preferences - https://github.com/scottyab/secure-preferences
+- Java AES Crypto - <https://github.com/tozny/java-aes-crypto>
+- SQL Cipher - <https://www.zetetic.net/sqlcipher/sqlcipher-for-android>
+- Secure Preferences - <https://github.com/scottyab/secure-preferences>
 
 #### Others
 
-- Appthority Mobile Threat Team Research Paper - https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf
+- Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>

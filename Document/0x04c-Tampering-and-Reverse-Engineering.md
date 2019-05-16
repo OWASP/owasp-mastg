@@ -104,9 +104,9 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 #### Tools
 
-- Angr - https://github.com/angr/angr
-- Cycript - http://www.cycript.org/
-- Frida - https://www.frida.re/
-- Radare2 - https://github.com/radare/radare2
-- Substrate - http://www.cydiasubstrate.com/
-- Xposed - https://www.xda-developers.com/xposed-framework-hub/
+- Angr - <https://github.com/angr/angr>
+- Cycript - <http://www.cycript.org/>
+- Frida - <https://www.frida.re/>
+- Radare2 - <https://github.com/radare/radare2>
+- Substrate - <http://www.cydiasubstrate.com/>
+- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>

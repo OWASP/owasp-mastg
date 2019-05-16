@@ -40,8 +40,8 @@ Given copyright laws, you must make sure you inform the user on any third party 
 
 #### Example for open source license mentioning
 
-- https://www.bignerdranch.com/blog/open-source-licenses-and-android/
+- <https://www.bignerdranch.com/blog/open-source-licenses-and-android/>
 
 #### Website to help with understanding licenses
 
-- https://tldrlegal.com/
+- <https://tldrlegal.com/>

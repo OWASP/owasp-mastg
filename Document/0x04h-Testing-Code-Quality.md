@@ -310,7 +310,7 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
@@ -323,4 +323,4 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 
 #### XSS via start ContentActivity
 
-- https://hackerone.com/reports/189793
+- <https://hackerone.com/reports/189793>

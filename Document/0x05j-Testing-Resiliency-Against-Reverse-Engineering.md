@@ -43,7 +43,7 @@ The following is a sample attestation result:
 }
 ```
 
-**ctsProfileMatch Vs basicIntegrity**
+####### ctsProfileMatch Vs basicIntegrity
 
 The SafetyNet Attestation API initially provided a single value called `basicIntegrity` to help developers determine the integrity of a device. As the API evolved, Google introduced a new, stricter check whose results appear in a value called `ctsProfileMatch`, which allows developers to more finely evaluate the devices on which their app is running.
 
@@ -58,7 +58,7 @@ On the other hand, `ctsProfileMatch` gives you a much stricter signal about the 
 - Devices with a system image built directly from the Android Open Source Program source files
 - Devices with a system image distributed as part of a beta or developer preview program (including the Android Beta Program)
 
-**Recommendations when using** `SafetyNetApi.attest`
+####### Recommendations when using `SafetyNetApi.attest`
 
 - Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
 - Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
@@ -71,7 +71,7 @@ Follow this [checklist](https://developer.android.com/training/safetynet/attesta
 
 ###### Programmatic Detection
 
-**File existence checks**
+####### File existence checks**
 
 Perhaps the most widely used method of programmatic detection is checking for files typically found on rooted devices, such as package files of common rooting apps and their associated files and directories, including the following:
 
@@ -129,11 +129,11 @@ jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath)
 }
 ```
 
-**Executing `su` and other commands**
+####### Executing `su` and other commands
 
 Another way of determining whether `su` exists is attempting to execute it through the `Runtime.getRuntime.exec` method. An IOException will be thrown if `su` is not on the PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox and the symbolic links that typically point to it.
 
-**Checking running processes**
+####### Checking running processes
 
 Supersu-by far the most popular rooting tool-runs an authentication daemon named `daemonsu`, so the presence of this process is another sign of a rooted device. Running processes can be enumerated with the `ActivityManager.getRunningAppProcesses` and `manager.getRunningServices` APIs, the `ps` command, and browsing through the `/proc` directory. The following is an example implemented in [rootinspector](https://github.com/devadvance/rootinspector/):
 
@@ -159,7 +159,7 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
     }
 ```
 
-**Checking installed app packages**
+####### Checking installed app packages
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
@@ -173,11 +173,11 @@ com.ramdroid.appquarantine
 com.topjohnwu.magisk
 ```
 
-**Checking for writable partitions and system directories**
+####### Checking for writable partitions and system directories
 
 Unusual permissions on system directories may indicate a customized or rooted device. Although the system and data directories are normally mounted read-only, you'll sometimes find them mounted read-write when the device is rooted. Look for these filesystems mounted with the "rw" flag or try to create a file in the data directories.
 
-**Checking for custom Android builds**
+####### Checking for custom Android builds
 
 Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](https://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion// "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/ "Android - Detect Root Access from inside an app"):
 
@@ -768,7 +768,7 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 
 ##### Bypassing File Integrity Checks
 
-*Bypassing the application-source integrity checks*
+###### Bypassing the application-source integrity checks
 
 1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
@@ -776,14 +776,14 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 
 Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
 
-*Bypassing the storage integrity checks*
+###### Bypassing the storage integrity checks
 
 1. Retrieve the data from the device, as described in the section on device binding.
 2. Alter the retrieved data and then put it back into storage.
 
 #### Effectiveness Assessment
 
-*For application-source integrity checks*
+##### For application-source integrity checks
 
 Run the app in an unmodified state and make sure that everything works. Apply simple patches to `classes.dex` and any .so libraries in the app package. Re-package and re-sign the app as described in the "Basic Security Testing" chapter, then run the app. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate. Work on bypassing the defenses and answer the following questions:
 
@@ -792,7 +792,7 @@ Run the app in an unmodified state and make sure that everything works. Apply si
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-*For storage integrity checks*
+##### For storage integrity checks
 
 An approach similar to that for application-source integrity checks applies. Answer the following questions:
 
@@ -815,7 +815,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-With API Level 25 and below it was possible to query for all running services by using the Java method  (getRunningServices[https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices(int) "getRunningServices"]. This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
+With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
 
 A working solution to detect the frida-server process is to us the command `ps` instead.
 
