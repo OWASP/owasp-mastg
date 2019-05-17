@@ -46,13 +46,13 @@ Romuald is a passionate cyber security & privacy professional with over 15 years
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
+- Jeroen Beckers
 - Pawel Rzepa
 - Francesco Stillavato
 - Henry Hoggard
 - Andreas Happe
 - Kyle Benac
 - Alexander Anthuk
-- Jeroen Beckers
 - Wen Bin Kong
 - Abdessamad Temmar
 - Bolot Kerimbaev
@@ -69,6 +69,7 @@ Abderrahmane Aftahi, Jin Kung Ong, Koki Takeyama, Sjoerd Langkemper, Gerhard Wag
 
 Reviewers have consistently provided useful feedback through GitHub issues and pull request comments.
 
+- Jeroen Beckers
 - Sjoerd Langkemper
 - Anant Shrivastava
 
