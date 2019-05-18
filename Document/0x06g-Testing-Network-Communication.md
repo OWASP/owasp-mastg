@@ -35,6 +35,7 @@ The cipher suite must be one of the following:
 ##### ATS Exceptions
 
 ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the `NSAppTransportSecurity` key. These exceptions can be applied to:
+
 - allow insecure connections (HTTP),
 - lower the minimum TLS version,
 - disable PFS or
@@ -97,11 +98,11 @@ If the source code is available, open then `Info.plist` file in the application 
 The following listing is an example of an exception configured to disable ATS restrictions globally.
 
 ```xml
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 ```
 
 If the source code is not available, then the `Info.plist` file should be either obtained from a jailbroken device or by extracting the application IPA file.
@@ -114,7 +115,7 @@ $ unzip app-name.ipa
 
 `Info.plist` file can be found in the `Payload/BundleName.app/` directory of the extract. It’s a binary encoded file and has to be converted to a human readable format for the analysis.
 
-[`plutil`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html "OS X Man Pages - Plutil") is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions.
+`plutil` is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions, but no official online documentation is currently available.
 
 The following command shows how to convert the Info.plist file into XML format.
 
@@ -128,7 +129,7 @@ Once the file is converted to a human readable format, the exceptions can be ana
 
 It is possible to verify which ATS settings can be used when communicating to a certain endpoint. On macOS the command line utility `nscurl` is available to check the same. The command can be used as follows:
 
-```
+```shell
 /usr/bin/nscurl --ats-diagnostics https://www.example.com
 Starting ATS Diagnostics
 
@@ -170,6 +171,7 @@ The output above only shows the first few results of nscurl. A permutation of di
 For more information on this topic please consult the [blog post by NowSecure on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
 
 In general it can be summarized:
+
 - ATS should be configured according to best practices by Apple and only be deactivated under certain circumstances.
 - If the application connects to a defined number of domains that the application owner controls, then configure the servers to support the ATS requirements and opt-in for the ATS requirements within the app. In the following example, `example.com` is owned by the application owner and ATS is enabled for that domain.
 
@@ -245,7 +247,6 @@ Note that the certificate pinning example above has a major drawback when you us
 - Use [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
 - Use [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
 
-
 #### Dynamic Analysis
 
 ##### Server certificate validation
@@ -274,12 +275,11 @@ Sometimes applications have one certificate that is hardcoded and use it for the
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
-
 #### References
 
 ##### OWASP Mobile Top 10 2016
 
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+- M3 - Insecure Communication - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication](https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication)
 
 ##### OWASP MASVS
 
@@ -296,4 +296,4 @@ Once you have extracted the certificate from the application (e.g. using Cycript
 
 ##### Nscurl
 
-- A guide to ATS - Blog post by NowSecure - https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/
+- A guide to ATS - Blog post by NowSecure - [https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/)

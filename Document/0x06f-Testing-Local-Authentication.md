@@ -17,7 +17,7 @@ Developers have two options for incorporating Touch ID/Face ID authentication:
 
 Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lidner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM) for more details.
 
-##### Local Authentication Framework
+#### Local Authentication Framework
 
 The Local Authentication framework provides facilities for requesting a passphrase or Touch ID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class.
 
@@ -36,20 +36,21 @@ let context = LAContext()
 var error: NSError?
 
 guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
-	// Could not evaluate policy; look at error and present an appropriate message to user
+    // Could not evaluate policy; look at error and present an appropriate message to user
 }
 
 context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pass authorization to enter this area") { success, evaluationError in
-	guard success else {
-		// User did not authenticate successfully, look at evaluationError and take appropriate action
-	}
+    guard success else {
+        // User did not authenticate successfully, look at evaluationError and take appropriate action
+    }
 
-	// User authenticated successfully, take appropriate action
+    // User authenticated successfully, take appropriate action
 }
 ```
+
 *Touch ID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
 
-#####  Using Keychain Services for Local Authentication
+#### Using Keychain Services for Local Authentication
 
 The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app stores either a secret authentication token or another piece of secret data identifying the user in the Keychain. In order to authenticate to a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data.
 
@@ -57,7 +58,7 @@ The Keychain allows saving items with the special `SecAccessControl` attribute, 
 
 In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
 
-**Swift**
+##### Swift
 
 ```swift
 
@@ -66,9 +67,9 @@ In the following example we will save the string "test_strong_password" to the K
 var error: Unmanaged<CFError>?
 
 guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-	kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-	.touchIDCurrentSet,
-	&error) else {
+    kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+    .touchIDCurrentSet,
+    &error) else {
     // failed to create AccessControl object
 }
 
@@ -87,46 +88,46 @@ query[kSecAttrAccessControl as String] = accessControl
 let status = SecItemAdd(query as CFDictionary, nil)
 
 if status == noErr {
-	// successfully saved
+    // successfully saved
 } else {
-	// error while saving
+    // error while saving
 }
 ```
 
-**Objective-C**
+##### Objective-C
 
 ```objc
 
-	// 1. create AccessControl object that will represent authentication settings
-	CFErrorRef *err = nil;
+    // 1. create AccessControl object that will represent authentication settings
+    CFErrorRef *err = nil;
 
-	SecAccessControlRef sacRef = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-		kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-		kSecAccessControlUserPresence,
-		err);
+    SecAccessControlRef sacRef = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
+        kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+        kSecAccessControlUserPresence,
+        err);
 
-	// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
-	NSDictionary* query = @{
-		(_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-		(__bridge id)kSecAttrLabel: @"com.me.myapp.password",
-		(__bridge id)kSecAttrAccount: @"OWASP Account",
-		(__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
-		(__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef
-	};
+    // 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
+    NSDictionary* query = @{
+        (_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+        (__bridge id)kSecAttrLabel: @"com.me.myapp.password",
+        (__bridge id)kSecAttrAccount: @"OWASP Account",
+        (__bridge id)kSecValueData: [@"test_strong_password" dataUsingEncoding:NSUTF8StringEncoding],
+        (__bridge id)kSecAttrAccessControl: (__bridge_transfer id)sacRef
+    };
 
-	// 3. save item
-	OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
+    // 3. save item
+    OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, nil);
 
-	if (status == noErr) {
-		// successfully saved
-	} else {
-		// error while saving
-	}
+    if (status == noErr) {
+        // successfully saved
+    } else {
+        // error while saving
+    }
 ```
 
 Now we can request the saved item from the Keychain. Keychain Services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
 
-**Swift**
+##### Swift
 
 ```swift
 // 1. define query
@@ -151,7 +152,7 @@ if status == noErr {
 }
 ```
 
-**Objective-C**
+##### Objective-C
 
 ```objc
 // 1. define query
@@ -182,7 +183,7 @@ $ otool -L <AppName>.app/<AppName>
 
 If `LocalAuthentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuthentication.framework` uses `Security.framework` under the hood):
 
-```
+```shell
 /System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication
 /System/Library/Frameworks/Security.framework/Security
 ```
@@ -218,7 +219,7 @@ Alternatively, you can use [objection to bypass Touch ID](https://github.com/sen
 
 Needle can be used to bypass insecure biometric authentication in iOS platforms. Needle utilizes Frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
 
-```
+```shell
 [needle][container] > use hooking/frida/script_touch-id-bypass
 [needle][script_touch-id-bypass] > run
 ```
@@ -226,14 +227,14 @@ Needle can be used to bypass insecure biometric authentication in iOS platforms.
 If vulnerable, the module will automatically bypass the login form.
 
 ### Note regarding temporariness of keys in the Keychain
-Unlike MacOSX and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (E.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
+Unlike MacOSX and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (E.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
 ### References
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication](https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication)
 
 #### OWASP MASVS
 

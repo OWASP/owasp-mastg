@@ -46,13 +46,13 @@ Romuald is a passionate cyber security & privacy professional with over 15 years
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
+- Jeroen Beckers
 - Pawel Rzepa
 - Francesco Stillavato
 - Henry Hoggard
 - Andreas Happe
 - Kyle Benac
 - Alexander Anthuk
-- Jeroen Beckers
 - Wen Bin Kong
 - Abdessamad Temmar
 - Bolot Kerimbaev
@@ -69,6 +69,7 @@ Abderrahmane Aftahi, Jin Kung Ong, Koki Takeyama, Sjoerd Langkemper, Gerhard Wag
 
 Reviewers have consistently provided useful feedback through GitHub issues and pull request comments.
 
+- Jeroen Beckers
 - Sjoerd Langkemper
 - Anant Shrivastava
 
@@ -96,13 +97,13 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. The original document was hosted on Google Drive. Guide development was moved to GitHub in October 2016.
 
-**OWASP MSTG "Beta 2" (Google Doc)**
+#### OWASP MSTG "Beta 2" (Google Doc)
 
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
 | Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Ali Yazdani, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner, Javier Dominguez | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
 
-**OWASP MSTG "Beta 1" (Google Doc)**
+#### OWASP MSTG "Beta 1" (Google Doc)
 
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
