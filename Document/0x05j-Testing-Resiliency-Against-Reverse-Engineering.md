@@ -1243,12 +1243,10 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
   - Generating the key pair in the Android keystore using *KeyPairGeneratorSpec* API.
   - Generating a secret key for AES-GCM using a Secure Pseudo Random Number Generator(SPRNG) such as *java.security.SecureRandom* API
   - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher
-  - Encrypt the secret key using public key stored in Android keystore and store the same in the private storage of the application
-  - Whenever authentication data or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the same to decrypt the ciphertext
+  - Encrypt the secret key using public key stored in Android keystore and store the encrypted secret key in the private storage of the application
+  - Whenever authentication data or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
 
-  Note: For API level 23 and above, the *KeyGenParameterSpec* API can be leveraged directly to generate and manage secret key through Android keystore.
-
-  For the detailed implementation guidelines, [Securely Storing Secrets in an Android Application](https://medium.com/@ericfu/securely-storing-secrets-in-an-android-application-501f030ae5a3 "Securely Storing Secrets in an Android Application") blog can be referred.
+  Note: For API level 23 and above, the *KeyGenParameterSpec* API can be leveraged directly to generate and manage secret keys through the Android keystore.
  
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
@@ -1506,9 +1504,6 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
 - SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
 
-#### Secure Storage and Device Binding
-
-- Securely Storing Secrets in an Android Application - https://medium.com/@ericfu/securely-storing-secrets-in-an-android-application-501f030ae5a3
 
 #### Tools
 
