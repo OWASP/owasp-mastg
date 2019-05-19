@@ -5,13 +5,13 @@
 
 ### Криптографические библиотеки в iOS
 
-Apple предоставляет библиотеки с наиболее часто используемыми алгоритмами шифрования. Отличные источник информации- [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide"). В нем содержится расширенная документации на тему использования стандартных библиотек для инициализации и использования криптографических примитивов, что также является очень полезными знаниями во время ревью кода. 
+Apple предоставляет библиотеки с наиболее часто используемыми алгоритмами шифрования. Отличные источник информации- [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide"). В нем содержится расширенная документации на тему использования стандартных библиотек для инициализации и использования криптографических примитивов, что также является очень полезными знаниями во время ревью кода.
 
 Код iOS обычно ссылается на предопределенные константы, объявленные в `CommonCryptor.h` (например, `kCCAlgorithmDES`). Вы можете воспользоваться поиском, чтобы найти использование таких констант в исходном коде. Обратите внимание на то, что константы в iOS численные, поэтому убедитесь, что константы передаются в `CCCrypt` для выполнения алгоритма, который, как мы знаем, является безопасным и не устаревшим.  
 
 Если приложение использует стандартные реализации криптографии, предоставленные Apple, самый простой путь проверки - это посмотреть вызовы функций в `CommonCryptor`, такие как: `CCCrypt`, `CCCryptorCreate`, и т.д. [Исходный код](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") содержит сигнатуры всех функций. Например, `CCCryptorCreate` имеет следующую сигнатуру:
 
-```
+```c
 CCCryptorStatus CCCryptorCreate(
 	CCOperation op,             /* kCCEncrypt, etc. */
 	CCAlgorithm alg,            /* kCCAlgorithmDES, etc. */
@@ -32,7 +32,7 @@ Apple предоставляет разработчикам [Randomization Servi
 
 API сервисов рандомизации Apple использует функцию `SecRandomCopyBytes`, чтобы осуществлять генерацию. Это функция - обертка над `/dev/random` файлом, который предоставляет криптографически безопасные псевдорандомные числа от 0 до 255 и осуществляет конкатенацию.
 
-Проверьте, что все случайные числа сгенерированы с использование этого API - нет ни одной причины почему разработчики использовали бы другой метод. 
+Проверьте, что все случайные числа сгенерированы с использование этого API - нет ни одной причины почему разработчики использовали бы другой метод.
 
 В Swift, [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") опеределено следующим образом:
 
