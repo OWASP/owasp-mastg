@@ -1241,10 +1241,10 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 - Encrypting the data stored in the device with the key material which is strongly bound to the device can help in the implementation of the device binding. The Android Keystore can be leveraged for the same to generate and manage the key material which is strongly coupled with the device. This would prevent the malicious actor to perform operations from the device to which the data is copied since the key material with which the data is encrypted would not be present to decrypt the encrypted data. This can be implemented using the following way:
 
   - Generating the key pair in the Android keystore using *KeyPairGeneratorSpec* API.
-  - Generating a secret key for AES-GCM using a Secure Pseudo Random Number Generator(SPRNG) such as *java.security.SecureRandom* API
+  - Generating a secret key for AES-GCM using a secure random number generation APIs such as *java.security.SecureRandom*
   - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher
   - Encrypt the secret key using public key stored in Android keystore and store the encrypted secret key in the private storage of the application
-  - Whenever authentication data or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
+  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
 
   Note: For API level 23 and above, the *KeyGenParameterSpec* API can be leveraged directly to generate and manage secret keys through the Android keystore.
  
