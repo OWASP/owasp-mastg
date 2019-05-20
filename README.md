@@ -110,7 +110,7 @@ Our current goal is to publish one minor release every 6 months. Next, we will o
 
 ### Contributing
 
-- Fork it ( https://github.com/[my-github-username]/owasp-mstg/ )
+- Fork it ( <https://github.com/[my-github-username]/owasp-mstg/> )
 - Create your feature branch (git checkout -b my-new-feature)
 - Commit your changes (git commit -am 'Add some feature')
 - Push to the branch (git push origin my-new-feature)
