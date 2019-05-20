@@ -1242,7 +1242,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
   - Generating the key pair in the Android keystore using *KeyPairGeneratorSpec* API.
   - Generating a secret key for AES-GCM using a secure random number generation APIs such as *java.security.SecureRandom*
-  - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher
+  - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher and use device specific parameters such IMEI, Instance ID, etc. as associated data
   - Encrypt the secret key using public key stored in Android keystore and store the encrypted secret key in the private storage of the application
   - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
 
