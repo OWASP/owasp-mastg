@@ -599,6 +599,7 @@ When you do not have the source code:
 ##### Android Developer Documentation
 
 - Network Security Config - <https://developer.android.com/training/articles/security-config>
+- Network Security Config (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
 
 ##### Xamarin Certificate Pinning
 
