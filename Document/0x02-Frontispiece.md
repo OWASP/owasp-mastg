@@ -12,6 +12,10 @@ Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative 
 
 <img src="Images/CC-license.png" alt="drawing" width="150">
 
+## ISBN
+
+Our ISBN Number is 978-0-359-47489-9.
+
 ## Acknowledgments
 
 **Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
