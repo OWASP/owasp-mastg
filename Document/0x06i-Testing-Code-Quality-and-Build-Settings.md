@@ -485,7 +485,7 @@ The dynamic analysis of this section comprises of two parts: the actual license 
 It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
 When no source-code is available for library analysis, you can find some of the frameworks being used with otool and MobSF.
-After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with at the root of the <Application.app> directory:
+After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with the root of the application's directory:
 
 ```shell
 $ otool -L <Executable>
