@@ -14,42 +14,13 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 Make sure that the following is installed on your system:
 
-- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform.
+- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. See the previous chapter for installation instructions.
 
-- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
+- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. See more details about the installation below.
 
 In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon]( https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](http://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
 Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
-
-#### Setting up the Android SDK
-
-Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
-
-- Android 9.0 (API level 28)
-- Android 8.1 (API level 27)
-- Android 8.0 (API level 26)
-- Android 7.1 (API level 25)
-
-An overview of all Android codenames, it's version number and API Levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
-
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager">
-
-Installed SDKs are found at the following locations:
-
-Windows:
-
-```shell
-C:\Users\<username>\AppData\Local\Android\sdk
-```
-
-MacOS:
-
-```shell
-/Users/<username>/Library/Android/sdk
-```
-
-Note: On Linux, you'll need to pick your own SDK location. `/opt`, `/srv`, and `/usr/local` are common locations.
 
 #### Setting up the Android NDK
 
@@ -78,18 +49,6 @@ This creates a standalone toolchain for Android 7.0 in the directory `/tmp/andro
 
 ```shell
 $  export TOOLCHAIN=/tmp/android-7-toolchain
-```
-
-### Enabling Developer Mode
-
-You must enable USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
-
-Once USB debugging is enabled, connected devices can be viewed with the following command:
-
-```shell
-$ adb devices
-List of devices attached
-BAZ5ORFARKOZYDFA    device
 ```
 
 ### Building a Reverse Engineering Environment for Free
