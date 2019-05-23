@@ -114,7 +114,7 @@ Although working with a completely free setup is possible, you should consider i
 
 ##### IDA Pro
 
-[IDA Pro]( https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.
+[IDA Pro]( https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.    
 
 ### Reverse Engineering
 
@@ -474,7 +474,8 @@ $ adb jdwp
 $ adb forward tcp:7777 jdwp:12167
 ```
 
-You're now ready to attach JDB. Attaching the debugger, however, causes the app to resume, which you don't want. You want to keep it suspended so that you can explore first. To prevent the process from resuming, pipe the `suspend` command into jdb:
+You're now ready to attach Initializing jdb ...
+. Attaching the debugger, however, causes the app to resume, which you don't want. You want to keep it suspended so that you can explore first. To prevent the process from resuming, pipe the `suspend` command into jdb:
 
 ```shell
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
@@ -485,7 +486,7 @@ Initializing jdb ...
 
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
-- \*classes: list all loaded classes
+- classes: list all loaded classes
 - class/method/fields _class id_: Print details about a class and list its method and fields
 - locals: print local variables in current stack frame
 - print/dump _expr_: print information about an object
