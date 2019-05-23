@@ -5,12 +5,12 @@ This document is automatically generated at {{gitbook.time}}
 ## 1.1.2 12 May 2019
 
 - Added missing mappings for MASVS V1.X.
-- Updated markdown throughout the Enlish MSTG to be consistent.
+- Updated markdown throughout the English MSTG to be consistent.
 - Replaces some dead links.
 - Improvements for rendering as a book, including the ISBN number.
 - Updated the Excel: it is now available in Japanese as well!
-- Many punctuation corrections, spelling and grammer issues resolved.
-- Added missing iOS testcase regarding memory corruption issues.
+- Many punctuation corrections, spelling and grammar issues resolved.
+- Added missing iOS test case regarding memory corruption issues.
 - Added contributing, code of conduct, markdown linting and dead link detection.
 
 ## 1.1.1 7 May 2019
