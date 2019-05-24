@@ -1,21 +1,35 @@
-## Setting up a Testing Environment for iOS Apps
+## iOS Basic Security Testing
 
 In the previous chapter, we provided an overview of the iOS platform and described the structure of iOS apps. In this chapter, we'll introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes are the foundation for the test cases outlined in the following chapters.
 
-Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
+### iOS Testing Setup
+
+#### Host Device
+
+Although you can use a Linux or Windows machine for testing, you'll find that many tasks are difficult or impossible on these platforms. In addition, the Xcode development environment and the iOS SDK are only available for macOS. This means that you'll definitely want to work on macOS for source code analysis and debugging (it also makes black box testing easier).
 
 The following is the most basic iOS app testing setup:
 
-- laptop with admin rights
+- ideally macOS machine with admin rights
 - Wi-Fi network that permits client-to-client traffic or USB multiplexing
 - at least one jailbroken iOS device (of the desired iOS version)
 - Burp Suite or other interception proxy tool
 
-Although you can use a Linux or Windows machine for testing, you'll find that many tasks are difficult or impossible on these platforms. In addition, the Xcode development environment and the iOS SDK are only available for macOS. This means that you'll definitely want to work on a Mac for source code analysis and debugging (it also makes black box testing easier).
+#### Setting up the iOS SDK
 
-### Jailbreaking an iOS Device
+-- ToDo: install Xcode, xcode tools
 
-You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a difficult experience.
+#### Testing Device
+
+##### Testing on a real device (Jailbroken)
+
+You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
+
+##### Testing on the iOS Simulator
+
+Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
+
+#### Jailbreak
 
 iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
 
@@ -30,7 +44,9 @@ Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for ja
 
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
-#### Benefits of Jailbreaking
+Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
+
+##### Benefits of Jailbreaking
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
@@ -39,7 +55,7 @@ End users often jailbreak their devices to tweak the iOS system's appearance, ad
 - unrestricted debugging and dynamic analysis
 - access to the Objective-C or Swift runtime
 
-#### Jailbreak Types
+##### Jailbreak Types
 
 There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
 
@@ -51,7 +67,7 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 - Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
 
-#### Caveats and Considerations
+##### Caveats and Considerations
 
 Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the jailbreak benefits from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") affecting the BootROM of the iPhone 4 and iPad 1). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
 
@@ -59,7 +75,7 @@ If you have a jailbroken device that you use for security testing, keep it as is
 
 iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window," and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
-#### Which Jailbreaking Tool to Use
+##### Which Jailbreaking Tool to Use
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
@@ -74,11 +90,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 > Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
-#### Dealing with Jailbreak Detection
-
-Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
-
-#### Jailbroken Device Setup
+#### Getting Priviledged Access
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
 
@@ -118,41 +130,35 @@ The following are some useful packages you can install from Cydia to get started
 - PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 
+
+#### Recommended Tools
+
 Your analyst workstation should have at least the following installed:
 
 - an SSH client
 - an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
 
-Other useful tools we'll be referring throughout the guide:
+This is a list of useful tools we'll be referring throughout the guide:
 
 - [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS")
 - [Frida](https://www.frida.re "Frida")
 - [IDB](https://www.idbtool.com "IDBTool")
 - [Needle](https://github.com/mwrlabs/needle "Needle")
 
-### Static Analysis
 
-The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
+-- ToDo: extend the list with tools used in the guide and give guidance how to install them (ideally refernce to the documenation, only descirbe installation process if not straightforward)
 
-Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
-
-The static analysis instructions in the following chapters are based on the assumption that the source code is available.
-
-#### Automated Static Analysis Tools
-
-Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
-
-Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
-
-### Dynamic Analysis of Jailbroken Devices
-
-Life is easy with a jailbroken device: not only do you gain easy access to the app's sandbox, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
-
-#### Needle
+##### Needle
 
 [Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an all-in-one iOS security assessment framework. The following section includes the steps necessary to install and use Needle.
 
-##### Installing Needle
+
+-- TODO: Should double check with the documenation of Needle. If this is copy/paste we should reference to the original documentation only. 
+
+Your analyst workstation should have at least the following installed:
+
+- an SSH client
+- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
 
 ###### On Linux
 
@@ -198,7 +204,7 @@ $ sudo cp mitmproxy-0.17.1-osx/mitm* /usr/local/bin/
 $ git clone https://github.com/mwrlabs/needle.git
 ```
 
-##### Install the Needle Agent
+###### Install the Needle Agent
 
 The only prerequisite is a Jailbroken device, with the following packages installed:
 
@@ -216,7 +222,7 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 
 <img src="Images/Chapters/0x06b/needle_agent.png" alt="iOS App Folder Structure" width="250">
 
-##### Start the Framework
+###### Start the Framework
 
 First, the NeedleAgent needs to be started on the device. This can be accomplished by following these steps:
 
@@ -287,62 +293,13 @@ run
 
 Other modules may prompt you the `apt-get` command has not been installed. To get `apt-get`, go to your Cydia and look for  `CyDelete` and install it.
 
-#### SSH Connection via USB
+### Basic Testing Operations
 
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
+#### Host Device Data Transfer
 
-Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
+--ToDo: describe ways via SSH and Passionfruit
 
-Connect macOS to an iOS device by installing and starting iproxy:
-
-```shell
-$ brew install libimobiledevice
-$ iproxy 2222 22
-waiting for connection
-```
-
-The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command, you should be able to connect to the device:
-
-```shell
-$ ssh -p 2222 root@localhost
-root@localhost's password:
-iPhone:~ root#
-```
-
-You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
-
-#### Using Burp via USB on a jailbroken device
-
-We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
-
-First we need to create the SSH connection
-
-```bash
-$ iproxy 2222 22
-waiting for connection
-```
-
-The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
-
-```bash
-ssh -R 8080:localhost:8080 root@localhost -p 2222
-```
-
-You should now be able to reach Burp on your iOS device. Open Safari and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
-
-The last step would be to set the proxy globally on your iOS device.
-
-- Go to Settings
-- Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
-- Once connected click on the small blue icon on the right side of the connect Wi-Fi
-- Configure your Proxy by selecting Manual
-- Type in 127.0.0.1 as Server
-- Type in 8080 as Port
-
-Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
-
-#### App Folder Structure
+##### App Folder Structure
 
 System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
 
@@ -367,7 +324,7 @@ The Application subdirectory, which is inside the Bundle subdirectory, contains 
 
 The random string in the URI is the application's GUID. Every app installation has a unique GUID. There is no relationship between an app's Bundle GUID and its Data GUID.
 
-#### Copying App Data Files
+##### Copying App Data Files
 
 App files are stored in the Data directory. To identify the correct path, SSH into the device and use IPA Installer Console to retrieve the package information (as shown previously):
 
@@ -394,6 +351,43 @@ iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Applic
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
+
+#### Obtaining and Extracting Apps
+
+--ToDo: Describe how to Clutch an app to get rid of DRM 
+
+#### Installing Apps
+
+-- ToDo: Describe different ways of sideloading the app (ipainstaller via ssh, ios-deploy etc.)
+
+##### Allow Application Installation on an Non-Ipad Device
+
+Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <key>UIDeviceFamily</key>
+  <array>
+    <integer>1</integer>
+  </array>
+
+</dict>
+</plist>  
+```
+
+It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
+
+This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
+
+Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
+
+#### Information Gathering
+
+-- ToDo: Describe how to get basic information out of the app with Passionfruit (directories used and UUID for installation of the app) objection 
 
 #### Dumping KeyChain Data
 
@@ -430,7 +424,85 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
-#### Installing Frida
+
+#### Static Analysis
+
+The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
+
+Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
+
+The static analysis instructions in the following chapters are based on the assumption that the source code is available.
+
+##### Automated Static Analysis Tools
+
+Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
+
+Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
+
+#### Dynamic Analysis with Jailbroken Devices
+
+Life is easy with a jailbroken device: not only do you gain easy access to the app's sandbox, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+
+##### SSH Connection via USB
+
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
+
+Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
+
+Connect macOS to an iOS device by installing and starting iproxy:
+
+```shell
+$ brew install libimobiledevice
+$ iproxy 2222 22
+waiting for connection
+```
+
+The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command, you should be able to connect to the device:
+
+```shell
+$ ssh -p 2222 root@localhost
+root@localhost's password:
+iPhone:~ root#
+```
+
+You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
+
+##### Using Burp via USB on a jailbroken device
+
+We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+
+First we need to create the SSH connection
+
+```bash
+$ iproxy 2222 22
+waiting for connection
+```
+
+The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
+
+```bash
+ssh -R 8080:localhost:8080 root@localhost -p 2222
+```
+
+You should now be able to reach Burp on your iOS device. Open Safari and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+
+The last step would be to set the proxy globally on your iOS device.
+
+- Go to Settings
+- Wi-Fi
+- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
+- Once connected click on the small blue icon on the right side of the connect Wi-Fi
+- Configure your Proxy by selecting Manual
+- Type in 127.0.0.1 as Server
+- Type in 8080 as Port
+
+Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
+
+
+##### Installing Frida
+
+-- ToDo: This will be redundant most likely with the RE chapter. Clean it and consolidate the installation instructions of Frida. 
+
 
 [Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
 
@@ -463,7 +535,7 @@ PID  Name
 
 We will demonstrate a few more uses for Frida below.
 
-### Method Tracing with Frida
+##### Method Tracing with Frida
 
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
 
@@ -552,7 +624,7 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
-### Monitoring Console Logs
+##### Monitoring Console Logs
 
 Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
 
@@ -567,15 +639,10 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
-### Setting up a Web Proxy with Burp Suite
+##### Bypassing Certificate Pinning
 
-Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+-- ToDo: This should be merged with the Certificate Pinning Test Case 
 
-Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
-
-PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
-
-#### Bypassing Certificate Pinning
 
 "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
 
@@ -606,7 +673,9 @@ If you want to get more details about white box testing and typical code pattern
 
 To get more information about testing transport security, please refer to the section "Testing Network Communication."
 
-### Network Monitoring/Sniffing
+### Setting up a Network Testing Environment
+
+#### Network Monitoring/Sniffing
 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
@@ -620,30 +689,13 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 ip.addr == 192.168.1.1 && http
 ```
 
-### Allow Application Installation on an Non-Ipad Device
+#### Setting up an Interception Proxy
 
-Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
+Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
+Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
-  <key>UIDeviceFamily</key>
-  <array>
-    <integer>1</integer>
-  </array>
-
-</dict>
-</plist>  
-```
-
-It is important to note that changing this value will break the original signature of the IPA file so you need to re-sign the IPA, after the update, in order to install it on a device on which the signature validation has not been disabled.
-
-This bypass might not work if the application requires capabilities that are specific to modern iPads while your iPhone or iPod is a bit older.
-
-Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 ### References
 
