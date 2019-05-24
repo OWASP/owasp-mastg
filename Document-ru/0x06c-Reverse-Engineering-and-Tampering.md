@@ -6,9 +6,9 @@
 
 Большая часть этой главы относится к приложениям, написанным на Objective-C или имеющим bridged types, которые являются типами, совместимыми как с Swift, так и с Objective-C. Большинство инструментов, которые в настоящее время хорошо работают с Objective-C, работают над улучшением их совместимости с Swift. Например, в настоящее время Фрида поддерживает [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
-#### XCode и iOS SDK
+#### Xcode и iOS SDK
 
-XCode - это интегрированная среда разработки (IDE) для macOS, содержащая набор инструментов для разработки программного обеспечения, созданная Apple для разработки программного обеспечения для macOS, iOS, watchOS и tvOS. Последним выпуском на момент написания этой книги является XCode 8, который можно загрузить [с официального веб-сайта Apple] (https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
+Xcode - это интегрированная среда разработки (IDE) для macOS, содержащая набор инструментов для разработки программного обеспечения, созданная Apple для разработки программного обеспечения для macOS, iOS, watchOS и tvOS. Последним выпуском на момент написания этой книги является Xcode 8, который можно загрузить [с официального веб-сайта Apple] (https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
 
 IOS SDK (Software Development Kit), ранее известный как iPhone SDK, представляет собой набор для разработки программного обеспечения, созданный Apple для разработки собственных приложений для iOS. Последний выпуск на момент написания этой книги - это iOS 10 SDK, и он может быть [загружен с официального веб-сайта Apple] (https://developer.apple.com/ios/ "Apple iOS 10 SDK").
 
@@ -44,7 +44,7 @@ IDA Pro может работать с двоичными файлами iOS и 
 
 Во время разработки, приложения иногда предоставляются тестировщикам через распространение по воздуху (OTA). В этом случае вы получите ссылку itms-services, примерно такую:
 
-```
+```shell
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
@@ -56,7 +56,7 @@ npm install -g itms-services
 
 Сохраните файл IPA локально, написва следующую команду:
 
-```
+```shell
 # itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
 ```
 
@@ -96,7 +96,7 @@ iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
 # Clutch -i
 ```
 
-**Примечание:** Только приложения, распространяемые через AppStore, защищены с помощью FairPlay DRM. Если вы получили свое приложение, скомпилированное и экспортированное непосредственно из XCode, вам не нужно расшифровывать его. Самый простой способ - загрузить приложение в Hopper и проверить, правильно ли оно было дизассемблировано. Вы также можете проверить это с помощью otool:
+**Примечание:** Только приложения, распространяемые через AppStore, защищены с помощью FairPlay DRM. Если вы получили свое приложение, скомпилированное и экспортированное непосредственно из Xcode, вам не нужно расшифровывать его. Самый простой способ - загрузить приложение в Hopper и проверить, правильно ли оно было дизассемблировано. Вы также можете проверить это с помощью otool:
 
 ```shell
 # otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
@@ -124,8 +124,8 @@ DamnVulnerableIOSApp (architecture arm64):
 Mach header
       magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
 MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
 ```
+
 Подметим, что название архитектуры для 32 битной разрядности `armv7`, а также  `arm64`. Данный архитектурный прием позволяет распространять одно приложение для всех устройств. Для того, чтобы проанализировать приложение, используя class-dump нам необходимо создать, так называемый тонкий бинарник, который создан только для одной архитектуры:
 
 ```shell
@@ -162,13 +162,13 @@ $ otool -L <binary>
 
 ##### Использование LLDB
 
-iOS поставляется с консольным приложением, debugserver, которое позволяет воспользоваться удаленной отладкой с использованием lldb или gdb. По умолчанию, debugserver не может прикрепляться к произвольным процессам (обычно, он используется для отладки собственных приложений, разработанных в Xcode). Чтобы включить отладку сторонних приложений, право на получение task_for_pid должно быть добавлено в исполняемый файл debugserver. Самый простой способ сделать это- добавление права в [исполняемый файл debugserver, поставляемый с XCode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+iOS поставляется с консольным приложением, debugserver, которое позволяет воспользоваться удаленной отладкой с использованием lldb или gdb. По умолчанию, debugserver не может прикрепляться к произвольным процессам (обычно, он используется для отладки собственных приложений, разработанных в Xcode). Чтобы включить отладку сторонних приложений, право на получение task_for_pid должно быть добавлено в исполняемый файл debugserver. Самый простой способ сделать это- добавление права в [исполняемый файл debugserver, поставляемый с Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 Чтобы получить исполняемый файл смонтируйте следующий DMG образ:
 
-~~~
-/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version//DeveloperDiskImage.dmg
-~~~
+```shell
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version>//DeveloperDiskImage.dmg
+```
 
 Вы найдете исполняемый файл debugserver в директории /usr/bin/ на смонтированном томе, скопируйте его во временную директорию.После этого, создайте файл entitlements.plist со следующим содержимым:
 

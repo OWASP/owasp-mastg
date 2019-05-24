@@ -3,6 +3,7 @@
 # Script in charge of auditing the released MD files in order to detect dead links
 
 cd ../Document
+rm ../link-check-result.out
 find . -name \*.md -exec markdown-link-check -q -c ../.markdownlinkcheck.json {} \; 1>../link-check-result.out 2>&1
 errors=`grep -c "ERROR:" ../link-check-result.out`
 content=`cat ../link-check-result.out`

@@ -3,6 +3,7 @@
 # Script in charge of auditing the released MD files with the linter policy defined at project level
 
 cd ..
+rm linter-result.out
 markdownlint -c .markdownlint.json -o linter-result.out Document
 errors=`wc -m linter-result.out | cut -d' ' -f1`
 content=`cat linter-result.out`

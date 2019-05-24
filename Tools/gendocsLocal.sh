@@ -8,5 +8,5 @@ echo $RESULT
 echo "Applying Link check"
 sh ./Apply_Link_Check.sh
 echo "Running creaton of pdfs and word documents"
-sh ./gitbookepubandpdf.sh $TRAVIS_TAG
+sh ./gitbookepubandpdf.sh "TST-LOCAL"
 sh ./generate_document.sh

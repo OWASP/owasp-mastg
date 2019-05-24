@@ -197,7 +197,7 @@ As previously mentioned, there are several ways to store information on an Andro
     - the `getReadableDatabase` function (returns a SQLiteDatabase for reading)
     - the `getCacheDir` and `getExternalCacheDirs` function (use cached files)
 
-Encryption should implemented using proven SDK functions. The following describes bad practices to look for in the source code:
+Encryption should be implemented using proven SDK functions. The following describes bad practices to look for in the source code:
 
 - Locally stored sensitive information "encrypted" via simple bit operations like XOR or bit flipping. These operations should be avoided because the encrypted data can be recovered easily.
 - Keys used or created without Android onboard features, such as the Android KeyStore
