@@ -295,7 +295,7 @@ Inspect the source code to determine whether native Android mechanisms identify 
 - Make sure that the app is using the Android KeyStore and Cipher mechanisms to securely store encrypted information on the device. Look for the patterns `AndroidKeystore`, `import java.security.KeyStore`, `import javax.crypto.Cipher`, `import java.security.SecureRandom`, and corresponding usages.
 - Use the `store(OutputStream stream, char[] password)` function to store the KeyStore to disk with a password. Make sure that the password is provided by the user, not hard-coded.
 
-##### 3rd Party libraries
+##### Third Party libraries
 
 There are several different open-source libraries that offer encryption capabilities specific for the Android platform.
 

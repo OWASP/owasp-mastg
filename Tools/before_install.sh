@@ -6,3 +6,4 @@ exit 0;
 fi
 brew install pandoc
 brew cask install calibre
+brew install epubcheck
