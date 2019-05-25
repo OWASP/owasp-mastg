@@ -130,13 +130,14 @@ The following are some useful packages you can install from Cydia to get started
 - PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 
-
 #### Recommended Tools
 
 Your analyst workstation should have at least the following installed:
 
-- an SSH client
-- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
+- SSH client and
+- an interception proxy.
+
+In this guide, we'll be using [Burp Suite](https://portswigger.net/burp "Burp Suite") as interception proxy.
 
 This is a list of useful tools we'll be referring throughout the guide:
 
@@ -153,12 +154,7 @@ This is a list of useful tools we'll be referring throughout the guide:
 [Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an all-in-one iOS security assessment framework. The following section includes the steps necessary to install and use Needle.
 
 
--- TODO: Should double check with the documenation of Needle. If this is copy/paste we should reference to the original documentation only. 
-
-Your analyst workstation should have at least the following installed:
-
-- an SSH client
-- an interception proxy. In this guide, we'll be using [BURP Suite](https://portswigger.net/burp "Burp Suite").
+-- TODO: Should double check with the documenation of Needle. If this is copy/paste we should reference to the original documentation only.
 
 ###### On Linux
 
@@ -354,13 +350,33 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 #### Obtaining and Extracting Apps
 
---ToDo: Describe how to Clutch an app to get rid of DRM 
+--ToDo: Describe how to Clutch an app to get rid of DRM
+--ToDo: Ticket 1185 should be placed here https://github.com/OWASP/owasp-mstg/issues/1185 (Talk to Carlos before moving here!)
 
 #### Installing Apps
 
--- ToDo: Describe different ways of sideloading the app (ipainstaller via ssh, ios-deploy etc.)
+Different methods exist for installing an IPA package onto an iOS device. One tool that is available for Windows, macOS and Linux is [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
 
-##### Allow Application Installation on an Non-Ipad Device
+On Linux and also macOS, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. This allows you to install apps over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+
+The package for libimobiledevice will be availabe in your Linux package manager. On macOS you can install libimobiledevice via brew:
+
+```bash
+$ brew install libimobiledevice
+```
+
+
+-- ToDo: Describe other ways of sideloading the app (ideviceinstaller as part of libimobiledevice, ios-deploy etc.)
+
+On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store or software distribution system. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
+
+The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
+
+```shell
+$ ipainstaller App_name.ipa
+```
+
+#### Allow Application Installation on an Non-iPad Device
 
 Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
 
@@ -387,9 +403,21 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
--- ToDo: Describe how to get basic information out of the app with Passionfruit (directories used and UUID for installation of the app) objection 
+-- ToDo: Describe how to get basic information out of the app with Passionfruit (directories used and UUID for installation of the app); objection? 
 
 #### Dumping KeyChain Data
+
+-- ToDo: Describe how to use Passionfruit and objection to dump Keychain data form a non jailbroken device and explain it's limitations (still in the app sandbox can only access items in the keychain that are tied to the entitlement of the app)
+
+##### Objection (non-Jailbroken)
+
+TBD
+
+##### Passionfruit (non-Jailbroken)
+
+TBD
+
+##### Keychain-dumper (Jailbroken)
 
 [Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
@@ -424,7 +452,6 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
-
 #### Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
@@ -441,7 +468,7 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 #### Dynamic Analysis with Jailbroken Devices
 
-Life is easy with a jailbroken device: not only do you gain easy access to the app's sandbox, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+Life is easy with a jailbroken device: not only do you gain easy priviledged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
 ##### SSH Connection via USB
 
@@ -457,7 +484,7 @@ $ iproxy 2222 22
 waiting for connection
 ```
 
-The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command, you should be able to connect to the device:
+The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
 
 ```shell
 $ ssh -p 2222 root@localhost
@@ -467,11 +494,11 @@ iPhone:~ root#
 
 You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
 
-##### Using Burp via USB on a jailbroken device
+##### Using Burp via USB on a Jailbroken Device
 
 We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
-First we need to create the SSH connection
+First we need to use iproxy to make SSH from iOS available on localhost.
 
 ```bash
 $ iproxy 2222 22
@@ -484,20 +511,19 @@ The next step is to make a remote port forwarding of port 8080 on the iOS device
 ssh -R 8080:localhost:8080 root@localhost -p 2222
 ```
 
-You should now be able to reach Burp on your iOS device. Open Safari and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
 
 The last step would be to set the proxy globally on your iOS device.
 
 - Go to Settings
 - Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting in the Wi-Fi so we can set a global Proxy)
+- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
 - Once connected click on the small blue icon on the right side of the connect Wi-Fi
 - Configure your Proxy by selecting Manual
 - Type in 127.0.0.1 as Server
 - Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
-
 
 ##### Installing Frida
 
@@ -641,7 +667,7 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ##### Bypassing Certificate Pinning
 
--- ToDo: This should be merged with the Certificate Pinning Test Case 
+-- ToDo: This should be merged with the Certificate Pinning Test Case
 
 
 "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
