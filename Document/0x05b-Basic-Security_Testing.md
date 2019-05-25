@@ -427,6 +427,14 @@ Successfully installed 1 modules, 0 already installed
 
 This will install any module that matches your query. Newly installed modules are dynamically loaded into the console and are available immediately.
 
+##### Xposed
+
+TODO link to the installation instructions and give some basics and benefits. It should be clear why you'd like to use this instead of e.g. Frida. (note: this was moved from 0x05c)
+
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
+
+To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
+
 ### Basic Testing Operations
 
 #### Accessing the Device Shell
