@@ -104,7 +104,153 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 TODO recommend a basic set and installation instructions?
 
 ##### Frida
-TODO move installation and basics from 0x05c to here?
+TODO We've moved installation and basics from 0x05c to here. Still we have to review this instructions and refer to the official instructions to avoid maintaining them, which does not make sense for us. We should make clear here what's the point on using Frida, what are the benefits for android and some basic commands / features. Also: "Dynamic Instrumentation with Frida" in 0x5c needs a rework.
+
+[Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX." Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
+
+Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
+In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app, Frida uses ptrace to hijack a thread of a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server that's running on the device, and loads a dynamically generated library file that contains the Frida agent and instrumentation code. The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
+
+Frida injects a complete JavaScript runtime into the process, along with a powerful API that provides a lot of useful functionality, including calling and hooking native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime.
+
+![Frida](Images/Chapters/0x04/frida.png)
+
+*FRIDA Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
+
+Here are some more APIs FRIDA offers on Android:
+
+- Instantiate Java objects and call static and non-static class methods
+- Replace Java method implementations
+- Enumerate live instances of specific classes by scanning the Java heap (Dalvik only)
+- Scan process memory for occurrences of a string
+- Intercept native function calls to run your own code at function entry and exit
+
+The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limited support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
+
+##### Installing Frida
+
+To install Frida locally, simply use PyPI:
+
+```shell
+$ sudo pip install frida
+```
+
+Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
+
+```shell
+$ frida --version
+9.1.10
+$ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
+```
+
+Or you can run the following command to automatically detect frida version and download the right frida-server binary:
+
+```shell
+$ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
+```
+
+Copy frida-server to the device and run it:
+
+```shell
+$ adb push frida-server /data/local/tmp/
+$ adb shell "chmod 755 /data/local/tmp/frida-server"
+$ adb shell "su -c /data/local/tmp/frida-server &"
+```
+
+With frida-server running, you should now be able to get a list of running processes with the following command:
+
+```shell
+$ frida-ps -U
+  PID  Name
+-----  --------------------------------------------------------------
+  276  adbd
+  956  android.process.media
+  198  bridgemgrd
+ 1191  com.android.nfc
+ 1236  com.android.phone
+ 5353  com.android.settings
+  936  com.android.systemui
+(...)
+```
+
+The -U option lets Frida search for USB devices or emulators.
+
+To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
+
+```shell
+$ frida-trace -i "open" -U com.android.chrome
+```
+
+This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
+
+Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
+
+```shell
+$ frida -U com.android.chrome
+```
+
+With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to load `myscript.js`:
+
+```shell
+$ frida -U -l myscript.js com.android.chrome
+```
+
+Frida also provides a Java API, which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
+
+```java
+Java.perform(function () {
+    var Activity = Java.use("android.app.Activity");
+    Activity.onResume.implementation = function () {
+        console.log("[*] onResume() got called!");
+        this.onResume();
+    };
+});
+```
+
+The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume()` function. The new `onResume()` function implementation prints a notice to the console and calls the original `onResume()` method by invoking `this.onResume()` every time an activity is resumed in the app.
+
+Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
+
+```java
+setImmediate(function() {
+    console.log("[*] Starting script");
+    Java.perform(function () {
+        Java.choose("android.view.View", {
+             "onMatch":function(instance){
+                  console.log("[*] Instance found: " + instance.toString());
+             },
+             "onComplete":function() {
+                  console.log("[*] Finished heap search")
+             }
+        });
+    });
+});
+```
+
+The output would look like this:
+
+```shell
+[*] Starting script
+[*] Instance found: android.view.View{7ccea78 G.ED..... ......ID 0,0-0,0 #7f0c01fc app:id/action_bar_black_background}
+[*] Instance found: android.view.View{2809551 V.ED..... ........ 0,1731-0,1731 #7f0c01ff app:id/menu_anchor_stub}
+[*] Instance found: android.view.View{be471b6 G.ED..... ......I. 0,0-0,0 #7f0c01f5 app:id/location_bar_verbose_status_separator}
+[*] Instance found: android.view.View{3ae0eb7 V.ED..... ........ 0,0-1080,63 #102002f android:id/statusBarBackground}
+[*] Finished heap search
+```
+
+You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods()` from the wrapper's `class` property:
+
+```java
+Java.perform(function () {
+    var view = Java.use("android.view.View");
+    var methods = view.class.getMethods();
+    for(var i = 0; i < methods.length; i++) {
+        console.log(methods[i].toString());
+    }
+});
+```
+
+Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
 
 ##### Objection
 TODO
