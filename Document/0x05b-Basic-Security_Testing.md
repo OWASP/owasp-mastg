@@ -268,6 +268,12 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 ##### Objection
 TODO
 
+##### radare2
+TODO
+
+##### r2frida
+TODO
+
 ##### Drozer
 
 TODO check if the installation instruction is up-to-date; check if it's just copy and paste. If it is, we just get rid of it and link to the original documentation
@@ -523,10 +529,8 @@ uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdca
 Rooting an emulator is therefore unnecessary; root access can be established with `adb`.
 
 #### Host-Device Data Transfer
-TODO `adb push pull`, scp. https://developer.android.com/studio/command-line/adb#copyfiles
 
-
-
+TODO `adb push pull` https://developer.android.com/studio/command-line/adb#copyfiles, ftp from termux.
 
 #### Obtaining and Extracting Apps
 ##### App Store
@@ -1161,6 +1165,8 @@ setTimeout(function(){
 ```
 
 ##### Certificate Pinning
+
+TODO shift everything to the SSL Pinning test case and merge it together. maybe simply make a reference from here.
 
 Different ways of implementing certificate pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning".
 
