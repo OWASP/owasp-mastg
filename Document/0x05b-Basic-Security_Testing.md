@@ -111,6 +111,8 @@ TODO
 
 ##### Drozer
 
+TODO check if the installation instruction is up-to-date; check if it's just copy and paste. If it is, we just get rid of it and link to the original documentation
+
 [Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and use Drozer.
 
 ###### Installing Drozer
