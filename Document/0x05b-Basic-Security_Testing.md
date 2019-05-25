@@ -103,6 +103,19 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 #### Recommended Tools
 TODO recommend a basic set and installation instructions?
 
+##### adb
+
+TODO extend this with a summary of features and basic usage.
+
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
+
+```shell
+$ adb devices
+List of devices attached
+090c285c0b97f748  device
+```
+
+
 ##### Frida
 TODO We've moved installation and basics from 0x05c to here. Still we have to review this instructions and refer to the official instructions to avoid maintaining them, which does not make sense for us. We should make clear here what's the point on using Frida, what are the benefits for android and some basic commands / features. Also: "Dynamic Instrumentation with Frida" in 0x5c needs a rework.
 
@@ -127,7 +140,7 @@ Here are some more APIs FRIDA offers on Android:
 
 The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limited support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
 
-##### Installing Frida
+###### Installing Frida
 
 To install Frida locally, simply use PyPI:
 
