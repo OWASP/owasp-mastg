@@ -14,7 +14,7 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 Make sure that the following is installed on your system:
 
-- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. See the previous chapter for installation instructions.
+- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. See the "Android Basic Security Testing" chapter for installation instructions.
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. See more details about the installation below.
 
