@@ -210,7 +210,8 @@ The only prerequisite is a Jailbroken device, with the following packages instal
 - Add the following repository to the Cydia Sources: mobiletools.mwrinfosecurity.com/cydia/  
 - Search for the NeedleAgent package and install it.
 
-![Installing the Needle agent (1)](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_1.jpg)  ![Installing the Needle agent (2)](https://raw.githubusercontent.com/mwrlabs/needle/master/.github/install_agent_2.jpg)
+<img src="Images/Chapters/0x06b/install_agent_1.jpg" alt="Installing the Needle agent - 1">
+<img src="Images/Chapters/0x06b/install_agent_2.jpg" alt="Installing the Needle agent - 2">
 
 - If the setup process is successful, you'll find the NeedleAgent app on the home screen.
 

@@ -170,7 +170,7 @@ If a certificate pinning validation check has failed, the following event will b
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
-Using a decompiler (e.g. jadx or apktool) we will be able to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
+Using a decompiler (e.g. jadx or apktool) we will be able to confirm if the `<pin>` entry is present in the network_security_config.xml file located in the /res/xml/ folder.
 
 ##### TrustManager
 
