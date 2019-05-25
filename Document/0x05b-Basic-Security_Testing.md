@@ -435,6 +435,22 @@ TODO link to the installation instructions and give some basics and benefits. It
 
 To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
 
+##### Angr
+
+TODO give some more basics and benefits. It should be clear why you'd like to use this instead of e.g. r2 and its ESIL feature. (note: this was moved from 0x05c)
+
+Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+
+Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
+
+```shell
+$ pip install angr
+```
+
+Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
+
+Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
+
 ### Basic Testing Operations
 
 #### Accessing the Device Shell
