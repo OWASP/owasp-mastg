@@ -154,7 +154,7 @@ This is a list of useful tools we'll be referring throughout the guide:
 [Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an all-in-one iOS security assessment framework. The following section includes the steps necessary to install and use Needle.
 
 
--- TODO: Should double check with the documenation of Needle. If this is copy/paste we should reference to the original documentation only.
+-- TODO: Should double check the following paragraphs with the documenation of Needle. If this is copy/paste we should reference to the original documentation only.
 
 ###### On Linux
 
@@ -351,6 +351,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 #### Obtaining and Extracting Apps
 
 --ToDo: Describe how to Clutch an app to get rid of DRM
+
 --ToDo: Ticket 1185 should be placed here https://github.com/OWASP/owasp-mstg/issues/1185 (Talk to Carlos before moving here!)
 
 #### Installing Apps
