@@ -40,26 +40,6 @@ In this guide, we'll introduce static and dynamic analysis and instrumentation. 
 
 #### Static Analysis
 
-#### Getting the IPA File from an OTA Distribution Link
-
-During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
-
-```http
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
-
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
-
-```shell
-$ npm install -g itms-services
-```
-
-Save the IPA file locally with the following command:
-
-```shell
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
-
 ##### Recovering an IPA File From an Installed App
 
 ###### From Jailbroken Devices

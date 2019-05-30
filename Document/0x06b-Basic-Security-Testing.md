@@ -17,7 +17,7 @@ The following is the most basic iOS app testing setup:
 
 #### Setting up the iOS SDK
 
--- ToDo: install Xcode, xcode tools
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1242
 
 #### Testing Device
 
@@ -147,14 +147,14 @@ This is a list of useful tools we'll be referring throughout the guide:
 - [Needle](https://github.com/mwrlabs/needle "Needle")
 
 
--- ToDo: extend the list with tools used in the guide and give guidance how to install them (ideally refernce to the documenation, only descirbe installation process if not straightforward)
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1243
 
 ##### Needle
 
 [Needle](https://github.com/mwrlabs/needle "Needle on GitHub") is an all-in-one iOS security assessment framework. The following section includes the steps necessary to install and use Needle.
 
 
--- TODO: Should double check the following paragraphs with the documenation of Needle. If this is copy/paste we should reference to the original documentation only.
+-- TODO: https://github.com/OWASP/owasp-mstg/issues/1244
 
 ###### On Linux
 
@@ -293,8 +293,6 @@ Other modules may prompt you the `apt-get` command has not been installed. To ge
 
 #### Host Device Data Transfer
 
---ToDo: describe ways via SSH and Passionfruit
-
 ##### App Folder Structure
 
 System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
@@ -320,7 +318,7 @@ The Application subdirectory, which is inside the Bundle subdirectory, contains 
 
 The random string in the URI is the application's GUID. Every app installation has a unique GUID. There is no relationship between an app's Bundle GUID and its Data GUID.
 
-##### Copying App Data Files
+##### Copying App Data Files via SSH and SCP
 
 App files are stored in the Data directory. To identify the correct path, SSH into the device and use IPA Installer Console to retrieve the package information (as shown previously):
 
@@ -348,15 +346,44 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
+
+--ToDo: https://github.com/OWASP/owasp-mstg/issues/1245
+
 #### Obtaining and Extracting Apps
 
---ToDo: Describe how to Clutch an app to get rid of DRM
+--ToDo: https://github.com/OWASP/owasp-mstg/issues/1246
 
 --ToDo: Ticket 1185 should be placed here https://github.com/OWASP/owasp-mstg/issues/1185 (Talk to Carlos before moving here!)
 
+##### Getting the IPA File from an OTA Distribution Link
+
+During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
+
+```http
+itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
+```
+
+You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
+
+```shell
+$ npm install -g itms-services
+```
+
+Save the IPA file locally with the following command:
+
+```shell
+# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
+```
+
 #### Installing Apps
 
+When installing apps that are not avaialbe via the official distribution channel through Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. 
+
+##### Cydia Impactor
+
 Different methods exist for installing an IPA package onto an iOS device. One tool that is available for Windows, macOS and Linux is [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+
+##### libimobiledevice
 
 On Linux and also macOS, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. This allows you to install apps over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
@@ -366,16 +393,18 @@ The package for libimobiledevice will be availabe in your Linux package manager.
 $ brew install libimobiledevice
 ```
 
-
--- ToDo: Describe other ways of sideloading the app (ideviceinstaller as part of libimobiledevice, ios-deploy etc.)
-
 On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store or software distribution system. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
+
+##### ipainstaller
 
 The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
 ```shell
 $ ipainstaller App_name.ipa
 ```
+
+-- ToDo https://github.com/OWASP/owasp-mstg/issues/1248
+
 
 #### Allow Application Installation on an Non-iPad Device
 
@@ -404,7 +433,10 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
--- ToDo: Describe how to get basic information out of the app with Passionfruit (directories used and UUID for installation of the app); objection? 
+The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
+
+-- ToDo Objection: https://github.com/OWASP/owasp-mstg/issues/1247
+-- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
 
 #### Dumping KeyChain Data
 
@@ -412,11 +444,11 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 ##### Objection (non-Jailbroken)
 
-TBD
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
 
 ##### Passionfruit (non-Jailbroken)
 
-TBD
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
 
 ##### Keychain-dumper (Jailbroken)
 
@@ -528,7 +560,7 @@ Open Safari and go to any webpage, you should see now the traffic in Burp. Thank
 
 ##### Installing Frida
 
--- ToDo: This will be redundant most likely with the RE chapter. Clean it and consolidate the installation instructions of Frida. 
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1251
 
 
 [Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
@@ -668,7 +700,7 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ##### Bypassing Certificate Pinning
 
--- ToDo: This should be merged with the Certificate Pinning Test Case
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1252
 
 
 "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
