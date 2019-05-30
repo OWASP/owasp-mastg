@@ -46,7 +46,7 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
 
-TODO (e.g. Recommended physical devices: Nexus / Pixel...)
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1226
 
 ##### Testing on the Emulator
 
@@ -101,11 +101,11 @@ An extensive list of root detection methods is presented in the "Testing Anti-Re
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
 
 #### Recommended Tools
-TODO recommend a basic set and installation instructions?
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1227
 
 ##### adb
 
-TODO extend this with a summary of features and basic usage.
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1228
 
 [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
 
@@ -117,7 +117,7 @@ List of devices attached
 
 
 ##### Frida
-TODO We've moved installation and basics from 0x05c to here. Still we have to review this instructions and refer to the official instructions to avoid maintaining them, which does not make sense for us. We should make clear here what's the point on using Frida, what are the benefits for android and some basic commands / features. Also: "Dynamic Instrumentation with Frida" in 0x5c needs a rework.
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1229
 
 [Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX." Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
 
@@ -266,17 +266,17 @@ Java.perform(function () {
 Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
 
 ##### Objection
-TODO
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1230
 
 ##### radare2
-TODO
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1231
 
 ##### r2frida
-TODO
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1232
 
 ##### Drozer
 
-TODO check if the installation instruction is up-to-date; check if it's just copy and paste. If it is, we just get rid of it and link to the original documentation
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1233
 
 [Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and use Drozer.
 
@@ -448,7 +448,7 @@ This will install any module that matches your query. Newly installed modules ar
 
 ##### Xposed
 
-TODO link to the installation instructions and give some basics and benefits. It should be clear why you'd like to use this instead of e.g. Frida. (note: this was moved from 0x05c)
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1234
 
 [Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
 
@@ -456,7 +456,7 @@ To use Xposed, you need to first install the Xposed framework on a rooted device
 
 ##### Angr
 
-TODO give some more basics and benefits. It should be clear why you'd like to use this instead of e.g. r2 and its ESIL feature. (note: this was moved from 0x05c)
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1235
 
 Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 
@@ -473,9 +473,8 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 ### Basic Testing Operations
 
 #### Accessing the Device Shell
-
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1236
 ##### On-device Shell App
-TODO (termux?)
 
 ##### Remote Shell
 
@@ -530,26 +529,18 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 #### Host-Device Data Transfer
 
-TODO `adb push pull` https://developer.android.com/studio/command-line/adb#copyfiles, ftp from termux.
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1237
 
 #### Obtaining and Extracting Apps
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1238
+
 ##### App Store
-TODO mirrorapk or gplaycli
 
 ##### Recovering the App Package from the Device
+
 ###### From Rooted Devices
-TODO via adb pull
+
 ###### From Non-Rooted Devices
-
-This works on both rooted and non-rooted devices:
-
-```
-$ adb shell pm path sg.vp.owasp_mobile.omtg_android
-package:/data/app/sg.vp.owasp_mobile.omtg_android-Q0Y29-poHT2w8912zTxXNw==/base.apk
-
-$ adb pull /data/app/sg.vp.owasp_mobile.omtg_android-Q0Y29-poHT2w8912zTxXNw==/base.apk
-/data/app/sg.vp.owasp_mobile.omtg_android-Q0Y29-poHT2w8912zTxXNw==/base.apk: 1 file pulled. 17.9 MB/s (5801767 bytes in 0.309s)
-```
 
 #### Installing Apps
 
@@ -562,73 +553,24 @@ adb install path_to_apk
 Note that if you have the original source code and use Android Studio, you do not need to do this because Android Studio handles the packaging and installation of the app for you.
 
 #### Information Gathering
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1239
+
 ##### Installed Apps
-TODO
-```shell
-$ adb shell pm list packages
-package:com.android.sdm.plugins.connmo
-package:com.google.android.googlequicksearchbox
-package:com.android.providers.calendar
-package:com.android.providers.media
-package:com.google.android.onetimeinitializer
-package:com.google.android.ext.shared
-package:com.android.wallpapercropper
-package:sg.vp.owasp_mobile.omtg_android
-```
-
-
 
 ##### App Basic Information
-TODO aapt, dumpsys
+
 ###### Sandbox
 
-```shell
-$ adb shell pm path sg.vp.owasp_mobile.omtg_android
-package:/data/app/sg.vp.owasp_mobile.omtg_android-Q0Y29-poHT2w8912zTxXNw==/base.apk
-```
-
-```shell
-$ adb shell ls /data/data/sg.vp.owasp_mobile.omtg_android
-```
 ###### Permissions
-TODO from androidmanifest or aapt dump
 
-```
-aapt dump permissions omtg.apk
-```
 ###### Native Libs
-TODO APK/libs or from device; or frida / objection when running
-
-```
-bullhead:/ # ls /data/data/sg.vp.owasp_mobile.omtg_android/lib
-libdatabase_sqlcipher.so libnative.so libsqlcipher_android.so libstlport_shared.so
-```
-
-Using objection it is also straightforward as you already land in the sandbox and can directly use `cd` and `ls` commands to look around:
-
-```
-$ objection -g sg.vp.owasp_mobile.omtg_android explore
-
-...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # ls lib                                                                                                           
-Type    Last Modified            Read    Write    Hidden    Size       Name
-------  -----------------------  ------  -------  --------  ---------  ------------------------
-File    2018-06-06 08:16:34 GMT  True    False    False     13.4 KiB   libnative.so
-File    2018-06-06 08:16:34 GMT  True    False    False     181.9 KiB  libdatabase_sqlcipher.so
-File    2018-06-06 08:16:34 GMT  True    False    False     357.3 KiB  libstlport_shared.so
-File    2018-06-06 08:16:34 GMT  True    False    False     2.2 MiB    libsqlcipher_android.so
-```
 
 ###### ...
 
 
-##### Accessing App Data (what to expect, where, sandbox structure)
-TODO /data/data
-##### Monitoring System Logs
-TODO logcat or android studio https://developer.android.com/studio/command-line/logcat.html
+##### Accessing App Data
 
-```shell
-$ adb logcat
-```
+##### Monitoring System Logs
 
 #### Static Analysis
 ##### Manual Static Analysis
@@ -691,11 +633,10 @@ There are several open source tools for automated security analysis of an APK.
 For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
 
 #### Dynamic Analysis
-TODO add intro and basics to dynamic analysis
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1240
 ##### Using Non-Rooted Devices
 ##### Method Tracing
 ##### Basic Network Monitoring/Sniffing
-TODO maybe move from the next section to here.
 
 ### Setting up a Network Testing Environment
 
@@ -1166,7 +1107,7 @@ setTimeout(function(){
 
 ##### Certificate Pinning
 
-TODO shift everything to the SSL Pinning test case and merge it together. maybe simply make a reference from here.
+-- ToDo: https://github.com/OWASP/owasp-mstg/issues/1241
 
 Different ways of implementing certificate pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning".
 
