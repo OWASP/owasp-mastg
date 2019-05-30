@@ -440,8 +440,6 @@ The following sections describes on how to retrieve basic information of an iOS 
 
 #### Dumping KeyChain Data
 
--- ToDo: Describe how to use Passionfruit and objection to dump Keychain data form a non jailbroken device and explain it's limitations (still in the app sandbox can only access items in the keychain that are tied to the entitlement of the app)
-
 ##### Objection (non-Jailbroken)
 
 -- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
