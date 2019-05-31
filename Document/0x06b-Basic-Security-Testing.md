@@ -11,13 +11,19 @@ Although you can use a Linux or Windows machine for testing, you'll find that ma
 The following is the most basic iOS app testing setup:
 
 - ideally macOS machine with admin rights
-- Wi-Fi network that permits client-to-client traffic or USB multiplexing
+- Wi-Fi network that permits client-to-client traffic
 - at least one jailbroken iOS device (of the desired iOS version)
 - Burp Suite or other interception proxy tool
 
-#### Setting up the iOS SDK
+#### Setting up Xcode and Command Line Tools
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1242
+Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools developed by Apple for developing software for macOS, iOS, watchOS, and tvOS. You can [download Xcdoe for free from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). Xcode will offer you different tools and functions to interact with an iOS device that can be helpful during a penetration test, such as monitoring, analyzing logs or sideloading apps.
+
+All development tools are alrady included within the Xcode IDE, but they are not available within your terminal. In order to make them available systemwide, it is recommended to install the Command Line Tools package. This will be handy during testing of iOS apps as some of the tools you are using later (e.g. objection) are also relying on the availablity of them. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK"). Instead of downloading, you can also install the package via the command line:
+
+```bash
+$ xcode-select --install
+```
 
 #### Testing Device
 
