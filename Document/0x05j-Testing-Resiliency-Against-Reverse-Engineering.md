@@ -1237,7 +1237,17 @@ The goal of device binding is to impede an attacker who tries to both copy an ap
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods that allow device binding:
 
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
-- Obfuscating the data stored on the device by using device identifiers as keys for encryption methods. This can help with binding to a device when the app does a lot of offline work or when access to APIs depends on access-tokens stored by the application.
+
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can help in the implementation of the device binding. The Android Keystore can be leveraged for the same to generate and manage the key material which is strongly coupled with the device. This would prevent the malicious actor to perform operations from the device to which the data is copied since the key material with which the data is encrypted would not be present to decrypt the encrypted data. This can be implemented using the following way:
+
+  - Generating the key pair in the Android keystore using *KeyPairGeneratorSpec* API.
+  - Generating a secret key for AES-GCM using a secure random number generation APIs such as *java.security.SecureRandom*
+  - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher and use device specific parameters such IMEI, Instance ID, etc. as associated data
+  - Encrypt the secret key using public key stored in Android keystore and store the encrypted secret key in the private storage of the application
+  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
+
+  Note: For API level 23 and above, the *KeyGenParameterSpec* API can be leveraged directly to generate and manage secret keys through the Android keystore.
+ 
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
 #### Static Analysis
@@ -1493,6 +1503,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - Do's & Don'ts of SafetyNet Attestation - <https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html>
 - SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
 - SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
+
 
 #### Tools
 
