@@ -14,42 +14,13 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 Make sure that the following is installed on your system:
 
-- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform.
+- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform. See the "Android Basic Security Testing" chapter for installation instructions.
 
-- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
+- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. See more details about the installation below.
 
 In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon]( https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](http://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
 Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
-
-#### Setting up the Android SDK
-
-Local Android SDK installations are managed through Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab lets you install SDKs for multiple API levels. Recent API levels are:
-
-- Android 9.0 (API level 28)
-- Android 8.1 (API level 27)
-- Android 8.0 (API level 26)
-- Android 7.1 (API level 25)
-
-An overview of all Android codenames, it's version number and API Levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
-
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager">
-
-Installed SDKs are found at the following locations:
-
-Windows:
-
-```shell
-C:\Users\<username>\AppData\Local\Android\sdk
-```
-
-MacOS:
-
-```shell
-/Users/<username>/Library/Android/sdk
-```
-
-Note: On Linux, you'll need to pick your own SDK location. `/opt`, `/srv`, and `/usr/local` are common locations.
 
 #### Setting up the Android NDK
 
@@ -78,18 +49,6 @@ This creates a standalone toolchain for Android 7.0 in the directory `/tmp/andro
 
 ```shell
 $  export TOOLCHAIN=/tmp/android-7-toolchain
-```
-
-### Enabling Developer Mode
-
-You must enable USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
-
-Once USB debugging is enabled, connected devices can be viewed with the following command:
-
-```shell
-$ adb devices
-List of devices attached
-BAZ5ORFARKOZYDFA    device
 ```
 
 ### Building a Reverse Engineering Environment for Free
@@ -381,11 +340,11 @@ Android apps support two different types of debugging: Debugging on the level of
 
 ##### Debugging Release Apps
 
-Dalvik and ART support the JDWP, a protocol for communication between the debugger and the Java virtual machine (VM) that it debugs. JDWP is a standard debugging protocol that's supported by all command line tools and Java IDEs, including JDB, JEB, IntelliJ, and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS).
+Dalvik and ART support the JDWP, a protocol for communication between the debugger and the Java virtual machine (VM) that it debugs. JDWP is a standard debugging protocol that's supported by all command line tools and Java IDEs, including jdb, JEB, IntelliJ, and Eclipse. Android's implementation of JDWP also includes hooks for supporting extra features implemented by the Dalvik Debug Monitor Server (DDMS).
 
 A JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll use a JDWP debugger most of the time you debug "normal" Android apps (i.e., apps that don't make many calls to native libraries).
 
-In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with JDB alone. Note that this is not an *efficient* way to solve this crackme—you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
+In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with jdb alone. Note that this is not an *efficient* way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
 
 ###### Repackaging
 
@@ -456,17 +415,9 @@ In the Developer options, pick `Uncrackable1` as the debugging application and a
 
 Note: Even with `ro.debuggable` set to 1 in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `true` in the Manifest.
 
-##### The Android Debug Bridge
+##### Debugging with jdb
 
-The `adb` command line tool, which ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
-
-```shell
-$ adb devices
-List of devices attached
-090c285c0b97f748  device
-```
-
-The `adb jdwp` command lists the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host machine and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
+The `adb` command line tool was introduced in the "Android Basic Security Testing" chapter. You can use its `adb jdwp` command to list the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host machine and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
 
 ```shell
 $ adb jdwp
@@ -474,7 +425,7 @@ $ adb jdwp
 $ adb forward tcp:7777 jdwp:12167
 ```
 
-You're now ready to attach JDB. Attaching the debugger, however, causes the app to resume, which you don't want. You want to keep it suspended so that you can explore first. To prevent the process from resuming, pipe the `suspend` command into jdb:
+You're now ready to attach jdb. Attaching the debugger, however, causes the app to resume, which you don't want. You want to keep it suspended so that you can explore first. To prevent the process from resuming, pipe the `suspend` command into jdb:
 
 ```shell
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
@@ -573,7 +524,7 @@ main[1] cont
 
 This is the plaintext string you're looking for!
 
-###### Debugging with an IDE
+##### Debugging with an IDE
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect—it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
@@ -941,12 +892,6 @@ The following approach can be used in order to patch the JavaScript file:
 
 #### Hooking Java Methods with Xposed
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
-
-To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
-
-##### Example: Bypassing Root Detection with XPosed
-
 Let's assume you're testing an app that's stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
 ```java
@@ -972,7 +917,7 @@ public static boolean c() {
 }
 ```
 
-This method iterates through a list of directories and returns "true" (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false." Method hooking with an Xposed module is one way to do this.
+This method iterates through a list of directories and returns "true" (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false." Method hooking with an Xposed module is one way to do this (see "Android Basic Security Testing" for more details on Xposed installation and basics).
 
 The method  `XposedHelpers.findAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c()`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
 
@@ -1008,161 +953,14 @@ Just like regular Android apps, modules for Xposed are developed and deployed wi
 
 #### Dynamic Instrumentation with Frida
 
-[Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX." Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
+In the "Android Basic Security Testing" chapter you have already seen that you can hook method calls with Frida. We'll use Frida to solve the OWASP UnCrackable Crackme Level 1 and demonstrate how we can easily bypass root detection and extract secret data from the app.
 
-Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
-In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app, Frida uses ptrace to hijack a thread of a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server that's running on the device, and loads a dynamically generated library file that contains the Frida agent and instrumentation code. The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
-
-Frida injects a complete JavaScript runtime into the process, along with a powerful API that provides a lot of useful functionality, including calling and hooking native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime.
-
-![Frida](Images/Chapters/0x04/frida.png)
-
-*FRIDA Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
-
-Here are some more APIs FRIDA offers on Android:
-
-- Instantiate Java objects and call static and non-static class methods
-- Replace Java method implementations
-- Enumerate live instances of specific classes by scanning the Java heap (Dalvik only)
-- Scan process memory for occurrences of a string
-- Intercept native function calls to run your own code at function entry and exit
-
-The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limitted support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
-
-##### Installing Frida
-
-To install Frida locally, simply use PyPI:
-
-```shell
-$ sudo pip install frida
-```
-
-Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
-
-```shell
-$ frida --version
-9.1.10
-$ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
-```
-
-Or you can run the following command to automatically detect frida version and download the right frida-server binary:
-
-```shell
-$ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
-```
-
-Copy frida-server to the device and run it:
-
-```shell
-$ adb push frida-server /data/local/tmp/
-$ adb shell "chmod 755 /data/local/tmp/frida-server"
-$ adb shell "su -c /data/local/tmp/frida-server &"
-```
-
-With frida-server running, you should now be able to get a list of running processes with the following command:
-
-```shell
-$ frida-ps -U
-  PID  Name
------  --------------------------------------------------------------
-  276  adbd
-  956  android.process.media
-  198  bridgemgrd
- 1191  com.android.nfc
- 1236  com.android.phone
- 5353  com.android.settings
-  936  com.android.systemui
-(...)
-```
-
-The -U option lets Frida search for USB devices or emulators.
-
-To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
-
-```shell
-$ frida-trace -i "open" -U com.android.chrome
-```
-
-This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
-
-Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
-
-```shell
-$ frida -U com.android.chrome
-```
-
-With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to load `myscript.js`:
-
-```shell
-$ frida -U -l myscript.js com.android.chrome
-```
-
-Frida also provides a Java API, which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
-
-```java
-Java.perform(function () {
-    var Activity = Java.use("android.app.Activity");
-    Activity.onResume.implementation = function () {
-        console.log("[*] onResume() got called!");
-        this.onResume();
-    };
-});
-```
-
-The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume()` function. The new `onResume()` function implementation prints a notice to the console and calls the original `onResume()` method by invoking `this.onResume()` every time an activity is resumed in the app.
-
-Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
-
-```java
-setImmediate(function() {
-    console.log("[*] Starting script");
-    Java.perform(function () {
-        Java.choose("android.view.View", {
-             "onMatch":function(instance){
-                  console.log("[*] Instance found: " + instance.toString());
-             },
-             "onComplete":function() {
-                  console.log("[*] Finished heap search")
-             }
-        });
-    });
-});
-```
-
-The output would look like this:
-
-```shell
-[*] Starting script
-[*] Instance found: android.view.View{7ccea78 G.ED..... ......ID 0,0-0,0 #7f0c01fc app:id/action_bar_black_background}
-[*] Instance found: android.view.View{2809551 V.ED..... ........ 0,1731-0,1731 #7f0c01ff app:id/menu_anchor_stub}
-[*] Instance found: android.view.View{be471b6 G.ED..... ......I. 0,0-0,0 #7f0c01f5 app:id/location_bar_verbose_status_separator}
-[*] Instance found: android.view.View{3ae0eb7 V.ED..... ........ 0,0-1080,63 #102002f android:id/statusBarBackground}
-[*] Finished heap search
-```
-
-You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods()` from the wrapper's `class` property:
-
-```java
-Java.perform(function () {
-    var view = Java.use("android.view.View");
-    var methods = view.class.getMethods();
-    for(var i = 0; i < methods.length; i++) {
-        console.log(methods[i].toString());
-    }
-});
-```
-
-Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
-
-##### Solving the OWASP Uncrackable Crackme Level1 with Frida
-
-Frida makes it easy to solve the OWASP UnCrackable Crackme Level 1. You have already seen that you can hook method calls with Frida.
-
-When you start the App on an emulator or a rooted device, you'll find that the app presents a dialog box and exits as soon as you press "Ok" because it detected root:
+When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 
 <img src="Images/Chapters/0x05c/crackme-frida-1.png" alt="Crackme Root Detected Dialog" width="300">
 
 Let's see how we can prevent this.
+
 The main method (decompiled with CFR) looks like this:
 
 ```java
@@ -1366,27 +1164,14 @@ In the remaining sections, we'll introduce a few advanced subjects, including ke
 
 ### Binary Analysis Frameworks
 
-Binary analysis frameworks give you powerful ways to automate tasks that would be almost impossible to do manually. In this section, we'll look at Angr, a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+Binary analysis frameworks give you powerful ways to automate tasks that would be almost impossible to do manually. Binary analysis frameworks typically use a technique called symbolic execution, which allow to determine the conditions necessary to reach a specific target. It translates the program's semantics into a logical formula in which some variables are represented by symbols with specific constraints. By resolving the constraints, you can find the conditions necessary for the execution of some branch of the program.
 
-Our target program is a simple license key validation program. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
+Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. Refer to the "Android Basic Security Testing" chapter for installation instructions and basics.
 
-#### Installing Angr
+The target crackme is a simple license key validation Android app. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
-Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
 
-```shell
-$ pip install angr
-```
-
-Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
-
-Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
-
-#### Using the Disassembler Backends - Symbolic Execution
-
-Symbolic execution allows you to determine the conditions necessary to reach a specific target. It translates the program's semantics into a logical formula in which some variables are represented by symbols with specific constraints. By resolving the constraints, you can find the conditions necessary for the execution of some branch of the program.
-
-Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. The crackme takes the form of a native ELF binary that you can download here:
+The crackme takes the form of a native ELF binary that you can download here:
 
 [https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
 
