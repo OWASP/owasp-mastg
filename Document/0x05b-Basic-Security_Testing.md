@@ -10,7 +10,6 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
 
-
 ##### Setting up the Android SDK
 
 Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab is where you install SDKs for multiple API levels. Recent API levels are:
@@ -46,7 +45,7 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1226
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
 
 ##### Testing on the Emulator
 
@@ -88,7 +87,7 @@ To root a mobile device, first unlock its boot loader. The unlocking procedure d
 
 ###### Rooting with Magisk
 
-Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way, the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
+Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
 
@@ -101,11 +100,12 @@ An extensive list of root detection methods is presented in the "Testing Anti-Re
 For a typical mobile app security build, you'll usually want to test a debug build with root detection disabled. If such a build is not available for testing, you can disable root detection in a variety of ways that will be introduced later in this book.
 
 #### Recommended Tools
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1227
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1227>
 
 ##### adb
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1228
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1228>
 
 [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
 
@@ -115,9 +115,9 @@ List of devices attached
 090c285c0b97f748  device
 ```
 
-
 ##### Frida
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1229
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1229>
 
 [Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX." Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
 
@@ -266,17 +266,20 @@ Java.perform(function () {
 Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
 
 ##### Objection
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1230
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1230>
 
 ##### radare2
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1231
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1231>
 
 ##### r2frida
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1232
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1232>
 
 ##### Drozer
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1233
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1233>
 
 [Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and use Drozer.
 
@@ -448,7 +451,7 @@ This will install any module that matches your query. Newly installed modules ar
 
 ##### Xposed
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1234
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1234>
 
 [Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
 
@@ -456,7 +459,7 @@ To use Xposed, you need to first install the Xposed framework on a rooted device
 
 ##### Angr
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1235
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1235>
 
 Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
 
@@ -473,7 +476,9 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 ### Basic Testing Operations
 
 #### Accessing the Device Shell
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1236
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1236>
+
 ##### On-device Shell App
 
 ##### Remote Shell
@@ -529,10 +534,11 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 #### Host-Device Data Transfer
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1237
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1237>
 
 #### Obtaining and Extracting Apps
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1238
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1238>
 
 ##### App Store
 
@@ -553,7 +559,8 @@ adb install path_to_apk
 Note that if you have the original source code and use Android Studio, you do not need to do this because Android Studio handles the packaging and installation of the app for you.
 
 #### Information Gathering
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1239
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1239>
 
 ##### Installed Apps
 
@@ -565,14 +572,14 @@ Note that if you have the original source code and use Android Studio, you do no
 
 ###### Native Libs
 
-###### ...
-
+###### ... other
 
 ##### Accessing App Data
 
 ##### Monitoring System Logs
 
 #### Static Analysis
+
 ##### Manual Static Analysis
 
 In Android app security testing, black-box testing (with access to the compiled binary, but not the original source code) is almost equivalent to white-box testing. The majority of apps can be decompiled easily, and having some reverse engineering knowledge and access to bytecode and binary code is almost as good as having the original code unless the release build has been purposefully obfuscated.
@@ -633,9 +640,13 @@ There are several open source tools for automated security analysis of an APK.
 For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
 
 #### Dynamic Analysis
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1240
+
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1240>
+
 ##### Using Non-Rooted Devices
+
 ##### Method Tracing
+
 ##### Basic Network Monitoring/Sniffing
 
 ### Setting up a Network Testing Environment
@@ -999,8 +1010,6 @@ Applications often implement security controls that make it more difficult to pe
 
 Of course, this is not always possible, and you may need to perform a black-box assessment on an application where all security controls are enabled. The section below shows you how you can circumvent certificate pinning for different applications.
 
-
-
 ##### Client Isolation in Wireless Networks
 
 Once you have setup an interception proxy and have a MITM position you might still not be able to see anything. This might be due to restrictions in the app (see next section) but can also be due to so called client isolation in the Wi-Fi that you are connected to.
@@ -1107,7 +1116,7 @@ setTimeout(function(){
 
 ##### Certificate Pinning
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1241
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1241>
 
 Different ways of implementing certificate pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning".
 
@@ -1148,8 +1157,6 @@ For the Builder.add method, you can find the possible methods by running the fol
 This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
 
 Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
-
-
 
 ### References
 

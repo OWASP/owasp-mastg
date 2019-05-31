@@ -1170,7 +1170,6 @@ Symbolic execution is useful when you need to find the right input for reaching 
 
 The target crackme is a simple license key validation Android app. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
-
 The crackme takes the form of a native ELF binary that you can download here:
 
 [https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
