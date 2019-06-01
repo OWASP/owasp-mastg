@@ -715,13 +715,29 @@ The following is [sample Swift code for excluding a file from a backup](https://
 
 #### Dynamic Analysis
 
-After the app data has been backed up, review the data that's in the backed up files and folders. The following directories should be reviewed for sensitive data:
+After the app data has been backed up with iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch"). Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your drive.
 
-- Documents/
-- Library/Application Support/
-- Library/Preferences/
+When you want to navigate to the iTunes backup folder on macOS Mojave and later you will get the following error (even as root):
 
-Refer to the overview of this section for more on the purpose of each of these directories.
+```bash
+$ /Library/Application Support/MobileSync/Backup
+```
+
+This is not an issue of the backup but a new feature in Mojave. Allow the terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail.
+
+Once you can access the directory you need to select the UDID folder of your device. In this directory you will find the full backup of the whole device.  
+Review the data that's in the backed up files and folders. The structure of the directories and file names is obfuscated and will look like this:
+
+```bash
+$ pwd
+/Users/foo/Library/Application Support/MobileSync/Backup/416f01bd160932d2bf2f95f1f142bc29b1c62dcb/00
+$ ls | head -n 3
+000127b08898088a8a169b4f63b363a3adcf389b
+0001fe89d0d03708d414b36bc6f706f567b08d66
+000200a644d7d2c56eec5b89c1921dacbec83c3e
+```
+
+
 
 ### Testing Auto-Generated Screenshots for Sensitive Information
 
