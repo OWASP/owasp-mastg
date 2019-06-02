@@ -12,8 +12,7 @@ content=`cat linter-result.out`
 if [[ $errors != "0" ]]
 then
     echo "[!] Error(s) found by the Linter: $content"
-    echo "Only warning for now..."
-    #exit $errors
+    exit $errors
 else
     echo "[+] No error found by the Linter."
     rm linter-result.out
