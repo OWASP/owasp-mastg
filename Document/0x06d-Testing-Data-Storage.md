@@ -762,7 +762,7 @@ $ ~/Library/Application Support/MobileSync/Backup/<UDID>
 $ grep -iRn "password" .
 ```
 
-If you can find such data it should be excluded from the backup as described in the Static Analysis chapter or not stored on the device in the first place.
+If you can find such data it should be excluded from the backup as described in the Static Analysis chapter, or encrypted properly by using the Keychain or not stored on the device in the first place.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information
 
