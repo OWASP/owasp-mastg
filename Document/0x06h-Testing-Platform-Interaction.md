@@ -215,75 +215,7 @@ and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
 ##### Entitlements Embedded in the Compiled App Binary
 
-If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself.
-
-The following two subsections will show you how to access the app binary and once it is accessible, how to extract the entitlements property lists.
-
-###### Acquiring the App Binary
-
-1. From an IPA:
-
-   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
-
-    > On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
-
-2. From a Jailbroken device:
-
-    If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store or TestFlight). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, example using Telegram:
-
-    - Open the app and leave it running on foreground.
-    - Start an objection session by running the following command:
-
-        ```shell
-        $ objection --gadget Telegram explore
-        Using USB device `iPhone`
-        ```
-
-    - Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
-
-        ```shell
-        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
-
-        Name               Path
-        -----------------  -------------------------------------------------------------------------
-        BundlePath         /var/containers/Bundle/Application/B0E38F10-8F30.../Telegram X.app
-        CachesDirectory    /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library/Caches
-        DocumentDirectory  /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Documents
-        LibraryDirectory   /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library
-        ```
-
-    - `BundlePath` is also the current directory by default, run `ls` to list the contents:
-
-        ```shell
-        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
-
-        NSFileType      Perms  NSFileProtection   ... Size       Name
-        ------------  -------  ------------------ ... ---------  ----------------------------------
-        Directory         493  None               ... 224.0 B    PlugIns
-        Directory         493  None               ... 96.0 B     Base.lproj
-        Directory         493  None               ... 96.0 B     _CodeSignature
-        Directory         493  None               ... 1.3 KiB    Frameworks
-        ...
-        Regular           493  None               ... 1.4 MiB    Telegram X
-        ...
-        Readable: True  Writable: False
-        ```
-
-        The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
-    - Download the app binary using the command `file download`:
-
-        ```shell
-        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
-
-        Downloading /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
-            Telegram X.app/Telegram X to Telegram X
-        Streaming file from device...
-        Writing bytes to destination...
-        Successfully downloaded /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
-            Telegram X.app/Telegram X to Telegram X
-        ```
-
-    Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via SCP for example) or keep working on the device.
+If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (which you've previously obtained as explained in the "iOS Basic Security Testing" chapter, section "Acquiring the App Binary").
 
 The following steps should work even when targeting an encrypted binary. If for some reason they don't, you'll have to decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar.
 

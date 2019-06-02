@@ -354,8 +354,6 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 --ToDo: https://github.com/OWASP/owasp-mstg/issues/1246
 
---ToDo: Ticket 1185 should be placed here https://github.com/OWASP/owasp-mstg/issues/1185 (Talk to Carlos before moving here!)
-
 ##### Getting the IPA File from an OTA Distribution Link
 
 During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
@@ -376,9 +374,76 @@ Save the IPA file locally with the following command:
 # itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
 ```
 
+##### Acquiring the App Binary
+
+1. From an IPA:
+
+   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
+
+    > On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
+
+2. From a Jailbroken device:
+
+    If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, see the following example using Telegram:
+
+    - Open the app and leave it running in the foreground.
+    - Start an objection session by running the following command:
+
+        ```shell
+        $ objection --gadget Telegram explore
+        Using USB device `iPhone`
+        ```
+
+    - Run `env` to display directory information for the current application environment. On iOS devices, this includes the location of the app's bundle (`BundlePath`), the Documents/ and Library/ directories.
+
+        ```shell
+        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # env
+
+        Name               Path
+        -----------------  -------------------------------------------------------------------------
+        BundlePath         /var/containers/Bundle/Application/B0E38F10-8F30.../Telegram X.app
+        CachesDirectory    /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library/Caches
+        DocumentDirectory  /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Documents
+        LibraryDirectory   /var/mobile/Containers/Data/Application/56E142D2-D2CB.../Library
+        ```
+
+    - `BundlePath` is also the current directory by default, run `ls` to list the contents:
+
+        ```shell
+        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # ls
+
+        NSFileType      Perms  NSFileProtection   ... Size       Name
+        ------------  -------  ------------------ ... ---------  ----------------------------------
+        Directory         493  None               ... 224.0 B    PlugIns
+        Directory         493  None               ... 96.0 B     Base.lproj
+        Directory         493  None               ... 96.0 B     _CodeSignature
+        Directory         493  None               ... 1.3 KiB    Frameworks
+        ...
+        Regular           493  None               ... 1.4 MiB    Telegram X
+        ...
+        Readable: True  Writable: False
+        ```
+
+        The name of the app binary can be found in the `Info.plist` file by searching for the key `CFBundleExecutable` (running `ios plist cat Info.plist` will display the `Info.plist` file).
+    - Download the app binary using the command `file download`:
+
+        ```shell
+        ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # file download "Telegram X"
+
+        Downloading /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
+            Telegram X.app/Telegram X to Telegram X
+        Streaming file from device...
+        Writing bytes to destination...
+        Successfully downloaded /var/containers/Bundle/Application/B0E38F10-8F30-4142-8C53-4CE022C2B097/
+            Telegram X.app/Telegram X to Telegram X
+        ```
+
+    Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via `scp` for example) or keep working on the device.
+
+
 #### Installing Apps
 
-When installing apps that are not avaialbe via the official distribution channel through Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. 
+When installing apps that are not available via the official distribution channel through Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below.
 
 ##### Cydia Impactor
 
@@ -388,7 +453,7 @@ Different methods exist for installing an IPA package onto an iOS device. One to
 
 On Linux and also macOS, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. This allows you to install apps over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
-The package for libimobiledevice will be availabe in your Linux package manager. On macOS you can install libimobiledevice via brew:
+The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
 
 ```bash
 $ brew install libimobiledevice
