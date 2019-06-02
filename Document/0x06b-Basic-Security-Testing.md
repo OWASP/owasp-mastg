@@ -384,9 +384,9 @@ Save the IPA file locally with the following command:
 
 2. From a Jailbroken device:
 
-    If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, example using Telegram:
+    If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, see the following example using Telegram:
 
-    - Open the app and leave it running on foreground.
+    - Open the app and leave it running in the foreground.
     - Start an objection session by running the following command:
 
         ```shell
@@ -438,7 +438,7 @@ Save the IPA file locally with the following command:
             Telegram X.app/Telegram X to Telegram X
         ```
 
-    Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via SCP for example) or keep working on the device.
+    Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via `scp` for example) or keep working on the device.
 
 
 #### Installing Apps
