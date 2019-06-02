@@ -651,7 +651,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
-Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes"-but only if the app insecurely stores sensitive data in the first place.
+Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
 
 ##### How the Keychain Is Backed Up
 
@@ -715,17 +715,23 @@ The following is [sample Swift code for excluding a file from a backup](https://
 
 #### Dynamic Analysis
 
-After the app data has been backed up with iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch"). Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your drive.
+After the iOS device has been backed up through iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch"). Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your drive.
 
 When you want to navigate to the iTunes backup folder on macOS Mojave and later you will get the following error (even as root):
 
 ```bash
-$ /Library/Application Support/MobileSync/Backup
+root# pwd
+/Users/foo/Library/Application Support
+root# ls -alh MobileSync
+ls: MobileSync: Operation not permitted
+root# id
+uid=0(root) gid=0(wheel) groups=0(wheel),1(daemon),2(kmem),3(sys),4(tty),5(operator),8(procview),9(procmod),12(everyone),20(staff),29(certusers),61(localaccounts),80(admin),701(com.apple.sharepoint.group.1),702(com.apple.sharepoint.group.2),33(_appstore),98(_lpadmin),100(_lpoperator),204(_developer),250(_analyticsusers),395(com.apple.access_ftp),398(com.apple.access_screensharing),399(com.apple.access_ssh)
 ```
 
-This is not an issue of the backup but a new feature in Mojave. Allow the terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail.
+This is not an issue of the backup or the permission rights, but a new feature in Mojave. Allow the terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail.
 
-Once you can access the directory you need to select the UDID folder of your device. In this directory you will find the full backup of the whole device.  
+Once you can access the directory you need to select the folder with the UDID of your device. In this directory you will find the full backup of the whole device, which does include pictures, app data and whatever might have been stored on the device.
+
 Review the data that's in the backed up files and folders. The structure of the directories and file names is obfuscated and will look like this:
 
 ```bash
@@ -737,7 +743,7 @@ $ ls | head -n 3
 000200a644d7d2c56eec5b89c1921dacbec83c3e
 ```
 
-
+TBD
 
 ### Testing Auto-Generated Screenshots for Sensitive Information
 
