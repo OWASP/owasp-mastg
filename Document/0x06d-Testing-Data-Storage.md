@@ -715,22 +715,34 @@ The following is [sample Swift code for excluding a file from a backup](https://
 
 #### Dynamic Analysis
 
-After the iOS device has been backed up through iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch"). Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your drive.
+In order to test the backup, you obviously need to create one first. The most common way to create a backup of an iOS device is by using iTunes, which is available for Windows, Linux and of course macOS. When creating a backup via iTunes you can always only backup the whole device and not select just a single app. Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your hard drive.
+
+After the iOS device has been backed up through iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch").
 
 When you want to navigate to the iTunes backup folder on macOS Mojave and later you will get the following error (even as root):
 
 ```bash
-root# pwd
+$ pwd
 /Users/foo/Library/Application Support
-root# ls -alh MobileSync
+$ ls -alh MobileSync
 ls: MobileSync: Operation not permitted
-root# id
-uid=0(root) gid=0(wheel) groups=0(wheel),1(daemon),2(kmem),3(sys),4(tty),5(operator),8(procview),9(procmod),12(everyone),20(staff),29(certusers),61(localaccounts),80(admin),701(com.apple.sharepoint.group.1),702(com.apple.sharepoint.group.2),33(_appstore),98(_lpadmin),100(_lpoperator),204(_developer),250(_analyticsusers),395(com.apple.access_ftp),398(com.apple.access_screensharing),399(com.apple.access_ssh)
 ```
 
-This is not an issue of the backup or the permission rights, but a new feature in Mojave. Allow the terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail.
+This is not a permission issue of the backup folder, but a new feature in macOS Mojave. Allow the Terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail.
 
-Once you can access the directory you need to select the folder with the UDID of your device. In this directory you will find the full backup of the whole device, which does include pictures, app data and whatever might have been stored on the device.
+Before you can access the directory you need to select the folder with the UDID of your device. This is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID in iTunes, when selecting your device and when you click in the summary tab on "Serial Number". When clicking on this you will iterate through different meta-data of the iOS device including it's UDID.
+
+It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id`:
+
+```bash
+$ brew install ideviceinstaller
+$ idevice_id -l
+316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+```
+
+Alternatively you can also use the Xcode command `instruments -s devices`.
+
+Once you know the UDID you can navigate into this directory and you will find the full backup of the whole device, which does include pictures, app data and whatever might have been stored on the device.
 
 Review the data that's in the backed up files and folders. The structure of the directories and file names is obfuscated and will look like this:
 
@@ -743,7 +755,14 @@ $ ls | head -n 3
 000200a644d7d2c56eec5b89c1921dacbec83c3e
 ```
 
-TBD
+Therefore it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. What you can do is use a simple grep to search for sensitive data that you have keyed in while using the app before you made the backup, for example the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
+
+```bash
+$ ~/Library/Application Support/MobileSync/Backup/<UDID>
+$ grep -iRn "password" .
+```
+
+If you can find such data it should be excluded from the backup as described in the Static Analysis chapter or not stored on the device in the first place.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information
 
