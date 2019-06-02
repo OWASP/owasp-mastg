@@ -6,12 +6,6 @@ Because Objective-C and Swift are fundamentally different, the programming langu
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
-#### Xcode and iOS SDK
-
-Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools developed by Apple for developing software for macOS, iOS, watchOS, and tvOS. You can [download it from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
-
-The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a software development kit developed by Apple for developing native iOS applications. You can [download it from the official Apple website](https://developer.apple.com/ios/ "Apple iOS SDK") as well.
-
 #### Utilities
 
 - [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") "is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols."
