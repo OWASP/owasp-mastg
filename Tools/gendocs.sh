@@ -1,4 +1,13 @@
 #!/bin/sh
+
+verify_and_add_lint_results() {
+
+}
+
+verify_and_add_link_results(){
+
+}
+
 cd $TRAVIS_BUILD_DIR/Tools
 echo "Applying Linter check"
 sh ./Apply_Linter_Check.sh
@@ -10,15 +19,17 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
     export LINKRESULT=$(sh ./Apply_Link_Check.sh)
     echo "$LINKRESULT"
     if [ "$LINTRESULT" -eq "0" ]; then
-        COMMENT_LINT="Please run the Apply_Linter_check.sh in the tools folder to see where the Lint issues are."
-    fi
-    if [ -z "$LINTRESULT"]; then
+        COMMENT_LINT=""
+    elif [ -z "$LINTRESULT"]; then
+        COMMENT_LINT=""
+    else 
         COMMENT_LINT="Please run the Apply_Linter_check.sh in the tools folder to see where the Lint issues are."
     fi
     if [ "$LINKRESULT" -eq "0" ]; then
-        COMMENT_LINK="Please run the Apply_Link_Check.sh in the tools folder to see wherhe the Link issues are."
-    fi
-    if [ -z "$LINKRESULT" ]; then
+        COMMENT_LINK=""
+    elif [ -z "$LINKRESULT" ]; then
+        COMMENT_LINK=""
+    else
         COMMENT_LINK="Please run the Apply_Link_Check.sh in the tools folder to see wherhe the Link issues are."
     fi
     echo "Sending feedback to Github"
