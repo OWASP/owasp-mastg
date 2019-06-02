@@ -1,13 +1,5 @@
 #!/bin/sh
 
-verify_and_add_lint_results() {
-
-}
-
-verify_and_add_link_results(){
-
-}
-
 cd $TRAVIS_BUILD_DIR/Tools
 echo "Applying Linter check"
 sh ./Apply_Linter_Check.sh
