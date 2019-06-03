@@ -25,7 +25,7 @@ After your PR has been submitted, we will review it as quickly as possible. This
 1. Create a GitHub account. Multiple different GitHub subscription plans are available, but you only need a free one. Follow [these steps](https://help.github.com/en/articles/signing-up-for-a-new-github-account "Signing up for a new GitHub account") to set up your account.
 2. Fork the repository. Creating a fork means creating a copy of the repository on your own account, which you can modify without any impact on this repository. GitHub has an [article that describes all the needed steps](https://help.github.com/en/articles/fork-a-repo "Fork a repo").
 3. Clone your own repository to your machine so that you can make modifications. If you followed the GitHub tutorial from step 2, you have already done this.
-4. Go the newly cloned directory "owasp-mstg" and add the remote upstream repository:
+4. Go to the newly cloned directory "owasp-mstg" and add the remote upstream repository:
 
 ```bash
 $ git remote -v
