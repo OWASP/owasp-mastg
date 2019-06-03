@@ -291,6 +291,14 @@ When defining the KeyDescription AuthorizationList, the following parameters wil
 - The `keySize` parameter Specifies the size, in bits, of the key, measuring in the normal way for the key's algorithm
 - The `digest` parameter Specifies the digest algorithms that may be used with the key to perform signing and verification operations
 
+#### Key Attestation
+
+For the applications which heavily rely on Android Keystore for business-critical operations such as multi-factor authentication through cryptographic primitives, secure storage of sensitive data at the client side, etc. Android provides the feature of [Key Attestation](https://developer.android.com/training/articles/security-key-attestation "Key Attestation") which helps to analyze the security of cryptographic material managed through Android Keystore. From Android 8.0, the key attestation was made mandatory for all new(Android 7.0 or higher) devices that need to have device certification for Google suite of apps, such devices use attestation keys signed by the [Google hardware attestation root certificate](https://developer.android.com/training/articles/security-key-attestation#root_certificate "Google Hardware Attestation Root Certificate") and the same can be verified while key attestation process.
+
+During key attestation, we can specify the alias of a key pair and in return, get a certificate chain, which we can use to verify the properties of that key pair. If the root certificate of the chain is signed using an attestation root key it implies that the device supports hardware-level key attestation and the key is in hardware-backed keystore that Google believes to be secure. Alternatively, if the attestation chain has any other root certificate, then Google does not make any claims about the security of the hardware. 
+
+Note: Although the key attestation process can be implemented within the application directly, however, Google recommends to check the certificates' revocation lists on a separate trusted server for security reasons. For implementation guidelines, Verifying hardware-backed key pairs with Key Attestation guidelines be referred.
+
 #### decryption only on unlocked devices
 
 For more security Android pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
@@ -379,6 +387,7 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - KeyInfo documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
 - Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
 - Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
+- Key Attestation - <https://developer.android.com/training/articles/security-key-attestation>
 
 ##### OWASP Mobile Top 10 2016
 
