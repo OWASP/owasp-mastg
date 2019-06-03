@@ -96,11 +96,9 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 > Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
-#### Getting Priviledged Access
+#### Getting Privileged Access
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
-
-- *Cydia Store*
 
 Once you've jailbroken your iOS device and Cydia has been installed (as shown in the previous screenshot), proceed as follows:
 
@@ -109,20 +107,14 @@ Once you've jailbroken your iOS device and Cydia has been installed (as shown in
     - The default users are `root` and `mobile`.
     - The default password is `alpine`.
 3. Change the default password for both users `root` and `mobile`.
-4. Add the following repository to Cydia: `https://build.frida.re`.
-5. Install Frida from Cydia.
 
-Cydia allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL:
+#### Recommended Tools - iOS Device
 
-```http
-http://apt.thebigboss.org/repofiles/cydia/
-```
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
 
-You may also want to add the HackYouriPhone repository to get the AppSync package:
+You may also want to add the HackYouriPhone repository to get the AppSync package <http://repo.hackyouriphone.org>.
 
-```http
-http://repo.hackyouriphone.org
-```
+You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>.
 
 The following are some useful packages you can install from Cydia to get started:
 
@@ -130,20 +122,21 @@ The following are some useful packages you can install from Cydia to get started
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
 - [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files.
-- Cydia or Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
-- cycript: Cycript is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (assiciated to Substrate).
+- Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
 - PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 
-#### Recommended Tools
+Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
+
+#### Recommended Tools - macOS Device
 
 In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
-- [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS")
+- [Burp Suite](https://portswigger.net/burp "Burp Suite")
 - [Frida](https://www.frida.re "Frida")
 - [IDB](https://www.idbtool.com "IDBTool")
-- [Burp Suite](https://portswigger.net/burp "Burp Suite")
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
 
 -- ToDo: https://github.com/OWASP/owasp-mstg/issues/1243
@@ -298,7 +291,6 @@ Save the IPA file locally with the following command:
 
     Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via `scp` for example) or keep working on the device.
 
-
 #### Installing Apps
 
 When installing apps that are not available via the official distribution channel through Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below.
@@ -358,6 +350,8 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 #### Information Gathering
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
+
+
 
 -- ToDo Objection: https://github.com/OWASP/owasp-mstg/issues/1247
 -- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
