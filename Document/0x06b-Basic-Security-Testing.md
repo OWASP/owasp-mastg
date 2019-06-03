@@ -351,9 +351,29 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
+Let's focus first on objection. In the following example Frida is running as server on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name. When using objection you can retrieve different kind of information, where `env` will show you all the directory information of iGoat.
 
+```bash
+$ objection  --gadget "iGoat-Swift" explore
+...
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
 
--- ToDo Objection: https://github.com/OWASP/owasp-mstg/issues/1247
+Name               Path
+-----------------  -------------------------------------------------------------------------------------------
+BundlePath         /var/containers/Bundle/Application/E97D56FE-9C97-47ED-A458-5F1A3BDBE0DB/iGoat-Swift.app
+CachesDirectory    /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library/Caches
+DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Documents
+LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
+```
+
+The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information of an app can be found below:
+
+```
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
+```
+
 -- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
 
 #### Dumping KeyChain Data
