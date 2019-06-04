@@ -27,19 +27,19 @@ After your PR has been submitted, we will review it as quickly as possible. This
 3. Clone your own repository to your machine so that you can make modifications. If you followed the GitHub tutorial from step 2, you have already done this.
 4. Go to the newly cloned directory "owasp-mstg" and add the remote upstream repository:
 
-```bash
-$ git remote -v
-origin git@github.com:<your Github handle>/owasp-mstg.git (fetch)
-origin git@github.com:<your Github handle>/owasp-mstg.git (push)
-$ git remote add upstream git@github.com:OWASP/owasp-mstg.git
-$ git remote -v
-origin git@github.com:<your Github handle>/owasp-mstg.git (fetch)
-origin git@github.com:<your Github handle>/owasp-mstg.git (push)
-upstream git@github.com:OWASP/owasp-mstg.git (fetch)
-upstream git@github.com:OWASP/owasp-mstg.git (push)
-```
+    ```bash
+    $ git remote -v
+    origin git@github.com:<your Github handle>/owasp-mstg.git (fetch)
+    origin git@github.com:<your Github handle>/owasp-mstg.git (push)
+    $ git remote add upstream git@github.com:OWASP/owasp-mstg.git
+    $ git remote -v
+    origin git@github.com:<your Github handle>/owasp-mstg.git (fetch)
+    origin git@github.com:<your Github handle>/owasp-mstg.git (push)
+    upstream git@github.com:OWASP/owasp-mstg.git (fetch)
+    upstream git@github.com:OWASP/owasp-mstg.git (push)
+    ```
 
-See also the GitHub documentation on [Configuring a remote for a fork](https://help.github.com/en/articles/configuring-a-remote-for-a-fork "Configuring a remote for a fork").
+    See also the GitHub documentation on "[Configuring a remote for a fork](https://help.github.com/en/articles/configuring-a-remote-for-a-fork "Configuring a remote for a fork")".
 5. Choose what to work on, based on any of the outstanding [issues](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues").
 6. Create a branch so that you can cleanly work on the chosen issue: `git checkout -b FixingIssue66`
 7. Open your favorite editor and start making modifications. We recommend using the free [Visual Studio Code editor](https://code.visualstudio.com "Visual Studio Code") as it can make use of the code linting that is part of the repository through the [MarkdownLint plugin](https://github.com/DavidAnson/vscode-markdownlint#install "MarkdownLint plugin"). The code linter can help you when you make mistakes against our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide"), but be sure to read the style guide yourself, as the code linter will only detect a part of it.
@@ -48,12 +48,12 @@ See also the GitHub documentation on [Configuring a remote for a fork](https://h
 10. Your PR will be reviewed and comments may be given. In order to process a comment, simply make modifications to the same branch as before and push them to your repository. GitHub will automatically detect these changes and add them to your existing PR.
 11. When starting on a new PR in the future, make sure to always keep your local repo up to date:
 
-```bash
-$ git fetch upstream
-$ git merge upstream/master
-```
+    ```bash
+    $ git fetch upstream
+    $ git merge upstream/master
+    ```
 
-See also the following article for further explanation on "[How to Keep a Downstream git Repository Current with Upstream Repository Changes](https://medium.com/sweetmeat/how-to-keep-a-downstream-git-repository-current-with-upstream-repository-changes-10b76fad6d97 "How to Keep a Downstream git Repository Current with Upstream Repository Changes")".
+    See also the following article for further explanation on "[How to Keep a Downstream git Repository Current with Upstream Repository Changes](https://medium.com/sweetmeat/how-to-keep-a-downstream-git-repository-current-with-upstream-repository-changes-10b76fad6d97 "How to Keep a Downstream git Repository Current with Upstream Repository Changes")".
 
 If at any time you want to work on a different issue, you can simply switch to a different branch, as explained in step 5. Don't try to work on too many issues at once though, as it will be a lot more difficult to merge branches the longer they are open.
 
