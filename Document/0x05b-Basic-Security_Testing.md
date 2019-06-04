@@ -536,7 +536,7 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 ##### Using adb
 
-You can copy files to and from a device by using the commands `adb pull remote local` and `adb push local remote` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
+You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```
 adb push foo.txt /sdcard/foo.txt
@@ -555,13 +555,13 @@ Android Studio has a [built-in Device File Explorer](https://developer.android.c
 
 ![Android Studio Device File Explorer](Images/Chapters/0x05b/android-studio-file-device-explorer.png)
 
-If you're using a rooted device you may start now exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
+If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
 ##### Using objection
 
-This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). objection also has the benefit of letting you **access the app sandbox on non-rooted devices**. This works without having to set the app as debuggable, which is required otherwise when using Android Studio's Device File Explorer.
+This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). Objection also has the benefit of letting you **access the app sandbox on non-rooted devices**. This works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-By default, `objection --gadget app_proccess_name explore`, the REPL will start in the app's main sandbox path (`app_proccess_name` is the app process name, you can quickly get it by running `frida-ps -U | grep -i keyword`). You may now use `ls` and `cd` as you normally would on your terminal.
+By executing `objection --gadget <app_proccess_name> explore`, the REPL will start by default in the app's main sandbox path (`app_proccess_name` is the app process name, you can quickly get it by running `frida-ps -U | grep -i <keyword>`). You may now use `ls` and `cd` as you normally would on your terminal.
 
 ```
 $ frida-ps -U | grep -i owasp
@@ -588,7 +588,7 @@ Readable: True  Writable: True
 
 ```
 
-One you have a file you want to download you can just run `file download some_file`. This will download that file to your working directory. The same way you can upload files using `file upload`.
+One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
 
 ```
 ...[usb] # ls
@@ -605,11 +605,11 @@ Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
 
 ```
 
-The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of e.g. taking note of the full path of that file and use `adb pull path_to_some_file` from a separate terminal, you might just want to directly do `file download some_file`.
+The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of e.g. taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
 
 ##### Using Termux
 
-If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed, you can start a FTP server.
+If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed, you can start an FTP server.
 
 Install and run `tsu` on the Android device, which is the Termux su binary: `pkg install tsu`
 
