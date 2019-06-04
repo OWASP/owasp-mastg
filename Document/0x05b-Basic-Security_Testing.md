@@ -609,24 +609,24 @@ The downside is that, at the time of this writing, objection does not support bu
 
 ##### Using Termux
 
-If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed, you can start an FTP server.
-
-Install and run `tsu` on the Android device, which is the Termux su binary: `pkg install tsu`
-
-Now you can run `tcpsvd` as root:
+If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
 ```
-$ tsu
-# tcpsvd -vE 0.0.0.0 1024 ftpd /
+$ sftp -P 8022 root@localhost
+...
+sftp> cd /data/data
+sftp> ls -1
+...
+sg.vantagepoint.helloworldjni
+sg.vantagepoint.uncrackable1
+sg.vp.owasp_mobile.omtg_android
 ```
 
-![FTP from Android](Images/Chapters/0x05b/android-ftp-from-android.png)
+Or simply by using a SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-This will open FTP access to the root folder of the device (`/`) on port 1024. You can now use any command line FTP client or, for example, if you're on macOS you can type `cmd+k` from Finder and give in the IP of the Android device, e.g. `ftp://192.168.1.108:1024`
+![SFTP Access](Images/Chapters/0x05b/sftp-with-filezilla.png)
 
-![FTP from macOS](Images/Chapters/0x05b/android-ftp-from-macos.png)
-
-Remember that FTP is not encrypting its communication and is therefore considered insecure. For projects classified as high risk or in critical environments you may want to transfer data preferably via the USB cable and not unencrypted via the network. Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
+Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
 #### Obtaining and Extracting Apps
 
