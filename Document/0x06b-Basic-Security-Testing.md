@@ -351,7 +351,28 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
-Let's focus first on objection. In the following example Frida is running as server on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name. When using objection you can retrieve different kind of information, where `env` will show you all the directory information of iGoat.
+##### Mobile Security Framework (MobSF)
+
+MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device. The easiest way of getting MobSF started is via docker.
+
+```bash
+$ docker pull opensecurity/mobile-security-framework-mobsf
+$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+```
+
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Just select the IPA you want to analyse and MobSF will start it's job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
+
+The result screen might first be overwhelming but will have a very good overview of the potential attack surface and has automated a few things for you. With MobSF you can now for example:
+
+- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classpdump can be created.
+- Have access to the Info.plist
+- Exceptions in the App Transport Security (ATS) configuration will be raised
+
+There is much more information provided that you should explore, that might be helpful for you.
+
+##### Objection
+
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running as server on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name. When using objection you can retrieve different kind of information, where `env` will show you all the directory information of iGoat.
 
 ```bash
 $ objection  --gadget "iGoat-Swift" explore
@@ -366,13 +387,15 @@ DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE
 LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
 ```
 
-The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information of an app can be found below:
+The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, like the classes used in an app, functions of classes or information about the bundle of an app can be found below:
 
 ```
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 ```
+
+##### Passionfruit
 
 -- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
 
@@ -437,7 +460,7 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 #### Dynamic Analysis with Jailbroken Devices
 
-Life is easy with a jailbroken device: not only do you gain easy priviledged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
 ##### SSH Connection via USB
 
