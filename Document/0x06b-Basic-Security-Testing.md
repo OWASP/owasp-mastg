@@ -48,6 +48,8 @@ The purpose of jailbreaking is to disable iOS protections (Apple's code signing 
 
 Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
 
+Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
+
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
 Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
@@ -100,13 +102,14 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
 
-Once you've jailbroken your iOS device and Cydia has been installed (as shown in the previous screenshot), proceed as follows:
+Once you've jailbroken your iOS device and either Cydia (see screenshot above) or Sileo has been installed, you can install the OpenSSH package. Once installed do the following:
 
-1. From Cydia install aptitude and OpenSSH.
-2. SSH into your iOS device.
-    - The default users are `root` and `mobile`.
-    - The default password is `alpine`.
-3. Change the default password for both users `root` and `mobile`.
+- SSH into your iOS device.
+  - The default users are `root` and `mobile`.
+  - The default password is `alpine`.
+- Change the default password for both users `root` and `mobile`.
+
+In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 #### Recommended Tools - iOS Device
 
@@ -132,6 +135,13 @@ The following are some useful packages you can install from Cydia to get started
 - PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 
 Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
+
+Besides Cydia you can also ssh into your iOS device and you can install the packages directly via apt-get, like for example adv-cmds.
+
+```bash
+$ apt-get update
+$ apt-get install adv-cmds
+```
 
 #### Recommended Tools - macOS Device
 
@@ -381,7 +391,7 @@ Once you have MobSF up and running you can open it in your browser by navigating
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
 
-- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classpdump can be created.
+- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classdump can be created.
 - Have access to the Info.plist
 - Exceptions in the App Transport Security (ATS) configuration will be raised
 
@@ -394,8 +404,6 @@ Once you have installed the app, there is further information to explore, where 
 ```bash
 ```shell
 $ frida-ps -Ua | grep -i iGoat
-PID  Name
----  ----------------
 983  iGoat-Swift
 $ objection  --gadget "iGoat-Swift" explore
 ...
