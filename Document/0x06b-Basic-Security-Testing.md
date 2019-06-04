@@ -389,9 +389,7 @@ There is much more information provided that you should explore, that might be h
 
 ##### Objection
 
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
-
-With `frida-ps` you can find the name of the process you want to analyse in objection.
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name, which you can identify with `frida-ps -Ua | grep -i <keyword>`. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
 
 ```bash
 ```shell
