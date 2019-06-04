@@ -279,104 +279,23 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### Drozer
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1233>
+[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
 
-[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and use Drozer.
+You can refer to [drozer GitHub page](https://github.com/mwrlabs/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-###### Installing Drozer
+The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions. Other resources where you might find useful information are:
 
-**On Linux:**
+- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
+- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
 
-Pre-built packages for many Linux distributions are available on the [Drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website"). If your distribution is not listed, you can build Drozer from source as follows:
+Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the releases page](https://github.com/mwrlabs/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
-```shell
-$ git clone https://github.com/mwrlabs/drozer/
-$ cd drozer
-$ make apks
-$ source ENVIRONMENT
-$ python setup.py build
-$ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
-```
+Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions [here](https://mobiletools.mwrinfosecurity.com/Starting-a-session/ "Starting a Session").
 
-**On Mac:**
+Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
-On Mac, Drozer is a bit more difficult to install due to missing dependencies. Mac OS versions from El Capitan onwards don't have OpenSSL installed, so compiling pyOpenSSL won't work. You can resolve this issue by [installing OpenSSL manually]. To install openSSL, run:
-
-```shell
-$ brew install openssl
-```
-
-Drozer depends on older versions of some libraries. Avoid messing up the system's Python installation by installing Python with homebrew and creating a dedicated environment with virtualenv. (Using a Python version management tool such as [pyenv](https://github.com/pyenv/pyenv "pyenv") is even better, but this is beyond the scope of this book).
-
-Install virtualenv via pip:
-
-```shell
-$ pip install virtualenv
-```
-
-Create a project directory to work in; you'll download several files into it. Navigate into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder, which contains the Python executable files and a copy of the pip library.
-
-```shell
-$ virtualenv drozer
-$ source drozer/bin/activate
-(drozer) $
-```
-
-You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. A typo in the source of the pyOpenSSL version Drozer prevents successful compilation, so you'll need to fix the source before compiling. Fortunately, ropnop has figured out the necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan").
-Run the following commands:
-
-```shell
-$ wget https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.tar.gz
-$ tar xzvf pyOpenSSL-0.13.tar.gz
-$ cd pyOpenSSL-0.13
-$ sed -i '' 's/X509_REVOKED_dup/X509_REVOKED_dupe/' OpenSSL/crypto/crl.c
-$ python setup.py build_ext -L/usr/local/opt/openssl/lib -I/usr/local/opt/openssl/include
-$ python setup.py build
-$ python setup.py install
-```
-
-With that out of the way, you can install the remaining dependencies.
-
-```shell
-$ easy_install protobuf==2.4.1 twisted==10.2.0
-```
-
-Finally, download and install the Python .egg from the MWR labs website:
-
-```shell
-$ wget https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-2.3.4.tar.gz
-$ tar xzf drozer-2.3.4.tar.gz
-$ easy_install drozer-2.3.4-py2.7.egg
-```
-
-###### Installing the Agent
-
-Drozer agent is the software component that runs on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/) and install it with adb.
-
-```shell
-$ adb install drozer.apk
-```
-
-###### Starting a Session
-
-You should now have the Drozer console installed on your host machine and the Agent running on your USB-connected device or emulator. Now you need to connect the two to start exploring.
-
-Open the Drozer application in the running emulator and click the OFF button at the bottom of the app to start an Embedded Server.
-
-![alt text](Images/Chapters/0x05b/server.png "Drozer")
-
-The server listens on port 31415 by default. Use adb to forward this port to the localhost interface, then run Drozer on the host to connect to the agent.
-
-```shell
-$ adb forward tcp:31415 tcp:31415
-$ drozer console connect
-```
-
- Use the "list" command to view all Drozer modules that can be executed in the current session.
-
-###### Basic Drozer Commands
-
-- To list all the packages installed on the emulator, execute the following command:
+- To list all the packages installed, execute the following command:
 
     `dz> run app.package.list`
 
@@ -408,46 +327,12 @@ $ drozer console connect
 
     `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
 
-###### Using Modules
+Learn more about drozer's security assessment and exploitation features by checking the following resources:
 
-Out of the box, Drozer provides modules for investigating various aspects of the Android platform and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
-
-###### Finding Modules
-
-The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
-
-```shell
-dz> module search tool
-kernelerror.tools.misc.installcert
-metall0id.tools.setup.nmap
-mwrlabs.tools.setup.sqlite3
-```
-
-For more information about a module, pass the `–d` option to view the module's description:
-
-```shell
-dz> module  search url -d
-mwrlabs.urls
-    Finds URLs with the HTTP or HTTPS schemes by searching the strings
-    inside APK files.
-
-        You can, for instance, use this for finding API servers, C&C
-    servers within malicious APKs and checking for presence of advertising
-    networks.
-
-```
-
-###### Installing Modules
-
-You can install modules with the `module` command:
-
-```shell
-dz> module install mwrlabs.tools.setup.sqlite3
-Processing mwrlabs.tools.setup.sqlite3... Already Installed.
-Successfully installed 1 modules, 0 already installed
-```
-
-This will install any module that matches your query. Newly installed modules are dynamically loaded into the console and are available immediately.
+- [Command Reference](https://mobiletools.mwrinfosecurity.com/Command-Reference/ "drozer's Command Reference")
+- [Using drozer for application security assessments](https://mobiletools.mwrinfosecurity.com/Using-Drozer-for-application-security-assessments/ "Using drozer for application security assessments")
+- [Exploitation features in drozer](https://mobiletools.mwrinfosecurity.com/Exploitation-features-in-drozer/ "Exploitation features in drozer")
+- [Using modules](https://mobiletools.mwrinfosecurity.com/Installing-modules/)
 
 ##### Xposed
 
