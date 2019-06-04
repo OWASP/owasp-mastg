@@ -258,6 +258,7 @@ Save the IPA file locally with the following command:
 
     If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, see the following example using Telegram:
 
+    - Start the Frida server on the iOS-device.
     - Open the app and leave it running in the foreground.
     - Start an objection session by running the following command:
 
@@ -376,9 +377,9 @@ The following sections describes on how to retrieve basic information of an iOS 
 
 MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
 
-Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Just select the IPA you want to analyse and MobSF will start it's job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyse and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
 
-The result screen might first be overwhelming but will have a very good overview of the potential attack surface and has automated a few things for you. With MobSF you can now for example:
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
 
 - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classpdump can be created.
 - Have access to the Info.plist
@@ -388,9 +389,16 @@ There is much more information provided that you should explore, that might be h
 
 ##### Objection
 
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running as server on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name. When using objection you can retrieve different kind of information, where `env` will show you all the directory information of iGoat.
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+
+With `frida-ps` you can find the name of the process you want to analyse in objection.
 
 ```bash
+```shell
+$ frida-ps -Ua | grep -i iGoat
+PID  Name
+---  ----------------
+983  iGoat-Swift
 $ objection  --gadget "iGoat-Swift" explore
 ...
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
@@ -403,9 +411,11 @@ DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE
 LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
 ```
 
-The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, like the classes used in an app, functions of classes or information about the bundle of an app can be found below:
+If you want to do the same thing on a non-jailbroken device that is also possible, but then you need to [patch the iOS app](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") on macOS and with Xcode.
 
-```
+The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
+
+```bash
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
