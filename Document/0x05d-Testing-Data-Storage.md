@@ -8,7 +8,7 @@ Note that the meaning of "sensitive data" depends on the app that handles it. Da
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
 
-### Testing Local Storage for Sensitive Data 
+### Testing Local Storage for Sensitive Data
 
 #### Overview
 
