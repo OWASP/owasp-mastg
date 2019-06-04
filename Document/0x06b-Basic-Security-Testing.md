@@ -163,7 +163,7 @@ In order to analyse iOS apps, you should use a macOS device and install the foll
 
 ##### Connecting to an iOS emulator
 
-#### Host Device Data Transfer
+#### Host-Device Data Transfer
 
 ##### App Folder Structure
 
@@ -441,11 +441,17 @@ Several automated tools for analyzing iOS apps are available; most of them are c
 
 Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
-#### Dynamic Analysis with Jailbroken Devices
+#### Dynamic Analysis
+
+##### Using Non-Jailbroken Devices
+
+###### Injecting Frida into IPA
+
+##### Using Jailbroken Devices
 
 Life is easy with a jailbroken device: not only do you gain easy priviledged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-##### SSH Connection via USB
+###### SSH Connection via USB
 
 During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
 
@@ -469,7 +475,7 @@ iPhone:~ root#
 
 You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
 
-##### Using Burp via USB on a Jailbroken Device
+###### Using Burp via USB on a Jailbroken Device
 
 We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
@@ -500,7 +506,7 @@ The last step would be to set the proxy globally on your iOS device.
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-##### Installing Frida
+###### Installing Frida
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1251>
 
@@ -672,7 +678,7 @@ If you want to get more details about white box testing and typical code pattern
 
 To get more information about testing transport security, please refer to the section "Testing Network Communication."
 
-### Setting up a Network Testing Environment
+### Setting Up a Network Testing Environment
 
 -- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
 
