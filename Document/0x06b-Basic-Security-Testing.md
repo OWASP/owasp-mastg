@@ -118,15 +118,18 @@ You can also easily install Frida by adding the following repository to Cydia <h
 
 The following are some useful packages you can install from Cydia to get started:
 
-- BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
-- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
-- Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files.
-- Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
-- Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
-- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
+- BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
+- Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
+- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces.
+- Clutch: Used to decrypt an app executable.
+- Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
+- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
+- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 
 Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
 
@@ -134,12 +137,30 @@ Besides Cydia there are several other open source tools available and should be 
 
 In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
-- [Burp Suite](https://portswigger.net/burp "Burp Suite")
-- [Frida](https://www.frida.re "Frida")
-- [IDB](https://www.idbtool.com "IDBTool")
-- [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
+- [Burp Suite](https://portswigger.net/burp "Burp Suite"): Is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to.
+- [Frida](https://www.frida.re "Frida"): Is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps.
+- [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump"): This tools allows you to pull a decrypted IPA from a jailbroken device.
+- [Ghidra](https://ghidra-sre.org/ "Ghidra"): Is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate.
+- [IDB](https://www.idbtool.com "IDBTool"): Is an open source tool to simplify some common tasks for iOS app security assessments and research.
+- [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"): Install and debug iPhone apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1243
+```bash
+$ brew install ios-deploy 
+```
+
+- [iFunbox](http://www.i-funbox.com/ "iFunbox"): File and app management tool that supports iOS.
+- [keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper"): A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
+- [Mobile-Security-Framework - MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"):  Is an automated, all-in-one mobile application pen-testing framework that supports also iOS. The easiest way of getting MobSF started is via docker.
+
+```bash
+$ docker pull opensecurity/mobile-security-framework-mobsf
+$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+```
+
+- [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
+- [objection](https://github.com/sensepost/objection "objection"): objection is a runtime mobile exploration toolkit, powered by Frida.
+- [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
+- [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
 
 ### Basic Testing Operations
 
@@ -353,12 +374,7 @@ The following sections describes on how to retrieve basic information of an iOS 
 
 ##### Mobile Security Framework (MobSF)
 
-MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device. The easiest way of getting MobSF started is via docker.
-
-```bash
-$ docker pull opensecurity/mobile-security-framework-mobsf
-$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
-```
+MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
 
 Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Just select the IPA you want to analyse and MobSF will start it's job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
 
@@ -722,6 +738,8 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 #### Tools
 
 - Burp Suite - <https://portswigger.net/burp/communitydownload>
+- Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
+- Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
 - Frida - <https://www.frida.re>
 - IDB - <https://www.idbtool.com>
 - Introspy - <https://github.com/iSECPartners/Introspy-iOS>
@@ -731,6 +749,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Needle - <https://github.com/mwrlabs/needle>
 - Objection - <https://github.com/sensepost/objection>
+- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
 - SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
 - Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
 - Wireshark - <https://www.wireshark.org/download.html>
