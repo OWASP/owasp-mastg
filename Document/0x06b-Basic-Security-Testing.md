@@ -340,7 +340,7 @@ $ ipainstaller App_name.ipa
 
 -- ToDo <https://github.com/OWASP/owasp-mstg/issues/1248>
 
-##### Allow Application Installation on an Non-iPad Device
+##### Allow Application Installation on a Non-iPad Device
 
 Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
 
