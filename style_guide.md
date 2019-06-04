@@ -302,7 +302,7 @@ $ echo 'Hello World'
 Hello World
 ```
 
-When a command requires parameters that need to be modified by the reader, surround them with square brackets:
+When a command requires parameters that need to be modified by the reader, surround them with angle brackets:
 
 ```shell
 $ adb pull <remote_file> <target_destination>
