@@ -395,7 +395,7 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
-###### Mobile Security Framework (MobSF)
+####### Mobile Security Framework (MobSF)
 
 MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
 
@@ -409,7 +409,7 @@ After MobSF is done with its analysis, you will receive a one-page overview of a
 
 There is much more information provided that you should explore, that might be helpful for you.
 
-###### Objection
+####### Objection
 
 Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name, which you can identify with `frida-ps -Ua | grep -i <keyword>`. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
 
