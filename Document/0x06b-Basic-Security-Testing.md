@@ -109,6 +109,8 @@ Once you've jailbroken your iOS device and either Cydia (see screenshot above) o
   - The default password is `alpine`.
 - Change the default password for both users `root` and `mobile`.
 
+In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+
 #### Recommended Tools - iOS Device
 
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
@@ -117,7 +119,7 @@ You may also want to add the HackYouriPhone repository to get the AppSync packag
 
 You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>.
 
-The following are some useful packages you can install from Cydia to get started :
+The following are some useful packages you can install from Cydia to get started:
 
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
