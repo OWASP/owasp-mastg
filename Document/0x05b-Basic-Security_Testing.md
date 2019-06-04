@@ -377,7 +377,7 @@ In order to connect to the shell of an Android device from your host computer, [
 
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
-```
+```shell
 $ adb shell
 ```
 
@@ -385,7 +385,7 @@ $ adb shell
 
 If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
 
-```
+```shell
 $ adb shell
 generic_x86:/ $ su
 generic_x86:/ # id
@@ -399,18 +399,18 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 
 > Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already and it also allows to transfer data from/to file system locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
 
-**Connect to Multiple Devices**
+###### Connect to Multiple Devices
 
 If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
 ```shell
 $ adb devices
 List of devices attached
-00c907098530a82c	device
-emulator-5554	device
+00c907098530a82c    device
+emulator-5554    device
 ```
 
-**Connect to a Device over Wi-Fi**
+###### Connect to a Device over Wi-Fi
 
 You can also access your Android device without using the USB cable. For this you'll have to connect both your host computer and your Android device to the same Wi-Fi network and follow the next steps:
 
@@ -422,7 +422,7 @@ You can also access your Android device without using the USB cable. For this yo
 
 See the full instructions and considerations in the [Android Developers Documentation](https://developer.android.com/studio/command-line/adb#wireless "Connect to a device over Wi-Fi").
 
-**Connect to a Device via SSH**
+###### Connect to a Device via SSH
 
 If you prefer, you can also enable SSH access. A convenient option is to use Termux, which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
