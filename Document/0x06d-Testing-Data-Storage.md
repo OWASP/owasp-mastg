@@ -651,7 +651,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
-Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes"-but only if the app insecurely stores sensitive data in the first place.
+Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
 
 ##### How the Keychain Is Backed Up
 
@@ -715,13 +715,56 @@ The following is [sample Swift code for excluding a file from a backup](https://
 
 #### Dynamic Analysis
 
-After the app data has been backed up, review the data that's in the backed up files and folders. The following directories should be reviewed for sensitive data:
+In order to test the backup, you obviously need to create one first. The most common way to create a backup of an iOS device is by using iTunes, which is available for Windows, Linux and of course macOS. When creating a backup via iTunes you can always only backup the whole device and not select just a single app. Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your hard drive.
 
-- Documents/
-- Library/Application Support/
-- Library/Preferences/
+After the iOS device has been backed up through iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch").
 
-Refer to the overview of this section for more on the purpose of each of these directories.
+When you want to navigate to the iTunes backup folder up to High Sierra you can easily do so. Starting with macOS Mojave you will get the following error (even as root):
+
+```bash
+$ pwd
+/Users/foo/Library/Application Support
+$ ls -alh MobileSync
+ls: MobileSync: Operation not permitted
+```
+
+This is not a permission issue of the backup folder, but a new feature in macOS Mojave. Allow the Terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail. 
+
+Before you can access the directory you need to select the folder with the UDID of your device. This is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID in iTunes, when selecting your device and when you click in the summary tab on "Serial Number". When clicking on this you will iterate through different meta-data of the iOS device including it's UDID.
+
+It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id`:
+
+```bash
+$ brew install ideviceinstaller
+$ idevice_id -l
+316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+```
+
+Alternatively you can also use the Xcode command `instruments -s devices`.
+
+Once you know the UDID you can navigate into this directory and you will find the full backup of the whole device, which does include pictures, app data and whatever might have been stored on the device.
+
+Review the data that's in the backed up files and folders. The structure of the directories and file names is obfuscated and will look like this:
+
+```bash
+$ pwd
+/Users/foo/Library/Application Support/MobileSync/Backup/416f01bd160932d2bf2f95f1f142bc29b1c62dcb/00
+$ ls | head -n 3
+000127b08898088a8a169b4f63b363a3adcf389b
+0001fe89d0d03708d414b36bc6f706f567b08d66
+000200a644d7d2c56eec5b89c1921dacbec83c3e
+```
+
+Therefore it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. What you can do is use a simple grep to search for sensitive data that you have keyed in while using the app before you made the backup, for example the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
+
+```bash
+$ ~/Library/Application Support/MobileSync/Backup/<UDID>
+$ grep -iRn "password" .
+```
+
+If you can find such data it should be excluded from the backup as described in the Static Analysis chapter, or encrypted properly by using the Keychain or not stored on the device in the first place.
+
+In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information
 
