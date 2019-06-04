@@ -682,7 +682,7 @@ To get more information about testing transport security, please refer to the se
 
 -- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
 
-#### Network Monitoring/Sniffing
+#### Basic Network Monitoring/Sniffing
 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
@@ -703,6 +703,8 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+
+#### Potential Obstacles
 
 ### References
 
