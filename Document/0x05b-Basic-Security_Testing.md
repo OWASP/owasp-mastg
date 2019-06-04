@@ -622,7 +622,7 @@ sg.vantagepoint.uncrackable1
 sg.vp.owasp_mobile.omtg_android
 ```
 
-Or simply by using a SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
+Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
 ![SFTP Access](Images/Chapters/0x05b/sftp-with-filezilla.png)
 
