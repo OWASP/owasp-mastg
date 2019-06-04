@@ -96,11 +96,9 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 > Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
-#### Getting Priviledged Access
+#### Getting Privileged Access
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
-
-- *Cydia Store*
 
 Once you've jailbroken your iOS device and Cydia has been installed (as shown in the previous screenshot), proceed as follows:
 
@@ -109,44 +107,60 @@ Once you've jailbroken your iOS device and Cydia has been installed (as shown in
     - The default users are `root` and `mobile`.
     - The default password is `alpine`.
 3. Change the default password for both users `root` and `mobile`.
-4. Add the following repository to Cydia: `https://build.frida.re`.
-5. Install Frida from Cydia.
 
-Cydia allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL:
+#### Recommended Tools - iOS Device
 
-```http
-http://apt.thebigboss.org/repofiles/cydia/
-```
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
 
-You may also want to add the HackYouriPhone repository to get the AppSync package:
+You may also want to add the HackYouriPhone repository to get the AppSync package <http://repo.hackyouriphone.org>.
 
-```http
-http://repo.hackyouriphone.org
-```
+You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>.
 
 The following are some useful packages you can install from Cydia to get started:
 
-- BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
-- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
-- Class Dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files.
-- Cydia or Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
-- cycript: Cycript is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (assiciated to Substrate).
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
-- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
+- BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
+- Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
+- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces.
+- Clutch: Used to decrypt an app executable.
+- Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
+- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
+- Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
+- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 
-#### Recommended Tools
+Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
+
+#### Recommended Tools - macOS Device
 
 In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
-- [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS")
-- [Frida](https://www.frida.re "Frida")
-- [IDB](https://www.idbtool.com "IDBTool")
-- [Burp Suite](https://portswigger.net/burp "Burp Suite")
-- [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
+- [Burp Suite](https://portswigger.net/burp "Burp Suite"): Is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to.
+- [Frida](https://www.frida.re "Frida"): Is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps.
+- [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump"): This tools allows you to pull a decrypted IPA from a jailbroken device.
+- [Ghidra](https://ghidra-sre.org/ "Ghidra"): Is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate.
+- [IDB](https://www.idbtool.com "IDBTool"): Is an open source tool to simplify some common tasks for iOS app security assessments and research.
+- [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"): Install and debug iPhone apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1243
+```bash
+$ brew install ios-deploy 
+```
+
+- [iFunbox](http://www.i-funbox.com/ "iFunbox"): File and app management tool that supports iOS.
+- [keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper"): A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
+- [Mobile-Security-Framework - MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"):  Is an automated, all-in-one mobile application pen-testing framework that supports also iOS. The easiest way of getting MobSF started is via docker.
+
+```bash
+$ docker pull opensecurity/mobile-security-framework-mobsf
+$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+```
+
+- [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
+- [objection](https://github.com/sensepost/objection "objection"): objection is a runtime mobile exploration toolkit, powered by Frida.
+- [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
+- [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
 
 ### Basic Testing Operations
 
@@ -244,6 +258,7 @@ Save the IPA file locally with the following command:
 
     If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from the app's bundle. This can be easily done with objection, see the following example using Telegram:
 
+    - Start the Frida server on the iOS-device.
     - Open the app and leave it running in the foreground.
     - Start an objection session by running the following command:
 
@@ -297,7 +312,6 @@ Save the IPA file locally with the following command:
         ```
 
     Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via `scp` for example) or keep working on the device.
-
 
 #### Installing Apps
 
@@ -359,7 +373,54 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
--- ToDo Objection: https://github.com/OWASP/owasp-mstg/issues/1247
+##### Mobile Security Framework (MobSF)
+
+MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
+
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyse and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
+
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
+
+- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classpdump can be created.
+- Have access to the Info.plist
+- Exceptions in the App Transport Security (ATS) configuration will be raised
+
+There is much more information provided that you should explore, that might be helpful for you.
+
+##### Objection
+
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name, which you can identify with `frida-ps -Ua | grep -i <keyword>`. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+
+```bash
+```shell
+$ frida-ps -Ua | grep -i iGoat
+PID  Name
+---  ----------------
+983  iGoat-Swift
+$ objection  --gadget "iGoat-Swift" explore
+...
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
+
+Name               Path
+-----------------  -------------------------------------------------------------------------------------------
+BundlePath         /var/containers/Bundle/Application/E97D56FE-9C97-47ED-A458-5F1A3BDBE0DB/iGoat-Swift.app
+CachesDirectory    /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library/Caches
+DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Documents
+LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
+```
+
+If you want to do the same thing on a non-jailbroken device that is also possible, but then you need to [patch the iOS app](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") on macOS and with Xcode.
+
+The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
+
+```bash
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
+OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
+```
+
+##### Passionfruit
+
 -- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
 
 #### Dumping KeyChain Data
@@ -423,7 +484,7 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 #### Dynamic Analysis with Jailbroken Devices
 
-Life is easy with a jailbroken device: not only do you gain easy priviledged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
 ##### SSH Connection via USB
 
@@ -685,6 +746,8 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 #### Tools
 
 - Burp Suite - <https://portswigger.net/burp/communitydownload>
+- Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
+- Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
 - Frida - <https://www.frida.re>
 - IDB - <https://www.idbtool.com>
 - Introspy - <https://github.com/iSECPartners/Introspy-iOS>
@@ -694,6 +757,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Needle - <https://github.com/mwrlabs/needle>
 - Objection - <https://github.com/sensepost/objection>
+- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
 - SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
 - Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
 - Wireshark - <https://www.wireshark.org/download.html>
