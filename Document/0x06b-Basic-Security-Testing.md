@@ -334,15 +334,19 @@ Save the IPA file locally with the following command:
 
 #### Installing Apps
 
-When installing apps that are not available via the official distribution channel through Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below.
+When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified "AppSync"), a package available in the Cydia store. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
+
+Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
+
+> Please note that since iTunes 12.7 it is not longer possible to install apps using iTunes.
 
 ##### Cydia Impactor
 
-Different methods exist for installing an IPA package onto an iOS device. One tool that is available for Windows, macOS and Linux is [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading. The tool is available on MacOS, Windows and Linux, and can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+One tool that is available for Windows, macOS and Linux is [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading. The tool can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
 
 ##### libimobiledevice
 
-On Linux and also macOS, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. This allows you to install apps over an USB connection via ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
+On Linux and also macOS, you can alternatively use [libimobiledevice](https://www.libimobiledevice.org/ "libimobiledevice"), a cross-platform software protocol library and a set of tools for native communication with iOS devices. This allows you to install apps over a USB connection by executing ideviceinstaller. The connection is implemented with the USB multiplexing daemon [usbmuxd](https://www.theiphonewiki.com/wiki/Usbmux "Usbmux"), which provides a TCP tunnel over USB.
 
 The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
 
@@ -350,17 +354,70 @@ The package for libimobiledevice will be available in your Linux package manager
 $ brew install libimobiledevice
 ```
 
-On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified), a package available in the Cydia store. Cydia is an alternative app store or software distribution system. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
+After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
+
+```bash
+# The following command will show detailed information about the iOS device connected via USB.
+$ ideviceinfo
+# The following command will install the IPA to your iOS device.
+$ ideviceinstaller -i iGoat-Swift_v1.0-frida-codesigned.ipa
+WARNING: could not locate iTunesMetadata.plist in archive!
+WARNING: could not locate Payload/iGoat-Swift.app/SC_Info/iGoat-Swift.sinf in archive!
+Copying 'iGoat-Swift_v1.0-frida-codesigned.ipa' to device... DONE.
+Installing 'OWASP.iGoat-Swift'
+Install: CreatingStagingDirectory (5%)
+Install: ExtractingPackage (15%)
+Install: InspectingPackage (20%)
+Install: TakingInstallLock (20%)
+Install: PreflightingApplication (30%)
+Install: InstallingEmbeddedProfile (30%)
+Install: VerifyingApplication (40%)
+Install: CreatingContainer (50%)
+Install: InstallingApplication (60%)
+Install: PostflightingApplication (70%)
+Install: SandboxingApplication (80%)
+Install: GeneratingApplicationMap (90%)
+Install: Complete
+# The following command will start the app in debug mode, by providing the bundle name. The bundle name can be found in the previous command after "Installing".
+$ idevicedebug -d run OWASP.iGoat-Swift
+```
 
 ##### ipainstaller
 
-The IPA can also be directly installed via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
+The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
 ```shell
 $ ipainstaller App_name.ipa
 ```
 
--- ToDo <https://github.com/OWASP/owasp-mstg/issues/1248>
+##### ios-deploy
+
+On macOS one more tool can be used on the command line called [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), to allow installation and debugging of iOS apps from the command line. It can be installed via brew:
+
+```bash
+$ brew install ios-deploy
+```
+
+After the installation, go into the directory of the IPA you want to install and unzip it as ios-deploy installs an app by using the bundle.
+
+```bash
+$ unzip Name.ipa
+$ ios-deploy --bundle 'Payload/Name.app' -W -d -v
+```
+
+After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the application again.
+
+```bash
+$ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
+```
+
+##### Xcode
+
+It is also possible to use the Xcode IDE to install iOS apps by doing the following steps:
+
+1. Start Xcode
+2. Select "Window/Devices and Simulators"
+3. Select the connected iOS device and click on the "+" sign in "Installed Apps".
 
 ##### Allow Application Installation on a Non-iPad Device
 
