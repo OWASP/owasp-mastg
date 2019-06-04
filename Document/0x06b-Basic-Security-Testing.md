@@ -15,7 +15,7 @@ The following is the most basic iOS app testing setup:
 - at least one jailbroken iOS device (of the desired iOS version)
 - Burp Suite or other interception proxy tool
 
-#### Setting up Xcode and Command Line Tools
+##### Setting up Xcode and Command Line Tools
 
 Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools for developing software for macOS, iOS, watchOS, and tvOS. You can [download Xcode for free from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). Xcode will offer you different tools and functions to interact with an iOS device that can be helpful during a penetration test, such as analyzing logs or sideloading of apps.
 
@@ -35,7 +35,7 @@ You should have a jailbroken iPhone or iPad for running tests. These devices all
 
 Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
 
-#### Jailbreak
+##### Getting Priviledged Access
 
 iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
 
@@ -52,7 +52,7 @@ Developing a jailbreak for a given version of iOS is not easy. As a security tes
 
 Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
 
-##### Benefits of Jailbreaking
+###### Benefits of Jailbreaking
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
@@ -61,7 +61,7 @@ End users often jailbreak their devices to tweak the iOS system's appearance, ad
 - unrestricted debugging and dynamic analysis
 - access to the Objective-C or Swift runtime
 
-##### Jailbreak Types
+###### Jailbreak Types
 
 There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
 
@@ -73,7 +73,7 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 - Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
 
-##### Caveats and Considerations
+###### Caveats and Considerations
 
 Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the jailbreak benefits from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") affecting the BootROM of the iPhone 4 and iPad 1). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
 
@@ -81,7 +81,7 @@ If you have a jailbroken device that you use for security testing, keep it as is
 
 iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window," and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
-##### Which Jailbreaking Tool to Use
+###### Which Jailbreaking Tool to Use
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
@@ -96,7 +96,9 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 > Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
-#### Getting Priviledged Access
+###### Cydia Store
+
+The Cydia store is an alternative app store that is typically automatically installed when a device is jailbroken, although sometimes it may take a while until a jailbreak with Cydia support is available.
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
 
@@ -135,6 +137,7 @@ The following are some useful packages you can install from Cydia to get started
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
 - PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
+- Frida: Frida is a dynamic instrumentation framework that is used in many
 
 #### Recommended Tools
 
@@ -146,9 +149,19 @@ In order to analyse iOS apps, you should use a macOS device and install the foll
 - [Burp Suite](https://portswigger.net/burp "Burp Suite")
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1243
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1243>
 
 ### Basic Testing Operations
+
+#### Accessing the Device Shell
+
+##### On-device Shell App
+
+##### Remote Shell
+
+##### Connecting to a physical iOS device
+
+##### Connecting to an iOS emulator
 
 #### Host Device Data Transfer
 
@@ -205,12 +218,11 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
-
---ToDo: https://github.com/OWASP/owasp-mstg/issues/1245
+--ToDo: <https://github.com/OWASP/owasp-mstg/issues/1245>
 
 #### Obtaining and Extracting Apps
 
---ToDo: https://github.com/OWASP/owasp-mstg/issues/1246
+--ToDo: <https://github.com/OWASP/owasp-mstg/issues/1246>
 
 ##### Getting the IPA File from an OTA Distribution Link
 
@@ -298,7 +310,6 @@ Save the IPA file locally with the following command:
 
     Alternatively you can connect per SSH to the device, search for the bundle directory and `cd` to it, locate the app binary and copy it over to your computer (via `scp` for example) or keep working on the device.
 
-
 #### Installing Apps
 
 When installing apps that are not available via the official distribution channel through Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below.
@@ -327,10 +338,9 @@ The IPA can also be directly installed via the command line with [ipainstaller](
 $ ipainstaller App_name.ipa
 ```
 
--- ToDo https://github.com/OWASP/owasp-mstg/issues/1248
+-- ToDo <https://github.com/OWASP/owasp-mstg/issues/1248>
 
-
-#### Allow Application Installation on an Non-iPad Device
+##### Allow Application Installation on an Non-iPad Device
 
 Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
 
@@ -357,22 +367,28 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
+##### Installed Apps
+
+##### App Basic Information
+
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
--- ToDo Objection: https://github.com/OWASP/owasp-mstg/issues/1247
--- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
+-- ToDo Objection: <https://github.com/OWASP/owasp-mstg/issues/1247>
+-- ToDo Passionfruit: <https://github.com/OWASP/owasp-mstg/issues/1249>
 
-#### Dumping KeyChain Data
+##### Accessing App Data
 
-##### Objection (non-Jailbroken)
+###### Dumping KeyChain Data
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
+###### Objection (non-Jailbroken)
 
-##### Passionfruit (non-Jailbroken)
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
+####### Passionfruit (non-Jailbroken)
 
-##### Keychain-dumper (Jailbroken)
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+
+####### Keychain-dumper (Jailbroken)
 
 [Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
@@ -407,7 +423,11 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
+##### Monitoring System Logs
+
 #### Static Analysis
+
+##### Manual Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
@@ -482,8 +502,7 @@ Open Safari and go to any webpage, you should see now the traffic in Burp. Thank
 
 ##### Installing Frida
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1251
-
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1251>
 
 [Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
 
@@ -622,8 +641,7 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ##### Bypassing Certificate Pinning
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1252
-
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1252>
 
 "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
 
@@ -655,6 +673,8 @@ If you want to get more details about white box testing and typical code pattern
 To get more information about testing transport security, please refer to the section "Testing Network Communication."
 
 ### Setting up a Network Testing Environment
+
+-- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
 
 #### Network Monitoring/Sniffing
 
