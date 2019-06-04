@@ -38,6 +38,7 @@ After your PR has been submitted, we will review it as quickly as possible. This
     upstream git@github.com:OWASP/owasp-mstg.git (fetch)
     upstream git@github.com:OWASP/owasp-mstg.git (push)
     ```
+
     See also the GitHub documentation on [Configuring a remote for a fork](https://help.github.com/en/articles/configuring-a-remote-for-a-fork "Configuring a remote for a fork").
 1. Choose what to work on, based on any of the outstanding [issues](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues").
 1. Create a branch so that you can cleanly work on the chosen issue: `git checkout -b FixingIssue66`
