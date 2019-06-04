@@ -15,7 +15,7 @@ The following is the most basic iOS app testing setup:
 - at least one jailbroken iOS device (of the desired iOS version)
 - Burp Suite or other interception proxy tool
 
-#### Setting up Xcode and Command Line Tools
+##### Setting up Xcode and Command Line Tools
 
 Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools for developing software for macOS, iOS, watchOS, and tvOS. You can [download Xcode for free from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). Xcode will offer you different tools and functions to interact with an iOS device that can be helpful during a penetration test, such as analyzing logs or sideloading of apps.
 
@@ -35,7 +35,7 @@ You should have a jailbroken iPhone or iPad for running tests. These devices all
 
 Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
 
-#### Jailbreak
+##### Getting Priviledged Access
 
 iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
 
@@ -54,7 +54,7 @@ Developing a jailbreak for a given version of iOS is not easy. As a security tes
 
 Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
 
-##### Benefits of Jailbreaking
+###### Benefits of Jailbreaking
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
@@ -63,7 +63,7 @@ End users often jailbreak their devices to tweak the iOS system's appearance, ad
 - unrestricted debugging and dynamic analysis
 - access to the Objective-C or Swift runtime
 
-##### Jailbreak Types
+###### Jailbreak Types
 
 There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
 
@@ -75,7 +75,7 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 - Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
 
-##### Caveats and Considerations
+###### Caveats and Considerations
 
 Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the jailbreak benefits from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") affecting the BootROM of the iPhone 4 and iPad 1). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
 
@@ -83,7 +83,7 @@ If you have a jailbroken device that you use for security testing, keep it as is
 
 iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window," and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
-##### Which Jailbreaking Tool to Use
+###### Which Jailbreaking Tool to Use
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
@@ -155,7 +155,7 @@ In order to analyse iOS apps, you should use a macOS device and install the foll
 - [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"): Install and debug iPhone apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
 ```bash
-$ brew install ios-deploy 
+$ brew install ios-deploy
 ```
 
 - [iFunbox](http://www.i-funbox.com/ "iFunbox"): File and app management tool that supports iOS.
@@ -174,7 +174,17 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 
 ### Basic Testing Operations
 
-#### Host Device Data Transfer
+#### Accessing the Device Shell
+
+##### On-device Shell App
+
+##### Remote Shell
+
+##### Connecting to a physical iOS device
+
+##### Connecting to an iOS emulator
+
+#### Host-Device Data Transfer
 
 ##### App Folder Structure
 
@@ -229,12 +239,11 @@ iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
-
---ToDo: https://github.com/OWASP/owasp-mstg/issues/1245
+--ToDo: <https://github.com/OWASP/owasp-mstg/issues/1245>
 
 #### Obtaining and Extracting Apps
 
---ToDo: https://github.com/OWASP/owasp-mstg/issues/1246
+--ToDo: <https://github.com/OWASP/owasp-mstg/issues/1246>
 
 ##### Getting the IPA File from an OTA Distribution Link
 
@@ -351,10 +360,9 @@ The IPA can also be directly installed via the command line with [ipainstaller](
 $ ipainstaller App_name.ipa
 ```
 
--- ToDo https://github.com/OWASP/owasp-mstg/issues/1248
+-- ToDo <https://github.com/OWASP/owasp-mstg/issues/1248>
 
-
-#### Allow Application Installation on an Non-iPad Device
+##### Allow Application Installation on a Non-iPad Device
 
 Sometimes an application can require to be used on an iPad device. If you only have iPhone or iPod touch devices then you can force the application to accept to be installed and used on these kinds of devices. You can do this by changing the value of the property **UIDeviceFamily** to the value **1** in the **Info.plist** file.
 
@@ -381,9 +389,13 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
+##### Installed Apps
+
+##### App Basic Information
+
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
-##### Mobile Security Framework (MobSF)
+####### Mobile Security Framework (MobSF)
 
 MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
 
@@ -397,7 +409,7 @@ After MobSF is done with its analysis, you will receive a one-page overview of a
 
 There is much more information provided that you should explore, that might be helpful for you.
 
-##### Objection
+####### Objection
 
 Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name, which you can identify with `frida-ps -Ua | grep -i <keyword>`. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
 
@@ -427,21 +439,23 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <Cl
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 ```
 
-##### Passionfruit
+###### Passionfruit
 
 -- ToDo Passionfruit: https://github.com/OWASP/owasp-mstg/issues/1249
 
-#### Dumping KeyChain Data
+##### Accessing App Data
 
-##### Objection (non-Jailbroken)
+###### Dumping KeyChain Data
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
+###### Objection (non-Jailbroken)
 
-##### Passionfruit (non-Jailbroken)
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1250
+####### Passionfruit (non-Jailbroken)
 
-##### Keychain-dumper (Jailbroken)
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+
+####### Keychain-dumper (Jailbroken)
 
 [Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
@@ -476,7 +490,11 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
+##### Monitoring System Logs
+
 #### Static Analysis
+
+##### Manual Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
@@ -490,11 +508,17 @@ Several automated tools for analyzing iOS apps are available; most of them are c
 
 Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
-#### Dynamic Analysis with Jailbroken Devices
+#### Dynamic Analysis
+
+##### Using Non-Jailbroken Devices
+
+###### Injecting Frida into IPA
+
+##### Using Jailbroken Devices
 
 Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-##### SSH Connection via USB
+###### SSH Connection via USB
 
 During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
 
@@ -518,7 +542,7 @@ iPhone:~ root#
 
 You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
 
-##### Using Burp via USB on a Jailbroken Device
+###### Using Burp via USB on a Jailbroken Device
 
 We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
@@ -549,10 +573,9 @@ The last step would be to set the proxy globally on your iOS device.
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-##### Installing Frida
+###### Installing Frida
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1251
-
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1251>
 
 [Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
 
@@ -691,8 +714,7 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ##### Bypassing Certificate Pinning
 
--- ToDo: https://github.com/OWASP/owasp-mstg/issues/1252
-
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1252>
 
 "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
 
@@ -723,9 +745,11 @@ If you want to get more details about white box testing and typical code pattern
 
 To get more information about testing transport security, please refer to the section "Testing Network Communication."
 
-### Setting up a Network Testing Environment
+### Setting Up a Network Testing Environment
 
-#### Network Monitoring/Sniffing
+-- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
+
+#### Basic Network Monitoring/Sniffing
 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
@@ -746,6 +770,8 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+
+#### Potential Obstacles
 
 ### References
 
