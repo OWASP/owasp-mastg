@@ -107,12 +107,20 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1228>
 
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via the USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on these devices.
 
 ```shell
 $ adb devices
 List of devices attached
-090c285c0b97f748  device
+090c285c0b97f748 device
+emulator-5554    device
+```
+
+```shell
+$ adb devices -l
+List of devices attached
+090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
+emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
 
 ##### Frida
