@@ -307,7 +307,7 @@ $ class-dump Telegram
 //
 ```
 
-In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-iOS-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's usefull to have multiple ways for extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump.
+In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-iOS-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's usefull to have multiple ways for extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or modify Clutch as discussed later.
 
 ###### Using Clutch
 
@@ -372,13 +372,39 @@ struct CGPoint {
 
 ```
 
+Note: when you use Clutch on iOS 12, please check [Clutch its Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
+
 ###### Using Frida-ios-dump
 
-After Frida has been launched on the iOS device, simply run the dump.py tool with the name of the application:
+Frida-ios-dump requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
+Note: before we get started, please note that the Frida-ios-dump tool is not always compatible with the latest version of Frida. Therefore: it might well be that you have to install an older version of Frida on your jailbroken device.
+First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual ip-address and prot of the device from which you want to dump the binary. Next, change the username and password to the ones you use. Now you can safely use the tool to enumerate the apps installed:
 
 ```shell
+$ ./dump.py -l
+ PID  Name             Identifier
+----  ---------------  -------------------------------------
+ 860  Cydia            com.saurik.Cydia
+1130  Instellingen     com.apple.Preferences
+ 685  Mail             com.apple.mobilemail
+ 834  Telegram         ph.telegra.Telegraph
+   -  Aandelen         com.apple.stocks
+   ...
+```
 
-````
+and you can dump the binary you select:
+
+```shell
+python dump.py com.highaltitudehacks.DVIAswiftv2   
+/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
+  m.add_string(self.Q_C.public_numbers().encode_point())
+/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
+  self.curve, Q_S_bytes
+/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
+  hm.add_string(self.Q_C.public_numbers().encode_point())
+Start the target app ph.telegra.Telegraph
+Dumping Telegram to /var/folders/0b/5j2l_v0x47j2k6dwqw5c2d040000gn/T
+```
 
 #### Installing Apps
 
