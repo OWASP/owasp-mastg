@@ -43,27 +43,33 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 ##### Testing on a Real Device
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
-
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
+
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
 ##### Testing on the Emulator
 
-All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1279>
 
-- MobSF
-- Nathan (not updated since 2016)
-- AppUse
+You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
+You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
-You can also create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices")
-
-Please also verify the "Tools" section at the end of this book.
-
-###### Restrictions When Testing on an Emulator
+```shell
+$ ./android avd
+```
 
 There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
 
 Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
+
+Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
+
+- MobSF
+- Nathan (not updated since 2016)
+
+Please also verify the "Tools" section at the end of this book.
 
 ##### Getting Privileged Access
 
@@ -362,60 +368,65 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 
 #### Accessing the Device Shell
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1236>
-
-##### On-device Shell App
+One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both remotely from your host computer with/without a USB cable and locally from the device itself.
 
 ##### Remote Shell
 
-In order to connect to the shell of an Android device, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your first tool of choice (unless you've configured remote SSH access).
+In order to connect to the shell of an Android device from your host computer, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
-###### Connecting to an Android Physical Device
+For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
-When connecting to an Android physical device, you must enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+```shell
+$ adb shell
+```
 
-Once USB debugging is enabled, connected devices can be viewed with the following command:
+> press Control + D or type `exit` to quit
+
+If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
+
+```shell
+$ adb shell
+bullhead:/ $ su
+bullhead:/ # id
+uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
+```
+
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
+
+###### Connect to Multiple Devices
+
+If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
 ```shell
 $ adb devices
 List of devices attached
-BAZ5ORFARKOZYDFA    device
+00c907098530a82c    device
+emulator-5554    device
 ```
 
-Access to the remote device's shell
+###### Connect to a Device over Wi-Fi
 
-```shell
-$ adb shell
-```
+You can also access your Android device without using the USB cable. For this you'll have to connect both your host computer and your Android device to the same Wi-Fi network and follow the next steps:
 
-> When you are ready to exit the remote shell, press Control + D or type `exit`.
+- Connect the device to the host computer with a USB cable and set the target device to listen for a TCP/IP connection on port 5555: `adb tcpip 5555`.
+- Disconnect the USB cable from the target device and run `adb connect <device_ip_address>`. Check that the device is now available by running `adb devices`.
+- Open the shell with `adb shell`.
 
-This will simply work if you have only one device connected. If you have more than one, you'll have to specify the device to which you want to access the shell.
+However, notice that by doing this you leave your device open to anyone being in the same network and knowing the IP address of your device. You may rather prefer using the USB connection.
 
-The `adb shell` command can also issue commands to the device without entering the adb remote shell, for example:
+> For example, on a Nexus device, you can find the IP address at Settings -> System -> About phone -> Status -> IP address or by going to the Wi-Fi menu and tapping once on the network you're connected to.
 
-```shell
-$ adb shell id
-```
+See the full instructions and considerations in the [Android Developers Documentation](https://developer.android.com/studio/command-line/adb#wireless "Connect to a device over Wi-Fi").
 
-###### Connecting to an Android Virtual Device
+###### Connect to a Device via SSH
 
-You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
+If you prefer, you can also enable SSH access. A convenient option is to use Termux, which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
-```shell
-$ ./android avd
-```
+##### On-device Shell App
 
-Once the emulator is up and running, you can establish a root connection with the `adb` command.
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
 
-```shell
-$ adb root
-$ adb shell
-root@generic_x86:/ $ id
-uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:su:s0
-```
-
-Rooting an emulator is therefore unnecessary; root access can be established with `adb`.
+Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
 
 #### Host-Device Data Transfer
 
