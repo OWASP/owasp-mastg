@@ -6,9 +6,9 @@
 
 Большая часть этой главы относится к приложениям, написанным на Objective-C или имеющим bridged types, которые являются типами, совместимыми как с Swift, так и с Objective-C. Большинство инструментов, которые в настоящее время хорошо работают с Objective-C, работают над улучшением их совместимости с Swift. Например, в настоящее время Фрида поддерживает [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
-#### XCode и iOS SDK
+#### Xcode и iOS SDK
 
-XCode - это интегрированная среда разработки (IDE) для macOS, содержащая набор инструментов для разработки программного обеспечения, созданная Apple для разработки программного обеспечения для macOS, iOS, watchOS и tvOS. Последним выпуском на момент написания этой книги является XCode 8, который можно загрузить [с официального веб-сайта Apple] (https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
+Xcode - это интегрированная среда разработки (IDE) для macOS, содержащая набор инструментов для разработки программного обеспечения, созданная Apple для разработки программного обеспечения для macOS, iOS, watchOS и tvOS. Последним выпуском на момент написания этой книги является Xcode 8, который можно загрузить [с официального веб-сайта Apple] (https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
 
 IOS SDK (Software Development Kit), ранее известный как iPhone SDK, представляет собой набор для разработки программного обеспечения, созданный Apple для разработки собственных приложений для iOS. Последний выпуск на момент написания этой книги - это iOS 10 SDK, и он может быть [загружен с официального веб-сайта Apple] (https://developer.apple.com/ios/ "Apple iOS 10 SDK").
 
@@ -44,19 +44,19 @@ IDA Pro может работать с двоичными файлами iOS и 
 
 Во время разработки, приложения иногда предоставляются тестировщикам через распространение по воздуху (OTA). В этом случае вы получите ссылку itms-services, примерно такую:
 
-```
+```shell
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
 Вы можете использовать [ITMS services asset downloader](https://www.npmjs.com/package/itms-services) чтобы загрузить IPS через OTA ссылку. Установите через npm таким образом:
 
-```
+```shell
 npm install -g itms-services
 ```
 
 Сохраните файл IPA локально, написва следующую команду:
 
-```
+```shell
 # itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
 ```
 
@@ -92,11 +92,11 @@ iPhone:~ root# ipainstaller -b com.example.targetapp -o /tmp/example.ipa
 
 Помимо подписи кода, приложения, распространяемые через магазин приложений, также защищены с помощью системы Apple FairPlay DRM. Эта система использует асимметричную криптографию, чтобы гарантировать, что любое приложение (включая бесплатные приложения), полученное из магазина приложений, выполняется только на определенном устройстве, которое одобрено для запуска. Ключ дешифрования уникален для устройства и записывается в процессор. На данный момент единственный способ получить дешифрованный код из приложения с расшифровкой FairPlay - это копирование его из памяти во время работы приложения. На устройстве с джейлбрейком это можно сделать с помощью инструмента Clutch, который входит в стандартный репозиторий Cydia [2]. Используйте Clutch в интерактивном режиме, чтобы получить список установленных приложений, расшифровать их и упаковать в файл IPA:
 
-```
+```shell
 # Clutch -i
 ```
 
-**Примечание:** Только приложения, распространяемые через AppStore, защищены с помощью FairPlay DRM. Если вы получили свое приложение, скомпилированное и экспортированное непосредственно из XCode, вам не нужно расшифровывать его. Самый простой способ - загрузить приложение в Hopper и проверить, правильно ли оно было дизассемблировано. Вы также можете проверить это с помощью otool:
+**Примечание:** Только приложения, распространяемые через AppStore, защищены с помощью FairPlay DRM. Если вы получили свое приложение, скомпилированное и экспортированное непосредственно из Xcode, вам не нужно расшифровывать его. Самый простой способ - загрузить приложение в Hopper и проверить, правильно ли оно было дизассемблировано. Вы также можете проверить это с помощью otool:
 
 ```shell
 # otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
@@ -124,8 +124,8 @@ DamnVulnerableIOSApp (architecture arm64):
 Mach header
       magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
 MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
 ```
+
 Подметим, что название архитектуры для 32 битной разрядности `armv7`, а также  `arm64`. Данный архитектурный прием позволяет распространять одно приложение для всех устройств. Для того, чтобы проанализировать приложение, используя class-dump нам необходимо создать, так называемый тонкий бинарник, который создан только для одной архитектуры:
 
 ```shell
@@ -150,7 +150,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 
 Следующая команда показывает список общих библиотек:
 
-```bash
+```shell
 $ otool -L <binary>
 ```
 
@@ -162,13 +162,13 @@ $ otool -L <binary>
 
 ##### Использование LLDB
 
-iOS поставляется с консольным приложением, debugserver, которое позволяет воспользоваться удаленной отладкой с использованием lldb или gdb. По умолчанию, debugserver не может прикрепляться к произвольным процессам (обычно, он используется для отладки собственных приложений, разработанных в Xcode). Чтобы включить отладку сторонних приложений, право на получение task_for_pid должно быть добавлено в исполняемый файл debugserver. Самый простой способ сделать это- добавление права в [исполняемый файл debugserver, поставляемый с XCode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+iOS поставляется с консольным приложением, debugserver, которое позволяет воспользоваться удаленной отладкой с использованием lldb или gdb. По умолчанию, debugserver не может прикрепляться к произвольным процессам (обычно, он используется для отладки собственных приложений, разработанных в Xcode). Чтобы включить отладку сторонних приложений, право на получение task_for_pid должно быть добавлено в исполняемый файл debugserver. Самый простой способ сделать это- добавление права в [исполняемый файл debugserver, поставляемый с Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 Чтобы получить исполняемый файл смонтируйте следующий DMG образ:
 
-~~~
-/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version//DeveloperDiskImage.dmg
-~~~
+```shell
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version>//DeveloperDiskImage.dmg
+```
 
 Вы найдете исполняемый файл debugserver в директории /usr/bin/ на смонтированном томе, скопируйте его во временную директорию.После этого, создайте файл entitlements.plist со следующим содержимым:
 
@@ -217,7 +217,7 @@ Cydia Substrate (раньше называемая MobileSubstrate) являет
 
 Прежде всего, необходимо скачать, распаковать и установить SDK.
 
-```bash
+```shell
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
@@ -225,14 +225,14 @@ $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
 ```
 Чтобы создать интерактивную оболочку cycript, вы можете запустить “./cyript” или просто “cycript”, если он находится в вашей глобальной переменной PATH.
 
-```bash
+```shell
 $ cycyript
 cy#
 ```
 
 Чтобы произвести инъекцию в запущенный процесс, в первую очередь необходимо найти идентификатор процесса(PID). Вы можете выполнить "cycript -p" с указанием PID того процесса, куда хотите произвести инъекцию. Чтобы продемонстрировать мы произведем инъекцию в SpringBoard.
 
-```bash
+```shell
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
@@ -241,7 +241,7 @@ cy#
 
 Мы осуществили инекцию в SpringBoard, давайте попробуем вызвать сообщение оповещения на SpringBoard, используя cycript. 		
 
-```bash
+```shell
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
@@ -251,20 +251,20 @@ cy# [alertView release]
 
 Узнайте папку документа, используя cycript:
 
-```bash
+```shell
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
 ```
 
 Получайте класс делегата приложения, используя следующую команду:
 
-```bash
+```shell
 cy# [UIApplication sharedApplication].delegate
 ```
 
 Команда [[UIApp keyWindow] recursiveDescription].toString() возвращает иерархию view для keyWindow. Описание каждого subview и sub-subview для keyWindow будет показано, а отступ будет отражать взаимоотношения каждого view. Например, UILabel, UITextField и UIButton являются subviews UIView.
 
-```
+```shell
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
    | <UIView: 0x16e935f0; frame = (0 0; 320 568); autoresize = W+H; layer = <CALayer: 0x16e93680>>
@@ -286,18 +286,22 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 - Осуществите внедрение в приложение, написав: `cycript -p PID`.
 - Интерпретатор Cycript будет предоставлен, в случае успеха. Вы можете получить сущность приложения, использовав синтаксис Objective-C `[UIApplication sharedApplication]`.
 
-```
-cy# [UIApplication sharedApplication]
-cy# var a = [UIApplication sharedApplication]
-```
+    ```
+    cy# [UIApplication sharedApplication]
+    cy# var a = [UIApplication sharedApplication]
+    ```
+
 - Чтобы получить делегат приложения:
-```
-cy# a.delegate
-```
+
+    ```
+    cy# a.delegate
+    ```
+
 - Для печати методов класса AppDelegate:
-```
-cy# printMethods (“AppDelegate”)
-```
+
+    ```
+    cy# printMethods (“AppDelegate”)
+    ```
 
 #### Установка Frida
 

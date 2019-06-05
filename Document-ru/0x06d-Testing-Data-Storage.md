@@ -283,7 +283,7 @@ do {
 
 Файлы Keychain находятся в:
 
-```
+```shell
 /private/var/Keychains/Keychain-2.db
 ```
 
@@ -297,7 +297,7 @@ do {
 
 Как только приложение запустилось, вы можете перейти в папку, используя команду:
 
-```bash
+```shell
 $ cd ~/Library/Developer/CoreSimulator/Devices/$(
 ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
 awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
@@ -305,7 +305,7 @@ awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 
 Команда автоматически найдет UUID устройства, запушенного в последний раз. Теперь вам все равно необходимо найти/захватить(grep) имя вашего приложения или ключевое слово в нем. Данная команда покажет UUID приложения.
 
-```bash
+```shell
 $ grep -iRn keyword .
 ```
 После этого вы можете следить и проверять изменения в файловой системе приложение и узнать хранится ли чувствительная информация среди файлов, во время использования приложения.
@@ -318,7 +318,7 @@ $ grep -iRn keyword .
 
 Для чтения Keychain, используя Needle:
 
-```
+```shell
 [needle] > use storage/data/Keychain_dump
 [needle][Keychain_dump] > run
 ```
@@ -327,7 +327,7 @@ $ grep -iRn keyword .
 
 Приложения iOS часто хранят бинарные файлы кукис в песочнице приложения. В таких бинарных файлах обычно хранятся куки информация webView приложения. Можно использовать Needle для конвертации файлов в читаемый формат. Для поиска таких файлов в контейнере приложения, просмотра их атрибутов защиты данных и непосредственной их загрузки или просмотра используйте модуль Needle:
 
-```
+```shell
 [needle] > use storage/data/files_binarycookies
 [needle][files_binarycookies] > run
 ```
@@ -339,7 +339,7 @@ $ grep -iRn keyword .
 Для поиска таких файлов в контейнере приложения, просмотра их атрибутов защиты данных и непосредственной их загрузки или просмотра воспользуйтесь модулем Needle:
 
 
-```
+```shell
 [needle] > use storage/data/files_plist
 [needle][files_plist] > run
 ```
@@ -348,7 +348,7 @@ $ grep -iRn keyword .
 
 Приложение может хранить веб запросы и ответы, в которых может находится чувствительная информация, в кэширующих БД. Для поиска таких файлов в контейнере приложения, просмотра их атрибутов защиты данных и непосредственной их загрузки или просмотра воспользуйтесь модулем Needle:
 
-```
+```shell
 [needle] > use storage/data/files_cachedb
 [needle][files_cachedb] > run
 ```
@@ -357,7 +357,7 @@ $ grep -iRn keyword .
 
 Приложения часто используют SQLite базы данных для хранения данных. Тестировщикам следует проверять значения защиты данных этих файлов также как их содержимое для обнаружения хранения чувствительной информации. Для поиска таких БД файлов в контейнере приложения, просмотра их атрибутов защиты данных и непосредственной их загрузки или просмотра воспользуйтесь модулем Needle:
 
-```
+```shell
 [needle] > use storage/data/files_sql
 [needle][files_sql] >
 ```
@@ -401,17 +401,17 @@ $ grep -iRn keyword .
 
 - Подключитесь к устройству и выполните команду:
 
-```
-tail -f /var/log/syslog
-```
+    ```shell
+    tail -f /var/log/syslog
+    ```
 
-- Подсоедините свое устройство через USB и запустите XCode. Перейдите в Windows > Devices, выберете ваше устройство и соответствующее приложение.
+- Подсоедините свое устройство через USB и запустите Xcode. Перейдите в Windows > Devices, выберете ваше устройство и соответствующее приложение.
 
 Заполните все всплывающие поля ввода и если после выполнения команды сверху отображается чувствительная информация - значит тест провален.
 
 Лог файлы также могут быть изучены, используя Needle, для захвата логов приложения iOS используйте команду:
 
-```
+```shell
 [needle] > use dynamic/monitor/syslog
 [needle][syslog] > run
 ```
@@ -560,7 +560,7 @@ UIPasteboard *pb = [UIPasteboard generalPasteboard];
 Needle может быть использован для мониторинга буфера обмена на джейлбрейк устройстве. Следующий модуль Needle должен быть запущен для начала пассивного мониторинга буфера обмена, любые данные из буфера обмена будут записаны в специальный выходной файл:
 
 
-```
+```shell
 [needle] > use dynamic/monitor/pasteboard
 [needle] > set OUTPUT "./clipboard-logs.txt"
 [needle] > run
@@ -594,7 +594,7 @@ Needle может быть использован для мониторинга 
 
 [Несколько атрибутов безопасности](https://www.objc.io/issues/14-mac/xpc/#security-attributes-of-the-connection "Security Attributes of NSXPCConnection") для подключения могут быть использованы, и их необходимо проверить.
 
-Для XPC Services API, которые основаны на C, необходимо проверить наличие следующих двух файлов в проекте XCode:
+Для XPC Services API, которые основаны на C, необходимо проверить наличие следующих двух файлов в проекте Xcode:
 
 - [xpc.h](https://developer.apple.com/documentation/xpc/xpc_services_xpc.h "xpc.h")
 - connection.h
@@ -699,7 +699,7 @@ iOS создает копии всех установленных приложе
 
 Далее следует [пример кода для исключения файлов из бекапа](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") на iOS 5.1 и старше (Swift):
 
-```
+```swift
  func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
     {
         let URL:NSURL = NSURL.fileURLWithPath(filePath)
@@ -742,7 +742,7 @@ iOS создает копии всех установленных приложе
 
 Возможный способ обойти данную ситуацию, поставить скриншот по умолчанию:
 
-```
+```objc
 @property (UIImageView *)backgroundImage;
  
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -750,6 +750,7 @@ iOS создает копии всех установленных приложе
     self.backgroundImage = myBanner;
     [self.window addSubview:myBanner];
 }
+
 ```
 
 Данная манипуляция выставит файл "overlayImage.png" как фоновое изображение всегда, когда приложение переходит в фоновый режим. Данный подход защитит от утечки чувствительных данных, так как  "overlayImage.png" всегда будет перезаписывать текущий экран(view).
@@ -762,7 +763,7 @@ iOS создает копии всех установленных приложе
 
 Уязвимости по кэшированию скринштов могут быть обнаружены, с использованием Needle. Это демонстрируется ниже:
 
-```
+```shell
 [needle] > use storage/caching/screenshot
 [needle][screenshot] > run
 [V] Creating timestamp file...
@@ -844,7 +845,7 @@ str1.removeAll()                 // "", base address                    0x00010b
 
 Objection дает возможность произвести дамп всей памяти запущенного на айфоне процесса.
 
-```
+```shell
 (virtual-python3) ➜ objection explore
 
      _     _         _   _
@@ -864,7 +865,7 @@ Memory dumped to file: /Users/foo/memory_iOS/memory
 
 После этого команда `strings` может быть выполнена для извлечения строк.
 
-```
+```shell
 $ strings memory > strings.txt
 ```
 
@@ -872,7 +873,7 @@ $ strings memory > strings.txt
 
 Загруженные модули данного процесса также могут быть просмотрены.
 
-```
+```shell
 iPhone on (iPhone: 10.3.1) [usb] # memory list modules
 Name                              Base         Size                 Path
 --------------------------------  -----------  -------------------  ---------------------------------------------------------------------------------
@@ -894,7 +895,7 @@ libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/sys
 
 Если вы видете следующие сообщения ошибок, даже если ваше устройство подключено через USB, вам следует посмотреть [Fridump с фиксом для Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
 
-```
+```shell
 ➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
 
         ______    _     _
@@ -911,7 +912,7 @@ Can't connect to App. Have you connected the device?
 
 Когда Fridump заработает, вам нужно получить имя приложения, которое вы хотите задампить, что может быть сделано, выполнив `frida-ps`. После чего просто указываете имя в fridump.
 
-```
+```shell
 ➜  fridump git:(master) ✗ frida-ps -U
  PID  Name
 ----  ------

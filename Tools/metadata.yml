@@ -1,9 +1,9 @@
 ---
-title: My book title
-author: Daniel Herzog
+title: Mobile Security Testing Guide
+author: Bernhard Mueller, Sven Schleier, Jeroen Willemsen, OWASP Mobile Team
 rights:  Creative Commons Attribution 4.0 International
 language: en-US
-tags: [book, my-book, etc]
+tags: [Mobile Security, Android, iOS]
 abstract: |
-  Your summary.
+  This is the Mobile Security Testing Guide (MSTG).
 ---

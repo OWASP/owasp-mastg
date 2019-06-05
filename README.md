@@ -1,11 +1,10 @@
 <a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg"></a>
 
-
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
-[![Creative Commons License](https://i.creativecommons.org/l/by-sa/3.0/88x31.png)](http://creativecommons.org/licenses/by-sa/3.0/ "CC-by-SA 3")
+
+[![Creative Commons License](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 [![OWASP Labs](https://img.shields.io/badge/owasp-lab%20project-f7b73c.svg)](https://www.owasp.org/index.php/Category:OWASP_Project#tab=Project_Inventory)
 [![Build Status](https://travis-ci.com/OWASP/owasp-mstg.svg?branch=master)](https://travis-ci.com/OWASP/owasp-mstg)
-
 
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 You can also read the MSTG on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "MSTG @ Gitbook") or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book").
@@ -69,23 +68,25 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 2. Check the [releases](https://github.com/OWASP/owasp-mstg/releases "Our releases"). Here you can find a PDF, an archive containing the sources and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 
-3. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
+3. Get the book as printed version. A hardcopy of the book can be ordered via [lulu.com](http://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24091501.html "MSTG on Lulu.com"). This version of the book is not completely aligned with book printing standards, but we are improving each version. If you recognise any issues or mistakes, even small ones, please raise an [issue](https://github.com/OWASP/owasp-mstg/issues "our issues section") so we can fix it in the next version.
 
-3. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
+4. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
-```shell
-$ git clone https://github.com/OWASP/owasp-mstg/
-$ cd owasp-mstg/Tools/
-$ ./generate_document.sh
-```
+5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
 
-4. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
+    ```shell
+    $ git clone https://github.com/OWASP/owasp-mstg/
+    $ cd owasp-mstg/Tools/
+    $ ./generate_document.sh
+    ```
 
-```shell
-$ git clone https://github.com/OWASP/owasp-mstg/
-$ cd owasp-mstg/Tools/
-$ ./gitbookandpdf.sh
-```
+6. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
+
+    ```shell
+    $ git clone https://github.com/OWASP/owasp-mstg/
+    $ cd owasp-mstg/Tools/
+    $ ./gitbookandpdf.sh
+    ```
 
 You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
 
@@ -95,28 +96,14 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
 
-[https://owasp.slack.com/](https://join.slack.com/t/owasp/shared_invite/enQtNDI5MzgxMDQ2MTAwLTEyNzIzYWQ2NDZiMGIwNmJhYzYxZDJiNTM0ZmZiZmJlY2EwZmMwYjAyNmJjNzQxNzMyMWY4OTk3ZTQ0MzFhMDY)
+[https://owasp.slack.com/](https://join.slack.com/t/owasp/shared_invite/enQtNjExMTc3MTg0MzU4LTViMDg1MmJiMzMwZGUxZjgxZWQ1MTE0NTBlOTBhNjhhZDIzZTZiNmEwOTJlYjdkMzAxMGVhNDkwNDNiNjZiOWQ)
 
-Before you start contributing, please read our brief [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "Style Guide") which contains a few basic writing rules.
+Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started.
 
 Please note that the MSTG focuses primarely on the native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Nativescript/React-native/Xamarin/Cordova/... apps are not within the focus of the MSTG. However, some key-controls, such as pinning, have been explained already for some of these platforms.
 
 If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues "Issue") or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
 If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones "Milestones").
-
-### Translating
-Our current goal is to publish one minor release every 6 months. Next, we will often create patch updates in order to provide intermediary updates in PDF and DocX format. Releases that have been tagged can then be translated into preferred languages.
-(Note we use semantic versioning: major.minor.patch)
-
-
-### Contributing
-
-- Fork it ( https://github.com/[my-github-username]/owasp-mstg/ )
-- Create your feature branch (git checkout -b my-new-feature)
-- Commit your changes (git commit -am 'Add some feature')
-- Push to the branch (git push origin my-new-feature)
-- Create a new Pull Request
-- The project leaders will QA and give feedback before it's merged.
 
 ## Authoring Credit
 
@@ -134,4 +121,5 @@ Please ping us or create a pull request if you are missing from the table or in 
 If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *sushi2k*) or Jeroen Willemsen (Slack: *jeroenwillemsen*) for more information.
 
 ## Crackmes
+
 In the Crackmes folder, you can find a set of mobile apps to hack. Are you able to find the secrets? For more details: check the [README.md](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md "Crackmes readme") at the [Crackmes folder](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes "Crackmes folder").

@@ -29,18 +29,22 @@ We will work with the [OMTG app][OMTGApp]. For this to work we will use Android 
   `Nexus 5 API 22        1080 × 1920: xxhdpi    22    Android 5.1    x86_64    4 GB`
 
 - Download the Android 5 APK:
-  <https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug-Android5.apk>
+  `https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug-Android5.apk`
 - and install it:
-  ```
+
+  ```shell
   adb install ~/Downloads/app-x86-debug_android5.apk
   ```
 
 - Download the [x86 version of frida-server][x86fridaserver] and push it to the emulator:
-  ```
+
+  ```shell
   adb push ./Downloads/frida-server-11.0.3-android-x86 /data/local/tmp/
   ```
+  
 - Run the frida-server on the emulator:
-  ```
+
+  ```shell
   adb shell
   su # if needed
   cd /data/local/tmp/
@@ -64,15 +68,18 @@ You can get both APKs here, both for the emulator and for real devices:
 - Download the Android 7 APK:
   <https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug.apk>
 - and install it:
-  ```
+  
+  ```shell
   adb install ~/Downloads/app-x86-debug.apk
   ```
+
 - Download the [x86_64 version of frida-server][x8664fridaserver] and push it to the emulator:
-  ```
+  ```shell
   adb push ./Downloads/frida-server-11.0.3-android-x86_64 /data/local/tmp/
   ```
+
 - Run the frida-server on the emulator:
-  ```
+  ```shell
   adb shell
   su # if needed
   cd /data/local/tmp/
@@ -91,8 +98,8 @@ The part of the app that is interesting to us is the `decryptString` method of [
 
 For this part it is important that you take a look at the right version in the repo. Here is the link to the right source code:
 
+```java
 
-```
 public void decryptString(String alias) {
      try {
          KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(alias, null);
@@ -102,12 +109,18 @@ public void decryptString(String alias) {
 
          Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
          output.init(Cipher.DECRYPT_MODE, privateKey);
+         //...
+       }catch(<ExceptionsHere> e){
+         //...
+       }
+     }
 ```
 
 ### First warmup: a simple hook with Frida
 
 Create a file called hook_decryptString.js (name it as you want).
-```
+
+```java
 Java.perform(function(){
   console.log("[*] script loaded");
   var clazz = Java.use("sg.vp.owasp_mobile.OMTG_Android.OMTG_DATAST_001_KeyStore");
@@ -130,7 +143,7 @@ The frida cli will open, connect to the device (`-U`) and will load the script (
 
 From now on, every time we click on decrypt it will print a log as indicated in our script.
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] decryptString called
 [*] alias: Dummy
@@ -148,7 +161,7 @@ This `init` method receives a `mode` and a `key`, we can look up this in the And
 
 The init method of Cipher has multiple overloads. The one we need is:
 
-```
+```shell
 init(int opmode, Key key)
 Initializes this cipher with a key.
 ```
@@ -157,7 +170,7 @@ So first we can simply hook the method like this:
 
 > Remember to enclose all hooks in `Java.perform(function(){});`. I will be omitting this for the rest of the write-up.
 
-```
+```javascript
 var Cipher = Java.use("javax.crypto.Cipher");
 Cipher.init.overload('int', 'java.security.Key').implementation  = function(opmode, key){
     console.log("[*] Cipher.init called");
@@ -166,7 +179,7 @@ Cipher.init.overload('int', 'java.security.Key').implementation  = function(opmo
 ```
 
 Output:
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] Cipher.init called
 [*] Cipher.init called
@@ -179,7 +192,7 @@ Note about the operation mode: The operation mode in a Cipher may have two diffe
 
 Let's use this to differentiate if the Cipher is being initialized for encryption or decryption:
 
-```
+```javascript
 var Cipher = Java.use("javax.crypto.Cipher");
 Cipher.init.overload('int', 'java.security.Key').implementation  = function(opmode, key){
     console.log("[*] Cipher.init called");
@@ -199,7 +212,7 @@ Cipher.init.overload('int', 'java.security.Key').implementation  = function(opmo
 
 Whenever we click on encrypt or decrypt we will get this logged.
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] Cipher.init called
 [*] mode: 2
@@ -220,7 +233,7 @@ If we look at the code we see that this is a [RSAPublicKey][].
 
 Let's modify our script to print the public key:
 
-```
+```javascript
 var Cipher = Java.use("javax.crypto.Cipher");
 Cipher.init.overload('int', 'java.security.Key').implementation  = function(opmode, key){
     console.log("[*] Cipher.init called");
@@ -247,7 +260,7 @@ Note that we had to cast to two different classes in order to get all the values
 
 Let's run the script and see what happens:
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] Cipher.init called
 [*] mode: 2
@@ -270,7 +283,7 @@ The same goes for RSAKey.
 
 Let's run it again:
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] Cipher.init called
 [*] mode: 1
@@ -292,9 +305,9 @@ For this part it is important that you take a look at the right version in the r
 
 Remember that we are working with the Android 5 compatible version of the app.
 
-```
+```java
 public void decryptString(String alias) {
-        try {
+        //try {
             KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(alias, null);
             RSAPrivateKey privateKey = (RSAPrivateKey) privateKeyEntry.getPrivateKey();
 
@@ -302,23 +315,26 @@ public void decryptString(String alias) {
 
             Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
 output.init(Cipher.DECRYPT_MODE, privateKey);
+//...
+}
 ```
 
 As we can see, we have a [RSAPrivateKey][] that gets passed to the Cipher's `init` method (remember that we are working with API 22).
 
 This class has the method `getPrivateExponent` So we can try first the following:
 
-```
-...
+```javascript
+//...
 if (opmode == 2){
   console.log("[*] decryption with private key!");
   console.log("[*] key PrivateExponent: " + key.getPrivateExponent());
-...
+}
+//..
 ```
 
 Run it:
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] decryptString called
 [*] alias: Dummy
@@ -336,16 +352,17 @@ _Oops!_
 
 We know this error already, let's cast it:
 
-```
+```javascript
 if (opmode == 2){
   console.log("[*] decryption with private key!");
   var priv_key = Java.cast(key, RSAPrivateKey);
   console.log("[*] key PrivateExponent: " + priv_key.getPrivateExponent());
+}
 ```
 
 Run:
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] decryptString called
 [*] alias: Dummy
@@ -358,7 +375,7 @@ We do not get any print containing `"[*] key PrivateExponent: "`. And in the emu
 
 We do not give up and continue.. If you take a look at the Cipher `getInstance` method you can see that it is using the `"AndroidOpenSSL"` cryptographic provider. If you do a little research you will see that it will internally use the class [OpenSSLRSAPrivateKey][] for the RSAPrivateKey. If we take a look at the code we found this method:
 
-```
+```java
 public final BigInteger getPrivateExponent() {
     if (key.isEngineBased()) {
         throw new UnsupportedOperationException("private exponent cannot be extracted");
@@ -370,17 +387,19 @@ public final BigInteger getPrivateExponent() {
 
 If we do the casting and run the script again we will get the same exception and it is exactly what's being thrown by the previous method.
 
-```
+```javascript
 if (opmode == 2){
   console.log("[*] decryption with private key!");
   //var priv_key = Java.cast(key, RSAPrivateKey);
   var priv_key = Java.cast(key, OpenSSLRSAPrivateKey);
   console.log("[*] key PrivateExponent: " + priv_key.getPrivateExponent());
+//..
+}
 ```
 
 We try next with other method, getEncoded:
 
-```
+```java
 public final byte[] getEncoded() {
     if (key.isEngineBased()) {
         return null;
@@ -391,20 +410,21 @@ public final byte[] getEncoded() {
 
 We will probably get a null but let's try anyway:
 
-```
+```javascript
 if (opmode == 2){
   console.log("[*] decryption with private key!");
   //var priv_key = Java.cast(key, RSAPrivateKey);
   var priv_key = Java.cast(key, OpenSSLRSAPrivateKey);
   //console.log("[*] key PrivateExponent: " + priv_key.getPrivateExponent());
   console.log("[*] Private Key encoded: " + priv_key.getEncoded());
+}
 ```
 
 > Note that we commented out the first call to getPrivateExponent because it is throwing the exception and this breaks the script. I made this for simplicity, normally you will handle the exceptions in your javascript scripts.
 
 Output:
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] decryptString called
 [*] alias: Dummy
@@ -418,7 +438,7 @@ So the key is null as we can expect from the source code.
 
 We see that this and other methods here are _protected_ by a `isEngineBased` check. This will prevent us from getting this key on the first place, so let's get rid of this check:
 
-```
+```javascript
 var OpenSSLKey = Java.use("com.android.org.conscrypt.OpenSSLKey");
 
 OpenSSLKey.isEngineBased.overload().implementation  = function(){
@@ -428,7 +448,7 @@ OpenSSLKey.isEngineBased.overload().implementation  = function(){
 ```
 
 In order to test this hook we will call a method where we can sure that we get something back `OpenSSLRSAPrivateKey.getFormat()`:
-```    
+```java   
 public final String getFormat() {
     if (key.isEngineBased()) {
         return null;
@@ -440,14 +460,15 @@ public final String getFormat() {
 We will get `"PKCS#8"` or `null` if we run the hook or not. We run it and it goes as expected :)
 
 But let's go back to the `getEncoded` method. This should get us the encoded key bytes. In order to work with `OpenSSLRSAPrivateKey` on frida we have to cast it:
-```
+
+```javascript
 var priv_key = Java.cast(key, OpenSSLRSAPrivateKey);
 console.log("[*] Private Key Encoded: " + bytesToHex(priv_key.getEncoded()));
 ```
 
 Output:
 
-```
+```shell
 [*] script loaded
 [Android Emulator 5554::sg.vp.owasp_mobile.OMTG_Android]-> [*] decryptString called
 [*] alias: Dummy
@@ -461,7 +482,7 @@ Output:
 
 So now we get something, but it is an _Object_. We know that it has to return a byte array so let's convert this object to a byte array. Add this little method at the beginning of your script and aplly it to the `getEncoded` call:
 
-```
+```javascript
 function bytesToHex(bytes) {
     for (var hex = [], i = 0; i < bytes.length; i++) { hex.push(((bytes[i] >>> 4) & 0xF).toString(16).toUpperCase());
         hex.push((bytes[i] & 0xF).toString(16).toUpperCase());
@@ -469,14 +490,13 @@ function bytesToHex(bytes) {
     }
     return hex.join("");
 }
-...
+//...
   console.log("[*] Private Key Encoded: " + bytesToHex(priv_key.getEncoded()));
-...
+//...
 ```
 
 So at the end we get the key:
-```
-
+```shell
 [Xiaomi Redmi Note 2::sg.vp.owasp_mobile.OMTG_Android]-> [*] decryptString called
 [*] alias: Dummy
 [*] OpenSSLKey.isEngineBased called
@@ -491,7 +511,7 @@ If you have worked long enough with cryptography (for example programming JavaCa
 <https://lapo.it/asn1js/#30820127020100300D06092A864886F70D0101010500048201113082010D0201000282010100D1E2A4E02B4B850834C069D7C35F1ED9DC324E737C6A1F76CA79C225A19FA05393F01CAB1FFDD1E7E8DC6560B12F3416BFBA4CB5810F645BEBAB7821A9A8FE9C4CDAF004FF28B3F22D3D09B3F25152CE24DDF34E7139132EC2B1395949B66452B77B7DBA1750AF46CFC30B44063814A679289597F33B6EE7CDB68886D461B85EF32D6FB997B68996D8424D37C22718239C48E68540F7B1D99E10925BE9FC59CBA1F08E2CA81C83E31CA8CAA8C4FE023767A306E3E4A1FCA1349E0094A4755BDB3FBF8E6654CAEACD384570D77EA4BBEA81B6185C90D6967830930BC1892EA5CD590A0F62758E33E950A3DDFC263DE2DA6E1C715DD41D4216A858EC439218CA690203010001>
 
 And this is what we obtain:
-```
+```shell
 SEQUENCE (3 elem)
   INTEGER 0
   SEQUENCE (2 elem)
@@ -536,7 +556,7 @@ We can also verify that both the public exponent as well as the modulus are the 
 A final note about the javascript exceptions. If you use try catch blocks you will get more valuable information:
 
 Running this:
-```
+```javascript
  try {
   console.log("[*] key PrivateExponent: " + priv_key.getPrivateExponent());
 }
@@ -545,7 +565,7 @@ catch (err){
 }
 ```
 Gives:
-```
+```shell
 [*] Exception in priv_key.getPrivateExponent(): java.lang.NullPointerException: privateExponent == null
 ```
 

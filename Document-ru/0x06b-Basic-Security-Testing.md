@@ -156,7 +156,7 @@ http://repo.hackyouriphone.org
 
 Следующие команды устанавливают зависимости, необходимые для запуска Needle в Linux.
 
-```
+```shell
 # Unix packages
 sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
 
@@ -172,7 +172,7 @@ git clone https://github.com/mwrlabs/needle.git
 
 Следующие команды устанавливают зависимости, необходимые для запуска Needle в macOS.
 
-```
+```shell
 # Core dependencies
 brew install python
 brew install libxml2
@@ -227,7 +227,7 @@ git clone https://github.com/mwrlabs/needle.git
 
 Чтобы запустить Needle, откройте консоль и напишите:
 
-```
+```shell
 $ python needle.py
       __  _ _______ _______ ______         ______
       | \ | |______ |______ | \     |      |______
@@ -285,7 +285,7 @@ Usbmuxd - демон, который мониторит подключения i
 
 Подключите устройство iOS к macOS, установив и запустив iproxy:
 
-```bash
+```shell
 $ brew install libimobiledevice
 $ iproxy 2222 22
 waiting for connection
@@ -329,7 +329,7 @@ Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1F
 
 Файлы приложения хранятся в каталоге Data. Чтобы определить правильный путь, подключитесь через SSH к устройству и используйте IPA Installer Console для извлечения информации о пакете (как показано далее):
 
-```bash
+```shell
 iPhone:~ root# ipainstaller -l
 ...
 sg.vp.UnCrackable1
@@ -347,7 +347,7 @@ Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1F
 
 Теперь вы можете просто архивировать каталог данных и вытащить его с устройства с помощью `scp`:
 
-```bash
+```shell
 iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
@@ -357,7 +357,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 [Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper/) позволяет вам копировать содержимое Keychain с джейлбрейкнутого устройства. Самый простой способ получить этот инструмент - загрузить его из репозитория GitHub:
 
-```bash
+```shell
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
 $ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
 $ ssh -p 2222 root@localhost
