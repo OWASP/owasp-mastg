@@ -282,7 +282,7 @@ However, Objection also provides a REPL that allows you to interact with the app
 - List the Activities, Services and Broadcast receivers
 - Start Activities
 
-The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to analyze the application. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
 
 Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
 
