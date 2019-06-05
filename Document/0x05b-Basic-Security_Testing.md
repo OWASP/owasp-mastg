@@ -45,7 +45,7 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
 
 When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
@@ -68,7 +68,6 @@ Several tools and VMs that can be used to test an app within an emulator environ
 
 - MobSF
 - Nathan (not updated since 2016)
-- AppUse
 
 Please also verify the "Tools" section at the end of this book.
 
@@ -369,11 +368,11 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 
 #### Accessing the Device Shell
 
-One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both and remotely from your host computer with/without a USB cable and from the device itself.
+One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both remotely from your host computer with/without a USB cable and locally from the device itself.
 
 ##### Remote Shell
 
-In order to connect to the shell of an Android device from your host computer, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your first tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
+In order to connect to the shell of an Android device from your host computer, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
@@ -387,17 +386,12 @@ If your device is rooted or you're using the emulator, you can get root access b
 
 ```shell
 $ adb shell
-generic_x86:/ $ su
-generic_x86:/ # id
-uid=0(root) gid=0(root) groups=0(root),... context=u:r:su:s0
-
-$ adb shell
 bullhead:/ $ su
 bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 ```
 
-> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already and it also allows to transfer data from/to file system locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
 
 ###### Connect to Multiple Devices
 
@@ -418,6 +412,8 @@ You can also access your Android device without using the USB cable. For this yo
 - Disconnect the USB cable from the target device and run `adb connect <device_ip_address>`. Check that the device is now available by running `adb devices`.
 - Open the shell with `adb shell`.
 
+However, notice that by doing this you leave your device open to anyone being in the same network and knowing the IP address of your device. You may rather prefer using the USB connection.
+
 > For example, on a Nexus device, you can find the IP address at Settings -> System -> About phone -> Status -> IP address or by going to the Wi-Fi menu and tapping once on the network you're connected to.
 
 See the full instructions and considerations in the [Android Developers Documentation](https://developer.android.com/studio/command-line/adb#wireless "Connect to a device over Wi-Fi").
@@ -430,7 +426,7 @@ If you prefer, you can also enable SSH access. A convenient option is to use Ter
 
 While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
 
-Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages trivial is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
+Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
 
 #### Host-Device Data Transfer
 
