@@ -105,16 +105,7 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 ##### adb
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1228>
-
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via the USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on these devices.
-
-```shell
-$ adb devices
-List of devices attached
-090c285c0b97f748 device
-emulator-5554    device
-```
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on these devices.
 
 ```shell
 $ adb devices -l
@@ -122,6 +113,26 @@ List of devices attached
 090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
 emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
+
+In addition, adb provides other commands such as `adb forward` and `adb reverse` to forward traffic on a specific host port to a different port on a connect device and vice versa.
+
+```shell
+$ adb forward tcp:<host port> tcp:<device port>
+```
+
+You can also start an interactive shell on a target device with the `adb shell` command.
+
+```shell
+./adb -s emulator-5554 shell
+root@generic_x86:/ # ls
+acct
+cache
+charger
+config
+...
+```
+
+Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
 
 ##### Frida
 
@@ -431,13 +442,13 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
-```
-adb push foo.txt /sdcard/foo.txt
+```shell
+$ adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
 
-```
+```shell
 $ adb pull /sdcard
 /sdcard/: 1190 files pulled. 14.1 MB/s (304526427 bytes in 20.566s)
 ```
@@ -456,7 +467,7 @@ This option is useful when you are working on a specific app and want to copy fi
 
 By executing `objection --gadget <app_proccess_name> explore`, the REPL will start by default in the app's main sandbox path (`app_proccess_name` is the app process name, you can quickly get it by running `frida-ps -U | grep -i <keyword>`). You may now use `ls` and `cd` as you normally would on your terminal.
 
-```
+```shell
 $ frida-ps -U | grep -i owasp
 21228  sg.vp.owasp_mobile.omtg_android
 
@@ -483,7 +494,7 @@ Readable: True  Writable: True
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
 
-```
+```shell
 ...[usb] # ls
 Type    ...  Name
 ------  ...  -----------------------------------------------
@@ -504,7 +515,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
-```
+```shell
 $ sftp -P 8022 root@localhost
 ...
 sftp> cd /data/data
