@@ -182,9 +182,89 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 ```
 
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-- [objection](https://github.com/sensepost/objection "objection"): objection is a runtime mobile exploration toolkit, powered by Frida.
 - [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
 - [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
+
+##### Objection
+
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-jailbroken device by sideloading it and interact with the application as explained in the previous section.
+
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- Dump the Keychain
+- Read plist files
+
+The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+
+###### Installing Objection
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```shell
+
+$ pip3 install objection
+
+```
+
+If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
+
+However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
+
+```shell
+$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+```
+
+Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
+
+```shell
+$ ios-deploy --bundle Payload/my-app.app -W -d
+```
+
+###### Using Objection
+
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+
+```shell
+# Connecting to a patched IPA
+$ objection explore
+
+# Using frida-ps to get the correct application name
+$ frida-ps -Ua | grep -i Telegram
+983  Telegram
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="Telegram" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```shell
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ ios sslpinning disable
+
+# Dump the Keychain
+$ ios keychain dump
+
+# Dump the Keychain, including access modifiers. The result will be written to the host in myfile.json
+$ ios keychain dump --json <myfile.json>
+
+# Show the content of a plist file
+$ ios plist cat <myfile.plist>
+
+```
+
+More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ### Basic Testing Operations
 
@@ -556,14 +636,11 @@ There is much more information provided that you should explore, that might be h
 
 ####### Objection
 
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name, which you can identify with `frida-ps -Ua | grep -i <keyword>`. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
 
-```bash
+When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+
 ```shell
-$ frida-ps -Ua | grep -i iGoat
-983  iGoat-Swift
-$ objection  --gadget "iGoat-Swift" explore
-...
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
 
 Name               Path
@@ -573,8 +650,6 @@ CachesDirectory    /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE
 DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Documents
 LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
 ```
-
-If you want to do the same thing on a non-jailbroken device that is also possible, but then you need to [patch the iOS app](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") on macOS and with Xcode.
 
 The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
 
@@ -592,7 +667,7 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Dumping KeyChain Data
 
-###### Objection (non-Jailbroken)
+###### Objection
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
@@ -878,13 +953,15 @@ If you don't have access to the source, you can try binary patching or runtime m
 
 Certificate pinning is a good security practice and should be used for all applications that handle sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) lists the root and intermediate CAs that major operating systems automatically trust. Please refer to the [map of the roughly 650 organizations that are Certificate Authorities Mozilla or Microsoft trust (directly or indirectly)](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
 
-It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection. As a prerequisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection GitHub Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable SSL Pinning:
+It is also possible to bypass SSL Pinning on non-jailbroken devices by using objection. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
+
+By using the following command in objection you can disable SSL Pinning:
 
 ```shell
 $ ios sslpinning disable
 ```
 
-See also the [GitHub Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" )
+More information on this can be found on [Objection's Wiki - Disable SSL Pinning in iOS](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS")
 
 If you want to get more details about white box testing and typical code patterns, refer to "iOS Application Security" by David Thiel. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
