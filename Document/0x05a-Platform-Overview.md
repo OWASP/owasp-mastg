@@ -48,7 +48,7 @@ For example, Android Nougat defines the following system users:
     ...
 ```
 
-### Android Application Structure
+### Apps on Android
 
 #### Communication with the Operating System
 
@@ -74,99 +74,6 @@ Noteworthy API versions:
 - Android 7.0 (API Level 24-25) in August 2016 (new JIT compiler on ART)
 - Android 8.0 (API Level 26-27) in August 2017 (A lot of security improvements)
 - Android 9 (API Level 28) in August 2018.
-
-#### App Folder Structure
-
-Installed Android apps are located at `/data/app/[package-name]`. For example, the YouTube app is located at:
-
-```shell
-/data/app/com.google.android.youtube-1/base.apk
-```
-
-The Android Package Kit (APK) file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
-
-```shell
-$ unzip base.apk
-$ ls -lah
--rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
-drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
-drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
--rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
-drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
-drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
--rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
-```
-
-- AndroidManifest.xml: contains the definition of the app's package name, target and min API version, app configuration, components, user-granted permissions, etc.
-- META-INF: contains the app's metadata
-  - MANIFEST.MF: stores hashes of the app resources
-  - CERT.RSA: the app's certificate(s)
-  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
-- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the AssetManager can retrieve
-- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing 3rd party libraries that are part of the APK.
-- res: directory containing resources that haven't been compiled into resources.arsc
-- resources.arsc: file containing precompiled resources, such as XML files for the layout
-
-Note that unzipping with the standard `unzip` utility the archive leaves some files unreadable. `AndroidManifest.XML` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
-A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
-
-```shell
-$ apktool d base.apk
-I: Using Apktool 2.1.0 on base.apk
-I: Loading resource table...
-I: Decoding AndroidManifest.xml with resources...
-I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
-I: Regular manifest package...
-I: Decoding file-resources...
-I: Decoding values */* XMLs...
-I: Baksmaling classes.dex...
-I: Copying assets and libs...
-I: Copying unknown files...
-I: Copying original files...
-$ cd base
-$ ls -alh
-total 32
-drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
-drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
--rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
--rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
-drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
-drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
-drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
-drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
-drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
-```
-
-- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
-- apktool.yml: file containing information about the output of apktool
-- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
-- res: directory containing the app’s resources
-- smali: directory containing the disassembled Dalvik bytecode in Smali. Smali is a human-readable representation of the Dalvik executable.
-
-Every app also has a data directory for storing data created during run time. This directory is at `/data/data/[package-name]` and has the following structure:
-
-```shell
-drwxrwx--x u0_a65   u0_a65            2016-01-06 03:26 cache
-drwx------ u0_a65   u0_a65            2016-01-06 03:26 code_cache
-drwxrwx--x u0_a65   u0_a65            2016-01-06 03:31 databases
-drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 files
-drwxr-xr-x system   system            2016-01-06 03:26 lib
-drwxrwx--x u0_a65   u0_a65            2016-01-10 09:44 shared_prefs
-```
-
-- **cache**: This location is used for data caching. For example, the WebView cache is found in this directory.
-- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location when the app or the entire platform is upgraded.
-- **databases**: This folder stores SQLite database files generated by the app at run time, e.g., user data files.
-- **files**: This folder stores regular files created by the app.
-- **lib**: This folder stores native libraries written in C/C++. These libraries can have one of several file extensions, including .so and .dll (x86 support). This folder contains subdirectories for the platforms the app has native libraries for, including
-  - armeabi: compiled code for all ARM-based processors
-  - armeabi-v7a: compiled code for all ARM-based processors, version 7 and above only
-  - arm64-v8a: compiled code for all 64-bit ARM-based processors, version 8 and above based only
-  - x86: compiled code for x86 processors only
-  - x86_64: compiled code for x86_64 processors only
-  - mips: compiled code for MIPS processors
-- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html).
 
 #### Linux UID/GID for Normal Applications
 
@@ -238,9 +145,9 @@ Apps must implement callback methods that react to a number of events; for examp
 
 Every app has a manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app’s APK file.
 
-The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's  icon, version number, and theme. The file may list other information,  such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location").
+The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's icon, version number, and theme. The file may list other information, such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location").
 
-Here is an example of a manifest file, including the package name (the convention is a reversed  URL, but any string is acceptable). It also lists the app version, relevant SDKs, required permissions, exposed content providers, broadcast receivers used with intent filters, and a description of the app and its activities:
+Here is an example of a manifest file, including the package name (the convention is a reversed URL, but any string is acceptable). It also lists the app version, relevant SDKs, required permissions, exposed content providers, broadcast receivers used with intent filters and a description of the app and its activities:
 
 ```xml
 <manifest
