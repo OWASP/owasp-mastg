@@ -1247,7 +1247,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
   - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
 
   Note: For API level 23 and above, the *KeyGenParameterSpec* API can be leveraged directly to generate and manage secret keys through the Android keystore.
- 
+
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
 #### Static Analysis
@@ -1503,7 +1503,6 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 - Do's & Don'ts of SafetyNet Attestation - <https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html>
 - SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
 - SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
-
 
 #### Tools
 
