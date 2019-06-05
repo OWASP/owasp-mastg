@@ -1243,6 +1243,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
   - Generate the key pair in the Android keystore using `KeyGenParameterSpec` API.
 
     ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
     KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
     keyPairGenerator.initialize(
@@ -1264,10 +1265,10 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
     ```
 
-  >Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
   - Generating a secret key for AES-GCM:
   
     ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
     KeyGenerator keyGenerator = KeyGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
     keyGenerator.init(
@@ -1284,9 +1285,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     key = (SecretKey) keyStore.getKey("key2", null);
     ```
 
-  >Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
-
-  - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data
+  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data
   
     ```java
     Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -1298,7 +1297,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     cipher.updateAAD(aad);
     cipher.init(Cipher.ENCRYPT_MODE, key);
 
-    //use the cipher to encrypt the dataL see 0x50e for more details.
+    //use the cipher to encrypt the authentication data see 0x50e for more details.
     ```
 
   - Encrypt the secret key using the public key stored in Android keystore and store the encrypted secret key in the private storage of the application
