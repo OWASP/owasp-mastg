@@ -714,17 +714,6 @@ You can display the captured traffic in a human-readable format with Wireshark. 
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
-##### Burp plugins to Process Non-HTTP Traffic
-
-Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
-
-- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
-- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
-
-These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
-
-Please note that this setup can become sometimes very tedious and is not as straightforward as testing HTTP.
-
 ##### Firebase/Google Cloud Messaging (FCM/GCM)
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
