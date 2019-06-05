@@ -204,12 +204,10 @@ In general it can be summarized:
 
 #### Overview
 
-Certificate pinning is the process of associating the mobile app with a particular X.509 certificate of a server, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores ("pins") the server certificate or public key will subsequently only establish connections to the known server. By removing trust in external certificate authorities, the attack surface is reduced (after all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors).
+Certificate pinning is the process of associating the mobile app with a particular X.509 certificate of a server, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores ("pins") the server certificate or public key will subsequently only establish connections to the known server. By removing trust in external certificate authorities, the attack surface is reduced. After all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors. A detailed timeline of CA breaches and failures can be found on [sslmate.com](https://sslmate.com/certspotter/failures "Timeline of PKI Security Failures").
 
 The certificate can be pinned during development, or at the time the app first connects to the backend.
 In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
-
-Certificate pinning is a good security practice and should be used for all applications that handle sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) lists the root and intermediate CAs that major operating systems automatically trust. Please refer to the [map of the roughly 650 organizations that are Certificate Authorities Mozilla or Microsoft trust (directly or indirectly)](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
 
 #### Static Analysis
 
@@ -296,7 +294,7 @@ If you don't have access to the source, you can try binary patching:
 - If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
 - Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware of the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
 
-It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection (this also works on jailbroken devices). As a prerequisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection GitHub Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable common SSL Pinning implementations:
+It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and Objection (this also works on jailbroken devices). As a prerequisite the iOS app would need to be repackaged and signed, which can be automated through Objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the Objection GitHub Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in Objection you can disable common SSL Pinning implementations:
 
 ```shell
 $ ios sslpinning disable
@@ -304,11 +302,13 @@ $ ios sslpinning disable
 
 You can look into the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts "pinning.ts") file to understand how the bypass works.
 
-See also the [GitHub Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" ) for further information. 
+See also the [GitHub Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" ) for further information.
 
-If you want to get more details about white box testing and typical code patterns, refer to "iOS Application Security" by David Thiel. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
+If you want to get more details about white box testing and typical code patterns, refer to [#thiel]. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
 #### References
+
+- [#thiel] - David Thiel. iOS Application Security, No Starch Press, 2015
 
 ##### OWASP Mobile Top 10 2016
 
