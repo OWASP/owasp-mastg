@@ -49,7 +49,7 @@ You should have a jailbroken iPhone or iPad for running tests. These devices all
 
 Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
 
-##### Getting Priviledged Access
+##### Getting Privileged Access
 
 iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
 
@@ -111,19 +111,6 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 
 > Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
-
-#### Getting Privileged Access
-
-<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
-
-Once you've jailbroken your iOS device and either Cydia (see screenshot above) or Sileo has been installed, you can install the OpenSSH package. Once installed do the following:
-
-- SSH into your iOS device.
-  - The default users are `root` and `mobile`.
-  - The default password is `alpine`.
-- Change the default password for both users `root` and `mobile`.
-
-In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 #### Recommended Tools - iOS Device
 
@@ -270,13 +257,89 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 #### Accessing the Device Shell
 
-##### On-device Shell App
+One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the iOS shell both remotely from your host computer with/without a USB cable and locally from the device itself.
 
 ##### Remote Shell
 
-##### Connecting to a physical iOS device
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either Cydia (see screenshot above) or Sileo installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
-##### Connecting to an iOS emulator
+<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
+
+In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the Settings -> Wi-Fi menu and tapping once on the info icon of the network you're connected to.
+
+You can now access the remote device's shell by running `ssh root@<device_ip_address>`, which will log you in as the root user:
+
+```shell
+$ ssh root@192.168.197.234
+root@192.168.197.234's password:
+iPhone:~ root#
+```
+
+> press Control + D or type `exit` to quit
+
+When accessing your iOS device via SSH consider the following:
+
+- The default users are `root` and `mobile`.
+- The default password for both is `alpine`.
+
+> Remember to change the default password for both users `root` and `mobile` as anyone on the same network can find the IP address of your device and connect via the well-known default password, which will give them root access to your device.
+
+If you forget your password and want to reset it to the default `alpine`:
+
+- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
+- Find the lines:
+  
+  ```bash
+  root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
+  mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
+  ```
+  
+- Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+- Save and exit
+
+###### Connect to a Device via SSH over USB
+
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
+
+Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
+
+Connect macOS to an iOS device by installing and starting iproxy:
+
+```shell
+$ brew install libimobiledevice
+$ iproxy 2222 22
+waiting for connection
+```
+
+The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
+
+```shell
+$ ssh -p 2222 root@localhost
+root@localhost's password:
+iPhone:~ root#
+```
+
+You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
+
+##### On-device Shell App
+
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/) via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
+
+In addition, there are a few jailbreaks that explicitly disable incoming SSH *for security reasons*. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
+
+Opening a reverse shell over SSH can be done by running the command `ssh -R <remote_port>:localhost:22 <username>@<host_computer_ip>`.
+
+On the on-device shell app run the following command and, when asked, enter the password of the `mstg` user of the host computer:
+
+```bash
+ssh -R 2222:localhost:22 mstg@192.168.197.235
+```
+
+On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
+
+```bash
+$ ssh -p 2222 root@localhost
+```
 
 #### Host-Device Data Transfer
 
@@ -738,33 +801,9 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-###### SSH Connection via USB
-
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
-
-Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
-
-Connect macOS to an iOS device by installing and starting iproxy:
-
-```shell
-$ brew install libimobiledevice
-$ iproxy 2222 22
-waiting for connection
-```
-
-The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
-
-```shell
-$ ssh -p 2222 root@localhost
-root@localhost's password:
-iPhone:~ root#
-```
-
-You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
-
 ###### Using Burp via USB on a Jailbroken Device
 
-We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
