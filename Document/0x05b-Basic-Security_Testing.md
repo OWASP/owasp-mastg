@@ -532,10 +532,10 @@ $ frida-ps -U | grep -i owasp
 
 $ objection -g sg.vp.owasp_mobile.omtg_android explore
 
-...[usb] # cd ..
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # cd ..
 /data/user/0/sg.vp.owasp_mobile.omtg_android
 
-...[usb] # ls
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
 Type       ...  Name
 ---------  ...  -------------------
 Directory  ...  cache
@@ -548,7 +548,6 @@ Directory  ...  app_ACRA-unapproved
 Directory  ...  databases
 
 Readable: True  Writable: True
-
 ```
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
@@ -663,24 +662,184 @@ $ frida-ps -Ua
 
 Note that this is not the same as all installed apps.
 
-##### App Basic Information
+##### Exploring the App Package
 
-Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the APK of the app. The first source of information is the Android Manifest, which you can obtain by just unzipping the APK and searching for AndroidManifest.xml. However, it will be probably encoded so the best option is using apktool to properly unpack the APK and also get the decoded AndroidManifest.xml.
+Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the APK of the app.
+As you've seen above, installed Android apps are located at `/data/app/[package-name]`.
 
-```bash
-$ apktool d <filename>.apk
+The Android Package Kit (APK) file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
+
+```shell
+$ unzip base.apk
+$ ls -lah
+-rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
+drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
+drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
+-rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
+drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
+drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
+-rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
 ```
 
+- AndroidManifest.xml: contains the definition of the app's package name, target and min API version, app configuration, components, user-granted permissions, etc.
+- META-INF: contains the app's metadata
+  - MANIFEST.MF: stores hashes of the app resources
+  - CERT.RSA: the app's certificate(s)
+  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the AssetManager can retrieve
+- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK.
+- res: directory containing resources that haven't been compiled into resources.arsc
+- resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-###### Sandbox
+Note that unzipping with the standard `unzip` utility the archive leaves some files unreadable. `AndroidManifest.XML` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
+A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
 
-###### Permissions
+```shell
+$ apktool d base.apk
+I: Using Apktool 2.1.0 on base.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Copying assets and libs...
+I: Copying unknown files...
+I: Copying original files...
+$ cd base
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
 
-###### Native Libs
+- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- apktool.yml: file containing information about the output of apktool
+- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
+- res: directory containing the app’s resources
+- smali: directory containing the disassembled Dalvik bytecode.
 
-###### ... other
+The main source of information is the Android Manifest. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded AndroidManifest.xml.
 
-##### Accessing App Data
+###### The Android Manifest
+
+As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package id, the app permissions, app components, etc.
+
+Here's a list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
+
+- App permissions: `permission` (see "iOS Platform APIs")
+- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
+- App components: `activity`, `service`, `provider`, `receiver` (see "iOS Platform APIs" and "Data Storage on Android")
+- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+
+Please refer to the mentioned chapters to learn more about how to test each of these points.
+
+###### App Binary
+
+As seen above, the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code.
+
+Above we've seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called Smali, which is a human-readable representation of the Dalvik executable.
+
+Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
+
+###### Native Libraries
+
+You can inspect the `lib` folder in the APK:
+
+```shell
+$ ls -1 lib/armeabi/
+libdatabase_sqlcipher.so
+libnative.so
+libsqlcipher_android.so
+libstlport_shared.so
+```
+
+or from the device with objection:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # ls lib
+Type    ...  Name
+------  ...  ------------------------
+File    ...  libnative.so
+File    ...  libdatabase_sqlcipher.so
+File    ...  libstlport_shared.so
+File    ...  libsqlcipher_android.so
+```
+
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only dissassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
+
+###### Other App Resources
+
+It is normally worth taking a look at the rest of the resources and files that you may find in the root folder of the APK as some times they contain additional goodies like keystores, encrypted databases, certificates, etc.
+
+##### Accessing App Data Directories
+
+Once you have installed the app, there is further information to explore, where tools like objection come in handy.
+
+When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of the app.
+
+```shell
+$ objection -g sg.vp.owasp_mobile.omtg_android explore
+
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # env
+
+Name                    Path
+----------------------  ---------------------------------------------------------------------------
+cacheDirectory          /data/user/0/sg.vp.owasp_mobile.omtg_android/cache
+codeCacheDirectory      /data/user/0/sg.vp.owasp_mobile.omtg_android/code_cache
+externalCacheDirectory  /storage/emulated/0/Android/data/sg.vp.owasp_mobile.omtg_android/cache
+filesDirectory          /data/user/0/sg.vp.owasp_mobile.omtg_android/files
+obbDir                  /storage/emulated/0/Android/obb/sg.vp.owasp_mobile.omtg_android
+packageCodePath         /data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
+```
+
+Among this information we find:
+
+- The internal data directory (aka. sandbox directory) which is at `/data/data/[package-name]` or `/data/user/0/[package-name]`
+- The external data directory at `/storage/emulated/0/Android/data/[package-name]` or `/sdcard/Android/data/[package-name]`
+- The path to the app package in `/data/app/`
+
+The internal data directory is used by the app to store data created during runtime and has the following basic structure:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
+Type       ...  Name
+---------  ...  -------------------
+Directory  ...  cache
+Directory  ...  code_cache
+Directory  ...  lib
+Directory  ...  shared_prefs
+Directory  ...  files
+Directory  ...  databases
+
+Readable: True  Writable: True
+```
+
+Each of the folders having its own purpose:
+
+- **cache**: This location is used for data caching. For example, the WebView cache is found in this directory.
+- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location when the app or the entire platform is upgraded.
+- **lib**: This folder stores native libraries written in C/C++. These libraries can have one of several file extensions, including .so and .dll (x86 support). This folder contains subdirectories for the platforms the app has native libraries for, including
+  - armeabi: compiled code for all ARM-based processors
+  - armeabi-v7a: compiled code for all ARM-based processors, version 7 and above only
+  - arm64-v8a: compiled code for all 64-bit ARM-based processors, version 8 and above based only
+  - x86: compiled code for x86 processors only
+  - x86_64: compiled code for x86_64 processors only
+  - mips: compiled code for MIPS processors
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html).
+- **files**: This folder stores regular files created by the app.
+- **databases**: This folder stores SQLite database files generated by the app at runtime, e.g., user data files.
+
+However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`). Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
 
