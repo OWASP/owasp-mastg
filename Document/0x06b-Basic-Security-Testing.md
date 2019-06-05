@@ -27,6 +27,20 @@ $ xcode-select --install
 
 #### Testing Device
 
+##### Getting the UDID of an iOS device
+
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
+
+It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id -l`:
+
+```bash
+$ brew install ideviceinstaller
+$ idevice_id -l
+316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+```
+
+Alternatively you can also use the Xcode command `instruments -s devices`.
+
 ##### Testing on a real device (Jailbroken)
 
 You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
@@ -35,7 +49,7 @@ You should have a jailbroken iPhone or iPad for running tests. These devices all
 
 Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
 
-##### Getting Priviledged Access
+##### Getting Privileged Access
 
 iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
 
@@ -98,19 +112,6 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 > Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
-#### Getting Privileged Access
-
-<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
-
-Once you've jailbroken your iOS device and either Cydia (see screenshot above) or Sileo has been installed, you can install the OpenSSH package. Once installed do the following:
-
-- SSH into your iOS device.
-  - The default users are `root` and `mobile`.
-  - The default password is `alpine`.
-- Change the default password for both users `root` and `mobile`.
-
-In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
-
 #### Recommended Tools - iOS Device
 
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
@@ -168,21 +169,177 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 ```
 
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-- [objection](https://github.com/sensepost/objection "objection"): objection is a runtime mobile exploration toolkit, powered by Frida.
 - [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
 - [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
+
+##### Objection
+
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-jailbroken device by sideloading it and interact with the application as explained in the previous section.
+
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- Dump the Keychain
+- Read plist files
+
+The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+
+###### Installing Objection
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```shell
+
+$ pip3 install objection
+
+```
+
+If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
+
+However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
+
+```shell
+$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+```
+
+Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
+
+```shell
+$ ios-deploy --bundle Payload/my-app.app -W -d
+```
+
+###### Using Objection
+
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+
+```shell
+# Connecting to a patched IPA
+$ objection explore
+
+# Using frida-ps to get the correct application name
+$ frida-ps -Ua | grep -i Telegram
+983  Telegram
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="Telegram" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```shell
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ ios sslpinning disable
+
+# Dump the Keychain
+$ ios keychain dump
+
+# Dump the Keychain, including access modifiers. The result will be written to the host in myfile.json
+$ ios keychain dump --json <myfile.json>
+
+# Show the content of a plist file
+$ ios plist cat <myfile.plist>
+
+```
+
+More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ### Basic Testing Operations
 
 #### Accessing the Device Shell
 
-##### On-device Shell App
+One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the iOS shell both remotely from your host computer with/without a USB cable and locally from the device itself.
 
 ##### Remote Shell
 
-##### Connecting to a physical iOS device
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either Cydia (see screenshot above) or Sileo installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
-##### Connecting to an iOS emulator
+<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
+
+In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the Settings -> Wi-Fi menu and tapping once on the info icon of the network you're connected to.
+
+You can now access the remote device's shell by running `ssh root@<device_ip_address>`, which will log you in as the root user:
+
+```shell
+$ ssh root@192.168.197.234
+root@192.168.197.234's password:
+iPhone:~ root#
+```
+
+> press Control + D or type `exit` to quit
+
+When accessing your iOS device via SSH consider the following:
+
+- The default users are `root` and `mobile`.
+- The default password for both is `alpine`.
+
+> Remember to change the default password for both users `root` and `mobile` as anyone on the same network can find the IP address of your device and connect via the well-known default password, which will give them root access to your device.
+
+If you forget your password and want to reset it to the default `alpine`:
+
+- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
+- Find the lines:
+  
+  ```bash
+  root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
+  mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
+  ```
+  
+- Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+- Save and exit
+
+###### Connect to a Device via SSH over USB
+
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
+
+Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
+
+Connect macOS to an iOS device by installing and starting iproxy:
+
+```shell
+$ brew install libimobiledevice
+$ iproxy 2222 22
+waiting for connection
+```
+
+The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
+
+```shell
+$ ssh -p 2222 root@localhost
+root@localhost's password:
+iPhone:~ root#
+```
+
+You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
+
+##### On-device Shell App
+
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/) via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
+
+In addition, there are a few jailbreaks that explicitly disable incoming SSH *for security reasons*. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
+
+Opening a reverse shell over SSH can be done by running the command `ssh -R <remote_port>:localhost:22 <username>@<host_computer_ip>`.
+
+On the on-device shell app run the following command and, when asked, enter the password of the `mstg` user of the host computer:
+
+```bash
+ssh -R 2222:localhost:22 mstg@192.168.197.235
+```
+
+On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
+
+```bash
+$ ssh -p 2222 root@localhost
+```
 
 #### Host-Device Data Transfer
 
@@ -542,14 +699,11 @@ There is much more information provided that you should explore, that might be h
 
 ####### Objection
 
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. In the following example Frida is running on a jailbroken device and the app iGoat is running in the foreground. To attach to a process in this scenario you need to use the flag `--gadget` with the process name, which you can identify with `frida-ps -Ua | grep -i <keyword>`. When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
 
-```bash
+When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+
 ```shell
-$ frida-ps -Ua | grep -i iGoat
-983  iGoat-Swift
-$ objection  --gadget "iGoat-Swift" explore
-...
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
 
 Name               Path
@@ -559,8 +713,6 @@ CachesDirectory    /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE
 DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Documents
 LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
 ```
-
-If you want to do the same thing on a non-jailbroken device that is also possible, but then you need to [patch the iOS app](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") on macOS and with Xcode.
 
 The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
 
@@ -578,7 +730,7 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Dumping KeyChain Data
 
-###### Objection (non-Jailbroken)
+###### Objection
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
@@ -649,33 +801,9 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-###### SSH Connection via USB
-
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
-
-Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
-
-Connect macOS to an iOS device by installing and starting iproxy:
-
-```shell
-$ brew install libimobiledevice
-$ iproxy 2222 22
-waiting for connection
-```
-
-The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
-
-```shell
-$ ssh -p 2222 root@localhost
-root@localhost's password:
-iPhone:~ root#
-```
-
-You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
-
 ###### Using Burp via USB on a Jailbroken Device
 
-We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
@@ -843,39 +971,6 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
-##### Bypassing Certificate Pinning
-
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1252>
-
-"[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
-
-The Burp Suite app "[Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html "Using Burp Suite Mobile Assistant")" can also be used to bypass certificate pinning.
-
-In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
-
-- the API calls `NSURLSession`, `CFStream`, and `AFNetworking`
-- methods/strings containing words like "pinning," "X.509," "Certificate," etc.
-
-If you don't have access to the source, you can try binary patching or runtime manipulation:
-
-- If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
-- Applications written with Apache Cordova or Adobe PhoneGap use a lot of callbacks. Look for the callback function that's called on success and manually call it with Cycript.
-- Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
-
-Certificate pinning is a good security practice and should be used for all applications that handle sensitive information. [EFF's Observatory](https://www.eff.org/pl/observatory) lists the root and intermediate CAs that major operating systems automatically trust. Please refer to the [map of the roughly 650 organizations that are Certificate Authorities Mozilla or Microsoft trust (directly or indirectly)](https://www.eff.org/files/colour_map_of_CAs.pdf "Map of the 650-odd organizations that function as Certificate Authorities trusted (directly or indirectly) by Mozilla or Microsoft"). Use certificate pinning if you don't trust at least one of these CAs.
-
-It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and objection. As a prerequisite the iOS app would need to be repackaged and signed, which can be automated through objection (please take note that this can only be done on macOS with Xcode). For detailed information please visit the objection GitHub Wiki on [how to repackage](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications"). By using the following command in objection you can disable SSL Pinning:
-
-```shell
-$ ios sslpinning disable
-```
-
-See also the [GitHub Page](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" )
-
-If you want to get more details about white box testing and typical code patterns, refer to "iOS Application Security" by David Thiel. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
-
-To get more information about testing transport security, please refer to the section "Testing Network Communication."
-
 ### Setting Up a Network Testing Environment
 
 -- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
@@ -885,14 +980,21 @@ To get more information about testing transport security, please refer to the se
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
 1. Connect your iOS device to your macOS machine via USB.
-2. Make sure that your iOS device and your macOS machine are connected to the same network.
-3. Open Terminal on macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID").
-4. Launch Wireshark and select "rvi0" as the capture interface.
-5. Filter the traffic in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
+1. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
+
+```bash
+$ rvictl -s <UDID>
+Starting device <UDID> [SUCCEEDED] with interface rvi0
+```
+
+1. Launch Wireshark and select "rvi0" as the capture interface.
+1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
 ```shell
 ip.addr == 192.168.1.1 && http
 ```
+
+The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
 #### Setting up an Interception Proxy
 

@@ -204,7 +204,11 @@ In general it can be summarized:
 
 #### Overview
 
-Certificate pinning is the process of associating the mobile app with a particular X.509 certificate of a server, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores ("pins") the server certificate or public key will subsequently only establish connections to the known server. By removing trust in external certificate authorities, the attack surface is reduced (after all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors).
+Certificate Authorities are an integral part of a secure client server communication and they are predefined in the trust store of each operating system. On iOS you are automatically trusting an enormous amount of certificates which you can look up in detail in the Apple documentation, that will show you [lists of available trusted root certificates for each iOS version](https://support.apple.com/en-gb/HT204132 "Lists of available trusted root certificates in iOS").
+
+CAs can be added to the trust store, either manually through the user, by an MDM that manages your enterprise device or through malware. The question is then can I trust all of those CAs and should my app rely on the trust store?
+
+In order to address this risk you can use certificate pinning. Certificate pinning is the process of associating the mobile app with a particular X.509 certificate of a server, instead of accepting any certificate signed by a trusted certificate authority. A mobile app that stores the server certificate or public key will subsequently only establish connections to the known server, thereby "pinning" the server. By removing trust in external certificate authorities (CAs), the attack surface is reduced. After all, there are many known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors. A detailed timeline of CA breaches and failures can be found at [sslmate.com](https://sslmate.com/certspotter/failures "Timeline of PKI Security Failures").
 
 The certificate can be pinned during development, or at the time the app first connects to the backend.
 In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
@@ -254,8 +258,8 @@ Note that the certificate pinning example above has a major drawback when you us
 Our test approach is to gradually relax security of the SSL handshake negotiation and check which security mechanisms are enabled.
 
 1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (Settings -> General -> Profiles) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
-2. Now, install Burp certificate, as explained in [Burp's user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that certificate is validated against device's trust store, but the pinning is not performed.
-3. If executing instructions from previous step doesn't lead to traffic being proxied through burp, it means that certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to section "Basic Security Testing" for more information on this.
+2. Now, install the Burp certificate, as explained in [Burp's user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that the certificate is validated against the device's trust store, but no pinning is performed.
+3. If executing the instructions from the previous step doesn't lead to traffic being proxied through burp, it may mean that the certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section below titled "Bypassing Certificate Pinning" for more information on this.
 
 ##### Client certificate validation
 
@@ -275,11 +279,44 @@ Sometimes applications have one certificate that is hardcoded and use it for the
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
+##### Bypassing Certificate Pinning
+
+There are various ways to bypass SSL Pinning and the following section will describe it for jailbroken and non-jailbroken devices.
+
+If you have a jailbroken device you can try one of the following tools that can automatically disable SSL Pinning:
+
+- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the Cydia store. It will hook on to all high-level API calls and bypass certificate pinning.
+- The Burp Suite app "[Mobile Assistant](https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html "Using Burp Suite Mobile Assistant")" can also be used to bypass certificate pinning.
+
+In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
+
+- the API calls `NSURLSession`, `CFStream`, and `AFNetworking`
+- methods/strings containing words like "pinning," "X.509," "Certificate," etc.
+
+If you don't have access to the source, you can try binary patching:
+
+- If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
+- Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware of the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
+
+It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and Objection (this also works on jailbroken devices). After repackaging your application with Objection as described in "iOS Basic Security Testing", you can use the following command in Objection to disable common SSL Pinning implementations:
+
+```shell
+$ ios sslpinning disable
+```
+
+You can look into the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts "pinning.ts") file to understand how the bypass works.
+
+See also [Objection's documentation on Disabling SSL Pinning for iOS](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" ) for further information.
+
+If you want to get more details about white box testing and typical code patterns, refer to [#thiel]. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
+
 #### References
+
+- [#thiel] - David Thiel. iOS Application Security, No Starch Press, 2015
 
 ##### OWASP Mobile Top 10 2016
 
-- M3 - Insecure Communication - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication](https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication)
+- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
 
 ##### OWASP MASVS
 
@@ -296,4 +333,4 @@ Once you have extracted the certificate from the application (e.g. using Cycript
 
 ##### Nscurl
 
-- A guide to ATS - Blog post by NowSecure - [https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/)
+- A guide to ATS - Blog post by NowSecure - <https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/>

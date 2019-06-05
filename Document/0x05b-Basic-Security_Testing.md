@@ -176,6 +176,8 @@ $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
 ```
 
+###### Using Frida
+
 With frida-server running, you should now be able to get a list of running processes with the following command:
 
 ```shell
@@ -273,7 +275,77 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### Objection
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1230>
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted device by sideloading it and interact with the application as explained in the previous section.
+
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- List the Activities, Services and Broadcast receivers
+- Start Activities
+
+The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+
+###### Installing Objection
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```shell
+
+$ pip3 install objection
+
+```
+
+If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
+
+However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
+
+```shell
+$ objection patchapk --source app-release.apk
+```
+
+The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
+
+###### Using Objection
+
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+
+```shell
+# Connecting to a patched APK
+objection explore
+
+# Find the correct name using frida-ps
+$ frida-ps -Ua | grep -i telegram
+30268  Telegram                               org.telegram.messenger
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="org.telegram.messenger" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```shell
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ android sslpinning disable
+
+# List items in the keystore
+$ android keystore list
+
+# Try to circumvent root detection
+$ android root disable
+
+```
+
+More infomation on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ##### radare2
 
@@ -281,7 +353,122 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### r2frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1232>
+[r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. R2frida allows you to:
+
+- Attach radare2 to any local process or remote frida-server via USB or TCP.
+- Read/Write memory from the target process.
+- Load Frida information such as maps, symbols, imports, classes and methods into radare2.
+- Call r2 commands from Frida as it exposes the r2pipe interface into the Frida Javascript API.
+
+###### Installing r2frida
+
+Before installing r2frida, make sure you have installed [radare2](https://rada.re/r/ "radare2") on your system. On GNU/Debian you also need to install the following dependencies:
+
+```shell
+$ sudo apt install -y make gcc libzip-dev nodejs npm curl pkg-config git
+```
+
+Once the dependencies are installed, you may proceed to install r2frida. The recommended installation method is via r2pm. To install with `r2pm`, simply run the following command:
+
+```shell
+$ r2pm -ci r2frida
+```
+
+However, you may also compile r2frida yourself in the traditional way. You can find how to do this in the official documentation of [r2frida](https://github.com/nowsecure/r2frida/blob/master/README.md "r2frida readme").
+
+###### Using r2frida
+
+With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
+
+```shell
+$ r2 frida://1234
+```
+
+For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page.](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage")
+
+Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
+
+```shell
+[0x00000000]> \i
+arch                x86
+bits                64
+os                  linux
+pid                 2218
+uid                 1000
+objc                false
+runtime             V8
+java                false
+cylang              false
+pageSize            4096
+pointerSize         8
+codeSigningPolicy   optional
+isDebuggerAttached  false
+```
+
+To search in memory for a specific keyword, you may use the search command `\/`:
+
+```shell
+[0x00000000]> \/ unacceptable
+Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
+Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
+...
+Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
+hits: 23
+0x561f072d89ee hit12_0 unacceptable policyunsupported md algorithmvar bad valuec
+0x561f0732a91a hit12_1 unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61
+```
+
+To output the search results in json format, we simply add `j` to our previous search command. This can be used in most of the commands:
+
+```shell
+[0x00000000]> \/j unacceptable
+Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
+Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
+...
+Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
+hits: 23
+{"address":"0x561f072c4223","size":12,"flag":"hit14_1","content":"unacceptable policyunsupported md algorithmvar bad valuec0"},{"address":"0x561f072c4275","size":12,"flag":"hit14_2","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61"},{"address":"0x561f072c42c8","size":12,"flag":"hit14_3","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61 "},
+...
+```
+
+To list the loaded libraries use the command `\il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
+
+```shell
+[0x00000000]> \il~keystore,ssl,crypto
+0x00007f3357b8e000 libssl.so.1.1
+0x00007f3357716000 libcrypto.so.1.1
+```
+
+Similarly, to list the exports and filter the results by a specific keyword:
+
+```shell
+[0x00000000]> \iE libssl.so.1.1~CIPHER
+0x7f3357bb7ef0 f SSL_CIPHER_get_bits
+0x7f3357bb8260 f SSL_CIPHER_find
+0x7f3357bb82c0 f SSL_CIPHER_get_digest_nid
+0x7f3357bb8380 f SSL_CIPHER_is_aead
+0x7f3357bb8270 f SSL_CIPHER_get_cipher_nid
+0x7f3357bb7ed0 f SSL_CIPHER_get_name
+0x7f3357bb8340 f SSL_CIPHER_get_auth_nid
+0x7f3357bb7930 f SSL_CIPHER_description
+0x7f3357bb8300 f SSL_CIPHER_get_kx_nid
+0x7f3357bb7ea0 f SSL_CIPHER_get_version
+0x7f3357bb7f10 f SSL_CIPHER_get_id
+```
+
+To list or set a breakpoint use the command db. This is useful when analyzing/modifying memory:
+
+```shell
+[0x00000000]> \db
+```
+
+Finally, remember that you can also run Frida JS code with \. script.js:
+
+```shell
+[0x00000000]> \. agent.js
+```
+
+You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki "Using r2frida") on their Wiki project.
 
 ##### Drozer
 
@@ -322,7 +509,6 @@ This previous command will start the activity, hopefully leaking some sensitive 
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
 ```shell
-
 # List all the installed packages
 $ dz> run app.package.list
 
@@ -457,13 +643,13 @@ Termux is a terminal emulator for Android that provides a Linux environment that
 
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
-```
+```shell
 adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
 
-```
+```shell
 $ adb pull /sdcard
 /sdcard/: 1190 files pulled. 14.1 MB/s (304526427 bytes in 20.566s)
 ```
@@ -478,11 +664,11 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 ##### Using objection
 
-This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). Objection also has the benefit of letting you **access the app sandbox on non-rooted devices**. This works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
+This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-By executing `objection --gadget <app_proccess_name> explore`, the REPL will start by default in the app's main sandbox path (`app_proccess_name` is the app process name, you can quickly get it by running `frida-ps -U | grep -i <keyword>`). You may now use `ls` and `cd` as you normally would on your terminal.
+First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
-```
+```shell
 $ frida-ps -U | grep -i owasp
 21228  sg.vp.owasp_mobile.omtg_android
 
@@ -509,7 +695,7 @@ Readable: True  Writable: True
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
 
-```
+```shell
 ...[usb] # ls
 Type    ...  Name
 ------  ...  -----------------------------------------------
@@ -530,7 +716,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
-```
+```shell
 $ sftp -P 8022 root@localhost
 ...
 sftp> cd /data/data
@@ -736,17 +922,6 @@ You can display the captured traffic in a human-readable format with Wireshark. 
 <img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="500">
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
-
-##### Burp plugins to Process Non-HTTP Traffic
-
-Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
-
-- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
-- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
-
-These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
-
-Please note that this setup can become sometimes very tedious and is not as straightforward as testing HTTP.
 
 ##### Firebase/Google Cloud Messaging (FCM/GCM)
 
@@ -1199,6 +1374,7 @@ Hook each method with Frida and print the arguments. One of them will print out 
 - Objection - <https://github.com/sensepost/objection>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - QARK - <https://github.com/linkedin/qark/>
+- R2frida - <https://github.com/nowsecure/r2frida/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 - Wireshark - <https://www.wireshark.org/>

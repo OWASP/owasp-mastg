@@ -1238,15 +1238,70 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
 
-- Encrypting the data stored in the device with the key material which is strongly bound to the device can help in the implementation of the device binding. The Android Keystore can be leveraged for the same to generate and manage the key material which is strongly coupled with the device. This would prevent the malicious actor to perform operations from the device to which the data is copied since the key material with which the data is encrypted would not be present to decrypt the encrypted data. This can be implemented using the following way:
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would then extract the data from a device, he would not have access to the key to decrypt the encrypted data. Implementing this, takes the following steps:
 
-  - Generating the key pair in the Android keystore using *KeyPairGeneratorSpec* API.
-  - Generating a secret key for AES-GCM using a secure random number generation APIs such as *java.security.SecureRandom*
-  - Encrypt the authentication data and other sensitive data stored by the application using secret key through AES-GCM cipher and use device specific parameters such IMEI, Instance ID, etc. as associated data
-  - Encrypt the secret key using public key stored in Android keystore and store the encrypted secret key in the private storage of the application
+  - Generate the key pair in the Android keystore using `KeyGenParameterSpec` API.
+
+    ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
+    keyPairGenerator.initialize(
+            new KeyGenParameterSpec.Builder(
+                    "key1",
+                    KeyProperties.PURPOSE_DECRYPT)
+                    .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
+                    .build());
+    KeyPair keyPair = keyPairGenerator.generateKeyPair();
+    Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+    cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+    ...
+
+    // The key pair can also be obtained from the Android Keystore any time as follows:
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null);
+    PrivateKey privateKey = (PrivateKey) keyStore.getKey("key1", null);
+    PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
+    ```
+
+  - Generating a secret key for AES-GCM:
+  
+    ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+    KeyGenerator keyGenerator = KeyGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+    keyGenerator.init(
+            new KeyGenParameterSpec.Builder("key2",
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .build());
+    SecretKey key = keyGenerator.generateKey();
+
+    // The key can also be obtained from the Android Keystore any time as follows:
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null);
+    key = (SecretKey) keyStore.getKey("key2", null);
+    ```
+
+  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data
+  
+    ```java
+    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+    final byte[] nonce = new byte[GCM_NONCE_LENGTH];
+    random.nextBytes(nonce);
+    GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, nonce);
+    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+    byte[] aad = "<deviceidentifierhere>".getBytes();;
+    cipher.updateAAD(aad);
+    cipher.init(Cipher.ENCRYPT_MODE, key);
+
+    //use the cipher to encrypt the authentication data see 0x50e for more details.
+    ```
+
+  - Encrypt the secret key using the public key stored in Android keystore and store the encrypted secret key in the private storage of the application
   - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
-
-  Note: For API level 23 and above, the *KeyGenParameterSpec* API can be leveraged directly to generate and manage secret keys through the Android keystore.
 
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
@@ -1268,6 +1323,8 @@ There are a few key terms you can look for when the source code is available:
   TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
   String IMEI = tm.getDeviceId();
 ```
+
+- The creation of private keys in the `AndroidKeyStore` using the `KeyPairGeneratorSpec` or `KeyGenParameterSpec` APIs.
 
 To be sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The file should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
