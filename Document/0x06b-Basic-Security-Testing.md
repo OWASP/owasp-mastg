@@ -167,13 +167,13 @@ One of the most common things you do when testing an app is accessing the device
 
 ##### Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This means also that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either Cydia (see screenshot above) or Sileo installed as introduced in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either Cydia (see screenshot above) or Sileo installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250">
 
 In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the Settings -> Wi-Fi menu and tapping once on the info icon of the network you're connected to.
 
-You can access now the remote device's shell by running `ssh root@<device_ip_address>` and you'll already have root access, for example:
+You can now access the remote device's shell by running `ssh root@<device_ip_address>`, which will log you in as the root user:
 
 ```shell
 $ ssh root@192.168.197.234
@@ -186,9 +186,20 @@ iPhone:~ root#
 When accessing your iOS device via SSH consider the following:
 
 - The default users are `root` and `mobile`.
-- The default password is `alpine`.
+- The default password for both is `alpine`.
 
-Remember to change the default password for both users `root` and `mobile` as anyone being in the same network and knowing the IP address of your device an the well-know default password will be able to access your device as root.
+> Remember to change the default password for both users `root` and `mobile` as anyone on the same network can find the IP address of your device and connect via the well-know default password, which will give them root access to your device.
+
+If you forget your password and want to reset it to the default `alpine`:
+
+- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using SSH over USB or an on-device shell as shown below)
+- Find the lines:
+  ```bash
+  root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
+  mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
+  ```
+- Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+- Save and exit
 
 ###### Connect to a Device via SSH over USB
 
@@ -685,7 +696,7 @@ Life is easy with a jailbroken device: not only do you gain easy privileged acce
 
 ###### Using Burp via USB on a Jailbroken Device
 
-In section "Accessing the Device Shell" we've already learn how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
