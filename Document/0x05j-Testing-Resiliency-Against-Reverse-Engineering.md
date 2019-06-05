@@ -1297,7 +1297,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     byte[] aad = "<deviceidentifierhere>".getBytes();;
     cipher.updateAAD(aad);
     cipher.init(Cipher.ENCRYPT_MODE, key);
-    
+
     //use the cipher to encrypt the dataL see 0x50e for more details.
     ```
 
@@ -1325,7 +1325,7 @@ There are a few key terms you can look for when the source code is available:
   String IMEI = tm.getDeviceId();
 ```
 
-- The creation of private keys in the `AndroidKeyStore` using the `KeyPairGeneratorSpec`.
+- The creation of private keys in the `AndroidKeyStore` using the `KeyPairGeneratorSpec` or `KeyGenParameterSpec` APIs.
 
 To be sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The file should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
