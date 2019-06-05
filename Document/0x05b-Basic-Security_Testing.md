@@ -286,11 +286,11 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 - Attach radare2 to any local process or remote frida-server via USB or TCP.
 - Read/Write memory from the target process.
 - Load Frida information such as maps, symbols, imports, classes and methods into radare2.
-- Call r2 commands from frida as it exposes the r2pipe interface into the Frida Javascript API.
+- Call r2 commands from Frida as it exposes the r2pipe interface into the Frida Javascript API.
 
 ###### Installing r2frida
 
-Before installing r2frida, make sure you have installed radare2 on your system. In GNU/Debian you also need to install the following dependencies:
+Before installing r2frida, make sure you have installed [radare2](https://rada.re/r/ "radare2") on your system. On GNU/Debian you also need to install the following dependencies:
 
 ```shell
 $ sudo apt install -y make gcc libzip-dev nodejs npm curl pkg-config git
@@ -306,13 +306,15 @@ However, you may also compile r2frida yourself in the traditional way. You can f
 
 ###### Using r2frida
 
-With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port and USBID/pid. For example, to attach to PID 1234:
+With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
 
 ```shell
 $ r2 frida://1234
 ```
 
-Once attached, you should see the r2 prompt with the device ID. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
+For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page.](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage")
+
+Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
 
 ```shell
 [0x00000000]> \i
@@ -344,7 +346,7 @@ hits: 23
 0x561f0732a91a hit12_1 unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61
 ```
 
-To output the search results in json format, we simply add `j` to our previous search command:
+To output the search results in json format, we simply add `j` to our previous search command. This can be used in most of the commands:
 
 ```shell
 [0x00000000]> \/j unacceptable
@@ -357,10 +359,10 @@ hits: 23
 ...
 ```
 
-To list the loaded libraries and filter the results using the internal grep from radare2:
+To list the loaded libraries use the command `\il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
 
 ```shell
-[0x00000000]> \il~+keystore,ssl,crypto
+[0x00000000]> \il~keystore,ssl,crypto
 0x00007f3357b8e000 libssl.so.1.1
 0x00007f3357716000 libcrypto.so.1.1
 ```
