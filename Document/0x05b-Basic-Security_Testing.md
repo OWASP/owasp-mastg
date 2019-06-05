@@ -1289,6 +1289,7 @@ Hook each method with Frida and print the arguments. One of them will print out 
 - Objection - <https://github.com/sensepost/objection>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - QARK - <https://github.com/linkedin/qark/>
+- R2frida - <https://github.com/nowsecure/r2frida/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 - Wireshark - <https://www.wireshark.org/>
