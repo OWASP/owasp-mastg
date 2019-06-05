@@ -170,6 +170,8 @@ $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
 ```
 
+###### Using Frida
+
 With frida-server running, you should now be able to get a list of running processes with the following command:
 
 ```shell
@@ -267,7 +269,80 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### Objection
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1230>
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-jailbroken device by sideloading it and interact with the application as explained in the previous section.
+
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to interactively perform any action that the application could perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- Dump the Keychain
+- Read plist files
+
+The ability to perform advanced dynamic analysis on non-jailbroken device is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+
+###### Installing Objection
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```shell
+
+$ pip3 install objection
+
+```
+
+If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
+
+However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
+
+```shell
+$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+```
+
+Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
+
+```shell
+$ ios-deploy --bundle Payload/my-app.app -W -d
+```
+
+###### Using Objection
+
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+
+```shell
+# Connecting to a patched IPA
+objection explore
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="Telegram" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```shell
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ ios sslpinning disable
+
+# Dump the Keychain
+$ ios keychain dump
+
+# Dump the Keychain, including access modifiers. The result will be written to the host in myfile.json
+$ ios keychain dump --json <myfile.json>
+
+# Show the content of a plist file
+$ ios plist cat <myfile.plist>
+
+```
+
+More infomation on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ##### radare2
 
@@ -475,7 +550,7 @@ Readable: True  Writable: True
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
 
-```
+```shell
 ...[usb] # ls
 Type    ...  Name
 ------  ...  -----------------------------------------------
