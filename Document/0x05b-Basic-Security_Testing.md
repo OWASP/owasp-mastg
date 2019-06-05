@@ -373,37 +373,32 @@ Once the setup is completed you can start a session to an emulator or a device c
 
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
-- To list all the packages installed, execute the following command:
+```shell
 
-    `dz> run app.package.list`
+# List all the installed packages
+$ dz> run app.package.list
 
-- To find the package name of a specific app, pass  "-f" and a search string:
+# Find the package name of a specific app
+$ dz> run app.package.list –f (string to be searched)
 
-    `dz> run app.package.list –f (string to be searched)`
+# See basic information
+$ dz> run app.package.info –a (package name)
 
-- To see basic information about the package, execute the following command:
+# Identify the exported application components
+$ dz> run app.package.attacksurface (package name)
 
-    `dz> run app.package.info –a (package name)`
+# Identify the list of exported Activities
+$ dz> run app.activity.info -a (package name)
 
-- To identify the exported application components, execute the following command:
+# Launch the exported Activities
+$ dz> run app.activity.start --component (package name) (component name)
 
-    `dz> run app.package.attacksurface (package name)`
+# Identify the list of exported Broadcast receivers
+$ dz> run app.broadcast.info -a (package name)
 
-- To identify the list of exported Activities in the target application, execute the following command:
-
-    `dz> run app.activity.info -a (package name)`
-
-- To launch the exported Activities, execute the following command:
-
-    `dz> run app.activity.start --component (package name) (component name)`
-
-- To identify the list of exported Broadcast receivers in the target application, execute the following command:
-
-    `dz> run app.broadcast.info -a (package name)`
-
-- To send a message to a Broadcast receiver, execute the following command:
-
-    `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
+# Send a message to a Broadcast receiver
+$ dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)
+```
 
 Learn more about drozer's security assessment and exploitation features by checking the following resources:
 
