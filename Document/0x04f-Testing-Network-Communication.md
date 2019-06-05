@@ -27,7 +27,7 @@ Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, bec
 
 These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
 
-Please note that this setup can become sometimes very tedious and is not as straightforward as testing HTTP.
+Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
 ### Intercepting Traffic on the Network Layer
 
