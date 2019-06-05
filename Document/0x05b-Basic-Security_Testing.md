@@ -43,27 +43,33 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 ##### Testing on a Real Device
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
-
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
+
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
 ##### Testing on the Emulator
 
-All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
+-- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1279>
 
-- MobSF
-- Nathan (not updated since 2016)
-- AppUse
+You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
+You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
-You can also create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices")
-
-Please also verify the "Tools" section at the end of this book.
-
-###### Restrictions When Testing on an Emulator
+```shell
+$ ./android avd
+```
 
 There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
 
 Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
+
+Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
+
+- MobSF
+- Nathan (not updated since 2016)
+
+Please also verify the "Tools" section at the end of this book.
 
 ##### Getting Privileged Access
 
@@ -170,6 +176,8 @@ $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
 ```
 
+###### Using Frida
+
 With frida-server running, you should now be able to get a list of running processes with the following command:
 
 ```shell
@@ -267,7 +275,77 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### Objection
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1230>
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted device by sideloading it and interact with the application as explained in the previous section.
+
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- List the Activities, Services and Broadcast receivers
+- Start Activities
+
+The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+
+###### Installing Objection
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```shell
+
+$ pip3 install objection
+
+```
+
+If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
+
+However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
+
+```shell
+$ objection patchapk --source app-release.apk
+```
+
+The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
+
+###### Using Objection
+
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+
+```shell
+# Connecting to a patched APK
+objection explore
+
+# Find the correct name using frida-ps
+$ frida-ps -Ua | grep -i telegram
+30268  Telegram                               org.telegram.messenger
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="org.telegram.messenger" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```shell
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ android sslpinning disable
+
+# List items in the keystore
+$ android keystore list
+
+# Try to circumvent root detection
+$ android root disable
+
+```
+
+More infomation on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ##### radare2
 
@@ -362,60 +440,65 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 
 #### Accessing the Device Shell
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1236>
-
-##### On-device Shell App
+One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both remotely from your host computer with/without a USB cable and locally from the device itself.
 
 ##### Remote Shell
 
-In order to connect to the shell of an Android device, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your first tool of choice (unless you've configured remote SSH access).
+In order to connect to the shell of an Android device from your host computer, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
-###### Connecting to an Android Physical Device
+For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
-When connecting to an Android physical device, you must enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+```shell
+$ adb shell
+```
 
-Once USB debugging is enabled, connected devices can be viewed with the following command:
+> press Control + D or type `exit` to quit
+
+If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
+
+```shell
+$ adb shell
+bullhead:/ $ su
+bullhead:/ # id
+uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
+```
+
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
+
+###### Connect to Multiple Devices
+
+If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
 ```shell
 $ adb devices
 List of devices attached
-BAZ5ORFARKOZYDFA    device
+00c907098530a82c    device
+emulator-5554    device
 ```
 
-Access to the remote device's shell
+###### Connect to a Device over Wi-Fi
 
-```shell
-$ adb shell
-```
+You can also access your Android device without using the USB cable. For this you'll have to connect both your host computer and your Android device to the same Wi-Fi network and follow the next steps:
 
-> When you are ready to exit the remote shell, press Control + D or type `exit`.
+- Connect the device to the host computer with a USB cable and set the target device to listen for a TCP/IP connection on port 5555: `adb tcpip 5555`.
+- Disconnect the USB cable from the target device and run `adb connect <device_ip_address>`. Check that the device is now available by running `adb devices`.
+- Open the shell with `adb shell`.
 
-This will simply work if you have only one device connected. If you have more than one, you'll have to specify the device to which you want to access the shell.
+However, notice that by doing this you leave your device open to anyone being in the same network and knowing the IP address of your device. You may rather prefer using the USB connection.
 
-The `adb shell` command can also issue commands to the device without entering the adb remote shell, for example:
+> For example, on a Nexus device, you can find the IP address at Settings -> System -> About phone -> Status -> IP address or by going to the Wi-Fi menu and tapping once on the network you're connected to.
 
-```shell
-$ adb shell id
-```
+See the full instructions and considerations in the [Android Developers Documentation](https://developer.android.com/studio/command-line/adb#wireless "Connect to a device over Wi-Fi").
 
-###### Connecting to an Android Virtual Device
+###### Connect to a Device via SSH
 
-You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
+If you prefer, you can also enable SSH access. A convenient option is to use Termux, which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
-```shell
-$ ./android avd
-```
+##### On-device Shell App
 
-Once the emulator is up and running, you can establish a root connection with the `adb` command.
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
 
-```shell
-$ adb root
-$ adb shell
-root@generic_x86:/ $ id
-uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:su:s0
-```
-
-Rooting an emulator is therefore unnecessary; root access can be established with `adb`.
+Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
 
 #### Host-Device Data Transfer
 
@@ -423,13 +506,13 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
-```
+```shell
 adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
 
-```
+```shell
 $ adb pull /sdcard
 /sdcard/: 1190 files pulled. 14.1 MB/s (304526427 bytes in 20.566s)
 ```
@@ -444,11 +527,11 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 ##### Using objection
 
-This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). Objection also has the benefit of letting you **access the app sandbox on non-rooted devices**. This works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
+This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-By executing `objection --gadget <app_proccess_name> explore`, the REPL will start by default in the app's main sandbox path (`app_proccess_name` is the app process name, you can quickly get it by running `frida-ps -U | grep -i <keyword>`). You may now use `ls` and `cd` as you normally would on your terminal.
+First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
-```
+```shell
 $ frida-ps -U | grep -i owasp
 21228  sg.vp.owasp_mobile.omtg_android
 
@@ -475,7 +558,7 @@ Readable: True  Writable: True
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
 
-```
+```shell
 ...[usb] # ls
 Type    ...  Name
 ------  ...  -----------------------------------------------
@@ -496,7 +579,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
-```
+```shell
 $ sftp -P 8022 root@localhost
 ...
 sftp> cd /data/data
@@ -702,17 +785,6 @@ You can display the captured traffic in a human-readable format with Wireshark. 
 <img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="500">
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
-
-##### Burp plugins to Process Non-HTTP Traffic
-
-Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
-
-- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
-- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
-
-These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
-
-Please note that this setup can become sometimes very tedious and is not as straightforward as testing HTTP.
 
 ##### Firebase/Google Cloud Messaging (FCM/GCM)
 
