@@ -269,22 +269,22 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### Objection
 
-[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
 
-Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-jailbroken device by sideloading it and interact with the application as explained in the previous section.
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted device by sideloading it and interact with the application as explained in the previous section.
 
-However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to interactively perform any action that the application could perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
 
 - Repackage applications to include the Frida gadget
 - Disable SSL pinning for popular methods
 - Access application storage to download or upload files
 - Execute custom Frida scripts
-- Dump the Keychain
-- Read plist files
+- List the Activities, Services and Broadcast receivers
+- Start Activities
 
-The ability to perform advanced dynamic analysis on non-jailbroken device is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to analyze the application. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
 
-Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
 
 ###### Installing Objection
 
@@ -298,28 +298,28 @@ $ pip3 install objection
 
 If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
 
-However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
+However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
 
 ```shell
-$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+$ objection patchapk --source app-release.apk
 ```
 
-Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
-
-```shell
-$ ios-deploy --bundle Payload/my-app.app -W -d
-```
+The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
 
 ###### Using Objection
 
-Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
 
 ```shell
-# Connecting to a patched IPA
+# Connecting to a patched APK
 objection explore
 
+# Find the correct name using frida-ps
+$ frida-ps -Ua | grep -i telegram
+30268  Telegram                               org.telegram.messenger
+
 # Connecting to the Telegram app through Frida-server
-$ objection --gadget="Telegram" explore
+$ objection --gadget="org.telegram.messenger" explore
 ```
 
 Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
@@ -329,16 +329,13 @@ Once you are in the Objection REPL, you can execute any of the available command
 $ env
 
 # Disable popular ssl pinning methods
-$ ios sslpinning disable
+$ android sslpinning disable
 
-# Dump the Keychain
-$ ios keychain dump
+# List items in the keystore
+$ android keystore list
 
-# Dump the Keychain, including access modifiers. The result will be written to the host in myfile.json
-$ ios keychain dump --json <myfile.json>
-
-# Show the content of a plist file
-$ ios plist cat <myfile.plist>
+# Try to circumvent root detection
+$ android root disable
 
 ```
 
@@ -498,13 +495,13 @@ Rooting an emulator is therefore unnecessary; root access can be established wit
 
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
-```
+```shell
 adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
 
-```
+```shell
 $ adb pull /sdcard
 /sdcard/: 1190 files pulled. 14.1 MB/s (304526427 bytes in 20.566s)
 ```
@@ -519,11 +516,11 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 ##### Using objection
 
-This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). Objection also has the benefit of letting you **access the app sandbox on non-rooted devices**. This works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
+This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-By executing `objection --gadget <app_proccess_name> explore`, the REPL will start by default in the app's main sandbox path (`app_proccess_name` is the app process name, you can quickly get it by running `frida-ps -U | grep -i <keyword>`). You may now use `ls` and `cd` as you normally would on your terminal.
+First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
-```
+```shell
 $ frida-ps -U | grep -i owasp
 21228  sg.vp.owasp_mobile.omtg_android
 
@@ -571,7 +568,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
-```
+```shell
 $ sftp -P 8022 root@localhost
 ...
 sftp> cd /data/data
