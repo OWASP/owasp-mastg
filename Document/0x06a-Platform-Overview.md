@@ -131,21 +131,6 @@ A language.lproj folder exists for each language that the application supports. 
 
 On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [TestFlight](https://developer.apple.com/testflight/ "TestFlight").
 
-#### App Structure on the iOS File System
-
-Previously, ups to iOS 7 included, applications were unpacked to a folder in the `/var/mobile/Applications/` directory. Starting with iOS 8, the way applications are stored on the device changed (as detailed below). Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself is stored. The static app bundle and the application data folders are stored in a different location. These folders contain information that must be examined closely during application security assessments.
-
-- `/var/mobile/Containers/Bundle/Application/[UUID]/Application.app` contains the previously mentioned Application.app data, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder is used to validate the code signature.
-- `/var/mobile/Containers/Data/Application/[UUID]/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
-- `/var/mobile/Containers/Data/Application/[UUID]/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
-- `/var/mobile/Containers/Data/Application/[UUID]/tmp` contains temporary files which aren't needed between application launches.
-
-Note, that since iOS 9.3.x, the Bundle path has changed again to `/var/containers/Bundle/Application/`.
-
-The following figure represents the application folder structure:
-
-<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
-
 #### App Permissions
 
 In contrast to Android apps (before Android 6), iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during run time, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").

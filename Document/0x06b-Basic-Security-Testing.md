@@ -169,6 +169,13 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 ```
 
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
+- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): It's an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via vuejs. It can be installed with npm.
+
+```bash 
+$ npm install -g passionfruit
+$ passionfruit
+```
+
 - [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
 - [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
 
@@ -343,60 +350,88 @@ $ ssh -p 2222 root@localhost
 
 #### Host-Device Data Transfer
 
+There might be various scenarios where you might need to transfer data from the iOS device or app data sandbox to your workstation or vice versa. The following section will show you different ways on how to achieve that.
+
 ##### App Folder Structure
 
-System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/mobile/Containers/` since iOS 9). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
+Before explaining all the tools, let's go through a short overview of the app folder structure on iOS to understand where which data is stored.
+
+System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/containers/`). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
 
 ```shell
 iPhone:~ root# ipainstaller -l
 ...
-sg.vp.UnCrackable1
+com.highaltitudehacks.dvia
 
-iPhone:~ root# ipainstaller -i sg.vp.UnCrackable1
+iPhone:~ root# ipainstaller -i com.highaltitudehacks.dvia
 ...
-Bundle: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1
-Application: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1/UnCrackable Level 1.app
-Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
+Bundle: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7
+Application: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app
+Data: /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
 ```
 
-The user-installed apps have two main subdirectories (plus the `Shared` subdirectory since iOS 9):
+Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself is stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments.
 
-- Bundle
-- Data
+- `/private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder is used to validate the code signature.
+- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
+- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
+- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05` contains temporary files which aren't needed between application launches.
 
-The Application subdirectory, which is inside the Bundle subdirectory, contains the name of the app. The static installer files are in the Application directory, and all user data is in the Data directory.
+The following illustration represents the application folder structure:
 
-The random string in the URI is the application's GUID. Every app installation has a unique GUID. There is no relationship between an app's Bundle GUID and its Data GUID.
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
 
 ##### Copying App Data Files via SSH and SCP
 
-App files are stored in the Data directory. To identify the correct path, SSH into the device and use IPA Installer Console to retrieve the package information (as shown previously):
+As we know now, files from our app are stored in the Data directory. You can now simply archive the Data directory with `tar` and pull it from the device with `scp`:
 
 ```shell
-iPhone:~ root# ipainstaller -l
-...
-sg.vp.UnCrackable1
-
-iPhone:~ root# ipainstaller -i sg.vp.UnCrackable1
-Identifier: sg.vp.UnCrackable1
-Version: 1
-Short Version: 1.0
-Name: UnCrackable1
-Display Name: UnCrackable Level 1
-Bundle: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1
-Application: /private/var/mobile/Containers/Bundle/Application/A8BD91A9-3C81-4674-A790-AF8CDCA8A2F1/UnCrackable Level 1.app
-Data: /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
-```
-
-You can now simply archive the Data directory and pull it from the device with `scp`:
-
-```shell
-iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35258D87
+iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
 
---ToDo: <https://github.com/OWASP/owasp-mstg/issues/1245>
+##### Passionfruit
+
+After starting Passionfruit you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
+
+When navigating through the directories and selecting a file a TextViewer pop-up will show up, that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, which include:
+
+- Text viewer
+- SQLite viewer
+- Image viewer
+- Plist viewer
+- Download
+
+<img src="Images/Chapters/0x06b/Passionfruit_files.png" alt="Passiofruit File Options">
+
+##### Objection
+
+When you are starting objection you will find the prompt within the bundle directory.
+
+```bash
+org.owasp.MSTG on (iPhone: 10.3.3) [usb] # pwd print
+Current directory: /var/containers/Bundle/Application/DABF849D-493E-464C-B66B-B8B6C53A4E76/org.owasp.MSTG.app
+```
+
+Use the `env` command to get the directories of the app and navigate to the Documents directory. 
+
+```bash
+org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
+/var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
+```
+
+With the command `file download <filename>` you can download a file from the iOS device to your workstation and can analyse it afterwards.
+
+```bash
+org.owasp.MSTG on (iPhone: 10.3.3) [usb] # file download .com.apple.mobile_container_manager.metadata.plist
+Downloading /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
+Streaming file from device...
+Writing bytes to destination...
+Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
+```
+
+You can also upload files with `file upload <local_file_path>` to the iOS device.
 
 #### Obtaining and Extracting Apps
 
@@ -726,19 +761,17 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 -- ToDo Passionfruit: <https://github.com/OWASP/owasp-mstg/issues/1249>
 
-##### Accessing App Data
-
-###### Dumping KeyChain Data
+##### Dumping KeyChain Data
 
 ###### Objection
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
-####### Passionfruit (non-Jailbroken)
+###### Passionfruit (non-Jailbroken)
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
-####### Keychain-dumper (Jailbroken)
+###### Keychain-dumper (Jailbroken)
 
 [Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
