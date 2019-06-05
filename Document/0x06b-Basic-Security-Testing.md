@@ -27,6 +27,20 @@ $ xcode-select --install
 
 #### Testing Device
 
+##### Getting the UDID of an iOS device
+
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
+
+It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id -l`:
+
+```bash
+$ brew install ideviceinstaller
+$ idevice_id -l
+316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+```
+
+Alternatively you can also use the Xcode command `instruments -s devices`.
+
 ##### Testing on a real device (Jailbroken)
 
 You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
@@ -885,14 +899,21 @@ To get more information about testing transport security, please refer to the se
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
 1. Connect your iOS device to your macOS machine via USB.
-2. Make sure that your iOS device and your macOS machine are connected to the same network.
-3. Open Terminal on macOS and enter the following command: `$ rvictl -s x`, where x is the UDID of your iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID").
-4. Launch Wireshark and select "rvi0" as the capture interface.
-5. Filter the traffic in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
+1. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
+
+```bash
+$ rvictl -s <UDID>
+Starting device <UDID> [SUCCEEDED] with interface rvi0
+```
+
+1. Launch Wireshark and select "rvi0" as the capture interface.
+1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
 ```shell
 ip.addr == 192.168.1.1 && http
 ```
+
+The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
 #### Setting up an Interception Proxy
 
