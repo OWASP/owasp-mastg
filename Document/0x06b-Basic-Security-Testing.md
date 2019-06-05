@@ -188,16 +188,18 @@ When accessing your iOS device via SSH consider the following:
 - The default users are `root` and `mobile`.
 - The default password for both is `alpine`.
 
-> Remember to change the default password for both users `root` and `mobile` as anyone on the same network can find the IP address of your device and connect via the well-know default password, which will give them root access to your device.
+> Remember to change the default password for both users `root` and `mobile` as anyone on the same network can find the IP address of your device and connect via the well-known default password, which will give them root access to your device.
 
 If you forget your password and want to reset it to the default `alpine`:
 
-- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using SSH over USB or an on-device shell as shown below)
+- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
 - Find the lines:
+  
   ```bash
   root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
   mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
   ```
+  
 - Change `xxxxxxxxx` to `/smx7MYTQIi2M`
 - Save and exit
 
@@ -228,6 +230,22 @@ You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecur
 ##### On-device Shell App
 
 While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/) via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
+
+In addition, there are a few jailbreaks that explicitly disable incoming SSH *for security reasons*. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
+
+Opening a reverse shell over SSH can be done by running the command `ssh -R <remote_port>:localhost:22 <username>@<host_computer_ip>`.
+
+On the on-device shell app run the following command and, when asked, enter the password of the `mstg` user of the host computer:
+
+```bash
+ssh -R 2222:localhost:22 mstg@192.168.197.235
+```
+
+On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
+
+```bash
+$ ssh -p 2222 root@localhost
+```
 
 #### Host-Device Data Transfer
 
