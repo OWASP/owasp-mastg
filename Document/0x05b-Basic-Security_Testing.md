@@ -287,54 +287,77 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 [Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
 
+The advantage of using Drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
+
+###### Installing Drozer
+
 You can refer to [drozer GitHub page](https://github.com/mwrlabs/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions. Other resources where you might find useful information are:
+The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions.
 
-- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
-- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
-- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
+###### Using Drozer
 
 Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the releases page](https://github.com/mwrlabs/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
 Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions [here](https://mobiletools.mwrinfosecurity.com/Starting-a-session/ "Starting a Session").
 
+Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
+
+```shell
+$ dz> run app.package.attacksurface <package>
+```
+
+Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standlone app as it would be required for certain tasks such as communicating with a content provider.
+
+For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
+
+```shell
+$ dz> run app.activity.start --component <package> <component name>
+```
+
+This previous command will start the activity, hopefully leaking some sensitive information. Drozer has modules for every type of IPC mechanism. Download [Sieve](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve APK") if you would like to try all the modules with an intentionally vulnerable application that illustrates common problems related to IPC endpoints. Pay close attention to the modules in the scanner category as they are very helpful automatically detecting vulnerabilities even in system packages, specially if you are using a ROM provided by your cellphone company. Even [SQL injection vulnerabilities in system packages by Google](https://issuetracker.google.com/u/0/issues/36965126 "SQL injection in Android") have been identified in the past with drozer.
+
+###### Other Drozer commands
+
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
-- To list all the packages installed, execute the following command:
+```shell
 
-    `dz> run app.package.list`
+# List all the installed packages
+$ dz> run app.package.list
 
-- To find the package name of a specific app, pass  "-f" and a search string:
+# Find the package name of a specific app
+$ dz> run app.package.list –f (string to be searched)
 
-    `dz> run app.package.list –f (string to be searched)`
+# See basic information
+$ dz> run app.package.info –a (package name)
 
-- To see basic information about the package, execute the following command:
+# Identify the exported application components
+$ dz> run app.package.attacksurface (package name)
 
-    `dz> run app.package.info –a (package name)`
+# Identify the list of exported Activities
+$ dz> run app.activity.info -a (package name)
 
-- To identify the exported application components, execute the following command:
+# Launch the exported Activities
+$ dz> run app.activity.start --component (package name) (component name)
 
-    `dz> run app.package.attacksurface (package name)`
+# Identify the list of exported Broadcast receivers
+$ dz> run app.broadcast.info -a (package name)
 
-- To identify the list of exported Activities in the target application, execute the following command:
+# Send a message to a Broadcast receiver
+$ dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)
 
-    `dz> run app.activity.info -a (package name)`
+# Detect SQL injections in content providers
+$ dz> run scanner.provider.injection -a (package name)
+```
 
-- To launch the exported Activities, execute the following command:
+###### Other Drozer resources
 
-    `dz> run app.activity.start --component (package name) (component name)`
+Other resources where you might find useful information are:
 
-- To identify the list of exported Broadcast receivers in the target application, execute the following command:
-
-    `dz> run app.broadcast.info -a (package name)`
-
-- To send a message to a Broadcast receiver, execute the following command:
-
-    `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
-
-Learn more about drozer's security assessment and exploitation features by checking the following resources:
-
+- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
+- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
 - [Command Reference](https://mobiletools.mwrinfosecurity.com/Command-Reference/ "drozer's Command Reference")
 - [Using drozer for application security assessments](https://mobiletools.mwrinfosecurity.com/Using-Drozer-for-application-security-assessments/ "Using drozer for application security assessments")
 - [Exploitation features in drozer](https://mobiletools.mwrinfosecurity.com/Exploitation-features-in-drozer/ "Exploitation features in drozer")
