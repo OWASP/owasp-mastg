@@ -296,7 +296,7 @@ Before installing r2frida, make sure you have installed radare2 on your system. 
 $ sudo apt install -y make gcc libzip-dev nodejs npm curl pkg-config git
 ```
 
-Once the dependencies are installed, you may proceed to install r2frida. The recommended installation method is via r2pm. To install with r2pm, simply run the following command:
+Once the dependencies are installed, you may proceed to install r2frida. The recommended installation method is via r2pm. To install with `r2pm`, simply run the following command:
 
 ```shell
 $ r2pm -ci r2frida
@@ -306,13 +306,13 @@ However, you may also compile r2frida yourself in the traditional way. You can f
 
 ###### Using r2frida
 
-With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port and USBID/pid. For example, to attach to pid 1234:
+With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port and USBID/pid. For example, to attach to PID 1234:
 
 ```shell
 $ r2 frida://1234
 ```
 
-Once attached, you should see the r2 prompt with the device ID. r2frida commands must start with \ or =!. For example, you may retrieve target information with the command \i:
+Once attached, you should see the r2 prompt with the device ID. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
 
 ```shell
 [0x00000000]> \i
@@ -331,7 +331,7 @@ codeSigningPolicy   optional
 isDebuggerAttached  false
 ```
 
-To search in memory for a specific keyword, you may use the search command \/:
+To search in memory for a specific keyword, you may use the search command `\/`:
 
 ```shell
 [0x00000000]> \/ unacceptable
@@ -344,7 +344,7 @@ hits: 23
 0x561f0732a91a hit12_1 unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61
 ```
 
-To output the search results in json format, we simply add 'j' to our previous search command:
+To output the search results in json format, we simply add `j` to our previous search command:
 
 ```shell
 [0x00000000]> \/j unacceptable
@@ -394,7 +394,7 @@ Finally, remember that you can also run Frida JS code with \. script.js:
 [0x00000000]> \. agent.js
 ```
 
-You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki) on their Wiki project.
+You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki "Using r2frida") on their Wiki project.
 
 ##### Drozer
 
