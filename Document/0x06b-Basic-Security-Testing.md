@@ -971,6 +971,8 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
+<<<<<<< HEAD
+=======
 ##### Bypassing Certificate Pinning
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1252>
@@ -1006,6 +1008,7 @@ If you want to get more details about white box testing and typical code pattern
 
 To get more information about testing transport security, please refer to the section "Testing Network Communication."
 
+>>>>>>> master
 ### Setting Up a Network Testing Environment
 
 -- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
