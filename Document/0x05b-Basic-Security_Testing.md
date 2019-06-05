@@ -622,9 +622,60 @@ Note that if you have the original source code and use Android Studio, you do no
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1239>
 
+You can retrieve information from the apps by getting their package and exploring it or by targeting the apps on the device itself.
+
 ##### Installed Apps
 
+When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager):
+
+```bash
+$ adb shell pm list packages
+package:sg.vantagepoint.helloworldjni
+package:eu.chainfire.supersu
+package:org.teamsik.apps.hackingchallenge.easy
+package:org.teamsik.apps.hackingchallenge.hard
+package:sg.vp.owasp_mobile.omtg_android
+```
+
+You can include flags to show only third party apps (`-3`) and the location of their APK file (`-f`), which you can use afterwards to download it via `adb pull`:
+
+```bash
+$ adb shell pm list packages -3 -f
+package:/data/app/sg.vantagepoint.helloworldjni-1/base.apk=sg.vantagepoint.helloworldjni
+package:/data/app/eu.chainfire.supersu-1/base.apk=eu.chainfire.supersu
+package:/data/app/org.teamsik.apps.hackingchallenge.easy-1/base.apk=org.teamsik.apps.hackingchallenge.easy
+package:/data/app/org.teamsik.apps.hackingchallenge.hard-1/base.apk=org.teamsik.apps.hackingchallenge.hard
+package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk=sg.vp.owasp_mobile.omtg_android
+```
+
+This is the same as running `adb shell pm path <app_package_id>` on an app package ID:
+
+```bash
+$ adb shell pm path sg.vp.owasp_mobile.omtg_android
+package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
+```
+
+Use `frida-ps -Ua` to get all apps (`-a`) currently running on the connected USB device (`-U`):
+
+```bash
+$ frida-ps -Ua
+  PID  Name                                      Identifier
+-----  ----------------------------------------  ---------------------------------------
+  766  Android System                            android
+21228  Attack me if u can                        sg.vp.owasp_mobile.omtg_android
+ 4281  Termux                                    com.termux
+```
+
+Note that this is not the same as all installed apps.
+
 ##### App Basic Information
+
+Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the APK of the app. The first source of information is the Android Manifest, which you can obtain by just unzipping the APK and searching for AndroidManifest.xml. However, it will be probably encoded so the best option is using apktool to properly unpack the APK and also get the decoded AndroidManifest.xml.
+
+```bash
+$ apktool d <filename>.apk
+```
+
 
 ###### Sandbox
 
