@@ -624,8 +624,6 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 
 ##### Method Tracing
 
-##### Basic Network Monitoring/Sniffing
-
 ### Setting up a Network Testing Environment
 
 #### Basic Network Monitoring/Sniffing

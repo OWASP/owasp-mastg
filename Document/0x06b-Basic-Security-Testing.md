@@ -589,61 +589,6 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-###### SSH Connection via USB
-
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
-
-Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
-
-Connect macOS to an iOS device by installing and starting iproxy:
-
-```shell
-$ brew install libimobiledevice
-$ iproxy 2222 22
-waiting for connection
-```
-
-The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
-
-```shell
-$ ssh -p 2222 root@localhost
-root@localhost's password:
-iPhone:~ root#
-```
-
-You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
-
-###### Using Burp via USB on a Jailbroken Device
-
-We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
-
-First we need to use iproxy to make SSH from iOS available on localhost.
-
-```bash
-$ iproxy 2222 22
-waiting for connection
-```
-
-The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
-
-```bash
-ssh -R 8080:localhost:8080 root@localhost -p 2222
-```
-
-You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
-
-The last step would be to set the proxy globally on your iOS device.
-
-- Go to Settings
-- Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-- Once connected click on the small blue icon on the right side of the connect Wi-Fi
-- Configure your Proxy by selecting Manual
-- Type in 127.0.0.1 as Server
-- Type in 8080 as Port
-
-Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
-
 ###### Installing Frida
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1251>
@@ -850,6 +795,61 @@ Setting up Burp to proxy your traffic is pretty straightforward. We assume that 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 #### Potential Obstacles
+
+##### SSH Connection via USB
+
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
+
+Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host machine. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
+
+Connect macOS to an iOS device by installing and starting iproxy:
+
+```shell
+$ brew install libimobiledevice
+$ iproxy 2222 22
+waiting for connection
+```
+
+The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the iOS device:
+
+```shell
+$ ssh -p 2222 root@localhost
+root@localhost's password:
+iPhone:~ root#
+```
+
+You can also use the iPhone's USB connection via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
+
+##### Using Burp via USB on a Jailbroken Device
+
+We already know now that we can use iproxy to use SSH via USB. The next step would be to use the SSH connection to route our traffic to Burp that is running on our workstation. Let's get started:
+
+First we need to use iproxy to make SSH from iOS available on localhost.
+
+```bash
+$ iproxy 2222 22
+waiting for connection
+```
+
+The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
+
+```bash
+ssh -R 8080:localhost:8080 root@localhost -p 2222
+```
+
+You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+
+The last step would be to set the proxy globally on your iOS device.
+
+- Go to Settings
+- Wi-Fi
+- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+- Once connected click on the small blue icon on the right side of the connected Wi-Fi
+- Configure your Proxy by selecting Manual
+- Type in 127.0.0.1 as Server
+- Type in 8080 as Port
+
+Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
 ### References
 
