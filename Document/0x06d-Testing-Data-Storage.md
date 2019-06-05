@@ -728,19 +728,9 @@ $ ls -alh MobileSync
 ls: MobileSync: Operation not permitted
 ```
 
-This is not a permission issue of the backup folder, but a new feature in macOS Mojave. Allow the Terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail. 
+This is not a permission issue of the backup folder, but a new feature in macOS Mojave. Allow the Terminal or iTerm or whatever your terminal software is full disk access, which is explained [here](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave") in detail.
 
-Before you can access the directory you need to select the folder with the UDID of your device. This is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID in iTunes, when selecting your device and when you click in the summary tab on "Serial Number". When clicking on this you will iterate through different meta-data of the iOS device including it's UDID.
-
-It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id`:
-
-```bash
-$ brew install ideviceinstaller
-$ idevice_id -l
-316f01bd160932d2bf2f95f1f142bc29b1c62dbc
-```
-
-Alternatively you can also use the Xcode command `instruments -s devices`.
+Before you can access the directory you need to select the folder with the UDID of your device. Check the section "Getting the UDID of an iOS device" in the "iOS Basic Security Testing" chapter on how to retrieve the UDID.
 
 Once you know the UDID you can navigate into this directory and you will find the full backup of the whole device, which does include pictures, app data and whatever might have been stored on the device.
 

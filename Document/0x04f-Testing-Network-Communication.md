@@ -18,6 +18,17 @@ To use the interception proxy, you'll need run it on your machine and configure 
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
+### Burp plugins to Process Non-HTTP Traffic
+
+Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
+
+- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
+- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
+
+These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
+
+Please note that this setup can become sometimes very tedious and is not as straightforward as testing HTTP.
+
 ### Intercepting Traffic on the Network Layer
 
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries are used in the app and all communication is done via HTTP. But there are several cases where this is not working:
