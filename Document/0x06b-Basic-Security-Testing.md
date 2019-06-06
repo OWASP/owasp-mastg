@@ -169,7 +169,7 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 ```
 
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via vuejs. It can be installed with npm.
+- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
 
 ```bash 
 $ npm install -g passionfruit
@@ -372,7 +372,7 @@ Data: /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2F
 
 Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself are stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments.
 
-- `/private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder is used to validate the code signature.
+- `/private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder are used to validate the code signature.
 - `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
 - `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
 - `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05` contains temporary files which aren't needed between application launches.
@@ -407,7 +407,7 @@ When navigating through the directories and selecting a file, a TextViewer pop-u
 
 ##### Objection
 
-When you are starting objection you will find the prompt within the bundle directory.
+When you are starting objection you will find the prompt within the Bundle directory.
 
 ```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # pwd print
@@ -421,7 +421,7 @@ org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Applic
 /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
 ```
 
-With the command `file download <filename>` you can download a file from the iOS device to your workstation and can analyse it afterwards.
+With the command `file download <filename>` you can download a file from the iOS device to your workstation and can analyze it afterwards.
 
 ```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # file download .com.apple.mobile_container_manager.metadata.plist
@@ -431,7 +431,7 @@ Writing bytes to destination...
 Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 ```
 
-You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case file an issue.
+You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case file an issue in the [objection GitHub repo](https://github.com/sensepost/objection/issues "Objection Issues").
 
 #### Obtaining and Extracting Apps
 
