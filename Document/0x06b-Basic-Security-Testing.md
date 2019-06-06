@@ -169,7 +169,7 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 ```
 
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): It's an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via vuejs. It can be installed with npm.
+- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via vuejs. It can be installed with npm.
 
 ```bash 
 $ npm install -g passionfruit
@@ -354,7 +354,7 @@ There might be various scenarios where you might need to transfer data from the 
 
 ##### App Folder Structure
 
-Before explaining all the tools, let's go through a short overview of the app folder structure on iOS to understand where which data is stored.
+Before explaining all the tools, let's go through a short overview of the app folder structure on iOS to understand which data is stored where.
 
 System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/containers/`). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
 
@@ -370,7 +370,7 @@ Application: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-
 Data: /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
 ```
 
-Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself is stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments.
+Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself are stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments.
 
 - `/private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder is used to validate the code signature.
 - `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
@@ -395,7 +395,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 After starting Passionfruit you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
-When navigating through the directories and selecting a file a TextViewer pop-up will show up, that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, which include:
+When navigating through the directories and selecting a file, a TextViewer pop-up will show up that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, including:
 
 - Text viewer
 - SQLite viewer
@@ -431,7 +431,7 @@ Writing bytes to destination...
 Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 ```
 
-You can also upload files with `file upload <local_file_path>` to the iOS device.
+You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case file an issue.
 
 #### Obtaining and Extracting Apps
 
