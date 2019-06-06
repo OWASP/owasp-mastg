@@ -776,13 +776,19 @@ Info.plist
 iGoat-Swift
 ```
 
+- `Info.plist`
+- resources such as images/icons, translation files, text files, etc.
+- application components such as XIB/NIB files, archives, or certificates.
+- `_CodeSignature/CodeResources`is a plist file containing the signature over all files in the bundle.
+- `Frameworks/`
+- `iGoat-Swift` is the app binary
+
+
 The `Info.plist` is main source of information for an iOS app. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded `Info.plist`.
 
 ###### The Info.plist File
 
-As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package name, the permissions, app components, etc.
-
-If the `Info.plist` file comes in binary format (bplist), convert it to XML format:
+The `Info.plist` file might be XML or binary format (bplist), to convert it to XML format:
 
 - On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
 
