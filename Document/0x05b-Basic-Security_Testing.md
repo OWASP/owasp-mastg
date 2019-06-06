@@ -120,7 +120,7 @@ List of devices attached
 emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
 
-adb provides other useful commands such as `adb shell` to start an interative shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
+adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
 
 ```shell
 $ adb forward tcp:<host port> tcp:<device port>
@@ -137,6 +137,51 @@ config
 ```
 
 You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
+
+##### apktool
+
+apktool is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
+
+A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). See the installation instructions in [https://ibotpeaches.github.io/Apktool/install/](https://ibotpeaches.github.io/Apktool/install/ "apktool Install Instructions").
+
+When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+
+```shell
+$ apktool d base.apk
+I: Using Apktool 2.1.0 on base.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Copying assets and libs...
+I: Copying unknown files...
+I: Copying original files...
+$ cd base
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
+
+The unpacked files are:
+
+- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- apktool.yml: file containing information about the output of apktool
+- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
+- res: directory containing the app’s resources
+- smali: directory containing the disassembled Dalvik bytecode.
+
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "Exploring the App Package" later on this chapter and section "Repackaging" in the chapter "Tampering and Reverse Engineering on Android" for more information and practical examples.
 
 ##### Frida
 
@@ -773,17 +818,18 @@ Note that if you have the original source code and use Android Studio, you do no
 
 #### Information Gathering
 
-One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. You should be able to build a kind of "map" about the app, which will help you have a better understanding of the app before going further and start testing or reversing it. We will be answering questions like:
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advanced techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
-- Which files does the app include inside its package?
+- Which files are included in the package?
 - Which native libraries does the app use?
-- Which app components does the app use? Any services or content providers?
+- Which app components does the app define? Any services or content providers?
 - Is the app debuggable?
+- Does the app contain a network security policy?
 - Does the app create any new files when being installed?
 
 ##### Listing Installed Apps
 
-When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager) or by using `frida-ps`:
+When targeting apps that are installed on the device, you'll first have to figure out the correct package name of the application you want to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager) or by using `frida-ps`:
 
 ```bash
 $ adb shell pm list packages
@@ -829,10 +875,9 @@ Note that this also shows the PID of the apps that are running at the moment. Ta
 
 ##### Exploring the App Package
 
-Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the APK of the app.
-As you've seen above, installed Android apps are located at `/data/app/[package-name]` and their APKs can be retrieved from there.
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
-The APK file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
+APK files are actually ZIP files that can be unpacked using a standard unarchiver:
 
 ```shell
 $ unzip base.apk
@@ -846,6 +891,8 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 -rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
 ```
 
+The following files are unpacked:
+
 - AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
 - META-INF: contains the app's metadata
   - MANIFEST.MF: stores hashes of the app resources
@@ -857,23 +904,9 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-Note that unzipping with the standard `unzip` utility the archive leaves some files unreadable. `AndroidManifest.XML` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
-A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+As unzipping with the standard `unzip` utility leaves some files like the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
 
 ```shell
-$ apktool d base.apk
-I: Using Apktool 2.1.0 on base.apk
-I: Loading resource table...
-I: Decoding AndroidManifest.xml with resources...
-I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
-I: Regular manifest package...
-I: Decoding file-resources...
-I: Decoding values */* XMLs...
-I: Baksmaling classes.dex...
-I: Copying assets and libs...
-I: Copying unknown files...
-I: Copying original files...
-$ cd base
 $ ls -alh
 total 32
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
@@ -886,12 +919,6 @@ drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
 drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 ```
-
-- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
-- apktool.yml: file containing information about the output of apktool
-- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
-- res: directory containing the app’s resources
-- smali: directory containing the disassembled Dalvik bytecode.
 
 The main source of information is the Android Manifest. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded AndroidManifest.xml.
 
@@ -910,7 +937,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 ###### App Binary
 
-As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called Smali, which is a human-readable representation of the Dalvik executable.
+As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
 
 Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
 
