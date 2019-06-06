@@ -783,22 +783,22 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Passionfruit
 
-With Passionfruit it's possible to explore different kind of information of an IPA. Once you selected the IPA you have access to the following information:
+With Passionfruit it's possible to explore different kinds of information concerning an IPA. Once you selected the IPA you have access to the following information:
 
-- Informatiom about the binary
+- Information about the binary
 - Folders used by the application
 - Overview of the Info.plist
 - UI Dump of the app screen shown on the iOS device
 - Modules that are loaded
-- Dumped Classnames
+- Dumped classnames
 
-Passionfruit offers a wide range of different information including access to NSLog.
+Passionfruit offers a wide range of information including access to NSLog.
 
 ##### Dumping KeyChain Data
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
 
-###### Objection
+###### Objection (Jailbroken / non-Jailbroken)
 
 The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
@@ -823,7 +823,7 @@ Note that currently, the latest versions of frida-server and objection do not co
 
 Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
 
-###### Needle
+###### Needle (Jailbroken)
 
 Needle can list the content of the keychain through the `storage/data/keychain_dump_frida` module. However, getting Needle up and running can be difficult. First, make sure that `open`, and the `darwin cc tools` are installed. The installation procedure for these tools is described in "Recommended Tools - iOS Device".
 
@@ -872,9 +872,9 @@ Finally, select the `storage/data/keychain_dump_frida` module and run it:
 
 Note that currently only the `keychain_dump_frida` module works on iOS 12, but not the `keychain_dump` module.
 
-###### Passionfruit (non-Jailbroken)
+###### Passionfruit (Jailbroken / non-Jailbroken)
 
-With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keystore information.
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 
