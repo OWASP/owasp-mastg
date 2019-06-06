@@ -784,18 +784,18 @@ As introduced in the previous chapter, the manifest file includes a lot of inter
 
 If the `Info.plist` file comes in binary format (bplist), convert it to XML format:
 
-On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
+- On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
 
-```bash
-$ plutil -convert xml1 Info.plist
-```
+  ```bash
+  $ plutil -convert xml1 Info.plist
+  ```
 
-On Linux:
+- On Linux:
 
-```bash
-$ apt install libplist-utils
-$ plistutil -i Info.plist -o Info_xml.plist
-```
+  ```bash
+  $ apt install libplist-utils
+  $ plistutil -i Info.plist -o Info_xml.plist
+  ```
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
@@ -808,9 +808,9 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 ###### App Binary
 
-In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled. Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details.
+iOS app binaries are so-called fat binary, which allows an application to be deployed on all devices (32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
 
-MYTODO give more details
+Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details.
 
 ###### Native Libraries
 
