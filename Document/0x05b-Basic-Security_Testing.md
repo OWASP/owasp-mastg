@@ -366,7 +366,7 @@ More infomation on using the Objection REPL can be found on the [Objection Wiki]
 
 ##### radare2
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1231>
+[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that supports many platforms and file formats including Android/iOS apps. The framework is very robust and it works with Dalvik DEX, ELF, Java, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level dissassembling that comes handy when traditional tools fail
 
 ##### r2frida
 
