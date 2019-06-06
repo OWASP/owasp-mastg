@@ -323,6 +323,46 @@ After decompressing the APK file, Cordova/Phonegap files will be located in the 
 
 Dynamic analysis can be performed by launching a MITM attack with your preferred interception proxy. This will allow you to monitor the traffic between the client (the mobile application) and the backend server. If the proxy is unable to intercept the HTTP requests and responses, the SSL pinning has been implemented correctly.
 
+##### Bypassing Certificate Pinning
+
+There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
+
+- Objection: Use the `android sslpinning disable` command.
+- Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
+- Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
+
+For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+
+###### Bypass Custom Certificate Pinning Statically
+
+Somewhere in the application, both the endpoint and the certificate (or its hash) must be defined. After decompiling the application, you can search for:
+
+- Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
+- Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
+
+If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
+
+After making these modifications, repackage the application using apktool and install it on your device.
+
+###### Bypass Custom Certificate Pinning Dynamically
+
+Bypassing the pinning logic dynamically makes it more convenient as there is no need to bypass any integrity checks and it's much faster to perform trial & error attempts.
+
+Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
+
+As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the CertificatePinner.Builder class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways:
+
+- Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
+- Search for the method signature in the SMALI code
+
+For the Builder.add method, you can find the possible methods by running the following grep command: `grep -ri java/lang/String;\[Ljava/lang/String;)L ./`
+
+This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
+
+Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
+
+
+
 For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
 
 ### Testing the Network Security Configuration settings
