@@ -171,7 +171,7 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
 - [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
 
-```bash 
+```bash
 $ npm install -g passionfruit
 $ passionfruit
 ```
@@ -414,7 +414,7 @@ org.owasp.MSTG on (iPhone: 10.3.3) [usb] # pwd print
 Current directory: /var/containers/Bundle/Application/DABF849D-493E-464C-B66B-B8B6C53A4E76/org.owasp.MSTG.app
 ```
 
-Use the `env` command to get the directories of the app and navigate to the Documents directory. 
+Use the `env` command to get the directories of the app and navigate to the Documents directory.
 
 ```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
@@ -568,7 +568,7 @@ Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](http
 
 ###### Using Frida-ios-dump
 
-Frida-ios-dump requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
 Note: before we get started, please note that the Frida-ios-dump tool is not always compatible with the latest version of Frida. Therefore: it might well be that you have to install an older version of Frida on your jailbroken device.
 First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the username and password to the ones you use. Now you can safely use the tool to enumerate the apps installed:
 
@@ -577,26 +577,38 @@ $ ./dump.py -l
  PID  Name             Identifier
 ----  ---------------  -------------------------------------
  860  Cydia            com.saurik.Cydia
-1130  Instellingen     com.apple.Preferences
+1130  Settings         com.apple.Preferences
  685  Mail             com.apple.mobilemail
  834  Telegram         ph.telegra.Telegraph
-   -  Aandelen         com.apple.stocks
+   -  Stocks           com.apple.stocks
    ...
 ```
 
-and you can dump the binary you select:
+and you can dump one of the listed binaries:
 
 ```shell
-$ python dump.py com.highaltitudehacks.DVIAswiftv2
-/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
+$ python dump.py ph.telegra.Telegraph
+/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
   m.add_string(self.Q_C.public_numbers().encode_point())
-/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
+/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
   self.curve, Q_S_bytes
-/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
+/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
   hm.add_string(self.Q_C.public_numbers().encode_point())
 Start the target app ph.telegra.Telegraph
-Dumping Telegram to /var/folders/0b/5j2l_v0x47j2k6dwqw5c2d040000gn/T
+Dumping Telegram to /var/folders/qw/gz47_8_n6xx1c_lwq7pq5k040000gn/T
+[frida-ios-dump]: HockeySDK.framework has been loaded.
+[frida-ios-dump]: Load Postbox.framework success.
+[frida-ios-dump]: libswiftContacts.dylib has been dlopen.
+...
+start dump /private/var/containers/Bundle/Application/14002D30-B113-4FDF-BD25-1BF740383149/Telegram.app/Frameworks/libswiftsimd.dylib
+libswiftsimd.dylib.fid: 100%|██████████| 343k/343k [00:00<00:00, 1.54MB/s]
+start dump /private/var/containers/Bundle/Application/14002D30-B113-4FDF-BD25-1BF740383149/Telegram.app/Frameworks/libswiftCoreData.dylib
+libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00:00<00:00, 477kB/s]
+5.m4a: 80.9MB [00:14, 5.85MB/s]
+0.00B [00:00, ?B/s]Generating "Telegram.ipa"
 ```
+
+After this, the Telegram.ipa file will be created in your current directory. You can validate the successfulness of the dump by removing the application and reinstalling it through io-deploy using `ios-deploy -b Telegram.ipa`. Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 #### Installing Apps
 
