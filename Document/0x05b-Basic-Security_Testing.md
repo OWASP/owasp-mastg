@@ -370,30 +370,18 @@ More infomation on using the Objection REPL can be found on the [Objection Wiki]
 
 ###### Installing radare2
 
-Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). There are also installation instructions If you need to [install radare2 on Android](https://github.com/radare/radare2/blob/master/doc/android.md "Install radare2 on Android").
+Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). There are also installation instructions if you need to [install radare2 on Android](https://github.com/radare/radare2/blob/master/doc/android.md "Install radare2 on Android").
 
 ###### Using radare2
 
 You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
 
 ```shell
-$ rafind2 -ZS permission AndroidManifest.xml
-```
-
-```shell
-$ rafind2 -ZS activity AndroidManifest.xml
-```
-
-```shell
-$ rafind2 -ZS provider AndroidManifest.xml
-```
-
-```shell
-$ rafind2 -ZS service AndroidManifest.xml
-```
-
-```shell
-$ rafind2 -ZS receiver AndroidManifest.xml
+$ rafind2 -ZS permission AndroidManifest.xml # Permissions
+$ rafind2 -ZS activity AndroidManifest.xml #Activities
+$ rafind2 -ZS provider AndroidManifest.xml #Content Providers
+$ rafind2 -ZS service AndroidManifest.xml #Services
+$ rafind2 -ZS receiver AndroidManifest.xml #Receivers
 ```
 
 You can use the flag `-a` to manually set the architecture to Dalvik.
@@ -427,7 +415,7 @@ You can limit the number of opcodes displayed by appending the number to the com
       |``-> 0x000009ec      1a003f00       const-string v0, str.Root_detected ; 0x11bf
 ```
 
-You can also print the class names with the r2 command `icq`.
+You can print the class names with the r2 command `icq`.
 
 ```shell
 [0x000009c8]> icq
@@ -438,7 +426,7 @@ You can also print the class names with the r2 command `icq`.
 0x0000075c [0x00000acc - 0x00000bb2] Lsg/vantagepoint/uncrackable1/a Ljava/lang/Object;
 ```
 
-You can also print the external methods with the r2 command `iiq`.
+You can print the external methods with the r2 command `iiq`.
 
 ```shell
 [0x000009c8]> iiq
@@ -450,7 +438,7 @@ Landroid/app/Activity.method.onCreate(Landroid/os/Bundle;)V
 0x00000b5c method 1 sp   Lsg/vantagepoint/uncrackable1/a.method.b(Ljava/lang/String;)[B
 ```
 
-You can also print all the strings with the r2 command `izq`.
+You can print all the strings with the r2 command `izq`.
 
 ```shell
 [0x000009c8]> izq
