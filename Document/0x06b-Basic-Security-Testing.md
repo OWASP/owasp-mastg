@@ -783,7 +783,16 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Passionfruit
 
--- ToDo Passionfruit: <https://github.com/OWASP/owasp-mstg/issues/1249>
+With Passionfruit it's possible to explore different kind of information of an IPA. Once you selected the IPA you have access to the following information:
+
+- Informatiom about the binary
+- Folders used by the application
+- Overview of the Info.plist
+- UI Dump of the app screen shown on the iOS device
+- Modules that are loaded
+- Dumped Classnames
+
+Passionfruit offers a wide range of different information including access to NSLog.
 
 ##### Dumping KeyChain Data
 
@@ -813,8 +822,6 @@ OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # quit
 Note that currently, the latest versions of frida-server and objection do not correctly decode all keychain data. Different combinations can be tried to increase compatibility. For example, the previous printout was created with `frida-tools==1.3.0`, `frida==12.4.8` and `objection==1.5.0`.
 
 Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
-
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
 ####### Needle
 
@@ -867,7 +874,9 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 ####### Passionfruit (non-Jailbroken)
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keystore information.
+
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 
 ###### Keychain-dumper (Jailbroken)
 
