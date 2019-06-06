@@ -116,13 +116,13 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to Sources -> Edit, then clicking "Add" in the top left:
 
-- One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package: <http://apt.thebigboss.org/repofiles/cydia/>.
-- You may also want to add the HackYouriPhone repository to get the AppSync package <http://repo.hackyouriphone.org>
-- You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>
-- The Needle agent, has its own repository as well and should be added: <http://mobiletools.mwrinfosecurity.com/cydia/>
-- When you need to manage your jailbreak on iOS 11, the Chariz repository can help. You can find it at <https://repo.chariz.io>
-- Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver: <https://apt.bingner.com/>
-- For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools: <https://coolstar.org/publicrepo/>
+- <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
+- <http://repo.hackyouriphone.org>: Add the HackYouriPhone repository to get the AppSync package.
+- <https://build.frida.re>: Install Frida by adding the repository to Cydia.
+- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added.
+- <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
+- <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
+- <https://coolstar.org/publicrepo/>: For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools.
 
 > In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
 
@@ -134,7 +134,7 @@ After adding all the suggested repositories above you can install the following 
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
-- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "") in order to get class-dump-z running on your iOS device.
+- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "Class-dump-Z installation steps") in order to get class-dump-z running on your iOS device.
 - Clutch: Used to decrypt an app executable.
 - Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
 - Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
@@ -145,7 +145,7 @@ After adding all the suggested repositories above you can install the following 
 - Grep: Handy tool to filter lines.
 - Gzip: A well known zip utility.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
-- Open for iOS 11: Tool required to make Needle Agent function, comes from the BigBoss repo.
+- Open for iOS 11: Tool required to make Needle Agent function.
 - PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - SOcket CAT: a utility with which you can connect to sockets to read and write messages. This can come in handy if you want to trace the syslog on iOS 12 devices.
 
@@ -182,7 +182,7 @@ In order to analyse iOS apps, you should use a macOS device and install the foll
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
 
-Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can click now on "Select App...", select the app you want to analyse and get first meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyse and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
@@ -204,11 +204,11 @@ It has several features, like app installation, access the app sandbox without j
 
 ##### Keychain-Dumper
 
-[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is a tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "Keychain-dumper (Jailbroken)" for detailed instructions on how to use it.
+[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "Keychain-dumper (Jailbroken)" for detailed instructions on how to use it.
 
 ##### Mobile-Security-Framework - MobSF
 
-[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pen-testing framework that supports also iOS. The easiest way of getting MobSF started is via docker.
+[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pen-testing framework that also supports iOS. The easiest way of getting MobSF started is via docker.
 
 ```bash
 $ docker pull opensecurity/mobile-security-framework-mobsf
