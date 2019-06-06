@@ -832,7 +832,7 @@ Note that this also shows the PID of the apps that are running at the moment. Ta
 Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the APK of the app.
 As you've seen above, installed Android apps are located at `/data/app/[package-name]` and their APKs can be retrieved from there.
 
-The APK file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
+The APK file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
 
 ```shell
 $ unzip base.apk
@@ -1008,9 +1008,9 @@ Refer to the "Testing Data Storage" chapter for more information and best practi
 
 ##### Monitoring System Logs
 
-An Android you can easily inspect the log of system messages by using [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:
+On Android you can easily inspect the log of system messages by using [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:
 
-- Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) and Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
+- Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
 ![Log output in Android Studio](Images/Chapters/0x05b/log_output_Android_Studio.png)
 
