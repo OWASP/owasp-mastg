@@ -756,7 +756,7 @@ One fundamental step when analyzing apps is information gathering. This can be d
 
 ##### Listing Installed Apps
 
-When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager):
+When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager) or by using `frida-ps`:
 
 ```bash
 $ adb shell pm list packages
@@ -785,18 +785,20 @@ $ adb shell pm path sg.vp.owasp_mobile.omtg_android
 package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
 ```
 
-Use `frida-ps -Ua` to get all apps (`-a`) currently running on the connected USB device (`-U`):
+Use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
 
 ```bash
-$ frida-ps -Ua
+$ frida-ps -Uai
   PID  Name                                      Identifier
 -----  ----------------------------------------  ---------------------------------------
   766  Android System                            android
 21228  Attack me if u can                        sg.vp.owasp_mobile.omtg_android
  4281  Termux                                    com.termux
+    -  Uncrackable1                              sg.vantagepoint.uncrackable1
+    -  drozer Agent                              com.mwr.dz
 ```
 
-Note that this does not include all installed apps as they'd probably not be running all at the same time.
+Note that this also shows the PID of the apps that are running at the moment. Take a note of the "Identifier" and the PID if any as you'll need them afterwards.
 
 ##### Exploring the App Package
 
