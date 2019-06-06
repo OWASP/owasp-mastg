@@ -352,41 +352,12 @@ $ ssh -p 2222 root@localhost
 
 There might be various scenarios where you might need to transfer data from the iOS device or app data sandbox to your workstation or vice versa. The following section will show you different ways on how to achieve that.
 
-##### App Folder Structure
-
-Before explaining all the tools, let's go through a short overview of the app folder structure on iOS to understand which data is stored where.
-
-System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/containers/`). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
-
-```shell
-iPhone:~ root# ipainstaller -l
-...
-com.highaltitudehacks.dvia
-
-iPhone:~ root# ipainstaller -i com.highaltitudehacks.dvia
-...
-Bundle: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7
-Application: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app
-Data: /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
-```
-
-Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself are stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments.
-
-- `/private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder are used to validate the code signature.
-- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
-- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
-- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05` contains temporary files which aren't needed between application launches.
-
-The following illustration represents the application folder structure:
-
-<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
-
 ##### Copying App Data Files via SSH and SCP
 
 As we know now, files from our app are stored in the Data directory. You can now simply archive the Data directory with `tar` and pull it from the device with `scp`:
 
 ```shell
-iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
+iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
@@ -712,6 +683,289 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. You should be able to build a kind of "map" about the app, which will help you have a better understanding of the app before going further and start testing or reversing it. We will be answering questions like:
+
+- Which files does the app include inside its package?
+- Which Frameworks does the app use?
+- Which permissions does the app request to the user and for what reason?
+- Does the app allow any unsecured connections?
+- Does the app create any new files when being installed?
+
+##### Listing Installed Apps
+
+When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager):
+
+```bash
+$ frida-ps -Uai
+ PID  Name                 Identifier
+----  -------------------  -----------------------------------------
+6847  Calendar             com.apple.mobilecal
+6815  Mail                 com.apple.mobilemail
+   -  App Store            com.apple.AppStore
+   -  Apple Store          com.apple.store.Jolly
+   -  Calculator           com.apple.calculator
+   -  Camera               com.apple.camera
+   -  iGoat-Swift          OWASP.iGoat-Swift
+```
+
+It will also show which of them are currently running. Take a note of the "Identifier" and the PID if any as you'll need them afterwards.
+
+##### Exploring the App Package
+
+Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the IPA of the app.
+As you've seen above in "Host-Device Data Transfer", installed iOS apps are located at `/data/app/[package-name]`.
+
+The Android Package Kit (APK) file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
+
+```shell
+$ unzip base.apk
+$ ls -lah
+-rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
+drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
+drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
+-rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
+drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
+drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
+-rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+```
+
+- AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
+- META-INF: contains the app's metadata
+  - MANIFEST.MF: stores hashes of the app resources
+  - CERT.RSA: the app's certificate(s)
+  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
+- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK.
+- res: directory containing resources that haven't been compiled into resources.arsc
+- resources.arsc: file containing precompiled resources, such as XML files for the layout
+
+Note that unzipping with the standard `unzip` utility the archive leaves some files unreadable. `AndroidManifest.XML` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
+A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+
+```shell
+$ apktool d base.apk
+I: Using Apktool 2.1.0 on base.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Copying assets and libs...
+I: Copying unknown files...
+I: Copying original files...
+$ cd base
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
+
+- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- apktool.yml: file containing information about the output of apktool
+- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
+- res: directory containing the app’s resources
+- smali: directory containing the disassembled Dalvik bytecode.
+
+The main source of information is the Android Manifest. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded AndroidManifest.xml.
+
+###### The Android Manifest
+
+As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package name, the permissions, app components, etc.
+
+Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
+
+- App permissions: `permission` (see "iOS Platform APIs")
+- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
+- App components: `activity`, `service`, `provider`, `receiver` (see "iOS Platform APIs" and "Data Storage on Android")
+- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+
+Please refer to the mentioned chapters to learn more about how to test each of these points.
+
+###### App Binary
+
+As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called Smali, which is a human-readable representation of the Dalvik executable.
+
+Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
+
+###### Native Libraries
+
+You can inspect the `lib` folder in the APK:
+
+```shell
+$ ls -1 lib/armeabi/
+libdatabase_sqlcipher.so
+libnative.so
+libsqlcipher_android.so
+libstlport_shared.so
+```
+
+or from the device with objection:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # ls lib
+Type    ...  Name
+------  ...  ------------------------
+File    ...  libnative.so
+File    ...  libdatabase_sqlcipher.so
+File    ...  libstlport_shared.so
+File    ...  libsqlcipher_android.so
+```
+
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
+
+###### Other App Resources
+
+It is normally worth taking a look at the rest of the resources and files that you may find in the root folder of the APK as some times they contain additional goodies like key stores, encrypted databases, certificates, etc.
+
+##### Accessing App Data Directories
+
+Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS to understand which data is stored where.
+
+System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/containers/`). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
+
+```shell
+iPhone:~ root# ipainstaller -l
+...
+OWASP.iGoat-Swift
+
+iPhone:~ root# ipainstaller -i OWASP.iGoat-Swift
+...
+Bundle: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67
+Application: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app
+Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
+```
+
+Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env
+
+Name               Path
+-----------------  -------------------------------------------------------------------------------------------
+BundlePath         /var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app
+CachesDirectory    /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Library/Caches
+DocumentDirectory  /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Documents
+LibraryDirectory   /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Library
+```
+
+Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself are stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments (for example when analyzing the stored data for sensitive data).
+
+- `/private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder are used to validate the code signature.
+- `/private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
+- `/private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
+- `/private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693` contains temporary files which aren't needed between application launches.
+
+The following illustration represents the application folder structure:
+
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
+
+Important file system locations are:
+
+- `AppName.app`
+  - This app's bundle contains the app and all its resources.
+  - This directory is visible to users, but users can't write to it.
+  - Content in this directory is not backed up.
+- Documents/
+  - Use this directory to store user-generated content.
+  - Visible to users and users can write to it.
+  - Content in this directory is backed up.
+  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
+- Library/
+  - This is the top-level directory for all files that aren't user data files.
+  - iOS apps usually use the `Application Support` and `Caches` subdirectories, but you can create custom subdirectories.
+- Library/Caches/
+  - Contains semi-persistent cached files.
+  - Invisible to users and users can't write to it.
+  - Content in this directory is not backed up.
+  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
+- Library/Application Support/
+  - Contains persistent files necessary for running the app.
+  - Invisible to users and users can't write to it.
+  - Content in this directory is backed up.
+  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`
+- Library/Preferences/
+  - Used for storing properties, objects that can persist even after an application is restarted.
+  - Information is saved, unencrypted, inside the application sandbox in a plist file called [BUNDLE_ID].plist.
+  - All the key/value pairs stored using `NSUserDefaults` can be found in this file.
+- tmp/
+  - Use this directory to write temporary files that need not persist between app launches.
+  - Contains non-persistent cached files.
+  - Invisible to users.
+  - Content in this directory is not backed up.
+  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
+
+Let's take a look at iGoat-Swift's Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
+NSFileType      Perms  NSFileProtection    ...  Name
+------------  -------  ------------------  ...  --------------------------------------
+Regular           420  None                ...  rutger.html
+Regular           420  None                ...  mansi.html
+Regular           420  None                ...  splash.html
+Regular           420  None                ...  about.html
+
+Regular           420  None                ...  LICENSE.txt
+Regular           420  None                ...  Sentinel.txt
+Regular           420  None                ...  README.txt
+
+Directory         493  None                ...  URLSchemeAttackExerciseVC.nib
+Directory         493  None                ...  CutAndPasteExerciseVC.nib
+Directory         493  None                ...  RandomKeyGenerationExerciseVC.nib
+Directory         493  None                ...  KeychainExerciseVC.nib
+Directory         493  None                ...  CoreData.momd
+Regular           420  None                ...  archived-expanded-entitlements.xcent
+Directory         493  None                ...  SVProgressHUD.bundle
+
+Directory         493  None                ...  Base.lproj
+Regular           420  None                ...  Assets.car
+Regular           420  None                ...  PkgInfo
+Directory         493  None                ...  _CodeSignature
+Regular           420  None                ...  AppIcon60x60@3x.png
+
+Directory         493  None                ...  Frameworks
+
+Regular           420  None                ...  embedded.mobileprovision
+
+Regular           420  None                ...  Credentials.plist
+Regular           420  None                ...  Assets.plist
+Regular           420  None                ...  Info.plist
+
+Regular           493  None                ...  iGoat-Swift
+```
+
+Each of the folders having its own purpose:
+
+- **cache**: This location is used for data caching. For example, the WebView cache is found in this directory.
+- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Lollipop or later Android versions, the system will delete any files stored in this location when the app or the entire platform is upgraded.
+- **lib**: This folder stores native libraries written in C/C++. These libraries can have one of several file extensions, including .so and .dll (x86 support). This folder contains subdirectories for the platforms the app has native libraries for, including
+  - armeabi: compiled code for all ARM-based processors
+  - armeabi-v7a: compiled code for all ARM-based processors, version 7 and above only
+  - arm64-v8a: compiled code for all 64-bit ARM-based processors, version 8 and above based only
+  - x86: compiled code for x86 processors only
+  - x86_64: compiled code for x86_64 processors only
+  - mips: compiled code for MIPS processors
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs]( https://developer.android.com/training/basics/data-storage/shared-preferences.html).
+- **files**: This folder stores regular files created by the app.
+- **databases**: This folder stores SQLite database files generated by the app at runtime, e.g., user data files.
+
+However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
+
+Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+
+##### Monitoring System Logs
+
+
 ##### Installed Apps
 
 ##### App Basic Information
@@ -720,7 +974,7 @@ The following sections describes on how to retrieve basic information of an iOS 
 
 ####### Mobile Security Framework (MobSF)
 
-MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
+MobSF is a penetration testing framework that is capable of analyzing IPA files and can be used before even installing the app on your testing device.
 
 Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyse and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
 
@@ -734,22 +988,7 @@ There is much more information provided that you should explore, that might be h
 
 ####### Objection
 
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
-
-When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
-
-```shell
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
-
-Name               Path
------------------  -------------------------------------------------------------------------------------------
-BundlePath         /var/containers/Bundle/Application/E97D56FE-9C97-47ED-A458-5F1A3BDBE0DB/iGoat-Swift.app
-CachesDirectory    /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library/Caches
-DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Documents
-LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
-```
-
-The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
+Once you have installed the app, there is further information to explore, where tools like objection come in handy. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
 
 ```bash
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
