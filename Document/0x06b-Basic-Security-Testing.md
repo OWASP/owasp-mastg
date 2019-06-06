@@ -674,39 +674,25 @@ Dumping the KeyChain data can be done with multiple tools, but not all of them w
 The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
 ```shell
-$ objection --gadget="DVIA-v2" explore
-Using USB device `iPad 4`
-Agent injected and responds ok!
-[tab] for command suggestions
+$ objection --gadget="iGoat-Swift" explore
 ... [usb] # ios keychain dump
-
+...
 Note: You may be asked to authenticate using the devices passcode or TouchID
 Save the output by adding `--json keychain.json` to this command
 Dumping the iOS keychain...
-Created                    Accessible            ACL    Type      Account             Service                                                Data
--------------------------  --------------------  -----  --------  ------------------  -----------------------------------------------------  ------------------
-2019-06-04 16:45:45 +0000  WhenUnlocked          None   Password  (failed to decode)  com.highaltitudehacks.DVIAswiftv2com.flurry.analytics  (failed to decode)
-2019-06-04 16:45:45 +0000  WhenUnlocked          None   Password  (failed to decode)  com.highaltitudehacks.DVIAswiftv2com.flurry.analytics  (failed to decode)
-2019-06-04 16:45:45 +0000  AlwaysThisDeviceOnly  None   Password  (failed to decode)  com.highaltitudehacks.DVIAswiftv2com.flurry.analytics  (failed to decode)
-2019-06-05 17:12:00 +0000  WhenUnlocked          None   Password  keychainValue       com.highaltitudehacks.dvia                             (failed to decode)
-2019-06-05 17:13:37 +0000  WhenUnlocked          None   Password  keychainValue       com.highaltitudehacks.DVIAswiftv2                      (failed to decode)
+Created                    Accessible                      ACL    Type      Account              Service                     Data
+-------------------------  ------------------------------  -----  --------  -------------------  --------------------------  ----------------------------------------------------------------------
+2019-06-06 10:53:09 +0000  WhenUnlocked                    None   Password  keychainValue        com.highaltitudehacks.dvia  mypassword123
+2019-06-06 10:53:30 +0000  WhenUnlockedThisDeviceOnly      None   Password  SCAPILazyVector      com.toyopagroup.picaboo     (failed to decode)
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  fideliusDeviceGraph  com.toyopagroup.picaboo     (failed to decode)
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  SCDeviceTokenKey2    com.toyopagroup.picaboo     00001:FKsDMgVISiavdm70v9Fhv5z+pZfBTTN7xkwSwNvVr2IhVBqLsC7QBhsEjKMxrEjh
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  SCDeviceTokenValue2  com.toyopagroup.picaboo     CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # quit  
 ```
 
-This command gives a very good first impression, but it doesn't show the entire Keychain content. By adding the --json flag, you can retrieve more information:
+Note that currently, the latest versions of frida-server and objection do not correctly decode all keychain data. Different combinations can be tried to increase compatibility. For example, the previous printout was created with `frida-tools==1.3.0`, `frida==12.4.8` and `objection==1.5.0`.
 
-```shell
-... [usb] # ios keychain dump --json data.json
-
-Note: You may be asked to authenticate using the devices passcode or TouchID
-Dumping the iOS keychain...
-Writing keychain as json to data.json...
-Dumped keychain to: data.json
-
-```
-
-
-
-
+Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
