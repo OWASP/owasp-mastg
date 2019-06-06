@@ -366,25 +366,36 @@ More infomation on using the Objection REPL can be found on the [Objection Wiki]
 
 ##### radare2
 
-[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that is scriptable and supports many architectures and file formats including Android/iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java classes are supported, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes handy when traditional tools fail.
+[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that is scriptable and supports many architectures and file formats including Android/iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java (JNI and Java classes) are supported, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes handy when traditional tools fail.
 
 ###### Installing radare2
 
-Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). There are also installation instructions if you need to [install radare2 on Android](https://github.com/radare/radare2/blob/master/doc/android.md "Install radare2 on Android").
+Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). There are also installation instructions if you need to [install radare2 on Android](https://github.com/radare/radare2/blob/master/doc/android.md "Install radare2 on Android") via [Termux](#On-device Shell App "Termux").
 
 ###### Using radare2
 
-You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
+r2 is composed by several utilities. All of them can be called from r2 but you can call directly the binaries you need for specific tasks without loading the entire framework. You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
 
 ```shell
-$ rafind2 -ZS permission AndroidManifest.xml # Permissions
-$ rafind2 -ZS activity AndroidManifest.xml #Activities
-$ rafind2 -ZS provider AndroidManifest.xml #Content Providers
-$ rafind2 -ZS service AndroidManifest.xml #Services
-$ rafind2 -ZS receiver AndroidManifest.xml #Receivers
+# Permissions
+$ rafind2 -ZS permission AndroidManifest.xml
+#Activities
+$ rafind2 -ZS activity AndroidManifest.xml
+#Content Providers
+$ rafind2 -ZS provider AndroidManifest.xml
+#Services
+$ rafind2 -ZS service AndroidManifest.xml
+#Receivers
+$ rafind2 -ZS receiver AndroidManifest.xml
 ```
 
-You can use the flag `-a` to manually set the architecture to Dalvik.
+You can load DEX classes with the following command.
+
+```shell
+$ r2 classes.dex
+```
+
+In the very rare case it doesn't get detected properly, you can use the flag `-a` to manually set the architecture to Dalvik.
 
 ```shell
 $ r2 -a dalvik classes.dex
