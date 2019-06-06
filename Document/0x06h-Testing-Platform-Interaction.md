@@ -132,21 +132,7 @@ If only having the IPA:
 
 - Unzip the IPA.
 - The `Info.plist` is located in `Payload/<appname>.app/Info.plist`.
-- If the file comes in binary format (bplist), convert it to XML format:
-
-    On macOS:
-
-    ```bash
-    $ plutil -convert xml1 Info.plist
-    ```
-
-    On Linux:
-
-    ```bash
-    $ apt install libplist-utils
-    $ plistutil -i Info.plist -o Info_xml.plist
-    ```
-
+- Convert it if needed (e.g. `plutil -convert xml1 Info.plist`) as explained in the chapter "iOS Basic Security Testing", section "The Info.plist File".
 - Inspect all *purpose strings Info.plist keys*, usually ending with `UsageDescription`:
 
     ```xml

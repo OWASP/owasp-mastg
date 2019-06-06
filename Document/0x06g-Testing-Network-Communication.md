@@ -105,25 +105,9 @@ The following listing is an example of an exception configured to disable ATS re
     </dict>
 ```
 
-If the source code is not available, then the `Info.plist` file should be either obtained from a jailbroken device or by extracting the application IPA file.
+If the source code is not available, then the `Info.plist` file should be either obtained from a jailbroken device or by extracting the application IPA file. Convert it to a human readable format if needed (e.g. `plutil -convert xml1 Info.plist`) as explained in the chapter "iOS Basic Security Testing", section "The Info.plist File".
 
-Since IPA files are ZIP archives, they can be extracted using any zip utility.
-
-```shell
-$ unzip app-name.ipa
-```
-
-`Info.plist` file can be found in the `Payload/BundleName.app/` directory of the extract. It’s a binary encoded file and has to be converted to a human readable format for the analysis.
-
-`plutil` is a tool that’s designed for this purpose. It comes natively with Mac OS 10.2 and above versions, but no official online documentation is currently available.
-
-The following command shows how to convert the Info.plist file into XML format.
-
-```shell
-$ plutil -convert xml1 Info.plist
-```
-
-Once the file is converted to a human readable format, the exceptions can be analyzed. The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP website that does not have all the ATS requirements.
+The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP website that does not have all the ATS requirements.
 
 #### Recommendations for usage of ATS
 
