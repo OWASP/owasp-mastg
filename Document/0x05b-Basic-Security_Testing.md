@@ -120,7 +120,7 @@ List of devices attached
 emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
 
-adb provides other useful commands such as `adb shell` or `adb forward` to start an interative shell on a target and forward traffic on a specific host port to a different port on a connect device respectively.
+adb provides other useful commands such as `adb shell` to start an interative shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
 
 ```shell
 $ adb forward tcp:<host port> tcp:<device port>
