@@ -841,17 +841,100 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Passionfruit
 
--- ToDo Passionfruit: <https://github.com/OWASP/owasp-mstg/issues/1249>
+With Passionfruit it's possible to explore different kinds of information concerning an IPA. Once you selected the IPA you have access to the following information:
+
+- Information about the binary
+- Folders used by the application
+- Overview of the Info.plist
+- UI Dump of the app screen shown on the iOS device
+- Modules that are loaded
+- Dumped classnames
+
+Passionfruit offers a wide range of information including access to NSLog.
 
 ##### Dumping KeyChain Data
 
-###### Objection
+Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+###### Objection (Jailbroken / non-Jailbroken)
 
-###### Passionfruit (non-Jailbroken)
+The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+```shell
+$ objection --gadget="iGoat-Swift" explore
+... [usb] # ios keychain dump
+...
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Save the output by adding `--json keychain.json` to this command
+Dumping the iOS keychain...
+Created                    Accessible                      ACL    Type      Account              Service                     Data
+-------------------------  ------------------------------  -----  --------  -------------------  --------------------------  ----------------------------------------------------------------------
+2019-06-06 10:53:09 +0000  WhenUnlocked                    None   Password  keychainValue        com.highaltitudehacks.dvia  mypassword123
+2019-06-06 10:53:30 +0000  WhenUnlockedThisDeviceOnly      None   Password  SCAPILazyVector      com.toyopagroup.picaboo     (failed to decode)
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  fideliusDeviceGraph  com.toyopagroup.picaboo     (failed to decode)
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  SCDeviceTokenKey2    com.toyopagroup.picaboo     00001:FKsDMgVISiavdm70v9Fhv5z+pZfBTTN7xkwSwNvVr2IhVBqLsC7QBhsEjKMxrEjh
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  SCDeviceTokenValue2  com.toyopagroup.picaboo     CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # quit  
+```
+
+Note that currently, the latest versions of frida-server and objection do not correctly decode all keychain data. Different combinations can be tried to increase compatibility. For example, the previous printout was created with `frida-tools==1.3.0`, `frida==12.4.8` and `objection==1.5.0`.
+
+Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
+
+###### Needle (Jailbroken)
+
+Needle can list the content of the keychain through the `storage/data/keychain_dump_frida` module. However, getting Needle up and running can be difficult. First, make sure that `open`, and the `darwin cc tools` are installed. The installation procedure for these tools is described in "Recommended Tools - iOS Device".
+
+Before dumping the keychain, open Needle and use the `device/dependency_installer` plugin to install any other missing dependencies. This module should return without any errors. If an error did pop up, be sure to fix this error before continuing.
+
+Finally, select the `storage/data/keychain_dump_frida` module and run it:
+
+```shell
+[needle][keychain_dump_frida] > use storage/data/keychain_dump_frida
+[needle][keychain_dump_frida] > run
+[*] Checking connection with device...
+[+] Already connected to: 192.168.43.91
+[+] Target app: OWASP.iGoat-Swift
+[*] Retrieving app's metadata...
+[*] Pulling: /private/var/containers/Bundle/Application/92E7C59C-2F0B-47C5-94B7-DCF506DBEB34/iGoat-Swift.app/Info.plist -> /Users/razr/.needle/tmp/plist
+[*] Setting up local port forwarding to enable communications with the Frida server...
+[*] Launching the app...
+[*] Attaching to process: 4448
+[*] Parsing payload
+[*] Keychain Items:
+[+] {
+    "AccessControls": "",
+    "Account": "keychainValue",
+    "CreationTime": "2019-06-06 10:53:09 +0000",
+    "Data": " (UTF8 String: 'mypassword123')",
+    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
+    "ModifiedTime": "2019-06-06 16:53:38 +0000",
+    "Protection": "kSecAttrAccessibleWhenUnlocked",
+    "Service": "com.highaltitudehacks.dvia",
+    "kSecClass": "kSecClassGenericPassword"
+}
+...
+[+] {
+    "AccessControls": "",
+    "Account": "<53434465 76696365 546f6b65 6e56616c 756532>",
+    "CreationTime": "2019-06-06 10:53:30 +0000",
+    "Data": " (UTF8 String: 'CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=')",
+    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
+    "ModifiedTime": "2019-06-06 10:53:30 +0000",
+    "Protection": "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly",
+    "Service": "com.toyopagroup.picaboo",
+    "kSecClass": "kSecClassGenericPassword"
+}
+[*] Saving output to file: /Users/razr/.needle/output/frida_script_dump_keychain.txt
+```
+
+Note that currently only the `keychain_dump_frida` module works on iOS 12, but not the `keychain_dump` module.
+
+###### Passionfruit (Jailbroken / non-Jailbroken)
+
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keychain information.
+
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 
 ###### Keychain-dumper (Jailbroken)
 
