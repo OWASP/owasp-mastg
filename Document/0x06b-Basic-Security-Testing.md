@@ -667,9 +667,50 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Dumping KeyChain Data
 
+Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
+
 ###### Objection
 
+The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
+
+```shell
+$ objection --gadget="DVIA-v2" explore
+Using USB device `iPad 4`
+Agent injected and responds ok!
+[tab] for command suggestions
+... [usb] # ios keychain dump
+
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Save the output by adding `--json keychain.json` to this command
+Dumping the iOS keychain...
+Created                    Accessible            ACL    Type      Account             Service                                                Data
+-------------------------  --------------------  -----  --------  ------------------  -----------------------------------------------------  ------------------
+2019-06-04 16:45:45 +0000  WhenUnlocked          None   Password  (failed to decode)  com.highaltitudehacks.DVIAswiftv2com.flurry.analytics  (failed to decode)
+2019-06-04 16:45:45 +0000  WhenUnlocked          None   Password  (failed to decode)  com.highaltitudehacks.DVIAswiftv2com.flurry.analytics  (failed to decode)
+2019-06-04 16:45:45 +0000  AlwaysThisDeviceOnly  None   Password  (failed to decode)  com.highaltitudehacks.DVIAswiftv2com.flurry.analytics  (failed to decode)
+2019-06-05 17:12:00 +0000  WhenUnlocked          None   Password  keychainValue       com.highaltitudehacks.dvia                             (failed to decode)
+2019-06-05 17:13:37 +0000  WhenUnlocked          None   Password  keychainValue       com.highaltitudehacks.DVIAswiftv2                      (failed to decode)
+```
+
+This command gives a very good first impression, but it doesn't show the entire Keychain content. By adding the --json flag, you can retrieve more information:
+
+```shell
+... [usb] # ios keychain dump --json data.json
+
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Dumping the iOS keychain...
+Writing keychain as json to data.json...
+Dumped keychain to: data.json
+
+```
+
+
+
+
+
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+
+####### Needle 
 
 ####### Passionfruit (non-Jailbroken)
 
