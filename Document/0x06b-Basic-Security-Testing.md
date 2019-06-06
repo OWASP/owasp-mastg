@@ -823,7 +823,7 @@ Note that currently, the latest versions of frida-server and objection do not co
 
 Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
 
-####### Needle
+###### Needle
 
 Needle can list the content of the keychain through the `storage/data/keychain_dump_frida` module. However, getting Needle up and running can be difficult. First, make sure that `open`, and the `darwin cc tools` are installed. The installation procedure for these tools is described in "Recommended Tools - iOS Device".
 
@@ -872,7 +872,7 @@ Finally, select the `storage/data/keychain_dump_frida` module and run it:
 
 Note that currently only the `keychain_dump_frida` module works on iOS 12, but not the `keychain_dump` module.
 
-####### Passionfruit (non-Jailbroken)
+###### Passionfruit (non-Jailbroken)
 
 With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keystore information.
 
