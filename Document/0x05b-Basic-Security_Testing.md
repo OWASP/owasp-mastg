@@ -105,7 +105,7 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 ##### adb
 
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on these devices.
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
 ```shell
 $ adb devices -l
@@ -114,16 +114,14 @@ List of devices attached
 emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
 
-In addition, adb provides other commands such as `adb forward` and `adb reverse` to forward traffic on a specific host port to a different port on a connect device and vice versa.
+adb provides other useful commands such as `adb shell` or `adb forward` to start an interative shell on a target and forward traffic on a specific host port to a different port on a connect device respectively.
 
 ```shell
 $ adb forward tcp:<host port> tcp:<device port>
 ```
 
-You can also start an interactive shell on a target device with the `adb shell` command.
-
 ```shell
-./adb -s emulator-5554 shell
+$ adb -s emulator-5554 shell
 root@generic_x86:/ # ls
 acct
 cache
@@ -132,7 +130,7 @@ config
 ...
 ```
 
-Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
+You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
 
 ##### Frida
 
