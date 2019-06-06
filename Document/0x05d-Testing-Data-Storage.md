@@ -409,9 +409,9 @@ Then configure ProGuard to strip its calls.
 
 Use all the mobile app functions at least once, then identify the application's data directory and look for log files (`/data/data/<package-name>`). Check the application logs to determine whether log data has been generated; some mobile applications create and store their own logs in the data directory.  
 
-Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat") as we've already learned in the chapter "Basic Security Testing", section "Monitoring System Logs".
+Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat") as explained in the chapter "Basic Security Testing", section "Monitoring System Logs".
 
-Remember that you can target an specific app by filtering the Logcat output this way:
+Remember that you can target a specific app by filtering the Logcat output as follows:
 
 ```shell
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
