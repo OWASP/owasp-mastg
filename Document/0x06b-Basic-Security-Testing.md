@@ -794,11 +794,13 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 ##### Installed Apps
 
+-- ToDo
+
 ##### App Basic Information
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
-####### Mobile Security Framework (MobSF)
+###### Mobile Security Framework (MobSF)
 
 MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
 
@@ -812,7 +814,7 @@ After MobSF is done with its analysis, you will receive a one-page overview of a
 
 There is much more information provided that you should explore, that might be helpful for you.
 
-####### Objection
+###### Objection
 
 Once you have installed the app, there is further information to explore, where tools like objection come in handy. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
 
@@ -947,15 +949,7 @@ Open Safari and go to any webpage, you should see now the traffic in Burp. Thank
 
 ###### Installing Frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1251>
-
-[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
-
-If you haven't already done so, you need to install the Frida Python package on your host machine:
-
-```shell
-$ pip install frida-tools
-```
+When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
 
@@ -1021,10 +1015,8 @@ The method is called with a single argument of type `NSURL`. According to the [A
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
 ```python
-
 import sys
 import frida
-
 
 // JavaScript to be injected
 frida_code = """
@@ -1060,7 +1052,6 @@ script.on('message', message_callback)
 script.load()
 
 sys.stdin.read()
-
 ```
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
@@ -1085,8 +1076,6 @@ To save the console output to a text file, go to the bottom right and click the 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
 ### Setting Up a Network Testing Environment
-
--- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
 
 #### Basic Network Monitoring/Sniffing
 
@@ -1116,8 +1105,6 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
-
-#### Potential Obstacles
 
 ### References
 
