@@ -114,37 +114,39 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 #### Recommended Tools - iOS Device
 
-Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to Sources -> Edit, then clicking "Add" in the top left:
 
-Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver: <https://apt.bingner.com/>.
+- <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
+- <http://repo.hackyouriphone.org>: Add the HackYouriPhone repository to get the AppSync package.
+- <https://build.frida.re>: Install Frida by adding the repository to Cydia.
+- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added.
+- <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
+- <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
+- <https://coolstar.org/publicrepo/>: For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools.
 
-You may also want to add the HackYouriPhone repository to get the AppSync package <http://repo.hackyouriphone.org>.
+> In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
 
-You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>. Similarly, the Needle agent has its own repository as well: <http://mobiletools.mwrinfosecurity.com/cydia/>.
+After adding all the suggested repositories above you can install the following useful packages from Cydia to get started:
 
-When you need to manage your jailbreak on iOS 11, the Chariz repository can help. You can find it at <https://repo.chariz.io>.
-
-The following are some useful packages you can install from Cydia to get started:
-
-- adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
+- adv-cmds: Advanced command line, which includes tools such as finger, fingerd, last, lsvfs, md, and ps.
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
 - Apt: Advanced Package Tool, which you can use to manage the installed packages similarly to DPKG, but in a more friendly way. This allows you to install, uninstall, upgrade, and downgrade packages from your Cydia repositories. Comes from Elucubratus.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
-- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces.
+- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "Class-dump-Z installation steps") in order to get class-dump-z running on your iOS device.
 - Clutch: Used to decrypt an app executable.
 - Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
+- Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
 - cURL: Is a well known http client which you can use to download packages faster to your device. This can be a great help when you need to install different versions of Frida-server on your device for instance.
-- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
-- Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of Frida-server (which forces you to update /downgrade the version on Mac OS X). Running Frida Server installed via APT or Cydia is recommend. Upgrading/downgrading afterwards can be done, by following the instructions at [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
-- Grep: handy tool to filter lines, comes from Elucubratus repo at iOS 12.
-- Gzip: a well known zip utility, comes from Elucubratus repo at iOS 12.
-- Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- Darwin CC Tools: Install the Darwin CC Tools from the Coolstar repo as a dependency for Needle.
+- IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
+- Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
+- Grep: Handy tool to filter lines.
+- Gzip: A well known zip utility.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
-- Open for iOS 11: tool require to make Needle Agent function, comes from the BigBoss repo.
-- Ipa Installer: a BigBoss tool to install IPA files directly on the device.
-- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
+- Open for iOS 11: Tool required to make Needle Agent function.
+- PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - SOcket CAT: a utility with which you can connect to sockets to read and write messages. This can come in handy if you want to trace the syslog on iOS 12 devices.
 
 Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
@@ -160,36 +162,82 @@ $ apt-get install adv-cmds
 
 In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
-- [Burp Suite](https://portswigger.net/burp "Burp Suite"): Is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to.
-- [Frida](https://www.frida.re "Frida"): Is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps.
-- [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump"): This tools allows you to pull a decrypted IPA from a jailbroken device.
-- [Ghidra](https://ghidra-sre.org/ "Ghidra"): Is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate.
-- [IDB](https://www.idbtool.com "IDBTool"): Is an open source tool to simplify some common tasks for iOS app security assessments and research.
-- [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"): Install and debug iPhone apps from the command line, without using Xcode. It can be installed via brew on macOS:
+##### Burp Suite
+
+[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
+
+##### Frida
+
+[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. The [installation instructions for Frida](https://www.frida.re/docs/installation/ "Installation of Frida") can be found on the official website. Frida is used in several of the following sections and chapters. For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
+
+##### Frida-ios-dump
+
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from a jailbroken device. Please refer to the section "Using Frida-ios-dump" for detailed instructions on how to use it.
+
+##### Ghidra
+
+[Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts.
+
+##### IDB
+
+[IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
+
+Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyse and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+
+Please keep in mind that IDB might be unstable and crash after selecting the app.
+
+##### ios-deploy
+
+With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
 ```shell
 $ brew install ios-deploy
 ```
 
-- [iFunbox](http://www.i-funbox.com/ "iFunbox"): File and app management tool that supports iOS.
-- [keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper"): A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
-- [Mobile-Security-Framework - MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"):  Is an automated, all-in-one mobile application pen-testing framework that supports also iOS. The easiest way of getting MobSF started is via docker.
+For the usage please refer to the section "ios-deploy" below which is part of "Installing Apps".
+
+##### iFunBox
+
+[iFunBox](http://www.i-funbox.com/ "iFunBox") is a file and app management tool that supports iOS. You can [download it for Windows and macOS](http://www.i-funbox.com/en_download.html "iFunBox").
+
+It has several features, like app installation, access the app sandbox without jailbreak and others.
+
+##### Keychain-Dumper
+
+[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "Keychain-dumper (Jailbroken)" for detailed instructions on how to use it.
+
+##### Mobile-Security-Framework - MobSF
+
+[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pen-testing framework that also supports iOS. The easiest way of getting MobSF started is via docker.
 
 ```shell
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
-- [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+##### Needle
+
+[Needle](https://github.com/mwrlabs/needle "Needle") is an all-in-one iOS security assessment framework, which you can compare to as a "Metasploit" for iOS. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
+
+Please also ensure that you install the Darwin CC Tools from the Coolstar repository, to get Needle to work on iOS 12.
+
+In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
+
+##### Passionfruit
+
+[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
 
 ```shell
 $ npm install -g passionfruit
 $ passionfruit
+listening on http://localhost:31337
 ```
 
-- [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
-- [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
+Once you executed the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+
+<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
+
+Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
 
 ##### Objection
 
@@ -271,6 +319,14 @@ $ ios plist cat <myfile.plist>
 ```
 
 More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
+
+##### Radare2
+
+[Radare2](https://github.com/radare/radare2 "Radare2") is a complete framework for reverse-engineering and analyzing binaries. The installation instructions can be found in the GitHub repository. To learn more on radare2 you may want to read the [official radare2 book](https://radare.gitbooks.io/radare2book/content/ "Radare2 book").
+
+##### TablePlus
+
+[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analysing the content of them with a GUI tool.
 
 ### Basic Testing Operations
 
