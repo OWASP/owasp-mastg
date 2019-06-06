@@ -696,7 +696,54 @@ Finally, since the keychain dumper is executed from within the application conte
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
 
-####### Needle 
+####### Needle
+
+Needle can list the content of the keychain through the `storage/data/keychain_dump_frida` module. However, getting Needle up and running can be difficult. First, make sure that `open`, and the `darwin cc tools` are installed. The installation procedure for these tools is described in "Recommended Tools - iOS Device".
+
+Before dumping the keychain, open Needle and use the `device/dependency_installer` plugin to install any other missing dependencies. This module should return without any errors. If an error did pop up, be sure to fix this error before continuing.
+
+Finally, select the `storage/data/keychain_dump_frida` module and run it:
+
+```shell
+[needle][keychain_dump_frida] > use storage/data/keychain_dump_frida
+[needle][keychain_dump_frida] > run
+[*] Checking connection with device...
+[+] Already connected to: 192.168.43.91
+[+] Target app: OWASP.iGoat-Swift
+[*] Retrieving app's metadata...
+[*] Pulling: /private/var/containers/Bundle/Application/92E7C59C-2F0B-47C5-94B7-DCF506DBEB34/iGoat-Swift.app/Info.plist -> /Users/razr/.needle/tmp/plist
+[*] Setting up local port forwarding to enable communications with the Frida server...
+[*] Launching the app...
+[*] Attaching to process: 4448
+[*] Parsing payload
+[*] Keychain Items:
+[+] {
+    "AccessControls": "",
+    "Account": "keychainValue",
+    "CreationTime": "2019-06-06 10:53:09 +0000",
+    "Data": " (UTF8 String: 'mypassword123')",
+    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
+    "ModifiedTime": "2019-06-06 16:53:38 +0000",
+    "Protection": "kSecAttrAccessibleWhenUnlocked",
+    "Service": "com.highaltitudehacks.dvia",
+    "kSecClass": "kSecClassGenericPassword"
+}
+...
+[+] {
+    "AccessControls": "",
+    "Account": "<53434465 76696365 546f6b65 6e56616c 756532>",
+    "CreationTime": "2019-06-06 10:53:30 +0000",
+    "Data": " (UTF8 String: 'CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=')",
+    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
+    "ModifiedTime": "2019-06-06 10:53:30 +0000",
+    "Protection": "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly",
+    "Service": "com.toyopagroup.picaboo",
+    "kSecClass": "kSecClassGenericPassword"
+}
+[*] Saving output to file: /Users/razr/.needle/output/frida_script_dump_keychain.txt
+```
+
+Note that currently only the `keychain_dump_frida` module works on iOS 12, but not the `keychain_dump` module.
 
 ####### Passionfruit (non-Jailbroken)
 
