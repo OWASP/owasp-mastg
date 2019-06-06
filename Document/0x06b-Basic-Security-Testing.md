@@ -717,7 +717,7 @@ One fundamental step when analyzing apps is information gathering. This can be d
 
 ##### Listing Installed Apps
 
-When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager):
+When targeting apps that are installed on the device, you'll first have to figure out the correct bundle identifier of the application you want to analyze. You can use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
 
 ```bash
 $ frida-ps -Uai
@@ -732,11 +732,11 @@ $ frida-ps -Uai
    -  iGoat-Swift          OWASP.iGoat-Swift
 ```
 
-It will also show which of them are currently running. Take a note of the "Identifier" and the PID if any as you'll need them afterwards.
+It also shows which of them are currently running. Take a note of the "Identifier" (bundle identifier) and the PID if any as you'll need them afterwards.
 
 ##### Exploring the App Package
 
-Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the IPA of the app.
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
 You can unzip the IPA using the standard `unzip` or any other zip utility. The following output was truncated for better readability and overview:
 
@@ -776,6 +776,8 @@ Info.plist
 iGoat-Swift
 ```
 
+MYTODO: finish this:
+
 - `Info.plist`
 - resources such as images/icons, translation files, text files, etc.
 - application components such as XIB/NIB files, archives, or certificates.
@@ -783,12 +785,13 @@ iGoat-Swift
 - `Frameworks/`
 - `iGoat-Swift` is the app binary
 
-
 The `Info.plist` is main source of information for an iOS app. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded `Info.plist`.
 
 ###### The Info.plist File
 
-The `Info.plist` file might be XML or binary format (bplist), to convert it to XML format:
+The information property list or `Info.plist` (named by convention) is a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (plug-ins, frameworks, and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List"). 
+
+The file format might be XML or binary (bplist). You can convert it to XML format with one simple command:
 
 - On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
 
@@ -820,7 +823,7 @@ Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details
 
 ###### Native Libraries
 
-Native Libraries are known as Frameworks on iOS. You can inspect them by listing the `Frameworks` folder in the IPA:
+iOS native libraries are known as Frameworks. You can inspect them by listing the `Frameworks` folder in the IPA:
 
 ```shell
 $ ls -1 Frameworks/
@@ -855,7 +858,11 @@ Once you have installed the app, there is further information to explore. Let's 
 
 <img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
 
-System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/containers/`). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
+On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) as its directory name.
+
+In order to easily obtain the installation directory information for user-installed apps you can follow the following methods:
+
+Connect to the terminal on the device and run the command `ipainstaller` ([IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console")) as follows:
 
 ```shell
 iPhone:~ root# ipainstaller -l
@@ -882,15 +889,23 @@ DocumentDirectory  /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8E
 LibraryDirectory   /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Library
 ```
 
-Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself are stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments (for example when analyzing the stored data for sensitive data).
+As you can see, apps have two main locations:
 
-Important file directories are:
+- The Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/`).
+- The Data directory (`/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/`).
+
+These folders contain information that must be examined closely during application security assessments (for example when analyzing the stored data for sensitive data).
+
+Bundle directory:
 
 - **AppName.app**
   - This is the app's bundle contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary.
   - This directory is visible to users, but users can't write to it.
   - Content in this directory is not backed up.
   - The contents of this folder are used to validate the code signature.
+
+Data directory:
+
 - **Documents/**
   - Contains all the user-generated data. The application end user initiates the creation of this data..
   - Visible to users and users can write to it.
@@ -920,7 +935,7 @@ Important file directories are:
   - Content in this directory is not backed up.
   - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 
-Let's take a closer look at iGoat-Swift's Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
+Let's take a closer look at iGoat-Swift's .app directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
 ```shell
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
