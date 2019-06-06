@@ -116,20 +116,26 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
 
+Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver: <https://apt.bingner.com/>.
+
 You may also want to add the HackYouriPhone repository to get the AppSync package <http://repo.hackyouriphone.org>.
 
-You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>.
+You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>. Similarly, the Needle agent has its own repository as well: <http://mobiletools.mwrinfosecurity.com/cydia/>.
+
+When you need to manage your jailbreak on iOS 11, the Chariz repository can help. You can find it at <https://repo.chariz.io>.
 
 The following are some useful packages you can install from Cydia to get started:
 
 - adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
+- Apt: Advanced Package Tool, which you can use to manage the installed packages from your shell, UNIX style. We recommend you to install this as it will.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
 - Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces.
 - Clutch: Used to decrypt an app executable.
 - Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
+- Curl: Is a well known http client which you can use to download packages faster to your device. This can be a great help when you need to install different versions of Frida-server on your device for instance.
 - [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
 - Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
@@ -171,7 +177,7 @@ $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:lates
 - [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
 - [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
 
-```bash 
+```bash
 $ npm install -g passionfruit
 $ passionfruit
 ```
@@ -414,7 +420,7 @@ org.owasp.MSTG on (iPhone: 10.3.3) [usb] # pwd print
 Current directory: /var/containers/Bundle/Application/DABF849D-493E-464C-B66B-B8B6C53A4E76/org.owasp.MSTG.app
 ```
 
-Use the `env` command to get the directories of the app and navigate to the Documents directory. 
+Use the `env` command to get the directories of the app and navigate to the Documents directory.
 
 ```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
