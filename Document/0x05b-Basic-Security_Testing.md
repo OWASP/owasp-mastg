@@ -752,15 +752,48 @@ Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remot
 
 #### Obtaining and Extracting Apps
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1238>
+There are several ways of extracting apk files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
 
 ##### App Store
 
+One of the easiest option is to download the apk from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not offical and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host apks and are not known for modifying apps and claim to MD5 checksum the apps are:
+
+- [APKMirror](https://apkmirror.com "APKMirror")
+- [APKPure](https://apkpure.com "APKPure")
+
+Beware that you do not have control over these sites and you can not guarantee what they do in the future. Only use them if it's your only option left.
+
 ##### Recovering the App Package from the Device
+
+Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified.
+
+###### From Non-Rooted Devices
+
+To obtain applications from a non-rooted device, you could use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
+
+```shell
+$ adb shell pm list packages
+```
+
+Once you have located the package name of the application, you need the full path where it is stored on the system to download it.
+
+```shell
+$ adb shell pm path (package)
+```
+
+With the full path to the apk, you can now simply use `adb pull` to extract the apk.
+
+```shell
+$ adb pull (apk path)
+```
+
+The apk will be downloaded in your working directory.
+
+There are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted apk via your prefered method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
 
 ###### From Rooted Devices
 
-###### From Non-Rooted Devices
+As the process does not require root, there are no benefits of using a rooted device. The methods shown previously with `adb` or apps such as `APK Extractor` work with rooted devices too.
 
 #### Installing Apps
 
