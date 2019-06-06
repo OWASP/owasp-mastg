@@ -746,8 +746,6 @@ Note that if you have the original source code and use Android Studio, you do no
 
 #### Information Gathering
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1239>
-
 One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. You should be able to build a kind of "map" about the app, which will help you have a better understanding of the app before going further and start testing or reversing it. We will be answering questions like:
 
 - Which files does the app include inside its package?
