@@ -8,7 +8,7 @@ Jailbreak detection mechanisms are added to reverse engineering defense to make 
 
 ##### File-based Checks
 
-Check for files and directories typically associated with jailbreaks, such as
+Check for files and directories typically associated with jailbreaks, such as:
 
 ```text
 /Applications/Cydia.app
@@ -86,7 +86,7 @@ Once you start an application that has jailbreak detection enabled on a jailbrok
 
 In the first case, make sure the application is fully functional on non-jailbroken devices. The application may be crashing or it may have a bug that causes it to terminate. This may happen while you're testing a preproduction version of the application.
 
-Let's again look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
+Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
 
 ![Disassembling with Hopper](Images/Chapters/0x06b/HopperDisassembling.png) ![Decompiling with Hopper](Images/Chapters/0x06b/HopperDecompile.png)
 
@@ -130,13 +130,13 @@ false
 
 In this case we have bypassed the jailbreak detection of the application!
 
-Now, imagine that the application is closing immediately after detecting that the device is jailbroken. You don't have time to launch Cycript and replace the function implementation. Instead, you have to use CydiaSubstrate, employ a proper hooking function like `MSHookMessageEx`, and compile the tweak. There are [good sources](http://delaat.net/rp/2015-2016/p51/report.pdf "Jailbreak/Root Detection Evasion Study on iOS and Android") for how to do this; however, we will provide a potentially faster and more flexible approach.
+Now, imagine that the application is closing immediately after detecting that the device is jailbroken. You don't have time to launch Cycript and replace the function implementation. Instead, you have to use CydiaSubstrate, employ a proper hooking function like `MSHookMessageEx`, and compile the tweak. There are [good sources](http://delaat.net/rp/2015-2016/p51/report.pdf "Jailbreak/Root Detection Evasion Study on iOS and Android") for how to do this; however, by using Frida, we can more easily perform early instrumentation and we can build on our gathered skills from previous tests.
 
-**[Frida](https://www.frida.re/ "Frida")** is a dynamic instrumentation framework that allows you to use a JavaScript API to instrument apps. One feature that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
+One feature of Frida that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
 
-1. Make sure that `frida-server` is running on your iDevice.
+1. Make sure that `frida-server` is running on your iOS Device.
 2. Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
-3. iOS device must be connected via USB cable.
+3. The iOS device must be connected via USB cable.
 4. Use `frida-trace` on your workstation:
 
 ```shell
@@ -170,11 +170,11 @@ Changing the return value to:0x0
  22475 ms  -[JailbreakDetectionVC isJailbroken]
 ```
 
-Please note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
+Note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
 
-Frida is a very powerful and versatile tool. Refer to the [Frida documentation online](https://www.frida.re/docs/home/ "Frida Documentation") for more details.
+One more way to bypass Jailbreak detection mechanisms that rely on file system checks is objection. You can [find the implementation here](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
 
-Please see below a Python script for hooking Objective-C methods and native functions:
+See below a Python script for hooking Objective-C methods and native functions:
 
 ```python
 import frida
