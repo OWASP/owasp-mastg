@@ -901,9 +901,9 @@ As introduced in the previous chapter, the manifest file includes a lot of inter
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
-- App permissions: `permission` (see "iOS Platform APIs")
+- App permissions: `permission` (see "Android Platform APIs")
 - Backup allowance: `android:allowBackup` (see "Data Storage on Android")
-- App components: `activity`, `service`, `provider`, `receiver` (see "iOS Platform APIs" and "Data Storage on Android")
+- App components: `activity`, `service`, `provider`, `receiver` (see "Android Platform APIs" and "Data Storage on Android")
 - Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
