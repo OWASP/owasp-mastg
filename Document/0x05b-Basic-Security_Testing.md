@@ -731,9 +731,15 @@ Note that if you have the original source code and use Android Studio, you do no
 
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1239>
 
-You can retrieve information from the apps by getting their package and exploring it or by targeting the apps on the device itself.
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. You should be able to build a kind of "map" about the app, which will help you have a better understanding of the app before going further and start testing or reversing it. We will be answering questions like:
 
-##### Installed Apps
+- Which files does the app include inside its package?
+- Which native libraries does the app use?
+- Which app components does the app use? Any services or content providers?
+- Is the app debuggable?
+- Does the app create any new files when being installed?
+
+##### Listing Installed Apps
 
 When targeting apps that are installed on the device first you'll have to decide which app you'd like to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager):
 
@@ -775,7 +781,7 @@ $ frida-ps -Ua
  4281  Termux                                    com.termux
 ```
 
-Note that this is not the same as all installed apps.
+Note that this does not include all installed apps as they'd probably not be running all at the same time.
 
 ##### Exploring the App Package
 
@@ -796,12 +802,12 @@ drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
 -rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
 ```
 
-- AndroidManifest.xml: contains the definition of the app's package name, target and min API version, app configuration, components, user-granted permissions, etc.
+- AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
 - META-INF: contains the app's metadata
   - MANIFEST.MF: stores hashes of the app resources
   - CERT.RSA: the app's certificate(s)
   - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
-- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the AssetManager can retrieve
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
 - classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
 - lib: directory containing 3rd party libraries that are part of the APK.
 - res: directory containing resources that haven't been compiled into resources.arsc
@@ -847,9 +853,9 @@ The main source of information is the Android Manifest. The following sections c
 
 ###### The Android Manifest
 
-As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package id, the app permissions, app components, etc.
+As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package name, the permissions, app components, etc.
 
-Here's a list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
+Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
 - App permissions: `permission` (see "iOS Platform APIs")
 - Backup allowance: `android:allowBackup` (see "Data Storage on Android")
@@ -860,9 +866,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 ###### App Binary
 
-As seen above, the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code.
-
-Above we've seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called Smali, which is a human-readable representation of the Dalvik executable.
+As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called Smali, which is a human-readable representation of the Dalvik executable.
 
 Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
 
@@ -890,11 +894,11 @@ File    ...  libstlport_shared.so
 File    ...  libsqlcipher_android.so
 ```
 
-For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only dissassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
 
 ###### Other App Resources
 
-It is normally worth taking a look at the rest of the resources and files that you may find in the root folder of the APK as some times they contain additional goodies like keystores, encrypted databases, certificates, etc.
+It is normally worth taking a look at the rest of the resources and files that you may find in the root folder of the APK as some times they contain additional goodies like key stores, encrypted databases, certificates, etc.
 
 ##### Accessing App Data Directories
 
@@ -954,7 +958,9 @@ Each of the folders having its own purpose:
 - **files**: This folder stores regular files created by the app.
 - **databases**: This folder stores SQLite database files generated by the app at runtime, e.g., user data files.
 
-However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`). Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
+
+Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
 
