@@ -409,23 +409,17 @@ Then configure ProGuard to strip its calls.
 
 Use all the mobile app functions at least once, then identify the application's data directory and look for log files (`/data/data/<package-name>`). Check the application logs to determine whether log data has been generated; some mobile applications create and store their own logs in the data directory.  
 
-Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:
+Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat") as we've already learned in the chapter "Basic Security Testing", section "Monitoring System Logs".
 
-- Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) and Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
-
-![Log output in Android Studio](Images/Chapters/0x05d/log_output_Android_Studio.png)
-
-- You can execute Logcat with adb to store the log output permanently:
-
-```shell
-$ adb logcat > logcat.log
-```
-
-With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for ```ps``` to be able to get its PID.
+Remember that you can target an specific app by filtering the Logcat output this way:
 
 ```shell
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
+
+> If you already know the app PID you may give it directly using `--pid` flag.
+
+You may also want to apply further filters or regular expressions (using `logcat`'s regex flags `-e <expr>, --regex=<expr>` for example) if you expect certain strings or patterns to come up in the logs.
 
 ### Determining Whether Sensitive Data is Sent to Third Parties
 
