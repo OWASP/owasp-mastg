@@ -904,7 +904,7 @@ The following files are unpacked:
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-As unzipping with the standard `unzip` utility leaves some files like the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
 
 ```shell
 $ ls -alh
@@ -924,7 +924,7 @@ The main source of information is the Android Manifest. The following sections c
 
 ###### The Android Manifest
 
-As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package name, the permissions, app components, etc.
+As introduced in the previous chapter, the manifest file includes a lot of interesting information such as the package name, the permissions, app components, etc.
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
