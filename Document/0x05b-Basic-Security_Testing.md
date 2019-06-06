@@ -456,7 +456,7 @@ You can print all the strings with the r2 command `izq`.
 0x11bf 14 14 Root detected!
 ```
 
-Radare2 is very powerful and has dozens commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation").
+Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation").
 
 ##### r2frida
 
