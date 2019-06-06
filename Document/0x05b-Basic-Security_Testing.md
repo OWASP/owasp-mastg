@@ -111,15 +111,32 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 ##### adb
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1228>
-
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
 ```shell
-$ adb devices
+$ adb devices -l
 List of devices attached
-090c285c0b97f748  device
+090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
+emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
+
+adb provides other useful commands such as `adb shell` to start an interative shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
+
+```shell
+$ adb forward tcp:<host port> tcp:<device port>
+```
+
+```shell
+$ adb -s emulator-5554 shell
+root@generic_x86:/ # ls
+acct
+cache
+charger
+config
+...
+```
+
+You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
 
 ##### Frida
 
@@ -353,60 +370,197 @@ More infomation on using the Objection REPL can be found on the [Objection Wiki]
 
 ##### r2frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1232>
+[r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. R2frida allows you to:
+
+- Attach radare2 to any local process or remote frida-server via USB or TCP.
+- Read/Write memory from the target process.
+- Load Frida information such as maps, symbols, imports, classes and methods into radare2.
+- Call r2 commands from Frida as it exposes the r2pipe interface into the Frida Javascript API.
+
+###### Installing r2frida
+
+Before installing r2frida, make sure you have installed [radare2](https://rada.re/r/ "radare2") on your system. On GNU/Debian you also need to install the following dependencies:
+
+```shell
+$ sudo apt install -y make gcc libzip-dev nodejs npm curl pkg-config git
+```
+
+Once the dependencies are installed, you may proceed to install r2frida. The recommended installation method is via r2pm. To install with `r2pm`, simply run the following command:
+
+```shell
+$ r2pm -ci r2frida
+```
+
+However, you may also compile r2frida yourself in the traditional way. You can find how to do this in the official documentation of [r2frida](https://github.com/nowsecure/r2frida/blob/master/README.md "r2frida readme").
+
+###### Using r2frida
+
+With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
+
+```shell
+$ r2 frida://1234
+```
+
+For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page.](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage")
+
+Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
+
+```shell
+[0x00000000]> \i
+arch                x86
+bits                64
+os                  linux
+pid                 2218
+uid                 1000
+objc                false
+runtime             V8
+java                false
+cylang              false
+pageSize            4096
+pointerSize         8
+codeSigningPolicy   optional
+isDebuggerAttached  false
+```
+
+To search in memory for a specific keyword, you may use the search command `\/`:
+
+```shell
+[0x00000000]> \/ unacceptable
+Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
+Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
+...
+Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
+hits: 23
+0x561f072d89ee hit12_0 unacceptable policyunsupported md algorithmvar bad valuec
+0x561f0732a91a hit12_1 unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61
+```
+
+To output the search results in json format, we simply add `j` to our previous search command. This can be used in most of the commands:
+
+```shell
+[0x00000000]> \/j unacceptable
+Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
+Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
+...
+Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
+hits: 23
+{"address":"0x561f072c4223","size":12,"flag":"hit14_1","content":"unacceptable policyunsupported md algorithmvar bad valuec0"},{"address":"0x561f072c4275","size":12,"flag":"hit14_2","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61"},{"address":"0x561f072c42c8","size":12,"flag":"hit14_3","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61 "},
+...
+```
+
+To list the loaded libraries use the command `\il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
+
+```shell
+[0x00000000]> \il~keystore,ssl,crypto
+0x00007f3357b8e000 libssl.so.1.1
+0x00007f3357716000 libcrypto.so.1.1
+```
+
+Similarly, to list the exports and filter the results by a specific keyword:
+
+```shell
+[0x00000000]> \iE libssl.so.1.1~CIPHER
+0x7f3357bb7ef0 f SSL_CIPHER_get_bits
+0x7f3357bb8260 f SSL_CIPHER_find
+0x7f3357bb82c0 f SSL_CIPHER_get_digest_nid
+0x7f3357bb8380 f SSL_CIPHER_is_aead
+0x7f3357bb8270 f SSL_CIPHER_get_cipher_nid
+0x7f3357bb7ed0 f SSL_CIPHER_get_name
+0x7f3357bb8340 f SSL_CIPHER_get_auth_nid
+0x7f3357bb7930 f SSL_CIPHER_description
+0x7f3357bb8300 f SSL_CIPHER_get_kx_nid
+0x7f3357bb7ea0 f SSL_CIPHER_get_version
+0x7f3357bb7f10 f SSL_CIPHER_get_id
+```
+
+To list or set a breakpoint use the command db. This is useful when analyzing/modifying memory:
+
+```shell
+[0x00000000]> \db
+```
+
+Finally, remember that you can also run Frida JS code with \. script.js:
+
+```shell
+[0x00000000]> \. agent.js
+```
+
+You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki "Using r2frida") on their Wiki project.
 
 ##### Drozer
 
 [Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
 
+The advantage of using Drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
+
+###### Installing Drozer
+
 You can refer to [drozer GitHub page](https://github.com/mwrlabs/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions. Other resources where you might find useful information are:
+The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions.
 
-- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
-- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
-- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
+###### Using Drozer
 
 Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the releases page](https://github.com/mwrlabs/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
 Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions [here](https://mobiletools.mwrinfosecurity.com/Starting-a-session/ "Starting a Session").
 
+Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
+
+```shell
+$ dz> run app.package.attacksurface <package>
+```
+
+Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standlone app as it would be required for certain tasks such as communicating with a content provider.
+
+For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
+
+```shell
+$ dz> run app.activity.start --component <package> <component name>
+```
+
+This previous command will start the activity, hopefully leaking some sensitive information. Drozer has modules for every type of IPC mechanism. Download [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "InsecureBankv2 APK") if you would like to try the modules with an intentionally vulnerable application that illustrates common problems related to IPC endpoints. Pay close attention to the modules in the scanner category as they are very helpful automatically detecting vulnerabilities even in system packages, specially if you are using a ROM provided by your cellphone company. Even [SQL injection vulnerabilities in system packages by Google](https://issuetracker.google.com/u/0/issues/36965126 "SQL injection in Android") have been identified in the past with drozer.
+
+###### Other Drozer commands
+
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
-- To list all the packages installed, execute the following command:
+```shell
+# List all the installed packages
+$ dz> run app.package.list
 
-    `dz> run app.package.list`
+# Find the package name of a specific app
+$ dz> run app.package.list –f (string to be searched)
 
-- To find the package name of a specific app, pass  "-f" and a search string:
+# See basic information
+$ dz> run app.package.info –a (package name)
 
-    `dz> run app.package.list –f (string to be searched)`
+# Identify the exported application components
+$ dz> run app.package.attacksurface (package name)
 
-- To see basic information about the package, execute the following command:
+# Identify the list of exported Activities
+$ dz> run app.activity.info -a (package name)
 
-    `dz> run app.package.info –a (package name)`
+# Launch the exported Activities
+$ dz> run app.activity.start --component (package name) (component name)
 
-- To identify the exported application components, execute the following command:
+# Identify the list of exported Broadcast receivers
+$ dz> run app.broadcast.info -a (package name)
 
-    `dz> run app.package.attacksurface (package name)`
+# Send a message to a Broadcast receiver
+$ dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)
 
-- To identify the list of exported Activities in the target application, execute the following command:
+# Detect SQL injections in content providers
+$ dz> run scanner.provider.injection -a (package name)
+```
 
-    `dz> run app.activity.info -a (package name)`
+###### Other Drozer resources
 
-- To launch the exported Activities, execute the following command:
+Other resources where you might find useful information are:
 
-    `dz> run app.activity.start --component (package name) (component name)`
-
-- To identify the list of exported Broadcast receivers in the target application, execute the following command:
-
-    `dz> run app.broadcast.info -a (package name)`
-
-- To send a message to a Broadcast receiver, execute the following command:
-
-    `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
-
-Learn more about drozer's security assessment and exploitation features by checking the following resources:
-
+- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
+- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
 - [Command Reference](https://mobiletools.mwrinfosecurity.com/Command-Reference/ "drozer's Command Reference")
 - [Using drozer for application security assessments](https://mobiletools.mwrinfosecurity.com/Using-Drozer-for-application-security-assessments/ "Using drozer for application security assessments")
 - [Exploitation features in drozer](https://mobiletools.mwrinfosecurity.com/Exploitation-features-in-drozer/ "Exploitation features in drozer")
@@ -507,7 +661,7 @@ Termux is a terminal emulator for Android that provides a Linux environment that
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```shell
-adb push foo.txt /sdcard/foo.txt
+$ adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
@@ -1237,6 +1391,7 @@ Hook each method with Frida and print the arguments. One of them will print out 
 - Objection - <https://github.com/sensepost/objection>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - QARK - <https://github.com/linkedin/qark/>
+- R2frida - <https://github.com/nowsecure/r2frida/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 - Wireshark - <https://www.wireshark.org/>
