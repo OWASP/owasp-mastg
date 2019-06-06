@@ -111,15 +111,32 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 ##### adb
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1228>
-
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
 ```shell
-$ adb devices
+$ adb devices -l
 List of devices attached
-090c285c0b97f748  device
+090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
+emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
+
+adb provides other useful commands such as `adb shell` to start an interative shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
+
+```shell
+$ adb forward tcp:<host port> tcp:<device port>
+```
+
+```shell
+$ adb -s emulator-5554 shell
+root@generic_x86:/ # ls
+acct
+cache
+charger
+config
+...
+```
+
+You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
 
 ##### Frida
 
@@ -617,7 +634,7 @@ Termux is a terminal emulator for Android that provides a Linux environment that
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```shell
-adb push foo.txt /sdcard/foo.txt
+$ adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
