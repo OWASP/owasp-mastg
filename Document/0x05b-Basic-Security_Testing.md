@@ -803,9 +803,9 @@ Note that this also shows the PID of the apps that are running at the moment. Ta
 ##### Exploring the App Package
 
 Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the APK of the app.
-As you've seen above, installed Android apps are located at `/data/app/[package-name]`.
+As you've seen above, installed Android apps are located at `/data/app/[package-name]` and their APKs can be retrieved from there.
 
-The Android Package Kit (APK) file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
+The APK file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
 
 ```shell
 $ unzip base.apk
