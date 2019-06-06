@@ -366,7 +366,109 @@ More infomation on using the Objection REPL can be found on the [Objection Wiki]
 
 ##### radare2
 
-[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that supports many platforms and file formats including Android/iOS apps. The framework is very robust and it works with Dalvik DEX, ELF, Java, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level dissassembling that comes handy when traditional tools fail
+[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that is scriptable and supports many architectures and file formats including Android/iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java classes are supported, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes handy when traditional tools fail.
+
+###### Installing radare2
+
+Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). There are also installation instructions If you need to [install radare2 on Android](https://github.com/radare/radare2/blob/master/doc/android.md "Install radare2 on Android").
+
+###### Using radare2
+
+You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
+
+```shell
+$ rafind2 -ZS permission AndroidManifest.xml
+```
+
+```shell
+$ rafind2 -ZS activity AndroidManifest.xml
+```
+
+```shell
+$ rafind2 -ZS provider AndroidManifest.xml
+```
+
+```shell
+$ rafind2 -ZS service AndroidManifest.xml
+```
+
+```shell
+$ rafind2 -ZS receiver AndroidManifest.xml
+```
+
+You can use the flag `-a` to manually set the architecture to Dalvik.
+
+```shell
+$ r2 -a dalvik classes.dex
+```
+
+Once loaded, you can print the disassembly opcodes with the r2 command `pd`.
+
+```shell
+[0x000009c8]> pd
+```
+
+You can limit the number of opcodes displayed by appending the number to the command `pd`.
+
+```shell
+[0x000009c8]> pd 10
+            ;-- entry0:
+            ;-- Lsg/vantagepoint/uncrackable1/MainActivity.method.onCreate(Landroid/os/Bundle;)V:
+            ;-- method.protected.Lsg_vantagepoint_uncrackable1_MainActivity.Lsg_vantagepoint_uncrackable1_MainActivity.method.onCreate_Landroid_os_Bundle__V:
+            ;-- ip:
+            0x000009c8      710027000000   invoke-static {}, Lsg/vantagepoint/a/c.a()Z ; 0x27
+            0x000009ce      0a00           move-result v0
+        ,=< 0x000009d0      39000e00       if-nez v0, 0x000009ec
+        |   0x000009d4      710028000000   invoke-static {}, Lsg/vantagepoint/a/c.b()Z
+        ...
+            ; 0x29
+       ||   0x000009e6      0a00           move-result v0
+      ,===< 0x000009e8      38000700       if-eqz v0, 0x000009f6
+      |``-> 0x000009ec      1a003f00       const-string v0, str.Root_detected ; 0x11bf
+```
+
+You can also print the class names with the r2 command `icq`.
+
+```shell
+[0x000009c8]> icq
+0x0000069c [0x0000078c - 0x000007b8] Lsg/vantagepoint/a/a Ljava/lang/Object;
+0x000006bc [0x000007c8 - 0x000007ec] Lsg/vantagepoint/a/b Ljava/lang/Object;
+...
+0x0000073c [0x00000958 - 0x00000abc] Lsg/vantagepoint/uncrackable1/MainActivity Landroid/app/Activity;
+0x0000075c [0x00000acc - 0x00000bb2] Lsg/vantagepoint/uncrackable1/a Ljava/lang/Object;
+```
+
+You can also print the external methods with the r2 command `iiq`.
+
+```shell
+[0x000009c8]> iiq
+Landroid/app/Activity.method.<init>()V
+Landroid/app/Activity.method.onCreate(Landroid/os/Bundle;)V
+...
+0x0000075c [0x00000acc - 0x00000bb2]    230 class 6 Lsg/vantagepoint/uncrackable1/a super: Ljava/lang/Object;
+0x00000acc method 0 sp   Lsg/vantagepoint/uncrackable1/a.method.a(Ljava/lang/String;)Z
+0x00000b5c method 1 sp   Lsg/vantagepoint/uncrackable1/a.method.b(Ljava/lang/String;)[B
+```
+
+You can also print all the strings with the r2 command `izq`.
+
+```shell
+[0x000009c8]> izq
+0xc50 39 39 /dev/com.koushikdutta.superuser.daemon/
+0xc79 25 25 /system/app/Superuser.apk
+...
+0xd23 44 44 5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=
+0xd51 32 32 8d127684cbc37c17616d806cf50473cc
+0xd76 6 6 <init>
+0xd83 10 10 AES error:
+0xd8f 20 20 AES/ECB/PKCS7Padding
+0xda5 18 18 App is debuggable!
+0xdc0 9 9 CodeCheck
+0x11ac 7 7 Nope...
+0x11bf 14 14 Root detected!
+```
+
+Radare2 is very powerful and has dozens commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation").
 
 ##### r2frida
 
