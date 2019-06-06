@@ -713,72 +713,12 @@ It will also show which of them are currently running. Take a note of the "Ident
 ##### Exploring the App Package
 
 Once you are targeting an specific app you'll want to start gathering information about it. At this point you might have the IPA of the app.
-As you've seen above in "Host-Device Data Transfer", installed iOS apps are located at `/data/app/[package-name]`.
 
-The Android Package Kit (APK) file is an archive that contains the code and resources required to run the app it comes with. This file is identical to the original, signed app package created by the developer. It is in fact a ZIP archive with the following directory structure:
+You can unzip the IPA using the standard `unzip` utility. Note that the `Info.plist` is encoded into binary XML format which isn’t readable with a text editor.
 
-```shell
-$ unzip base.apk
-$ ls -lah
--rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
-drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
-drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
--rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
-drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
-drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
--rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
-```
+The main source of information is the `Info.plist`. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded `Info.plist`.
 
-- AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
-- META-INF: contains the app's metadata
-  - MANIFEST.MF: stores hashes of the app resources
-  - CERT.RSA: the app's certificate(s)
-  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
-- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
-- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing 3rd party libraries that are part of the APK.
-- res: directory containing resources that haven't been compiled into resources.arsc
-- resources.arsc: file containing precompiled resources, such as XML files for the layout
-
-Note that unzipping with the standard `unzip` utility the archive leaves some files unreadable. `AndroidManifest.XML` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
-A better way of unpacking an Android app package is using [apktool](https://ibotpeaches.github.io/Apktool/). When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
-
-```shell
-$ apktool d base.apk
-I: Using Apktool 2.1.0 on base.apk
-I: Loading resource table...
-I: Decoding AndroidManifest.xml with resources...
-I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
-I: Regular manifest package...
-I: Decoding file-resources...
-I: Decoding values */* XMLs...
-I: Baksmaling classes.dex...
-I: Copying assets and libs...
-I: Copying unknown files...
-I: Copying original files...
-$ cd base
-$ ls -alh
-total 32
-drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
-drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
--rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
--rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
-drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
-drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
-drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
-drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
-drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
-```
-
-- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
-- apktool.yml: file containing information about the output of apktool
-- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
-- res: directory containing the app’s resources
-- smali: directory containing the disassembled Dalvik bytecode.
-
-The main source of information is the Android Manifest. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded AndroidManifest.xml.
-
-###### The Android Manifest
+###### The Info.plist File
 
 As introduced in the previous chapter, the manifest file includes a lot of interesting information like the package name, the permissions, app components, etc.
 
@@ -799,10 +739,10 @@ Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering 
 
 ###### Native Libraries
 
-You can inspect the `lib` folder in the APK:
+Native Libraries are known as Frameworks on iOS, you can inspect them by listing the `Frameworks` folder in the IPA:
 
 ```shell
-$ ls -1 lib/armeabi/
+$ ls -1 Frameworks/
 libdatabase_sqlcipher.so
 libnative.so
 libsqlcipher_android.so
