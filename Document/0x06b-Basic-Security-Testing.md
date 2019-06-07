@@ -757,9 +757,9 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
-One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. You should be able to build a kind of "map" about the app, which will help you have a better understanding of the app before going further and start testing or reversing it. We will be answering questions like:
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
-- Which files does the app include inside its package?
+- Which files are included in the package?
 - Which Frameworks does the app use?
 - Which permissions does the app request to the user and for what reason?
 - Does the app allow any unsecured connections?
@@ -836,11 +836,9 @@ The most relevant items are:
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
 - `iGoat-Swift` is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
 
-The `Info.plist` is main source of information for an iOS app. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded `Info.plist`.
-
 ###### The Info.plist File
 
-The information property list or `Info.plist` (named by convention) is a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (plug-ins, frameworks, and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
+The information property list or `Info.plist` (named by convention) is main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (plug-ins, frameworks, and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
 
 The file format might be XML or binary (bplist). You can convert it to XML format with one simple command:
 
@@ -1238,12 +1236,12 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 The last step would be to set the proxy globally on your iOS device:
 
 1. Go to Settings
-1. Wi-Fi
+2. Wi-Fi
 1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
 1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
 1. Configure your Proxy by selecting Manual
 1. Type in 127.0.0.1 as Server
-1. Type in 8080 as Port
+2. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 

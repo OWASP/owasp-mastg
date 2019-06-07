@@ -947,11 +947,9 @@ drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 ```
 
-The main source of information is the Android Manifest. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded AndroidManifest.xml.
-
 ###### The Android Manifest
 
-As introduced in the previous chapter, the manifest file includes a lot of interesting information such as the package name, the permissions, app components, etc.
+The Android Manifest is the main source of information, it includes a lot of interesting information such as the package name, the permissions, app components, etc.
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
