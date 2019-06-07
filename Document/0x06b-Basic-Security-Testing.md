@@ -794,7 +794,7 @@ It also shows which of them are currently running. Take a note of the "Identifie
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
-You can unzip the IPA using the standard `unzip` or any other zip utility. The following output was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other zip utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```shell
 $ ls -1 Payload/iGoat-Swift.app
@@ -832,20 +832,21 @@ Info.plist
 iGoat-Swift
 ```
 
-MYTODO: finish this:
+The most relevant items are:
 
-- `Info.plist`
-- resources such as images/icons, translation files, text files, etc.
-- application components such as XIB/NIB files, archives, or certificates.
-- `_CodeSignature/CodeResources`is a plist file containing the signature over all files in the bundle.
-- `Frameworks/`
-- `iGoat-Swift` is the app binary
+- `Info.plist` contains configuration information for the application, such as its bundle ID, version number, and display name.
+- resources such as images/icons, localized content (`<language>.lproj`), text files, audio files, etc.
+- `*.nib` files store the user interfaces of iOS app
+- `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
+- `Frameworks/` contains the app native libraries as .dylib or .framework files.
+- `PlugIns/` may contain app extensions as .appex files (not present in the example).
+- `iGoat-Swift` is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
 
 The `Info.plist` is main source of information for an iOS app. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded `Info.plist`.
 
 ###### The Info.plist File
 
-The information property list or `Info.plist` (named by convention) is a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (plug-ins, frameworks, and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List"). 
+The information property list or `Info.plist` (named by convention) is a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (plug-ins, frameworks, and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
 
 The file format might be XML or binary (bplist). You can convert it to XML format with one simple command:
 
