@@ -46,6 +46,10 @@ Carlos is a security engineer leading the mobile penetration testing team at ESC
 
 Romuald is a passionate cyber security & privacy professional with over 15 years of experience in the web, mobile, IoT and cloud domains. During his career, he has been dedicating his spare time to a variety of projects with the goal of advancing the sectors of software and security. He is teaching regularly at various institutions. He holds CISSP, CCSP, CSSLP, and CEH credentials.
 
+#### Jeroen Beckers
+
+Jeroen is the mobile security lead at NVISO where he is responsible for quality assurance on mobile security projects and for R&D on all things mobile. He worked as a Flash developer during high school and college, but switched to a career in cybersecurity once he graduated and now has more than 5 years of experience in mobile security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
+
 ### Top Contributors
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
