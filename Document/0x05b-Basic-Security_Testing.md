@@ -51,8 +51,6 @@ When working with an Android physical device, you'll want to enable Developer Mo
 
 ##### Testing on the Emulator
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1279>
-
 You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
@@ -64,8 +62,12 @@ There are several downsides to using an emulator. You may not be able to test an
 
 Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
 
-Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
+Although there exist several free android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
 
+Several tools and VMs that can be used to test an app within an emulator environment are available:
+
+- Frida
+- Xposed
 - MobSF
 - Nathan (not updated since 2016)
 
