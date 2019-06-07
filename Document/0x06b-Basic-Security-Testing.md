@@ -160,11 +160,11 @@ $ apt-get install adv-cmds
 
 #### Recommended Tools - macOS Device
 
-In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
+In order to analyze iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
 ##### Burp Suite
 
-[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
+[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
 
 ##### Frida
 
@@ -182,7 +182,7 @@ In order to analyse iOS apps, you should use a macOS device and install the foll
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
 
-Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyse and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyze and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
@@ -214,6 +214,14 @@ It has several features, like app installation, access the app sandbox without j
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
+
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyze and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
+
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
+
+- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classdump can be created.
+- Have access to the Info.plist
+- Exceptions in the App Transport Security (ATS) configuration will be raised
 
 ##### Needle
 
@@ -268,7 +276,7 @@ $ ios-deploy --bundle Payload/my-app.app -W -d
 
 ###### Using Objection
 
-Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
 ```shell
 # Connecting to a patched IPA
@@ -318,7 +326,16 @@ When you execute the command `passionfruit` a local server will be started on po
 
 <img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
 
-Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
+With Passionfruit it's possible to explore different kinds of information concerning an iOS app. Once you selected the iOS app you can perform many tasks such as:
+
+- Get information about the binary
+- View folders and files used by the application and download them
+- Inspect the Info.plist
+- Get a UI Dump of the app screen shown on the iOS device
+- List the modules that are loaded by the app
+- Dump class names
+- Dump keychain items
+- Access to NSLog traces
 
 ##### Radare2
 
@@ -326,7 +343,7 @@ Passionfruit can now be used to gather information of the app, dump keychain ite
 
 ##### TablePlus
 
-[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analysing the content of them with a GUI tool.
+[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analyzing the content of them with a GUI tool.
 
 ### Basic Testing Operations
 
@@ -1028,23 +1045,20 @@ Refer to the "Testing Data Storage" chapter for more information and best practi
 
 ##### Monitoring System Logs
 
-MYTODO create.
+Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
+
+1. Launch Xcode.
+2. Connect your device to your host computer.
+3. Choose Devices from the window menu.
+4. Click on your connected iOS device in the left section of the Devices window.
+5. Reproduce the problem.
+6. Click the triangle-in-a-box toggle located in the lower left-hand corner of the Devices window's right section to view the console log's contents.
+
+To save the console output to a text file, go to the bottom right and click the circular downward-pointing-arrow icon.
+
+![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
 MYTODO: move two subsections below to Recommended Tools and.
-
-###### Mobile Security Framework (MobSF)
-
-MobSF is a penetration testing framework that is capable of analyzing IPA files and can be used before even installing the app on your testing device.
-
-Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyse and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
-
-After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
-
-- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classdump can be created.
-- Have access to the Info.plist
-- Exceptions in the App Transport Security (ATS) configuration will be raised
-
-There is much more information provided that you should explore, that might be helpful for you.
 
 ###### Objection
 
@@ -1055,19 +1069,6 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 ```
-
-###### Passionfruit
-
-With Passionfruit it's possible to explore different kinds of information concerning an IPA. Once you selected the IPA you have access to the following information:
-
-- Information about the binary
-- Folders used by the application
-- Overview of the Info.plist
-- UI Dump of the app screen shown on the iOS device
-- Modules that are loaded
-- Dumped classnames
-
-Passionfruit offers a wide range of information including access to NSLog.
 
 ##### Dumping KeyChain Data
 
@@ -1187,8 +1188,6 @@ Keychain Data: WOg1DfuH
 
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
-
-##### Monitoring System Logs
 
 #### Static Analysis
 
@@ -1354,21 +1353,6 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
-##### Monitoring Console Logs
-
-Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
-
-1. Launch Xcode.
-2. Connect your device to your host computer.
-3. Choose Devices from the window menu.
-4. Click on your connected iOS device in the left section of the Devices window.
-5. Reproduce the problem.
-6. Click the triangle-in-a-box toggle located in the lower left-hand corner of the Devices window's right section to view the console log's contents.
-
-To save the console output to a text file, go to the bottom right and click the circular downward-pointing-arrow icon.
-
-![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
-
 ### Setting Up a Network Testing Environment
 
 #### Basic Network Monitoring/Sniffing
@@ -1376,7 +1360,7 @@ To save the console output to a text file, go to the bottom right and click the 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
 1. Connect your iOS device to your macOS machine via USB.
-1. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
+2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
 
 ```shell
 $ rvictl -s <UDID>
