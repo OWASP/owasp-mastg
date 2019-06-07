@@ -223,22 +223,6 @@ Please also ensure that you install the Darwin CC Tools from the Coolstar reposi
 
 In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
 
-##### Passionfruit
-
-[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
-
-```shell
-$ npm install -g passionfruit
-$ passionfruit
-listening on http://localhost:31337
-```
-
-Once you executed the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
-
-<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
-
-Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
-
 ##### Objection
 
 [Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
@@ -319,6 +303,22 @@ $ ios plist cat <myfile.plist>
 ```
 
 More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
+
+##### Passionfruit
+
+[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+
+```shell
+$ npm install -g passionfruit
+$ passionfruit
+listening on http://localhost:31337
+```
+
+Once you executed the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+
+<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
+
+Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
 
 ##### Radare2
 
@@ -503,8 +503,6 @@ You can also upload files with `file upload <local_file_path>` to the iOS device
 
 #### Obtaining and Extracting Apps
 
---ToDo: <https://github.com/OWASP/owasp-mstg/issues/1246>
-
 ##### Getting the IPA File from an OTA Distribution Link
 
 During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
@@ -574,20 +572,17 @@ In order to retrieve the unencrypted version, we can use tools such as [frida-io
 After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through scp. Run Cluch with the -i flag to list all installed applications:
 
 ```shell
-
 root# ./Clutch -i
 2019-06-04 20:16:57.807 Clutch[2449:440427] command: Prints installed applications
 Installed apps:
 ...
 5:   Telegram Messenger <ph.telegra.Telegraph>
 ...
-
 ```
 
 Once you have the bundle identifier, you can use Clutch to create the IPA:
 
 ```shell
-
 root# ./Clutch -d ph.telegra.Telegraph
 2019-06-04 20:19:28.460 Clutch[2450:440574] command: Dump specified bundleID into .ipa file
 ph.telegra.Telegraph contains watchOS 2 compatible application. It's not possible to dump watchOS 2 apps with Clutch (null) at this moment.
@@ -603,7 +598,6 @@ Zipping SiriIntents.appex
 Zipping Widget.appex
 DONE: /private/var/mobile/Documents/Dumped/ph.telegra.Telegraph-iOS9.0-(Clutch-(null)).ipa
 Finished dumping ph.telegra.Telegraph in 20.5 seconds
-
 ```
 
 After copying the IPA file over to the host system and unzipping it, you can see that the Telegram application can now be parsed by class-dump, indicating that it is no longer encrypted:
@@ -791,10 +785,6 @@ This bypass might not work if the application requires capabilities that are spe
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
 
 #### Information Gathering
-
-##### Installed Apps
-
--- ToDo
 
 ##### App Basic Information
 
@@ -991,15 +981,9 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 #### Dynamic Analysis
 
-##### Using Non-Jailbroken Devices
+Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-###### Injecting Frida into IPA
-
-##### Using Jailbroken Devices
-
-Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
-
-###### Using Burp via USB on a Jailbroken Device
+##### Using Burp via USB on a Jailbroken Device
 
 In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
@@ -1030,7 +1014,7 @@ The last step would be to set the proxy globally on your iOS device.
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-###### Installing Frida
+##### Using Frida
 
 When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
 
@@ -1188,6 +1172,12 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+
+#### Certificate Pinning
+
+Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
+
+For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
 
 ### References
 
