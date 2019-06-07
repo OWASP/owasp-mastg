@@ -935,6 +935,8 @@ Regular           420  None                ...  libswiftCoreFoundation.dylib
 ...
 ```
 
+Please note that this might not be the complete list of third party libraries being used by the app as some can be part of the source code, meaning that they'll be compiled in the app binary and therefore cannot be found as standalone libraries or Frameworks in the `Frameworks` folder.
+
 For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to the chapter "Tampering and Reverse Engineering on iOS" for more information about how to reverse engineer Frameworks.
 
 ###### Other App Resources
