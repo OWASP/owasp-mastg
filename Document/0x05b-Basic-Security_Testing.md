@@ -374,7 +374,9 @@ Please refer to [radare2's official installation instructions](https://github.co
 
 ###### Using radare2
 
-r2 is composed by several utilities. All of them can be called from r2 but you can call directly the binaries you need for specific tasks without loading the entire framework. You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
+r2 is a set of small command-line utilities that can be used together or idenpendently. Utilities like `rabin2`, `rasm2`, `rahash2`, `radiff2`, `rafind2`, `ragg2`, `rarun2`, `rax2`, and of course `radare2`.
+
+You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
 
 ```shell
 # Permissions
