@@ -246,6 +246,14 @@ However, Objection also provides a REPL that allows you to interact with the app
 - Dump the Keychain
 - Read plist files
 
+All these tasks and more can be easily done by using the commands in objection's REPL. For example, you can obtain the classes used in an app, functions of classes or information about the bundles of an app by running:
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list classes
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <ClassName>
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
+```
+
 The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
 
 Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
@@ -1091,16 +1099,6 @@ To save the console output to a text file, go to the bottom right and click the 
 Passionfruit also offers a view of all the NSLog-based application logs. Simply click on the "Console" tab:
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
-
-###### Objection
-
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
-
-```shell
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
-```
 
 ##### Dumping KeyChain Data
 
