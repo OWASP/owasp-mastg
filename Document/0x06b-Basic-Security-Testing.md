@@ -830,7 +830,7 @@ The most relevant items are:
 
 - `Info.plist` contains configuration information for the application, such as its bundle ID, version number, and display name.
 - resources such as images/icons, localized content (`<language>.lproj`), text files, audio files, etc.
-- `*.nib` files store the user interfaces of iOS app
+- `*.nib` files store the user interfaces of iOS app.
 - `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
 - `Frameworks/` contains the app native libraries as .dylib or .framework files.
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
@@ -838,7 +838,7 @@ The most relevant items are:
 
 ###### The Info.plist File
 
-The information property list or `Info.plist` (named by convention) is main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (plug-ins, frameworks, and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
+The information property list or `Info.plist` (named by convention) is main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (app extensions, frameworks and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
 
 The file format might be XML or binary (bplist). You can convert it to XML format with one simple command:
 
@@ -866,7 +866,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 ###### App Binary
 
-iOS app binaries are so-called fat binary, which allows an application to be deployed on all devices (32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
+iOS app binaries are fat binaries (they can be deployed on all devices 32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
 
 Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details.
 
@@ -882,7 +882,7 @@ libswiftCoreData.dylib
 libswiftCoreFoundation.dylib
 ```
 
-or from the device with objection:
+or from the device with objection (as well as per SSH of course):
 
 ```shell
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
@@ -899,15 +899,15 @@ For now this is all information you can get about the Frameworks unless you star
 
 ###### Other App Resources
 
-It is normally worth taking a look at the rest of the resources and files that you may find in the .app folder inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
+It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
 ##### Accessing App Data Directories
 
-Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS to understand which data is stored where. The following illustration represents the application folder structure:
+Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
 
 <img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
 
-On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) as its directory name.
+On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) assigned for its directory names.
 
 In order to easily obtain the installation directory information for user-installed apps you can follow the following methods:
 
@@ -948,7 +948,7 @@ These folders contain information that must be examined closely during applicati
 Bundle directory:
 
 - **AppName.app**
-  - This is the app's bundle contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary.
+  - This is the Application Bundle as seen before in the IPA, it contains essential application data, static content as well as the application's compiled binary.
   - This directory is visible to users, but users can't write to it.
   - Content in this directory is not backed up.
   - The contents of this folder are used to validate the code signature.
@@ -956,7 +956,7 @@ Bundle directory:
 Data directory:
 
 - **Documents/**
-  - Contains all the user-generated data. The application end user initiates the creation of this data..
+  - Contains all the user-generated data. The application end user initiates the creation of this data.
   - Visible to users and users can write to it.
   - Content in this directory is backed up.
   - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
@@ -972,19 +972,19 @@ Data directory:
   - Contains persistent files necessary for running the app.
   - Invisible to users and users can't write to it.
   - Content in this directory is backed up.
-  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`
+  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
 - **Library/Preferences/**
-  - Used for storing properties, objects that can persist even after an application is restarted.
+  - Used for storing properties that can persist even after an application is restarted.
   - Information is saved, unencrypted, inside the application sandbox in a plist file called [BUNDLE_ID].plist.
   - All the key/value pairs stored using `NSUserDefaults` can be found in this file.
 - **tmp/**
-  - Use this directory to write temporary files that need not persist between app launches.
+  - Use this directory to write temporary files that do not need to persist between app launches.
   - Contains non-persistent cached files.
   - Invisible to users.
   - Content in this directory is not backed up.
   - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 
-Let's take a closer look at iGoat-Swift's .app directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
+Let's take a closer look at iGoat-Swift's Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
 ```shell
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
@@ -1030,11 +1030,7 @@ Refer to the "Testing Data Storage" chapter for more information and best practi
 
 MYTODO create.
 
-##### Installed Apps
-
-##### App Basic Information
-
-The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
+MYTODO: move two subsections below to Recommended Tools and.
 
 ###### Mobile Security Framework (MobSF)
 
@@ -1237,11 +1233,11 @@ The last step would be to set the proxy globally on your iOS device:
 
 1. Go to Settings
 2. Wi-Fi
-1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
-1. Configure your Proxy by selecting Manual
-1. Type in 127.0.0.1 as Server
-2. Type in 8080 as Port
+3. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+4. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+5. Configure your Proxy by selecting Manual
+6. Type in 127.0.0.1 as Server
+7. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
