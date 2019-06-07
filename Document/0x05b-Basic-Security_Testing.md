@@ -370,7 +370,7 @@ More infomation on using the Objection REPL can be found on the [Objection Wiki]
 
 ###### Installing radare2
 
-Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). There are also installation instructions if you need to [install radare2 on Android](https://github.com/radare/radare2/blob/master/doc/android.md "Install radare2 on Android") via [Termux](#On-device Shell App "Termux").
+Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions").
 
 ###### Using radare2
 
