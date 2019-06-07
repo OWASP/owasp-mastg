@@ -868,7 +868,7 @@ The most relevant items are:
 
 ###### The Info.plist File
 
-The information property list or `Info.plist` (named by convention) is main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (app extensions, frameworks and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
+The information property list or `Info.plist` (named by convention) is the main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (app extensions, frameworks and apps) are expected to have an `Info.plist` file. You can find all possible keys in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
 
 The file might be formatted in XML or binary (bplist). You can convert it to XML format with one simple command:
 
@@ -1260,12 +1260,12 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 The last step would be to set the proxy globally on your iOS device:
 
 1. Go to Settings
-2. Wi-Fi
-3. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-4. Once connected click on the small blue icon on the right side of the connect Wi-Fi
-5. Configure your Proxy by selecting Manual
-6. Type in 127.0.0.1 as Server
-7. Type in 8080 as Port
+1. Wi-Fi
+1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+1. Configure your Proxy by selecting Manual
+1. Type in 127.0.0.1 as Server
+1. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
