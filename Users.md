@@ -25,7 +25,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 
 ## Standards, frameworks and guidelines recommending the MASVS and MSTG
 
-Currently, the MASVS and MSTG are recommending the MASVS and MSTG:
+ Currently, the MASVS and MSTG are recommended by:
 
 - [Egov standards for India](http://egovstandards.gov.in/notified-standards-0)
 - [Vetting the Security of Mobile Applications: NIST Publishes SP 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1)
