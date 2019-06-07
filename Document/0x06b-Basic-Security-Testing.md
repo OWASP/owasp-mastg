@@ -10,10 +10,10 @@ Although you can use a Linux or Windows machine for testing, you'll find that ma
 
 The following is the most basic iOS app testing setup:
 
-- ideally macOS machine with admin rights
-- Wi-Fi network that permits client-to-client traffic
-- at least one jailbroken iOS device (of the desired iOS version)
-- Burp Suite or other interception proxy tool
+- Ideally macOS machine with admin rights.
+- Wi-Fi network that permits client-to-client traffic.
+- At least one jailbroken iOS device (of the desired iOS version).
+- Burp Suite or other interception proxy tool.
 
 ##### Setting up Xcode and Command Line Tools
 
@@ -72,10 +72,10 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
-- root access to the file system
-- possibility of executing applications that haven't been signed by Apple (which includes many security tools)
-- unrestricted debugging and dynamic analysis
-- access to the Objective-C or Swift runtime
+- Root access to the file system.
+- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
+- Unrestricted debugging and dynamic analysis.
+- Access to the Objective-C or Swift runtime.
 
 ###### Jailbreak Types
 
@@ -223,22 +223,6 @@ Please also ensure that you install the Darwin CC Tools from the Coolstar reposi
 
 In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
 
-##### Passionfruit
-
-[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
-
-```shell
-$ npm install -g passionfruit
-$ passionfruit
-listening on http://localhost:31337
-```
-
-Once you executed the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
-
-<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
-
-Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
-
 ##### Objection
 
 [Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
@@ -320,6 +304,22 @@ $ ios plist cat <myfile.plist>
 
 More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
+##### Passionfruit
+
+[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+
+```shell
+$ npm install -g passionfruit
+$ passionfruit
+listening on http://localhost:31337
+```
+
+When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+
+<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
+
+Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
+
 ##### Radare2
 
 [Radare2](https://github.com/radare/radare2 "Radare2") is a complete framework for reverse-engineering and analyzing binaries. The installation instructions can be found in the GitHub repository. To learn more on radare2 you may want to read the [official radare2 book](https://radare.gitbooks.io/radare2book/content/ "Radare2 book").
@@ -350,7 +350,7 @@ root@192.168.197.234's password:
 iPhone:~ root#
 ```
 
-> press Control + D or type `exit` to quit
+Press Control + D or type `exit` to quit.
 
 When accessing your iOS device via SSH consider the following:
 
@@ -361,16 +361,16 @@ When accessing your iOS device via SSH consider the following:
 
 If you forget your password and want to reset it to the default `alpine`:
 
-- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
-- Find the lines:
+1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
+2. Find the lines:
   
   ```shell
   root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
   mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
   ```
   
-- Change `xxxxxxxxx` to `/smx7MYTQIi2M`
-- Save and exit
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+4. Save and exit
 
 ###### Connect to a Device via SSH over USB
 
@@ -503,8 +503,6 @@ You can also upload files with `file upload <local_file_path>` to the iOS device
 
 #### Obtaining and Extracting Apps
 
---ToDo: <https://github.com/OWASP/owasp-mstg/issues/1246>
-
 ##### Getting the IPA File from an OTA Distribution Link
 
 During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
@@ -574,20 +572,17 @@ In order to retrieve the unencrypted version, we can use tools such as [frida-io
 After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through scp. Run Cluch with the -i flag to list all installed applications:
 
 ```shell
-
 root# ./Clutch -i
 2019-06-04 20:16:57.807 Clutch[2449:440427] command: Prints installed applications
 Installed apps:
 ...
 5:   Telegram Messenger <ph.telegra.Telegraph>
 ...
-
 ```
 
 Once you have the bundle identifier, you can use Clutch to create the IPA:
 
 ```shell
-
 root# ./Clutch -d ph.telegra.Telegraph
 2019-06-04 20:19:28.460 Clutch[2450:440574] command: Dump specified bundleID into .ipa file
 ph.telegra.Telegraph contains watchOS 2 compatible application. It's not possible to dump watchOS 2 apps with Clutch (null) at this moment.
@@ -603,7 +598,6 @@ Zipping SiriIntents.appex
 Zipping Widget.appex
 DONE: /private/var/mobile/Documents/Dumped/ph.telegra.Telegraph-iOS9.0-(Clutch-(null)).ipa
 Finished dumping ph.telegra.Telegraph in 20.5 seconds
-
 ```
 
 After copying the IPA file over to the host system and unzipping it, you can see that the Telegram application can now be parsed by class-dump, indicating that it is no longer encrypted:
@@ -791,10 +785,6 @@ This bypass might not work if the application requires capabilities that are spe
 Possible values for the property [UIDeviceFamily](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11 "UIDeviceFamily property") can be found in the Apple Developer documentation.
 
 #### Information Gathering
-
-##### Installed Apps
-
--- ToDo
 
 ##### App Basic Information
 
@@ -991,15 +981,9 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 #### Dynamic Analysis
 
-##### Using Non-Jailbroken Devices
+Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-###### Injecting Frida into IPA
-
-##### Using Jailbroken Devices
-
-Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
-
-###### Using Burp via USB on a Jailbroken Device
+##### Using Burp via USB on a Jailbroken Device
 
 In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
@@ -1018,19 +1002,19 @@ ssh -R 8080:localhost:8080 root@localhost -p 2222
 
 You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
 
-The last step would be to set the proxy globally on your iOS device.
+The last step would be to set the proxy globally on your iOS device:
 
-- Go to Settings
-- Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-- Once connected click on the small blue icon on the right side of the connect Wi-Fi
-- Configure your Proxy by selecting Manual
-- Type in 127.0.0.1 as Server
-- Type in 8080 as Port
+1. Go to Settings
+1. Wi-Fi
+1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+1. Configure your Proxy by selecting Manual
+1. Type in 127.0.0.1 as Server
+1. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-###### Installing Frida
+##### Using Frida
 
 When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
 
@@ -1188,6 +1172,12 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+
+#### Certificate Pinning
+
+Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
+
+For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
 
 ### References
 
