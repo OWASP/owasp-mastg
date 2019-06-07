@@ -10,10 +10,10 @@ Although you can use a Linux or Windows machine for testing, you'll find that ma
 
 The following is the most basic iOS app testing setup:
 
-- ideally macOS machine with admin rights
-- Wi-Fi network that permits client-to-client traffic
-- at least one jailbroken iOS device (of the desired iOS version)
-- Burp Suite or other interception proxy tool
+- Ideally macOS machine with admin rights.
+- Wi-Fi network that permits client-to-client traffic.
+- At least one jailbroken iOS device (of the desired iOS version).
+- Burp Suite or other interception proxy tool.
 
 ##### Setting up Xcode and Command Line Tools
 
@@ -21,7 +21,7 @@ Xcode is an Integrated Development Environment (IDE) for macOS that contains a s
 
 All development tools are already included within Xcode, but they are not available within your terminal. In order to make them available systemwide, it is recommended to install the Command Line Tools package. This will be handy during testing of iOS apps as some of the tools you will be using later (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
 
-```bash
+```shell
 $ xcode-select --install
 ```
 
@@ -33,7 +33,7 @@ The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS
 
 It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id -l`:
 
-```bash
+```shell
 $ brew install ideviceinstaller
 $ idevice_id -l
 316f01bd160932d2bf2f95f1f142bc29b1c62dbc
@@ -72,10 +72,10 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
-- root access to the file system
-- possibility of executing applications that haven't been signed by Apple (which includes many security tools)
-- unrestricted debugging and dynamic analysis
-- access to the Objective-C or Swift runtime
+- Root access to the file system.
+- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
+- Unrestricted debugging and dynamic analysis.
+- Access to the Objective-C or Swift runtime.
 
 ###### Jailbreak Types
 
@@ -114,44 +114,46 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 #### Recommended Tools - iOS Device
 
-Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package. If your Cydia installation isn't pre-configured with this repository, you can add it by navigating to Sources -> Edit, then clicking "Add" in the top left and entering the following URL <http://apt.thebigboss.org/repofiles/cydia/>.
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to Sources -> Edit, then clicking "Add" in the top left:
 
-Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver: <https://apt.bingner.com/>.
+- <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
+- <http://repo.hackyouriphone.org>: Add the HackYouriPhone repository to get the AppSync package.
+- <https://build.frida.re>: Install Frida by adding the repository to Cydia.
+- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added.
+- <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
+- <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
+- <https://coolstar.org/publicrepo/>: For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools.
 
-You may also want to add the HackYouriPhone repository to get the AppSync package <http://repo.hackyouriphone.org>.
+> In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
 
-You can also easily install Frida by adding the following repository to Cydia <https://build.frida.re>. Similarly, the Needle agent has its own repository as well: <http://mobiletools.mwrinfosecurity.com/cydia/>.
+After adding all the suggested repositories above you can install the following useful packages from Cydia to get started:
 
-When you need to manage your jailbreak on iOS 11, the Chariz repository can help. You can find it at <https://repo.chariz.io>.
-
-The following are some useful packages you can install from Cydia to get started:
-
-- adv-cmds: Advanced command line. Includes finger, fingerd, last, lsvfs, md, and ps.
+- adv-cmds: Advanced command line, which includes tools such as finger, fingerd, last, lsvfs, md, and ps.
 - AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
 - Apt: Advanced Package Tool, which you can use to manage the installed packages similarly to DPKG, but in a more friendly way. This allows you to install, uninstall, upgrade, and downgrade packages from your Cydia repositories. Comes from Elucubratus.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
 - Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
-- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces.
+- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "Class-dump-Z installation steps") in order to get class-dump-z running on your iOS device.
 - Clutch: Used to decrypt an app executable.
 - Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
+- Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
 - cURL: Is a well known http client which you can use to download packages faster to your device. This can be a great help when you need to install different versions of Frida-server on your device for instance.
-- [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa/ "IPA Installer Console"): Tool for installing IPA application packages from the command line. Package name is `com.autopear.installipa`.
-- Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of Frida-server (which forces you to update /downgrade the version on Mac OS X). Running Frida Server installed via APT or Cydia is recommend. Upgrading/downgrading afterwards can be done, by following the instructions at [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
-- Grep: handy tool to filter lines, comes from Elucubratus repo at iOS 12.
-- Gzip: a well known zip utility, comes from Elucubratus repo at iOS 12.
-- Mobile Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- Darwin CC Tools: Install the Darwin CC Tools from the Coolstar repo as a dependency for Needle.
+- IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
+- Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
+- Grep: Handy tool to filter lines.
+- Gzip: A well known zip utility.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
-- Open for iOS 11: tool require to make Needle Agent function, comes from the BigBoss repo.
-- Ipa Installer: a BigBoss tool to install IPA files directly on the device.
-- PreferenceLoader: A Mobile Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
+- Open for iOS 11: Tool required to make Needle Agent function.
+- PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - SOcket CAT: a utility with which you can connect to sockets to read and write messages. This can come in handy if you want to trace the syslog on iOS 12 devices.
 
 Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
 
 Besides Cydia you can also ssh into your iOS device and you can install the packages directly via apt-get, like for example adv-cmds.
 
-```bash
+```shell
 $ apt-get update
 $ apt-get install adv-cmds
 ```
@@ -160,36 +162,66 @@ $ apt-get install adv-cmds
 
 In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
-- [Burp Suite](https://portswigger.net/burp "Burp Suite"): Is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to.
-- [Frida](https://www.frida.re "Frida"): Is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps.
-- [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump"): This tools allows you to pull a decrypted IPA from a jailbroken device.
-- [Ghidra](https://ghidra-sre.org/ "Ghidra"): Is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate.
-- [IDB](https://www.idbtool.com "IDBTool"): Is an open source tool to simplify some common tasks for iOS app security assessments and research.
-- [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"): Install and debug iPhone apps from the command line, without using Xcode. It can be installed via brew on macOS:
+##### Burp Suite
 
-```bash
+[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
+
+##### Frida
+
+[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. The [installation instructions for Frida](https://www.frida.re/docs/installation/ "Installation of Frida") can be found on the official website. Frida is used in several of the following sections and chapters. For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
+
+##### Frida-ios-dump
+
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from a jailbroken device. Please refer to the section "Using Frida-ios-dump" for detailed instructions on how to use it.
+
+##### Ghidra
+
+[Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts.
+
+##### IDB
+
+[IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
+
+Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyse and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+
+Please keep in mind that IDB might be unstable and crash after selecting the app.
+
+##### ios-deploy
+
+With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
+
+```shell
 $ brew install ios-deploy
 ```
 
-- [iFunbox](http://www.i-funbox.com/ "iFunbox"): File and app management tool that supports iOS.
-- [keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper"): A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken.
-- [Mobile-Security-Framework - MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"):  Is an automated, all-in-one mobile application pen-testing framework that supports also iOS. The easiest way of getting MobSF started is via docker.
+For the usage please refer to the section "ios-deploy" below which is part of "Installing Apps".
 
-```bash
+##### iFunBox
+
+[iFunBox](http://www.i-funbox.com/ "iFunBox") is a file and app management tool that supports iOS. You can [download it for Windows and macOS](http://www.i-funbox.com/en_download.html "iFunBox").
+
+It has several features, like app installation, access the app sandbox without jailbreak and others.
+
+##### Keychain-Dumper
+
+[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "Keychain-dumper (Jailbroken)" for detailed instructions on how to use it.
+
+##### Mobile-Security-Framework - MobSF
+
+[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pen-testing framework that also supports iOS. The easiest way of getting MobSF started is via docker.
+
+```shell
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
-- [Needle](https://github.com/mwrlabs/needle "Needle"): Is an all-in-one iOS security assessment framework. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-- [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit"): Is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+##### Needle
 
-```bash
-$ npm install -g passionfruit
-$ passionfruit
-```
+[Needle](https://github.com/mwrlabs/needle "Needle") is an all-in-one iOS security assessment framework, which you can compare to as a "Metasploit" for iOS. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
 
-- [Radare2](https://github.com/radare/radare2 "Radare2"): Radare2 is a complete framework for reverse-engineering and analyzing binaries.
-- [TablePlus](https://tableplus.io/ "TablePlus"): Tool to inspect and analyse database files, like Sqlite and others.
+Please also ensure that you install the Darwin CC Tools from the Coolstar repository, to get Needle to work on iOS 12.
+
+In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
 
 ##### Objection
 
@@ -272,6 +304,30 @@ $ ios plist cat <myfile.plist>
 
 More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
+##### Passionfruit
+
+[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+
+```shell
+$ npm install -g passionfruit
+$ passionfruit
+listening on http://localhost:31337
+```
+
+When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+
+<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
+
+Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
+
+##### Radare2
+
+[Radare2](https://github.com/radare/radare2 "Radare2") is a complete framework for reverse-engineering and analyzing binaries. The installation instructions can be found in the GitHub repository. To learn more on radare2 you may want to read the [official radare2 book](https://radare.gitbooks.io/radare2book/content/ "Radare2 book").
+
+##### TablePlus
+
+[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analysing the content of them with a GUI tool.
+
 ### Basic Testing Operations
 
 #### Accessing the Device Shell
@@ -294,7 +350,7 @@ root@192.168.197.234's password:
 iPhone:~ root#
 ```
 
-> press Control + D or type `exit` to quit
+Press Control + D or type `exit` to quit.
 
 When accessing your iOS device via SSH consider the following:
 
@@ -305,16 +361,16 @@ When accessing your iOS device via SSH consider the following:
 
 If you forget your password and want to reset it to the default `alpine`:
 
-- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
-- Find the lines:
+1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
+2. Find the lines:
   
-  ```bash
+  ```shell
   root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
   mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
   ```
   
-- Change `xxxxxxxxx` to `/smx7MYTQIi2M`
-- Save and exit
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+4. Save and exit
 
 ###### Connect to a Device via SSH over USB
 
@@ -350,13 +406,13 @@ Opening a reverse shell over SSH can be done by running the command `ssh -R <rem
 
 On the on-device shell app run the following command and, when asked, enter the password of the `mstg` user of the host computer:
 
-```bash
+```shell
 ssh -R 2222:localhost:22 mstg@192.168.197.235
 ```
 
 On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
 
-```bash
+```shell
 $ ssh -p 2222 root@localhost
 ```
 
@@ -421,21 +477,21 @@ When navigating through the directories and selecting a file, a TextViewer pop-u
 
 When you are starting objection you will find the prompt within the Bundle directory.
 
-```bash
+```shell
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # pwd print
 Current directory: /var/containers/Bundle/Application/DABF849D-493E-464C-B66B-B8B6C53A4E76/org.owasp.MSTG.app
 ```
 
 Use the `env` command to get the directories of the app and navigate to the Documents directory.
 
-```bash
+```shell
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
 /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
 ```
 
 With the command `file download <filename>` you can download a file from the iOS device to your workstation and can analyze it afterwards.
 
-```bash
+```shell
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # file download .com.apple.mobile_container_manager.metadata.plist
 Downloading /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 Streaming file from device...
@@ -446,8 +502,6 @@ Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4F
 You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case file an issue in the [objection GitHub repo](https://github.com/sensepost/objection/issues "Objection Issues").
 
 #### Obtaining and Extracting Apps
-
---ToDo: <https://github.com/OWASP/owasp-mstg/issues/1246>
 
 ##### Getting the IPA File from an OTA Distribution Link
 
@@ -518,20 +572,17 @@ In order to retrieve the unencrypted version, we can use tools such as [frida-io
 After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through scp. Run Cluch with the -i flag to list all installed applications:
 
 ```shell
-
 root# ./Clutch -i
 2019-06-04 20:16:57.807 Clutch[2449:440427] command: Prints installed applications
 Installed apps:
 ...
 5:   Telegram Messenger <ph.telegra.Telegraph>
 ...
-
 ```
 
 Once you have the bundle identifier, you can use Clutch to create the IPA:
 
 ```shell
-
 root# ./Clutch -d ph.telegra.Telegraph
 2019-06-04 20:19:28.460 Clutch[2450:440574] command: Dump specified bundleID into .ipa file
 ph.telegra.Telegraph contains watchOS 2 compatible application. It's not possible to dump watchOS 2 apps with Clutch (null) at this moment.
@@ -547,7 +598,6 @@ Zipping SiriIntents.appex
 Zipping Widget.appex
 DONE: /private/var/mobile/Documents/Dumped/ph.telegra.Telegraph-iOS9.0-(Clutch-(null)).ipa
 Finished dumping ph.telegra.Telegraph in 20.5 seconds
-
 ```
 
 After copying the IPA file over to the host system and unzipping it, you can see that the Telegram application can now be parsed by class-dump, indicating that it is no longer encrypted:
@@ -580,7 +630,7 @@ Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](http
 
 ###### Using Frida-ios-dump
 
-Frida-ios-dump requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
 Note: before we get started, please note that the Frida-ios-dump tool is not always compatible with the latest version of Frida. Therefore: it might well be that you have to install an older version of Frida on your jailbroken device.
 First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the username and password to the ones you use. Now you can safely use the tool to enumerate the apps installed:
 
@@ -589,26 +639,38 @@ $ ./dump.py -l
  PID  Name             Identifier
 ----  ---------------  -------------------------------------
  860  Cydia            com.saurik.Cydia
-1130  Instellingen     com.apple.Preferences
+1130  Settings         com.apple.Preferences
  685  Mail             com.apple.mobilemail
  834  Telegram         ph.telegra.Telegraph
-   -  Aandelen         com.apple.stocks
+   -  Stocks           com.apple.stocks
    ...
 ```
 
-and you can dump the binary you select:
+and you can dump one of the listed binaries:
 
 ```shell
-$ python dump.py com.highaltitudehacks.DVIAswiftv2
-/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
+$ python dump.py ph.telegra.Telegraph
+/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
   m.add_string(self.Q_C.public_numbers().encode_point())
-/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
+/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
   self.curve, Q_S_bytes
-/usr/local/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
+/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
   hm.add_string(self.Q_C.public_numbers().encode_point())
 Start the target app ph.telegra.Telegraph
-Dumping Telegram to /var/folders/0b/5j2l_v0x47j2k6dwqw5c2d040000gn/T
+Dumping Telegram to /var/folders/qw/gz47_8_n6xx1c_lwq7pq5k040000gn/T
+[frida-ios-dump]: HockeySDK.framework has been loaded.
+[frida-ios-dump]: Load Postbox.framework success.
+[frida-ios-dump]: libswiftContacts.dylib has been dlopen.
+...
+start dump /private/var/containers/Bundle/Application/14002D30-B113-4FDF-BD25-1BF740383149/Telegram.app/Frameworks/libswiftsimd.dylib
+libswiftsimd.dylib.fid: 100%|██████████| 343k/343k [00:00<00:00, 1.54MB/s]
+start dump /private/var/containers/Bundle/Application/14002D30-B113-4FDF-BD25-1BF740383149/Telegram.app/Frameworks/libswiftCoreData.dylib
+libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00:00<00:00, 477kB/s]
+5.m4a: 80.9MB [00:14, 5.85MB/s]
+0.00B [00:00, ?B/s]Generating "Telegram.ipa"
 ```
+
+After this, the Telegram.ipa file will be created in your current directory. You can validate the successfulness of the dump by removing the application and reinstalling it through io-deploy using `ios-deploy -b Telegram.ipa`. Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 #### Installing Apps
 
@@ -628,13 +690,13 @@ On Linux and also macOS, you can alternatively use [libimobiledevice](https://ww
 
 The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
 
-```bash
+```shell
 $ brew install libimobiledevice
 ```
 
 After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
 
-```bash
+```shell
 # The following command will show detailed information about the iOS device connected via USB.
 $ ideviceinfo
 # The following command will install the IPA to your iOS device.
@@ -672,20 +734,20 @@ $ ipainstaller App_name.ipa
 
 On macOS one more tool can be used on the command line called [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), to allow installation and debugging of iOS apps from the command line. It can be installed via brew:
 
-```bash
+```shell
 $ brew install ios-deploy
 ```
 
 After the installation, go into the directory of the IPA you want to install and unzip it as ios-deploy installs an app by using the bundle.
 
-```bash
+```shell
 $ unzip Name.ipa
 $ ios-deploy --bundle 'Payload/Name.app' -W -d -v
 ```
 
 After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the application again.
 
-```bash
+```shell
 $ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
 ```
 
@@ -724,13 +786,11 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
-##### Installed Apps
-
 ##### App Basic Information
 
 The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
 
-####### Mobile Security Framework (MobSF)
+###### Mobile Security Framework (MobSF)
 
 MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
 
@@ -744,7 +804,7 @@ After MobSF is done with its analysis, you will receive a one-page overview of a
 
 There is much more information provided that you should explore, that might be helpful for you.
 
-####### Objection
+###### Objection
 
 Once you have installed the app, there is further information to explore, where tools like objection come in handy. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
 
@@ -763,7 +823,7 @@ LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE
 
 The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
 
-```bash
+```shell
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
 OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
@@ -771,17 +831,100 @@ OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
 
 ###### Passionfruit
 
--- ToDo Passionfruit: <https://github.com/OWASP/owasp-mstg/issues/1249>
+With Passionfruit it's possible to explore different kinds of information concerning an IPA. Once you selected the IPA you have access to the following information:
+
+- Information about the binary
+- Folders used by the application
+- Overview of the Info.plist
+- UI Dump of the app screen shown on the iOS device
+- Modules that are loaded
+- Dumped classnames
+
+Passionfruit offers a wide range of information including access to NSLog.
 
 ##### Dumping KeyChain Data
 
-###### Objection
+Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+###### Objection (Jailbroken / non-Jailbroken)
 
-###### Passionfruit (non-Jailbroken)
+The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1250>
+```shell
+$ objection --gadget="iGoat-Swift" explore
+... [usb] # ios keychain dump
+...
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Save the output by adding `--json keychain.json` to this command
+Dumping the iOS keychain...
+Created                    Accessible                      ACL    Type      Account              Service                     Data
+-------------------------  ------------------------------  -----  --------  -------------------  --------------------------  ----------------------------------------------------------------------
+2019-06-06 10:53:09 +0000  WhenUnlocked                    None   Password  keychainValue        com.highaltitudehacks.dvia  mypassword123
+2019-06-06 10:53:30 +0000  WhenUnlockedThisDeviceOnly      None   Password  SCAPILazyVector      com.toyopagroup.picaboo     (failed to decode)
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  fideliusDeviceGraph  com.toyopagroup.picaboo     (failed to decode)
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  SCDeviceTokenKey2    com.toyopagroup.picaboo     00001:FKsDMgVISiavdm70v9Fhv5z+pZfBTTN7xkwSwNvVr2IhVBqLsC7QBhsEjKMxrEjh
+2019-06-06 10:53:30 +0000  AfterFirstUnlockThisDeviceOnly  None   Password  SCDeviceTokenValue2  com.toyopagroup.picaboo     CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # quit  
+```
+
+Note that currently, the latest versions of frida-server and objection do not correctly decode all keychain data. Different combinations can be tried to increase compatibility. For example, the previous printout was created with `frida-tools==1.3.0`, `frida==12.4.8` and `objection==1.5.0`.
+
+Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
+
+###### Needle (Jailbroken)
+
+Needle can list the content of the keychain through the `storage/data/keychain_dump_frida` module. However, getting Needle up and running can be difficult. First, make sure that `open`, and the `darwin cc tools` are installed. The installation procedure for these tools is described in "Recommended Tools - iOS Device".
+
+Before dumping the keychain, open Needle and use the `device/dependency_installer` plugin to install any other missing dependencies. This module should return without any errors. If an error did pop up, be sure to fix this error before continuing.
+
+Finally, select the `storage/data/keychain_dump_frida` module and run it:
+
+```shell
+[needle][keychain_dump_frida] > use storage/data/keychain_dump_frida
+[needle][keychain_dump_frida] > run
+[*] Checking connection with device...
+[+] Already connected to: 192.168.43.91
+[+] Target app: OWASP.iGoat-Swift
+[*] Retrieving app's metadata...
+[*] Pulling: /private/var/containers/Bundle/Application/92E7C59C-2F0B-47C5-94B7-DCF506DBEB34/iGoat-Swift.app/Info.plist -> /Users/razr/.needle/tmp/plist
+[*] Setting up local port forwarding to enable communications with the Frida server...
+[*] Launching the app...
+[*] Attaching to process: 4448
+[*] Parsing payload
+[*] Keychain Items:
+[+] {
+    "AccessControls": "",
+    "Account": "keychainValue",
+    "CreationTime": "2019-06-06 10:53:09 +0000",
+    "Data": " (UTF8 String: 'mypassword123')",
+    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
+    "ModifiedTime": "2019-06-06 16:53:38 +0000",
+    "Protection": "kSecAttrAccessibleWhenUnlocked",
+    "Service": "com.highaltitudehacks.dvia",
+    "kSecClass": "kSecClassGenericPassword"
+}
+...
+[+] {
+    "AccessControls": "",
+    "Account": "<53434465 76696365 546f6b65 6e56616c 756532>",
+    "CreationTime": "2019-06-06 10:53:30 +0000",
+    "Data": " (UTF8 String: 'CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=')",
+    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
+    "ModifiedTime": "2019-06-06 10:53:30 +0000",
+    "Protection": "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly",
+    "Service": "com.toyopagroup.picaboo",
+    "kSecClass": "kSecClassGenericPassword"
+}
+[*] Saving output to file: /Users/razr/.needle/output/frida_script_dump_keychain.txt
+```
+
+Note that currently only the `keychain_dump_frida` module works on iOS 12, but not the `keychain_dump` module.
+
+###### Passionfruit (Jailbroken / non-Jailbroken)
+
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keychain information.
+
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 
 ###### Keychain-dumper (Jailbroken)
 
@@ -838,56 +981,42 @@ Don't shy away from using automated scanners for your analysis - they help you p
 
 #### Dynamic Analysis
 
-##### Using Non-Jailbroken Devices
+Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-###### Injecting Frida into IPA
-
-##### Using Jailbroken Devices
-
-Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches that we will cover later, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
-
-###### Using Burp via USB on a Jailbroken Device
+##### Using Burp via USB on a Jailbroken Device
 
 In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
-```bash
+```shell
 $ iproxy 2222 22
 waiting for connection
 ```
 
 The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
 
-```bash
+```shell
 ssh -R 8080:localhost:8080 root@localhost -p 2222
 ```
 
 You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
 
-The last step would be to set the proxy globally on your iOS device.
+The last step would be to set the proxy globally on your iOS device:
 
-- Go to Settings
-- Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-- Once connected click on the small blue icon on the right side of the connect Wi-Fi
-- Configure your Proxy by selecting Manual
-- Type in 127.0.0.1 as Server
-- Type in 8080 as Port
+1. Go to Settings
+1. Wi-Fi
+1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+1. Configure your Proxy by selecting Manual
+1. Type in 127.0.0.1 as Server
+1. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-###### Installing Frida
+##### Using Frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1251>
-
-[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
-
-If you haven't already done so, you need to install the Frida Python package on your host machine:
-
-```shell
-$ pip install frida-tools
-```
+When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
 
@@ -953,10 +1082,8 @@ The method is called with a single argument of type `NSURL`. According to the [A
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
 ```python
-
 import sys
 import frida
-
 
 // JavaScript to be injected
 frida_code = """
@@ -992,7 +1119,6 @@ script.on('message', message_callback)
 script.load()
 
 sys.stdin.read()
-
 ```
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
@@ -1018,8 +1144,6 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ### Setting Up a Network Testing Environment
 
--- ToDo <https://github.com/OWASP/owasp-mstg/issues/1271>
-
 #### Basic Network Monitoring/Sniffing
 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
@@ -1027,7 +1151,7 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 1. Connect your iOS device to your macOS machine via USB.
 1. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
 
-```bash
+```shell
 $ rvictl -s <UDID>
 Starting device <UDID> [SUCCEEDED] with interface rvi0
 ```
@@ -1049,7 +1173,11 @@ Setting up Burp to proxy your traffic is pretty straightforward. We assume that 
 
 PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
-#### Potential Obstacles
+#### Certificate Pinning
+
+Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
+
+For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
 
 ### References
 

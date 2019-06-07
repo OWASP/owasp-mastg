@@ -122,7 +122,7 @@ List of devices attached
 emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
 
-adb provides other useful commands such as `adb shell` to start an interative shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
+adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
 
 ```shell
 $ adb forward tcp:<host port> tcp:<device port>
@@ -139,6 +139,49 @@ config
 ```
 
 You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
+
+##### apktool
+
+[apktool](https://ibotpeaches.github.io/Apktool/) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
+
+When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+
+```shell
+$ apktool d base.apk
+I: Using Apktool 2.1.0 on base.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Copying assets and libs...
+I: Copying unknown files...
+I: Copying original files...
+$ cd base
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
+
+The unpacked files are:
+
+- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- apktool.yml: file containing information about the output of apktool
+- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
+- res: directory containing the app’s resources
+- smali: directory containing the disassembled Dalvik bytecode.
+
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "Exploring the App Package" later on this chapter and section "Repackaging" in the chapter "Tampering and Reverse Engineering on Android" for more information and practical examples.
 
 ##### Frida
 
@@ -693,10 +736,10 @@ $ frida-ps -U | grep -i owasp
 
 $ objection -g sg.vp.owasp_mobile.omtg_android explore
 
-...[usb] # cd ..
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # cd ..
 /data/user/0/sg.vp.owasp_mobile.omtg_android
 
-...[usb] # ls
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
 Type       ...  Name
 ---------  ...  -------------------
 Directory  ...  cache
@@ -709,7 +752,6 @@ Directory  ...  app_ACRA-unapproved
 Directory  ...  databases
 
 Readable: True  Writable: True
-
 ```
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
@@ -754,15 +796,44 @@ Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remot
 
 #### Obtaining and Extracting Apps
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1238>
+There are several ways of extracting apk files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
 
-##### App Store
+##### Alternative App Stores
 
-##### Recovering the App Package from the Device
+One of the easiest options is to download the apk from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not offical and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host APKs and are not known for modifying apps and even list SHA-1 and SHA-256 checksums of the apps are:
 
-###### From Rooted Devices
+- [APKMirror](https://apkmirror.com "APKMirror")
+- [APKPure](https://apkpure.com "APKPure")
 
-###### From Non-Rooted Devices
+Beware that you do not have control over these sites and you cannot guarantee what they do in the future. Only use them if it's your only option left.
+
+##### Extracting the App Package from the Device
+
+Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party.
+
+To obtain applications from a non-rooted device, you could use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
+
+```shell
+$ adb shell pm list packages
+```
+
+Once you have located the package name of the application, you need the full path where it is stored on the system to download it.
+
+```shell
+$ adb shell pm path <package name>
+```
+
+With the full path to the apk, you can now simply use `adb pull` to extract the apk.
+
+```shell
+$ adb pull <apk path>
+```
+
+The apk will be downloaded in your working directory.
+
+There are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted apk via your prefered method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
+
+Both of the methods mentioned previously do not require root, hence, they can be used on rooted and non-rooted devices.
 
 #### Installing Apps
 
@@ -776,23 +847,240 @@ Note that if you have the original source code and use Android Studio, you do no
 
 #### Information Gathering
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1239>
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advanced techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
-##### Installed Apps
+- Which files are included in the package?
+- Which native libraries does the app use?
+- Which app components does the app define? Any services or content providers?
+- Is the app debuggable?
+- Does the app contain a network security policy?
+- Does the app create any new files when being installed?
 
-##### App Basic Information
+##### Listing Installed Apps
 
-###### Sandbox
+When targeting apps that are installed on the device, you'll first have to figure out the correct package name of the application you want to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager) or by using `frida-ps`:
 
-###### Permissions
+```bash
+$ adb shell pm list packages
+package:sg.vantagepoint.helloworldjni
+package:eu.chainfire.supersu
+package:org.teamsik.apps.hackingchallenge.easy
+package:org.teamsik.apps.hackingchallenge.hard
+package:sg.vp.owasp_mobile.omtg_android
+```
 
-###### Native Libs
+You can include flags to show only third party apps (`-3`) and the location of their APK file (`-f`), which you can use afterwards to download it via `adb pull`:
 
-###### ... other
+```bash
+$ adb shell pm list packages -3 -f
+package:/data/app/sg.vantagepoint.helloworldjni-1/base.apk=sg.vantagepoint.helloworldjni
+package:/data/app/eu.chainfire.supersu-1/base.apk=eu.chainfire.supersu
+package:/data/app/org.teamsik.apps.hackingchallenge.easy-1/base.apk=org.teamsik.apps.hackingchallenge.easy
+package:/data/app/org.teamsik.apps.hackingchallenge.hard-1/base.apk=org.teamsik.apps.hackingchallenge.hard
+package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk=sg.vp.owasp_mobile.omtg_android
+```
 
-##### Accessing App Data
+This is the same as running `adb shell pm path <app_package_id>` on an app package ID:
+
+```bash
+$ adb shell pm path sg.vp.owasp_mobile.omtg_android
+package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
+```
+
+Use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
+
+```bash
+$ frida-ps -Uai
+  PID  Name                                      Identifier
+-----  ----------------------------------------  ---------------------------------------
+  766  Android System                            android
+21228  Attack me if u can                        sg.vp.owasp_mobile.omtg_android
+ 4281  Termux                                    com.termux
+    -  Uncrackable1                              sg.vantagepoint.uncrackable1
+    -  drozer Agent                              com.mwr.dz
+```
+
+Note that this also shows the PID of the apps that are running at the moment. Take a note of the "Identifier" and the PID if any as you'll need them afterwards.
+
+##### Exploring the App Package
+
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
+
+APK files are actually ZIP files that can be unpacked using a standard unarchiver:
+
+```shell
+$ unzip base.apk
+$ ls -lah
+-rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
+drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
+drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
+-rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
+drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
+drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
+-rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+```
+
+The following files are unpacked:
+
+- AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
+- META-INF: contains the app's metadata
+  - MANIFEST.MF: stores hashes of the app resources
+  - CERT.RSA: the app's certificate(s)
+  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
+- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK.
+- res: directory containing resources that haven't been compiled into resources.arsc
+- resources.arsc: file containing precompiled resources, such as XML files for the layout
+
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
+
+```shell
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
+
+The main source of information is the Android Manifest. The following sections cover the basic information that you can get from an app by using its unpacked app package and the decoded AndroidManifest.xml.
+
+###### The Android Manifest
+
+As introduced in the previous chapter, the manifest file includes a lot of interesting information such as the package name, the permissions, app components, etc.
+
+Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
+
+- App permissions: `permission` (see "Android Platform APIs")
+- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
+- App components: `activity`, `service`, `provider`, `receiver` (see "Android Platform APIs" and "Data Storage on Android")
+- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+
+Please refer to the mentioned chapters to learn more about how to test each of these points.
+
+###### App Binary
+
+As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
+
+Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
+
+###### Native Libraries
+
+You can inspect the `lib` folder in the APK:
+
+```shell
+$ ls -1 lib/armeabi/
+libdatabase_sqlcipher.so
+libnative.so
+libsqlcipher_android.so
+libstlport_shared.so
+```
+
+or from the device with objection:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # ls lib
+Type    ...  Name
+------  ...  ------------------------
+File    ...  libnative.so
+File    ...  libdatabase_sqlcipher.so
+File    ...  libstlport_shared.so
+File    ...  libsqlcipher_android.so
+```
+
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
+
+###### Other App Resources
+
+It is normally worth taking a look at the rest of the resources and files that you may find in the root folder of the APK as some times they contain additional goodies like key stores, encrypted databases, certificates, etc.
+
+##### Accessing App Data Directories
+
+Once you have installed the app, there is further information to explore, where tools like objection come in handy.
+
+When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of the app.
+
+```shell
+$ objection -g sg.vp.owasp_mobile.omtg_android explore
+
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # env
+
+Name                    Path
+----------------------  ---------------------------------------------------------------------------
+cacheDirectory          /data/user/0/sg.vp.owasp_mobile.omtg_android/cache
+codeCacheDirectory      /data/user/0/sg.vp.owasp_mobile.omtg_android/code_cache
+externalCacheDirectory  /storage/emulated/0/Android/data/sg.vp.owasp_mobile.omtg_android/cache
+filesDirectory          /data/user/0/sg.vp.owasp_mobile.omtg_android/files
+obbDir                  /storage/emulated/0/Android/obb/sg.vp.owasp_mobile.omtg_android
+packageCodePath         /data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
+```
+
+Among this information we find:
+
+- The internal data directory (aka. sandbox directory) which is at `/data/data/[package-name]` or `/data/user/0/[package-name]`
+- The external data directory at `/storage/emulated/0/Android/data/[package-name]` or `/sdcard/Android/data/[package-name]`
+- The path to the app package in `/data/app/`
+
+The internal data directory is used by the app to store data created during runtime and has the following basic structure:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
+Type       ...  Name
+---------  ...  -------------------
+Directory  ...  cache
+Directory  ...  code_cache
+Directory  ...  lib
+Directory  ...  shared_prefs
+Directory  ...  files
+Directory  ...  databases
+
+Readable: True  Writable: True
+```
+
+Each folder has its own purpose:
+
+- **cache**: This location is used for data caching. For example, the WebView cache is found in this directory.
+- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Android 5 (API level 21) or later, the system will delete any files stored in this location when the app or the entire platform is upgraded.
+- **lib**: This folder stores native libraries written in C/C++. These libraries can have one of several file extensions, including .so and .dll (x86 support). This folder contains subdirectories for the platforms the app has native libraries for, including
+  - armeabi: compiled code for all ARM-based processors
+  - armeabi-v7a: compiled code for all ARM-based processors, version 7 and above only
+  - arm64-v8a: compiled code for all 64-bit ARM-based processors, version 8 and above based only
+  - x86: compiled code for x86 processors only
+  - x86_64: compiled code for x86_64 processors only
+  - mips: compiled code for MIPS processors
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs](https://developer.android.com/training/basics/data-storage/shared-preferences.html "SharedPreferences APIs").
+- **files**: This folder stores regular files created by the app.
+- **databases**: This folder stores SQLite database files generated by the app at runtime, e.g., user data files.
+
+However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
+
+Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
+
+On Android you can easily inspect the log of system messages by using [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:
+
+- Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
+
+![Log output in Android Studio](Images/Chapters/0x05b/log_output_Android_Studio.png)
+
+- You can execute Logcat with adb to store the log output permanently:
+
+```shell
+$ adb logcat > logcat.log
+```
+
+With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for ```ps``` to be able to get its PID.
+
+```shell
+$ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
+```
 
 #### Static Analysis
 
@@ -1207,7 +1495,7 @@ Alternatively, you can follow the following steps manually in order to achieve t
     chmod 644 <hash>.0
     ```
 
-By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, of course unless the application uses SSL pinning.
+By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, unless of course the application uses SSL pinning.
 
 #### Potential Obstacles
 
@@ -1321,47 +1609,9 @@ setTimeout(function(){
 
 ##### Certificate Pinning
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1241>
+Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
 
-Different ways of implementing certificate pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning".
-
-If the app implements certificate pinning, X.509 certificates provided by an intercepting proxy will be declined and the app will refuse to make any requests through the proxy. To perform an efficient white box test, use a debug build with deactivated certificate pinning.
-
-There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
-
-- Frida: [Objection](https://github.com/sensepost/objection "Objection")
-- Xposed: [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready"), [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning")
-- Cydia Substrate: [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller")
-
-For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered for these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
-
-###### Bypass Custom Certificate Pinning Statically
-
-Somewhere in the application, both the endpoint and the certificate (or its hash) must be defined. After decompiling the application, you can search for:
-
-- Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
-- Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
-
-If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
-
-After making these modifications, repackage the application using apktool and install it on your device.
-
-###### Bypass Custom Certificate Pinning Dynamically
-
-Bypassing the pinning logic dynamically makes it more convenient as there is no need to bypass any integrity checks and it's much faster to perform trial & error attempts.
-
-Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
-
-As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the CertificatePinner.Builder class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways:
-
-- Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
-- Search for the method signature in the SMALI code
-
-For the Builder.add method, you can find the possible methods by running the following grep command: `grep -ri java/lang/String;\[Ljava/lang/String;)L ./`
-
-This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
-
-Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
+For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
 
 ### References
 
