@@ -314,7 +314,7 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 ##### Passionfruit
 
-[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard app data via Vue.js-based GUI. It can be installed with npm.
 
 ```shell
 $ npm install -g passionfruit
@@ -322,7 +322,7 @@ $ passionfruit
 listening on http://localhost:31337
 ```
 
-When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon you will get an overview of all installed apps:
 
 <img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
 
@@ -451,6 +451,8 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 After starting Passionfruit you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory">
+
 When navigating through the directories and selecting a file, a TextViewer pop-up will show up that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, including:
 
 - Text viewer
@@ -459,7 +461,7 @@ When navigating through the directories and selecting a file, a TextViewer pop-u
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/Passionfruit_files.png" alt="Passiofruit File Options">
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passiofruit File Options">
 
 ##### Objection
 
@@ -801,6 +803,10 @@ $ frida-ps -Uai
 
 It also shows which of them are currently running. Take a note of the "Identifier" (bundle identifier) and the PID if any as you'll need them afterwards.
 
+You can also directly open passionfruit and after selecting your iOS device you'll get the list of installed apps.
+
+<img src="Images/Chapters/0x06b/passionfruit_installed_apps.png" alt="Passionfruit Installed Apps" width="400">
+
 ##### Exploring the App Package
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
@@ -857,7 +863,7 @@ The most relevant items are:
 
 The information property list or `Info.plist` (named by convention) is main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (app extensions, frameworks and apps) are expected to have an `Info.plist` file. You can find all possible key in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
 
-The file format might be XML or binary (bplist). You can convert it to XML format with one simple command:
+The file might be formatted in XML or binary (bplist). You can convert it to XML format with one simple command:
 
 - On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
 
@@ -889,7 +895,17 @@ Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details
 
 ###### Native Libraries
 
-iOS native libraries are known as Frameworks. You can inspect them by listing the `Frameworks` folder in the IPA:
+iOS native libraries are known as Frameworks.
+
+You can easily visualize them from Passionfruit by clicking on "Modules":
+
+<img src="Images/Chapters/0x06b/passionfruit_modules.png" alt="Passionfruit Modules">
+
+And get a more detailed view including their imports/exports:
+
+<img src="Images/Chapters/0x06b/passionfruit_modules_detail.png" alt="Passionfruit Modules Detail">
+
+They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
 
 ```shell
 $ ls -1 Frameworks/
@@ -917,6 +933,8 @@ For now this is all information you can get about the Frameworks unless you star
 ###### Other App Resources
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
+
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View">
 
 ##### Accessing App Data Directories
 
@@ -1041,6 +1059,18 @@ Regular           420  None                ...  Info.plist
 Regular           493  None                ...  iGoat-Swift
 ```
 
+You can also visualize the Bundle directory from Passionfruit by clicking on "Files" -> "App Bundle":
+
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View">
+
+Including the `Info.plist` file:
+
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View">
+
+As well as the Data directory in "Files" -> "Data":
+
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View">
+
 Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
@@ -1058,7 +1088,9 @@ To save the console output to a text file, go to the bottom right and click the 
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
 
-MYTODO: move two subsections below to Recommended Tools and.
+Passionfruit also offers a view of all the NSLog-based application logs. Simply click on the "Console" tab:
+
+<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
 
 ###### Objection
 
