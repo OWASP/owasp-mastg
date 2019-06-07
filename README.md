@@ -9,6 +9,8 @@
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 You can also read the MSTG on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "MSTG @ Gitbook") or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book").
 
+The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users document listing some of the adopters](Users.md).
+
 ## Table-of-Contents
 
 ### Introduction
