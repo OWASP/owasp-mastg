@@ -10,9 +10,9 @@ Although you can use a Linux or Windows machine for testing, you'll find that ma
 
 The following is the most basic iOS app testing setup:
 
-- ideally macOS machine with admin rights
+- Ideally macOS machine with admin rights
 - Wi-Fi network that permits client-to-client traffic
-- at least one jailbroken iOS device (of the desired iOS version)
+- At least one jailbroken iOS device (of the desired iOS version)
 - Burp Suite or other interception proxy tool
 
 ##### Setting up Xcode and Command Line Tools
@@ -72,10 +72,10 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
-- root access to the file system
-- possibility of executing applications that haven't been signed by Apple (which includes many security tools)
-- unrestricted debugging and dynamic analysis
-- access to the Objective-C or Swift runtime
+- Root access to the file system
+- Possibility of executing applications that haven't been signed by Apple (which includes many security tools)
+- Unrestricted debugging and dynamic analysis
+- Access to the Objective-C or Swift runtime
 
 ###### Jailbreak Types
 
@@ -350,7 +350,7 @@ root@192.168.197.234's password:
 iPhone:~ root#
 ```
 
-> press Control + D or type `exit` to quit
+Press Control + D or type `exit` to quit.
 
 When accessing your iOS device via SSH consider the following:
 
@@ -361,16 +361,16 @@ When accessing your iOS device via SSH consider the following:
 
 If you forget your password and want to reset it to the default `alpine`:
 
-- Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
-- Find the lines:
+1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
+2. Find the lines:
   
   ```shell
   root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
   mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
   ```
   
-- Change `xxxxxxxxx` to `/smx7MYTQIi2M`
-- Save and exit
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+4. Save and exit
 
 ###### Connect to a Device via SSH over USB
 
@@ -1002,15 +1002,15 @@ ssh -R 8080:localhost:8080 root@localhost -p 2222
 
 You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
 
-The last step would be to set the proxy globally on your iOS device.
+The last step would be to set the proxy globally on your iOS device:
 
-- Go to Settings
-- Wi-Fi
-- Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-- Once connected click on the small blue icon on the right side of the connect Wi-Fi
-- Configure your Proxy by selecting Manual
-- Type in 127.0.0.1 as Server
-- Type in 8080 as Port
+1. Go to Settings
+1. Wi-Fi
+1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+1. Configure your Proxy by selecting Manual
+1. Type in 127.0.0.1 as Server
+1. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
