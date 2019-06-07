@@ -66,8 +66,6 @@ Although there exist several free android emulators, we recommend using AVD as i
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
-- Frida
-- Xposed
 - MobSF
 - Nathan (not updated since 2016)
 
@@ -1647,3 +1645,5 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 - Wireshark - <https://www.wireshark.org/>
+- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Nathan - <https://github.com/mseclab/nathan>
