@@ -860,12 +860,11 @@ iGoat-Swift
 The most relevant items are:
 
 - `Info.plist` contains configuration information for the application, such as its bundle ID, version number, and display name.
-- resources such as images/icons, localized content (`<language>.lproj`), text files, audio files, etc.
-- `*.nib` files store the user interfaces of iOS app.
 - `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
 - `Frameworks/` contains the app native libraries as .dylib or .framework files.
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
 - `iGoat-Swift` is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
+- Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
 
 ###### The Info.plist File
 
