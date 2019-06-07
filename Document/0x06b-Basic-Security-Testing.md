@@ -10,10 +10,10 @@ Although you can use a Linux or Windows machine for testing, you'll find that ma
 
 The following is the most basic iOS app testing setup:
 
-- Ideally macOS machine with admin rights
-- Wi-Fi network that permits client-to-client traffic
-- At least one jailbroken iOS device (of the desired iOS version)
-- Burp Suite or other interception proxy tool
+- Ideally macOS machine with admin rights.
+- Wi-Fi network that permits client-to-client traffic.
+- At least one jailbroken iOS device (of the desired iOS version).
+- Burp Suite or other interception proxy tool.
 
 ##### Setting up Xcode and Command Line Tools
 
@@ -72,10 +72,10 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
 
-- Root access to the file system
-- Possibility of executing applications that haven't been signed by Apple (which includes many security tools)
-- Unrestricted debugging and dynamic analysis
-- Access to the Objective-C or Swift runtime
+- Root access to the file system.
+- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
+- Unrestricted debugging and dynamic analysis.
+- Access to the Objective-C or Swift runtime.
 
 ###### Jailbreak Types
 
@@ -314,7 +314,7 @@ $ passionfruit
 listening on http://localhost:31337
 ```
 
-Once you executed the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
 
 <img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
 
