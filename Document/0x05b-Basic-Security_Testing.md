@@ -62,7 +62,7 @@ There are several downsides to using an emulator. You may not be able to test an
 
 Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
 
-Although there exist several free android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
+Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
