@@ -107,7 +107,7 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 #### Recommended Tools
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1227>
+This section describes some of the most popular and useful tools for testing security of Android applications. Following below is the aforementioned list of tools, each tool with an introduction, references to the installation instructions, example use cases and the reference to the full list of commands.
 
 ##### adb
 
