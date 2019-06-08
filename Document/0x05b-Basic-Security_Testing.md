@@ -374,7 +374,7 @@ The patched application then needs to be installed using adb, as explained in "B
 
 ###### Using Objection
 
-Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
 ```shell
 # Connecting to a patched APK
@@ -405,7 +405,7 @@ $ android root disable
 
 ```
 
-More infomation on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
+More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ##### radare2
 
@@ -417,20 +417,20 @@ Please refer to [radare2's official installation instructions](https://github.co
 
 ###### Using radare2
 
-r2 is a set of small command-line utilities that can be used together or idenpendently. Utilities like `rabin2`, `rasm2`, `rahash2`, `radiff2`, `rafind2`, `ragg2`, `rarun2`, `rax2`, and of course `radare2`.
+r2 is a set of small command-line utilities that can be used together or independently. Utilities like `rabin2`, `rasm2`, `rahash2`, `radiff2`, `rafind2`, `ragg2`, `rarun2`, `rax2`, and of course `radare2`.
 
 You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
 
 ```shell
 # Permissions
 $ rafind2 -ZS permission AndroidManifest.xml
-#Activities
+# Activities
 $ rafind2 -ZS activity AndroidManifest.xml
-#Content Providers
+# Content Providers
 $ rafind2 -ZS provider AndroidManifest.xml
-#Services
+# Services
 $ rafind2 -ZS service AndroidManifest.xml
-#Receivers
+# Receivers
 $ rafind2 -ZS receiver AndroidManifest.xml
 ```
 
@@ -657,7 +657,7 @@ Now you are ready to begin analyzing apps. A good first step is to enumerate the
 $ dz> run app.package.attacksurface <package>
 ```
 
-Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standlone app as it would be required for certain tasks such as communicating with a content provider.
+Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
 
 For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
 
