@@ -788,6 +788,7 @@ One fundamental step when analyzing apps is information gathering. This can be d
 
 - Which files are included in the package?
 - Which Frameworks does the app use?
+- Which capabilities does the app require?
 - Which permissions does the app request to the user and for what reason?
 - Does the app allow any unsecured connections?
 - Does the app create any new files when being installed?
