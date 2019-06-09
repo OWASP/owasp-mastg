@@ -208,14 +208,14 @@ It has several features, like app installation, access the app sandbox without j
 
 ##### Mobile-Security-Framework - MobSF
 
-[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pen-testing framework that also supports iOS. The easiest way of getting MobSF started is via docker.
+[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pentesting framework that also supports iOS IPA files. The easiest way of getting MobSF started is via Docker.
 
 ```shell
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
-However, if you want to use the dynamic analysis features you shouldn't setup MobSF inside a VM or use Docker. Instead, install and start it locally on your host computer by running:
+Or install and start it locally on your host computer by running:
 
 ```shell
 # Setup
@@ -229,13 +229,27 @@ setup.bat # For Windows
 run.bat # For Windows
 ```
 
-Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyze and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
+> By running it locally on a macOS host you'll benefit from a slightly better class-dump output.
 
-After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the IPA you want to analyze into the upload area and MobSF will start its job.
 
-- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classdump can be created.
-- Have access to the Info.plist
-- Exceptions in the App Transport Security (ATS) configuration will be raised
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
+
+<img src="Images/Chapters/0x06b/mobsf_ios.png" alt="MobSF for iOS">
+
+The following is displayed:
+
+- Basic information about the app and its binary file.
+- Some options to:
+  - View the `Info.plist` file.
+  - View the strings contained in the app binary.
+  - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
+- List all Purpose Strings extracted from the `Info.plist` which give some hints on the app's permissions.
+- Exceptions in the App Transport Security (ATS) configuration will be listed.
+- A brief binary analysis showing if free binary security features are activated or e.g. if the binary makes use of banned APIs.
+- List of libraries used by the app binary and list of all files inside the unzipped IPA.
+
+> In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
 
 Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
 
