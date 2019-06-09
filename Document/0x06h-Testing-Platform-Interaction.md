@@ -2242,7 +2242,7 @@ In the "URL Handlers" section, go to the "Fuzzer" tab. On the left side default 
 myURLscheme://$@$
 ```
 
-While the URL scheme is being fuzzed, watch the logs (in Xcode, go to Window -> Devices -> *click on your device* -> *bottom console contains logs*) to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
+While the URL scheme is being fuzzed, watch the logs (see the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing") to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
 
 ### Testing iOS WebViews
 
