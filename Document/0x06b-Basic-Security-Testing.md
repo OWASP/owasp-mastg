@@ -215,6 +215,20 @@ $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
+However, if you want to use the dynamic analysis features you shouldn't setup MobSF inside a VM or use Docker. Instead, install and start it locally on your host computer by running:
+
+```shell
+# Setup
+git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
+cd Mobile-Security-Framework-MobSF
+./setup.sh # For Linux and Mac
+setup.bat # For Windows
+
+# Installation process
+./run.sh # For Linux and Mac
+run.bat # For Windows
+```
+
 Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyze and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
@@ -222,6 +236,8 @@ After MobSF is done with its analysis, you will receive a one-page overview of a
 - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classdump can be created.
 - Have access to the Info.plist
 - Exceptions in the App Transport Security (ATS) configuration will be raised
+
+Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
 
 ##### Needle
 
@@ -1089,18 +1105,16 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 
 1. Launch Xcode.
 2. Connect your device to your host computer.
-3. Choose Devices from the window menu.
+3. Choose "Window" -> "Devices and Simulators".
 4. Click on your connected iOS device in the left section of the Devices window.
 5. Reproduce the problem.
-6. Click the triangle-in-a-box toggle located in the lower left-hand corner of the Devices window's right section to view the console log's contents.
+6. Click on the "Open Console" button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-To save the console output to a text file, go to the bottom right and click the circular downward-pointing-arrow icon.
+![Opening the Device Console in Xcode](Images/Chapters/0x06b/open_device_console.png)
 
-![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
+To save the console output to a text file, go to the top right side of the Console window and click on the "Save" button.
 
-Passionfruit also offers a view of all the NSLog-based application logs. Simply click on the "Console" tab:
-
-<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
+![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
 
 You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
 
@@ -1118,6 +1132,10 @@ Jun  7 13:42:14 iPhone rm[9707] <Notice>: MS:Notice: Injecting: (null) [rm] (155
 Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch] (1556.00)
 ...
 ```
+
+Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the "Console" -> "Output" tab:
+
+<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
 
 ##### Dumping KeyChain Data
 
