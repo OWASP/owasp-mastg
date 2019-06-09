@@ -1102,6 +1102,23 @@ Passionfruit also offers a view of all the NSLog-based application logs. Simply 
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
 
+You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
+
+```shell
+iPhone:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock
+
+========================
+ASL is here to serve you
+> watch
+OK
+
+Jun  7 13:42:14 iPhone chmod[9705] <Notice>: MS:Notice: Injecting: (null) [chmod] (1556.00)
+Jun  7 13:42:14 iPhone readlink[9706] <Notice>: MS:Notice: Injecting: (null) [readlink] (1556.00)
+Jun  7 13:42:14 iPhone rm[9707] <Notice>: MS:Notice: Injecting: (null) [rm] (1556.00)
+Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch] (1556.00)
+...
+```
+
 ##### Dumping KeyChain Data
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
@@ -1263,12 +1280,12 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 The last step would be to set the proxy globally on your iOS device:
 
 1. Go to Settings
-1. Wi-Fi
-1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
-1. Configure your Proxy by selecting Manual
-1. Type in 127.0.0.1 as Server
-1. Type in 8080 as Port
+2. Wi-Fi
+3. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+4. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+5. Configure your Proxy by selecting Manual
+6. Type in 127.0.0.1 as Server
+7. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
