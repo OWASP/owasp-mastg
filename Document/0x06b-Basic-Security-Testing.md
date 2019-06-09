@@ -1137,6 +1137,13 @@ Additionally, Passionfruit offers a view of all the NSLog-based application logs
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
 
+Needle also has an option to capture the logs of an iOS application, you can start the monitoring by opening Needle and running the following commands:
+
+```shell
+[needle] > use dynamic/monitor/syslog
+[needle][syslog] > run
+```
+
 ##### Dumping KeyChain Data
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
