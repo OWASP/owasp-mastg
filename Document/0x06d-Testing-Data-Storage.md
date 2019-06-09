@@ -397,32 +397,9 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 
 #### Dynamic Analysis
 
-Navigate to a screen that displays input fields that take sensitive user information. There are two possible methods for checking log files for sensitive data:
+In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing" various methods for checking the device logs are explained. Navigate to a screen that displays input fields that take sensitive user information.
 
-The first method is through a terminal on the device. Connect to the iOS device and use one of the following options:
-
-- Install tail via the Core Utilities from Cydia and run the following command:
-
-  ```shell
-  $ tail -f /var/log/syslog
-  ```
-
-- Install ondeviceconsole via cydia.suarik.com and run the following command:
-
-  ```shell
-  $ ondeviceconsole
-  ```
-
-The second option is to use Xcode. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
-
-After starting either method one or two, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
-
-To capture the logs of an iOS application, you can monitor log files with Needle:
-
-```shell
-[needle] > use dynamic/monitor/syslog
-[needle][syslog] > run
-```
+After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
 ### Determining Whether Sensitive Data Is Sent to Third Parties
 
