@@ -8,13 +8,13 @@ In the context of anti-reversing, the goal of root detection is to make running 
 
 For Android, we define "root detection" a bit more broadly, including custom ROMs detection, i.e., determining whether the device is a stock Android build or a custom build.
 
-##### Common Root Detection Methods
+#### Common Root Detection Methods
 
-In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [crackme examples](https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md "OWASP Mobile Crackmes") that accompany the OWASP Mobile Testing Guide.
+In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [crackme examples](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "OWASP Mobile Crackmes") that accompany the OWASP Mobile Testing Guide.
 
 Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer").
 
-###### SafetyNet
+##### SafetyNet
 
 SafetyNet is an Android API that provides a set of services and creates profiles of devices according to software and hardware information. This profile is then compared to a list of whitelisted device models that have passed Android compatibility testing. Google [recommends](https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet "SafetyNet Documentation") using the feature as "an additional in-depth defense signal as part of an anti-abuse system."
 
@@ -43,7 +43,7 @@ The following is a sample attestation result:
 }
 ```
 
-**ctsProfileMatch Vs basicIntegrity**
+###### ctsProfileMatch Vs basicIntegrity
 
 The SafetyNet Attestation API initially provided a single value called `basicIntegrity` to help developers determine the integrity of a device. As the API evolved, Google introduced a new, stricter check whose results appear in a value called `ctsProfileMatch`, which allows developers to more finely evaluate the devices on which their app is running.
 
@@ -58,34 +58,33 @@ On the other hand, `ctsProfileMatch` gives you a much stricter signal about the 
 - Devices with a system image built directly from the Android Open Source Program source files
 - Devices with a system image distributed as part of a beta or developer preview program (including the Android Beta Program)
 
-**Recommendations when using** `SafetyNetApi.attest`
+###### Recommendations when using `SafetyNetApi.attest`
 
--  Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
+- Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
 - Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
 - The entire JWS response should be sent to your server, using a secure connection, for verification. It isn't recommended to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
-- The `verify()` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.   
+- The `verify()` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.
 - The SafetyNet Attestation API gives you a snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommended to plan a strategy to use the least amount of attestations required to satisfy the use case.
 - To prevent inadvertently reaching your `SafetyNetApi.attest` quota and getting attestation errors, you should build a system that monitors your usage of the API and warns you well before you reach your quota so you can get it increased. You should also be prepared to handle attestation failures because of an exceeded quota and avoid blocking all your users in this situation. If you are close to reaching your quota, or expect a short-term spike that may lead you to exceed your quota, you can submit this [form](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request") to request short or long-term increases to the quota for your API key. This process, as well as the additional quota, is free of charge.
 
-Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklis "attestation checklist") to ensure that you've completed each of the steps needed to integrate the `SafetyNetApi.attest` API into the app.
+Follow this [checklist](https://developer.android.com/training/safetynet/attestation-checklist "attestation checklist") to ensure that you've completed each of the steps needed to integrate the `SafetyNetApi.attest` API into the app.
 
-###### Programmatic Detection
+##### Programmatic Detection
 
-**File existence checks**
+###### File existence checks
 
 Perhaps the most widely used method of programmatic detection is checking for files typically found on rooted devices, such as package files of common rooting apps and their associated files and directories, including the following:
 
-```
+```text
 /system/app/Superuser.apk
 /system/etc/init.d/99SuperSUDaemon
 /dev/com.koushikdutta.superuser.daemon/
 /system/xbin/daemonsu
-
 ```
 
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
-```
+```text
 /sbin/su  
 /system/bin/su  
 /system/bin/failsafe/su  
@@ -130,11 +129,11 @@ jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath)
 }
 ```
 
-**Executing `su` and other commands**
+###### Executing `su` and other commands
 
 Another way of determining whether `su` exists is attempting to execute it through the `Runtime.getRuntime.exec` method. An IOException will be thrown if `su` is not on the PATH. The same method can be used to check for other programs often found on rooted devices, such as busybox and the symbolic links that typically point to it.
 
-**Checking running processes**
+###### Checking running processes
 
 Supersu-by far the most popular rooting tool-runs an authentication daemon named `daemonsu`, so the presence of this process is another sign of a rooted device. Running processes can be enumerated with the `ActivityManager.getRunningAppProcesses` and `manager.getRunningServices` APIs, the `ps` command, and browsing through the `/proc` directory. The following is an example implemented in [rootinspector](https://github.com/devadvance/rootinspector/):
 
@@ -160,11 +159,11 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
     }
 ```
 
-**Checking installed app packages**
+###### Checking installed app packages
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
-```
+```text
 com.thirdparty.superuser
 eu.chainfire.supersu
 com.noshufou.android.su
@@ -174,11 +173,11 @@ com.ramdroid.appquarantine
 com.topjohnwu.magisk
 ```
 
-**Checking for writable partitions and system directories**
+###### Checking for writable partitions and system directories
 
 Unusual permissions on system directories may indicate a customized or rooted device. Although the system and data directories are normally mounted read-only, you'll sometimes find them mounted read-write when the device is rooted. Look for these filesystems mounted with the "rw" flag or try to create a file in the data directories.
 
-**Checking for custom Android builds**
+###### Checking for custom Android builds
 
 Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](https://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion// "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/ "Android - Detect Root Access from inside an app"):
 
@@ -224,7 +223,6 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
 
-
 ### Testing Anti-Debugging
 
 #### Overview
@@ -250,6 +248,7 @@ We have already encountered the `android:debuggable` attribute. This flag in the
 
     }
 ```
+
 ###### isDebuggerConnected
 
 The `Android Debug` system class offers a static method to determine whether a debugger is connected. The method returns a boolean value.
@@ -561,8 +560,8 @@ However, if we terminate the child process at this point, the parent exits as we
 
 ```shell
 root@android:/ # kill -9 20301
-130|root@hammerhead:/ # cd /data/local/tmp                                     
-root@android:/ # ./gdbserver --attach localhost:12345 20267   
+130|root@hammerhead:/ # cd /data/local/tmp
+root@android:/ # ./gdbserver --attach localhost:12345 20267
 gdbserver: unable to open /proc file '/proc/20267/status'
 Cannot attach to lwp 20267: No such file or directory (2)
 Exiting
@@ -645,7 +644,6 @@ Integrity checks often calculate a checksum or hash over selected files. Commonl
 
 The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
 
-
 ```java
 private void crcTest() throws IOException {
  boolean modified = false;
@@ -666,6 +664,7 @@ private void crcTest() throws IOException {
  }
 }
 ```
+
 ##### Sample Implementation - Storage
 
 When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
@@ -769,7 +768,7 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 
 ##### Bypassing File Integrity Checks
 
-*Bypassing the application-source integrity checks*
+###### Bypassing the application-source integrity checks
 
 1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
@@ -777,14 +776,14 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 
 Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
 
-*Bypassing the storage integrity checks*
+###### Bypassing the storage integrity checks
 
 1. Retrieve the data from the device, as described in the section on device binding.
 2. Alter the retrieved data and then put it back into storage.
 
 #### Effectiveness Assessment
 
-*For application-source integrity checks*
+##### For application-source integrity checks
 
 Run the app in an unmodified state and make sure that everything works. Apply simple patches to `classes.dex` and any .so libraries in the app package. Re-package and re-sign the app as described in the "Basic Security Testing" chapter, then run the app. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate. Work on bypassing the defenses and answer the following questions:
 
@@ -793,14 +792,14 @@ Run the app in an unmodified state and make sure that everything works. Apply si
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-*For storage integrity checks*
+##### For storage integrity checks
 
 An approach similar to that for application-source integrity checks applies. Answer the following questions:
+
 - Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value)?
 - How difficult is getting the HMAC key or the asymmetric private key?
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
-
 
 ### Testing The Detection of Reverse Engineering Tools
 
@@ -816,7 +815,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-With API Level 25 and below it was possible to query for all running services by using the Java method  (getRunningServices[https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices(int) "getRunningServices"]. This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
+With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
 
 A working solution to detect the frida-server process is to us the command `ps` instead.
 
@@ -881,7 +880,7 @@ boolean is_frida_server_listening() {
       /* Frida server detected. Do something… */
     }
 
-}   
+}
 ```
 
 Again, this code detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial. This method can be improved with an `nmap -sV`. `frida-server` uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself.
@@ -1080,7 +1079,6 @@ Launch the app with various apps and frameworks installed. Include at least the 
 - Substrate for Android
 - Xposed
 - Frida
-- Introspy-Android
 - Drozer
 - RootCloak
 - Android SSL Trust Killer
@@ -1091,7 +1089,6 @@ The app should respond in some way to the presence of each of those tools. At th
 - How difficult is identifying the anti-debugging code via static and dynamic analysis?
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
-
 
 ### Testing Emulator Detection
 
@@ -1105,7 +1102,7 @@ There are several indicators that the device in question is being emulated. Alth
 
 The first set of indicators are in the file `build.prop`.
 
-```
+```text
 API Method          Value           Meaning
 Build.ABI           armeabi         possibly emulator
 BUILD.ABI2          unknown         possibly emulator
@@ -1128,7 +1125,7 @@ You can edit the file `build.prop` on a rooted Android device or modify it while
 
 The next set of static indicators utilize the Telephony manager. All Android emulators have fixed values that this API can query.
 
-```
+```text
 API                                                     Value                   Meaning
 TelephonyManager.getDeviceId()                          0's                     emulator
 TelephonyManager.getLine1 Number()                      155552155               emulator
@@ -1163,7 +1160,6 @@ Work on bypassing the defenses and answer the following questions:
 - Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-
 ### Testing Run Time Integrity Checks
 
 #### Overview
@@ -1177,7 +1173,7 @@ There's some overlap with the category "detecting reverse engineering tools and 
 
 ##### Run Time Integrity Check Examples
 
-**Detecting tampering with the Java Runtime**
+###### Detecting tampering with the Java Runtime**
 
 This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
@@ -1211,7 +1207,7 @@ catch(Exception e) {
 }
 ```
 
-**Detecting Native Hooks**
+###### Detecting Native Hooks
 
 By using ELF binaries, native function hooks can be installed by overwriting function pointers in memory (e.g., Global Offset Table or PLT hooking) or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one way to detect this kind of hook.
 
@@ -1232,7 +1228,6 @@ Work on bypassing the checks with the following techniques:
 
 Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
 
-
 ### Testing Device Binding
 
 #### Overview
@@ -1242,13 +1237,77 @@ The goal of device binding is to impede an attacker who tries to both copy an ap
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods that allow device binding:
 
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
-- Obfuscating the data stored on the device by using device identifiers as keys for encryption methods. This can help with binding to a device when the app does a lot of offline work or when access to APIs depends on access-tokens stored by the application.
-- Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would then extract the data from a device, he would not have access to the key to decrypt the encrypted data. Implementing this, takes the following steps:
+
+  - Generate the key pair in the Android keystore using `KeyGenParameterSpec` API.
+
+    ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+    KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
+    keyPairGenerator.initialize(
+            new KeyGenParameterSpec.Builder(
+                    "key1",
+                    KeyProperties.PURPOSE_DECRYPT)
+                    .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
+                    .build());
+    KeyPair keyPair = keyPairGenerator.generateKeyPair();
+    Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+    cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+    ...
+
+    // The key pair can also be obtained from the Android Keystore any time as follows:
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null);
+    PrivateKey privateKey = (PrivateKey) keyStore.getKey("key1", null);
+    PublicKey publicKey = keyStore.getCertificate("key1").getPublicKey();
+    ```
+
+  - Generating a secret key for AES-GCM:
+  
+    ```java
+    //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
+    KeyGenerator keyGenerator = KeyGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+    keyGenerator.init(
+            new KeyGenParameterSpec.Builder("key2",
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .build());
+    SecretKey key = keyGenerator.generateKey();
+
+    // The key can also be obtained from the Android Keystore any time as follows:
+    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+    keyStore.load(null);
+    key = (SecretKey) keyStore.getKey("key2", null);
+    ```
+
+  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data
+  
+    ```java
+    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+    final byte[] nonce = new byte[GCM_NONCE_LENGTH];
+    random.nextBytes(nonce);
+    GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH * 8, nonce);
+    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+    byte[] aad = "<deviceidentifierhere>".getBytes();;
+    cipher.updateAAD(aad);
+    cipher.init(Cipher.ENCRYPT_MODE, key);
+
+    //use the cipher to encrypt the authentication data see 0x50e for more details.
+    ```
+
+  - Encrypt the secret key using the public key stored in Android keystore and store the encrypted secret key in the private storage of the application
+  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
+
+- Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
 #### Static Analysis
 
-In the past, Android developers often relied on the Settings.Secure.ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O, and the behavior of MAC addresses [changed with the release of Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation.
+In the past, Android developers often relied on the Settings.Secure.ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O, and the behavior of MAC addresses [changed with the release of Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. These last recommendations boil down to: either use the `Advertising ID` when it comes to advertising - so that a user can decline - or use the `Instance ID` for device identification. Both are not stable accross device upgrades and device-resets, but `Instance ID` will at least allow to identify the current software installation on a device.
 
 There are a few key terms you can look for when the source code is available:
 
@@ -1264,6 +1323,8 @@ There are a few key terms you can look for when the source code is available:
   TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
   String IMEI = tm.getDeviceId();
 ```
+
+- The creation of private keys in the `AndroidKeyStore` using the `KeyPairGeneratorSpec` or `KeyGenParameterSpec` APIs.
 
 To be sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The file should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
@@ -1297,67 +1358,75 @@ There are several ways to test the application binding:
 
 [Google Instance ID](https://developers.google.com/instance-id/ "Google Instance ID documentation") uses tokens to authenticate the running application instance. The moment the application is reset, uninstalled, etc., the Instance ID is reset, meaning that you'll have a new "instance" of the app.
 Go through the following steps for Instance ID:
+
 1. Configure your Instance ID for the given application in your Google Developer Console. This includes managing the PROJECT_ID.
 
 2. Setup Google Play services. In the file `build.gradle`, add
-```groovy
-  apply plugin: 'com.android.application'
-    ...
 
-    dependencies {
-        compile 'com.google.android.gms:play-services-gcm:10.2.4'
-    }
-```
+    ```groovy
+    apply plugin: 'com.android.application'
+        ...
+
+        dependencies {
+            compile 'com.google.android.gms:play-services-gcm:10.2.4'
+        }
+    ```
+
 3. Get an Instance ID.
-```java
-  String iid = Instance ID.getInstance(context).getId();
-  //now submit this iid to your server.
-```
+
+    ```java
+    String iid = Instance ID.getInstance(context).getId();
+    //now submit this iid to your server.
+    ```
 
 4. Generate a token.
-```java
-String authorizedEntity = PROJECT_ID; // Project id from Google Developer Console
-String scope = "GCM"; // e.g. communicating using GCM, but you can use any
-                      // URL-safe characters up to a maximum of 1000, or
-                      // you can also leave it blank.
-String token = Instance ID.getInstance(context).getToken(authorizedEntity,scope);
-//now submit this token to the server.
-```
+
+    ```java
+    String authorizedEntity = PROJECT_ID; // Project id from Google Developer Console
+    String scope = "GCM"; // e.g. communicating using GCM, but you can use any
+                        // URL-safe characters up to a maximum of 1000, or
+                        // you can also leave it blank.
+    String token = Instance ID.getInstance(context).getToken(authorizedEntity,scope);
+    //now submit this token to the server.
+    ```
+
 5. Make sure that you can handle callbacks from Instance ID, in case of invalid device information, security issues, etc. This requires extending `Instance IDListenerService` and handling the callbacks there:
 
-```java
-public class MyInstance IDService extends Instance IDListenerService {
-  public void onTokenRefresh() {
-    refreshAllTokens();
-  }
-
-  private void refreshAllTokens() {
-    // assuming you have defined TokenList as
-    // some generalized store for your tokens for the different scopes.
-    // Please note that for application validation having just one token with one scopes can be enough.
-    ArrayList<TokenList> tokenList = TokensList.get();
-    Instance ID iid = Instance ID.getInstance(this);
-    for(tokenItem : tokenList) {
-      tokenItem.token =
-        iid.getToken(tokenItem.authorizedEntity,tokenItem.scope,tokenItem.options);
-      // send this tokenItem.token to your server
+    ```java
+    public class MyInstance IDService extends Instance IDListenerService {
+    public void onTokenRefresh() {
+        refreshAllTokens();
     }
-  }
-};
 
-```
+    private void refreshAllTokens() {
+        // assuming you have defined TokenList as
+        // some generalized store for your tokens for the different scopes.
+        // Please note that for application validation having just one token with one scopes can be enough.
+        ArrayList<TokenList> tokenList = TokensList.get();
+        Instance ID iid = Instance ID.getInstance(this);
+        for(tokenItem : tokenList) {
+        tokenItem.token =
+            iid.getToken(tokenItem.authorizedEntity,tokenItem.scope,tokenItem.options);
+        // send this tokenItem.token to your server
+        }
+    }
+    };
+
+    ```
+
 6. Register the service in your Android manifest:
-```xml
-<service android:name=".MyInstance IDService" android:exported="false">
-  <intent-filter>
-        <action android:name="com.google.android.gms.iid.Instance ID"/>
-  </intent-filter>
-</service>
-```
+
+    ```xml
+    <service android:name=".MyInstance IDService" android:exported="false">
+    <intent-filter>
+            <action android:name="com.google.android.gms.iid.Instance ID"/>
+    </intent-filter>
+    </service>
+    ```
 
 When you submit the Instance ID (iid) and the tokens to your server, you can use that server with the Instance ID Cloud Service to validate the tokens and the iid. When the iid or token seems invalid, you can trigger a safeguard procedure (e.g., informing the server of possible copying or security issues or removing the data from the app and asking for a re-registration).
 
-Please note that [Firebase also supports Instance ID](https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstance ID "Firebase Instance ID documentation").
+Please note that [Firebase also supports Instance ID](https://firebase.google.com/docs/reference/android/com/google/firebase/iid/FirebaseInstanceId "Firebase Instance ID documentation").
 
 ##### IMEI & Serial
 
@@ -1372,31 +1441,35 @@ For pre-Android O devices, you can request the serial as follows:
 For devices running Android version O and later, you can request the device's serial as follows:
 
 1. Set the permission in your Android manifest:
-```xml
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-```
-2. Request the permission at run time from the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+
+    ```xml
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    ```
+
+2. Request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html) for more details.
 3. Get the serial:
 
-```java
-  String serial = android.os.Build.getSerial();
-```
+    ```java
+    String serial = android.os.Build.getSerial();
+    ```
 
 Retrieve the IMEI:
 
 1. Set the required permission in your Android manifest:
-```xml
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-```
 
-2. If you're using Android version M or later, request the permission at run time from the user: See https://developer.android.com/training/permissions/requesting.html for more details.
+    ```xml
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    ```
+
+2. If you're using Android version M or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html) for more details.
 
 3. Get the IMEI:
-```java
-  TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-  String IMEI = tm.getDeviceId();
-```
+
+    ```java
+    TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    String IMEI = tm.getDeviceId();
+    ```
 
 ##### SSAID
 
@@ -1411,6 +1484,7 @@ The behavior of the SSAID has changed since Android O, and the behavior of MAC a
 #### Effectiveness Assessment
 
 There are a few key terms you can look for when the source code is available:
+
 - Unique identifiers that will no longer work:
   - `Build.SERIAL` without `Build.getSerial`
   - `htc.camera.sensor.front_SN` for HTC devices
@@ -1464,10 +1538,10 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP Mobile Top 10 2016
 
-- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
-
+- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### OWASP MASVS
+
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
@@ -1481,13 +1555,14 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### SafetyNet Attestation
 
-- [Developer Guideline](https://developer.android.com/training/safetynet/attestation.html "developer guideline")
-- [SafetyNet Attestation Checklist](https://developer.android.com/training/safetynet/attestation-checklist "checklist")
-- [Do's & Don'ts of SafetyNet Attestation](https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html "recommendations")
-- [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/ "safetynet sample")
-- [SafetyNet Attestation API - Quota Request](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request")
+- Developer Guideline - <https://developer.android.com/training/safetynet/attestation.html>
+- SafetyNet Attestation Checklist - <https://developer.android.com/training/safetynet/attestation-checklist>
+- Do's & Don'ts of SafetyNet Attestation - <https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html>
+- SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
+- SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
 
 #### Tools
 
-- [FRIDA](https://www.frida.re/ "Frida")
-- ADB & DDMS
+- adb - <https://developer.android.com/studio/command-line/adb>
+- Frida  - <https://www.frida.re>
+- DDMS - <https://developer.android.com/studio/profile/monitor>

@@ -12,9 +12,9 @@ After you get the application's .ipa file, re-save it as a ZIP file and decompre
 
 Execute the following `codesign` command:
 
-```sh
-$ codesign -dvvv <yourapp.app>
-Executable=/Users/Documents/<yourname>/Payload/<yourname.app>/<yourname>
+```shell
+$ codesign -dvvv YOURAPP.app
+Executable=/Users/Documents/YOURAPP/Payload/YOURAPP.app/YOURNAME
 Identifier=com.example.example
 Format=app bundle with Mach-O universal (armv7 arm64)
 CodeDirectory v=20200 size=154808 flags=0x0(none) hashes=4830+5 location=embedded
@@ -45,18 +45,17 @@ Generating an app in Build or Release mode depends on build settings in Xcode; w
 #### Static Analysis
 
 At first you need to determine the mode in which your app is to be generated to check the flags in the environment:
+
 - Select the build settings of the project
 - Under 'Apple LVM - Preprocessing' and 'Preprocessor Macros', make sure 'DEBUG' or 'DEBUG_MODE' is not selected (Objective-C)
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
-
 
 #### Dynamic Analysis
 
 Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
 
 Note: if the application is equipped with anti-reverse engineering controls, then the debugger can be detected and stopped.
-
 
 ### Finding Debugging Symbols
 
@@ -101,10 +100,10 @@ To speed up verification and get a better understanding of errors, developers of
 
 You can take the following static analysis approach for the logging statements:
 
-1.	Import the application's code into Xcode.
-2.	Search the code for the following printing functions: `NSLog`, `println`, `print`, `dump`, `debugPrint`.
-3.	When you find one of them, determine whether the developers used a wrapping function around the logging function for better mark up of the statements to be logged; if so, add that function to your search.
-4.	For every result of steps 2 and 3, determine whether macros or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how Objective-C can use preprocessor macros:
+1. Import the application's code into Xcode.
+2. Search the code for the following printing functions: `NSLog`, `println`, `print`, `dump`, `debugPrint`.
+3. When you find one of them, determine whether the developers used a wrapping function around the logging function for better mark up of the statements to be logged; if so, add that function to your search.
+4. For every result of steps 2 and 3, determine whether macros or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how Objective-C can use preprocessor macros:
 
 ```objc
 #ifdef DEBUG
@@ -114,9 +113,9 @@ You can take the following static analysis approach for the logging statements:
 
 The procedure for enabling this behavior in Swift has changed: you need to either set environment variables in your scheme or set them as custom flags in the target's build settings. Please note that the following functions (which allow you to determine whether the app was built in the Swift 2.1. release-configuration) aren't recommended, as Xcode 8 and Swift 3 don't support these functions:
 
--	`_isDebugAssertConfiguration`
--	`_isReleaseAssertConfiguration`
--	`_isFastAssertConfiguration`.
+- `_isDebugAssertConfiguration`
+- `_isReleaseAssertConfiguration`
+- `_isFastAssertConfiguration`.
 
 Depending on the application's setup, there may be more logging functions. For example, when [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack "CocoaLumberjack") is used, static analysis is a bit different.
 
@@ -125,16 +124,15 @@ For the "debug-management" code (which is built-in): inspect the storyboards to 
 #### Dynamic Analysis
 
 Dynamic analysis should be executed on both a simulator and a device because developers sometimes use target-based functions (instead of functions based on a release/debug-mode) to execute the debugging code.
-1.	Run the application on a simulator and check for output in the console during the app's execution.
-2.	 Attach a device to your Mac, run the application on the device via Xcode, and check for output in the console during the app's execution in the console.
+
+1. Run the application on a simulator and check for output in the console during the app's execution.
+2. Attach a device to your Mac, run the application on the device via Xcode, and check for output in the console during the app's execution in the console.
 
 For the other "manager-based" debug code: click through the application on both a simulator and a device to see if you can find any functionality that allows an app's profiles to be pre-set, allows the actual server to be selected or allows responses from the API to be selected.
 
 #### Remediation
 
-As a developer, incorporating debug statements into your application's debug version should not be a problem if you realize that the debugging statements should never
-1.	be present in the application's release version or
-2.	end up in the application's release configuration.
+As a developer, incorporating debug statements into your application's debug version should not be a problem as long as you make sure that the debug statements are never present in the application's release version.
 
 In Objective-C, developers can use preprocessor macros to filter out debug code:
 
@@ -179,15 +177,15 @@ An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless
 
 ```objc
  @try {
- 	//do work here
+    //do work here
  }
 
 @catch (NSException *e) {
-	//recover from exception
+    //recover from exception
 }
 
 @finally {
- 	//cleanup
+    //cleanup
 ```
 
 Bear in mind that using `NSException` comes with memory management pitfalls: you need to [clean up allocations](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/RaisingExceptions.html#//apple_ref/doc/uid/20000058-BBCCFIBF "Raising exceptions") from the try block that are in the [finally block](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Exceptions/Tasks/HandlingExceptions.html "Handling Exceptions"). Note that you can promote `NSException` objects to `NSError` by instantiating an `NSError` in the `@catch` block.
@@ -204,31 +202,33 @@ Methods that can throw errors use the `throws` keyword. There are four ways to [
 
 ```swift
 func dosomething(argumentx:TypeX) throws {
-	try functionThatThrows(argumentx: argumentx)
+    try functionThatThrows(argumentx: argumentx)
 }
 ```
+
 - Handle the error with a `do-catch` statement. You can use the following pattern:
 
-```swift
-do {
-    try functionThatThrows()
-    defer {
-    	//use this as your finally block as with Objective-c
+    ```swift
+    do {
+        try functionThatThrows()
+        defer {
+            //use this as your finally block as with Objective-c
+        }
+        statements
+    } catch pattern 1 {
+        statements
+    } catch pattern 2 where condition {
+        statements
     }
-    statements
-} catch pattern 1 {
-    statements
-} catch pattern 2 where condition {
-    statements
-}
-```
+    ```
 
 - Handle the error as an optional value:
 
-```swift
-	let x = try? functionThatThrows()
-	//In this case the value of x is nil in case of an error.
-```  
+    ```swift
+        let x = try? functionThatThrows()
+        //In this case the value of x is nil in case of an error.
+    ```
+
 - Use the `try!` expression to assert that the error won't occur.
 
 #### Static Analysis
@@ -282,17 +282,15 @@ Developers can implement proper error handling in several ways:
 - Refrain from using `try!` in Swift unless you're certain that there's no error in the throwing method that's being called.
 - Make sure that the Swift error doesn't propagate into too many intermediate methods.
 
-
 ### Make Sure That Free Security Features Are Activated
 
 #### Overview
 
 Although Xcode enables all binary security features by default, it may be relevant to verify this for an old application or to check for the misconfiguration of compilation options. The following features are applicable:
 
--	**ARC** - Automatic Reference Counting - memory management feature
-	-	adds retain and release messages when required
--	**Stack Canary** - helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
--	**PIE** - Position Independent Executable - enables full ASLR for binary
+- **ARC** - Automatic Reference Counting - A memory management feature that adds retain and release messages when required
+- **Stack Canary** - Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
+- **PIE** - Position Independent Executable - enables full ASLR for binary
 
 #### Static Analysis
 
@@ -302,24 +300,23 @@ Although Xcode enables all binary security features by default, it may be releva
 
 Steps for enabling Stack-smashing protection in an iOS application:
 
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
-2.	Make sure that the "-fstack-protector-all" option is selected in the "Other C Flags" section.
-
-3.	Make sure that Position Independent Executables (PIE) support is enabled.
+1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
+2. Make sure that the "-fstack-protector-all" option is selected in the "Other C Flags" section.
+3. Make sure that Position Independent Executables (PIE) support is enabled.
 
 Steps for building an iOS application as PIE:
 
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
-2.	Set the iOS Deployment Target to iOS 4.3 or later.
-3.	Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
-4.	Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
+1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
+2. Set the iOS Deployment Target to iOS 4.3 or later.
+3. Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
+4. Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
 
 - ARC protection
 
 Steps for enabling ACR protection for an iOS application:
 
-1.	In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
-2.	Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
+1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
+2. Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
 
 See the [Technical Q&A QA1788 Building a Position Independent Executable]( https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
@@ -327,7 +324,7 @@ See the [Technical Q&A QA1788 Building a Position Independent Executable]( https
 
 Below are procedures for checking the binary security features described above. All the features are enabled in these examples.
 
--   PIE:
+- PIE:
 
 ```shell
 $ unzip DamnVulnerableiOSApp.ipa
@@ -345,7 +342,7 @@ MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
 WEAK_DEFINES BINDS_TO_WEAK PIE
 ```
 
--   stack canary:
+- stack canary:
 
 ```shell
 $ otool -Iv DamnVulnerableIOSApp | grep stack
@@ -361,7 +358,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep stack
 0x0000000100593dc8 83414 _sigaltstack
 ```
 
--   Automatic Reference Counting:
+- Automatic Reference Counting:
 
 ```shell
 $ otool -Iv DamnVulnerableIOSApp | grep release
@@ -378,18 +375,19 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 
 IDB automates the processes of checking for stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
-![alt tag](Images/Chapters/0x06i/idb.png)
-
+<img src="Images/Chapters/0x06i/idb.png" alt="IDB Analyze Binary" width="400">
 
 ### Checking for Weaknesses in Third Party Libraries
 
 #### Overview
 
 iOS applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
+
 - Libraries that are not (or should not) be packed within the actual production application, such as `OHHTTPStubs` used for testing.
 - Libraries that are packed within the actual production application, such as `Alamofire`.
 
 These libraries can have the following two classes of unwanted side-effects:
+
 - A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to execute man-in-the-middle attacks against apps that are using the library to connect to their APIs.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
@@ -404,41 +402,48 @@ In order to ensure that the libraries used by the apps are not carrying vulnerab
 
 In case CocoaPods is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities:
 
-1. At the root of the project, where the Podfile is located, execute the following commands:
-``` sh
+First, at the root of the project, where the Podfile is located, execute the following commands:
+
+```shell
 $ sudo gem install CocoaPods
 $ pod install
 ```
 
-2. Now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
-```sh
+Next, now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
+
+```shell
 $ sudo gem install CocoaPods-dependencies
 $ pod dependencies
 ```
 
-3. The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
+The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
 
 > Note:
+
 1. If the developer packs all dependencies in terms of its own support library using a .podspec file, then this .podspec file can be checked with the experimental CocoaPods podspec checker.
 2. If the project uses CocaoPods in combination with Objective-C, SourceClear can be used.
 3. Using CocoaPods with `http` based links instead of `https` might allow for man-in-the-middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
 
 In case Carthage is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities:
-1. At the root of the project, where the Cartfile is located, type
-```sh
+
+First, at the root of the project, where the Cartfile is located, type
+
+```shell
 $ brew install carthage
 $ carthage update --platform iOS
 ```
 
-2. Check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
+Next, check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
 
 > Note, at the time of writing of this chapter, there is no automated support for Carthage based dependency analysis known to the authors.
 
 When a library is found to contain vulnerabilities, then the following reasoning applies:
+
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
 In case frameworks are added manually as linked libraries:
+
 1. Open the xcodeproj file and check the project properties.
 2. Go to the tab "Build Phases" and check the entries in "Link Binary With Libraries" for any of the libraries. See earlier sections on how to obtain similar information using [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF").
 
@@ -446,31 +451,32 @@ In the case of copy-pasted sources: search the header files (in case of using Ob
 
 Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
-
 ##### Detecting the licenses used by the libraries of the application
+
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by CocoaPods or Carthage.
 
 When the application sources are available and CocoaPods is used, then execute the following steps to get the different licenses:
-1. At the root of the project, where the Podfile is located, type
-```sh
+First, at the root of the project, where the Podfile is located, type
+
+```shell
 $ sudo gem install CocoaPods
 $ pod install
 ```
-2. At the Pods folder you will find the libraries installed. Each in their own folder. Now you can check the licenses for each of the libraries by inspecting the license files in each of the folders.
 
-When the application sources are available and Carthage is used, then execute the following steps to get the different licenses:
-1. At the root of the project, where the Cartfile is located, type
-```sh
+This will create aPods folder where all libraries are installed, each in their own folder. You can now check the licenses for each of the libraries by inspecting the license files in each of the folders.
+
+When the application sources are available and Carthage is used, execute the following code in the root directory of the project, where the Cartfile is located:
+
+```shell
 $ brew install carthage
 $ carthage update --platform iOS
 ```
 
-2. The sources of each of the dependencies have been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
+The sources of each of the dependencies have now been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
 
 When a library contains a license in which the app's IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
 Note: In case of a hybrid app, please check the build-tools used: most of them do have a license enumeration plugin to find the licenses being used.
-
 
 #### Dynamic Analysis
 
@@ -479,7 +485,7 @@ The dynamic analysis of this section comprises of two parts: the actual license 
 It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
 When no source-code is available for library analysis, you can find some of the frameworks being used with otool and MobSF.
-After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with at the root of the <Application.app> directory:
+After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with the root of the application's directory:
 
 ```shell
 $ otool -L <Executable>
@@ -491,13 +497,44 @@ However, these do not include all the libraries being used. Next, with Class-dum
 $ ./class-dump <Executable> -r
 ```
 
+### Memory Corruption Bugs
 
+iOS applications have various ways to run into memory corruption bugs: first there are the native code issues which have been mentioned in the general Memory Corruption Bugs section. Next, there are various unsafe operations with both Objective-C and Swift to actually wrap around native code which can create issues. Last, both Swift and Objective-C implementations can result in memory leaks due to retaining objects which are no longer in use.
+
+#### Static Analysis
+
+Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code is a little harder to spot when compiled. If you have the sources then you can see that C files use .c source files and .h header files and C++ uses .cpp files and .h files. This is a little different from the .swift and the .m source files for Swift and Objective-C. These files can be part of the sources, or part of third party libraries, registered as frameworks and imported through various tools, such as Carthage, the Swift Package Manager or Cocoapods.
+
+For any managed code (Objective-C / Swift) in the project, check the following items:
+
+- The doubleFree issue: when `free()` is called twice for a given region instead of once.
+- Retaining cycles: look for cyclic dependencies by means of strong references of components to one another which keep materials in memory.
+- Using instances of `UnsafePointer` can be managed wrongly, which will allow for various memory corruption issues.
+- Trying to manage the reference count to an object by `Unmanaged` manually, leading to wrong counter numbers and a too late/too soon release.
+
+[A great talk is given on this subject at Realm academy](https://academy.realm.io/posts/russ-bishop-unsafe-swift/ "Russh Bishop on Unsafe Swift") and [a nice tutorial to see what is actually happening](https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c "Unsafe Swift: Using Pointers And Interacting With C") is provided by Ray Wenderlich on this subject.
+
+>Please note that with Swift 5 you can only deallocate full blocks, which means the playground has changed a bit.
+
+#### Dynamic Analysis
+
+There are various tools provided which help to identify memory bugs within Xcode, such as the Debug Memory graph introduced in Xcode 8 and the Allocations and Leaks instrument in Xcode.
+
+Next, you can check whether memory is freed too fast or too slow by enabling `NSAutoreleaseFreedObjectCheckEnabled`, `NSZombieEnabled`, `NSDebugEnabled` in Xcode while testing the application.
+
+There are various well written explanations which can help with taking care of memory management. These can be found in the reference list of this chapter.
 
 ### References
 
+#### Memory management - dynamic analysis examples
+
+- <https://developer.ibm.com/tutorials/mo-ios-memory/>
+- <https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html>
+- <https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15>
+
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality](https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality)
 
 #### OWASP MASVS
 
@@ -517,11 +554,11 @@ $ ./class-dump <Executable> -r
 
 ##### Tools
 
-- [Carthage](https://github.com/carthage/carthage "Carthage")
-- [CocoaPods](https://CocoaPods.org "CocoaPods")
-- [OWASP Dependency Checker](https://jeremylong.github.io/DependencyCheck/"OWASP Dependency Checker")
-- [Sourceclear](https://sourceclear.com "Sourceclear")
-- [Class-dump](https://github.com/nygard/class-dump "Class-dump")
-- [RetireJS](https://retirejs.github.io/retire.js/ "Retire JS")
-- [idb](https://github.com/dmayer/idb)
-- [Codesign](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html)
+- Carthage - [https://github.com/carthage/carthage](https://github.com/carthage/carthage)
+- CocoaPods - [https://CocoaPods.org](https://CocoaPods.org)
+- OWASP Dependency Checker - [https://jeremylong.github.io/DependencyCheck/](https://jeremylong.github.io/DependencyCheck/)
+- Sourceclear - [https://sourceclear.com](https://sourceclear.com)
+- Class-dump - [https://github.com/nygard/class-dump](https://github.com/nygard/class-dump)
+- RetireJS - [https://retirejs.github.io/retire.js/](https://retirejs.github.io/retire.js/)
+- idb  - [https://github.com/dmayer/idb](https://github.com/dmayer/idb)
+- Codesign - [https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html)

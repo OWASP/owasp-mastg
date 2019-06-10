@@ -7,6 +7,7 @@ In Android, there are two mechanisms supported by the Android Runtime for local 
 ### Testing Confirm Credentials
 
 #### Overview
+
 The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
@@ -51,6 +52,7 @@ Reassure that the lock screen is set:
 ```
 
 - setup the lock screen to confirm:
+
 ```java
   private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
   Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
@@ -59,8 +61,8 @@ Reassure that the lock screen is set:
         }
 ```
 
-
 - use the key after lock screen
+
 ```java
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -74,15 +76,13 @@ Reassure that the lock screen is set:
             }
         }
     }
-
 ```
 
 Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
 
-
 #### Dynamic Analysis
-Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
+Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
 ### Testing Biometric Authentication
 
@@ -94,7 +94,7 @@ Better security is achieved by using the fingerprint API in conjunction with the
 
 An even more secure option is using asymmetric cryptography. Here, the mobile app creates an asymmetric key pair in the KeyStore and enrolls the public key on the server backend. Later transactions are then signed with the private key and verified by the server using the public key. The advantage of this is that transactions can be signed using KeyStore APIs without ever extracting the private key from the KeyStore. Consequently, it is impossible for attackers to obtain the key from memory dumps or by using instrumentation.
 
-Note that there are quiet some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. See the Samsung Pass SDK for instance, which uses an `onComplete` handler with no cryptographic binding. See [the Samsung Programming Guide](https://developer.samsung.com/common/download/check.do?actId=1106 "Pass programming guide") for more details.
+Note that there are quite some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. Be very cautious when using third party SDKs to handle sensitive authentication logic.
 
 #### Static Analysis
 
@@ -108,36 +108,37 @@ Safely implementing fingerprint authentication requires following a few simple p
 
 - The permission must be requested in the Android Manifest:
 
-```xml
-	<uses-permission
-        android:name="android.permission.USE_FINGERPRINT" />
-```
+    ```xml
+        <uses-permission
+            android:name="android.permission.USE_FINGERPRINT" />
+    ```
+
 - Fingerprint hardware must be available:
 
-```Java
-	 FingerprintManager fingerprintManager = (FingerprintManager)
-                    context.getSystemService(Context.FINGERPRINT_SERVICE);
-    fingerprintManager.isHardwareDetected();                
-```
+    ```Java
+        FingerprintManager fingerprintManager = (FingerprintManager)
+                        context.getSystemService(Context.FINGERPRINT_SERVICE);
+        fingerprintManager.isHardwareDetected();
+    ```
 
 - The user must have a protected lock screen:
 
-```Java
-	 KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-	 keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
-```
+    ```Java
+        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
+    ```
 
 - At least one finger should be registered:
 
-```java
-	fingerprintManager.hasEnrolledFingerprints();
-```
+    ```java
+        fingerprintManager.hasEnrolledFingerprints();
+    ```
 
 - The application should have permission to ask for a user fingerprint:
 
-```java
-	context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
-```
+    ```java
+        context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
+    ```
 
 If any of the above checks fail, the option for fingerprint authentication should not be offered.
 
@@ -152,7 +153,7 @@ secetkeyInfo.isInsideSecureHardware()
 On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
 
 ```java
-	keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
+    keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
 ```
 
 ##### Fingerprint Authentication using a Symmetric Key
@@ -160,23 +161,23 @@ On certain systems, it is possible to enforce the policy for biometric authentic
 Fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
 
 ```java
-	generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
+    generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
 
-	generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
-	      KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-	      .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-	      .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-	      .setUserAuthenticationRequired(true)
-	      .build()
-	);
+    generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
+            KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            .setUserAuthenticationRequired(true)
+            .build()
+    );
 
-	generator.generateKey();
+    generator.generateKey();
 ```
 
 To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
 
-```
-	SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
+```java
+    SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
 
     if (mode == Cipher.ENCRYPT_MODE) {
         cipher.init(mode, keyspec);
@@ -185,17 +186,17 @@ To perform encryption or decryption with the protected key, create a `Cipher` ob
 Keep in mind, a new key cannot be used immediately - it has to be authenticated through the `FingerprintManager` first. This involves wrapping the `Cipher` object into `FingerprintManager.CryptoObject` which is passed to `FingerprintManager.authenticate()` before it will be recognized.
 
 ```java
-	cryptoObject = new FingerprintManager.CryptoObject(cipher);
-	fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
+    cryptoObject = new FingerprintManager.CryptoObject(cipher);
+    fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
 ```
 
 When the authentication succeeds, the callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called at which point, the authenticated `CryptoObject` can be retrieved from the result.
 
 ```java
 public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-	cipher = result.getCryptoObject().getCipher();
+    cipher = result.getCryptoObject().getCipher();
 
-	(... do something with the authenticated cipher object ...)
+    //(... do something with the authenticated cipher object ...)
 }
 ```
 
@@ -249,6 +250,7 @@ byte[] signed = signature.sign();
 
 Android Nougat (API 24) adds the `setInvalidatedByBiometricEnrollment(boolean invalidateKey)` method to `KeyGenParameterSpec.Builder`. When `invalidateKey` value is set to "true" (the default), keys that are valid for fingerprint authentication are irreversibly invalidated when a new fingerprint is enrolled. This prevents an attacker from retrieving they key even if they are able to enroll an additional fingerprint.
 Android Oreo (API 26) adds two additional error-codes:
+
 - `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
 - `FINGERPRINT_ERROR_VENDOR` – A vendor-specific fingerprint reader error occurred.
 
@@ -262,10 +264,9 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 ### References
 
-
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
 
 #### OWASP MASVS
 
@@ -279,5 +280,4 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 #### Request App Permissions
 
-- Runtime Permissions - https://developer.android.com/training/permissions/requesting
-- Samsung Pass Developer Guide - https://developer.samsung.com/galaxy/pass/guide
+- Runtime Permissions - <https://developer.android.com/training/permissions/requesting>

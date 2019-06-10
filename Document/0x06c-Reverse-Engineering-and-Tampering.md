@@ -6,12 +6,6 @@ Because Objective-C and Swift are fundamentally different, the programming langu
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
-#### Xcode and iOS SDK
-
-Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools developed by Apple for developing software for macOS, iOS, watchOS, and tvOS. You can [download it from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE").
-
-The iOS SDK (Software Development Kit), formerly known as the iPhone SDK, is a software development kit developed by Apple for developing native iOS applications. You can [download it from the official Apple website](https://developer.apple.com/ios/ "Apple iOS SDK") as well.
-
 #### Utilities
 
 - [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") "is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols."
@@ -39,26 +33,6 @@ iOS reverse engineering is a mixed bag. On one hand, apps programmed in Objectiv
 In this guide, we'll introduce static and dynamic analysis and instrumentation. Throughout this chapter, we refer to the [OWASP UnCrackable Apps for iOS]( https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios "OWASP UnCrackable Apps for iOS"), so download them from the MSTG repository if you're planning to follow the examples.
 
 #### Static Analysis
-
-#### Getting the IPA File from an OTA Distribution Link
-
-During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
-
-```
-itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
-```
-
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
-
-```shell 
-$ npm install -g itms-services
-```
-
-Save the IPA file locally with the following command:
-
-```
-# itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
-```
 
 ##### Recovering an IPA File From an Installed App
 
@@ -92,18 +66,17 @@ If the app is available on iTunes, you can recover the IPA on macOS:
 
 Besides being code-signed, apps distributed via the App Store are also protected by Apple's FairPlay DRM system. This system uses asymmetric cryptography to ensure that any app (including free apps) obtained from the App Store executes only on the device it is approved to run on. The decryption key is unique to the device and burned into the processor. As of now, the only way to obtain the decrypted code from a FairPlay-decrypted app is to dump it from memory while the app is running. On a jailbroken device, this can be done with the Clutch tool that's included in standard Cydia repositories [2]. Use clutch in interactive mode to get a list of installed apps, decrypt them, and pack them into an IPA file:
 
-```
-# Clutch -i
+```shell
+$ Clutch -i
 ```
 
 **NOTE:** Only applications distributed via the AppStore are protected by FairPlay DRM. If your application was compiled in and exported directly from Xcode, you don't need to decrypt it. The easiest way to disassemble is to load the application into Hopper, which can be used to make sure that it's being correctly disassembled. You can also check it with otool:
 
 ```shell
-# otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
+$  otool -l yourbinary | grep -A 4 LC_ENCRYPTION_INFO
 ```
 
 If the output contains cryptoff, cryptsize, and cryptid fields, the binary is encrypted. If the output of this command is empty, the binary is not encrypted. **Remember** to use otool on the binary, not on the IPA file.
-
 
 #### Getting Basic Information with Class-dump and Hopper Disassembler
 
@@ -128,7 +101,7 @@ MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYL
 
 ```
 
-Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an  application to be deployed on all devices.
+Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an application to be deployed on all devices.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
 ```shell
@@ -170,8 +143,8 @@ iOS ships with the console app debugserver, which allows remote debugging via gd
 
 To obtain the executable, mount the following DMG image:
 
-```
-/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/ DeviceSupport/<target-iOS-version/DeveloperDiskImage.dmg
+```shell
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/<target-iOS-version/DeveloperDiskImage.dmg
 ```
 
 You'll find the debugserver executable in the `/usr/bin/` directory on the mounted volume. Copy it to a temporary directory, then create a file called `entitlements.plist` with the following content:
@@ -249,7 +222,7 @@ cy#
 
 ```
 
-We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript. 		
+We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript.
 
 ```shell
 
@@ -259,7 +232,8 @@ cy# [alertView show]
 cy# [alertView release]
 
 ```
-![Cycript Alert Sample](Images/Chapters/0x06c/cycript_sample.png)
+
+<img src="Images/Chapters/0x06c/cycript_sample.png" alt="Cycript Alert Sample" width="250">
 
 Find the document directory with Cycript:
 
@@ -278,7 +252,7 @@ cy# [UIApplication sharedApplication].delegate
 
 The command `[[UIApp keyWindow] recursiveDescription].toString()` returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow is shown. The indentation space reflects the relationships between views. For example, UILabel, UITextField, and UIButton are subviews of UIView.
 
-```
+```xml
 
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
@@ -301,18 +275,22 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 - Hook into the running process with the command `cycript -p PID`.
 - The Cycript interpreter will be provided after successful hooking. You can get the application instance by using the Objective-C syntax: `[UIApplication sharedApplication]`.
 
-```
-cy# [UIApplication sharedApplication]
-cy# var a = [UIApplication sharedApplication]
-```
+  ```shell
+  cy# [UIApplication sharedApplication]
+  cy# var a = [UIApplication sharedApplication]
+  ```
+
 - To find this application's delegate class:
-```
-cy# a.delegate
-```
+
+  ```shell
+  cy# a.delegate
+  ```
+
 - Let's print out the `AppDelegate` class' methods :
-```
-cy# printMethods ("AppDelegate")
-```
+
+  ```shell
+  cy# printMethods ("AppDelegate")
+  ```
 
 #### Installing Frida
 
@@ -526,7 +504,6 @@ PID  Name
 
 When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
 
-
 ### Method Tracing with Frida
 
 Intercepting Objective-C methods is a useful iOS security testing technique (for data storage operations and network requests, for example). In the following example, we'll write a simple tracer for logging HTTP(S) requests made via standard iOS HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
@@ -539,16 +516,16 @@ Run Safari on the device and make sure the device is connected via USB. Then sta
 
 ```shell
 $ frida-trace -U -m "-[NSURL *]" Safari
-Instrumenting functions...                                              
+Instrumenting functions...
 -[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
 -[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
 (...)
-Started tracing 248 functions. Press Ctrl+C to stop.     
+Started tracing 248 functions. Press Ctrl+C to stop.
 ```
 
 Next, navigate to a new website in Safari. You should see traced function calls on the frida-trace console. Note that the `initWithURL:` method is called to initialize a new URL request object.
 
-```
+```shell
           /* TID 0xc07 */
  20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
 20313 ms  -[NSURLRequest URL]
@@ -563,10 +540,9 @@ We can look up the declaration of this method on the [Apple Developer Website](h
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
+The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
 
 We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
-
 
 ```python
 import sys
@@ -621,7 +597,6 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida iOS Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples") of Frida usage on iOS.
 
 Please also take a look at the [Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/).
-
 
 ### Patching React Native Applications
 

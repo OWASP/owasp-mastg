@@ -8,25 +8,29 @@ Android assigns a distinct system identity (Linux user ID and group ID) to every
 
 Android permissions are classified into four different categories on the basis of the protection level they offer:
 
--	**Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting SDK 23 or higher, these permissions are granted automatically at install time. For apps targeting a lower SDK, the user needs to approve them at install time. Example: `android.permission.INTERNET`
--	**Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
+- **Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting SDK 23 or higher, these permissions are granted automatically at install time. For apps targeting a lower SDK, the user needs to approve them at install time. Example: `android.permission.INTERNET`
+- **Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`
 Note that starting at Android 8, If an app requests a permission at runtime, the system will grant the explicit permission, instead of all the permissions which belong to the same permission group as the requested one.
--	**Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
--	**SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
+- **Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at install time. Example: `android.permission.ACCESS_MOCK_LOCATION`
+- **SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
 Note that starting at Android 8 the permissions bellow contain the following changes:
+
 - READ_CONTACTS : When an app request this permission, queries for usage data will return approximations rather than exact values.
 - GET_ACCOUNTs : Apps no longer get access to user accounts with this permission unless the authenticator owns the accounts or the user grants that access.
 
 #### Activity Permission Enforcement
+
 Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest. These permissions restrict which applications can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
 
 #### Service Permission Enforcement
+
 Permissions applied via `android:permission` attribute within the `<service>` tag in the manifest restrict who can start or bind to the associated Service. The permission is checked during `Context.startService()`, `Context.stopService()` and `Context.bindService()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
 
 #### Broadcast Permission Enforcement
+
 Permissions applied via `android:permission` attribute within the `<receiver>` tag restrict access to send broadcasts to the associated BroadcastReceiver. The held permissions are checked after `Context.sendBroadcast()` returns, while trying to deliver the sent broadcast to the given receiver. Please note failure to hold proper permissions doesn't throw an exception, the result is an unsent broadcast.
 
 A permission can be supplied to `Context.registerReceiver()` to control who can broadcast to a programmatically registered receiver. Going the other way, a permission can be supplied when calling `Context.sendBroadcast()` to restrict which broadcast receivers are allowed to receive the broadcast.
@@ -42,6 +46,7 @@ The permissions are checked when you first retrieve a provider (if you don't hav
 Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
 
 #### Content Provider URI Permissions
+
 The standard permission system is not sufficient when being used with content providers. For example a content provider may want to limit permissions to READ permissions in order to protect itself, while using custom URIs to retrieve information. An application should only have the permission for that specific URI.
 
 The solution is per-URI permissions. When starting or returning a result from an activity, the method can set `Intent.FLAG_GRANT_READ_URI_PERMISSION` and/or `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. This grants permission to the activity for
@@ -53,11 +58,9 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
  [grantUriPermission()](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn), [revokeUriPermission()](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)), and [checkUriPermission()](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)).
 
-**Custom Permissions**
+##### Custom Permissions
 
-Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes:
-- `android:name` and
-- `android:protectionLevel`.
+Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes: `android:name` and `android:protectionLevel`.
 
 It is crucial to create custom permissions that adhere to the *Principle of Least Privilege*: permission should be defined explicitly for its purpose, with a meaningful and accurate label and description.
 
@@ -94,8 +97,7 @@ Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it v
 
 #### Static Analysis
 
-
-**Android Permissions**
+##### Android Permissions
 
 Check permissions to make sure that the app really needs them and remove unnecessary permissions. For example, the `INTERNET` permission in the AndroidManifest.xml file is necessary for an Activity to load a web page into a WebView. Because a user can revoke an application's right to use a dangerous permission, the developer should check whether the application has the appropriate permission each time an action is performed that would require that permission.
 
@@ -114,9 +116,10 @@ uses-permission: android.permission.CHANGE_CONFIGURATION
 uses-permission: android.permission.SYSTEM_ALERT_WINDOW
 uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 ```
+
 Please reference this [permissions overview](https://developer.android.com/guide/topics/permissions/overview#permission-groups) for descriptions of the listed permissions that are considered dangerous.
 
-`
+```text
 READ_CALENDAR,
 WRITE_CALENDAR,
 READ_CALL_LOG,
@@ -143,9 +146,9 @@ RECEIVE_WAP_PUSH,
 RECEIVE_MMS,
 READ_EXTERNAL_STORAGE,
 WRITE_EXTERNAL_STORAGE.
-`
+```
 
-**Custom Permissions**
+##### Custom Permissions
 
 Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the ContextCompat.checkSelfPermission() method is called to check if an activity has a specified permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file.
 
@@ -155,6 +158,7 @@ int canProcess = checkCallingOrSelfPermission("com.example.perm.READ_INCOMING_MS
 if (canProcess != PERMISSION_GRANTED)
 throw new SecurityException();
 ```
+
 Or with `ContextCompat.checkSelfPermission()` which compares it to the manifest file.
 
 ```java
@@ -164,6 +168,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMIN
             Log.v(TAG, "Permission denied");
         }
 ```
+
 #### Requesting Permissions
 
 If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions()` method in order to obtain them. The app passes the permissions needed and an integer request code you have specified to the user asynchronously, returning once the user chooses to accept or deny the request in the same thread. After the response is returned the same request code is passed to the app's callback method.
@@ -195,8 +200,8 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
     // Permission already granted debug message printed in terminal.
     Log.v(TAG, "Permission already granted.");
 }
-
 ```
+
 Please note that if you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
 
 #### Handling the permissions response
@@ -213,7 +218,7 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
         case MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
             if (grantResults.length > 0
                 && permissionResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 0 is a cancelled request, if int array equals requestCode permission is granted.
+                // 0 is a canceled request, if int array equals requestCode permission is granted.
             } else {
                 // permission denied code goes here.
                 Log.v(TAG, "Permission denied");
@@ -225,7 +230,8 @@ public void onRequestPermissionsResult(int requestCode, //requestCode is what yo
 }
 
 ```
-Permissions should be explicitly requested for every needed permission, even if a similar permission from the same group may change in the future. Also permissions may be granted without user approval automatically.
+
+Permissions should be explicitly requested for every needed permission, even if a similar permission from the same group has already been requested. For applications targeting Android 7.1 (API level 25) and older, Android will automatically give an application all the permissions from a permission group, if the user grants one of the requested permissions of that group. Starting with Android 8.0 (API level 26), permissions will still automatically be granted if a user has already granted a permission from the same permission group, but the application still needs to explicitly request the permission. In this case, the `onRequestPermissionsResult` handler will automatically be triggered without any user interaction.
 
 For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are listed in the app manifest but only permissions are granted for `READ_EXTERNAL_STORAGE`, then requesting `WRITE_LOCAL_STORAGE` will automatically have permissions without user interaction because they are in the same group and not explicitly requested.
 
@@ -271,7 +277,6 @@ Note that this method can't be used for `signature` level permissions because Dr
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
-
 ### Testing Custom URL Schemes
 
 #### Overview
@@ -288,6 +293,7 @@ Once a URL scheme has been defined, multiple apps can register for any available
 URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
+
 - When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
 - Using the data for queries? Make sure you make parameterized queries.
 - Using the data to do authenticated actions? Make sure that the user is in an authenticated state before the data is processed.
@@ -328,7 +334,7 @@ Verify the usage of [`toUri`](https://developer.android.com/reference/android/co
 
 To enumerate URL schemes within an app that can be called by a web browser, use the Drozer module `scanner.activity.browsable`:
 
-```
+```shell
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
 Package: com.google.android.apps.messaging
   Invocable URIs:
@@ -340,7 +346,7 @@ Package: com.google.android.apps.messaging
 
 You can call custom URL schemes with the Drozer module `app.activity.start`:
 
-```
+```shell
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
@@ -357,7 +363,6 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
 
-
 ### Testing for Sensitive Functionality Exposure Through IPC
 
 #### Overview
@@ -366,21 +371,21 @@ During implementation of a mobile application, developers may apply traditional 
 
 The following is a list of Android IPC Mechanisms that may expose sensitive data:
 
--  [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
--  [Services](https://developer.android.com/guide/components/services.html "IPCServices")
--  [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
--  [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
--  [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
--  [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
+- [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
+- [Services](https://developer.android.com/guide/components/services.html "IPCServices")
+- [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
+- [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
+- [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
+- [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
 
 #### Static Analysis
 
 We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the source code must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
 
--	[`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
--	[`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
--	[`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
--	[`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
+- [`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
+- [`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
+- [`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
+- [`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
 
 An "exported" activity, service, or content  can be accessed by other apps. There are two common ways to designate a component as exported. The obvious one is setting the export tag to true `android:exported="true"`. The second way involves defining an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When this is done, the export tag is automatically set to "true." To prevent all other Android apps from interacting with the IPC component element, be sure that the `android:exported="true"` value and an `<intent-filter>` aren't in their `AndroidManifest.xml` files unless this is necessary.
 
@@ -461,6 +466,8 @@ By reversing the target application, we can see that the service `AuthService` p
                         sendUnrecognisedMessage();
                         return;
                     }
+           }
+   }
 ```
 
 ##### Broadcast Receivers
@@ -513,16 +520,19 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
                 SmsManager smsManager = SmsManager.getDefault();
                 System.out.println("For the changepassword - phonenumber: "+textPhoneno+" password is: "+textMessage);
 smsManager.sendTextMessage(textPhoneno, null, textMessage, null, null);
+          }
+     }
+  }
+}
 ```
 
 BroadcastReceivers should use the `android:permission` attribute;  otherwise, other applications can invoke them. You can use `Context.sendBroadcast(intent, receiverPermission);` to specify permissions a receiver must have to [read the broadcast](https://goo.gl/ViRYPC "SendBroadcast"). You can also set an explicit application package name that limits the components this Intent will resolve to. If left as the default value (null), all components in all applications will be considered. If non-null, the Intent can match only the components in the given application package.
-
 
 #### Dynamic Analysis
 
 You can enumerate IPC components with Drozer. To list all exported IPC components, use the module `app.package.attacksurface`:
 
-```
+```shell
 dz> run app.package.attacksurface com.mwr.example.sieve
 Attack Surface:
   3 activities exported
@@ -534,10 +544,9 @@ Attack Surface:
 
 ##### Content Providers
 
-
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
-```
+```shell
 dz> run app.provider.finduri com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 content://com.mwr.example.sieve.DBContentProvider/
@@ -552,12 +561,12 @@ content://com.mwr.example.sieve.DBContentProvider/Keys
 
 Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be good if sensitive keys and passwords could simply be queried from the provider!
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
 Permission Denial: reading com.mwr.example.sieve.DBContentProvider uri content://com.mwr.example.sieve.DBContentProvider/Keys from pid=4268, uid=10054 requires com.mwr.example.sieve.READ_KEYS, or grantUriPermission()
 ```
 
-```
+```shell
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password          | pin  |
 | SuperPassword1234 | 1234 |
@@ -565,7 +574,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 This content provider can be accessed without permission.
 
-```
+```shell
 dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string  Password "newpassword"
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password    | pin  |
@@ -576,7 +585,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 To list activities exported by an application, use the module `app.activity.info`. Specify the target package with `-a` or omit the option to target all apps on the device:
 
-```
+```shell
 dz> run app.activity.info -a com.mwr.example.sieve
 Package: com.mwr.example.sieve
   com.mwr.example.sieve.FileSelectActivity
@@ -589,7 +598,7 @@ Package: com.mwr.example.sieve
 
 Enumerating activities in the vulnerable password manager "Sieve" shows that the activity `com.mwr.example.sieve.PWList` is exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
 
-```
+```shell
 dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
 ```
 
@@ -599,7 +608,7 @@ Since the activity is called directly in this example, the login form protecting
 
 Services can be enumerated with the Drozer module `app.service.info`:
 
-```
+```shell
 dz> run app.service.info -a com.mwr.example.sieve
 Package: com.mwr.example.sieve
   com.mwr.example.sieve.AuthService
@@ -612,7 +621,7 @@ To communicate with a service, you must first use static analysis to identify th
 
 Because this service is exported, you can use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
-```
+```shell
 dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
 Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
   what: 4
@@ -625,7 +634,7 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 Broadcasts can be enumerated via the Drozer module `app.broadcast.info`. The target package should be specified via the `-a` parameter:
 
-```
+```shell
 dz> run app.broadcast.info -a com.android.insecurebankv2
 Package: com.android.insecurebankv2
   com.android.insecurebankv2.MyBroadCastReceiver
@@ -636,13 +645,13 @@ In the example app "Android Insecure Bank", one broadcast receiver is exported w
 
 With the Drozer module `app.broadcast.send`, we can formulate an intent to trigger the broadcast and send the password to a phone number within our control:
 
-```
+```shell
 dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
 ```
 
 This generates the following SMS:
 
-```
+```shell
 Updated Password from: SecretPassword@ to: 12345
 ```
 
@@ -652,7 +661,7 @@ If an Android application broadcasts intents without setting a required permissi
 
 To register a broadcast receiver to sniff intents, use the Drozer module `app.broadcast.sniff` and specify the action to monitor with the `--action` parameter:
 
-```
+```shell
 dz> run app.broadcast.sniff  --action theBroadcast
 [*] Broadcast receiver registered to sniff matching intents
 [*] Output is updated once a second. Press Control+C to exit.
@@ -660,9 +669,8 @@ dz> run app.broadcast.sniff  --action theBroadcast
 Action: theBroadcast
 Raw: Intent { act=theBroadcast flg=0x10 (has extras) }
 Extra: phonenumber=07123456789 (java.lang.String)
-Extra: newpass=12345 (java.lang.String)
+Extra: newpass=12345 (java.lang.String)`
 ```
-
 
 ### Testing JavaScript Execution in WebViews
 
@@ -713,16 +721,15 @@ To address these attack vectors, check the following:
   - the certificate is checked properly (see test case "Testing Endpoint Identify Verification"), and/or
   - the certificate should be pinned (see "Testing Custom Certificate Stores and SSL Pinning").
 
-
 ### Testing WebView Protocol Handlers
 
 #### Overview
 
 Several default [schemas](https://developer.android.com/guide/appendix/g-app-intents.html "Intent List") are available for Android URLs. They can be triggered within a WebView with the following:
 
--	http(s)://
--	file://
--	tel://
+- http(s)://
+- file://
+- tel://
 
 WebViews can load remote content from an endpoint, but they can also load local content from the app data directory or external storage. If the local content is loaded, the user shouldn't be able to influence the filename or the path used to load the file, and users shouldn't be able to edit the loaded file.
 
@@ -730,10 +737,10 @@ WebViews can load remote content from an endpoint, but they can also load local 
 
 Check the source code for WebView usage. The following [WebView settings](https://developer.android.com/reference/android/webkit/WebSettings.html "WebView Settings") control resource access:
 
--	`setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
--	`setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
--	`setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
--	`setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
+- `setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
+- `setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
+- `setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
+- `setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is true for API level 15 (Ice Cream Sandwich) and below and false for API level 16 (Jelly Bean) and above.
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
@@ -773,7 +780,6 @@ webView.getSettings().setAllowContentAccess(false);
 #### Dynamic Analysis
 
 To identify the usage of protocol handlers, look for ways to trigger phone calls and ways to access files from the file system while you're using the app.
-
 
 ### Determining Whether Java Objects Are Exposed Through WebViews
 
@@ -859,8 +865,6 @@ Dynamic analysis of the app can show you which HTML or JavaScript files are load
 
 A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
-
-
 ### Testing for Fragment Injection
 
 #### Overview
@@ -879,18 +883,14 @@ To prevent this vulnerability, a new method called `isValidFragment` was added i
 
 The default implementation returns true on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
 
-
 #### Static Analysis
 
 Steps:
+
 - Check if targetSdkVersion less than 19.
-
 - Find exported Activities that extend the `PreferenceActivity` class.
-
 - Determine whether the method isValidFragment has been overridden.
-
 - If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
-
 - In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as described.
 
 The following example shows an Activity that extends this activity:
@@ -900,6 +900,8 @@ public class MyPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+}
 ```
 
 The following examples show the isValidFragment method being overridden with an implementation that allows the loading of MyPreferenceFragment only:
@@ -913,11 +915,10 @@ return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
 
 ```
 
-
-
 #### Example of Vulnerable App and Exploitation
 
 MainActivity.class
+
 ```Java
 public class MainActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
@@ -927,6 +928,7 @@ public class MainActivity extends PreferenceActivity {
 ```
 
 MyFragment.class
+
 ```Java
 public class MyFragment extends Fragment {
     public void onCreate (Bundle savedInstanceState) {
@@ -941,6 +943,7 @@ public class MyFragment extends Fragment {
     }
 }
 ```
+
 To exploit this vulnerable Activity, you can create an application with the following code:
 
 ```Java
@@ -952,8 +955,7 @@ Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
-The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/blob/master/vulnerable.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
-
+The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
 
 ### Testing Object Persistence
 
@@ -975,7 +977,7 @@ public class Person implements Serializable {
   public Person(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-	}
+    }
   //..
   //getters, setters, etc
   //..
@@ -1009,14 +1011,16 @@ String json = gson.toJson(obj);
 // ==> json is {"value1":1,"value2":"abc"}
 
 ```
+
 ##### XML
 
-There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [this blog post](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
+There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [a blogpost from ibm.com](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
 Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the data storage chapter for more details. As stated earlier: the true danger in XML lies in the XML eXternal Entity attack (XXE) as it might allow for reading external data sources that are still accessible within the application.
 
 ##### ORM
 
 There are libraries that provide functionality for directly storing the contents of an object in a database and then instantiating the object with the database contents. This is called Object-Relational Mapping (ORM). Libraries that use the SQLite database include
+
 - [OrmLite](http://ormlite.com/ "OrmLite"),
 - [SugarORM](https://satyan.github.io/sugar/ "Sugar ORM"),
 - [GreenDAO](http://greenrobot.org/greendao/ "GreenDAO") and
@@ -1059,7 +1063,8 @@ public class MyParcelable implements Parcelable {
 
 Because this mechanism that involves Parcels and Intents may change over time, and the `Parcelable` may contain `IBinder` pointers, storing data to disk via `Parcelable` is not recommended.
 
-#####Protocol Buffers
+##### Protocol Buffers
+
 [Protocol Buffers](https://developers.google.com/protocol-buffers/ "Google Documentation") by Google, are a platform- and language neutral mechanism for serializing structured data by means of the [Binary Data Format](https://developers.google.com/protocol-buffers/docs/encoding "Encoding").
 There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
 Note that Protocol Buffers do not provide any protection for confidentiality: there is no built in encryption.
@@ -1068,13 +1073,11 @@ Note that Protocol Buffers do not provide any protection for confidentiality: th
 
 If object persistence is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters on data storage and cryptographic management for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
 
-
-
 There are a few generic remediation steps that you can always take:
 
-1.	Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter about cryptography for more details.
-2.	Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the data storage chapter for more details.
-3.	Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
+1. Make sure that sensitive data has been encrypted and HMACed/signed after serialization/persistence. Evaluate the signature or HMAC before you use the data. See the chapter about cryptography for more details.
+2. Make sure that the keys used in step 1 can't be extracted easily. The user and/or application instance should be properly authenticated/authorized to obtain the keys. See the data storage chapter for more details.
+3. Make sure that the data within the de-serialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic).
 
 For high-risk applications that focus on availability, we recommend that you use `Serializable` only when the serialized classes are stable. Second, we recommend not using reflection-based persistence because
 
@@ -1087,8 +1090,8 @@ See the anti-reverse-engineering chapter for more details.
 
 Search the source code for the following keywords:
 
--	`import java.io.Serializable`
--	`implements Serializable`
+- `import java.io.Serializable`
+- `implements Serializable`
 
 ##### JSON
 
@@ -1096,22 +1099,22 @@ If you need to counter memory-dumping, make sure that very sensitive information
 
 **`JSONObject`** Search the source code for the following keywords:
 
--	`import org.json.JSONObject;`
--	`import org.json.JSONArray;`
+- `import org.json.JSONObject;`
+- `import org.json.JSONArray;`
 
 **`GSON`** Search the source code for the following keywords:
 
--	`import com.google.gson`
--	`import com.google.gson.annotations`
--	`import com.google.gson.reflect`
--	`import com.google.gson.stream`
--	`new Gson();`
--	Annotations such as `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, and `@Until`
+- `import com.google.gson`
+- `import com.google.gson.annotations`
+- `import com.google.gson.reflect`
+- `import com.google.gson.stream`
+- `new Gson();`
+- Annotations such as `@Expose`, `@JsonAdapter`, `@SerializedName`,`@Since`, and `@Until`
 
 **`Jackson`** Search the source code for the following keywords:
 
--	`import com.fasterxml.jackson.core`
--	`import org.codehaus.jackson` for the older version.
+- `import com.fasterxml.jackson.core`
+- `import org.codehaus.jackson` for the older version.
 
 ##### ORM
 
@@ -1137,26 +1140,26 @@ Make sure that `QUERY_LOG` is set to false.
 
 **`GreenDAO`** Search the source code for the following keywords:
 
--	`import org.greenrobot.greendao.annotation.Convert`
--	`import org.greenrobot.greendao.annotation.Entity`
--	`import org.greenrobot.greendao.annotation.Generated`
--	`import org.greenrobot.greendao.annotation.Id`
--	`import org.greenrobot.greendao.annotation.Index`
--	`import org.greenrobot.greendao.annotation.NotNull`
--	`import org.greenrobot.greendao.annotation.*`
--	`import org.greenrobot.greendao.database.Database`
--	`import org.greenrobot.greendao.query.Query`
+- `import org.greenrobot.greendao.annotation.Convert`
+- `import org.greenrobot.greendao.annotation.Entity`
+- `import org.greenrobot.greendao.annotation.Generated`
+- `import org.greenrobot.greendao.annotation.Id`
+- `import org.greenrobot.greendao.annotation.Index`
+- `import org.greenrobot.greendao.annotation.NotNull`
+- `import org.greenrobot.greendao.annotation.*`
+- `import org.greenrobot.greendao.database.Database`
+- `import org.greenrobot.greendao.query.Query`
 
 **`ActiveAndroid`** Search the source code for the following keywords:
 
--	`ActiveAndroid.initialize(<contextReference>);`
--	`import com.activeandroid.Configuration`
--	`import com.activeandroid.query.*`
+- `ActiveAndroid.initialize(<contextReference>);`
+- `import com.activeandroid.Configuration`
+- `import com.activeandroid.query.*`
 
 **`Realm`** Search the source code for the following keywords:
 
--	`import io.realm.RealmObject;`
--	`import io.realm.annotations.PrimaryKey;`
+- `import io.realm.RealmObject;`
+- `import io.realm.annotations.PrimaryKey;`
 
 ##### Parcelable
 
@@ -1166,38 +1169,134 @@ Make sure that appropriate security measures are taken when sensitive informatio
 
 There are several ways to perform dynamic analysis:
 
-1.	For the actual persistence: Use the techniques described in the data storage chapter.
-2.	For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+1. For the actual persistence: Use the techniques described in the data storage chapter.
+2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+
+### Testing enforced updating
+
+Starting from API level 21 (Android 5.0), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
+Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
+
+Please note that newer versions of an application will not fix security issues that are living in the back-ends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
+Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
+
+#### Static analysis
+
+The code sample below shows the example of an app-update:
+
+```java
+//Part 1: check for update
+// Creates instance of the manager.
+AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(context);
+
+// Returns an intent object that you use to check for an update.
+Task<AppUpdateInfo> appUpdateInfo = appUpdateManager.getAppUpdateInfo();
+
+// Checks that the platform will allow the specified type of update.
+if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+      // For a flexible update, use AppUpdateType.FLEXIBLE
+      && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+
+
+
+                  //...Part 2: request update
+                  appUpdateManager.startUpdateFlowForResult(
+                     // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                     appUpdateInfo,
+                     // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                     AppUpdateType.IMMEDIATE,
+                     // The current activity making the update request.
+                     this,
+                     // Include a request code to later monitor this update request.
+                     MY_REQUEST_CODE);
+
+
+
+                     //...Part 3: check if update completed succesfully
+ @Override
+ public void onActivityResult(int requestCode, int resultCode, Intent data) {
+   if (myRequestCode == MY_REQUEST_CODE) {
+     if (resultCode != RESULT_OK) {
+       log("Update flow failed! Result code: " + resultCode);
+       // If the update is cancelled or fails,
+       // you can request to start the update again in case of forced updates
+     }
+   }
+ }
+
+ //..Part 4:
+ // Checks that the update is not stalled during 'onResume()'.
+// However, you should execute this check at all entry points into the app.
+@Override
+protected void onResume() {
+  super.onResume();
+
+  appUpdateManager
+      .getAppUpdateInfo()
+      .addOnSuccessListener(
+          appUpdateInfo -> {
+            ...
+            if (appUpdateInfo.updateAvailability()
+                == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                // If an in-app update is already running, resume the update.
+                manager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    IMMEDIATE,
+                    this,
+                    MY_REQUEST_CODE);
+            }
+          });
+}
+}
+```
+
+>Source: [https://developer.android.com/guide/app-bundle/in-app-updates](https://developer.android.com/guide/app-bundle/in-app-updates)
+
+When checking for a proper update mechanism, make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
+Next, pay attention to the `AppUpdateType.IMMEDIATE` use: if a security update comes in, then this flag should be used in order to make sure that the user cannot go forward with using the app without updating it.
+As you can see, in part 3 of the example: make sure that cancellations or errors do end up in re-checks and that a user cannot move forward in case of a critical security update.
+Finally, in part 4: you can see that for every entrypoint in the application, an update-mechanism should be enforced, so that bypassing it will be harder.
+
+#### Dynamic analysis
+
+In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
+Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the back-end will stop calls to vulnerable back-ends and/or whether the vulnerable app-version itself is blocked by the back-end.
+Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
 ### References
 
+#### Android App Bundles and updates
+
+- <https://developer.android.com/guide/app-bundle/in-app-updates>
+
 #### Android Fragment Injection
 
-- https://www.synopsys.com/blogs/software-security/fragment-injection/
-- https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf
+- <https://www.synopsys.com/blogs/software-security/fragment-injection/>
+- <https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf>
 
 #### Android Permissions Documentation
 
-- https://developer.android.com/training/permissions/usage-notes
-- https://developer.android.com/training/permissions/requesting#java
-- https://developer.android.com/guide/topics/permissions/overview#permission-groups
-- https://developer.android.com/guide/topics/manifest/provider-element#gprmsn
-- https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)
-- https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)
-- https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions
-- https://developer.android.com/guide/topics/permissions/overview
-- https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct
+- <https://developer.android.com/training/permissions/usage-notes>
+- <https://developer.android.com/training/permissions/requesting#java>
+- <https://developer.android.com/guide/topics/permissions/overview#permission-groups>
+- <https://developer.android.com/guide/topics/manifest/provider-element#gprmsn>
+- <https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int)>
+- <https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int)>
+- <https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions>
+- <https://developer.android.com/guide/topics/permissions/overview>
+- <https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct>
 
 #### Android permissions changes in Android 8
 
-- https://developer.android.com/about/versions/oreo/android-8.0-changes
+- <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
+- V1.9: "A mechanism for enforcing updates of the mobile app exists."
 - V6.1: "The app only requests the minimum set of permissions necessary."
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
@@ -1209,12 +1308,11 @@ There are several ways to perform dynamic analysis:
 
 #### CWE
 
-- CWE-79 - Improper Neutralization of Input During Web Page Generation https://cwe.mitre.org/data/definitions/79.html
+- CWE-79 - Improper Neutralization of Input During Web Page Generation
 - CWE-200 - Information Leak / Disclosure
 - CWE-749 - Exposed Dangerous Method or Function
 - CWE-939 - Improper Authorization in Handler for Custom URL Scheme
 
-
 #### Tools
 
-- Drozer - https://github.com/mwrlabs/drozer
+- Drozer - <https://github.com/mwrlabs/drozer>
