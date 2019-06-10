@@ -160,11 +160,11 @@ $ apt-get install adv-cmds
 
 #### Recommended Tools - macOS Device
 
-In order to analyse iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
+In order to analyze iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
 
 ##### Burp Suite
 
-[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyse the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
+[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
 
 ##### Frida
 
@@ -182,7 +182,7 @@ In order to analyse iOS apps, you should use a macOS device and install the foll
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
 
-Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyse and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyze and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
@@ -208,12 +208,50 @@ It has several features, like app installation, access the app sandbox without j
 
 ##### Mobile-Security-Framework - MobSF
 
-[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pen-testing framework that also supports iOS. The easiest way of getting MobSF started is via docker.
+[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pentesting framework that also supports iOS IPA files. The easiest way of getting MobSF started is via Docker.
 
 ```shell
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
+
+Or install and start it locally on your host computer by running:
+
+```shell
+# Setup
+git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
+cd Mobile-Security-Framework-MobSF
+./setup.sh # For Linux and Mac
+setup.bat # For Windows
+
+# Installation process
+./run.sh # For Linux and Mac
+run.bat # For Windows
+```
+
+> By running it locally on a macOS host you'll benefit from a slightly better class-dump output.
+
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the IPA you want to analyze into the upload area and MobSF will start its job.
+
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
+
+<img src="Images/Chapters/0x06b/mobsf_ios.png" alt="MobSF for iOS">
+
+The following is displayed:
+
+- Basic information about the app and its binary file.
+- Some options to:
+  - View the `Info.plist` file.
+  - View the strings contained in the app binary.
+  - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
+- List all Purpose Strings extracted from the `Info.plist` which give some hints on the app's permissions.
+- Exceptions in the App Transport Security (ATS) configuration will be listed.
+- A brief binary analysis showing if free binary security features are activated or e.g. if the binary makes use of banned APIs.
+- List of libraries used by the app binary and list of all files inside the unzipped IPA.
+
+> In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
+
+Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
 
 ##### Needle
 
@@ -237,6 +275,14 @@ However, Objection also provides a REPL that allows you to interact with the app
 - Execute custom Frida scripts
 - Dump the Keychain
 - Read plist files
+
+All these tasks and more can be easily done by using the commands in objection's REPL. For example, you can obtain the classes used in an app, functions of classes or information about the bundles of an app by running:
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list classes
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <ClassName>
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
+```
 
 The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
 
@@ -268,7 +314,7 @@ $ ios-deploy --bundle Payload/my-app.app -W -d
 
 ###### Using Objection
 
-Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyse.
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
 ```shell
 # Connecting to a patched IPA
@@ -306,7 +352,7 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 ##### Passionfruit
 
-[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard tasks via Vue.js. It can be installed with npm.
+[Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard app data via Vue.js-based GUI. It can be installed with npm.
 
 ```shell
 $ npm install -g passionfruit
@@ -314,11 +360,20 @@ $ passionfruit
 listening on http://localhost:31337
 ```
 
-When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon in the example below you will get an overview of all installed apps.
+When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon you will get an overview of all installed apps:
 
 <img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250">
 
-Passionfruit can now be used to gather information of the app, dump keychain items, download and view files and many other tasks that are described in this and the following chapters.
+With Passionfruit it's possible to explore different kinds of information concerning an iOS app. Once you selected the iOS app you can perform many tasks such as:
+
+- Get information about the binary
+- View folders and files used by the application and download them
+- Inspect the Info.plist
+- Get a UI Dump of the app screen shown on the iOS device
+- List the modules that are loaded by the app
+- Dump class names
+- Dump keychain items
+- Access to NSLog traces
 
 ##### Radare2
 
@@ -326,7 +381,7 @@ Passionfruit can now be used to gather information of the app, dump keychain ite
 
 ##### TablePlus
 
-[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analysing the content of them with a GUI tool.
+[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analyzing the content of them with a GUI tool.
 
 ### Basic Testing Operations
 
@@ -420,41 +475,12 @@ $ ssh -p 2222 root@localhost
 
 There might be various scenarios where you might need to transfer data from the iOS device or app data sandbox to your workstation or vice versa. The following section will show you different ways on how to achieve that.
 
-##### App Folder Structure
-
-Before explaining all the tools, let's go through a short overview of the app folder structure on iOS to understand which data is stored where.
-
-System applications are in the `/Applications` directory. You can use [IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console") to identify the installation folder for user-installed apps (available under `/private/var/containers/`). Connect to the device via SSH and run the command `ipainstaller` (which does the same thing as `installipa`) as follows:
-
-```shell
-iPhone:~ root# ipainstaller -l
-...
-com.highaltitudehacks.dvia
-
-iPhone:~ root# ipainstaller -i com.highaltitudehacks.dvia
-...
-Bundle: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7
-Application: /private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app
-Data: /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
-```
-
-Applications are identified by a UUID (Universal Unique Identifier), a random 128-bit number. This number is the name of the folder in which the application itself are stored. The static app bundle and the application data folder is stored in different locations. These folders contain information that must be examined closely during application security assessments.
-
-- `/private/var/containers/Bundle/Application/3BD82E5A-2793-4CF5-BFBC-540AF3FEF9D7/DamnVulnerableIOSApp.app` contains the previously mentioned application data of the app, and it stores the static content as well as the application's ARM-compiled binary. The contents of this folder are used to validate the code signature.
-- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Documents` contains all the user-generated data. The application end user initiates the creation of this data.
-- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05/Library` contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
-- `/private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05` contains temporary files which aren't needed between application launches.
-
-The following illustration represents the application folder structure:
-
-<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
-
 ##### Copying App Data Files via SSH and SCP
 
 As we know now, files from our app are stored in the Data directory. You can now simply archive the Data directory with `tar` and pull it from the device with `scp`:
 
 ```shell
-iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/CC24A101-A668-4F77-B410-2FF47A281D05
+iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ```
@@ -462,6 +488,8 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 ##### Passionfruit
 
 After starting Passionfruit you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
+
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory">
 
 When navigating through the directories and selecting a file, a TextViewer pop-up will show up that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, including:
 
@@ -471,7 +499,7 @@ When navigating through the directories and selecting a file, a TextViewer pop-u
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/Passionfruit_files.png" alt="Passiofruit File Options">
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passiofruit File Options">
 
 ##### Objection
 
@@ -786,61 +814,349 @@ Possible values for the property [UIDeviceFamily](https://developer.apple.com/li
 
 #### Information Gathering
 
-##### App Basic Information
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advance techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
-The following sections describes on how to retrieve basic information of an iOS app, that might be useful during a penetration test.
+- Which files are included in the package?
+- Which Frameworks does the app use?
+- Which capabilities does the app require?
+- Which permissions does the app request to the user and for what reason?
+- Does the app allow any unsecured connections?
+- Does the app create any new files when being installed?
 
-###### Mobile Security Framework (MobSF)
+##### Listing Installed Apps
 
-MobSF is a penetration testing framework that is capable of analysing IPA files and can be used before even installing the app on your testing device.
+When targeting apps that are installed on the device, you'll first have to figure out the correct bundle identifier of the application you want to analyze. You can use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
 
-Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply select the IPA you want to analyse and MobSF will start its job. The bigger the app the longer it takes, but usually you should get some feedback within a few minutes.
+```bash
+$ frida-ps -Uai
+ PID  Name                 Identifier
+----  -------------------  -----------------------------------------
+6847  Calendar             com.apple.mobilecal
+6815  Mail                 com.apple.mobilemail
+   -  App Store            com.apple.AppStore
+   -  Apple Store          com.apple.store.Jolly
+   -  Calculator           com.apple.calculator
+   -  Camera               com.apple.camera
+   -  iGoat-Swift          OWASP.iGoat-Swift
+```
 
-After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. While it may look daunting at first, the page is split up into multiple sections, each with their own purpose. Together, all the sections give a good first indication of the attack surface of the application. You can also execute additional actions, such as:
+It also shows which of them are currently running. Take a note of the "Identifier" (bundle identifier) and the PID if any as you'll need them afterwards.
 
-- Download a class-dump, if the app was written in Objective-C; if it is written in Swift no classdump can be created.
-- Have access to the Info.plist
-- Exceptions in the App Transport Security (ATS) configuration will be raised
+You can also directly open passionfruit and after selecting your iOS device you'll get the list of installed apps.
 
-There is much more information provided that you should explore, that might be helpful for you.
+<img src="Images/Chapters/0x06b/passionfruit_installed_apps.png" alt="Passionfruit Installed Apps" width="400">
 
-###### Objection
+##### Exploring the App Package
 
-Once you have installed the app, there is further information to explore, where tools like objection come in handy. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
-When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of iGoat.
+You can unzip the IPA using the standard `unzip` or any other zip utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```shell
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # env
+$ ls -1 Payload/iGoat-Swift.app
+rutger.html
+mansi.html
+splash.html
+about.html
+
+LICENSE.txt
+Sentinel.txt
+README.txt
+
+URLSchemeAttackExerciseVC.nib
+CutAndPasteExerciseVC.nib
+RandomKeyGenerationExerciseVC.nib
+KeychainExerciseVC.nib
+CoreData.momd
+archived-expanded-entitlements.xcent
+SVProgressHUD.bundle
+
+Base.lproj
+Assets.car
+PkgInfo
+_CodeSignature
+AppIcon60x60@3x.png
+
+Frameworks
+
+embedded.mobileprovision
+
+Credentials.plist
+Assets.plist
+Info.plist
+
+iGoat-Swift
+```
+
+The most relevant items are:
+
+- `Info.plist` contains configuration information for the application, such as its bundle ID, version number, and display name.
+- `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
+- `Frameworks/` contains the app native libraries as .dylib or .framework files.
+- `PlugIns/` may contain app extensions as .appex files (not present in the example).
+- `iGoat-Swift` is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
+- Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
+
+###### The Info.plist File
+
+The information property list or `Info.plist` (named by convention) is the main source of information for an iOS app. It consists of a structured file containing key-value pairs describing essential configuration information about the app. Actually, all bundled executables (app extensions, frameworks and apps) are expected to have an `Info.plist` file. You can find all possible keys in the [Apple Developer Documentation](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc "Information Property List").
+
+The file might be formatted in XML or binary (bplist). You can convert it to XML format with one simple command:
+
+- On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
+
+  ```bash
+  $ plutil -convert xml1 Info.plist
+  ```
+
+- On Linux:
+
+  ```bash
+  $ apt install libplist-utils
+  $ plistutil -i Info.plist -o Info_xml.plist
+  ```
+
+Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
+
+- App permissions Purpose Strings: `UsageDescription` (see "iOS Platform APIs")
+- Custom URL schemes: `CFBundleURLTypes` (see "iOS Platform APIs")
+- Exported/imported *custom document types*: `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` (see "iOS Platform APIs")
+- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "iOS Network APIs")
+
+Please refer to the mentioned chapters to learn more about how to test each of these points.
+
+###### App Binary
+
+iOS app binaries are fat binaries (they can be deployed on all devices 32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
+
+Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details.
+
+###### Native Libraries
+
+iOS native libraries are known as Frameworks.
+
+You can easily visualize them from Passionfruit by clicking on "Modules":
+
+<img src="Images/Chapters/0x06b/passionfruit_modules.png" alt="Passionfruit Modules">
+
+And get a more detailed view including their imports/exports:
+
+<img src="Images/Chapters/0x06b/passionfruit_modules_detail.png" alt="Passionfruit Modules Detail">
+
+They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
+
+```shell
+$ ls -1 Frameworks/
+Realm.framework
+libswiftCore.dylib
+libswiftCoreData.dylib
+libswiftCoreFoundation.dylib
+```
+
+or from the device with objection (as well as per SSH of course):
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
+NSFileType      Perms  NSFileProtection    ...  Name
+------------  -------  ------------------  ...  ----------------------------
+Directory         493  None                ...  Realm.framework
+Regular           420  None                ...  libswiftCore.dylib
+Regular           420  None                ...  libswiftCoreData.dylib
+Regular           420  None                ...  libswiftCoreFoundation.dylib
+...
+```
+
+Please note that this might not be the complete list of native code elements being used by the app as some can be part of the source code, meaning that they'll be compiled in the app binary and therefore cannot be found as standalone libraries or Frameworks in the `Frameworks` folder.
+
+For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to the chapter "Tampering and Reverse Engineering on iOS" for more information about how to reverse engineer Frameworks.
+
+###### Other App Resources
+
+It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
+
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View">
+
+##### Accessing App Data Directories
+
+Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
+
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350">
+
+On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) assigned for its directory names.
+
+In order to easily obtain the installation directory information for user-installed apps you can follow the following methods:
+
+Connect to the terminal on the device and run the command `ipainstaller` ([IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console")) as follows:
+
+```shell
+iPhone:~ root# ipainstaller -l
+...
+OWASP.iGoat-Swift
+
+iPhone:~ root# ipainstaller -i OWASP.iGoat-Swift
+...
+Bundle: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67
+Application: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app
+Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
+```
+
+Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env
 
 Name               Path
 -----------------  -------------------------------------------------------------------------------------------
-BundlePath         /var/containers/Bundle/Application/E97D56FE-9C97-47ED-A458-5F1A3BDBE0DB/iGoat-Swift.app
-CachesDirectory    /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library/Caches
-DocumentDirectory  /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Documents
-LibraryDirectory   /var/mobile/Containers/Data/Application/DF8806A4-F74A-4A6B-BE58-D7FDFF23F156/Library
+BundlePath         /var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app
+CachesDirectory    /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Library/Caches
+DocumentDirectory  /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Documents
+LibraryDirectory   /var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/Library
 ```
 
-The directories including the UUID will be useful later for analysing the stored data for sensitive data. Other useful commands in objection to retrieve information, such as the classes used in an app, functions of classes or information about the bundle of an app can be found below:
+As you can see, apps have two main locations:
+
+- The Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/`).
+- The Data directory (`/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693/`).
+
+These folders contain information that must be examined closely during application security assessments (for example when analyzing the stored data for sensitive data).
+
+Bundle directory:
+
+- **AppName.app**
+  - This is the Application Bundle as seen before in the IPA, it contains essential application data, static content as well as the application's compiled binary.
+  - This directory is visible to users, but users can't write to it.
+  - Content in this directory is not backed up.
+  - The contents of this folder are used to validate the code signature.
+
+Data directory:
+
+- **Documents/**
+  - Contains all the user-generated data. The application end user initiates the creation of this data.
+  - Visible to users and users can write to it.
+  - Content in this directory is backed up.
+  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
+- **Library/**
+  - Contains all files that aren't user-specific, such as caches, preferences, cookies, and property list (plist) configuration files.
+  - iOS apps usually use the `Application Support` and `Caches` subdirectories, but the app can create custom subdirectories.
+- **Library/Caches/**
+  - Contains semi-persistent cached files.
+  - Invisible to users and users can't write to it.
+  - Content in this directory is not backed up.
+  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
+- **Library/Application Support/**
+  - Contains persistent files necessary for running the app.
+  - Invisible to users and users can't write to it.
+  - Content in this directory is backed up.
+  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
+- **Library/Preferences/**
+  - Used for storing properties that can persist even after an application is restarted.
+  - Information is saved, unencrypted, inside the application sandbox in a plist file called [BUNDLE_ID].plist.
+  - All the key/value pairs stored using `NSUserDefaults` can be found in this file.
+- **tmp/**
+  - Use this directory to write temporary files that do not need to persist between app launches.
+  - Contains non-persistent cached files.
+  - Invisible to users.
+  - Content in this directory is not backed up.
+  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
+
+Let's take a closer look at iGoat-Swift's Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
 ```shell
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list classes
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios hooking list class_methods <ClassName>
-OWASP.iGoat-Swift on (iPhone: 10.3.3) [usb] # ios bundles list_bundles
+OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
+NSFileType      Perms  NSFileProtection    ...  Name
+------------  -------  ------------------  ...  --------------------------------------
+Regular           420  None                ...  rutger.html
+Regular           420  None                ...  mansi.html
+Regular           420  None                ...  splash.html
+Regular           420  None                ...  about.html
+
+Regular           420  None                ...  LICENSE.txt
+Regular           420  None                ...  Sentinel.txt
+Regular           420  None                ...  README.txt
+
+Directory         493  None                ...  URLSchemeAttackExerciseVC.nib
+Directory         493  None                ...  CutAndPasteExerciseVC.nib
+Directory         493  None                ...  RandomKeyGenerationExerciseVC.nib
+Directory         493  None                ...  KeychainExerciseVC.nib
+Directory         493  None                ...  CoreData.momd
+Regular           420  None                ...  archived-expanded-entitlements.xcent
+Directory         493  None                ...  SVProgressHUD.bundle
+
+Directory         493  None                ...  Base.lproj
+Regular           420  None                ...  Assets.car
+Regular           420  None                ...  PkgInfo
+Directory         493  None                ...  _CodeSignature
+Regular           420  None                ...  AppIcon60x60@3x.png
+
+Directory         493  None                ...  Frameworks
+
+Regular           420  None                ...  embedded.mobileprovision
+
+Regular           420  None                ...  Credentials.plist
+Regular           420  None                ...  Assets.plist
+Regular           420  None                ...  Info.plist
+
+Regular           493  None                ...  iGoat-Swift
 ```
 
-###### Passionfruit
+You can also visualize the Bundle directory from Passionfruit by clicking on "Files" -> "App Bundle":
 
-With Passionfruit it's possible to explore different kinds of information concerning an IPA. Once you selected the IPA you have access to the following information:
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View">
 
-- Information about the binary
-- Folders used by the application
-- Overview of the Info.plist
-- UI Dump of the app screen shown on the iOS device
-- Modules that are loaded
-- Dumped classnames
+Including the `Info.plist` file:
 
-Passionfruit offers a wide range of information including access to NSLog.
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View">
+
+As well as the Data directory in "Files" -> "Data":
+
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View">
+
+Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+
+##### Monitoring System Logs
+
+Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
+
+1. Launch Xcode.
+2. Connect your device to your host computer.
+3. Choose "Window" -> "Devices and Simulators".
+4. Click on your connected iOS device in the left section of the Devices window.
+5. Reproduce the problem.
+6. Click on the "Open Console" button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
+
+![Opening the Device Console in Xcode](Images/Chapters/0x06b/open_device_console.png)
+
+To save the console output to a text file, go to the top right side of the Console window and click on the "Save" button.
+
+![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
+
+You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
+
+```shell
+iPhone:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock
+
+========================
+ASL is here to serve you
+> watch
+OK
+
+Jun  7 13:42:14 iPhone chmod[9705] <Notice>: MS:Notice: Injecting: (null) [chmod] (1556.00)
+Jun  7 13:42:14 iPhone readlink[9706] <Notice>: MS:Notice: Injecting: (null) [readlink] (1556.00)
+Jun  7 13:42:14 iPhone rm[9707] <Notice>: MS:Notice: Injecting: (null) [rm] (1556.00)
+Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch] (1556.00)
+...
+```
+
+Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the "Console" -> "Output" tab:
+
+<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
+
+Needle also has an option to capture the logs of an iOS application, you can start the monitoring by opening Needle and running the following commands:
+
+```shell
+[needle] > use dynamic/monitor/syslog
+[needle][syslog] > run
+```
 
 ##### Dumping KeyChain Data
 
@@ -961,15 +1277,13 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
-##### Monitoring System Logs
-
 #### Static Analysis
 
 ##### Manual Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
-Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS."
+Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS".
 
 The static analysis instructions in the following chapters are based on the assumption that the source code is available.
 
@@ -1005,12 +1319,12 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 The last step would be to set the proxy globally on your iOS device:
 
 1. Go to Settings
-1. Wi-Fi
-1. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-1. Once connected click on the small blue icon on the right side of the connect Wi-Fi
-1. Configure your Proxy by selecting Manual
-1. Type in 127.0.0.1 as Server
-1. Type in 8080 as Port
+2. Wi-Fi
+3. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+4. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+5. Configure your Proxy by selecting Manual
+6. Type in 127.0.0.1 as Server
+7. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
@@ -1127,21 +1441,6 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
-##### Monitoring Console Logs
-
-Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
-
-1. Launch Xcode.
-2. Connect your device to your host computer.
-3. Choose Devices from the window menu.
-4. Click on your connected iOS device in the left section of the Devices window.
-5. Reproduce the problem.
-6. Click the triangle-in-a-box toggle located in the lower left-hand corner of the Devices window's right section to view the console log's contents.
-
-To save the console output to a text file, go to the bottom right and click the circular downward-pointing-arrow icon.
-
-![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.jpg)
-
 ### Setting Up a Network Testing Environment
 
 #### Basic Network Monitoring/Sniffing
@@ -1149,7 +1448,7 @@ To save the console output to a text file, go to the bottom right and click the 
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
 1. Connect your iOS device to your macOS machine via USB.
-1. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
+2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
 
 ```shell
 $ rvictl -s <UDID>

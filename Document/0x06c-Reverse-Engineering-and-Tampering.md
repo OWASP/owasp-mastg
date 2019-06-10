@@ -101,7 +101,7 @@ MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYL
 
 ```
 
-Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an  application to be deployed on all devices.
+Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an application to be deployed on all devices.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
 ```shell

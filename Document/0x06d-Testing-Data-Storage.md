@@ -265,7 +265,7 @@ One way to determine whether sensitive information (like credentials and keys) i
 The following steps can be used to determine how the application stores data locally on a jailbroken iOS device:
 
 1. Trigger the functionality that stores potentially sensitive data.
-2. Connect to the iOS device and navigate to the following directory (this applies to iOS versions 8.0 and above): `/var/mobile/Containers/Data/Application/$APP_ID/`
+2. Connect to the iOS device and navigate to its Bundle directory (this applies to iOS versions 8.0 and above): `/var/mobile/Containers/Data/Application/$APP_ID/`
 3. Execute grep with the data that you've stored, for example: `grep -iRn "USERID"`.
 4. If the sensitive data is stored in plaintext, the app fails this test.
 
@@ -279,44 +279,9 @@ You can analyze the app's data directory on a non-jailbroken iOS device by using
 
 > Note that tools like iMazing don't copy data directly from the device. They try to extract data from the backups they create. Therefore, getting all the app data that's stored on the iOS device is impossible: not all folders are included in backups. Use a jailbroken device or repackage the app with Frida and use a tool like objection to access all the data and files.
 
-If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Basic Security Testing" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition").
+If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Basic Security Testing" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "Host-Device Data Transfer".
 
-Important file system locations are:
-
-- `AppName.app`
-  - This app's bundle contains the app and all its resources.
-  - This directory is visible to users, but users can't write to it.
-  - Content in this directory is not backed up.
-- Documents/
-  - Use this directory to store user-generated content.
-  - Visible to users and users can write to it.
-  - Content in this directory is backed up.
-  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`.
-- Library/
-  - This is the top-level directory for all files that aren't user data files.
-  - iOS apps usually use the `Application Support` and `Caches` subdirectories, but you can create custom subdirectories.
-- Library/Caches/
-  - Contains semi-persistent cached files.
-  - Invisible to users and users can't write to it.
-  - Content in this directory is not backed up.
-  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
-- Library/Application Support/
-  - Contains persistent files necessary for running the app.
-  - Invisible to users and users can't write to it.
-  - Content in this directory is backed up.
-  - The app can disable paths by setting `NSURLIsExcludedFromBackupKey`
-- Library/Preferences/
-  - Used for storing properties, objects that can persist even after an application is restarted.
-  - Information is saved, unencrypted, inside the application sandbox in a plist file called [BUNDLE_ID].plist.
-  - All the key/value pairs stored using `NSUserDefaults` can be found in this file.
-- tmp/
-  - Use this directory to write temporary files that need not persist between app launches.
-  - Contains non-persistent cached files.
-  - Invisible to users.
-  - Content in this directory is not backed up.
-  - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
-
-The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS."
+The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS".
 
 The path to the Keychain file is
 
@@ -432,32 +397,9 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 
 #### Dynamic Analysis
 
-Navigate to a screen that displays input fields that take sensitive user information. There are two possible methods for checking log files for sensitive data:
+In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing" various methods for checking the device logs are explained. Navigate to a screen that displays input fields that take sensitive user information.
 
-The first method is through a terminal on the device. Connect to the iOS device and use one of the following options:
-
-- Install tail via the Core Utilities from Cydia and run the following command:
-
-  ```shell
-  $ tail -f /var/log/syslog
-  ```
-
-- Install ondeviceconsole via cydia.suarik.com and run the following command:
-
-  ```shell
-  $ ondeviceconsole
-  ```
-
-The second option is to use Xcode. Connect your iOS device via USB and launch Xcode. Navigate to Window > Devices and Simulators, select your device and then the Open Console option (as of Xcode 9).
-
-After starting either method one or two, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
-
-To capture the logs of an iOS application, you can monitor log files with Needle:
-
-```shell
-[needle] > use dynamic/monitor/syslog
-[needle][syslog] > run
-```
+After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
 ### Determining Whether Sensitive Data Is Sent to Third Parties
 
