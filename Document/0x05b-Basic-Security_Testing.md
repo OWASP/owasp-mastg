@@ -1244,7 +1244,9 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 
 #### Dynamic Analysis
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1240>
+Dynamic Analysis assesses the application after compiling it and running it, in a similar fashion to black box application testing. The way the code works should be inferred and looked at from a higher level. This allows the tester to properly identify business logic flaws and it helps identify vulnerabilities in live environments. The tester in dynamic analysis can either be an automated tool, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), or a real penetration tester. On Android, dynamic analysis can be done by side-loading applications, or by leveraging frameworks such as [Magisk](https://github.com/topjohnwu/Magisk) or [Xposed](https://forum.xda-developers.com/xposed).
+
+_Note:_ In order to use those frameworks, a rooted phone is required.
 
 ##### Using Non-Rooted Devices
 
