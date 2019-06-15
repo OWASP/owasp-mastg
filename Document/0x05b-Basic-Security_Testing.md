@@ -107,7 +107,9 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 #### Recommended Tools
 
-This section describes some of the most popular and useful tools for testing security of Android applications. Following below is the aforementioned list of tools, each tool with an introduction, references to the installation instructions, example use cases and the reference to the full list of commands.
+This section introduces some of the most popular and useful tools and frameworks for security testing Android applications that you will be using throughout this guide. For each tool, we give a brief introduction, a reference to the installation instructions, some handy use cases and examples, and links to the corresponding command documentation.
+
+See the section [Tools for Android Security Testing](#Tools "Android Security Testing tools") for the full list of covered tools.
 
 ##### adb
 
