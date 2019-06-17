@@ -1368,7 +1368,7 @@ FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only po
 $ echo "
 rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
 rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
-rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5230 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
