@@ -1250,6 +1250,17 @@ _Note:_ In order to use those frameworks, a rooted phone is required.
 
 ##### Using Non-Rooted Devices
 
+Rooted devices are certainly easier to bypass security than non-rooted devices. There are still ways to analyse android devices without rooting them. This makes it more intuitive for testers to test their applications without the need of having an extra rooted phone.
+
+One clear differencing version in Android must be discussed before going forward. As of Android 8.0 (API level 26), using a non-rooted device doesn't allow the tester to bypass `SSL pinning` by injecting the proxy certificate (_e.g._ Burp Suite's certificate) as applications need to be explicitly told to trust User CAs, and only trust System CAs by default.
+
+In order to bypass the above mentioned issue, 2 ways present themselves.
+
+- Find and remove the code revolving around SSL pinning, or allow the application to trust the User CAs in the manifest, and then re-package the application.
+- Use Frida to dynamically overwrite the function that handles SSL pinning and instruct it to use the proxy's certificate.
+
+In order to dynamically analyse the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida, and that too, can be used to bypass certain security checks without rooting the phone.
+
 ##### Method Tracing
 
 ##### Basic Network Monitoring/Sniffing
