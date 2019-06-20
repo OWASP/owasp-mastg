@@ -718,9 +718,9 @@ Other resources where you might find useful information are:
 
 To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers XPosed framework hub](https://www.xda-developers.com/xposed-framework-hub/). Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
 
-Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to use Xposed. This way, applications with Safetynet attestation should hav a higher chance of being testable.
+Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to install Xposed. This way, applications with Safetynet attestation should hav a higher chance of being testable with Xposed modules.
 
-One advantage of using Xposed to, for instance, bypass SSL pinning compared to Frida, is that the application does not have to be repackaged and resigned. Instead, you can manipulate an app directly on the device. The disadvantage is ofcourse, that you have to root the device on which you test it. This can be done on an emulator as well. See the script below for an example:
+One advantage of using Xposed to in comparison with Frida, is that the application does not have to be repackaged and resigned. Instead, you can manipulate an app directly on the device. The disadvantage is ofcourse, that you have to root the device on which you test it. This can be done on an emulator as well. See the script below for an example:
 
 ```sh
 #!/bin/sh
@@ -747,6 +747,8 @@ echo "Next, adb install XposedInstaller_3.1.5.apk"
 echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
+
+Xposed comes with various modules, such as the earlier discussed module to bypass SSL pinning with JustTrustMe and SSLUnpinning. But you can create your own modules as well to patch often used security mechanisms of Android applications.
 
 ##### Angr
 
