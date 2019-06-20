@@ -143,7 +143,14 @@ Apps must implement callback methods that react to a number of events; for examp
 
 ##### App Bundles
 
-Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Application Bundle](https://developer.android.com/guide/app-bundle). Application bundles //TODO: HVG!
+Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle) (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play.
+//TODO HVG:
+- explain architecture
+- explain how to create testable apps
+- explain dynamic feature testing
+- explain/refer to instant apps
+
+
 
 ##### Manifest
 
