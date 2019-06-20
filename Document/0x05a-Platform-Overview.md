@@ -141,6 +141,10 @@ In Android, the lifetime of an app process is controlled by the operating system
 - A cached process is a process that's not currently needed, so the system is free to kill it when memory is needed.
 Apps must implement callback methods that react to a number of events; for example, the `onCreate` handler is called when the app process is first created. Other callback methods include `onLowMemory`, `onTrimMemory` and `onConfigurationChanged`.
 
+##### App Bundles
+
+Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Application Bundle](https://developer.android.com/guide/app-bundle). Application bundles //TODO: HVG!
+
 ##### Manifest
 
 Every app has a manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app’s Android Package Kit (APK) file.

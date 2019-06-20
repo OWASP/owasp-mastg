@@ -363,6 +363,29 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
 
+### Testing for insecure Configuration of Instant Apps
+
+#### Overview
+
+With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview) you can now create Instant apps. An instant apps can be instantly launched from a browser or the "try now" button from the app store from Android API level 23 onward. They do not require any form of installation. There are a few challenges with instant apps:
+
+- there is a limited amount of size you can have with an instant app (max 10 mb).
+- there is a reduced set of permissions it is allowed to use, which is documented at the [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions).
+
+The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
+
+Note: Instant apps require an app-bundle. App-bundles are described in the [App Bundle](#App Bundle) section.
+
+//TODO:HVG
+
+#### Static Analysis
+
+//TODO
+
+#### Dynamic Analysis
+
+//TODO
+
 ### Testing for Sensitive Functionality Exposure Through IPC
 
 #### Overview
