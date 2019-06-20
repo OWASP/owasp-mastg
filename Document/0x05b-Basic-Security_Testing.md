@@ -748,7 +748,9 @@ echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
 
-Xposed comes with various modules, such as the earlier discussed module to bypass SSL pinning with JustTrustMe and SSLUnpinning. But you can create your own modules as well to patch often used security mechanisms of Android applications.
+Xposed comes with various modules, such as the earlier discussed module to bypass SSL pinning with [JustTrustMe](https://github.com/Fuzion24/JustTrustMe) and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed). Next, there are other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage) which allow you to do more in depth applicaiton testing. Lastly, you can create your own modules as well to patch often used security mechanisms of Android applications.
+
+Please note that Xposed, as of early 2019, does not work on Android Pie yet.
 
 ##### Angr
 
@@ -1779,3 +1781,4 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Wireshark - <https://www.wireshark.org/>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Nathan - <https://github.com/mseclab/nathan>
+- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
