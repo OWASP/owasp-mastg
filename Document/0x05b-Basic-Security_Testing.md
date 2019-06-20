@@ -714,11 +714,39 @@ Other resources where you might find useful information are:
 
 ##### Xposed
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1234>
-
 [Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
 
-To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
+To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers XPosed framework hub](https://www.xda-developers.com/xposed-framework-hub/). Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
+
+Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to use Xposed. This way, applications with Safetynet attestation should hav a higher chance of being testable.
+
+One advantage of using Xposed to, for instance, bypass SSL pinning compared to Frida, is that the application does not have to be repackaged and resigned. Instead, you can manipulate an app directly on the device. The disadvantage is ofcourse, that you have to root the device on which you test it. This can be done on an emulator as well. See the script below for an example:
+
+```sh
+#!/bin/sh
+echo "Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive -wipe-data'"
+adb root && adb remount
+adb install SuperSU\ v2.79.apk #binary can be downloaded from http://www.supersu.com/download
+adb push root_avd-master/SuperSU/x86/su /system/xbin/su
+adb shell chmod 0755 /system/xbin/su
+adb shell setenforce 0
+adb shell su --install
+adb shell su --daemon&
+adb push busybox /data/busybox #binary can be downloaded from https://busybox.net/
+# adb shell "mount -o remount,rw /system && mv /data/busybox /system/bin/busybox && chmod 755 /system/bin/busybox && /system/bin/busybox --install /system/bin"
+adb shell chmod 755 /data/busybox
+adb shell 'sh -c "./data/busybox --install /data"'
+adb shell 'sh -c "mkdir /data/xposed"'
+adb push xposed8.zip /data/xposed/xposed.zip #can be downloaded from https://dl-xda.xposed.info/framework/
+adb shell chmod 0755 /data/xposed
+adb shell 'sh -c "./data/unzip /data/xposed/xposed.zip -d /data/xposed/"'
+adb shell 'sh -c "cp /data/xposed/xposed/META-INF/com/google/android/*.* /data/xposed/xposed/"'
+echo "Now adb shell and do 'su', next: go to ./data/xposed/xposed, make flash-script.sh executable and run it in that directory after running SUperSU"
+echo "Next, restart emulator"
+echo "Next, adb install XposedInstaller_3.1.5.apk"
+echo "Next, run installer and then adb reboot"
+echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
+```
 
 ##### Angr
 
