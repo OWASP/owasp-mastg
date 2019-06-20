@@ -424,7 +424,7 @@ If you forget your password and want to reset it to the default `alpine`:
     mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
    ```
 
-3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M` (which is the hashed password `alpine`)
 4. Save and exit
 
 ###### Connect to a Device via SSH over USB

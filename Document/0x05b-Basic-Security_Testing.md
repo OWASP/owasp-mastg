@@ -714,13 +714,15 @@ Other resources where you might find useful information are:
 
 ##### Xposed
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
 
-To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers XPosed framework hub](https://www.xda-developers.com/xposed-framework-hub/). Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
+To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers XPosed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through GUI.
 
-Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to install Xposed. This way, applications with Safetynet attestation should hav a higher chance of being testable with Xposed modules.
+Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to install Xposed. This way, applications with Safetynet attestation should have a higher chance of being testable with Xposed modules.
 
-One advantage of using Xposed to in comparison with Frida, is that the application does not have to be repackaged and resigned. Instead, you can manipulate an app directly on the device. The disadvantage is ofcourse, that you have to root the device on which you test it. This can be done on an emulator as well. See the script below for an example:
+Xposed has been compared to Frida. When you run Frida server on a rooted device, you will end up with a similarly effective setup. Both frameworks deliver a lot of value when you want to do pentesting. When Frida crashes the app, you can try something similar with Xposed. Next, similar to the abudance of Frida scripts, you can easily use one of the many modules that come with Xposed, such as the earlier discussed module to bypass SSL pinning () [JustTrustMe](https://github.com/Fuzion24/JustTrustMe) and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed)).Xposed includes other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage) which allow you to do more in depth applicaiton testing as well. On top of that, you can create your own modules as well to patch often used security mechanisms of Android applications.
+
+XPosed can also be installed on an emulator through the following script:
 
 ```sh
 #!/bin/sh
@@ -747,8 +749,6 @@ echo "Next, adb install XposedInstaller_3.1.5.apk"
 echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
-
-Xposed comes with various modules, such as the earlier discussed module to bypass SSL pinning with [JustTrustMe](https://github.com/Fuzion24/JustTrustMe) and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed). Next, there are other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage) which allow you to do more in depth applicaiton testing. Lastly, you can create your own modules as well to patch often used security mechanisms of Android applications.
 
 Please note that Xposed, as of early 2019, does not work on Android Pie yet.
 
