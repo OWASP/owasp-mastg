@@ -160,7 +160,7 @@ $ apt-get install adv-cmds
 
 ##### Small note on USB of an iDevice
 
-Although many items in this guide depend on the fact that you connect your iOS device through USB, it might take an additional step to make this connection work from iOS 11.4.1 onward. With the at 11.4.1 introduced `USB Restricted Mode` on, an iPhone iPad cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again.
+On an iOS device you cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again due to the USB Restricted Mode, which was introduced with iOS 11.4.1
 
 #### Recommended Tools - macOS Device
 
