@@ -21,7 +21,7 @@ Web applications commonly use stateful authentication with a random session ID t
 
 As a mobile security tester, you should be familiar with both types of authentication.
 
-### Verifying that Appropriate Authentication is in Place
+### Verifying that Appropriate Authentication is in Place (MSTG‑AUTH‑1)
 
 There's no one-size-fits-all approach to authentication. When reviewing the authentication architecture of an app, you should first consider whether the authentication method(s) used are appropriate in the given context. Authentication can be based on one or more of the following:
 
@@ -45,7 +45,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 - The app informs the user of the recent activities with their account when they log in.
 
-#### Two-Factor Authentication and Step-up Authentication
+#### Two-Factor Authentication and Step-up Authentication (MSTG‑AUTH‑9)
 
 Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
 
@@ -118,7 +118,7 @@ Security experts used to recommend using session-based authentication and mainta
 
 To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/) We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
-#### Best Practices for Passwords
+#### Best Practices for Passwords (MSTG‑AUTH‑5)
 
 Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
@@ -202,7 +202,7 @@ function(password) {
 },
 ```
 
-#### Running a Password Dictionary Attack
+#### Running a Password Dictionary Attack (MSTG‑AUTH‑6)
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
@@ -234,7 +234,7 @@ To test if your own test accounts are prone to brute forcing, append the correct
 
 > Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
 
-#### Login Throttling
+#### Login Throttling (MSTG‑AUTH‑6)
 
 Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
 
@@ -249,7 +249,7 @@ Additional brute force mitigation techniques are described on the OWASP page [Bl
 
 When OTP authentication is used, consider that most OTPs are short numeric values. An attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
 
-### Testing Stateful Session Management
+### Testing Stateful Session Management (MSTG‑AUTH‑2)
 
 Stateful (or "session-based") authentication is characterized by authentication records on both the client and server. The authentication flow is as follows:
 
@@ -272,7 +272,7 @@ Make sure that:
 - Session IDs are always exchanged over secure connections (e.g. HTTPS).
 - The mobile app doesn't save session IDs in permanent storage.
 - The server verifies the session whenever a user tries to access privileged application elements, (a session ID must be valid and must correspond to the proper authorization level).
-- The session is terminated on the server side and deleted within the mobile app after it times out or the user logs out.
+- The session is terminated on the server side and session information deleted within the mobile app after it times out or the user logs out.
 
 Authentication shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made authentication and session management functionality. If the app uses framework APIs for authentication, check the framework security documentation for best practices. Security guides for common frameworks are available at the following links:
 
@@ -283,11 +283,13 @@ Authentication shouldn't be implemented from scratch but built on top of proven 
 
 A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
-##### Session Timeout
+### Testing Session Timeout MSTG‑AUTH‑4)
 
-In most popular frameworks, you can set the session timeout via configuration options. This parameter should be set according to the best practices specified in the framework documentation. The recommended timeout may be between 10 minutes and two hours, depending on the app's sensitivity.
+Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking.
 
-Refer to the framework documentation for examples of session timeout configuration:
+#### Static Analysis
+
+In most popular frameworks, you can set the session timeout via configuration options. This parameter should be set according to the best practices specified in the framework documentation. The recommended timeout may be between 10 minutes and two hours, depending on the app's sensitivity. Refer to the framework documentation for examples of session timeout configuration:
 
 - [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
@@ -296,27 +298,52 @@ Refer to the framework documentation for examples of session timeout configurati
 
 #### Dynamic Analysis
 
-You can use dynamic analysis to verify that authorization is consistently enforced on all remote endpoints. First, manually or automatically crawl the application to make sure that all privileged actions and data are secure and to determine whether a valid session ID is required. Record the requests in your proxy.
-
-Then, replay the crawled requests while manipulating the session IDs as follows:
-
-- Invalidate the session ID (for example, append to the session ID, or delete the session ID from the request).
-- Log out and log back in to see whether the session ID has changed.
-- Try to re-use a session ID after logging out.
-
-To verify session timeout:
+To verify if a session timeout is implemented, proxy your requests through an interception proxy:
 
 1. Log into the application.
 2. Perform a couple of operations that require authentication.
-3. Leave the session idle until it expires. After session expiry, attempt to use the same session ID to access authenticated functionality.
+3. Leave the session idle until it expires.
+4. After session expiry, attempt to use the same session ID to access authenticated functionality.
 
-##### Verifying that 2FA is Enforced
+If you can still access the resources this test case fails and the session timeout is not invalidating the session on server-side.
+
+### Testing User Logout (MSTG‑AUTH‑4)
+
+The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
+
+Failing to destroy the server-side session is one of the most common logout functionality implementation errors . This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user account.
+
+Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
+
+#### Static Analysis
+
+If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are different examples of session termination for proper server-side logout:
+
+- [Spring (Java)](https://docs.spring.io/autorepo/docs/spring-security/4.1.x/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
+- [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
+- [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
+
+If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
+
+#### Dynamic Analysis
+
+Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
+
+1. Log into the application.
+2. Perform a couple of operations that require authentication inside the application.
+3. Log out.
+4. Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
+
+If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
+The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
+
+### Verifying that 2FA is Enforced (MSTG‑AUTH‑9)
 
 Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
 
 Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information testing session management.
 
-### Testing Stateless (Token-Based) Authentication
+### Testing Stateless (Token-Based) Authentication (MSTG‑AUTH‑3)
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined in [RFC7519](https://tools.ietf.org/html/rfc7519 "RFC7519"). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
@@ -416,42 +443,15 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
   - Token signatures are created via a private key on the server. After you obtain a JWT, choose a tool for [brute forcing the secret key offline](https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/ "Attacking JWT Authentication").
 - Information Disclosure:
   - Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
+- Tampering with the Hashing Algorithm:
+  - Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 
-Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java").
+There are two different Burp Plugins that can help you for testing the vulnerabilities listed above:
 
-##### Tampering with the Hashing Algorithm
+- [JSON Web Token Attacker](https://portswigger.net/bappstore/82d6c60490b540369d6d5d01822bdf61 "JSON Web Token Attacker")
+- [JSON Web Tokens](https://portswigger.net/bappstore/f923cbf91698420890354c1d8958fee6 "JSON Web Tokens")
 
-Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
-
-### User Logout and Session Timeouts
-
-Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking. The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
-
-Failing to destroy the server-side session is one of the most common logout functionality implementation errors . This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user account.
-
-Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
-
-#### Verifying Best Practices
-
-If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are examples session termination for proper server-side logout:
-
-- [Spring (Java)](https://docs.spring.io/autorepo/docs/spring-security/4.1.x/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
-- [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
-- [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
-
-If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
-
-#### Dynamic Analysis
-
-Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
-
-1. Log into the application.
-2. Perform a couple of operations that require authentication inside the application.
-3. Log out.
-4. Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
-
-If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java") for additional information.
 
 ### Testing OAuth 2.0 Flows
 
@@ -538,7 +538,7 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
-### Login Activity and Device Blocking
+### Login Activity and Device Blocking (MSTG‑AUTH‑11)
 
 For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". This can be broken down into various scenarios:
 
@@ -547,7 +547,7 @@ For applications which require L2 protection, the MASVS states that: "The app in
 3. The application provides an overview of the last session after login at all times.
 4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
 
-In all cases, the pentester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.(Note that starting at Android 8, `Android_ID` is no longer a device unique ID. Instead it becomes scoped by app-signing key, user and device. So checking `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices) This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a pentester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+In all cases, the penetration tester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.(Note that starting at Android 8, `Android_ID` is no longer a device unique ID. Instead it becomes scoped by app-signing key, user and device. So checking `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices) This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a penetration tester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
 
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
