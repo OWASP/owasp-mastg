@@ -45,7 +45,7 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 - The app informs the user of the recent activities with their account when they log in.
 
-#### Two-Factor Authentication and Step-up Authentication (MSTG‑AUTH‑9)
+#### Two-Factor Authentication and Step-up Authentication (MSTG‑AUTH‑9 and MSTG‑AUTH‑10)
 
 Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
 
@@ -283,7 +283,7 @@ Authentication shouldn't be implemented from scratch but built on top of proven 
 
 A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
-### Testing Session Timeout MSTG‑AUTH‑4)
+### Testing Session Timeout MSTG‑AUTH‑7)
 
 Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking.
 
