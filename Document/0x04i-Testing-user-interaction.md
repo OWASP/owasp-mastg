@@ -1,4 +1,4 @@
-## Testing User Education
+## Testing User Education (MSTG‑STORAGE‑12)
 
 A lot has happened lately in terms of responsibilities that developers have to educate users on what they need to know.
 This has shifted especially with the introduction of the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe. Ever since then, it is best to educate users on what is happening with their private data and why.
@@ -36,7 +36,7 @@ Given copyright laws, you must make sure you inform the user on any third party 
 
 #### OWASP MASVS
 
-- V2.12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
+- MSTG‑STORAGE‑12: "The app educates the user about the types of personally identifiable information processed, as well as security best practices the user should follow in using the app."
 
 #### Example for open source license mentioning
 
