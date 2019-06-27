@@ -21,7 +21,7 @@ Web applications commonly use stateful authentication with a random session ID t
 
 As a mobile security tester, you should be familiar with both types of authentication.
 
-### Verifying that Appropriate Authentication is in Place (MSTG‑AUTH‑1)
+### Verifying that Appropriate Authentication is in Place (MSTG‑ARCH‑2 and MSTG‑AUTH‑1)
 
 There's no one-size-fits-all approach to authentication. When reviewing the authentication architecture of an app, you should first consider whether the authentication method(s) used are appropriate in the given context. Authentication can be based on one or more of the following:
 
@@ -560,17 +560,17 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 #### OWASP MASVS
 
-- V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
-- V4.1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
-- V4.2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
-- V4.3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
-- V4.4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
-- V4.5: "A password policy exists and is enforced at the remote endpoint."
-- V4.6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
-- v4.7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
-- V4.9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
-- V4.10: "Sensitive transactions require step-up authentication."
-- v4.11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices"
+- MSTG‑ARCH‑2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
+- MSTG‑AUTH‑1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
+- MSTG‑AUTH‑2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
+- MSTG‑AUTH‑3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
+- MSTG‑AUTH‑4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
+- MSTG‑AUTH‑5: "A password policy exists and is enforced at the remote endpoint."
+- MSTG‑AUTH‑6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
+- MSTG‑AUTH‑7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
+- MSTG‑AUTH‑9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+- MSTG‑AUTH‑10: "Sensitive transactions require step-up authentication."
+- MSTG‑AUTH‑11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices"
 
 #### CWE
 
