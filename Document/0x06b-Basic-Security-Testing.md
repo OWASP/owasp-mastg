@@ -422,13 +422,13 @@ If you forget your password and want to reset it to the default `alpine`:
 
 1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
 2. Find the lines:
-  
-  ```shell
-  root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
-  mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
-  ```
-  
-3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+
+   ```shell
+    root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
+    mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
+   ```
+
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M` (which is the hashed password `alpine`)
 4. Save and exit
 
 ###### Connect to a Device via SSH over USB
