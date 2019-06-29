@@ -298,26 +298,29 @@ In most popular frameworks, you can set the session timeout via configuration op
 
 #### Dynamic Analysis
 
-To verify if a session timeout is implemented, proxy your requests through an interception proxy:
+To verify if a session timeout is implemented, proxy your requests through an interception proxy and perform the following steps:
 
-1. Log into the application.
-2. Perform a couple of operations that require authentication.
-3. Leave the session idle until it expires.
-4. After session expiry, attempt to use the same session ID to access authenticated functionality.
+1. Log in to the application.
+2. Access a resource that requires authentication, typically a request for private information belonging to your account.
+3. Try to access the data after an increasing number of 5-minute delays has passed (5, 10, 15, ...).
+Leave the session idle until it expires.
+4. Once the resource is no longer available, you will know the session timeout.
 
-If you can still access the resources this test case fails and the session timeout is not invalidating the session on server-side.
+If you can still access the resources after a timeout, this test case fails and the session timeout is not invalidating the session on server-side.
+
+> When using Burp Proxy, you can use the [Session Timeout Test extension](https://portswigger.net/bappstore/c4bfd29882974712a1d69c6d8f05874e "Session Timeout Test extension") to automate this test.
 
 ### Testing User Logout (MSTG‑AUTH‑4)
 
 The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
 
-Failing to destroy the server-side session is one of the most common logout functionality implementation errors . This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user account.
+Failing to destroy the server-side session is one of the most common logout functionality implementation errors. This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user's account.
 
 Many mobile apps don't automatically log users out because it is inconvenient for customers by implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying the access and refresh token on the client and server. Otherwise, authentication can be bypassed when the refresh token is not invalidated.
 
 #### Static Analysis
 
-If server code is available, make sure logout functionality terminates the session is terminated . This verification will depend on the technology. Here are different examples of session termination for proper server-side logout:
+If server code is available, make sure logout functionality terminates the session correctly. This verification will depend on the technology. Here are different examples of session termination for proper server-side logout:
 
 - [Spring (Java)](https://docs.spring.io/autorepo/docs/spring-security/4.1.x/apidocs/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
@@ -327,14 +330,14 @@ If access and refresh tokens are used with stateless authentication, they should
 
 #### Dynamic Analysis
 
-Use an interception proxy for dynamic application analysis. Use the following steps to check whether the logout is implemented properly.
+Use an interception proxy for dynamic application analysis and execute the following steps to check whether the logout is implemented properly:
 
-1. Log into the application.
-2. Perform a couple of operations that require authentication inside the application.
-3. Log out.
-4. Resend one of the operations from step 2 with an interception proxy (Burp Repeater, for example). . This will send to the server a request with the session ID or token that was invalidated in step 3.
+1. Log in to the application.
+2. Access a resource that requires authentication, typically a request for private information belonging to your account.
+3. Log out of the application.
+4. Try to access the data again by resending the request from step 2.
 
-If logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
+If the logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
 The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
 
 ### Verifying that 2FA is Enforced (MSTG‑AUTH‑9)
@@ -435,8 +438,6 @@ For apps that handle sensitive data, make sure that the refresh token expires af
 
 Investigate the following JWT vulnerabilities while performing dynamic analysis:
 
-- Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"):
-  - JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
 - Token Storage on the client:
   - The token storage location should be verified for mobile apps that use JWT.
 - Cracking the signing key:
@@ -444,6 +445,7 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Information Disclosure:
   - Decode the Base64-encoded JWT and find out what kind of data it transmits and whether that data is encrypted.
 - Tampering with the Hashing Algorithm:
+  - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"). JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
   - Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
 
 There are two different Burp Plugins that can help you for testing the vulnerabilities listed above:
@@ -547,7 +549,9 @@ For applications which require L2 protection, the MASVS states that: "The app in
 3. The application provides an overview of the last session after login at all times.
 4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
 
-In all cases, the penetration tester should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.(Note that starting at Android 8, `Android_ID` is no longer a device unique ID. Instead it becomes scoped by app-signing key, user and device. So checking `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices) This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, a penetration tester should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.
+
+Note that starting at Android 8, `Android_ID` is no longer a device unique ID. Instead it becomes scoped by the combination of app-signing key, user and device. So validating `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices. This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, you should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
 
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
