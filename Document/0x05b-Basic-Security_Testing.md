@@ -66,8 +66,8 @@ Although there exist several free Android emulators, we recommend using AVD as i
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
-- MobSF
-- Nathan (not updated since 2016)
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
+- [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
 Please also verify the "Tools" section at the end of this book.
 
@@ -1271,6 +1271,7 @@ There are several open source tools for automated security analysis of an APK.
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 
 For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
 
@@ -1750,35 +1751,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
 - Google Android Codelabs - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
-
-#### Tools
-
-- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
-- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
-- Android tcpdump - <https://www.androidtcpdump.com/>
-- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
-- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
-- Android Studio - <https://developer.android.com/studio/index.html>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 - Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
-- apktool - <https://ibotpeaches.github.io/Apktool/>
-- apkx - <https://github.com/b-mueller/apkx>
-- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
-- Burp Suite Professional - <https://portswigger.net/burp/>
-- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
-- Frida - <https://www.frida.re/docs/android/>
-- JAADAS - <https://github.com/flankerhqd/JAADAS>
-- Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
-- Mitm-relay - <https://github.com/jrmdev/mitm_relay>
-- Objection - <https://github.com/sensepost/objection>
-- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
-- QARK - <https://github.com/linkedin/qark/>
-- Radare2 - <https://rada.re/r/>
-- R2frida - <https://github.com/nowsecure/r2frida/>
-- SDK tools - <https://developer.android.com/studio/index.html#downloads>
-- SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
-- Wireshark - <https://www.wireshark.org/>
-- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Nathan - <https://github.com/mseclab/nathan>
-- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
