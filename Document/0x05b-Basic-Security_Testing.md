@@ -1259,7 +1259,7 @@ In order to bypass the above mentioned issue, 2 ways present themselves.
 - Find and remove the code revolving around SSL pinning, or allow the application to trust the User CAs in the manifest, and then re-package the application.
 - Use Frida to dynamically overwrite the function that handles SSL pinning and instruct it to use the proxy's certificate.
 
-In order to dynamically analyse the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida, and that too, can be used to bypass certain security checks without rooting the phone.
+In order to dynamically analyse the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida, and that too, can be used to bypass certain security checks without rooting the phone. This tool works by [patching](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) the target application with the [frida-gadget](https://www.frida.re/docs/gadget/) library.
 
 ##### Method Tracing
 
