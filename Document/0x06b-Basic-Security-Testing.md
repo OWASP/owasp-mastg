@@ -1484,26 +1484,12 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 ### References
 
+- Jailbreak Exploits - <https://www.theiphonewiki.com/wiki/Jailbreak_Exploits>
+- limera1n exploit - <https://www.theiphonewiki.com/wiki/Limera1n>
+- IPSW Downloads website - <https://ipsw.me>
+- Can I Jailbreak? - <https://canijailbreak.com/>
+- The iPhone Wiki - <https://www.theiphonewiki.com/>
+- Redmond Pie - <https://www.redmondpie.com/>
+- Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
+- Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
 - UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
-
-#### Tools
-
-- Burp Suite - <https://portswigger.net/burp/communitydownload>
-- Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
-- Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
-- Clutch - <https://github.com/KJCracks/Clutch>
-- Frida - <https://www.frida.re>
-- Frida-ios-dump - <https://github.com/AloneMonkey/frida-ios-dump>
-- IDB - <https://www.idbtool.com>
-- Introspy - <https://github.com/iSECPartners/Introspy-iOS>
-- ipainstaller - <https://github.com/autopear/ipainstaller>
-- iProxy - <https://iphonedevwiki.net/index.php/SSH_Over_USB>
-- Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
-- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Needle - <https://github.com/mwrlabs/needle>
-- Objection - <https://github.com/sensepost/objection>
-- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
-- SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
-- Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
-- Wireshark - <https://www.wireshark.org/download.html>
-- Xcode - <https://developer.apple.com/xcode/>
