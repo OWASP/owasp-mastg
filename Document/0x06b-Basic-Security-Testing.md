@@ -162,9 +162,9 @@ $ apt-get install adv-cmds
 
 On an iOS device you cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again due to the USB Restricted Mode, which was introduced with iOS 11.4.1
 
-#### Recommended Tools - macOS Device
+#### Recommended Tools - Host Computer
 
-In order to analyze iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
+In order to analyze iOS apps, you should install the following tools on your host computer. We'll be referring them throughout the guide. Please note that a great number of them will require a macOS system in order to run and therefore using a macOS computer is normally the recommendation when dealing with iOS apps.
 
 ##### Burp Suite
 
