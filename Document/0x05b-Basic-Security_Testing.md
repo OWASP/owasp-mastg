@@ -1749,8 +1749,18 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
-- Google Android Codelabs - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
+- Basic Network Security Configuration - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 - Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
+- Codenames, Tags and Build Numbers - <https://source.android.com/setup/start/build-numbers>
+- Create and Manage Virtual Devices - <https://developer.android.com/studio/run/managing-avds.html>
+- Guide to rooting mobile devices - <https://www.xda-developers.com/root/>
+- API Levels - <https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels>
+- AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
+- SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
+- Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
+- Android's .apk format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
+- Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
