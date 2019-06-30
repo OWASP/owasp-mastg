@@ -492,7 +492,9 @@ In this example, an unsigned app ('myUnsignedApp.apk') will be signed with a pri
 
 ###### Zipalign
 
-The `zipalign` tool should always be used to align the APK file before distribution. This tool aligns all uncompressed data (such as images, raw files, and 4-byte boundaries) within the APK  that helps improve memory management during app run time. zipalign must be used before the APK file is signed with apksigner.
+The `zipalign` tool should always be used to align the APK file before distribution. This tool aligns all uncompressed data (such as images, raw files, and 4-byte boundaries) within the APK that helps improve memory management during app run time.
+
+> Zipalign must be used before the APK file is signed with apksigner.
 
 #### Publishing Process
 
@@ -512,8 +514,8 @@ The Android application attack surface consists of all components of the applica
   - [Testing for Sensitive functionality Exposure Through IPC](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc "Testing for Sensitive functionality Exposure Through IPC");
   - [Testing URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing URL Schemes").
 - Validate all input by the user in input fields.
-- Validate the content loaded inside a webview. See:
-  - [Testing JavaScript execution in webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews "Testing JavaScript execution in webviews");
+- Validate the content loaded inside a WebView. See:
+  - [Testing JavaScript execution in WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews "Testing JavaScript execution in WebViews");
   - [Testing WebView Protocol Handlers](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers "Testing WebView Protocol Handlers");
   - [Determining Whether Java Objects Are Exposed Through WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews "Determining Whether Java Objects Are Exposed Through WebViews").
 - Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application. See:

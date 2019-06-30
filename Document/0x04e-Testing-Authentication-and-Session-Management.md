@@ -49,8 +49,8 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
 
-- One-Time password via SMS (SMS-OTP)
-- One-time Code via phone call
+- One-time password via SMS (SMS-OTP)
+- One-time code via phone call
 - Hardware or software token
 - Push notifications in combination with PKI and local authentication
 
@@ -73,7 +73,7 @@ Mitigation Suggestions:
 - Messaging: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
 - Dedicated Channel: Send OTPs to a dedicated application that is only used to receive OTPs and that other applications can't access.
 - Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess.
-- Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail
+- Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
 
 #### Transaction Signing with Push Notifications and PKI
 
@@ -106,7 +106,7 @@ Consider the following example from the [OWASP Web Testing Guide](https://www.ow
 http://www.site.com/page.asp?authenticated=no
 ```
 
-The client can arbitrarily change the GET parameters sent with the request. Nothing prevents the client from simply changing the value of the `authenticated` parameter to "yes," effectively bypassing authentication.
+The client can arbitrarily change the GET parameters sent with the request. Nothing prevents the client from simply changing the value of the `authenticated` parameter to "yes", effectively bypassing authentication.
 
 Although this is a simplistic example that you probably won't find in the wild, programmers sometimes rely on "hidden" client-side parameters, such as cookies, to maintain authentication state. They assume that these parameters can't be tampered with. Consider, for example, the following [classic vulnerability in Nortel Contact Center Manager](http://seclists.org/bugtraq/2009/May/251). The administrative web application of Nortel's appliance relied on the cookie "isAdmin" to determine whether the logged-in user should be granted administrative privileges. Consequently, it was possible to get admin access by simply setting the cookie value as follows:
 
@@ -116,7 +116,7 @@ isAdmin=True
 
 Security experts used to recommend using session-based authentication and maintaining session data on the server only. This prevents any form of client-side tampering with the session state. However, the whole point of using stateless authentication instead of session-based authentication is to *not* have session state on the server. Instead, state is stored in client-side tokens and transmitted with every request. In this case, seeing client-side parameters such as `isAdmin` is perfectly normal.
 
-To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/) We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
+To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/). We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
 #### Best Practices for Passwords (MSTG‑AUTH‑5)
 
@@ -283,7 +283,7 @@ Authentication shouldn't be implemented from scratch but built on top of proven 
 
 A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
-### Testing Session Timeout MSTG‑AUTH‑7)
+### Testing Session Timeout (MSTG‑AUTH‑7)
 
 Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking.
 
@@ -455,7 +455,7 @@ There are two different Burp Plugins that can help you for testing the vulnerabi
 
 Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java") for additional information.
 
-### Testing OAuth 2.0 Flows
+### Testing OAuth 2.0 Flows (MSTG‑AUTH‑1 and MSTG‑AUTH‑3)
 
 [OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/ "OAuth 2.0 delegation protocols"). It is used in a variety of applications, including user authentication applications.
 
@@ -540,7 +540,7 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
-### Login Activity and Device Blocking (MSTG‑AUTH‑11)
+### Testing Login Activity and Device Blocking (MSTG‑AUTH‑11)
 
 For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". This can be broken down into various scenarios:
 
@@ -574,7 +574,7 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - MSTG‑AUTH‑7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
 - MSTG‑AUTH‑9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
 - MSTG‑AUTH‑10: "Sensitive transactions require step-up authentication."
-- MSTG‑AUTH‑11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices"
+- MSTG‑AUTH‑11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
 
 #### CWE
 
