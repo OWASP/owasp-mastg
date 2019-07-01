@@ -629,22 +629,22 @@ Use the following approach to patch the JavaScript file:
 
 #### Tools
 
-- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
-- Cycript - <http://www.cycript.org/>
 - Class-dump - <http://stevenygard.com/projects/class-dump/>
-- Class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
 - Class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
-- MachoOView - <https://sourceforge.net/projects/machoview/>
-- Radare2 - <https://rada.re/r/>
+- Class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
+- Cycript - <http://www.cycript.org/>
+- Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
+- Frida - <https://www.frida.re>
 - Hopper - <https://www.hopperapp.com/>
+- Hopper Disassembler - <https://www.hopperapp.com/>
+- ios-deploy - <https://github.com/phonegap/ios-deploy>
 - IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa/>
 - ipainstaller - <https://cydia.saurik.com/package/com.slugrail.ipainstaller/>
-- Hopper Disassembler - <https://www.hopperapp.com/>
-- Optool - <https://github.com/alexzielenski/optool>
-- ios-deploy - <https://github.com/phonegap/ios-deploy>
-- Xcode command line developer tools - <https://railsapps.github.io/xcode-command-line-tools.html>
-- Frida - <https://www.frida.re>
+- MachoOView - <https://sourceforge.net/projects/machoview/>
 - Objection - <https://github.com/sensepost/objection>
-- Swizzler project - <https://github.com/vtky/Swizzler2/>
+- Optool - <https://github.com/alexzielenski/optool>
 - OWASP UnCrackable Apps for iOS - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios>
-- Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
+- Radare2 - <https://rada.re/r/>
+- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
+- Swizzler project - <https://github.com/vtky/Swizzler2/>
+- Xcode command line developer tools - <https://railsapps.github.io/xcode-command-line-tools.html>

@@ -1751,17 +1751,17 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 #### Tools
 
-- OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
-- JD - <http://jd.benow.ca/>
-- JAD - <http://www.javadecompilers.com/jad>
-- Procyon - <https://bitbucket.org/mstrobel/procyon/overview>
-- CFR - <http://www.benf.org/other/cfr/>
-- apkx - <https://github.com/b-mueller/apkx>
 - Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
-- smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smali/wiki/smalidea>
-- APKTool - <https://ibotpeaches.github.io/Apktool/>
-- Radare2 - <https://www.radare.org>
 - Angr - <https://angr.io/>
-- JEB Decompiler - <https://www.pnfsoftware.com>
+- APKTool - <https://ibotpeaches.github.io/Apktool/>
+- apkx - <https://github.com/b-mueller/apkx>
+- CFR - <http://www.benf.org/other/cfr/>
 - IDA Pro - <https://www.hex-rays.com/products/ida/>
+- JAD - <http://www.javadecompilers.com/jad>
+- JD - <http://jd.benow.ca/>
+- JEB Decompiler - <https://www.pnfsoftware.com>
+- OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
+- Procyon - <https://bitbucket.org/mstrobel/procyon/overview>
+- Radare2 - <https://www.radare.org>
+- smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smali/wiki/smalidea>
 - VxStripper - <http://vxstripper.pagesperso-orange.fr>
