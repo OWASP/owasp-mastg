@@ -45,52 +45,9 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 - Step-up authentication is required to enable actions that deal with sensitive data or transactions.
 - The app informs the user of the recent activities with their account when they log in.
 
-#### Two-Factor Authentication and Step-up Authentication (MSTG‑AUTH‑9 and MSTG‑AUTH‑10)
+You can find details on how to test for the requirements above in the following sections.
 
-Two-factor authentication (2FA) is standard for apps that allow users to access sensitive personal data. Common implementations use a password for the first factor and any of the following as the second factor:
-
-- One-time password via SMS (SMS-OTP)
-- One-time code via phone call
-- Hardware or software token
-- Push notifications in combination with PKI and local authentication
-
-The secondary authentication can be performed at login or later in the user's session. For example, after logging in to a banking app with a username and PIN, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor ("step-up authentication") must be presented.
-
-Dangers of SMS-OTP
-
- Although one-time passwords (OTP) sent via SMS are a common second factor for 2-factor authentication, this method has its shortcomings. In 2016, NIST suggested that "Due to the risk that SMS messages may be intercepted or redirected, implementers of new systems SHOULD carefully consider alternative authenticators." Below you will find a list of some related threats and suggestions to avoid successful attacks on SMS-OTP.
-
-Threats:
-
-- Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
-- Trojans: Installed malicious applications with access to text messages may forward the OTP to another number or backend.
-- SIM SWAP Attack: In this attack, the adversary calls the phone company, or works for them, and has the victim's number moved to a SIM card owned by the adversary. If successful, the adversary can see the SMS messages which are sent to the victim's phone number. This includes the messages used in the 2-factor authentication.
-- Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.
-- Voicemail: Some 2-factor authentication schemes allow the OTP to be sent through a phone call when SMS is no longer preferred or available. Many of these calls, if not answered, send the information to voicemail. If an attacker was able to gain access to the voicemail, they could also use the OTP to gain access to a user's account.
-
-Mitigation Suggestions:
-
-- Messaging: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
-- Dedicated Channel: Send OTPs to a dedicated application that is only used to receive OTPs and that other applications can't access.
-- Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess.
-- Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
-
-#### Transaction Signing with Push Notifications and PKI
-
-Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the device keystore. To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
-
-#### Supplementary Authentication
-
-Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
-
-- Geolocation
-- IP address
-- Time of day
-- The device being used
-
-Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
-
-### Testing Authentication
+#### Testing Authentication
 
 Perform the following steps when testing authentication and authorization:
 
@@ -118,25 +75,36 @@ Security experts used to recommend using session-based authentication and mainta
 
 To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None."](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/). We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
-#### Best Practices for Passwords (MSTG‑AUTH‑5)
+#### Supplementary Authentication
+
+Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+
+- Geolocation
+- IP address
+- Time of day
+- The device being used
+
+Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
+
+### Testing Best Practices for Passwords (MSTG‑AUTH‑5 and MSTG‑AUTH‑6)
 
 Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
-##### Password Length
-
-- Minimum password length (10 characters) should be enforced.
-- Maximum password length should not be too short because it will prevent users from creating passphrases. The typical maximum length is 128 characters.
-
-##### Password Complexity
-
-The password must meet at least three out of the following four complexity rules:
-
-1. at least one uppercase character (A-Z)
-2. at least one lowercase character (a-z)
-3. at least one digit (0-9)
-4. at least one special character
+#### Static Analysis
 
 Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
+
+- Password Length:
+  - Minimum password length (10 characters) should be enforced.
+  - Maximum password length should not be too short because it will prevent users from creating passphrases. The typical maximum length is 128 characters.
+
+- Password Complexity - The password must meet at least three out of the following four complexity rules:
+  - at least one uppercase character (A-Z)
+  - at least one lowercase character (a-z)
+  - at least one digit (0-9)
+  - at least one special character
+
+##### zxcvbn
 
 [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength, inspired by password crackers. It is available in JavaScript but also for many other programming languages on the server side. There are different methods of installation, please check the Github repo for your preferred method. Once installed, zxcvbn can be used to calculate the complexity and the amount of guesses to crack the password.
 
@@ -202,7 +170,20 @@ function(password) {
 },
 ```
 
-#### Running a Password Dictionary Attack (MSTG‑AUTH‑6)
+##### Login Throttling
+
+Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
+
+Observe the following best practices when implementing anti-brute-force controls:
+
+- After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
+- A five-minute account lock is commonly used for temporary account locking.
+- The controls must be implemented on the server because client-side controls are easily bypassed.
+- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
+
+Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
+
+#### Dynamic Testing (MSTG‑AUTH‑6)
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
@@ -233,21 +214,6 @@ In this example, you can identify the successful attempt according to the differ
 To test if your own test accounts are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
 
 > Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
-
-#### Login Throttling (MSTG‑AUTH‑6)
-
-Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
-
-Observe the following best practices when implementing anti-brute-force controls:
-
-- After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
-- A five-minute account lock is commonly used for temporary account locking.
-- The controls must be implemented on the server because client-side controls are easily bypassed.
-- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
-
-Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
-
-When OTP authentication is used, consider that most OTPs are short numeric values. An attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
 
 ### Testing Stateful Session Management (MSTG‑AUTH‑2)
 
@@ -340,11 +306,59 @@ Use an interception proxy for dynamic application analysis and execute the follo
 If the logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
 The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
 
-### Verifying that 2FA is Enforced (MSTG‑AUTH‑9)
+### Testing Two-Factor Authentication and Step-up Authentication (MSTG‑AUTH‑9 and MSTG‑AUTH‑10)
+
+Two-factor authentication (2FA) is standard for apps that allow users to access sensitive functions and data. Common implementations use a password for the first factor and any of the following as the second factor:
+
+- One-time password via SMS (SMS-OTP)
+- One-time code via phone call
+- Hardware or software token
+- Push notifications in combination with PKI and local authentication
+
+The secondary authentication can be performed at login or later in the user's session. For example, after logging in to a banking app with a username and PIN, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor ("step-up authentication") must be presented.
+
+#### Dangers of SMS-OTP
+
+Although one-time passwords (OTP) sent via SMS are a common second factor for two-factor authentication, this method has its shortcomings. In 2016, NIST suggested that "Due to the risk that SMS messages may be intercepted or redirected, implementers of new systems SHOULD carefully consider alternative authenticators." Below you will find a list of some related threats and suggestions to avoid successful attacks on SMS-OTP.
+
+Threats:
+
+- Wireless Interception: The adversary can intercept SMS messages by abusing femtocells and other known vulnerabilities in the telecommunications network.
+- Trojans: Installed malicious applications with access to text messages may forward the OTP to another number or backend.
+- SIM SWAP Attack: In this attack, the adversary calls the phone company, or works for them, and has the victim's number moved to a SIM card owned by the adversary. If successful, the adversary can see the SMS messages which are sent to the victim's phone number. This includes the messages used in the two-factor authentication.
+- Verification Code Forwarding Attack: This social engineering attack relies on the trust the users have in the company providing the OTP. In this attack, the user receives a code and is later asked to relay that code using the same means in which it received the information.
+- Voicemail: Some two-factor authentication schemes allow the OTP to be sent through a phone call when SMS is no longer preferred or available. Many of these calls, if not answered, send the information to voicemail. If an attacker was able to gain access to the voicemail, they could also use the OTP to gain access to a user's account.
+
+You can find below several suggestions to reduce the likelihood of exploitation when using SMS for OTP:
+
+- Messaging: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
+- Dedicated Channel: Send OTPs to a dedicated application that is only used to receive OTPs and that other applications can't access.
+- Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess.
+- Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
+
+#### Transaction Signing with Push Notifications and PKI
+
+Another alternative and strong mechanisms to implement a second factor is transaction signing.
+
+Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the KeyStore (Android) or KeyChain (iOS). To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
+
+#### Static Analysis
+
+There are various two-factor authentication mechanism available which can range from 3rd party libraries, usage of external apps to self implemented checks by the developer(s).
+
+Use the app first and identify where 2FA is needed in the workflows (usually during login or when executing critical transactions). Do also interview the developer(s) and/or architects to understand more about the 2FA implementation. If a 3rd party library or external app is used, verify if the implementation was done accordingly to the security best practices.
+
+#### Dynamic Testing
 
 Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
 
-Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information testing session management.
+When OTP authentication is used, consider that most OTPs are short numeric values. An attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
+
+To test this, the captured request should be sent 10-15 times to the endpoint with random OTP values before providing the correct OTP. If the OTP is still accepted the 2FA implementation is prone to brute force attacks and the OTP can be guessed.
+
+> A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
+
+Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
 ### Testing Stateless (Token-Based) Authentication (MSTG‑AUTH‑3)
 
