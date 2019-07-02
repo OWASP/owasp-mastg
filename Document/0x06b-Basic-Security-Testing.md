@@ -1493,3 +1493,38 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
 - Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
 - UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
+
+#### Tools
+
+- Apple iOS SDK - <https://developer.apple.com/download/more/>
+- AppSync - <http://repo.hackyouriphone.org/appsyncunified>
+- Burp Suite - <https://portswigger.net/burp/communitydownload>
+- Chimera - <https://chimera.sh/>
+- Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
+- Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
+- Clutch - <https://github.com/KJCracks/Clutch>
+- Cydia Impactor - <http://www.cydiaimpactor.com/>
+- Frida - <https://www.frida.re>
+- Frida-ios-dump - <https://github.com/AloneMonkey/frida-ios-dump>
+- Ghidra - <https://ghidra-sre.org/>
+- IDB - <https://www.idbtool.com>
+- iFunBox - <http://www.i-funbox.com/>
+- Introspy - <https://github.com/iSECPartners/Introspy-iOS>
+- ios-deploy - <https://github.com/ios-control/ios-deploy>
+- IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa>
+- ipainstaller - <https://github.com/autopear/ipainstaller>
+- iProxy - <https://iphonedevwiki.net/index.php/SSH_Over_USB>
+- ITMS services asset downloader - <https://www.npmjs.com/package/itms-services>
+- Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
+- libimobiledevice - <https://www.libimobiledevice.org/>
+- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Needle - <https://github.com/mwrlabs/needle>
+- Objection - <https://github.com/sensepost/objection>
+- Passionfruit - <https://github.com/chaitin/passionfruit/>
+- Radare2 - <https://github.com/radare/radare2>
+- Sileo - <https://cydia-app.com/sileo/>
+- SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
+- TablePlus - <https://tableplus.io/>
+- Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
+- Wireshark - <https://www.wireshark.org/download.html>
+- Xcode - <https://developer.apple.com/xcode/>
