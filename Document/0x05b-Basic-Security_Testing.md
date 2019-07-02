@@ -1244,9 +1244,19 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 
 #### Dynamic Analysis
 
-Dynamic Analysis assesses the application after compiling it and running it, in a similar fashion to black box application testing. The way the code works should be inferred and looked at from a higher level. This allows the tester to properly identify business logic flaws and it helps identify vulnerabilities in live environments. The tester in dynamic analysis can either be an automated tool, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), or a real penetration tester. On Android, dynamic analysis can be done by side-loading applications, or by leveraging frameworks such as [Magisk](https://github.com/topjohnwu/Magisk) or [Xposed](https://forum.xda-developers.com/xposed).
+Dynamic Analysis tests the release version of an application, in a similar fashion to black box application testing. The way the code works should be inferred and looked at from a higher level, unlike static analysis, which takes the application's code and tries to analyze how the application will behave. This allows the tester to properly identify:
 
-_Note:_ In order to use those frameworks, a rooted phone is required.
+- Business logic flaws which extend over multiple services
+- Vulnerabilities in live environments
+- Weak input validation and bad input/output encoding as they are processed through one or multiple services
+
+ whereas static analysis would identify:
+
+- Code bad practices
+- Regex usage issues
+- Hidden code layers
+
+Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
 
 ##### Using Non-Rooted Devices
 
