@@ -1764,3 +1764,45 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Android's .apk format - <https://en.wikipedia.org/wiki/Android_application_package>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
+
+#### Tools
+
+- adb - <https://developer.android.com/studio/command-line/adb>
+- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
+- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
+- Android Studio - <https://developer.android.com/studio/index.html>
+- Android tcpdump - <https://www.androidtcpdump.com/>
+- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
+- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
+- angr - <https://github.com/angr/angr>
+- APK Extractor - <https://play.google.com/store/apps/details?id=com.ext.ui>
+- APKMirror - <https://apkmirror.com>
+- APKPure - <https://apkpure.com>
+- apktool - <https://ibotpeaches.github.io/Apktool/>
+- apkx - <https://github.com/b-mueller/apkx>
+- Burp Suite Professional - <https://portswigger.net/burp/>
+- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
+- Capillary - <https://github.com/google/capillary>
+- Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
+- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
+- FileZilla - <https://filezilla-project.org/download.php>
+- Frida - <https://www.frida.re/docs/android/>
+- InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
+- Inspeckage - <https://github.com/ac-pm/Inspeckage>
+- JAADAS - <https://github.com/flankerhqd/JAADAS>
+- JustTrustMe - <https://github.com/Fuzion24/JustTrustMe>
+- Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
+- Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
+- Mitm-relay - <https://github.com/jrmdev/mitm_relay>
+- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Nathan - <https://github.com/mseclab/nathan>
+- Objection - <https://github.com/sensepost/objection>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- QARK - <https://github.com/linkedin/qark/>
+- R2frida - <https://github.com/nowsecure/r2frida/>
+- Radare2 - <https://rada.re/r/>
+- SDK tools - <https://developer.android.com/studio/index.html#downloads>
+- SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
+- Termux - <https://play.google.com/store/apps/details?id=com.termux>
+- Wireshark - <https://www.wireshark.org/>
+- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
