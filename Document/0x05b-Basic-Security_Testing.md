@@ -1260,14 +1260,12 @@ Analysis can be assisted by automated tools, such as [MobSF](https://github.com/
 
 ##### Using Non-Rooted Devices
 
-Rooted devices are certainly easier to bypass security than non-rooted devices. There are still ways to analyse android devices without rooting them. This makes it more intuitive for testers to test their applications without the need of having an extra rooted phone.
+Non-rooted devices provide the tester with two benefits:
 
-In order to bypass the above mentioned issue, 2 ways present themselves.
+- Replicate the same environment of the installed application
+- Use any device without the need of having it rooted
 
-- Find and remove the code revolving around SSL pinning, or allow the application to trust the User CAs in the manifest, and then re-package the application.
-- Use Frida to dynamically overwrite the function that handles SSL pinning and instruct it to use the proxy's certificate.
-
-In order to dynamically analyse the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida, and that too, can be used to bypass certain security checks without rooting the phone. This tool works by [patching](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) the target application with the [frida-gadget](https://www.frida.re/docs/gadget/) library.
+In order to dynamically analyze the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida. This tool works by [patching](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) the target application with the [frida-gadget](https://www.frida.re/docs/gadget/) library. Objection communicates using a Python API with the mobile phone through the installed Gadget application.
 
 ##### Method Tracing
 
