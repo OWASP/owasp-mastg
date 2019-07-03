@@ -1262,8 +1262,6 @@ Analysis can be assisted by automated tools, such as [MobSF](https://github.com/
 
 Rooted devices are certainly easier to bypass security than non-rooted devices. There are still ways to analyse android devices without rooting them. This makes it more intuitive for testers to test their applications without the need of having an extra rooted phone.
 
-One clear differencing version in Android must be discussed before going forward. As of Android 8.0 (API level 26), using a non-rooted device doesn't allow the tester to bypass `SSL pinning` by injecting the proxy certificate (_e.g._ Burp Suite's certificate) as applications need to be explicitly told to trust User CAs, and only trust System CAs by default.
-
 In order to bypass the above mentioned issue, 2 ways present themselves.
 
 - Find and remove the code revolving around SSL pinning, or allow the application to trust the User CAs in the manifest, and then re-package the application.
