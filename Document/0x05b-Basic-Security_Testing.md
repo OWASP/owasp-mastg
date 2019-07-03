@@ -1267,6 +1267,19 @@ Non-rooted devices provide the tester with two benefits:
 
 In order to dynamically analyze the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida. This tool works by [patching](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) the target application with the [frida-gadget](https://www.frida.re/docs/gadget/) library. Objection communicates using a Python API with the mobile phone through the installed Gadget application.
 
+In order to accomplish this, the following commands can set you up and running:
+
+```bash
+# Download the Uncrackable APK
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
+# Patch the APK with the Frida Gadget
+$ objection patchapk --source UnCrackable-Level1.apk
+# Install the patched APK on the android phone
+$ adb install UnCrackable-Level1.objection.apk
+# After running the mobile phone, objection will detect the running frida-server through the APK
+$ objection explore
+```
+
 ##### Method Tracing
 
 _Note:_ The following [section](#Setting-up-a-Network-Testing-Environment) assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
