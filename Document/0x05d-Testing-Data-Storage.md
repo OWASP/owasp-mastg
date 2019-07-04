@@ -1186,7 +1186,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Fridump - <https://github.com/Nightbringer21/fridump>
 - LiME - <https://github.com/504ensicsLabs/LiME>
 - Logcat - <http://developer.android.com/tools/help/logcat.html>
-- Memory Analyzer which is part of Eclipse - <https://www.eclipse.org/downloads/>
 - Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - ProGuard - <http://proguard.sourceforge.net/>
