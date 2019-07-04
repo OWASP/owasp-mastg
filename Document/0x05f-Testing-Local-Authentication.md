@@ -4,7 +4,7 @@ During local authentication, an app authenticates the user against credentials s
 As described earlier in Testing Authentication and Session Management: it is important to reassure that authentication happens at least on a cryptographic primitive (e.g.: an authentication step which results in unlocking a key). Next, it is recommended that the authentication is verified at a remote endpoint.
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
-### Testing Confirm Credentials (MSTG‑AUTH‑1 and MSTG‑STORAGE‑11)
+### Testing Confirm Credentials (MSTG-AUTH-1 and MSTG-STORAGE-11)
 
 #### Overview
 
@@ -84,7 +84,7 @@ Make sure that the unlocked key is used during the application flow. For example
 
 Patch the app or use runtime instrumentation to bypass fingerprint authentication on the client. For example, you could use Frida to call the `onActivityResult` callback method directly to see if the cryptographic material (e.g. the setup cipher) can be ignored to proceed with the local authentication flow. Refer to the chapter "Tampering and Reverse Engineering on Android" for more information.
 
-### Testing Biometric Authentication (MSTG‑AUTH‑8)
+### Testing Biometric Authentication (MSTG-AUTH-8)
 
 #### Overview
 
@@ -270,9 +270,9 @@ Patch the app or use runtime instrumentation to bypass fingerprint authenticatio
 
 #### OWASP MASVS
 
-- MSTG‑AUTH‑1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
-- MSTG‑AUTH‑8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
-- MSTG‑STORAGE‑11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- MSTG-AUTH-1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
+- MSTG-AUTH-8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 
