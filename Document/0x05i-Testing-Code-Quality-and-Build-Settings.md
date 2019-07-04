@@ -1,6 +1,6 @@
 ## Code Quality and Build Settings of Android Apps
 
-### Making Sure That the App is Properly Signed
+### Making Sure That the App is Properly Signed (MSTG-CODE-1)
 
 #### Overview
 
@@ -71,7 +71,7 @@ Several best practices for [configuring the app for release](https://developer.a
 
 Static analysis should be used to verify the APK signature.
 
-### Determining Whether the App is Debuggable
+### Testing Whether the App is Debuggable (MSTG-CODE-2)
 
 #### Overview
 
@@ -161,7 +161,7 @@ A few notes about debugging:
 - Help with `jdb` is available [here](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "JDB basic commands").
 - If a "the connection to the debugger has been closed" error occurs while `jdb` is being binded to the local communication channel port, kill all `adb` sessions and start a single new session.
 
-### Finding Debugging Symbols
+### Testing for Debugging Symbols (MSTG-CODE-3)
 
 #### Overview
 
@@ -210,7 +210,7 @@ externalNativeBuild {
 
 Static analysis should be used to verify debugging symbols.
 
-### Finding Debugging Code and Verbose Error Logging
+### Testing for Debugging Code and Verbose Error Logging (MSTG-CODE-4)
 
 #### Overview
 
@@ -270,108 +270,7 @@ There are several ways of detecting `StrictMode`; the best choice depends on how
 - a warning dialog,
 - application crash.
 
-### Testing for Injection Flaws
-
-#### Overview
-
-Android apps can expose functionality through custom URL schemes (which are a part of Intents). They can expose functionality to
-
-- other apps (via IPC mechanisms, such as Intents, Binders, Android Shared Memory (ASHMEM), or BroadcastReceivers),
-- the user (via the user interface).
-
-None of the input from these sources can be trusted; it must be validated and/or sanitized. Validation ensures processing of data that the app is expecting only. If validation is not enforced, any input can be sent to the app, which may allow an attacker or malicious app to exploit app functionality.
-
-The following portions of the source code should be checked if any app functionality has been exposed:
-
-- Custom URL schemes. Check the test case "Testing Custom URL Schemes" as well for further test scenarios.
-- IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms" as well for further test scenarios.
-- User interface
-
-An example of a vulnerable IPC mechanism is shown below.
-
-You can use *ContentProviders* to access database information, and you can probe services to see if they return data. If data is not validated properly, the content provider may be prone to SQL injection while other apps are interacting with it. See the following vulnerable implementation of a *ContentProvider*.
-
-```xml
-<provider
-    android:name=".OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation"
-    android:authorities="sg.vp.owasp_mobile.provider.College">
-</provider>
-```
-
-The `AndroidManifest.xml` above defines a content provider that's exported and therefore available to all other apps. The `query` function in the `OMTG_CODING_003_SQL_Injection_Content_Provider_Implementation.java` class should be inspected.
-
-```java
-@Override
-public Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder) {
-    SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-    qb.setTables(STUDENTS_TABLE_NAME);
-
-    switch (uriMatcher.match(uri)) {
-        case STUDENTS:
-            qb.setProjectionMap(STUDENTS_PROJECTION_MAP);
-            break;
-
-        case STUDENT_ID:
-            // SQL Injection when providing an ID
-            qb.appendWhere( _ID + "=" + uri.getPathSegments().get(1));
-            Log.e("appendWhere",uri.getPathSegments().get(1).toString());
-            break;
-
-        default:
-            throw new IllegalArgumentException("Unknown URI " + uri);
-    }
-
-    if (sortOrder == null || sortOrder == ""){
-        /**
-         * By default sort on student names
-         */
-        sortOrder = NAME;
-    }
-    Cursor c = qb.query(db, projection, selection, selectionArgs,null, null, sortOrder);
-
-    /**
-     * register to watch a content URI for changes
-     */
-    c.setNotificationUri(getContext().getContentResolver(), uri);
-    return c;
-}
-```
-
-While the user is providing a STUDENT_ID at `content://sg.vp.owasp_mobile.provider.College/students`, the query statement is prone to SQL injection. Obviously [prepared statements](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet "OWASP SQL Injection Cheat Sheet") must be used to avoid SQL injection, but [input validation](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") should also be applied so that only input that the app is expecting is processed.
-
-All app functions that process data coming in through the UI should implement input validation:
-
-- For user interface input, [Android Saripaar v2](https://github.com/ragunathjawahar/android-saripaar "Android Saripaar v2") can be used.
-- For input from IPC or URL schemes, a validation function should be created. For example, the following determines whether the [string is alphanumeric](https://stackoverflow.com/questions/11241690/regex-for-checking-if-a-string-is-strictly-alphanumeric "Input Validation"):
-
-```java
-public boolean isAlphaNumeric(String s){
-    String pattern= "^[a-zA-Z0-9]*$";
-    return s.matches(pattern);
-}
-```
-
-An alternative to validation functions is type conversion, with, for example, `Integer.parseInt` if only integers are expected. The [OWASP Input Validation Cheat Sheet](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") contains more information about this topic.
-
-#### Dynamic Analysis
-
-The tester should manually test the input fields with strings like `OR 1=1--` if, for example, a local SQL injection vulnerability has been identified.
-
-On a rooted device, the command content can be used to query the data from a Content Provider. The following command queries the vulnerable function described above.
-
-```shell
-# content query --uri content://sg.vp.owasp_mobile.provider.College/students
-```
-
-SQL injection can be exploited with the following command. Instead of getting the record for Bob only, the user can retrieve all data.
-
-```shell
-# content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
-```
-
-Drozer can also be used for dynamic testing.
-
-### Testing Exception Handling
+### Testing Exception Handling (MSTG-CODE-6 and MSTG-CODE-7)
 
 #### Overview
 
@@ -457,7 +356,7 @@ The application should never crash; it should
 - if necessary, tell the user to take appropriate action (The message should not leak sensitive information.),
 - not provide any information in logging mechanisms used by the application.
 
-### Make Sure That Free Security Features Are Activated
+### Make Sure That Free Security Features Are Activated (MSTG-CODE-9)
 
 #### Overview
 
@@ -524,7 +423,7 @@ class a$b
 }
 ```
 
-### Memory Corruption Bugs
+### Memory Corruption Bugs (MSTG-CODE-8)
 
 Android applications often run on a VM where most of the memory corruption issues have been taken care off.
 This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
@@ -538,7 +437,7 @@ There are various items to look for:
 - Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
 - Is there Java code or Kotlin code? Look for Serialization/deserialization issues, such as described in [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization").
 
-Note that there can be Memory leaks in Java/Kottline code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details, please check:
+Note that there can be Memory leaks in Java/Kotlin code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details, please check:
 
 - [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
 - [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android").
@@ -552,7 +451,7 @@ There are various steps to take:
 - Check with the [Memory Profiler from Android Studio](https://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
 - Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Android Java Deserialization Vulnerability Tester"), for serialization vulnerabilities.
 
-### Checking for Weaknesses in Third Party Libraries
+### Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)
 
 #### Overview
 
@@ -654,16 +553,15 @@ The dynamic analysis of this section comprises validating whether the copyrights
 
 #### OWASP MASVS
 
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- V7.1: "The app is signed and provisioned with valid certificate."
-- V7.2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
-- V7.3: "Debugging symbols have been removed from native binaries."
-- V7.4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
-- V7.5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
-- V7.6: "The app catches and handles possible exceptions."
-- V7.7: "Error handling logic in security controls denies access by default."
-- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
-- V7.9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
+- MSTG-CODE-1: "The app is signed and provisioned with valid certificate."
+- MSTG-CODE-2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
+- MSTG-CODE-3: "Debugging symbols have been removed from native binaries."
+- MSTG-CODE-4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
+- MSTG-CODE-5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
+- MSTG-CODE-6: "The app catches and handles possible exceptions."
+- MSTG-CODE-7: "Error handling logic in security controls denies access by default."
+- MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
+- MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 #### CWE
 

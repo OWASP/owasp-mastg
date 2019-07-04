@@ -468,7 +468,7 @@ The code for all input fields that take sensitive information should include thi
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
 
-### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6 and MSTG-PLATFORM-2)
+### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
 
 #### Overview
 
