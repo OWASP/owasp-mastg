@@ -8,7 +8,7 @@ Note that the meaning of "sensitive data" depends on the app that handles it. Da
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
 
-### Testing Local Storage for Sensitive Data
+### Testing Local Storage for Sensitive Data (MSTG‑STORAGE‑1 and MSTG‑STORAGE‑2)
 
 #### Overview
 
@@ -104,8 +104,6 @@ Secure ways to retrieve the key include:
 ##### Firebase Real-time Databases
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
-
-###### Identifying Misconfigured Firebase Instance
 
 In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
 
@@ -203,9 +201,7 @@ Encryption should be implemented using proven SDK functions. The following descr
 - Keys used or created without Android onboard features, such as the Android KeyStore
 - Keys disclosed by hard-coding
 
-###### Typical Misuse: Hard-coded Cryptographic Keys
-
-Hard-coded and world-readable cryptographic keys significantly increase the possibility that encrypted data will be recovered. Once an attacker obtains the data, decrypting it is trivial. Symmetric cryptography keys must be stored on the device, so identifying them is just a matter of time and effort. Consider the following code:
+A typical misuse are hard-coded cryptographic keys. Hard-coded and world-readable cryptographic keys significantly increase the possibility that encrypted data will be recovered. Once an attacker obtains the data, decrypting it is trivial. Symmetric cryptography keys must be stored on the device, so identifying them is just a matter of time and effort. Consider the following code:
 
 ```Java
 this.db = localUserSecretStore.getWritableDatabase("SuperPassword123");
@@ -303,7 +299,7 @@ There are several different open-source libraries that offer encryption capabili
 - **[SQL Cipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQL Cipher")** - SQLCipher is an open source extension to SQLite that provides transparent 256-bit AES encryption of database files.
 - **[Secure Preferences](https://github.com/scottyab/secure-preferences "Secure Preferences")** - Android Shared preference wrapper than encrypts the keys and values of Shared Preferences.
 
-> Please keep in mind that as long as the key is not stored in the KeyStore, it is always possible to easily retrieve the key on a rooted device and the decrypt the values you are trying to protect.
+> Please keep in mind that as long as the key is not stored in the KeyStore, it is always possible to easily retrieve the key on a rooted device and then decrypt the values you are trying to protect.
 
 #### Dynamic Analysis
 
@@ -318,16 +314,17 @@ Install and use the app, executing all functions at least once. Data can be gene
 
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
 
-### Testing Local Storage for Input Validation
+### Testing Local Storage for Input Validation (MSTG‑PLATFORM‑2)
 
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
+
 > Note: Similar holds for private accessible data on a rooted device
 
 #### Static analysis
 
 ##### Using Shared Preferences
 
-When you use the `SharedPreferences.Editor` to read/write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaining the values (E.g.: no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet`  one should be careful with how the data is interpreted.
+When you use the `SharedPreferences.Editor` to read or write int/boolean/long values, you cannot check whether the data is overridden or not. However: it can hardly be used for actual attacks other than chaining the values (e.g. no additional exploits can be packed which will take over the control flow). In the case of a `String` or a `StringSet` you should be careful with how the data is interpreted.
 Using reflection based persistence? Check the section on "Testing Object Persistence" for Android to see how it should be validated.
 Using the `SharedPreferences.Editor` to store and read certificates or keys? Make sure you have patched your security provider given vulnerabilities such as found in [Bouncy Castle](https://www.cvedetails.com/cve/CVE-2018-1000613/ "Key reading vulnerability due to unsafe reflection").
 
@@ -337,7 +334,7 @@ In all cases, having the content HMACed can help to ensure that no additions and
 
 In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
-### Testing Logs for Sensitive Data
+### Testing Logs for Sensitive Data (MSTG‑STORAGE‑3)
 
 #### Overview
 
@@ -421,7 +418,7 @@ $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 You may also want to apply further filters or regular expressions (using `logcat`'s regex flags `-e <expr>, --regex=<expr>` for example) if you expect certain strings or patterns to come up in the logs.
 
-### Determining Whether Sensitive Data is Sent to Third Parties
+### Determining Whether Sensitive Data is Sent to Third Parties (MSTG-STORAGE-4)
 
 #### Overview
 
@@ -449,7 +446,7 @@ All data sent to third-party services should be anonymized. Data (such as applic
 Check all requests to external services for embedded sensitive information.
 To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with _Burp Suite Professional_ or _OWASP ZAP_. Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
-### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields
+### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG‑STORAGE‑5)
 
 #### Overview
 
@@ -471,7 +468,7 @@ The code for all input fields that take sensitive information should include thi
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
 
-### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms
+### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG‑STORAGE‑6 and MSTG‑PLATFORM‑2)
 
 #### Overview
 
@@ -692,7 +689,7 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-### Checking for Sensitive Data Disclosure Through the User Interface
+### Checking for Sensitive Data Disclosure Through the User Interface (	MSTG‑STORAGE‑7)
 
 #### Overview
 
@@ -716,7 +713,7 @@ To determine whether the application leaks any sensitive information to the user
 
 If the information is masked by, for example, replacing input with asterisks or dots, the app isn't leaking data to the user interface.
 
-### Testing Backups for Sensitive Data
+### Testing Backups for Sensitive Data (MSTG‑STORAGE‑8)
 
 #### Overview
 
@@ -838,7 +835,7 @@ Extract the tar file to your working directory.
 $ tar xvf mybackup.tar
 ```
 
-### Finding Sensitive Information in Auto-Generated Screenshots
+### Finding Sensitive Information in Auto-Generated Screenshots (MSTG‑STORAGE‑9)
 
 #### Overview
 
@@ -869,7 +866,7 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 |---|---|
 | ![OMTG_DATAST_010_1_FLAG_SECURE](Images/Chapters/0x05d/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](Images/Chapters/0x05d/2.png) |
 
-### Checking Memory for Sensitive Data
+### Checking Memory for Sensitive Data (MSTG‑STORAGE‑10)
 
 #### Overview
 
@@ -1117,7 +1114,7 @@ During your analysis, search for:
 
 Repeating tests and memory dumps will help you obtain statistics about the length of data exposure. Furthermore, observing the way a particular memory segment (e.g., a byte array) changes may lead you to some otherwise unrecognizable sensitive data (more on this in the "Remediation" section below).
 
-### Testing the Device-Access-Security Policy
+### Testing the Device-Access-Security Policy (MSTG‑STORAGE‑11)
 
 #### Overview
 
@@ -1150,19 +1147,18 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 #### OWASP MASVS
 
-- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
-- V2.2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
-- V2.3: "No sensitive data is written to application logs."
-- V2.4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
-- V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
-- V2.6: "No sensitive data is exposed via IPC mechanisms."
-- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
-- V2.9: "The app removes sensitive data from views when moved to the background."
-- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
-- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
-- V6.1: "The app only requests the minimum set of permissions necessary."
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-STORAGE-2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
+- MSTG-STORAGE-3: "No sensitive data is written to application logs."
+- MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+- MSTG-STORAGE-5: "The keyboard cache is disabled on text inputs that process sensitive data."
+- MSTG-STORAGE-6: "No sensitive data is exposed via IPC mechanisms."
+- MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
+- MSTG-STORAGE-8: "No sensitive data is included in backups generated by the mobile operating system."
+- MSTG-STORAGE-9: "The app removes sensitive data from views when moved to the background."
+- MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- MSTG‑PLATFORM‑2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 
 #### CWE
 
@@ -1182,20 +1178,20 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 #### Tools
 
-- Sqlite3 - <http://www.sqlite.org/cli.html>
-- Realm Browser - Realm Browser - <https://github.com/realm/realm-browser-osx>
-- ProGuard - <http://proguard.sourceforge.net/>
-- Logcat - <http://developer.android.com/tools/help/logcat.html>
-- Burp Suite Professional - <https://portswigger.net/burp/>
-- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
-- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
 - Android Backup Extractor - <https://github.com/nelenkov/android-backup-extractor>
-- Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
+- Burp Suite Professional - <https://portswigger.net/burp/>
+- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
 - Eclipse’s MAT (Memory Analyzer Tool) standalone - <https://eclipse.org/mat/downloads.php>
-- Memory Analyzer which is part of Eclipse - <https://www.eclipse.org/downloads/>
+- Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 - Fridump - <https://github.com/Nightbringer21/fridump>
 - LiME - <https://github.com/504ensicsLabs/LiME>
-- Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
+- Logcat - <http://developer.android.com/tools/help/logcat.html>
+- Memory Analyzer which is part of Eclipse - <https://www.eclipse.org/downloads/>
+- Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- ProGuard - <http://proguard.sourceforge.net/>
+- Realm Browser - Realm Browser - <https://github.com/realm/realm-browser-osx>
+- Sqlite3 - <http://www.sqlite.org/cli.html>
 
 #### Libraries
 
