@@ -1,6 +1,6 @@
 ## Android Anti-Reversing Defenses
 
-### Testing Root Detection
+### Testing Root Detection (MSTG-RESILIENCE-1)
 
 #### Overview
 
@@ -223,7 +223,7 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
 
-### Testing Anti-Debugging
+### Testing Anti-Debugging (MSTG-RESILIENCE-2)
 
 #### Overview
 
@@ -625,7 +625,7 @@ Work on bypassing the anti-debugging defenses and answer the following questions
 
 If anti-debugging mechanisms are missing or too easily bypassed, make suggestions in line with the effectiveness criteria above. These suggestions may include adding more detection mechanisms and better integration of existing mechanisms with other defenses.
 
-### Testing File Integrity Checks
+### Testing File Integrity Checks (MSTG-RESILIENCE-3)
 
 #### Overview
 
@@ -683,9 +683,9 @@ Complete the following procedure when generating an HMAC with BouncyCastle:
 Complete the following procedure when verifying the HMAC with BouncyCastle:
 
 1. Make sure that BouncyCastle or SpongyCastle is registered as a security provider.
-2. Extract the message and the hmacbytes as separate arrays.
+2. Extract the message and the HMAC-bytes as separate arrays.
 3. Repeat steps 1-4 of the procedure for generating an HMAC.
-4. Compare the extracted hmacbytes to the result of step 3.
+4. Compare the extracted HMAC-bytes to the result of step 3.
 
 When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html), then it is best to only do this for Android 6 and higher.
 
@@ -801,7 +801,7 @@ An approach similar to that for application-source integrity checks applies. Ans
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-### Testing The Detection of Reverse Engineering Tools
+### Testing The Detection of Reverse Engineering Tools (MSTG-RESILIENCE-4)
 
 #### Overview
 
@@ -1090,7 +1090,7 @@ The app should respond in some way to the presence of each of those tools. At th
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-### Testing Emulator Detection
+### Testing Emulator Detection (MSTG-RESILIENCE-5)
 
 #### Overview
 
@@ -1160,7 +1160,7 @@ Work on bypassing the defenses and answer the following questions:
 - Did you need to write custom code to disable the anti-emulation feature(s)? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-### Testing Run Time Integrity Checks
+### Testing Run Time Integrity Checks (MSTG-RESILIENCE-6)
 
 #### Overview
 
@@ -1228,7 +1228,7 @@ Work on bypassing the checks with the following techniques:
 
 Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
 
-### Testing Device Binding
+### Testing Device Binding (MSTG-RESILIENCE-10)
 
 #### Overview
 
@@ -1516,7 +1516,7 @@ See section "Dynamic Analysis with an Emulator" above.
 5. In the application's data folder, overwrite the data from step 3.
 6. Can you continue in an authenticated state? If so, binding may not be working properly.
 
-### Testing Obfuscation
+### Testing Obfuscation (MSTG-RESILIENCE-9)
 
 #### Overview
 
@@ -1542,16 +1542,14 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 #### OWASP MASVS
 
-- V6.1: "The app only requests the minimum set of permissions necessary."
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-- V8.2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
-- V8.3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
-- V8.4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
-- V8.5: "The app detects, and responds to, being run in an emulator."
-- V8.6: "The app detects, and responds to, tampering the code and data in its own memory space."
-- V8.9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-- V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis doesn't reveal important code or data."
+- MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
+- MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
+- MSTG-RESILIENCE-3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
+- MSTG-RESILIENCE-4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
+- MSTG-RESILIENCE-5: "The app detects, and responds to, being run in an emulator."
+- MSTG-RESILIENCE-6: "The app detects, and responds to, tampering the code and data in its own memory space."
+- MSTG-RESILIENCE-9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
+- MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 
 #### SafetyNet Attestation
 
