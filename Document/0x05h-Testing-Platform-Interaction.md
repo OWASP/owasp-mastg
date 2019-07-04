@@ -1,6 +1,6 @@
 ## Android Platform APIs
 
-### Testing App Permissions
+### Testing App Permissions (MSTG-PLATFORM-1)
 
 #### Overview
 
@@ -277,7 +277,7 @@ Note that this method can't be used for `signature` level permissions because Dr
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
-### Testing Custom URL Schemes
+### Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
 #### Overview
 
@@ -363,7 +363,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
 
-### Testing for Sensitive Functionality Exposure Through IPC
+### Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
 #### Overview
 
@@ -672,7 +672,7 @@ Extra: phonenumber=07123456789 (java.lang.String)
 Extra: newpass=12345 (java.lang.String)`
 ```
 
-### Testing JavaScript Execution in WebViews
+### Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)
 
 #### Overview
 
@@ -721,7 +721,7 @@ To address these attack vectors, check the following:
   - the certificate is checked properly (see test case "Testing Endpoint Identify Verification"), and/or
   - the certificate should be pinned (see "Testing Custom Certificate Stores and SSL Pinning").
 
-### Testing WebView Protocol Handlers
+### Testing WebView Protocol Handlers (MSTG-PLATFORM-6)
 
 #### Overview
 
@@ -781,7 +781,7 @@ webView.getSettings().setAllowContentAccess(false);
 
 To identify the usage of protocol handlers, look for ways to trigger phone calls and ways to access files from the file system while you're using the app.
 
-### Determining Whether Java Objects Are Exposed Through WebViews
+### Determining Whether Java Objects Are Exposed Through WebViews (MSTG-PLATFORM-7)
 
 #### Overview
 
@@ -865,7 +865,7 @@ Dynamic analysis of the app can show you which HTML or JavaScript files are load
 
 A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
-### Testing for Fragment Injection
+### Testing for Fragment Injection (MSTG-PLATFORM-2)
 
 #### Overview
 
@@ -957,7 +957,7 @@ startActivity(i);
 
 The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
 
-### Testing Object Persistence
+### Testing Object Persistence (MSTG-PLATFORM-8)
 
 #### Overview
 
@@ -1172,7 +1172,7 @@ There are several ways to perform dynamic analysis:
 1. For the actual persistence: Use the techniques described in the data storage chapter.
 2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
-### Testing enforced updating
+### Testing enforced updating (MSTG-ARCH-9)
 
 Starting from API level 21 (Android 5.0), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
@@ -1296,15 +1296,15 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 #### OWASP MASVS
 
-- V1.9: "A mechanism for enforcing updates of the mobile app exists."
-- V6.1: "The app only requests the minimum set of permissions necessary."
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
-- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
-- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
-- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
+- MSTG-PLATFORM-1: "The app only requests the minimum set of permissions necessary."
+- MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- MSTG-PLATFORM-3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- MSTG-PLATFORM-4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
+- MSTG-PLATFORM-5: "JavaScript is disabled in WebViews unless explicitly required."
+- MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
+- MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
 
 #### CWE
 
