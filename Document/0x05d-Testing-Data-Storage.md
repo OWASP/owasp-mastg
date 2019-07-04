@@ -8,7 +8,7 @@ Note that the meaning of "sensitive data" depends on the app that handles it. Da
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
 
-### Testing Local Storage for Sensitive Data (MSTG‑STORAGE‑1 and MSTG‑STORAGE‑2)
+### Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 #### Overview
 
@@ -314,7 +314,7 @@ Install and use the app, executing all functions at least once. Data can be gene
 
 Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
 
-### Testing Local Storage for Input Validation (MSTG‑PLATFORM‑2)
+### Testing Local Storage for Input Validation (MSTG-PLATFORM-2)
 
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
 
@@ -334,7 +334,7 @@ In all cases, having the content HMACed can help to ensure that no additions and
 
 In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
-### Testing Logs for Sensitive Data (MSTG‑STORAGE‑3)
+### Testing Logs for Sensitive Data (MSTG-STORAGE-3)
 
 #### Overview
 
@@ -446,7 +446,7 @@ All data sent to third-party services should be anonymized. Data (such as applic
 Check all requests to external services for embedded sensitive information.
 To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with _Burp Suite Professional_ or _OWASP ZAP_. Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
-### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG‑STORAGE‑5)
+### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
 
 #### Overview
 
@@ -468,7 +468,7 @@ The code for all input fields that take sensitive information should include thi
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
 
-### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG‑STORAGE‑6 and MSTG‑PLATFORM‑2)
+### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6 and MSTG-PLATFORM-2)
 
 #### Overview
 
@@ -689,7 +689,7 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-### Checking for Sensitive Data Disclosure Through the User Interface (	MSTG‑STORAGE‑7)
+### Checking for Sensitive Data Disclosure Through the User Interface (	MSTG-STORAGE-7)
 
 #### Overview
 
@@ -713,7 +713,7 @@ To determine whether the application leaks any sensitive information to the user
 
 If the information is masked by, for example, replacing input with asterisks or dots, the app isn't leaking data to the user interface.
 
-### Testing Backups for Sensitive Data (MSTG‑STORAGE‑8)
+### Testing Backups for Sensitive Data (MSTG-STORAGE-8)
 
 #### Overview
 
@@ -835,7 +835,7 @@ Extract the tar file to your working directory.
 $ tar xvf mybackup.tar
 ```
 
-### Finding Sensitive Information in Auto-Generated Screenshots (MSTG‑STORAGE‑9)
+### Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
 
 #### Overview
 
@@ -866,7 +866,7 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 |---|---|
 | ![OMTG_DATAST_010_1_FLAG_SECURE](Images/Chapters/0x05d/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](Images/Chapters/0x05d/2.png) |
 
-### Checking Memory for Sensitive Data (MSTG‑STORAGE‑10)
+### Checking Memory for Sensitive Data (MSTG-STORAGE-10)
 
 #### Overview
 
@@ -1114,7 +1114,7 @@ During your analysis, search for:
 
 Repeating tests and memory dumps will help you obtain statistics about the length of data exposure. Furthermore, observing the way a particular memory segment (e.g., a byte array) changes may lead you to some otherwise unrecognizable sensitive data (more on this in the "Remediation" section below).
 
-### Testing the Device-Access-Security Policy (MSTG‑STORAGE‑11)
+### Testing the Device-Access-Security Policy (MSTG-STORAGE-11)
 
 #### Overview
 
@@ -1158,7 +1158,7 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - MSTG-STORAGE-9: "The app removes sensitive data from views when moved to the background."
 - MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
-- MSTG‑PLATFORM‑2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 
 #### CWE
 
