@@ -689,7 +689,7 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-### Checking for Sensitive Data Disclosure Through the User Interface (	MSTG-STORAGE-7)
+### Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
 
 #### Overview
 
