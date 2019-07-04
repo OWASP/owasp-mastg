@@ -1181,7 +1181,7 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Android Backup Extractor - <https://github.com/nelenkov/android-backup-extractor>
 - Burp Suite Professional - <https://portswigger.net/burp/>
 - Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
-- Eclipse’s MAT (Memory Analyzer Tool) standalone - <https://eclipse.org/mat/downloads.php>
+- Eclipse Memory Analyzer (MAT) - <https://eclipse.org/mat/downloads.php>
 - Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 - Fridump - <https://github.com/Nightbringer21/fridump>
 - LiME - <https://github.com/504ensicsLabs/LiME>
