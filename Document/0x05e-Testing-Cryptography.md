@@ -343,7 +343,7 @@ When you have access to the source code, check at least for the following:
 - Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
 - Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 - In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
-- Make sure that keys are not used for different purposes, for instance:
+- Take special care on verifying the purposes of the keys, for instance:
   - make sure that for asymmetric encryption, the public key is not used for signing and the private key for encryption.
   - make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
 
