@@ -291,13 +291,13 @@ When defining the KeyDescription AuthorizationList, the following parameters wil
 - The `keySize` parameter Specifies the size, in bits, of the key, measuring in the normal way for the key's algorithm
 - The `digest` parameter Specifies the digest algorithms that may be used with the key to perform signing and verification operations
 
-#### Decryption only on Unlocked Devices
+#### Key Decryption only on Unlocked Devices
 
 For more security Android pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
 
 #### StrongBox Hardware Security Module
 
-Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random-number generator and a mechanism to resist package tampering. To use this feature a `True` flag must be passed to `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
+Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
 
 #### Key Use Authorizations
 
@@ -343,8 +343,8 @@ When you have access to the source code, check at least for the following:
 - Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
 - Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 - In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
-- Make sure that keys are not used for different purposes, for instance:
-  - make sure that for asymmetric encryption, the public key is not used for signing and the private key for encryption.
+- Take special care on verifying the purposes of the keys, for instance:
+  - make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
   - make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
 
 #### Dynamic Analysis

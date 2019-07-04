@@ -105,7 +105,7 @@ Secure ways to retrieve the key include:
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
+In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on more than 2 Million mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
 
 The misconfigured Firebase instance can be identified by making the following network call:
 
@@ -689,7 +689,7 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-### Checking for Sensitive Data Disclosure Through the User Interface (	MSTG-STORAGE-7)
+### Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
 
 #### Overview
 
@@ -1181,12 +1181,11 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Android Backup Extractor - <https://github.com/nelenkov/android-backup-extractor>
 - Burp Suite Professional - <https://portswigger.net/burp/>
 - Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
-- Eclipse’s MAT (Memory Analyzer Tool) standalone - <https://eclipse.org/mat/downloads.php>
+- Eclipse Memory Analyzer (MAT) - <https://eclipse.org/mat/downloads.php>
 - Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 - Fridump - <https://github.com/Nightbringer21/fridump>
 - LiME - <https://github.com/504ensicsLabs/LiME>
 - Logcat - <http://developer.android.com/tools/help/logcat.html>
-- Memory Analyzer which is part of Eclipse - <https://www.eclipse.org/downloads/>
 - Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - ProGuard - <http://proguard.sourceforge.net/>
