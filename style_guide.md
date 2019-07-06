@@ -24,11 +24,7 @@ Consider creating a supporting document and linking to it from the page rather t
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
 
-Update pages in order to keep information, such as data and statistics, timely and accurate.
-
-When using statistical data on your page
-
-Ensure that the information is current and up-to-date and is accompanied by the source from which   it was derived, along with the date the data was compiled.
+When using statistical data on your page, ensure that the information is current and up-to-date and is accompanied by the source from which it was derived, along with the date the data was compiled.
 
 ### Content for the digital platform versus for print
 
@@ -47,7 +43,7 @@ Include a clear and concise introduction where possible.
 
 Link to background information where necessary.
 
-### Write so people will read with joy!
+### Write so people will read with joy
 
 Use the following methods to increase scannability:
 
@@ -73,6 +69,7 @@ For longer pages, use the following tools to make the page easily scannable:
 ### Effective use of lists
 
 When presenting your content in a list format:
+
 - Use numbered lists when the order of entries is important.
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
@@ -82,9 +79,8 @@ When presenting your content in a list format:
 - - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
 - - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
-
-
 ### Numbering conventions
+
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
 
 When using any number higher than ten, use the numeric version (e.g., "12" or “300”).
@@ -113,9 +109,9 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
 
-### Standardization 
+### Standardization
 
-This is a list of words/abbrevations that are used inconsistently at the moment in the MSTG and need standardization:
+This is a list of words/abbreviations that are used inconsistently at the moment in the MSTG and need standardization:
 
 - man-in-the-middle attack (MITM)
 
@@ -139,7 +135,7 @@ were not -> weren't
 will not -> wont  
 would not -> wouldn't  
 you are -> you're  
-you have + *verb* -> you've + *verb* 
+you have + *verb* -> you've + *verb*
 you will -> you'll  
 
 ### Abbreviations
@@ -148,9 +144,25 @@ Spell out abbreviations the first time they are used.
 
 Ex: United States (U.S.)
 
+### Referencing Android versions
+
+Use the following format when referring to an Android version: Android X (API level YY). Usage of the descriptive name (Ex: Oreo) is discouraged.
+
+Ex: Android 9 (API level 28)
+
+### Addressing the reader in test cases
+
+Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
+
+**Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: ...
+
+**Wrong:** The AndroidManifest.xml file contains an Application tag, with the following attributes: atr1, atr2 and atr3. The command below shows that atr1 is dangerous: ...
+
+**Wrong:** If we open the AndroidManifest.xml file, we will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If we run the following command, we will see that atr1 is actually dangerous: ...
+
 ## 3. External References
 
-For web links, use the normal markdown inline link format:
+For web links, use the normal markdown in-line link format:
 
 \[TEXT](URL "NAME")
 
@@ -196,11 +208,11 @@ e.g.
 - [myer] R. L. Myer, “Parametric oscillators and nonlinear materials,” in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160.
 - [abramowitz] M. Abramowitz and I. A. Stegun, Eds., Handbook of Mathematical Functions (Applied Mathematics Series 55). Washington, DC: NBS, 1964, pp. 32-33.
 
-## References Within The Guide
+## 4. References Within The Guide
 
 For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly.
 
-## Insert pictures
+## 5. Insert pictures
 
 Pictures should be uploaded to the Images/Chapters directory. Afterwards they should be embedded by using the image tag, a width of 500px should be specified. For example:
 
@@ -209,25 +221,28 @@ Pictures should be uploaded to the Images/Chapters directory. Afterwards they sh
 - *iOS Data Protection Key Hierarchy*
 ```
 
-## Punctuation conventions
+## 6. Punctuation conventions
 
-**Lowercase or capital letter after a colon**
+### Lowercase or capital letter after a colon
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
 
-**Serial comma use**
+### Serial comma use
 
 Use a serial comma before "and" for the last item in a run-in list of three or more items. For example:
 
 We bought apples, oranges, and tomatoes from the store.
 
-**Quote Marks and Apostrophes**
+### Quote Marks and Apostrophes
+
 Use straight double quotes, straight single quotes, and straight apostrophes (not curly quotes/apostrophes).
 
-**Technical Terms**
+### Technical Terms
+
 Spell/punctuate **specific** technical terms as they are used by the company (e.g., use the company website).
 
 In order of preference, spell/punctuate **generic** technical terms according to
+
 1. Merriam Webster's Collegiate Dictionary, 11th edition.
 2. Microsoft Manual of Style, 4th edition
 3. foldoc.org (Free Online Dictionary of Computing)
@@ -258,22 +273,21 @@ In order of preference, spell/punctuate **generic** technical terms according to
 | use case   |    *same*       |
 | white box  |    *same*       |
 
-## Comments
+## 7. Comments
 
 Markdown blockquotes can be used for comments in the documents by using ">"/
 
 > This is a blockquote
 
-
-## Code and Shell Commands
+## 8. Code and Shell Commands
 
 Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
 
-\`\`\`java
-
-public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
-
-\`\`\`
+```text
+    ```java
+    public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
+    ```
+```
 
 This produces the following result:
 
@@ -283,10 +297,18 @@ public static void main(String[] args) { System.out.println(" Hello World!"); } 
 
 When including shell commands, make sure to remove any host names and usernames from the command prompt, e.g.:
 
-```
+```shell
 $ echo 'Hello World'
+Hello World
 ```
-**In-text keywords**
+
+When a command requires parameters that need to be modified by the reader, surround them with angle brackets:
+
+```shell
+$ adb pull <remote_file> <target_destination>
+```
+
+### In-text keywords
 
 When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
 

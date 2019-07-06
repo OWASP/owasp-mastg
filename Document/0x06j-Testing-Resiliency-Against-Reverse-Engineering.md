@@ -8,9 +8,9 @@ Jailbreak detection mechanisms are added to reverse engineering defense to make 
 
 ##### File-based Checks
 
-Check for files and directories typically associated with jailbreaks, such as
+Check for files and directories typically associated with jailbreaks, such as:
 
-```
+```text
 /Applications/Cydia.app
 /Applications/FakeCarrier.app
 /Applications/Icy.app
@@ -77,17 +77,16 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1." This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
 
-
 #### Bypassing Jailbreak Detection
 
 Once you start an application that has jailbreak detection enabled on a jailbroken device, you'll notice one of the following things:
 
-1.	The application closes immediately, without any notification.
-2.	A pop-up window indicates that the application won't run on a jailbroken device.
+1. The application closes immediately, without any notification.
+2. A pop-up window indicates that the application won't run on a jailbroken device.
 
 In the first case, make sure the application is fully functional on non-jailbroken devices. The application may be crashing or it may have a bug that causes it to terminate. This may happen while you're testing a preproduction version of the application.
 
-Let's again look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
+Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
 
 ![Disassembling with Hopper](Images/Chapters/0x06b/HopperDisassembling.png) ![Decompiling with Hopper](Images/Chapters/0x06b/HopperDecompile.png)
 
@@ -95,7 +94,7 @@ As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`)
 
 Let's inject Cycript into our process (look for your PID with `top`):
 
-```sh
+```shell
 iOS8-jailbreak:~ root# cycript -p 12345
 cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
@@ -103,14 +102,14 @@ true
 
 As you can see, our class method was called directly, and it returned "true." Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
 
-```sh
+```shell
 cy# a=choose(JailbreakDetectionVC)
 []
 ```
 
 Oops! The return value is an empty array. That means that there are no instances of this class registered in the runtime. In fact, we haven't clicked the second "Jailbreak Test" button, which initializes this class:
 
-```sh
+```shell
 cy# a=choose(JailbreakDetectionVC)
 [#"<JailbreakDetectionVC: 0x14ee15620>"]
 cy# [a[0] isJailbroken]
@@ -121,7 +120,7 @@ True
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
-```sh
+```shell
 cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
 false
@@ -131,14 +130,14 @@ false
 
 In this case we have bypassed the jailbreak detection of the application!
 
-Now, imagine that the application is closing immediately after detecting that the device is jailbroken. You don't have time to launch Cycript and replace the function implementation. Instead, you have to use CydiaSubstrate, employ a proper hooking function like `MSHookMessageEx`, and compile the tweak. There are [good sources](http://delaat.net/rp/2015-2016/p51/report.pdf "Jailbreak/Root Detection Evasion Study on iOS and Android") for how to do this; however, we will provide a potentially faster and more flexible approach.
+Now, imagine that the application is closing immediately after detecting that the device is jailbroken. You don't have time to launch Cycript and replace the function implementation. Instead, you have to use CydiaSubstrate, employ a proper hooking function like `MSHookMessageEx`, and compile the tweak. There are [good sources](http://delaat.net/rp/2015-2016/p51/report.pdf "Jailbreak/Root Detection Evasion Study on iOS and Android") for how to do this; however, by using Frida, we can more easily perform early instrumentation and we can build on our gathered skills from previous tests.
 
-**[Frida](https://www.frida.re/ "Frida")** is a dynamic instrumentation framework that allows you to use a JavaScript API to instrument apps. One feature that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
+One feature of Frida that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
 
-1.	Make sure that `frida-server` is running on your iDevice.
-2.	Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
-3.	iOS device must be connected via USB cable.
-4.	Use `frida-trace` on your workstation:
+1. Make sure that `frida-server` is running on your iOS Device.
+2. Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
+3. The iOS device must be connected via USB cable.
+4. Use `frida-trace` on your workstation:
 
 ```shell
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
@@ -161,7 +160,7 @@ $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp 
 
 Instrumenting functions...                                           `...
 -[JailbreakDetectionVC isJailbroken]: Loaded handler at "./__handlers__/__JailbreakDetectionVC_isJailbroken_.js"
-Started tracing 1 function. Press Ctrl+C to stop.                     
+Started tracing 1 function. Press Ctrl+C to stop.
 Function [JailbreakDetectionVC isJailbroken] originally returned:0x1
 Changing the return value to:0x0
            /* TID 0x303 */
@@ -171,106 +170,106 @@ Changing the return value to:0x0
  22475 ms  -[JailbreakDetectionVC isJailbroken]
 ```
 
-Please note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
+Note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
 
-Frida is a very powerful and versatile tool. Refer to the [documentation](https://www.frida.re/docs/home/ "Frida Documentation") for more details.
+One more way to bypass Jailbreak detection mechanisms that rely on file system checks is objection. You can [find the implementation here](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
 
-Please see below a Python script for hooking Objective-C methods and native functions:
+See below a Python script for hooking Objective-C methods and native functions:
 
 ```python
 import frida
 import sys
 
 try:
-	session = frida.get_usb_device().attach("Target Process")
+    session = frida.get_usb_device().attach("Target Process")
 except frida.ProcessNotFoundError:
-	print "Failed to attach to the target process. Did you launch the app?"
-	sys.exit(0);
+    print "Failed to attach to the target process. Did you launch the app?"
+    sys.exit(0);
 
 script = session.create_script("""
 
-	// Handle fork() based check
+    // Handle fork() based check
 
-  var fork = Module.findExportByName("libsystem_c.dylib", "fork");
+    var fork = Module.findExportByName("libsystem_c.dylib", "fork");
 
-	Interceptor.replace(fork, new NativeCallback(function () {
-		send("Intercepted call to fork().");
-	    return -1;
-	}, 'int', []));
+    Interceptor.replace(fork, new NativeCallback(function () {
+        send("Intercepted call to fork().");
+        return -1;
+    }, 'int', []));
 
-  var system = Module.findExportByName("libsystem_c.dylib", "system");
+    var system = Module.findExportByName("libsystem_c.dylib", "system");
 
-	Interceptor.replace(system, new NativeCallback(function () {
-		send("Intercepted call to system().");
-	    return 0;
-	}, 'int', []));
+    Interceptor.replace(system, new NativeCallback(function () {
+        send("Intercepted call to system().");
+        return 0;
+    }, 'int', []));
 
-	// Intercept checks for Cydia URL handler
+    // Intercept checks for Cydia URL handler
 
-	var canOpenURL = ObjC.classes.UIApplication["- canOpenURL:"];
+    var canOpenURL = ObjC.classes.UIApplication["- canOpenURL:"];
 
-	Interceptor.attach(canOpenURL.implementation, {
-		onEnter: function(args) {
-		  var url = ObjC.Object(args[2]);
-		  send("[UIApplication canOpenURL:] " + path.toString());
-		  },
-		onLeave: function(retval) {
-			send ("canOpenURL returned: " + retval);
-	  	}
+    Interceptor.attach(canOpenURL.implementation, {
+        onEnter: function(args) {
+          var url = ObjC.Object(args[2]);
+          send("[UIApplication canOpenURL:] " + path.toString());
+          },
+        onLeave: function(retval) {
+            send ("canOpenURL returned: " + retval);
+        }
 
-	});		
+    });
 
-	// Intercept file existence checks via [NSFileManager fileExistsAtPath:]
+    // Intercept file existence checks via [NSFileManager fileExistsAtPath:]
 
-	var fileExistsAtPath = ObjC.classes.NSFileManager["- fileExistsAtPath:"];
-	var hideFile = 0;
+    var fileExistsAtPath = ObjC.classes.NSFileManager["- fileExistsAtPath:"];
+    var hideFile = 0;
 
-	Interceptor.attach(fileExistsAtPath.implementation, {
-		onEnter: function(args) {
-		  var path = ObjC.Object(args[2]);
-		  // send("[NSFileManager fileExistsAtPath:] " + path.toString());
+    Interceptor.attach(fileExistsAtPath.implementation, {
+        onEnter: function(args) {
+          var path = ObjC.Object(args[2]);
+          // send("[NSFileManager fileExistsAtPath:] " + path.toString());
 
-		  if (path.toString() == "/Applications/Cydia.app" || path.toString() == "/bin/bash") {
-		  	hideFile = 1;
-		  }
-		},
-		onLeave: function(retval) {
-			if (hideFile) {
-		  		send("Hiding jailbreak file...");MM
-				retval.replace(0);
-				hideFile = 0;
-			}
+          if (path.toString() == "/Applications/Cydia.app" || path.toString() == "/bin/bash") {
+            hideFile = 1;
+          }
+        },
+        onLeave: function(retval) {
+            if (hideFile) {
+                send("Hiding jailbreak file...");MM
+                retval.replace(0);
+                hideFile = 0;
+            }
 
-			// send("fileExistsAtPath returned: " + retval);
-	  }
-	});
+            // send("fileExistsAtPath returned: " + retval);
+      }
+    });
 
 
-	/* If the above doesn't work, you might want to hook low level file APIs as well
+    /* If the above doesn't work, you might want to hook low level file APIs as well
 
-		var openat = Module.findExportByName("libsystem_c.dylib", "openat");
-		var stat = Module.findExportByName("libsystem_c.dylib", "stat");
-		var fopen = Module.findExportByName("libsystem_c.dylib", "fopen");
-		var open = Module.findExportByName("libsystem_c.dylib", "open");
-		var faccesset = Module.findExportByName("libsystem_kernel.dylib", "faccessat");
+        var openat = Module.findExportByName("libsystem_c.dylib", "openat");
+        var stat = Module.findExportByName("libsystem_c.dylib", "stat");
+        var fopen = Module.findExportByName("libsystem_c.dylib", "fopen");
+        var open = Module.findExportByName("libsystem_c.dylib", "open");
+        var faccesset = Module.findExportByName("libsystem_kernel.dylib", "faccessat");
 
-	*/
+    */
 
 """)
 
 def on_message(message, data):
-	if 'payload' in message:
-	  		print(message['payload'])
+    if 'payload' in message:
+            print(message['payload'])
 
 script.on('message', on_message)
 script.load()
 sys.stdin.read()
 ```
 
-
 ### Anti-Debugging Checks
 
 #### Overview
+
 Debugging and exploring applications are helpful during reversing. Using a debugger, a reverse engineer can not only track critical variables but also read and modify memory.
 
 Given the damage debugging can be used for, application developers use many techniques to prevent it. These are called anti-debugging techniques. As discussed in the "Testing Resiliency Against Reverse Engineering" chapter for Android, anti-debugging techniques can be preventive or reactive.
@@ -285,10 +284,7 @@ iOS runs on an XNU kernel. The XNU kernel implements a `ptrace` system call that
 
 The Mac Hacker's Handbook description of PT_DENY_ATTACH:
 
-```
-PT_DENY_ATTACH
-This request is the other operation used by the traced process; it allows a process that's not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.
-```
+> This request is the other operation used by the traced process; it allows a process that's not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.
 
 In other words, using `ptrace` with PT_DENY_ATTACH ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate.
 
@@ -320,9 +316,7 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 
 Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation:
 
-```
-The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
-```
+> The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
 
 `sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I'm being run under the debugger?"):
 
@@ -379,11 +373,10 @@ You can bypass a `sysctl` check by using the debugger itself and setting a break
 
 Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns false when the device is jailbroken. Use the following command to execute this module:
 
-```
+```shell
 [needle] > use dynamic/detection/script_jailbreak-detection-bypass
 [needle][script_jailbreak-detection-bypass] > run
 ```
-
 
 ### File Integrity Checks
 
@@ -468,42 +461,42 @@ When you generate an HMAC with CC:
 4. Append the hash value to the actual data.
 5. Store the results of step 4.
 
-
 ```objc
-	// Allocate a buffer to hold the digest and perform the digest.
-	NSMutableData* actualData = [getData];
- 	//get the key from the keychain
-	NSData* key = [getKey];
-   NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
-   CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData
-     bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
-   [actualData appendData: digestBuffer];
+    // Allocate a buffer to hold the digest and perform the digest.
+    NSMutableData* actualData = [getData];
+    //get the key from the keychain
+    NSData* key = [getKey];
+    NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
+    [actualData appendData: digestBuffer];
 ```
+
 Alternatively, you can use NSData for steps 1 and 3, but you'll need to create a new buffer for step 4.
 
-When verifying the HMAC with CC
+When verifying the HMAC with CC, follow these steps:
+
 1. Extract the message and the hmacbytes as separate `NSData`.
 2. Repeat steps 1-3 of the procedure for generating an HMAC on the `NSData`.
 3. Compare the extracted HMAC bytes to the result of step 1.
 
 ```objc
-	NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
-	NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
-	NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
-	CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
-	return [hmac isEqual: digestBuffer];
+  NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
+  NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
+  NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+  CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
+  return [hmac isEqual: digestBuffer];
 
 ```
 
 ##### Bypassing File Integrity Checks
 
-*When you're trying to bypass the application-source integrity checks*
+###### When you're trying to bypass the application-source integrity checks
 
 1. Patch the anti-debugging functionality and disable the unwanted behavior by overwriting the associated code with NOP instructions.
 2. Patch any stored hash that's used to evaluate the integrity of the code.
 3. Use Frida to hook file system APIs and return a handle to the original file instead of the modified file.
 
-*When you're trying to bypass the storage integrity checks*
+###### When you're trying to bypass the storage integrity checks
 
 1. Retrieve the data from the device, as described in the section on device binding.
 2. Alter the retrieved data and return it to storage.
@@ -527,7 +520,6 @@ A similar approach works. Answer the following questions:
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms??
 
-
 ### Device Binding
 
 #### Overview
@@ -541,8 +533,7 @@ The purpose of device binding is to impede an attacker who tries to copy an app 
 When the source code is available, there are a few bad coding practices you can look for, such as
 
 - MAC addresses: there are several ways to find the MAC address. When you use `CTL_NET` (a network subsystem) or `NET_RT_IFLIST` (getting the configured interfaces) or when the mac-address gets formatted, you'll often see formatting code for printing, such as `"%x:%x:%x:%x:%x:%x"`.
-- using the UDID: `[[[UIDevice currentDevice] identifierForVendor] UUIDString];` and `UIDevice.current.identifierForVendor?.uuidString in Swift3.
-`
+- using the UDID: `[[[UIDevice currentDevice] identifierForVendor] UUIDString];` and `UIDevice.current.identifierForVendor?.uuidString` in Swift3.
 - Any Keychain- or filesystem-based binding, which isn't protected by `SecAccessControlCreateFlags` or and doesn't use protection classes, such as `kSecAttrAccessibleAlways` and `kSecAttrAccessibleAlwaysThisDeviceOnly`.
 
 #### Dynamic Analysis
@@ -553,16 +544,16 @@ There are several ways to test the application binding.
 
 Take the following steps when you want to verify app-binding in a simulator:
 
-1.	Run the application on a simulator.
-2.	Make sure you can raise the trust in the application instance (e.g., authenticate in the app).
-3.	Retrieve the data from the Simulator:
-  - Because simulators use UUIDs to identify themselves, you can make locating the storage easier by creating a debug point and executing `po NSHomeDirectory()` on that point, which will reveal the location of the simulator's stored contents. You can also execute `find ~/Library/Developer/CoreSimulator/Devices/ | grep <appname>` for the suspected plist file.
-  - Go to the directory indicated by the given command's output.
-  - Copy all three found folders (Documents, Library, tmp).
-  - Copy the contents of the Keychain. Since iOS 8, this has been in `~/Library/Developer/CoreSimulator/Devices/<Simulator Device ID>/data/Library/Keychains`.
-4.	Start the application on another simulator and find its data location as described in step 3.
-5.	Stop the application on the second simulator. Overwrite the existing data with the data copied in step 3.
-6.	Can you continue in an authenticated state? If so, then binding may not be working properly.
+1. Run the application on a simulator.
+2. Make sure you can raise the trust in the application instance (e.g., authenticate in the app).
+3. Retrieve the data from the Simulator:
+    - Because simulators use UUIDs to identify themselves, you can make locating the storage easier by creating a debug point and executing `po NSHomeDirectory()` on that point, which will reveal the location of the simulator's stored contents. You can also execute `find ~/Library/Developer/CoreSimulator/Devices/ | grep <appname>` for the suspected plist file.
+    - Go to the directory indicated by the given command's output.
+    - Copy all three found folders (Documents, Library, tmp).
+    - Copy the contents of the Keychain. Since iOS 8, this has been in `~/Library/Developer/CoreSimulator/Devices/<Simulator Device ID>/data/Library/Keychains`.
+4. Start the application on another simulator and find its data location as described in step 3.
+5. Stop the application on the second simulator. Overwrite the existing data with the data copied in step 3.
+6. Can you continue in an authenticated state? If so, then binding may not be working properly.
 
 We are saying that the binding "may" not be working because not everything is unique in simulators.
 
@@ -570,15 +561,15 @@ We are saying that the binding "may" not be working because not everything is un
 
 Take the following steps when you want to verify app-binding with two jailbroken devices:
 
-1.	Run the app on your jailbroken device.
-2.	Make sure you can raise the trust in the application instance (e.g., authenticate in the app).
-3.	Retrieve the data from the jailbroken device:
-   - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
-  - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
-  - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
-4.	Install the application on the second jailbroken device.
-5.	Overwrite the application data extracted during step 3. The Keychain data must be added manually.
-6.	Can you continue in an authenticated state? If so, then binding may not be working properly.
+1. Run the app on your jailbroken device.
+2. Make sure you can raise the trust in the application instance (e.g., authenticate in the app).
+3. Retrieve the data from the jailbroken device:
+    - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
+    - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
+    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
+4. Install the application on the second jailbroken device.
+5. Overwrite the application data extracted during step 3. The Keychain data must be added manually.
+6. Can you continue in an authenticated state? If so, then binding may not be working properly.
 
 #### Remediation
 
@@ -592,11 +583,11 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 
 ### References
 
--	[Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android](http://delaat.net/rp/2015-2016/p51/report.pdf "Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android")
+- Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - [http://delaat.net/rp/2015-2016/p51/report.pdf](http://delaat.net/rp/2015-2016/p51/report.pdf)
 
 #### OWASP Mobile Top 10 2016
 
--	M9 - Reverse Engineering - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+- M9 - Reverse Engineering - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering)
 
 #### OWASP MASVS
 
@@ -607,6 +598,7 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 - V8.12: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
 
 #### Tools
-- Frida - http://frida.re/
-- Keychain Dumper - https://github.com/ptoomey3/Keychain-Dumper
-- Appsync Unified - https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified
+
+- Frida - [http://frida.re/](http://frida.re/)
+- Keychain Dumper - [https://github.com/ptoomey3/Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper)
+- Appsync Unified - [https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified)

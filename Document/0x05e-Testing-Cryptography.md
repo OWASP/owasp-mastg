@@ -16,7 +16,7 @@ You can list the set of existing providers as follows:
 StringBuilder builder = new StringBuilder();
 for (Provider provider : Security.getProviders()) {
     builder.append("provider: ")
-    		  .append(provider.getName())
+            .append(provider.getName())
             .append(" ")
             .append(provider.getVersion())
             .append("(")
@@ -29,7 +29,7 @@ String providers = builder.toString();
 
 Below you can find the output of a running Android 4.4 in an emulator with Google Play APIs, after the security provider has been patched:
 
-```
+```text
 provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
 provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider)
 provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)
@@ -41,8 +41,8 @@ provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
 
 For some applications that support older versions of Android (e.g.: only used Pre Android Nougat), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
 
-
 Apps that target modern API levels, went through the following changes:
+
 - For Android Nougat (7.0) and above [the Android Developer blog shows that](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security provider Crypto deprecated in Andorid N"):
   - It is recommended to stop specifying a security provider. Instead, always use a patched security provider.
   - The support for the `Crypto` provider has dropped and the provider is deprecated.
@@ -164,7 +164,7 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
 Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
-Last, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
+Lastly, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
 
 ### Testing Random Number Generation
 
@@ -224,7 +224,6 @@ Once an attacker is knowing what type of weak pseudo-random number generator (PR
 
 If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp's Sequencer") to see how good the quality of the randomness is.
 
-
 ### Testing Key Management
 
 #### Overview
@@ -253,9 +252,9 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
     return new SecretKeySpec(keyBytes, "AES");
 }
 ```
+
 The above method requires a character array containing the password and the needed keylength in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10000 rounds which will be used by the PBKDF2 algorithm. This significantly increases the workload for a bruteforce attack. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the `SecureRandom` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Note that you can store the salt privately in `SharedPreferences`. It is recommended to exclude the salt from the Android backup mechanism to prevent synchronization in case of higher risk data. See "testing android storage" for more details.
 Note that if you take a rooted device, or unpatched device, or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key in the `AndroidKeystore`. Afterwards the Password-based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm till API version 26. From there on it is best to use `PBKDF2withHmacSHA256`, which will end up with a different keysize.
-
 
 Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the AndroidKeyStore is hardware-backed in case a fingerprint sensor is present. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
 
@@ -266,7 +265,7 @@ When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.i
 
 Android Pie adds the ability to import keys securely into the `AndroidKeystore`. First `AndroidKeystore` generates a key pair using `PURPOSE_WRAP_KEY` which should also be protected with an attestation certficate, this pair aims to protect the Keys being imported to `AndroidKeystore`. The encypted keys are generated as ASN.1-encoded message in the `SecureKeyWrapper` format which also contains a description of the ways the imported key is allowed to be used. The keys are then decrypted inside the `AndroidKeystore` hardware belonging to the specific device that generated the wrapping key so they never appear as plaintext in the device's host memory.
 
-![Secure key import into Keystore.](Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png).
+<img src="Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png" alt="Secure key import into Keystore" width="500">
 
 ```java
 KeyDescription ::= SEQUENCE {
@@ -286,7 +285,8 @@ SecureKeyWrapper ::= SEQUENCE {
 
 The code above present the diffrent parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the Android documentation on [WrappedKeyEntry](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
 
-When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security : 
+When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security:
+
 - The `algorithm` parameter Specifies the cryptographic algorithm with which the key is used
 - The `keySize` parameter Specifies the size, in bits, of the key, measuring in the normal way for the key's algorithm
 - The `digest` parameter Specifies the digest algorithms that may be used with the key to perform signing and verification operations
@@ -323,21 +323,27 @@ Locate uses of the cryptographic primitives in the code. Some of the most freque
 - And a few others in the `java.security.*` and `javax.crypto.*` packages.
 
 As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
+
 ```shell
 $ baksmali d file.apk -o smali_output/
 ```
+
 Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
+
 ```shell
 $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 ```
+
 This will highlight all the classes that use the `SecretKeySpec` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
 
 ![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png).
 
 When you have access to the sourcecode, check at least for the following:
+
 - Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
-- Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation ](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
+- Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 - In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
+- Make sure that keys are not used for different purposes: for instance, make sure that encryption keys are not used for signing and vise a versa.
 
 #### Dynamic Analysis
 
@@ -348,32 +354,35 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - [#nelenkov] - N. Elenkov, Android Security Internals, No Starch Press, 2014, Chapter 5.
 
 #### Cryptography references
-- [Android Developer blog: Crypto provider deprecated]( https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Android Developer blog: Crypto provider deprecated")
-- [Android Developer blog: cryptography changes in android P]( https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Android Developer blog: cryptography changes in android P")
-- [Ida Pro](https://www.hex-rays.com/products/ida/ "IDA Pro")
-- [Android Developer blog: changes for NDK developers]( https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android Developer blog: changes for NDK developers")
-- [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers")
-- [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle")
-- [Legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java")
-- [Android Developer documentation](ttps://developer.android.com/training/articles/keystore.html "Keystore")
-- [NIST keylength recommendations](https://www.keylength.com/en/4/ "NIST keylength recommendations")
-- [BSI recommendations - 2017](https://www.keylength.com/en/8/ "BSI recommendations - 2017")
+
+- Android Developer blog: Crypto provider deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
+- Android Developer blog: cryptography changes in android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
+- Ida Pro - <https://www.hex-rays.com/products/ida/>
+- Android Developer blog: changes for NDK developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
+- security providers -  <https://developer.android.com/reference/java/security/Provider.html>
+- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
+- Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
+- Android Developer documentation - <https://developer.android.com/guide>
+- NIST keylength recommendations - <https://www.keylength.com/en/4/>
+- BSI recommendations - 2017 - <https://www.keylength.com/en/8/>
 
 #### SecureRandom references
-- [Proper seeding of SecureRandom](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom")
-- [Burpproxy its Sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burpproxy its Sequencer")
+
+- Proper seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
+- Burpproxy its Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
 
 #### Testing Key Management references
-- [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API")
-- [Android Keychain API](https://developer.android.com/reference/android/security/KeyChain "Keychain")
-- [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API")
-- [KeyInfo documentation ](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo")
-- [Android Pie features and APIs](https://developer.android.com/about/versions/pie/android-9.0#secure-key-import)
-- [Android Keystore system](https://developer.android.com/training/articles/keystore#java)
+
+- Android KeyStore API - <https://developer.android.com/reference/java/security/KeyStore.html>
+- Android Keychain API - <https://developer.android.com/reference/android/security/KeyChain>
+- SharedPreferences - <https://developer.android.com/reference/android/content/SharedPreferences.html>
+- KeyInfo documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
+- Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
+- Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
 
 ##### OWASP Mobile Top 10 2016
 
-- M5 - Insufficient Cryptography - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
+- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
 
 ##### OWASP MASVS
 

@@ -36,11 +36,11 @@ Following is a non-exhaustive list of more popular frameworks for developing *hy
 - [Framework 7](https://framework7.io/ "Framework 7")
 - [Ionic](https://ionicframework.com/ "Ionic")
 - [jQuery Mobile](https://jquerymobile.com/ "jQuery Mobile")
+- [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [Native Script](https://www.nativescript.org/ "Native Script")
-- [Onsen UI]( https://onsen.io/ "Onsen UI")
+- [Onsen UI](https://onsen.io/ "Onsen UI")
 - [React Native](https://www.reactnative.com/ "React Native")
 - [Sencha Touch](https://www.sencha.com/products/touch/ "Sencha Touch")
-
 
 ### Progressive Web App
 
@@ -50,7 +50,7 @@ PWAs combine different open standards of the web offered by modern browsers to p
 
 PWAs are supported by Android and iOS, but not all hardware features are yet available. For example Push Notifications, Face ID on iPhone X or ARKit for augmented reality is not available yet on iOS. An overview of PWA and supported features on each platform can be found in a [Medium article from Maximiliano Firtman](https://medium.com/@firt/progressive-web-apps-on-ios-are-here-d00430dee3a7 "Progressive Web Apps on iOS are here").
 
-### What's Covered in the Mobile Testing Guide?
+### What's Covered in the Mobile Testing Guide
 
 Throughout this guide, we will focus on apps for the two platforms dominating the market: Android and iOS. Mobile devices are currently the most common device class running these platforms – increasingly however, the same platforms (in particular, Android) run on other devices, such as smartwatches, TVs, car navigation/audio systems, and other embedded systems.
 

@@ -91,7 +91,6 @@ HostnameVerifier NO_VERIFY = org.apache.http.conn.ssl.SSLSocketFactory
 
 Make sure that your application verifies a hostname before setting a trusted connection.
 
-
 #### Dynamic Analysis
 
 Dynamic analysis requires an interception proxy. To test improper certificate verification, check the following controls:
@@ -110,7 +109,6 @@ In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` sect
 
 If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
 
-
 ### Testing Custom Certificate Stores and Certificate Pinning
 
 #### Overview
@@ -127,52 +125,52 @@ To customize their network security settings in a safe, declarative configuratio
 
 The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. If an application uses this feature, two things should be checked to identify the defined configuration:
 
-1. Specification of the file reference in the Android application manifest via the "android:networkSecurityConfig" attribute on the application tag:
+First, find the Network Security Configuration file in the Android application manifest via the "android:networkSecurityConfig" attribute on the application tag:
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="owasp.com.app">
-    <application android:networkSecurityConfig="@xml/network_security_config">
-        ...
-    </application>
-</manifest>
-```
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="owasp.com.app">
+      <application android:networkSecurityConfig="@xml/network_security_config">
+          ...
+      </application>
+  </manifest>
+  ```
 
-2. Contents of the file stored in "res/xml/network_security_config.xml":
+Open the identified file. In this case, the file can be found at "res/xml/network_security_config.xml":
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <domain-config>
-        <!-- Use certificate pinning for OWASP website access including sub domains -->
-        <domain includeSubdomains="true">owasp.org</domain>
-        <pin-set expiration="2018/8/10">
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Intermediate CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Root CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
-        </pin-set>
-    </domain-config>
-</network-security-config>
-```
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <network-security-config>
+      <domain-config>
+          <!-- Use certificate pinning for OWASP website access including sub domains -->
+          <domain includeSubdomains="true">owasp.org</domain>
+          <pin-set expiration="2018/8/10">
+              <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+              the Intermediate CA of the OWASP website server certificate -->
+              <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+              <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+              the Root CA of the OWASP website server certificate -->
+              <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
+          </pin-set>
+      </domain-config>
+  </network-security-config>
+  ```
 
 > The pin-set contains a set of public key pins. Each set can define an expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains.
 
 If a configuration exists, the following event may be visible in the log:
 
-```
+```shell
 D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
 ```
 
 If a certificate pinning validation check has failed, the following event will be logged:
 
-```
+```shell
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
-Using a decompiler (e.g. jadx or apktool) we will be able to confirm if the \<pin\> entry is present in the network_security_config.xml file located in the /res/xml/ folder.
+Using a decompiler (e.g. jadx or apktool) we will be able to confirm if the `<pin>` entry is present in the network_security_config.xml file located in the /res/xml/ folder.
 
 ##### TrustManager
 
@@ -279,7 +277,7 @@ Normally a function is created to check the certificate(s) and return the boolea
 
 In this particular example we are pinning the intermediate CA of the certificate chain. The output of the HTTP response will be available in the system logs.
 
-Sample Xamarin app with the previous example can be obtained at https://github.com/owasp-mstg/blob/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk?raw=true
+Sample Xamarin app with the previous example can be obtained on the [MSTG repository](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/02_CertificatePinning/certificatePinningXamarin.apk "Xamarin app with certificate pinning")
 
 After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dnSpy to decompile the app dlls stored inside the 'Assemblies' folder and confirm the usage of the ServicePointManager.
 
@@ -318,13 +316,50 @@ The check() method is used to confirm the fingerprint and callbacks will determi
      }
    }
 ```
+
 After decompressing the APK file, Cordova/Phonegap files will be located in the /assets/www folder. The 'plugins' folder will give you the visibility of the plugins used. We will need to search for this methods in the JavaScript code of the application to confirm its usage.
 
 #### Dynamic Analysis
 
 Dynamic analysis can be performed by launching a MITM attack with your preferred interception proxy. This will allow you to monitor the traffic between the client (the mobile application) and the backend server. If the proxy is unable to intercept the HTTP requests and responses, the SSL pinning has been implemented correctly.
 
-For further information, please check the [OWASP certificate pinning guide](https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning#Android "OWASP Certificate Pinning for Android").
+##### Bypassing Certificate Pinning
+
+There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
+
+- Objection: Use the `android sslpinning disable` command.
+- Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
+- Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
+
+For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+
+###### Bypass Custom Certificate Pinning Statically
+
+Somewhere in the application, both the endpoint and the certificate (or its hash) must be defined. After decompiling the application, you can search for:
+
+- Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
+- Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
+
+If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
+
+After making these modifications, repackage the application using apktool and install it on your device.
+
+###### Bypass Custom Certificate Pinning Dynamically
+
+Bypassing the pinning logic dynamically makes it more convenient as there is no need to bypass any integrity checks and it's much faster to perform trial & error attempts.
+
+Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
+
+As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the CertificatePinner.Builder class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways:
+
+- Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
+- Search for the method signature in the SMALI code
+
+For the Builder.add method, you can find the possible methods by running the following grep command: `grep -ri java/lang/String;\[Ljava/lang/String;)L ./`
+
+This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
+
+Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
 
 ### Testing the Network Security Configuration settings
 
@@ -344,7 +379,7 @@ Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After
 
 The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
 
-If there are custom <trust-anchors> present in a <base-config> or <domain-config>, that define a <certificates src="user"> the application will trust user supplied CA's for those particular domains or for all domains. Example:
+If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CA's for those particular domains or for all domains. Example:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -373,7 +408,7 @@ If there are custom <trust-anchors> present in a <base-config> or <domain-config
 </network-security-config>
 ```
 
-Is important to understand the precedence of entries. If a value is not set in a \<domain-config\> entry or in a parent \<domain-config\>, the configurations in place will be based on the \<base-config\>, and lastly if not defined in this entry, the default configuration will be used.
+Is important to understand the precedence of entries. If a value is not set in a `<domain-config\>` entry or in a parent `<domain-config\>`, the configurations in place will be based on the `<base-config\>`, and lastly if not defined in this entry, the default configuration will be used.
 
 The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
 
@@ -411,13 +446,14 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 For dynamic analysis by using an interception proxy as Burp you can patch the Network Security Configuration file, as described in the "Setting up a Testing Environment for Android Apps" chapter, section "Bypassing the Network Security Configuration".
 
 There might still be scenarios where this is not needed and you can still do MiTM attacks without patching:
+
 - If the app is running on a Android device with Android version 7.0 onwards, but the app targets API levels below 24, it will not use the network security configuration, therefore the app will still trusting user supplied CA's.
 - If the app is running on a Android device with Android version 7.0 onwards and there is no custom Network Security Configuration implemented in the app.
-
 
 ### Testing the Security Provider
 
 #### Overview
+
 Android relies on a security provider to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
 To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
 Since July 11, 2016, Google [has been rejecting Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) that use vulnerable versions of OpenSSL.
@@ -566,41 +602,46 @@ Make sure that NDK-based applications bind only to a recent and properly patched
 #### Dynamic Analysis
 
 When you have the source code:
+
 - Run the application in debug mode, then create a breakpoint where the app will first contact the endpoint(s).
 - Right click the highlighted code and select `Evaluate Expression`.
 - Type `Security.getProviders()` and press enter.
 - Check the providers and try to find `GmsCore_OpenSSL`, which should be the new top-listed provider.
 
 When you do not have the source code:
+
 - Use Xposed to hook into the `java.security` package, then hook into `java.security.Security` with the method `getProviders` (with no arguments). The return value will be an array of `Provider`.
 - Determine whether the first provider is `GmsCore_OpenSSL`.
-
 
 #### References
 
 #### OWASP Mobile Top 10 2016
-- M3 - Insecure Communication - https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication
+
+- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
 
 ##### OWASP MASVS
+
 - V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - V5.4: "The app either uses its own certificate store or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 - V5.6: "The app only depends on up-to-date connectivity and security libraries."
 
 ##### CWE
+
 - CWE-295 - Improper Certificate Validation
-- CWE-296 - Improper Following of a Certificate's Chain of Trust - https://cwe.mitre.org/data/definitions/296.html
-- CWE-297 - Improper Validation of Certificate with Host Mismatch - https://cwe.mitre.org/data/definitions/297.html
-- CWE-298 - Improper Validation of Certificate Expiration - https://cwe.mitre.org/data/definitions/298.html
+- CWE-296 - Improper Following of a Certificate's Chain of Trust - <https://cwe.mitre.org/data/definitions/296.html>
+- CWE-297 - Improper Validation of Certificate with Host Mismatch - <https://cwe.mitre.org/data/definitions/297.html>
+- CWE-298 - Improper Validation of Certificate Expiration - <https://cwe.mitre.org/data/definitions/298.html>
 
 ##### Android Developer Documentation
 
-- Network Security Config - https://developer.android.com/training/articles/security-config
+- Network Security Config - <https://developer.android.com/training/articles/security-config>
+- Network Security Config (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
 
 ##### Xamarin Certificate Pinning
 
-- Certificate and Public Key Pinning with Xamarin - https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin
-- ServicePointManager - https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx
+- Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
+- ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
 
 ##### Cordova Certificate Pinning
 
-PhoneGap SSL Certificate Checker plugin - https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin
+PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>

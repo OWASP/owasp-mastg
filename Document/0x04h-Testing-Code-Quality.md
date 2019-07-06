@@ -30,7 +30,6 @@ return c.getCount() != 0;
 
 Let's further assume an attacker enters the following values into the "username" and "password" fields:
 
-
 ```sql
 username = 1' or '1' = '1
 password = 1' or '1' = '1
@@ -44,48 +43,9 @@ SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1
 
 Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
 
-Ostorlab exploited the sort parameter of Yahoo's weather mobile application with adb using this SQL injection payload.
+Ostorlab exploited the sort parameter of [Yahoo's weather mobile application](https://blog.ostorlab.co/android-sql-contentProvider-sql-injections.html "Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?") with adb using this SQL injection payload.
 
-```shell
-$ adb shell content query --uri content://com.yahoo.mobile.client.android.weather.provider.Weather/locations/ --sort '_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master/**/where/**/1=1\)'  
-
-Row: 0 _id=1, woeid=2487956, isCurrentLocation=0, latitude=NULL, longitude=NULL, photoWoeid=NULL, city=NULL, state=NULL, stateAbbr=, country=NULL, countryAbbr=, timeZoneId=NULL, timeZoneAbbr=NULL, lastUpdatedTimeMillis=746034814, crc=1591594725
-
-```
-
-The payload can be further simplified using the following `_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master\)`.
-
-This SQL injection vulnerability did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
-
-```python
-import subprocess
-from flask import Flask, request
-
-app = Flask(__name__)
-
-URI = "com.yahoo.mobile.client.android.weather.provider.Weather/locations/"
-
-@app.route("/")
-def hello():
-
-   method = request.values['method']
-   sort = request.values['sort']
-   sort = "_id/**/limit/**/(SELECT/**/1/**/FROM/**/sqlite_master/**/WHERE/**/1={})".format(sort)
-   #sort = "_id/**/limit/**/({})".format(sort)
-
-   p = subprocess.Popen(["adb","shell","content",method,"--uri","content://{}".format(URI),"--sort",'"{}"'.format(sort)],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-
-   o, e = p.communicate()
-
-   print "[*]SORT:{}".format(sort)
-   print "[*]OUTPUT:{}".format(o)
-   return "<html><divclass='output'>{}</div></html>".format(o)
-
-if __name__=="__main__":
-   app.run()
-```
-
-One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](https://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").
+Another real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](https://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").
 
 #### XML Injection
 
@@ -165,15 +125,15 @@ The following code snippet shows a simple example for a condition resulting in a
 
 To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
-    - `strcat`
-    - `strcpy`
-    - `strncat`
-    - `strlcat`
-    - `strncpy`
-    - `strlcpy`
-    - `sprintf`
-    - `snprintf`
-    - `gets`
+- `strcat`
+- `strcpy`
+- `strncat`
+- `strlcat`
+- `strncpy`
+- `strlcpy`
+- `sprintf`
+- `snprintf`
+- `gets`
 
 Also, look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly.
 
@@ -202,7 +162,7 @@ For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
-In the context of *native apps*, XSS risks are far less prevalent for the simple reason these kinds of applications do not rely on a web browser. However, apps using WebView components, such as ‘UIWebView’ on iOS and ‘WebView’ on Android, are potentially vulnerable to such attacks.
+In the context of *native apps*, XSS risks are far less prevalent for the simple reason these kinds of applications do not rely on a web browser. However, apps using WebView components, such as ‘WKWebView’ or the deprecated 'UIWebView' on iOS and ‘WebView’ on Android, are potentially vulnerable to such attacks.
 
 An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance]( https://superevr.com/blog/2011/xss-in-skype-for-ios). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
@@ -217,11 +177,13 @@ Java
 ```java
 webView.loadUrl("javascript:initialize(" + myNumber + ");");
 ```
+
 Kotlin
 
 ```kotlin
 webView.loadUrl("javascript:initialize($myNumber);")
 ```
+
 Another example of XSS issues determined by user input is public overriden methods.
 
 Java
@@ -234,6 +196,7 @@ public boolean shouldOverrideUrlLoading(WebView view, String url) {
   }
 }
 ```
+
 Kotlin
 
 ```kotlin
@@ -247,33 +210,35 @@ Kotlin
 Sergey Bobrov was able to take advantage of this in the following [HackerOne report](https://hackerone.com/reports/189793). Any input to the HTML parameter would be trusted in Quora's ActionBarContentActivity. Payloads were successful using adb, clipboarddata via ModalContentActivity, and Intents from 3rd party applications.
 
 - ADB
-```shell
-$ adb shell
-$ am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
-```
+
+  ```shell
+  $ adb shell
+  $ am start -n com.quora.android/com.quora.android.ActionBarContentActivity -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
+  ```
+
 - Clipboard Data
-```shell
-$ am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
-```
-- 3rd party Intent
 
-Java
-```java
-Intent i = new Intent();
-i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
-i.putExtra("url","http://test/test");
-i.putExtra("html","XSS PoC <script>alert(123)</script>");
-view.getContext().startActivity(i);
-```
-Kotlin
+  ```shell
+  $ am start -n com.quora.android/com.quora.android.ModalContentActivity -e url 'http://test/test' -e html '<script>alert(QuoraAndroid.getClipboardData());</script>'
+  ```
 
-```kotlin
-val i = Intent()
-i.component = ComponentName("com.quora.android", "com.quora.android.ActionBarContentActivity")
-i.putExtra("url", "http://test/test")
-i.putExtra("html", "XSS PoC <script>alert(123)</script>")
-view.context.startActivity(i)
-```
+- 3rd party Intent in Java or kotlin:
+
+  ```java
+  Intent i = new Intent();
+  i.setComponent(new ComponentName("com.quora.android","com.quora.android.ActionBarContentActivity"));
+  i.putExtra("url","http://test/test");
+  i.putExtra("html","XSS PoC <script>alert(123)</script>");
+  view.getContext().startActivity(i);
+  ```
+
+  ```kotlin
+  val i = Intent()
+  i.component = ComponentName("com.quora.android", "com.quora.android.ActionBarContentActivity")
+  i.putExtra("url", "http://test/test")
+  i.putExtra("html", "XSS PoC <script>alert(123)</script>")
+  view.context.startActivity(i)
+  ```
 
 If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
 
@@ -294,7 +259,6 @@ Consider how data will be rendered in a response. For example, if data is render
 | ' | &amp;#x27;|
 | / | &amp;#x2F;|
 
-
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://goo.gl/motVKX "OWASP XSS Prevention Cheat Sheet").
 
 #### Dynamic Analysis
@@ -307,12 +271,12 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Poor Code Quality - https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
 - V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- 7.8: "In unmanaged code, memory is allocated, freed and used securely."
+- V7.8: "In unmanaged code, memory is allocated, freed and used securely."
 
 #### CWE
 
@@ -320,8 +284,4 @@ A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site
 
 #### XSS via start ContentActivity
 
-- https://hackerone.com/reports/189793
-
-#### Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?
-
-- http://blog.ostorlab.co/2016/03/android-sql-and-contentproviders-or-why.html
+- <https://hackerone.com/reports/189793>

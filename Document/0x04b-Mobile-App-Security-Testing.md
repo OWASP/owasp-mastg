@@ -53,7 +53,7 @@ Automated analysis tools can be used to speed up the review process of Static Ap
 
 Although some static code analysis tools incorporate a lot of information about the rules and semantics required to analyze mobile apps, they may produce many false positives, particularly if they are not configured for the target environment. A security professional must therefore always review the results.
 
-The chapter "Testing tools" includes a list of static analysis tools, which can be found at the end of this book.
+The appendix "Testing Tools" includes a list of static analysis tools, which can be found at the end of this book.
 
 #### Dynamic Analysis
 
@@ -150,7 +150,7 @@ When no data classification policy is available, use the following list of infor
 
  A definition of "sensitive data" must be decided before testing begins because detecting sensitive data leakage without a definition may be impossible.
 
-##### Intelligence Gathering
+###### Intelligence Gathering
 
 Intelligence gathering involves the collection of information about the app's architecture, the business use cases the app serves, and the context in which the app operates. Such information may be classified as "environmental" or "architectural."
 
@@ -158,7 +158,7 @@ Intelligence gathering involves the collection of information about the app's ar
 
 Environmental information includes:
 
-- The organization's goals for the app. Functionality shapes users' interaction with the app and may make some surfaces more likely than others to be targeted by attackers.   
+- The organization's goals for the app. Functionality shapes users' interaction with the app and may make some surfaces more likely than others to be targeted by attackers.
 - The relevant industry. Different industries may have different risk profiles.
 - Stakeholders and investors; understanding who is interested in and responsible for the app.
 - Internal processes, workflows, and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic exploits](https://www.owasp.org/index.php/Testing_for_business_logic "Testing business logic").
@@ -236,7 +236,7 @@ SDLCs always consist of the same steps (the overall process is sequential in the
 - Perform a **risk assessment** for the application and its components to identify their risk profiles. These risk profiles typically depend on the organization's risk appetite and applicable regulatory requirements. The risk assessment is also based on factors, including whether the application is accessible via the Internet and the kind of data the application processes and stores. All kinds of risks must be taken into account: financial, marketing, industrial, etc. Data classification policies specify which data is sensitive and how it must be secured.
 - **Security Requirements** are determined at the beginning of a project or development cycle, when functional requirements are being gathered. **Abuse Cases** are added as use cases are created. Teams (including development teams) may be given security training (such as Secure Coding) if they need it.
 You can use the [OWASP MASVS](https://mobile-security.gitbook.io/masvs/ "OWASP MASVS") to determine the security requirements of mobile applications on the basis of the risk assessment phase. Iteratively reviewing requirements when features and data classes are added is common, especially with Agile projects.
--  **Threat Modeling**, which is basically the identification, enumeration, prioritization, and initial handling of threats, is a foundational artifact that must be performed as architecture development and design progress. **Security Architecture**, a Threat Model factor, can be refined (for both software and hardware aspects) after the Threat Modeling phase. **Secure Coding rules** are established and the list of **Security tools** that will be used is created. The strategy for **Security testing** is clarified.
+- **Threat Modeling**, which is basically the identification, enumeration, prioritization, and initial handling of threats, is a foundational artifact that must be performed as architecture development and design progress. **Security Architecture**, a Threat Model factor, can be refined (for both software and hardware aspects) after the Threat Modeling phase. **Secure Coding rules** are established and the list of **Security tools** that will be used is created. The strategy for **Security testing** is clarified.
 - All security requirements and design considerations should be stored in the Application Life Cycle Management (ALM) system (also known as the issue tracker) that the development/ops team uses to ensure tight integration of security requirements into the development workflow. The security requirements should contain relevant source code snippets so that developers can quickly reference the snippets. Creating a dedicated repository that's under version control and contains only these code snippets is a secure coding strategy that's more beneficial than the traditional approach (storing the guidelines in word documents or PDFs).
 - **Securely develop the software**. To increase code security, you must complete activities such as **Security Code Reviews**, **Static Application Security Testing**, and **Security Unit Testing**. Although quality analogues of these security activities exist, the same logic must be applied to security, e.g., reviewing, analyzing, and testing code for security defects (for example, missing input validation, failing to free all resources, etc.).
 - Next comes the long-awaited release candidate testing: both manual and automated **Penetration Testing** ("Pentests"). **Dynamic Application Security Testing** is usually performed during this phase as well.
@@ -248,7 +248,6 @@ The picture below illustrates all the phases and artifacts:
 ![General description of SDLC](Images/Chapters/0x04b/SDLCOverview.jpg)
 
 Based on the project's general risk profile, you may simplify (or even skip) some artifacts, and you may add others (formal intermediary approvals, formal documentation of certain points, etc.). **Always remember two things: an SDLC is meant to reduce risks associated with software development, and it is a framework that helps you set up controls to that end.** This this is a generic description of SDLC; always tailor this framework to your projects.
-
 
 ##### Defining a Test Strategy
 
@@ -306,6 +305,7 @@ The human aspect of this emphasis is reflected in the creation of cross-function
 ###### Overview
 
 Automation is a key DevSecOps practice: as stated earlier, the frequency of deliveries from development to operation increases when compared to the traditional approach, and activities that usually require time need to keep up, e.g. deliver the same added value while taking more time. Unproductive activities must consequently be abandoned, and essential tasks must be fastened. These changes impact infrastructure changes, deployment, and security:
+
 - infrastructure is being implemented as **Infrastructure as Code**
 - deployment is becoming more scripted, translated through the concepts of **Continuous Integration** and **Continuous Delivery**
 - **security activities** are being automated as much as possible and taking place throughout the life cycle
@@ -317,6 +317,7 @@ The following sections provide more details about these three points.
 Instead of manually provisioning computing resources (physical servers, virtual machines, etc.) and modifying configuration files, Infrastructure as Code is based on the use of tools and automation to fasten the provisioning process and make it more reliable and repeatable. Corresponding scripts are often stored under version control to facilitate sharing and issue resolution.
 
 Infrastructure as Code practices facilitate collaboration between development and operations teams, with the following results:
+
 - Devs better understand infrastructure from a familiar point of view and can prepare resources that the running application will require.
 - Ops operate an environment that better suits the application, and they share a language with Devs.
 
@@ -324,7 +325,7 @@ Infrastructure as Code also facilitates the construction of the environments req
 
 Infrastructure as Code is commonly used for projects that have Cloud-based resources because many vendors provide APIs that can be used for provisioning items (such as virtual machines, storage spaces, etc.) and working on configurations (e.g., modifying memory sizes or the number of CPUs used by virtual machines). These APIs provide alternatives to administrators' performing these activities from monitoring consoles.
 
-The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"),  [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
+The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"), [Packer](https://www.packer.io/ "Packer"), [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
 
 ###### Deployment
 
@@ -362,3 +363,13 @@ The security of an application developed with DevOps must be considered during o
 
 - [paul] - M. Paul. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press), 2014
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
+
+#### OWASP MASVS
+
+- V1.1: "All app components are identified and known to be needed."
+- V1.3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
+- V1.4: "Data considered sensitive in the context of the mobile app is clearly identified."
+- V1.5: "All app components are defined in terms of the business functions and/or security functions they provide."
+- V1.6: "A threat model for the mobile app and the associated remote services has been produced that identifies potential threats and countermeasures."
+- V1.7: "All security controls have a centralized implementation."
+- V1.10: "Security is addressed within all parts of the software development lifecycle."

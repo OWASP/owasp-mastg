@@ -156,7 +156,7 @@ http://repo.hackyouriphone.org
 
 Следующие команды устанавливают зависимости, необходимые для запуска Needle в Linux.
 
-```
+```shell
 # Unix packages
 sudo apt-get install python2.7 python2.7-dev sshpass sqlite3 lib32ncurses5-dev
 
@@ -172,7 +172,7 @@ git clone https://github.com/mwrlabs/needle.git
 
 Следующие команды устанавливают зависимости, необходимые для запуска Needle в macOS.
 
-```
+```shell
 # Core dependencies
 brew install python
 brew install libxml2
@@ -227,7 +227,7 @@ git clone https://github.com/mwrlabs/needle.git
 
 Чтобы запустить Needle, откройте консоль и напишите:
 
-```
+```shell
 $ python needle.py
       __  _ _______ _______ ______         ______
       | \ | |______ |______ | \     |      |______

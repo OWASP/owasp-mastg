@@ -17,8 +17,8 @@ This app holds a secret inside. Can you find it?
 ### Installation
 
 This app is compatible with Android 4.4 and up.
-```
-$ adb install UnCrackable-Level1.apk
+```shell
+  $ adb install UnCrackable-Level1.apk
 ```
 
 ### Solutions
@@ -42,8 +42,8 @@ This app holds a secret inside. May include traces of native code.
 
 This app is compatible with Android 4.4 and up.
 
-```
-$ adb install UnCrackable-Level2.apk
+```shell
+  $ adb install UnCrackable-Level2.apk
 ```
 
 ### Solutions
@@ -65,8 +65,8 @@ The crackme from hell!
 
 This app is compatible with Android 4.4 and up.
 
-```
-$ adb install UnCrackable-Level3.apk
+```shell
+  $ adb install UnCrackable-Level3.apk
 ```
 
 ### Solutions
@@ -86,14 +86,14 @@ A brand new Android app sparks your interest. Of course, you are planning to pur
 
 Copy the binary to your Android device and run using the shell.
 
-```
-$ adb push validate /data/local/tmp
-[100%] /data/local/tmp/validate
-$ adb shell chmod 755 /data/local/tmp/validate
-$ adb shell /data/local/tmp/validate
-Usage: ./validate <serial>
-$ adb shell /data/local/tmp/validate 1234
-Incorrect serial (wrong format).
+```shell
+  $ adb push validate /data/local/tmp
+  [100%] /data/local/tmp/validate
+  $ adb shell chmod 755 /data/local/tmp/validate
+  $ adb shell /data/local/tmp/validate
+  Usage: ./validate <serial>
+  $ adb shell /data/local/tmp/validate 1234
+  Incorrect serial (wrong format).
 ```
 
 ### Solutions
