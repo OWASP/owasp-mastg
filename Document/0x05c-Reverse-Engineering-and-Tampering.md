@@ -349,7 +349,6 @@ When this function returns, R0 contains a pointer to the newly constructed UTF s
 ##### Check Secure Connections (HTTPS, TLS, cert. pinning, ATS) -> just refer to  0x05g/0x06g
 #### Automatic Code Analysis
 
-
 ### Dynamic Analysis
 #### Basic Information Gathering
 ##### Opened Files
@@ -739,7 +738,7 @@ Unfortunately, generating a complete guest instruction trace with QEMU is imposs
 
 Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU's tracing functionality. PANDA/PANDROID is the best choice if you're going for a CPU-trace based analysis because it allows you to easily record and replay a full trace and is relatively easy to set up if you follow the build instructions for Ubuntu.
 
-###### DroidScope
+##### DroidScope
 
 DroidScope (an extension to the [DECAF dynamic analysis framework](https://github.com/sycurelab/DECAF "DECAF dynamic analysis framework"))is a malware analysis engine based on QEMU. It instruments the emulated environment on several context levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java levels.
 
@@ -747,7 +746,7 @@ DroidScope exports instrumentation APIs that mirror the different context levels
 
 All of this makes it possible to build tracers that are practically transparent to the target application (as long as we can hide the fact that it is running in an emulator). One limitation is that DroidScope is compatible with the Dalvik VM only.
 
-###### PANDA
+##### PANDA
 
 [PANDA](https://github.com/moyix/panda/blob/master/docs/) is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered by certain QEMU events. The twist PANDA adds is its record/replay feature. This allows an iterative workflow: the reverse engineer records an execution trace of the target app (or some part of it), then replays it repeatedly, refining the analysis plugins with each iteration.
 
@@ -760,7 +759,7 @@ $ ./configure --target-list=arm-softmmu --enable-android $ makee
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
 
-###### VxStripper
+##### VxStripper
 
 Another very useful tool built on QEMU is [VxStripper by Sébastien Josse](http://vxstripper.pagesperso-orange.fr "VxStripper"). VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation and recompiles the simplified binary with LLVM. This is a very powerful way of normalizing obfuscated programs. See [Sébastien's paper](http://ieeexplore.ieee.org/document/6759227/ "Dynamic Malware Recompilation") for more information.
 
