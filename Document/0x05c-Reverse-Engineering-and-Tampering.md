@@ -137,6 +137,81 @@ Decompiling to UnCrackable-Level1/src (cfr)
 
 You should now find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
 
+##### Native Code
+
+Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method.
+
+Android JNI functions are written in native code that has been compiled into Linux ELF libraries. It's standard Linux fare. However, instead of relying on widely used C libraries (such as glibc) Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
+
+Download HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it on your emulator or Android device is optional.
+
+```shell
+$ wget HelloWord-JNI.apk
+$ adb install HelloWord-JNI.apk
+```
+
+This app is not exactly spectacular—all it does is show a label with the text "Hello from C++." This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
+
+<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
+
+Decompile the APK with `apkx`. This extracts the source code into the `HelloWorld/src` directory.
+
+```shell
+$ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+$ apkx HelloWord-JNI.apk
+Extracting HelloWord-JNI.apk to HelloWord-JNI
+Converting: classes.dex -> classes.jar (dex2jar)
+dex2jar HelloWord-JNI/classes.dex -> HelloWord-JNI/classes.jar
+```
+
+The MainActivity is found in the file `MainActivity.java`. The "Hello World" text view is populated in the `onCreate()` method:
+
+```java
+public class MainActivity
+extends AppCompatActivity {
+    static {
+        System.loadLibrary("native-lib");
+    }
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.setContentView(2130968603);
+        ((TextView)this.findViewById(2131427422)).setText((CharSequence)this.stringFromJNI());
+    }
+
+    public native String stringFromJNI();
+}
+
+}
+```
+
+Note the declaration of `public native String stringFromJNI` at the bottom. The keyword "native" tells the Java compiler that this method is implemented in a native language. The corresponding function is resolved during run time, but only if a native library that exports a global symbol with the expected signature is loaded (signatures comprise a package name, class name, and method name). In this example, this requirement is satisfied by the following C or C++ function:
+
+```c
+JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject)
+```
+
+So where is the native implementation of this function? If you look into the `lib` directory of the APK archive, you'll see eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library `libnative-lib.so` that has been compiled for the processor architecture in question. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on.
+
+<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200">
+
+Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
+
+```shell
+$ greadelf -W -s libnative-lib.so | grep Java
+     3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
+```
+
+This is the native function that eventually gets executed when the `stringFromJNI` native method is called.
+
+### Static Analysis
+#### Manual (Reversed) Code Review
+
+##### Java
+
+
+
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1," which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because Intellij uses the package name to identify the correct process.
 
 ![IntelliJ](Images/Chapters/0x05c/intellij_new_project.jpg)
@@ -204,73 +279,7 @@ Now you're getting somewhere: it's simply standard AES-ECB. Looks like the Base6
 
 A faster way to get the decrypted string is to add dynamic analysis—we'll revisit UnCrackable Level 1 later to show how, so don't delete the project yet!
 
-#### Statically Analyzing Native Code
-
-Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method.
-
-Android JNI functions are written in native code that has been compiled into Linux ELF libraries. It's standard Linux fare. However, instead of relying on widely used C libraries (such as glibc) Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
-
-Download HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it on your emulator or Android device is optional.
-
-```shell
-$ wget HelloWord-JNI.apk
-$ adb install HelloWord-JNI.apk
-```
-
-This app is not exactly spectacular—all it does is show a label with the text "Hello from C++." This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
-
-<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
-
-Decompile the APK with `apkx`. This extracts the source code into the `HelloWorld/src` directory.
-
-```shell
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
-$ apkx HelloWord-JNI.apk
-Extracting HelloWord-JNI.apk to HelloWord-JNI
-Converting: classes.dex -> classes.jar (dex2jar)
-dex2jar HelloWord-JNI/classes.dex -> HelloWord-JNI/classes.jar
-```
-
-The MainActivity is found in the file `MainActivity.java`. The "Hello World" text view is populated in the `onCreate()` method:
-
-```java
-public class MainActivity
-extends AppCompatActivity {
-    static {
-        System.loadLibrary("native-lib");
-    }
-
-    @Override
-    protected void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        this.setContentView(2130968603);
-        ((TextView)this.findViewById(2131427422)).setText((CharSequence)this.stringFromJNI());
-    }
-
-    public native String stringFromJNI();
-}
-
-}
-```
-
-Note the declaration of `public native String stringFromJNI` at the bottom. The   keyword "native" tells the Java compiler that this method is  implemented in a native language. The corresponding function is resolved during run time, but only if a native library that exports a global symbol with the expected signature is loaded (signatures comprise a package name, class name, and method name). In this example, this requirement is satisfied by the following C or C++ function:
-
-```c
-JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject)
-```
-
-So where is the native implementation of this function? If you look into the `lib` directory of the APK archive, you'll see eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library `libnative-lib.so` that has been compiled for the processor architecture in question. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on.
-
-<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200">
-
-Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
-
-```shell
-$ greadelf -W -s libnative-lib.so | grep Java
-     3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
-```
-
-This is the native function that eventually gets executed when the `stringFromJNI` native method is called.
+##### Native Libraries
 
 To disassemble the code, you can load `libnative-lib.so` into any disassembler that understands ELF binaries (i.e., any disassembler). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as it is compatible with the disassembler. Each version is compiled from the same source and implements the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
 
@@ -332,9 +341,24 @@ BX   R2
 
 When this function returns, R0 contains a pointer to the newly constructed UTF string. This is the final return value, so R0 is left unchanged and the function returns.
 
-#### Debugging and Tracing
+#### Basic Information Gathering
+##### Strings
+##### Call Diagrams and Cross References
+##### API Usage (Bluetooth, NFC, Crypto ...) -> just refer to 0x05d-j/0x06d-j
+##### Check Secure Connections (HTTPS, TLS, cert. pinning, ATS) -> just refer to  0x05g/0x06g
+#### Automatic Code Analysis
 
-So far, you've been using static analysis techniques without running the target apps. In the real world—especially when reversing malware or more complex apps—pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
+
+### Dynamic Analysis
+#### Basic Information Gathering
+##### Opened Files
+##### Opened Connections
+##### Loaded Native Libraries
+##### Sandbox Inspection (Files and Permissions)
+
+#### Debugging
+
+So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
 
 Android apps support two different types of debugging: Debugging on the level of the Java runtime with the Java Debug Wire Protocol (JDWP), and Linux/Unix-style ptrace-based debugging on the native layer, both of which are valuable to reverse engineers.
 
