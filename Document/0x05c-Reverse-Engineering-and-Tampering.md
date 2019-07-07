@@ -26,7 +26,7 @@ In addition to the SDK and NDK, you'll also need something to make Java bytecode
 
 Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
 
-#### Setting up the Android NDK
+##### Setting up the Android NDK
 
 The Android NDK contains prebuilt versions of the native compiler and toolchain. Both the GCC and Clang compilers have traditionally been supported, but active support for GCC ended with NDK revision 14. The device architecture and host OS determine the appropriate version. The prebuilt toolchains are in the `toolchains` directory of the NDK, which contains one subdirectory for each architecture.
 
@@ -55,7 +55,7 @@ This creates a standalone toolchain for Android 7.0 in the directory `/tmp/andro
 $  export TOOLCHAIN=/tmp/android-7-toolchain
 ```
 
-### Building a Reverse Engineering Environment for Free
+##### Building a Reverse Engineering Environment for Free
 
 With a little effort, you can build a reasonable GUI-based reverse engineering environment for free.
 
@@ -1198,7 +1198,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
 Just like regular Android apps, modules for Xposed are developed and deployed with Android Studio. For more details on writing, compiling, and installing Xposed modules, refer to the tutorial provided by its author, [rovo89](https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/ "Rovo89: Update on Development of Xposed for Nougat").
 
-#### Dynamic Instrumentation with Frida
+###### Dynamic Instrumentation with Frida
 
 In the "Android Basic Security Testing" chapter you have already seen that you can hook method calls with Frida. We'll use Frida to solve the OWASP UnCrackable Crackme Level 1 and demonstrate how we can easily bypass root detection and extract secret data from the app.
 
