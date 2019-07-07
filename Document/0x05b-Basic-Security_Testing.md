@@ -1280,8 +1280,6 @@ $ adb install UnCrackable-Level1.objection.apk
 $ objection explore
 ```
 
-##### Method Tracing
-
 _Note:_ The following [section](#Setting-up-a-Network-Testing-Environment) assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
 
 ### Setting up a Network Testing Environment
