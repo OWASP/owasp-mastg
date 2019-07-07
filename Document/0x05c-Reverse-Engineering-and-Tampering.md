@@ -80,6 +80,7 @@ Although working with a completely free setup is possible, you should consider i
 [IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.
 
 #### Disassembling and Decompiling
+
 ##### Java
 
 Java bytecode can be converted back into source code without many problems unless some nasty, tool-breaking anti-decompilation tricks have been applied. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
@@ -277,7 +278,7 @@ public class a {
 
 Now you're getting somewhere: it's simply standard AES-ECB. Looks like the Base64 string stored in `arrby1` in `check_input` is a ciphertext. It is decrypted with 128bit AES, then compared with the user input. As a bonus task, try to decrypt the extracted ciphertext and find the secret value!
 
-A faster way to get the decrypted string is to add dynamic analysis—we'll revisit UnCrackable Level 1 later to show how, so don't delete the project yet!
+A faster way to get the decrypted string is to add dynamic analysis. We'll revisit UnCrackable Level 1 later to show how (e.g. in the Debugging section), so don't delete the project yet!
 
 ##### Native Libraries
 
