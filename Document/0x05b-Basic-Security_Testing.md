@@ -43,27 +43,33 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 ##### Testing on a Real Device
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can do without a real Android device and test on the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
-
 -- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
+
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
 ##### Testing on the Emulator
 
-All the above steps for preparing a hardware testing device also apply if an emulator is used. Several tools and VMs that can be used to test an app within an emulator environment are available for dynamic testing:
+You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
+You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
-- MobSF
-- Nathan (not updated since 2016)
-- AppUse
-
-You can also create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices")
-
-Please also verify the "Tools" section at the end of this book.
-
-###### Restrictions When Testing on an Emulator
+```shell
+$ ./android avd
+```
 
 There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
 
 Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
+
+Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
+
+Several tools and VMs that can be used to test an app within an emulator environment are available:
+
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
+- [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
+
+Please also verify the "Tools" section at the end of this book.
 
 ##### Getting Privileged Access
 
@@ -91,7 +97,7 @@ Magisk ("Magic Mask") is one way to root your Android device. It's specialty lie
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
 
-Furthermore, developers can use the power of Magisk to create own modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [XPosed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
+Furthermore, developers can use the power of Magisk to create custom modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [Xposed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
 
 ###### Root Detection
 
@@ -105,15 +111,75 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 ##### adb
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1228>
-
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge) ships with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually debug apps on the emulator or a device connected via USB. Use the `adb devices` command to list the connected devices.
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
 ```shell
-$ adb devices
+$ adb devices -l
 List of devices attached
-090c285c0b97f748  device
+090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
+emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
+
+adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
+
+```shell
+$ adb forward tcp:<host port> tcp:<device port>
+```
+
+```shell
+$ adb -s emulator-5554 shell
+root@generic_x86:/ # ls
+acct
+cache
+charger
+config
+...
+```
+
+You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
+
+##### apktool
+
+[apktool](https://ibotpeaches.github.io/Apktool/) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
+
+When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+
+```shell
+$ apktool d base.apk
+I: Using Apktool 2.1.0 on base.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Copying assets and libs...
+I: Copying unknown files...
+I: Copying original files...
+$ cd base
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
+
+The unpacked files are:
+
+- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- apktool.yml: file containing information about the output of apktool
+- original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
+- res: directory containing the app’s resources
+- smali: directory containing the disassembled Dalvik bytecode.
+
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "Exploring the App Package" later on this chapter and section "Repackaging" in the chapter "Tampering and Reverse Engineering on Android" for more information and practical examples.
 
 ##### Frida
 
@@ -169,6 +235,8 @@ $ adb push frida-server /data/local/tmp/
 $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
 ```
+
+###### Using Frida
 
 With frida-server running, you should now be able to get a list of running processes with the following command:
 
@@ -267,195 +335,422 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 ##### Objection
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1230>
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted device by sideloading it and interact with the application as explained in the previous section.
+
+However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- List the Activities, Services and Broadcast receivers
+- Start Activities
+
+The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
+
+###### Installing Objection
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```shell
+
+$ pip3 install objection
+
+```
+
+If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
+
+However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
+
+```shell
+$ objection patchapk --source app-release.apk
+```
+
+The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
+
+###### Using Objection
+
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
+
+```shell
+# Connecting to a patched APK
+objection explore
+
+# Find the correct name using frida-ps
+$ frida-ps -Ua | grep -i telegram
+30268  Telegram                               org.telegram.messenger
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="org.telegram.messenger" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```shell
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ android sslpinning disable
+
+# List items in the keystore
+$ android keystore list
+
+# Try to circumvent root detection
+$ android root disable
+
+```
+
+More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
 ##### radare2
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1231>
+[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that is scriptable and supports many architectures and file formats including Android/iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java (JNI and Java classes) are supported, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes handy when traditional tools fail.
+
+###### Installing radare2
+
+Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions").
+
+###### Using radare2
+
+r2 is a set of small command-line utilities that can be used together or independently. Utilities like `rabin2`, `rasm2`, `rahash2`, `radiff2`, `rafind2`, `ragg2`, `rarun2`, `rax2`, and of course `radare2`.
+
+You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
+
+```shell
+# Permissions
+$ rafind2 -ZS permission AndroidManifest.xml
+# Activities
+$ rafind2 -ZS activity AndroidManifest.xml
+# Content Providers
+$ rafind2 -ZS provider AndroidManifest.xml
+# Services
+$ rafind2 -ZS service AndroidManifest.xml
+# Receivers
+$ rafind2 -ZS receiver AndroidManifest.xml
+```
+
+You can load DEX classes with the following command.
+
+```shell
+$ r2 classes.dex
+```
+
+In the very rare case it doesn't get detected properly, you can use the flag `-a` to manually set the architecture to Dalvik.
+
+```shell
+$ r2 -a dalvik classes.dex
+```
+
+Once loaded, you can print the disassembly opcodes with the r2 command `pd`.
+
+```shell
+[0x000009c8]> pd
+```
+
+You can limit the number of opcodes displayed by appending the number to the command `pd`.
+
+```shell
+[0x000009c8]> pd 10
+            ;-- entry0:
+            ;-- Lsg/vantagepoint/uncrackable1/MainActivity.method.onCreate(Landroid/os/Bundle;)V:
+            ;-- method.protected.Lsg_vantagepoint_uncrackable1_MainActivity.Lsg_vantagepoint_uncrackable1_MainActivity.method.onCreate_Landroid_os_Bundle__V:
+            ;-- ip:
+            0x000009c8      710027000000   invoke-static {}, Lsg/vantagepoint/a/c.a()Z ; 0x27
+            0x000009ce      0a00           move-result v0
+        ,=< 0x000009d0      39000e00       if-nez v0, 0x000009ec
+        |   0x000009d4      710028000000   invoke-static {}, Lsg/vantagepoint/a/c.b()Z
+        ...
+            ; 0x29
+       ||   0x000009e6      0a00           move-result v0
+      ,===< 0x000009e8      38000700       if-eqz v0, 0x000009f6
+      |``-> 0x000009ec      1a003f00       const-string v0, str.Root_detected ; 0x11bf
+```
+
+You can print the class names with the r2 command `icq`.
+
+```shell
+[0x000009c8]> icq
+0x0000069c [0x0000078c - 0x000007b8] Lsg/vantagepoint/a/a Ljava/lang/Object;
+0x000006bc [0x000007c8 - 0x000007ec] Lsg/vantagepoint/a/b Ljava/lang/Object;
+...
+0x0000073c [0x00000958 - 0x00000abc] Lsg/vantagepoint/uncrackable1/MainActivity Landroid/app/Activity;
+0x0000075c [0x00000acc - 0x00000bb2] Lsg/vantagepoint/uncrackable1/a Ljava/lang/Object;
+```
+
+You can print the external methods with the r2 command `iiq`.
+
+```shell
+[0x000009c8]> iiq
+Landroid/app/Activity.method.<init>()V
+Landroid/app/Activity.method.onCreate(Landroid/os/Bundle;)V
+...
+0x0000075c [0x00000acc - 0x00000bb2]    230 class 6 Lsg/vantagepoint/uncrackable1/a super: Ljava/lang/Object;
+0x00000acc method 0 sp   Lsg/vantagepoint/uncrackable1/a.method.a(Ljava/lang/String;)Z
+0x00000b5c method 1 sp   Lsg/vantagepoint/uncrackable1/a.method.b(Ljava/lang/String;)[B
+```
+
+You can print all the strings with the r2 command `izq`.
+
+```shell
+[0x000009c8]> izq
+0xc50 39 39 /dev/com.koushikdutta.superuser.daemon/
+0xc79 25 25 /system/app/Superuser.apk
+...
+0xd23 44 44 5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=
+0xd51 32 32 8d127684cbc37c17616d806cf50473cc
+0xd76 6 6 <init>
+0xd83 10 10 AES error:
+0xd8f 20 20 AES/ECB/PKCS7Padding
+0xda5 18 18 App is debuggable!
+0xdc0 9 9 CodeCheck
+0x11ac 7 7 Nope...
+0x11bf 14 14 Root detected!
+```
+
+Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation").
 
 ##### r2frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1232>
+[r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. R2frida allows you to:
+
+- Attach radare2 to any local process or remote frida-server via USB or TCP.
+- Read/Write memory from the target process.
+- Load Frida information such as maps, symbols, imports, classes and methods into radare2.
+- Call r2 commands from Frida as it exposes the r2pipe interface into the Frida Javascript API.
+
+###### Installing r2frida
+
+Before installing r2frida, make sure you have installed [radare2](https://rada.re/r/ "radare2") on your system. On GNU/Debian you also need to install the following dependencies:
+
+```shell
+$ sudo apt install -y make gcc libzip-dev nodejs npm curl pkg-config git
+```
+
+Once the dependencies are installed, you may proceed to install r2frida. The recommended installation method is via r2pm. To install with `r2pm`, simply run the following command:
+
+```shell
+$ r2pm -ci r2frida
+```
+
+However, you may also compile r2frida yourself in the traditional way. You can find how to do this in the official documentation of [r2frida](https://github.com/nowsecure/r2frida/blob/master/README.md "r2frida readme").
+
+###### Using r2frida
+
+With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
+
+```shell
+$ r2 frida://1234
+```
+
+For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page.](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage")
+
+Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
+
+```shell
+[0x00000000]> \i
+arch                x86
+bits                64
+os                  linux
+pid                 2218
+uid                 1000
+objc                false
+runtime             V8
+java                false
+cylang              false
+pageSize            4096
+pointerSize         8
+codeSigningPolicy   optional
+isDebuggerAttached  false
+```
+
+To search in memory for a specific keyword, you may use the search command `\/`:
+
+```shell
+[0x00000000]> \/ unacceptable
+Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
+Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
+...
+Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
+hits: 23
+0x561f072d89ee hit12_0 unacceptable policyunsupported md algorithmvar bad valuec
+0x561f0732a91a hit12_1 unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61
+```
+
+To output the search results in json format, we simply add `j` to our previous search command. This can be used in most of the commands:
+
+```shell
+[0x00000000]> \/j unacceptable
+Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
+Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
+...
+Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
+hits: 23
+{"address":"0x561f072c4223","size":12,"flag":"hit14_1","content":"unacceptable policyunsupported md algorithmvar bad valuec0"},{"address":"0x561f072c4275","size":12,"flag":"hit14_2","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61"},{"address":"0x561f072c42c8","size":12,"flag":"hit14_3","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61 "},
+...
+```
+
+To list the loaded libraries use the command `\il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
+
+```shell
+[0x00000000]> \il~keystore,ssl,crypto
+0x00007f3357b8e000 libssl.so.1.1
+0x00007f3357716000 libcrypto.so.1.1
+```
+
+Similarly, to list the exports and filter the results by a specific keyword:
+
+```shell
+[0x00000000]> \iE libssl.so.1.1~CIPHER
+0x7f3357bb7ef0 f SSL_CIPHER_get_bits
+0x7f3357bb8260 f SSL_CIPHER_find
+0x7f3357bb82c0 f SSL_CIPHER_get_digest_nid
+0x7f3357bb8380 f SSL_CIPHER_is_aead
+0x7f3357bb8270 f SSL_CIPHER_get_cipher_nid
+0x7f3357bb7ed0 f SSL_CIPHER_get_name
+0x7f3357bb8340 f SSL_CIPHER_get_auth_nid
+0x7f3357bb7930 f SSL_CIPHER_description
+0x7f3357bb8300 f SSL_CIPHER_get_kx_nid
+0x7f3357bb7ea0 f SSL_CIPHER_get_version
+0x7f3357bb7f10 f SSL_CIPHER_get_id
+```
+
+To list or set a breakpoint use the command db. This is useful when analyzing/modifying memory:
+
+```shell
+[0x00000000]> \db
+```
+
+Finally, remember that you can also run Frida JS code with \. script.js:
+
+```shell
+[0x00000000]> \. agent.js
+```
+
+You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki "Using r2frida") on their Wiki project.
 
 ##### Drozer
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1233>
+[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
 
-[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS. The following section documents the steps necessary to install and use Drozer.
+The advantage of using Drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
 
 ###### Installing Drozer
 
-**On Linux:**
+You can refer to [drozer GitHub page](https://github.com/mwrlabs/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-Pre-built packages for many Linux distributions are available on the [Drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website"). If your distribution is not listed, you can build Drozer from source as follows:
+The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions.
 
-```shell
-$ git clone https://github.com/mwrlabs/drozer/
-$ cd drozer
-$ make apks
-$ source ENVIRONMENT
-$ python setup.py build
-$ sudo env "PYTHONPATH=$PYTHONPATH:$(pwd)/src" python setup.py install
-```
+###### Using Drozer
 
-**On Mac:**
+Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the releases page](https://github.com/mwrlabs/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
-On Mac, Drozer is a bit more difficult to install due to missing dependencies. Mac OS versions from El Capitan onwards don't have OpenSSL installed, so compiling pyOpenSSL won't work. You can resolve this issue by [installing OpenSSL manually]. To install openSSL, run:
+Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions [here](https://mobiletools.mwrinfosecurity.com/Starting-a-session/ "Starting a Session").
+
+Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
 
 ```shell
-$ brew install openssl
+$ dz> run app.package.attacksurface <package>
 ```
 
-Drozer depends on older versions of some libraries. Avoid messing up the system's Python installation by installing Python with homebrew and creating a dedicated environment with virtualenv. (Using a Python version management tool such as [pyenv](https://github.com/pyenv/pyenv "pyenv") is even better, but this is beyond the scope of this book).
+Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
 
-Install virtualenv via pip:
+For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
 
 ```shell
-$ pip install virtualenv
+$ dz> run app.activity.start --component <package> <component name>
 ```
 
-Create a project directory to work in; you'll download several files into it. Navigate into the newly created directory and run the command `virtualenv drozer`. This creates a "drozer" folder, which contains the Python executable files and a copy of the pip library.
+This previous command will start the activity, hopefully leaking some sensitive information. Drozer has modules for every type of IPC mechanism. Download [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "InsecureBankv2 APK") if you would like to try the modules with an intentionally vulnerable application that illustrates common problems related to IPC endpoints. Pay close attention to the modules in the scanner category as they are very helpful automatically detecting vulnerabilities even in system packages, specially if you are using a ROM provided by your cellphone company. Even [SQL injection vulnerabilities in system packages by Google](https://issuetracker.google.com/u/0/issues/36965126 "SQL injection in Android") have been identified in the past with drozer.
+
+###### Other Drozer commands
+
+Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
 ```shell
-$ virtualenv drozer
-$ source drozer/bin/activate
-(drozer) $
+# List all the installed packages
+$ dz> run app.package.list
+
+# Find the package name of a specific app
+$ dz> run app.package.list –f (string to be searched)
+
+# See basic information
+$ dz> run app.package.info –a (package name)
+
+# Identify the exported application components
+$ dz> run app.package.attacksurface (package name)
+
+# Identify the list of exported Activities
+$ dz> run app.activity.info -a (package name)
+
+# Launch the exported Activities
+$ dz> run app.activity.start --component (package name) (component name)
+
+# Identify the list of exported Broadcast receivers
+$ dz> run app.broadcast.info -a (package name)
+
+# Send a message to a Broadcast receiver
+$ dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)
+
+# Detect SQL injections in content providers
+$ dz> run scanner.provider.injection -a (package name)
 ```
 
-You're now ready to install the required version of pyOpenSSL and build it against the OpenSSL headers installed previously. A typo in the source of the pyOpenSSL version Drozer prevents successful compilation, so you'll need to fix the source before compiling. Fortunately, ropnop has figured out the necessary steps and documented them in a [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan").
-Run the following commands:
+###### Other Drozer resources
 
-```shell
-$ wget https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.tar.gz
-$ tar xzvf pyOpenSSL-0.13.tar.gz
-$ cd pyOpenSSL-0.13
-$ sed -i '' 's/X509_REVOKED_dup/X509_REVOKED_dupe/' OpenSSL/crypto/crl.c
-$ python setup.py build_ext -L/usr/local/opt/openssl/lib -I/usr/local/opt/openssl/include
-$ python setup.py build
-$ python setup.py install
-```
+Other resources where you might find useful information are:
 
-With that out of the way, you can install the remaining dependencies.
-
-```shell
-$ easy_install protobuf==2.4.1 twisted==10.2.0
-```
-
-Finally, download and install the Python .egg from the MWR labs website:
-
-```shell
-$ wget https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-2.3.4.tar.gz
-$ tar xzf drozer-2.3.4.tar.gz
-$ easy_install drozer-2.3.4-py2.7.egg
-```
-
-###### Installing the Agent
-
-Drozer agent is the software component that runs on the device itself. Download the latest Drozer Agent [here](https://github.com/mwrlabs/drozer/releases/) and install it with adb.
-
-```shell
-$ adb install drozer.apk
-```
-
-###### Starting a Session
-
-You should now have the Drozer console installed on your host machine and the Agent running on your USB-connected device or emulator. Now you need to connect the two to start exploring.
-
-Open the Drozer application in the running emulator and click the OFF button at the bottom of the app to start an Embedded Server.
-
-![alt text](Images/Chapters/0x05b/server.png "Drozer")
-
-The server listens on port 31415 by default. Use adb to forward this port to the localhost interface, then run Drozer on the host to connect to the agent.
-
-```shell
-$ adb forward tcp:31415 tcp:31415
-$ drozer console connect
-```
-
- Use the "list" command to view all Drozer modules that can be executed in the current session.
-
-###### Basic Drozer Commands
-
-- To list all the packages installed on the emulator, execute the following command:
-
-    `dz> run app.package.list`
-
-- To find the package name of a specific app, pass  "-f" and a search string:
-
-    `dz> run app.package.list –f (string to be searched)`
-
-- To see basic information about the package, execute the following command:
-
-    `dz> run app.package.info –a (package name)`
-
-- To identify the exported application components, execute the following command:
-
-    `dz> run app.package.attacksurface (package name)`
-
-- To identify the list of exported Activities in the target application, execute the following command:
-
-    `dz> run app.activity.info -a (package name)`
-
-- To launch the exported Activities, execute the following command:
-
-    `dz> run app.activity.start --component (package name) (component name)`
-
-- To identify the list of exported Broadcast receivers in the target application, execute the following command:
-
-    `dz> run app.broadcast.info -a (package name)`
-
-- To send a message to a Broadcast receiver, execute the following command:
-
-    `dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number of arguments)`
-
-###### Using Modules
-
-Out of the box, Drozer provides modules for investigating various aspects of the Android platform and a few remote exploits. You can extend Drozer's functionality by downloading and installing additional modules.
-
-###### Finding Modules
-
-The official Drozer module repository is hosted alongside the main project on GitHub. This is automatically set up in your copy of Drozer. You can search for modules with the `module` command:
-
-```shell
-dz> module search tool
-kernelerror.tools.misc.installcert
-metall0id.tools.setup.nmap
-mwrlabs.tools.setup.sqlite3
-```
-
-For more information about a module, pass the `–d` option to view the module's description:
-
-```shell
-dz> module  search url -d
-mwrlabs.urls
-    Finds URLs with the HTTP or HTTPS schemes by searching the strings
-    inside APK files.
-
-        You can, for instance, use this for finding API servers, C&C
-    servers within malicious APKs and checking for presence of advertising
-    networks.
-
-```
-
-###### Installing Modules
-
-You can install modules with the `module` command:
-
-```shell
-dz> module install mwrlabs.tools.setup.sqlite3
-Processing mwrlabs.tools.setup.sqlite3... Already Installed.
-Successfully installed 1 modules, 0 already installed
-```
-
-This will install any module that matches your query. Newly installed modules are dynamically loaded into the console and are available immediately.
+- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
+- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
+- [Command Reference](https://mobiletools.mwrinfosecurity.com/Command-Reference/ "drozer's Command Reference")
+- [Using drozer for application security assessments](https://mobiletools.mwrinfosecurity.com/Using-Drozer-for-application-security-assessments/ "Using drozer for application security assessments")
+- [Exploitation features in drozer](https://mobiletools.mwrinfosecurity.com/Exploitation-features-in-drozer/ "Exploitation features in drozer")
+- [Using modules](https://mobiletools.mwrinfosecurity.com/Installing-modules/)
 
 ##### Xposed
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1234>
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
+To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers Xposed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through the GUI.
 
-To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
+Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to install Xposed. This way, applications with Safetynet attestation should have a higher chance of being testable with Xposed modules.
+
+Xposed has been compared to Frida. When you run Frida server on a rooted device, you will end up with a similarly effective setup. Both frameworks deliver a lot of value when you want to do dynamic instrumentation. When Frida crashes the app, you can try something similar with Xposed. Next, similar to the abudance of Frida scripts, you can easily use one of the many modules that come with Xposed, such as the earlier discussed module to bypass SSL pinning ([JustTrustMe](https://github.com/Fuzion24/JustTrustMe "JustTrustMe") and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSL Unpinning")). Xposed includes other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") which allow you to do more in depth application testing as well. On top of that, you can create your own modules as well to patch often used security mechanisms of Android applications.
+
+Xposed can also be installed on an emulator through the following script:
+
+```sh
+#!/bin/sh
+echo "Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive -wipe-data'"
+adb root && adb remount
+adb install SuperSU\ v2.79.apk #binary can be downloaded from http://www.supersu.com/download
+adb push root_avd-master/SuperSU/x86/su /system/xbin/su
+adb shell chmod 0755 /system/xbin/su
+adb shell setenforce 0
+adb shell su --install
+adb shell su --daemon&
+adb push busybox /data/busybox #binary can be downloaded from https://busybox.net/
+# adb shell "mount -o remount,rw /system && mv /data/busybox /system/bin/busybox && chmod 755 /system/bin/busybox && /system/bin/busybox --install /system/bin"
+adb shell chmod 755 /data/busybox
+adb shell 'sh -c "./data/busybox --install /data"'
+adb shell 'sh -c "mkdir /data/xposed"'
+adb push xposed8.zip /data/xposed/xposed.zip #can be downloaded from https://dl-xda.xposed.info/framework/
+adb shell chmod 0755 /data/xposed
+adb shell 'sh -c "./data/unzip /data/xposed/xposed.zip -d /data/xposed/"'
+adb shell 'sh -c "cp /data/xposed/xposed/META-INF/com/google/android/*.* /data/xposed/xposed/"'
+echo "Now adb shell and do 'su', next: go to ./data/xposed/xposed, make flash-script.sh executable and run it in that directory after running SUperSU"
+echo "Next, restart emulator"
+echo "Next, adb install XposedInstaller_3.1.5.apk"
+echo "Next, run installer and then adb reboot"
+echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
+```
+
+Please note that Xposed, as of early 2019, does not work on Android Pie yet.
 
 ##### Angr
 
@@ -477,76 +772,201 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 
 #### Accessing the Device Shell
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1236>
-
-##### On-device Shell App
+One of the most common things you do when testing an app is accessing the device shell. In this section we'll see how to access the Android shell both remotely from your host computer with/without a USB cable and locally from the device itself.
 
 ##### Remote Shell
 
-In order to connect to the shell of an Android device, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your first tool of choice (unless you've configured remote SSH access).
+In order to connect to the shell of an Android device from your host computer, [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
-###### Connecting to an Android Physical Device
+For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
-When connecting to an Android physical device, you must enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+```shell
+$ adb shell
+```
 
-Once USB debugging is enabled, connected devices can be viewed with the following command:
+> press Control + D or type `exit` to quit
+
+If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
+
+```shell
+$ adb shell
+bullhead:/ $ su
+bullhead:/ # id
+uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
+```
+
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
+
+###### Connect to Multiple Devices
+
+If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
 ```shell
 $ adb devices
 List of devices attached
-BAZ5ORFARKOZYDFA    device
+00c907098530a82c    device
+emulator-5554    device
 ```
 
-Access to the remote device's shell
+###### Connect to a Device over Wi-Fi
 
-```shell
-$ adb shell
-```
+You can also access your Android device without using the USB cable. For this you'll have to connect both your host computer and your Android device to the same Wi-Fi network and follow the next steps:
 
-> When you are ready to exit the remote shell, press Control + D or type `exit`.
+- Connect the device to the host computer with a USB cable and set the target device to listen for a TCP/IP connection on port 5555: `adb tcpip 5555`.
+- Disconnect the USB cable from the target device and run `adb connect <device_ip_address>`. Check that the device is now available by running `adb devices`.
+- Open the shell with `adb shell`.
 
-This will simply work if you have only one device connected. If you have more than one, you'll have to specify the device to which you want to access the shell.
+However, notice that by doing this you leave your device open to anyone being in the same network and knowing the IP address of your device. You may rather prefer using the USB connection.
 
-The `adb shell` command can also issue commands to the device without entering the adb remote shell, for example:
+> For example, on a Nexus device, you can find the IP address at Settings -> System -> About phone -> Status -> IP address or by going to the Wi-Fi menu and tapping once on the network you're connected to.
 
-```shell
-$ adb shell id
-```
+See the full instructions and considerations in the [Android Developers Documentation](https://developer.android.com/studio/command-line/adb#wireless "Connect to a device over Wi-Fi").
 
-###### Connecting to an Android Virtual Device
+###### Connect to a Device via SSH
 
-You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found  in the tools directory of the Android SDK:
+If you prefer, you can also enable SSH access. A convenient option is to use Termux, which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
-```shell
-$ ./android avd
-```
+##### On-device Shell App
 
-Once the emulator is up and running, you can establish a root connection with the `adb` command.
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
 
-```shell
-$ adb root
-$ adb shell
-root@generic_x86:/ $ id
-uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:su:s0
-```
-
-Rooting an emulator is therefore unnecessary; root access can be established with `adb`.
+Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
 
 #### Host-Device Data Transfer
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1237>
+##### Using adb
+
+You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
+
+```shell
+$ adb push foo.txt /sdcard/foo.txt
+```
+
+This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
+
+```shell
+$ adb pull /sdcard
+/sdcard/: 1190 files pulled. 14.1 MB/s (304526427 bytes in 20.566s)
+```
+
+##### Using Android Studio Device File Explorer
+
+Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to View -> Tool Windows -> Device File Explorer.
+
+![Android Studio Device File Explorer](Images/Chapters/0x05b/android-studio-file-device-explorer.png)
+
+If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
+
+##### Using objection
+
+This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
+
+First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
+
+```shell
+$ frida-ps -U | grep -i owasp
+21228  sg.vp.owasp_mobile.omtg_android
+
+$ objection -g sg.vp.owasp_mobile.omtg_android explore
+
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # cd ..
+/data/user/0/sg.vp.owasp_mobile.omtg_android
+
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
+Type       ...  Name
+---------  ...  -------------------
+Directory  ...  cache
+Directory  ...  code_cache
+Directory  ...  lib
+Directory  ...  shared_prefs
+Directory  ...  files
+Directory  ...  app_ACRA-approved
+Directory  ...  app_ACRA-unapproved
+Directory  ...  databases
+
+Readable: True  Writable: True
+```
+
+One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
+
+```shell
+...[usb] # ls
+Type    ...  Name
+------  ...  -----------------------------------------------
+File    ...  sg.vp.owasp_mobile.omtg_android_preferences.xml
+
+Readable: True  Writable: True
+...[usb] # file download sg.vp.owasp_mobile.omtg_android_preferences.xml
+Downloading ...
+Streaming file from device...
+Writing bytes to destination...
+Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
+
+```
+
+The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of e.g. taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
+
+##### Using Termux
+
+If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
+
+```shell
+$ sftp -P 8022 root@localhost
+...
+sftp> cd /data/data
+sftp> ls -1
+...
+sg.vantagepoint.helloworldjni
+sg.vantagepoint.uncrackable1
+sg.vp.owasp_mobile.omtg_android
+```
+
+Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
+
+![SFTP Access](Images/Chapters/0x05b/sftp-with-filezilla.png)
+
+Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
 #### Obtaining and Extracting Apps
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1238>
+There are several ways of extracting apk files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
 
-##### App Store
+##### Alternative App Stores
 
-##### Recovering the App Package from the Device
+One of the easiest options is to download the apk from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not offical and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host APKs and are not known for modifying apps and even list SHA-1 and SHA-256 checksums of the apps are:
 
-###### From Rooted Devices
+- [APKMirror](https://apkmirror.com "APKMirror")
+- [APKPure](https://apkpure.com "APKPure")
 
-###### From Non-Rooted Devices
+Beware that you do not have control over these sites and you cannot guarantee what they do in the future. Only use them if it's your only option left.
+
+##### Extracting the App Package from the Device
+
+Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party.
+
+To obtain applications from a non-rooted device, you could use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
+
+```shell
+$ adb shell pm list packages
+```
+
+Once you have located the package name of the application, you need the full path where it is stored on the system to download it.
+
+```shell
+$ adb shell pm path <package name>
+```
+
+With the full path to the apk, you can now simply use `adb pull` to extract the apk.
+
+```shell
+$ adb pull <apk path>
+```
+
+The apk will be downloaded in your working directory.
+
+There are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted apk via your prefered method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
+
+Both of the methods mentioned previously do not require root, hence, they can be used on rooted and non-rooted devices.
 
 #### Installing Apps
 
@@ -560,23 +980,238 @@ Note that if you have the original source code and use Android Studio, you do no
 
 #### Information Gathering
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1239>
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advanced techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
-##### Installed Apps
+- Which files are included in the package?
+- Which native libraries does the app use?
+- Which app components does the app define? Any services or content providers?
+- Is the app debuggable?
+- Does the app contain a network security policy?
+- Does the app create any new files when being installed?
 
-##### App Basic Information
+##### Listing Installed Apps
 
-###### Sandbox
+When targeting apps that are installed on the device, you'll first have to figure out the correct package name of the application you want to analyze. You can retrieve the installed apps either by using `pm` (Android Package Manager) or by using `frida-ps`:
 
-###### Permissions
+```bash
+$ adb shell pm list packages
+package:sg.vantagepoint.helloworldjni
+package:eu.chainfire.supersu
+package:org.teamsik.apps.hackingchallenge.easy
+package:org.teamsik.apps.hackingchallenge.hard
+package:sg.vp.owasp_mobile.omtg_android
+```
 
-###### Native Libs
+You can include flags to show only third party apps (`-3`) and the location of their APK file (`-f`), which you can use afterwards to download it via `adb pull`:
 
-###### ... other
+```bash
+$ adb shell pm list packages -3 -f
+package:/data/app/sg.vantagepoint.helloworldjni-1/base.apk=sg.vantagepoint.helloworldjni
+package:/data/app/eu.chainfire.supersu-1/base.apk=eu.chainfire.supersu
+package:/data/app/org.teamsik.apps.hackingchallenge.easy-1/base.apk=org.teamsik.apps.hackingchallenge.easy
+package:/data/app/org.teamsik.apps.hackingchallenge.hard-1/base.apk=org.teamsik.apps.hackingchallenge.hard
+package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk=sg.vp.owasp_mobile.omtg_android
+```
 
-##### Accessing App Data
+This is the same as running `adb shell pm path <app_package_id>` on an app package ID:
+
+```bash
+$ adb shell pm path sg.vp.owasp_mobile.omtg_android
+package:/data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
+```
+
+Use `frida-ps -Uai` to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
+
+```bash
+$ frida-ps -Uai
+  PID  Name                                      Identifier
+-----  ----------------------------------------  ---------------------------------------
+  766  Android System                            android
+21228  Attack me if u can                        sg.vp.owasp_mobile.omtg_android
+ 4281  Termux                                    com.termux
+    -  Uncrackable1                              sg.vantagepoint.uncrackable1
+    -  drozer Agent                              com.mwr.dz
+```
+
+Note that this also shows the PID of the apps that are running at the moment. Take a note of the "Identifier" and the PID if any as you'll need them afterwards.
+
+##### Exploring the App Package
+
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
+
+APK files are actually ZIP files that can be unpacked using a standard unarchiver:
+
+```shell
+$ unzip base.apk
+$ ls -lah
+-rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
+drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
+drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
+-rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
+drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
+drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
+-rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+```
+
+The following files are unpacked:
+
+- AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
+- META-INF: contains the app's metadata
+  - MANIFEST.MF: stores hashes of the app resources
+  - CERT.RSA: the app's certificate(s)
+  - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
+- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK.
+- res: directory containing resources that haven't been compiled into resources.arsc
+- resources.arsc: file containing precompiled resources, such as XML files for the layout
+
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
+
+```shell
+$ ls -alh
+total 32
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
+drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
+-rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
+-rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
+drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
+drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
+drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
+drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
+drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
+```
+
+###### The Android Manifest
+
+The Android Manifest is the main source of information, it includes a lot of interesting information such as the package name, the permissions, app components, etc.
+
+Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
+
+- App permissions: `permission` (see "Android Platform APIs")
+- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
+- App components: `activity`, `service`, `provider`, `receiver` (see "Android Platform APIs" and "Data Storage on Android")
+- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+
+Please refer to the mentioned chapters to learn more about how to test each of these points.
+
+###### App Binary
+
+As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
+
+Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
+
+###### Native Libraries
+
+You can inspect the `lib` folder in the APK:
+
+```shell
+$ ls -1 lib/armeabi/
+libdatabase_sqlcipher.so
+libnative.so
+libsqlcipher_android.so
+libstlport_shared.so
+```
+
+or from the device with objection:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # ls lib
+Type    ...  Name
+------  ...  ------------------------
+File    ...  libnative.so
+File    ...  libdatabase_sqlcipher.so
+File    ...  libstlport_shared.so
+File    ...  libsqlcipher_android.so
+```
+
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
+
+###### Other App Resources
+
+It is normally worth taking a look at the rest of the resources and files that you may find in the root folder of the APK as some times they contain additional goodies like key stores, encrypted databases, certificates, etc.
+
+##### Accessing App Data Directories
+
+Once you have installed the app, there is further information to explore, where tools like objection come in handy.
+
+When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of the app.
+
+```shell
+$ objection -g sg.vp.owasp_mobile.omtg_android explore
+
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # env
+
+Name                    Path
+----------------------  ---------------------------------------------------------------------------
+cacheDirectory          /data/user/0/sg.vp.owasp_mobile.omtg_android/cache
+codeCacheDirectory      /data/user/0/sg.vp.owasp_mobile.omtg_android/code_cache
+externalCacheDirectory  /storage/emulated/0/Android/data/sg.vp.owasp_mobile.omtg_android/cache
+filesDirectory          /data/user/0/sg.vp.owasp_mobile.omtg_android/files
+obbDir                  /storage/emulated/0/Android/obb/sg.vp.owasp_mobile.omtg_android
+packageCodePath         /data/app/sg.vp.owasp_mobile.omtg_android-kR0ovWl9eoU_yh0jPJ9caQ==/base.apk
+```
+
+Among this information we find:
+
+- The internal data directory (aka. sandbox directory) which is at `/data/data/[package-name]` or `/data/user/0/[package-name]`
+- The external data directory at `/storage/emulated/0/Android/data/[package-name]` or `/sdcard/Android/data/[package-name]`
+- The path to the app package in `/data/app/`
+
+The internal data directory is used by the app to store data created during runtime and has the following basic structure:
+
+```shell
+...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
+Type       ...  Name
+---------  ...  -------------------
+Directory  ...  cache
+Directory  ...  code_cache
+Directory  ...  lib
+Directory  ...  shared_prefs
+Directory  ...  files
+Directory  ...  databases
+
+Readable: True  Writable: True
+```
+
+Each folder has its own purpose:
+
+- **cache**: This location is used for data caching. For example, the WebView cache is found in this directory.
+- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Android 5 (API level 21) or later, the system will delete any files stored in this location when the app or the entire platform is upgraded.
+- **lib**: This folder stores native libraries written in C/C++. These libraries can have one of several file extensions, including .so and .dll (x86 support). This folder contains subdirectories for the platforms the app has native libraries for, including
+  - armeabi: compiled code for all ARM-based processors
+  - armeabi-v7a: compiled code for all ARM-based processors, version 7 and above only
+  - arm64-v8a: compiled code for all 64-bit ARM-based processors, version 8 and above based only
+  - x86: compiled code for x86 processors only
+  - x86_64: compiled code for x86_64 processors only
+  - mips: compiled code for MIPS processors
+- **shared_prefs**: This folder contains an XML file that stores values saved via the [SharedPreferences APIs](https://developer.android.com/training/basics/data-storage/shared-preferences.html "SharedPreferences APIs").
+- **files**: This folder stores regular files created by the app.
+- **databases**: This folder stores SQLite database files generated by the app at runtime, e.g., user data files.
+
+However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
+
+Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
+
+On Android you can easily inspect the log of system messages by using [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat"). There are two ways to execute Logcat:
+
+- Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
+
+![Log output in Android Studio](Images/Chapters/0x05b/log_output_Android_Studio.png)
+
+- You can execute Logcat with adb to store the log output permanently:
+
+```shell
+$ adb logcat > logcat.log
+```
+
+With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for ```ps``` to be able to get its PID.
+
+```shell
+$ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
+```
 
 #### Static Analysis
 
@@ -636,6 +1271,7 @@ There are several open source tools for automated security analysis of an APK.
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 
 For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
 
@@ -725,17 +1361,6 @@ You can display the captured traffic in a human-readable format with Wireshark. 
 <img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="500">
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
-
-##### Burp plugins to Process Non-HTTP Traffic
-
-Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
-
-- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
-- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
-
-These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
-
-Please note that this setup can become sometimes very tedious and is not as straightforward as testing HTTP.
 
 ##### Firebase/Google Cloud Messaging (FCM/GCM)
 
@@ -1002,7 +1627,7 @@ Alternatively, you can follow the following steps manually in order to achieve t
     chmod 644 <hash>.0
     ```
 
-By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, of course unless the application uses SSL pinning.
+By following the steps described above you allow any application to trust the proxy's certificate, which allows you to intercept its traffic, unless of course the application uses SSL pinning.
 
 #### Potential Obstacles
 
@@ -1116,78 +1741,68 @@ setTimeout(function(){
 
 ##### Certificate Pinning
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1241>
+Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
 
-Different ways of implementing certificate pinning have been explained in "Testing Custom Certificate Stores and Certificate Pinning".
-
-If the app implements certificate pinning, X.509 certificates provided by an intercepting proxy will be declined and the app will refuse to make any requests through the proxy. To perform an efficient white box test, use a debug build with deactivated certificate pinning.
-
-There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
-
-- Frida: [Objection](https://github.com/sensepost/objection "Objection")
-- Xposed: [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready"), [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning")
-- Cydia Substrate: [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller")
-
-For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered for these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
-
-###### Bypass Custom Certificate Pinning Statically
-
-Somewhere in the application, both the endpoint and the certificate (or its hash) must be defined. After decompiling the application, you can search for:
-
-- Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
-- Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
-
-If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
-
-After making these modifications, repackage the application using apktool and install it on your device.
-
-###### Bypass Custom Certificate Pinning Dynamically
-
-Bypassing the pinning logic dynamically makes it more convenient as there is no need to bypass any integrity checks and it's much faster to perform trial & error attempts.
-
-Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
-
-As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the CertificatePinner.Builder class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways:
-
-- Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
-- Search for the method signature in the SMALI code
-
-For the Builder.add method, you can find the possible methods by running the following grep command: `grep -ri java/lang/String;\[Ljava/lang/String;)L ./`
-
-This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
-
-Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
+For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
 
 ### References
 
 - Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
-- Google Android Codelabs - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
+- Basic Network Security Configuration - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
-
-#### Tools
-
-- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
-- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
-- Android tcpdump - <https://www.androidtcpdump.com/>
-- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
-- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
-- Android Studio - <https://developer.android.com/studio/index.html>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 - Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
+- Codenames, Tags and Build Numbers - <https://source.android.com/setup/start/build-numbers>
+- Create and Manage Virtual Devices - <https://developer.android.com/studio/run/managing-avds.html>
+- Guide to rooting mobile devices - <https://www.xda-developers.com/root/>
+- API Levels - <https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels>
+- AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
+- SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
+- Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
+- Android's .apk format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
+- Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
+
+#### Tools
+
+- adb - <https://developer.android.com/studio/command-line/adb>
+- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
+- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
+- Android Studio - <https://developer.android.com/studio/index.html>
+- Android tcpdump - <https://www.androidtcpdump.com/>
+- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
+- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
+- angr - <https://github.com/angr/angr>
+- APK Extractor - <https://play.google.com/store/apps/details?id=com.ext.ui>
+- APKMirror - <https://apkmirror.com>
+- APKPure - <https://apkpure.com>
 - apktool - <https://ibotpeaches.github.io/Apktool/>
 - apkx - <https://github.com/b-mueller/apkx>
-- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
 - Burp Suite Professional - <https://portswigger.net/burp/>
+- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
+- Capillary - <https://github.com/google/capillary>
+- Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
 - Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
+- FileZilla - <https://filezilla-project.org/download.php>
 - Frida - <https://www.frida.re/docs/android/>
+- InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
+- Inspeckage - <https://github.com/ac-pm/Inspeckage>
 - JAADAS - <https://github.com/flankerhqd/JAADAS>
+- JustTrustMe - <https://github.com/Fuzion24/JustTrustMe>
+- Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
 - Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
 - Mitm-relay - <https://github.com/jrmdev/mitm_relay>
+- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Nathan - <https://github.com/mseclab/nathan>
 - Objection - <https://github.com/sensepost/objection>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - QARK - <https://github.com/linkedin/qark/>
+- R2frida - <https://github.com/nowsecure/r2frida/>
+- Radare2 - <https://rada.re/r/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
+- Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>
+- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
