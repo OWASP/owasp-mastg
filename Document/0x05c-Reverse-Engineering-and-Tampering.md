@@ -967,26 +967,28 @@ JQAE6ACMABNAAIIA
 
 First, we'll look at some simple ways to modify and instrument mobile apps. *Tampering* means making patches or run-time changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile app-sec however, the term loosely refers to all kinds of run-time manipulation, including overriding methods to change behavior.
 
-#### Patching and Re-Packaging
+#### Patching, Repackaging, and Re-Signing
 
 Making small changes to the app Manifest or bytecode is often the quickest way to fix small annoyances that prevent you from testing or reverse engineering an app. On Android, two issues in particular happen regularly:
 
-1. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest.
-2. You can't intercept HTTPS traffic with a proxy because the app employs SSL pinning.
+1. You can't intercept HTTPS traffic with a proxy because the app employs SSL pinning.
+2. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest.
 
-In most cases, both issues can be fixed by making minor changes to the app and then re-signing and re-packaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
+In most cases, both issues can be fixed by making minor changes to the app and then re-signing and repackaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
 
-##### Example: Disabling Certificate Pinning
-
-Certificate pinning is an issue for security testers who want to intercept HTTPS communication for legitimate reasons. Patching bytecode to deactivate SSL pinning can help with this. To demonstrate bypassing certificate pinning, we'll walk through an implementation in an example application.
-
-The first step is disassembling the APK with `apktool`:
+The first step is unpacking and disassembling the APK with `apktool`:
 
 ```shell
 $ apktool d target_apk.apk
 ```
 
-You then locate the certificate pinning checks in the Smali source code. Searching the code for keywords such as "X509TrustManager" should point you in the right direction.
+> Note: To save time, you may use the flag `--no-src` if you only want to unpack the APK but not disassemble the code. For example, when you only want to modify the AndroidManifest.xml and repack immediately.
+
+##### Patching Example: Disabling Certificate Pinning
+
+Certificate pinning is an issue for security testers who want to intercept HTTPS communication for legitimate reasons. Patching bytecode to deactivate SSL pinning can help with this. To demonstrate bypassing certificate pinning, we'll walk through an implementation in an example application.
+
+Once you've unpacked and disassembled the APK, it's time to find the certificate pinning checks in the Smali source code. Searching the code for keywords such as "X509TrustManager" should point you in the right direction.
 
 In our example, a search for "X509TrustManager" returns one class that implements a custom Trustmanager. The derived class implements the methods `checkClientTrusted`, `checkServerTrusted`, and `getAcceptedIssuers`.
 
@@ -1011,6 +1013,79 @@ To bypass the pinning check, add the `return-void` opcode to the first line of e
   invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
 ```
 
+This modification will break the APK signature, so you'll also have to re-sign the altered APK archive after repackaging it.
+
+##### Patching Example: Making an App Debuggable
+
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
+
+When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to `0`, Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the run time state of a program makes understanding the program *a lot* easier.
+
+To _convert_ a release build into a debuggable build, you need to modify a flag in the app's manifest file (AndroidManifest.xml). Once you've unpacked the app (e.g. `apktool d --no-src UnCrackable-Level1.apk`) and decoded the AndroidManifest.xml, ddd android:debuggable = "true" to the manifest using a text editor:
+
+```xml
+<application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
+```
+
+Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `debuggable="true"` to the AndroidManifest file.
+
+Even if we haven't altered the source code, this modification also breaks the APK signature, so you'll also have to re-sign the altered APK archive.
+
+##### Repackaging
+
+You can easily repackage an app by doing the following:
+
+```shell
+$ cd UnCrackable-Level1
+$ apktool b
+$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+```
+
+Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
+
+##### Re-Signing
+
+Before re-signing, you first need a code-signing certificate. If you have built a project in Android Studio before, the IDE has already created a debug keystore and certificate in `$HOME/.android/debug.keystore`. The default password for this KeyStore is "android" and the key is called "androiddebugkey".
+
+The standard Java distribution includes `keytool` for managing KeyStores and certificates. You can create your own signing certificate and key, then add it to the debug KeyStore:
+
+```shell
+$ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
+```
+
+After the certificate is available, you can re-sign the APK with it. Be sure that `apksigner` is in the path and that you run it from the folder where your repackaged APK is located.
+
+```shell
+$ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
+```
+
+Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` must be called **after** signing.
+
+```shell
+$ jarsigner -verbose -keystore ~/.android/debug.keystore ../UnCrackable-Repackaged.apk signkey
+$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+```
+
+Now you may reinstall the app:
+
+```shell
+$ adb install UnCrackable-Repackaged.apk
+```
+
+##### The “Wait For Debugger” Feature
+
+The UnCrackable App is not stupid: it notices that it has been run in debuggable mode and reacts by shutting down. A modal dialog is shown immediately, and the crackme terminates once you tap "OK".
+
+Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
+
+<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300">
+
+In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
+
+<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
+
+Note: Even with `ro.debuggable` set to 1 in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `true` in the Manifest.
+
 ##### Patching React Native applications
 
 If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
@@ -1024,87 +1099,16 @@ The following approach can be used in order to patch the JavaScript file:
 5. Put the *patched code* on a single line and copy it in the original `assets/index.android.bundle` file.
 6. Repack the APK archive using `APKTool` tool and sign it before to install it on the target device/emulator.
 
-#### Patching
-##### Patching Release Apps
-##### Patching Native Libraries
-#### Re-Packaging
-
-Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
-
-When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0," Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool— being able to inspect the run time state of a program makes understanding the program *a lot* easier.
-
-To "convert" a release build into a debuggable build, you need to modify a flag in the app's manifest file. This modification breaks the code signature, so you'll also have to re-sign the altered APK archive.
-
-To re-sign, you first need a code-signing certificate. If you have built a project in Android Studio before, the IDE has already created a debug keystore and certificate in `$HOME/.android/debug.keystore`. The default password for this KeyStore is "android," and the key is called "androiddebugkey."
-
-The standard Java distribution includes `keytool` for managing KeyStores and certificates. You can create your own signing certificate and key, then add it to the debug KeyStore:
-
-```shell
-$ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
-```
-
-After the certificate is available, you can repackage the UnCrackable-Level1.apk according to the following steps. Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
-
-**Step 1:** Use `apktool` to unpack the app and decode AndroidManifest.xml
-
-```shell
-$ apktool d --no-src UnCrackable-Level1.apk
-```
-
-**Step 2:** Add android:debuggable = "true" to the manifest using a text editor
-
-```xml
-<application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
-```
-
-Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `debuggable="true"` to the AndroidManifest file.
-
-**Step 3:** Repackage and sign the APK
-
-```shell
-$ cd UnCrackable-Level1
-$ apktool b
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
-$ cd ..
-$ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
-```
-
-Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` is called *after* signing.
-
-```shell
-$ jarsigner -verbose -keystore ~/.android/debug.keystore UnCrackable-Repackaged.apk signkey
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
-```
-
-**Step 4:** Reinstall the app
-
-```shell
-$ adb install UnCrackable-Repackaged.apk
-```
-
-##### The “Wait For Debugger” Feature
-
-The UnCrackable App is not stupid: it notices that it has been run in debuggable mode and reacts by shutting down. A modal dialog is shown immediately, and the crackme terminates once you tap "OK."
-
-Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
-
-<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300">
-
-In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
-
-<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
-
-Note: Even with `ro.debuggable` set to 1 in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `true` in the Manifest.
-
 ##### Library Injection
-#### Re-Signing
 
 #### Dynamic Instrumentation
+
 ##### Tooling (Xposed (Android only), Frida)
 ##### Information Gathering
 ###### Getting Loaded Libraries
 ###### Getting Loaded Classes and their Methods
 ###### Getting Runtime Dependencies
+
 ##### Method Hooking
 
 ###### Hooking Java Methods with Xposed
