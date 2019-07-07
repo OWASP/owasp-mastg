@@ -256,14 +256,6 @@ $ frida-ps -U
 
 The -U option lets Frida search for USB devices or emulators.
 
-To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
-
-```shell
-$ frida-trace -i "open" -U com.android.chrome
-```
-
-This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
-
 Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
 ```shell
