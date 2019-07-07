@@ -637,42 +637,9 @@ Remote debugging using :1234
 0xb6de83b8 in ?? ()
 ```
 
-Execute the `resume` command in JDB to resume execution of the Java runtime (you're done with JDB, so you can detach it too). You can start exploring the process with GDB. The `info sharedlibrary` command displays the loaded libraries, which should include libnative-lib.so. The `info functions` command retrieves a list of all known functions. The JNI function `java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` should be listed as a non-debugging symbol. Set a breakpoint at the address of that function and resume the process.
+#### Dynamic Analysis on Non-Rooted/Non-Jailbroken Devices
 
-```shell
-(gdb) info sharedlibrary
-(...)
-0xa3522e3c  0xa3523c90  Yes (*)     libnative-lib.so
-(gdb) info functions
-All defined functions:
-
-Non-debugging symbols:
-0x00000e78  Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
-(...)
-0xa3522e78  Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
-(...)
-(gdb) b *0xa3522e78
-Breakpoint 1 at 0xa3522e78
-(gdb) cont
-```
-
-Your breakpoint should be reached when the first instruction of the JNI function is executed. You can now display a disassembled version of the function with the `disassemble` command.
-
-```shell
-Breakpoint 1, 0xa3522e78 in Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI() from libnative-lib.so
-(gdb) disass $pc
-Dump of assembler code for function Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI:
-=> 0xa3522e78 <+0>: ldr r2, [r0, #0]
-   0xa3522e7a <+2>: ldr r1, [pc, #8]  ; (0xa3522e84 <Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI+12>)
-   0xa3522e7c <+4>: ldr.w r2, [r2, #668]  ; 0x29c
-   0xa3522e80 <+8>: add r1, pc
-   0xa3522e82 <+10>:  bx  r2
-   0xa3522e84 <+12>:  lsrs  r4, r7, #28
-   0xa3522e86 <+14>:  movs  r0, r0
-End of assembler dump.
-```
-
-From here on, you can single-step through the program, print the contents of registers and memory, or tamper with them to explore the JNI function (which, in this case, simply returns a string). Use the `help` command to get more information on debugging, running, and examining data.
+#### Tracing
 
 ##### Execution Tracing
 
