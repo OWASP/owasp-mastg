@@ -1382,20 +1382,6 @@ In the remaining sections, we'll introduce a few advanced subjects, including ke
 ###### Memory Dump
 ###### Runtime Reverse Engineering
 
-
-### OS-specific customization (Android only)
-#### Customizing the RAMDisk
-#### Customizing the Android Kernel
-#### Booting the Custom Environment
-#### System Call Hooking with Kernel Modules
-
-
-
-
-
-
-
-
 ### Customizing Android for Reverse Engineering
 
 Working on real devices has advantages, especially for interactive, debugger-supported static/dynamic analysis. For example, working on a real device is simply faster. Also, Running the target app on a real device is less likely to trigger defenses. Instrumenting the live environment at strategic points gives you useful tracing functionality and the ability to manipulate the environment, which will help you bypass any anti-tampering defenses the app might implement.
