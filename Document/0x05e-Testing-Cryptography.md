@@ -293,11 +293,71 @@ When defining the KeyDescription AuthorizationList, the following parameters wil
 
 #### Key Attestation
 
-For the applications which heavily rely on Android Keystore for business-critical operations such as multi-factor authentication through cryptographic primitives, secure storage of sensitive data at the client side, etc. Android provides the feature of [Key Attestation](https://developer.android.com/training/articles/security-key-attestation "Key Attestation") which helps to analyze the security of cryptographic material managed through Android Keystore. From Android 8.0, the key attestation was made mandatory for all new(Android 7.0 or higher) devices that need to have device certification for Google suite of apps, such devices use attestation keys signed by the [Google hardware attestation root certificate](https://developer.android.com/training/articles/security-key-attestation#root_certificate "Google Hardware Attestation Root Certificate") and the same can be verified while key attestation process.
+For the applications which heavily rely on Android Keystore for business-critical operations such as multi-factor authentication through cryptographic primitives, secure storage of sensitive data at the client-side, etc. Android provides the feature of [Key Attestation](https://developer.android.com/training/articles/security-key-attestation "Key Attestation") which helps to analyze the security of cryptographic material managed through Android Keystore. From Android 8.0, the key attestation was made mandatory for all new(Android 7.0 or higher) devices that need to have device certification for Google suite of apps, such devices use attestation keys signed by the [Google hardware attestation root certificate](https://developer.android.com/training/articles/security-key-attestation#root_certificate "Google Hardware Attestation Root Certificate") and the same can be verified while key attestation process.
 
-During key attestation, we can specify the alias of a key pair and in return, get a certificate chain, which we can use to verify the properties of that key pair. If the root certificate of the chain is signed using an attestation root key it implies that the device supports hardware-level key attestation and the key is in hardware-backed keystore that Google believes to be secure. Alternatively, if the attestation chain has any other root certificate, then Google does not make any claims about the security of the hardware. 
+During key attestation, we can specify the alias of a key pair and in return, get a certificate chain, which we can use to verify the properties of that key pair. If the root certificate of the chain is [Google Hardware Attestation Root certificate]("https://developer.android.com/training/articles/security-key-attestation#root_certificate" "Google Hardware Attestation Root certificate") and the checks related to key pair storage in hardware are made it gives an assurance that the device supports hardware-level key attestation and the key is in hardware-backed keystore that Google believes to be secure. Alternatively, if the attestation chain has any other root certificate, then Google does not make any claims about the security of the hardware.
 
-Note: Although the key attestation process can be implemented within the application directly, however, Google recommends to check the certificates' revocation lists on a separate trusted server for security reasons. For implementation guidelines, Verifying hardware-backed key pairs with Key Attestation guidelines be referred.
+
+Although the key attestation process can be implemented within the application directly but it is recommended that it should be implemented at the server-side for security reasons. The following are the high-level guidelines for the secure implementation of Key Attestation:
+
+- The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge. 
+
+- The client should call the _setAttestationChallenge()_ API with the challenge received from the server and should then retrieve the attestation certificate chain using the _KeyStore.getCertificateChain()_ method.
+
+- The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
+
+    - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness.
+
+    - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
+
+    - Extract the attestation certificate extension data, which appears within the first element of the certificate chain and perform the following checks:
+
+            - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
+
+            - Verify the signature in the key attestation response.
+
+            - Now check the Keymaster(Keymaster is a software that runs in the security context and provides all the secure keystore operations) security level which will be one of Software, TrustedEnvironment or StrongBox to determine if the device has secure key storage mechanism.
+
+            - Additionally, you can check the attestation security level which will be one of Software, TrustedEnvironment or StrongBox to check how the attestation certificate was generated. Also, some other checks pertaining to keys can be made such as purpose, access time, authentication requirement, etc. to verify the key attributes.
+
+The typical example of Android Keystore attestation looks like this:
+
+```json
+{
+    "fmt": "android-key",
+    "authData": "9569088f1ecee3232954035dbd10d7cae391305a2751b559bb8fd7cbb229bdd4450000000028f37d2b92b841c4b02a860cef7cc034004101552f0265f6e35bcc29877b64176690d59a61c3588684990898c544699139be88e32810515987ea4f4833071b646780438bf858c36984e46e7708dee61eedcbd0a50102032620012158203849a20fde26c34b0088391a5827783dff93880b1654088aadfaf57a259549a1225820743c4b5245cf2685cf91054367cd4fafb9484e70593651011fc0dcce7621c68f",
+    "attStmt": {
+        "alg": -7,
+        "sig": "304402202ca7a8cfb6299c4a073e7e022c57082a46c657e9e53b28a6e454659ad024499602201f9cae7ff95a3f2372e0f952e9ef191e3b39ee2cedc46893a8eec6f75b1d9560",
+        "x5c": [
+            "308202ca30820270a003020102020101300a06082a8648ce3d040302308188310b30090603550406130255533113301106035504080c0a43616c69666f726e696131153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f6964313b303906035504030c32416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20496e7465726d656469617465301e170d3138313230323039313032355a170d3238313230323039313032355a301f311d301b06035504030c14416e64726f6964204b657973746f7265204b65793059301306072a8648ce3d020106082a8648ce3d030107034200043849a20fde26c34b0088391a5827783dff93880b1654088aadfaf57a259549a1743c4b5245cf2685cf91054367cd4fafb9484e70593651011fc0dcce7621c68fa38201313082012d300b0603551d0f0404030207803081fc060a2b06010401d6790201110481ed3081ea0201020a01000201010a010104202a4382d7bbd89d8b5bdf1772cfecca14392487b9fd571f2eb72bdf97de06d4b60400308182bf831008020601676e2ee170bf831108020601b0ea8dad70bf831208020601b0ea8dad70bf853d08020601676e2edfe8bf85454e044c304a31243022041d636f6d2e676f6f676c652e6174746573746174696f6e6578616d706c65020101312204205ad05ec221c8f83a226127dec557500c3e574bc60125a9dc21cb0be4a00660953033a1053103020102a203020103a30402020100a5053103020104aa03020101bf837803020117bf83790302011ebf853e03020100301f0603551d230418301680143ffcacd61ab13a9e8120b8d5251cc565bb1e91a9300a06082a8648ce3d0403020348003045022067773908938055fd634ee413eaafc21d8ac7a9441bdf97af63914f9b3b00affe022100b9c0c89458c2528e2b25fa88c4d63ddc75e1bc80fb94dcc6228952d04f812418",
+            "308202783082021ea00302010202021001300a06082a8648ce3d040302308198310b30090603550406130255533113301106035504080c0a43616c69666f726e69613116301406035504070c0d4d6f756e7461696e205669657731153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f69643133303106035504030c2a416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20526f6f74301e170d3136303131313030343630395a170d3236303130383030343630395a308188310b30090603550406130255533113301106035504080c0a43616c69666f726e696131153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f6964313b303906035504030c32416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20496e7465726d6564696174653059301306072a8648ce3d020106082a8648ce3d03010703420004eb9e79f8426359accb2a914c8986cc70ad90669382a9732613feaccbf821274c2174974a2afea5b94d7f66d4e065106635bc53b7a0a3a671583edb3e11ae1014a3663064301d0603551d0e041604143ffcacd61ab13a9e8120b8d5251cc565bb1e91a9301f0603551d23041830168014c8ade9774c45c3a3cf0d1610e479433a215a30cf30120603551d130101ff040830060101ff020100300e0603551d0f0101ff040403020284300a06082a8648ce3d040302034800304502204b8a9b7bee82bcc03387ae2fc08998b4ddc38dab272a459f690cc7c392d40f8e022100eeda015db6f432e9d4843b624c9404ef3a7cccbd5efb22bbe7feb9773f593ffb",
+            "3082028b30820232a003020102020900a2059ed10e435b57300a06082a8648ce3d040302308198310b30090603550406130255533113301106035504080c0a43616c69666f726e69613116301406035504070c0d4d6f756e7461696e205669657731153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f69643133303106035504030c2a416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20526f6f74301e170d3136303131313030343335305a170d3336303130363030343335305a308198310b30090603550406130255533113301106035504080c0a43616c69666f726e69613116301406035504070c0d4d6f756e7461696e205669657731153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f69643133303106035504030c2a416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20526f6f743059301306072a8648ce3d020106082a8648ce3d03010703420004ee5d5ec7e1c0db6d03a67ee6b61bec4d6a5d6a682e0fff7f490e7d771f44226dbdb1affa16cbc7adc577d2569caab7b02d54015d3e432b2a8ed74eec487541a4a3633061301d0603551d0e04160414c8ade9774c45c3a3cf0d1610e479433a215a30cf301f0603551d23041830168014c8ade9774c45c3a3cf0d1610e479433a215a30cf300f0603551d130101ff040530030101ff300e0603551d0f0101ff040403020284300a06082a8648ce3d040302034700304402203521a3ef8b34461e9cd560f31d5889206adca36541f60d9ece8a198c6648607b02204d0bf351d9307c7d5bda35341da8471b63a585653cad4f24a7e74daf417df1bf"
+        ]
+    }
+}
+```
+
+In the above JSON snippet, the keys have the following meaning:
+        _fmt_: Attestation statement format identifier
+        _authData_: It denotes the authenticator data for the attestation
+        _alg_: The algorithm that is used for the Signature
+        _sig_: Signature
+        _x5c_: Attestation certificate chain
+
+Note: The _sig_ is generated by concatenating _authData_ and _clientDataHash_(challenge sent by the server) and signing through the credential private key using the alg signing algorithm and the same is verified at the server-side by using the public key in the first certificate
+
+For more understanding on the implementation guidelines, [Google Samples] ("https://github.com/googlesamples/android-key-attestation/blob/master/server/src/main/java/com/android/example/KeyAttestationExample.java", "Google Sample Code For Android Key Attestation") can be referred.
+
+For the security analysis perspective the analysts may perform the following checks for the secure implementation of Key Attestation:
+
+    - Check if the key attestation is totally implemented at the client-side. In such scenario, the same can be easily bypassed by tampering the application, method hooking, etc.
+
+    - Check if the server uses challenge while initiating the key attestation. As failing to do that would lead to insecure implementation thus making it vulnerable to replay attacks. Also, checks pertaining to the randomness of the challenge should be performed.
+
+    - Check if the server verifies the integrity of key attestation response
+
+    - Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
 
 #### decryption only on unlocked devices
 
@@ -387,7 +447,16 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - KeyInfo documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
 - Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
 - Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
-- Key Attestation - <https://developer.android.com/training/articles/security-key-attestation>
+
+#### Key Attestation References
+- Android Key Attestation - <https://developer.android.com/training/articles/security-key-attestation>
+- W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
+- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d> 
+- Attestation and Assertion - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API/Attestation_and_Assertion>
+- Google Sample Codes - <https://github.com/googlesamples/android-key-attestation/tree/master/server>
+- FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
+- FIDO Alliance TechNotes - <https://fidoalliance.org/fido-technotes-the-truth-about-attestation/>
+
 
 ##### OWASP Mobile Top 10 2016
 
