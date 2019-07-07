@@ -22,7 +22,7 @@ Make sure that the following is installed on your system:
 
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. See more details about the installation below.
 
-In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon](https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](http://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
+In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon](https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](https://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
 Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
 
@@ -117,7 +117,7 @@ Archive:  UnCrackable-Level1.apk
 
 In the standard setup, all the Java bytecode and app data is in the file `classes.dex` in the app root directory. This file conforms to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers take plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. You can do this with `dex2jar` or `enjarify`.
 
-Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the CFR decompiler. CFR is under active development, and brand-new releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
+Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the [CFR decompiler](https://www.benf.org/other/cfr/ "CFR decompiler"). CFR is under active development, and brand-new releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
 
 The easiest way to run CFR is through `apkx`, which also packages `dex2jar` and automates extraction, conversion, and decompilation. Install it:
 
@@ -1782,13 +1782,13 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - Angr - <https://angr.io/>
 - APKTool - <https://ibotpeaches.github.io/Apktool/>
 - apkx - <https://github.com/b-mueller/apkx>
-- CFR - <http://www.benf.org/other/cfr/>
+- CFR Decompiler - <https://www.benf.org/other/cfr/>
 - IDA Pro - <https://www.hex-rays.com/products/ida/>
-- JAD - <http://www.javadecompilers.com/jad>
-- JD - <http://jd.benow.ca/>
+- JAD Decompiler - <http://www.javadecompilers.com/jad>
+- JD (Java Decompiler) - <http://jd.benow.ca/>
 - JEB Decompiler - <https://www.pnfsoftware.com>
 - OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
-- Procyon - <https://bitbucket.org/mstrobel/procyon/overview>
+- Procyon Decompiler - <https://bitbucket.org/mstrobel/procyon/overview>
 - Radare2 - <https://www.radare.org>
 - smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smali/wiki/smalidea>
 - VxStripper - <http://vxstripper.pagesperso-orange.fr>
