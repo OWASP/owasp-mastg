@@ -457,7 +457,6 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
 - FIDO Alliance TechNotes - <https://fidoalliance.org/fido-technotes-the-truth-about-attestation/>
 
-
 ##### OWASP Mobile Top 10 2016
 
 - M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
