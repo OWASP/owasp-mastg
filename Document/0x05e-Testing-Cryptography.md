@@ -300,25 +300,25 @@ During key attestation, we can specify the alias of a key pair and in return, ge
 
 Although the key attestation process can be implemented within the application directly but it is recommended that it should be implemented at the server-side for security reasons. The following are the high-level guidelines for the secure implementation of Key Attestation:
 
-- The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge. 
+* The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge. 
 
-- The client should call the _setAttestationChallenge()_ API with the challenge received from the server and should then retrieve the attestation certificate chain using the _KeyStore.getCertificateChain()_ method.
+* The client should call the _setAttestationChallenge()_ API with the challenge received from the server and should then retrieve the attestation certificate chain using the _KeyStore.getCertificateChain()_ method.
 
-- The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
+* The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
 
-    - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness.
+  * Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness.
 
-    - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
+  * Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
 
-    - Extract the attestation certificate extension data, which appears within the first element of the certificate chain and perform the following checks:
+  * Extract the attestation certificate extension data, which appears within the first element of the certificate chain and perform the following checks:
 
-            - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
+    * Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
 
-            - Verify the signature in the key attestation response.
+    * Verify the signature in the key attestation response.
 
-            - Now check the Keymaster(Keymaster is a software that runs in the security context and provides all the secure keystore operations) security level which will be one of Software, TrustedEnvironment or StrongBox to determine if the device has secure key storage mechanism.
+    * Now check the Keymaster(Keymaster is a software that runs in the security context and provides all the secure keystore operations) security level which will be one of Software, TrustedEnvironment or StrongBox to determine if the device has secure key storage mechanism.
 
-            - Additionally, you can check the attestation security level which will be one of Software, TrustedEnvironment or StrongBox to check how the attestation certificate was generated. Also, some other checks pertaining to keys can be made such as purpose, access time, authentication requirement, etc. to verify the key attributes.
+    * Additionally, you can check the attestation security level which will be one of Software, TrustedEnvironment or StrongBox to check how the attestation certificate was generated. Also, some other checks pertaining to keys can be made such as purpose, access time, authentication requirement, etc. to verify the key attributes.
 
 The typical example of Android Keystore attestation looks like this:
 
@@ -351,13 +351,13 @@ For more understanding on the implementation guidelines, [Google Samples] ("http
 
 For the security analysis perspective the analysts may perform the following checks for the secure implementation of Key Attestation:
 
-    - Check if the key attestation is totally implemented at the client-side. In such scenario, the same can be easily bypassed by tampering the application, method hooking, etc.
+* Check if the key attestation is totally implemented at the client-side. In such scenario, the same can be easily bypassed by tampering the application, method hooking, etc.
 
-    - Check if the server uses challenge while initiating the key attestation. As failing to do that would lead to insecure implementation thus making it vulnerable to replay attacks. Also, checks pertaining to the randomness of the challenge should be performed.
+* Check if the server uses challenge while initiating the key attestation. As failing to do that would lead to insecure implementation thus making it vulnerable to replay attacks. Also, checks pertaining to the randomness of the challenge should be performed.
 
-    - Check if the server verifies the integrity of key attestation response
+* Check if the server verifies the integrity of key attestation response
 
-    - Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
+* Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
 
 #### decryption only on unlocked devices
 
