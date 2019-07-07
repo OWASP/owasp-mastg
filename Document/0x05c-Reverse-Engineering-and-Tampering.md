@@ -849,9 +849,205 @@ $ ./configure --target-list=arm-softmmu --enable-android $ makee
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
 
-##### VxStripper
+###### VxStripper
 
 Another very useful tool built on QEMU is [VxStripper by Sébastien Josse](http://vxstripper.pagesperso-orange.fr "VxStripper"). VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation and recompiles the simplified binary with LLVM. This is a very powerful way of normalizing obfuscated programs. See [Sébastien's paper](http://ieeexplore.ieee.org/document/6759227/ "Dynamic Malware Recompilation") for more information.
+
+#### Binary Analysis
+
+Binary analysis frameworks give you powerful ways to automate tasks that would be almost impossible to do manually. Binary analysis frameworks typically use a technique called symbolic execution, which allow to determine the conditions necessary to reach a specific target. It translates the program's semantics into a logical formula in which some variables are represented by symbols with specific constraints. By resolving the constraints, you can find the conditions necessary for the execution of some branch of the program.
+
+##### Symbolic Execution
+
+Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. Refer to the "Android Basic Security Testing" chapter for installation instructions and basics.
+
+The target crackme is a simple license key validation Android app. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
+
+The crackme takes the form of a native ELF binary that you can download here:
+
+[https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
+
+Running the executable on any Android device should give you the following output:
+
+```shell
+$ adb push validate /data/local/tmp
+[100%] /data/local/tmp/validate
+$ adb shell chmod 755 /data/local/tmp/validate
+$ adb shell /data/local/tmp/validate
+Usage: ./validate <serial>
+$ adb shell /data/local/tmp/validate 12345
+Incorrect serial (wrong format).
+```
+
+So far so good, but you know nothing about what a valid license key looks like. Where do we start? Fire up IDA Pro to get a good look at what is happening.
+
+![Disassembly of function main.](Images/Chapters/0x05c/license-check-1.jpg)
+
+The main function is located at address 0x1874 in the disassembly (note that this is a PIE-enabled binary, and IDA Pro chooses 0x0 as the image base address). Function names have been stripped, but you can see some references to debugging strings. The input string appears  to be Base32-decoded (call to sub_1340). At the beginning of `main`, there's a length check at loc_1898. It makes sure that the length of the input string is exactly 16 characters. So you're looking for a Base32-encoded 16-character string! The decoded input is then passed to the function sub_1760, which validates the license key.
+
+The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x1760:
+
+```assembly_x86
+.text:00001760 ; =============== S U B R O U T I N E =======================================
+.text:00001760
+.text:00001760 ; Attributes: bp-based frame
+.text:00001760
+.text:00001760 sub_1760                                ; CODE XREF: sub_1874+B0
+.text:00001760
+.text:00001760 var_20          = -0x20
+.text:00001760 var_1C          = -0x1C
+.text:00001760 var_1B          = -0x1B
+.text:00001760 var_1A          = -0x1A
+.text:00001760 var_19          = -0x19
+.text:00001760 var_18          = -0x18
+.text:00001760 var_14          = -0x14
+.text:00001760 var_10          = -0x10
+.text:00001760 var_C           = -0xC
+.text:00001760
+.text:00001760                 STMFD   SP!, {R4,R11,LR}
+.text:00001764                 ADD     R11, SP, #8
+.text:00001768                 SUB     SP, SP, #0x1C
+.text:0000176C                 STR     R0, [R11,#var_20]
+.text:00001770                 LDR     R3, [R11,#var_20]
+.text:00001774                 STR     R3, [R11,#var_10]
+.text:00001778                 MOV     R3, #0
+.text:0000177C                 STR     R3, [R11,#var_14]
+.text:00001780                 B       loc_17D0
+.text:00001784 ; ---------------------------------------------------------------------------
+.text:00001784
+.text:00001784 loc_1784                                ; CODE XREF: sub_1760+78
+.text:00001784                 LDR     R3, [R11,#var_10]
+.text:00001788                 LDRB    R2, [R3]
+.text:0000178C                 LDR     R3, [R11,#var_10]
+.text:00001790                 ADD     R3, R3, #1
+.text:00001794                 LDRB    R3, [R3]
+.text:00001798                 EOR     R3, R2, R3
+.text:0000179C                 AND     R2, R3, #0xFF
+.text:000017A0                 MOV     R3, #0xFFFFFFF0
+.text:000017A4                 LDR     R1, [R11,#var_14]
+.text:000017A8                 SUB     R0, R11, #-var_C
+.text:000017AC                 ADD     R1, R0, R1
+.text:000017B0                 ADD     R3, R1, R3
+.text:000017B4                 STRB    R2, [R3]
+.text:000017B8                 LDR     R3, [R11,#var_10]
+.text:000017BC                 ADD     R3, R3, #2
+.text:000017C0                 STR     R3, [R11,#var_10]
+.text:000017C4                 LDR     R3, [R11,#var_14]
+.text:000017C8                 ADD     R3, R3, #1
+.text:000017CC                 STR     R3, [R11,#var_14]
+.text:000017D0
+.text:000017D0 loc_17D0                                ; CODE XREF: sub_1760+20
+.text:000017D0                 LDR     R3, [R11,#var_14]
+.text:000017D4                 CMP     R3, #4
+.text:000017D8                 BLE     loc_1784
+.text:000017DC                 LDRB    R4, [R11,#var_1C]
+.text:000017E0                 BL      sub_16F0
+.text:000017E4                 MOV     R3, R0
+.text:000017E8                 CMP     R4, R3
+.text:000017EC                 BNE     loc_1854
+.text:000017F0                 LDRB    R4, [R11,#var_1B]
+.text:000017F4                 BL      sub_170C
+.text:000017F8                 MOV     R3, R0
+.text:000017FC                 CMP     R4, R3
+.text:00001800                 BNE     loc_1854
+.text:00001804                 LDRB    R4, [R11,#var_1A]
+.text:00001808                 BL      sub_16F0
+.text:0000180C                 MOV     R3, R0
+.text:00001810                 CMP     R4, R3
+.text:00001814                 BNE     loc_1854
+.text:00001818                 LDRB    R4, [R11,#var_19]
+.text:0000181C                 BL      sub_1728
+.text:00001820                 MOV     R3, R0
+.text:00001824                 CMP     R4, R3
+.text:00001828                 BNE     loc_1854
+.text:0000182C                 LDRB    R4, [R11,#var_18]
+.text:00001830                 BL      sub_1744
+.text:00001834                 MOV     R3, R0
+.text:00001838                 CMP     R4, R3
+.text:0000183C                 BNE     loc_1854
+.text:00001840                 LDR     R3, =(aProductActivat - 0x184C)
+.text:00001844                 ADD     R3, PC, R3      ; "Product activation passed. Congratulati"...
+.text:00001848                 MOV     R0, R3          ; char *
+.text:0000184C                 BL      puts
+.text:00001850                 B       loc_1864
+.text:00001854 ; ---------------------------------------------------------------------------
+.text:00001854
+.text:00001854 loc_1854                                ; CODE XREF: sub_1760+8C
+.text:00001854                                         ; sub_1760+A0 ...
+.text:00001854                 LDR     R3, =(aIncorrectSer_0 - 0x1860)
+.text:00001858                 ADD     R3, PC, R3      ; "Incorrect serial."
+.text:0000185C                 MOV     R0, R3          ; char *
+.text:00001860                 BL      puts
+.text:00001864
+.text:00001864 loc_1864                                ; CODE XREF: sub_1760+F0
+.text:00001864                 SUB     SP, R11, #8
+.text:00001868                 LDMFD   SP!, {R4,R11,PC}
+.text:00001868 ; End of function sub_1760
+```
+
+You can see a loop with some XOR-magic happening at loc_1784, which supposedly decodes the input string. Starting from loc_17DC, you can see a series of decoded values compared with values from further subfunction calls. Even though this doesn't look like highly sophisticated stuff, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x1760) and the code that prints the "Product activation passed" message (0x1840) to determine the constraints on each byte of the input string. The solver engine then finds an input that satisfies those constraints: the valid license key.
+
+You need to provide several inputs to the symbolic execution engine:
+
+- An address from which execution will start. Initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
+
+- The address of the code block you want execution to reach. You need to find a path to the code responsible for printing the "Product activation passed" message. This code block starts at 0x1840.
+
+- Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x1854).
+
+Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is
+
+```python
+#!/usr/bin/python
+
+# This is how we defeat the Android license check using Angr!
+# The binary is available for download on GitHub:
+# https://github.com/b-mueller/obfuscation-metrics/tree/master/crackmes/android/01_license_check_1
+# Written by Bernhard -- bernhard [dot] mueller [at] owasp [dot] org
+
+import angr
+import claripy
+import base64
+
+load_options = {}
+
+# Android NDK library path:
+load_options['custom_ld_path'] = ['/Users/berndt/Tools/android-ndk-r10e/platforms/android-21/arch-arm/usr/lib']
+
+b = angr.Project("./validate", load_options = load_options)
+
+# The key validation function starts at 0x401760, so that's where we create the initial state.
+# This speeds things up a lot because we're bypassing the Base32-encoder.
+
+state = b.factory.blank_state(addr=0x401760)
+
+initial_path = b.factory.path(state)
+path_group = b.factory.path_group(state)
+
+# 0x401840 = Product activation passed
+# 0x401854 = Incorrect serial
+
+path_group.explore(find=0x401840, avoid=0x401854)
+found = path_group.found[0]
+
+# Get the solution string from *(R11 - 0x24).
+
+addr = found.state.memory.load(found.state.regs.r11 - 0x24, endness='Iend_LE')
+concrete_addr = found.state.se.any_int(addr)
+solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
+
+print base64.b32encode(solution)
+```
+
+Note the last part of the program, where the final input string is retrieved—it appears as if you were simply reading the solution from memory. You are, however, reading from symbolic memory—neither the string nor the pointer to it actually exist! Actually, the solver is computing concrete values that you could find  in that program state if you observed the actual program run up to that point.
+
+Running this script should return the following:
+
+```shell
+(angr) $ python solve.py
+WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
+JQAE6ACMABNAAIIA
+```
 
 ### Tampering and Runtime Instrumentation
 
@@ -1186,199 +1382,25 @@ You've now covered the basics of static/dynamic analysis on Android. Of course, 
 
 In the remaining sections, we'll introduce a few advanced subjects, including kernel modules and dynamic execution.
 
-### Binary Analysis Frameworks
+##### Process Exploration (r2frida)
+###### Memory Maps and Inspection
+###### In-Memory Search
+###### Memory Dump
+###### Runtime Reverse Engineering
 
-Binary analysis frameworks give you powerful ways to automate tasks that would be almost impossible to do manually. Binary analysis frameworks typically use a technique called symbolic execution, which allow to determine the conditions necessary to reach a specific target. It translates the program's semantics into a logical formula in which some variables are represented by symbols with specific constraints. By resolving the constraints, you can find the conditions necessary for the execution of some branch of the program.
 
-Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. Refer to the "Android Basic Security Testing" chapter for installation instructions and basics.
+### OS-specific customization (Android only)
+#### Customizing the RAMDisk
+#### Customizing the Android Kernel
+#### Booting the Custom Environment
+#### System Call Hooking with Kernel Modules
 
-The target crackme is a simple license key validation Android app. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
-The crackme takes the form of a native ELF binary that you can download here:
 
-[https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
 
-Running the executable on any Android device should give you the following output:
 
-```shell
-$ adb push validate /data/local/tmp
-[100%] /data/local/tmp/validate
-$ adb shell chmod 755 /data/local/tmp/validate
-$ adb shell /data/local/tmp/validate
-Usage: ./validate <serial>
-$ adb shell /data/local/tmp/validate 12345
-Incorrect serial (wrong format).
-```
 
-So far so good, but you know nothing about what a valid license key looks like. Where do we start? Fire up IDA Pro to get a good look at what is happening.
 
-![Disassembly of function main.](Images/Chapters/0x05c/license-check-1.jpg)
-
-The main function is located at address 0x1874 in the disassembly (note that this is a PIE-enabled binary, and IDA Pro chooses 0x0 as the image base address). Function names have been stripped, but you can see some references to debugging strings. The input string appears  to be Base32-decoded (call to sub_1340). At the beginning of `main`, there's a length check at loc_1898. It makes sure that the length of the input string is exactly 16 characters. So you're looking for a Base32-encoded 16-character string! The decoded input is then passed to the function sub_1760, which validates the license key.
-
-The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x1760:
-
-```assembly_x86
-.text:00001760 ; =============== S U B R O U T I N E =======================================
-.text:00001760
-.text:00001760 ; Attributes: bp-based frame
-.text:00001760
-.text:00001760 sub_1760                                ; CODE XREF: sub_1874+B0
-.text:00001760
-.text:00001760 var_20          = -0x20
-.text:00001760 var_1C          = -0x1C
-.text:00001760 var_1B          = -0x1B
-.text:00001760 var_1A          = -0x1A
-.text:00001760 var_19          = -0x19
-.text:00001760 var_18          = -0x18
-.text:00001760 var_14          = -0x14
-.text:00001760 var_10          = -0x10
-.text:00001760 var_C           = -0xC
-.text:00001760
-.text:00001760                 STMFD   SP!, {R4,R11,LR}
-.text:00001764                 ADD     R11, SP, #8
-.text:00001768                 SUB     SP, SP, #0x1C
-.text:0000176C                 STR     R0, [R11,#var_20]
-.text:00001770                 LDR     R3, [R11,#var_20]
-.text:00001774                 STR     R3, [R11,#var_10]
-.text:00001778                 MOV     R3, #0
-.text:0000177C                 STR     R3, [R11,#var_14]
-.text:00001780                 B       loc_17D0
-.text:00001784 ; ---------------------------------------------------------------------------
-.text:00001784
-.text:00001784 loc_1784                                ; CODE XREF: sub_1760+78
-.text:00001784                 LDR     R3, [R11,#var_10]
-.text:00001788                 LDRB    R2, [R3]
-.text:0000178C                 LDR     R3, [R11,#var_10]
-.text:00001790                 ADD     R3, R3, #1
-.text:00001794                 LDRB    R3, [R3]
-.text:00001798                 EOR     R3, R2, R3
-.text:0000179C                 AND     R2, R3, #0xFF
-.text:000017A0                 MOV     R3, #0xFFFFFFF0
-.text:000017A4                 LDR     R1, [R11,#var_14]
-.text:000017A8                 SUB     R0, R11, #-var_C
-.text:000017AC                 ADD     R1, R0, R1
-.text:000017B0                 ADD     R3, R1, R3
-.text:000017B4                 STRB    R2, [R3]
-.text:000017B8                 LDR     R3, [R11,#var_10]
-.text:000017BC                 ADD     R3, R3, #2
-.text:000017C0                 STR     R3, [R11,#var_10]
-.text:000017C4                 LDR     R3, [R11,#var_14]
-.text:000017C8                 ADD     R3, R3, #1
-.text:000017CC                 STR     R3, [R11,#var_14]
-.text:000017D0
-.text:000017D0 loc_17D0                                ; CODE XREF: sub_1760+20
-.text:000017D0                 LDR     R3, [R11,#var_14]
-.text:000017D4                 CMP     R3, #4
-.text:000017D8                 BLE     loc_1784
-.text:000017DC                 LDRB    R4, [R11,#var_1C]
-.text:000017E0                 BL      sub_16F0
-.text:000017E4                 MOV     R3, R0
-.text:000017E8                 CMP     R4, R3
-.text:000017EC                 BNE     loc_1854
-.text:000017F0                 LDRB    R4, [R11,#var_1B]
-.text:000017F4                 BL      sub_170C
-.text:000017F8                 MOV     R3, R0
-.text:000017FC                 CMP     R4, R3
-.text:00001800                 BNE     loc_1854
-.text:00001804                 LDRB    R4, [R11,#var_1A]
-.text:00001808                 BL      sub_16F0
-.text:0000180C                 MOV     R3, R0
-.text:00001810                 CMP     R4, R3
-.text:00001814                 BNE     loc_1854
-.text:00001818                 LDRB    R4, [R11,#var_19]
-.text:0000181C                 BL      sub_1728
-.text:00001820                 MOV     R3, R0
-.text:00001824                 CMP     R4, R3
-.text:00001828                 BNE     loc_1854
-.text:0000182C                 LDRB    R4, [R11,#var_18]
-.text:00001830                 BL      sub_1744
-.text:00001834                 MOV     R3, R0
-.text:00001838                 CMP     R4, R3
-.text:0000183C                 BNE     loc_1854
-.text:00001840                 LDR     R3, =(aProductActivat - 0x184C)
-.text:00001844                 ADD     R3, PC, R3      ; "Product activation passed. Congratulati"...
-.text:00001848                 MOV     R0, R3          ; char *
-.text:0000184C                 BL      puts
-.text:00001850                 B       loc_1864
-.text:00001854 ; ---------------------------------------------------------------------------
-.text:00001854
-.text:00001854 loc_1854                                ; CODE XREF: sub_1760+8C
-.text:00001854                                         ; sub_1760+A0 ...
-.text:00001854                 LDR     R3, =(aIncorrectSer_0 - 0x1860)
-.text:00001858                 ADD     R3, PC, R3      ; "Incorrect serial."
-.text:0000185C                 MOV     R0, R3          ; char *
-.text:00001860                 BL      puts
-.text:00001864
-.text:00001864 loc_1864                                ; CODE XREF: sub_1760+F0
-.text:00001864                 SUB     SP, R11, #8
-.text:00001868                 LDMFD   SP!, {R4,R11,PC}
-.text:00001868 ; End of function sub_1760
-```
-
-You can see a loop with some XOR-magic happening at loc_1784, which supposedly decodes the input string. Starting from loc_17DC, you can see a series of decoded values compared with values from further subfunction calls. Even though this doesn't look like highly sophisticated stuff, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x1760) and the code that prints the "Product activation passed" message (0x1840) to determine the constraints on each byte of the input string. The solver engine then finds an input that satisfies those constraints: the valid license key.
-
-You need to provide several inputs to the symbolic execution engine:
-
-- An address from which execution will start. Initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
-
-- The address of the code block you want execution to reach. You need to find a path to the code responsible for printing the "Product activation passed" message. This code block starts at 0x1840.
-
-- Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x1854).
-
-Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is
-
-```python
-#!/usr/bin/python
-
-# This is how we defeat the Android license check using Angr!
-# The binary is available for download on GitHub:
-# https://github.com/b-mueller/obfuscation-metrics/tree/master/crackmes/android/01_license_check_1
-# Written by Bernhard -- bernhard [dot] mueller [at] owasp [dot] org
-
-import angr
-import claripy
-import base64
-
-load_options = {}
-
-# Android NDK library path:
-load_options['custom_ld_path'] = ['/Users/berndt/Tools/android-ndk-r10e/platforms/android-21/arch-arm/usr/lib']
-
-b = angr.Project("./validate", load_options = load_options)
-
-# The key validation function starts at 0x401760, so that's where we create the initial state.
-# This speeds things up a lot because we're bypassing the Base32-encoder.
-
-state = b.factory.blank_state(addr=0x401760)
-
-initial_path = b.factory.path(state)
-path_group = b.factory.path_group(state)
-
-# 0x401840 = Product activation passed
-# 0x401854 = Incorrect serial
-
-path_group.explore(find=0x401840, avoid=0x401854)
-found = path_group.found[0]
-
-# Get the solution string from *(R11 - 0x24).
-
-addr = found.state.memory.load(found.state.regs.r11 - 0x24, endness='Iend_LE')
-concrete_addr = found.state.se.any_int(addr)
-solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
-
-print base64.b32encode(solution)
-```
-
-Note the last part of the program, where the final input string is retrieved—it appears as if you were simply reading the solution from memory. You are, however, reading from symbolic memory—neither the string nor the pointer to it actually exist! Actually, the solver is computing concrete values that you could find  in that program state if you observed the actual program run up to that point.
-
-Running this script should return the following:
-
-```shell
-(angr) $ python solve.py
-WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
-JQAE6ACMABNAAIIA
-```
 
 ### Customizing Android for Reverse Engineering
 
