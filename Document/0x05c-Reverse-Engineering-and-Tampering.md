@@ -81,7 +81,7 @@ Although working with a completely free setup is possible, you should consider i
 
 #### Disassembling and Decompiling
 
-##### Java
+##### Decompiling Java Code
 
 Java bytecode can be converted back into source code without many problems unless some nasty, tool-breaking anti-decompilation tricks have been applied. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
@@ -157,7 +157,7 @@ You'll end up with a structure that resembles the original Android Studio projec
 
 <img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300">
 
-##### Native Code
+##### Disassembling Native Code
 
 Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method.
 
@@ -225,11 +225,27 @@ $ greadelf -W -s libnative-lib.so | grep Java
 
 This is the native function that eventually gets executed when the `stringFromJNI` native method is called.
 
+To disassemble the code, you can load `libnative-lib.so` into any disassembler that understands ELF binaries (i.e., any disassembler). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as it is compatible with the disassembler. Each version is compiled from the same source and implements the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
+
+To support both older and newer ARM processors, Android apps ship with multiple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at run time. The following ABIs are supported:
+
+- armeabi: ABI is for ARM-based CPUs that support at least the ARMv5TE instruction set.
+- armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
+- arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
+
+Most disassemblers can handle any of those architectures. Below, we'll be viewing the `armeabi-v7a` version in IDA Pro. It is in `lib/armeabi-v7a/libnative-lib.so`. If you don't own an IDA Pro license, you can do the same thing with the demo or evaluation version available on the Hex-Rays website.
+
+Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+
+![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
+
+See the section "Reviewing Disassembled Native Code" below to learn on how to proceed when inspecting the disassembled native code.
+
 ### Static Analysis
 
 #### Manual (Reversed) Code Review
 
-##### Java
+##### Reviewing Decompiled Java Code
 
 As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of obfuscation that makes the bytecode a little more difficult to read, but with a fairly simple app like this one it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
 
@@ -280,23 +296,9 @@ Now you're getting somewhere: it's simply standard AES-ECB. Looks like the Base6
 
 A faster way to get the decrypted string is to add dynamic analysis. We'll revisit UnCrackable Level 1 later to show how (e.g. in the Debugging section), so don't delete the project yet!
 
-##### Native Libraries
+##### Reviewing Disassembled Native Code
 
-To disassemble the code, you can load `libnative-lib.so` into any disassembler that understands ELF binaries (i.e., any disassembler). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as it is compatible with the disassembler. Each version is compiled from the same source and implements the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
-
-To support both older and newer ARM processors, Android apps ship with multiple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at run time. The following ABIs are supported:
-
-- armeabi: ABI is for ARM-based CPUs that support at least the ARMv5TE instruction set.
-- armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
-- arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
-
-Most disassemblers can handle any of those architectures. Below, we'll be viewing the `armeabi-v7a` version in IDA Pro. It is in `lib/armeabi-v7a/libnative-lib.so`. If you don't own an IDA Pro license, you can do the same thing with the demo or evaluation version available on the Hex-Rays website.
-
-Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
-
-![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
-
-Once the file is open, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
+Following the example from "Disassembling Native Code", we assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
 ![Hello World Disassembly](Images/Chapters/0x05c/helloworld_stringfromjni.jpg)
 
