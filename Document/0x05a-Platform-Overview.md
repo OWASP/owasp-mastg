@@ -143,14 +143,26 @@ Apps must implement callback methods that react to a number of events; for examp
 
 ##### App Bundles
 
-Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle) (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play.
-//TODO HVG:
-- explain architecture
-- explain how to create testable apps
-- explain dynamic feature testing
-- explain/refer to instant apps
+Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle) (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play. App Bundles are signed binaries which contain the code of the app in several modules. The base module contains the core of the application. The base module can be extended with various modules which contain new enrichments/functionalities for the app as further explained at their [Documentation](https://developer.android.com/guide/app-bundle "Documentation on App Bundle").
+If you have an Android App Bundle, you can best use the [Bundletool](https://developer.android.com/studio/command-line/bundletool "Bundle Tool") from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by the following command:
 
+```shell
 
+$ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
+
+```
+
+If you want to create signed APKs ready for deployment to a test-device, use:
+
+```shell
+$ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
+--ks=/MyApp/keystore.jks
+--ks-pass=file:/MyApp/keystore.pwd
+--ks-key-alias=MyKeyAlias
+--key-pass=file:/MyApp/key.pwd
+```
+
+We recommend that you test both the APK with and without the additional modules, so that it becomes clear whether the additonal modules introduce and/or fix security issues for the base module.
 
 ##### Manifest
 

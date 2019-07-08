@@ -193,7 +193,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
         ActivityCompat.requestPermissions(secureActivity.this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-        // MY_PERMISSIONS_REQUEST_WRITE_EXTERAL_STORAGE will be the app-defined int constant.
+        // MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE will be the app-defined int constant.
         // The callback method gets the result of the request.
     }
 } else {
@@ -376,15 +376,13 @@ The combination of these can lead to insecure decisions, such as: stripping too 
 
 Note: Instant apps require an app-bundle. App-bundles are described in the [App Bundle](#App Bundle) section.
 
-//TODO:HVG
-
 #### Static Analysis
 
-//TODO
+//TODO!
 
 #### Dynamic Analysis
 
-//TODO
+//TODO!
 
 ### Testing for Sensitive Functionality Exposure Through IPC
 
