@@ -346,19 +346,7 @@ BX   R2
 
 When this function returns, R0 contains a pointer to the newly constructed UTF string. This is the final return value, so R0 is left unchanged and the function returns.
 
-#### Basic Information Gathering
-##### Strings
-##### Call Diagrams and Cross References
-##### API Usage (Bluetooth, NFC, Crypto ...) -> just refer to 0x05d-j/0x06d-j
-##### Check Secure Connections (HTTPS, TLS, cert. pinning, ATS) -> just refer to  0x05g/0x06g
-#### Automatic Code Analysis
-
 ### Dynamic Analysis
-#### Basic Information Gathering
-##### Opened Files
-##### Opened Connections
-##### Loaded Native Libraries
-##### Sandbox Inspection (Files and Permissions)
 
 #### Debugging
 
@@ -640,8 +628,6 @@ Remote debugging using :1234
 0xb6de83b8 in ?? ()
 ```
 
-#### Dynamic Analysis on Non-Rooted/Non-Jailbroken Devices
-
 #### Tracing
 
 ##### Execution Tracing
@@ -716,17 +702,9 @@ Jprobes and Kretprobes are other KProbes-based probe types that allow hooking of
 
 The stock Android kernel comes without loadable module support, which is a problem because Kprobes are usually deployed as kernel modules. The strict memory protection the Android kernel is compiled with is another issue because it prevents the patching of some parts of Kernel memory. Elfmaster's system call hooking method causes a Kernel panic on stock Lollipop and Marshmallow because the sys_call_table is non-writable. You can, however, use KProbes in a sandbox by compiling your own, more lenient Kernel (more on this later).
 
-##### Method Tracing (parameters and returns)
 
-To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
-```shell
-$ frida-trace -i "open" -U com.android.chrome
-```
 
-This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
-
-##### Native Libraries Tracing
 
 #### Emulation-based Analysis
 
@@ -1099,15 +1077,7 @@ The following approach can be used in order to patch the JavaScript file:
 5. Put the *patched code* on a single line and copy it in the original `assets/index.android.bundle` file.
 6. Repack the APK archive using `APKTool` tool and sign it before to install it on the target device/emulator.
 
-##### Library Injection
-
 #### Dynamic Instrumentation
-
-##### Tooling (Xposed (Android only), Frida)
-##### Information Gathering
-###### Getting Loaded Libraries
-###### Getting Loaded Classes and their Methods
-###### Getting Runtime Dependencies
 
 ##### Method Hooking
 
@@ -1382,12 +1352,6 @@ The hooked function outputted the decrypted string. You extracted the secret str
 You've now covered the basics of static/dynamic analysis on Android. Of course, the only way to *really* learn it is hands-on experience: build your own projects in Android Studio, observe how your code gets translated into bytecode and native code, and try to crack our challenges.
 
 In the remaining sections, we'll introduce a few advanced subjects, including kernel modules and dynamic execution.
-
-##### Process Exploration (r2frida)
-###### Memory Maps and Inspection
-###### In-Memory Search
-###### Memory Dump
-###### Runtime Reverse Engineering
 
 ### Customizing Android for Reverse Engineering
 
