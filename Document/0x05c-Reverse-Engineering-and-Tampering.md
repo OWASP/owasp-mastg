@@ -296,7 +296,7 @@ public class a {
 
 Now you're getting somewhere: it's simply standard AES-ECB. Looks like the Base64 string stored in `arrby1` in `check_input` is a ciphertext. It is decrypted with 128bit AES, then compared with the user input. As a bonus task, try to decrypt the extracted ciphertext and find the secret value!
 
-A faster way to get the decrypted string is to add dynamic analysis. We'll revisit UnCrackable Level 1 later to show how (e.g. in the Debugging section), so don't delete the project yet!
+A faster way to get the decrypted string is to add dynamic analysis. We'll revisit UnCrackable App for Android Level 1 later to show how (e.g. in the Debugging section), so don't delete the project yet!
 
 ##### Reviewing Disassembled Native Code
 
@@ -391,7 +391,7 @@ You're now attached to the suspended process and ready to go ahead with the jdb 
 - clear _method_: remove a method breakpoint
 - set _lvalue_ = _expr_:  assign new value to field/variable/array element
 
-Let's revisit the decompiled code from the UnCrackable App Level 1 and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
+Let's revisit the decompiled code from the UnCrackable App for Android Level 1 and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
 
 Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.MainActivity.a` displays the "This in unacceptable..." message box. This method creates an `AlertDialog` and sets a listener class for the `onClick` event. This class (named `b`) has a callback method will terminates the app once the user taps the “OK” button. To prevent the user from simply canceling the dialog, the `setCancelable` method is called.
 
@@ -525,7 +525,7 @@ Once you modify the binary name or the directory name, `File.exists` should retu
 
 ![File Exists False](Images/Chapters/0x05c/file_exists_false.png)
 
-This defeats the first root detection control of Uncrackable App Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
+This defeats the first root detection control of UnCrackable App for Android Level 1 . The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
 <img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300">
 
@@ -692,7 +692,7 @@ The `/sys/kernel/debug/tracing` directory holds all control and output files rel
 
 - available_tracers: This file lists the available tracers compiled into the kernel.
 - current_tracer: This file sets or displays the current tracer.
-- tracing_on: Echo 1 into this file to allow/start update of the ring buffer. Echoing 0 will prevent further writes into the ring buffer.
+- tracing_on: Echo "1" into this file to allow/start update of the ring buffer. Echoing "0" will prevent further writes into the ring buffer.
 
 ###### KProbes
 
@@ -701,10 +701,6 @@ The KProbes interface provides an even more powerful way to instrument the kerne
 Jprobes and Kretprobes are other KProbes-based probe types that allow hooking of function entries and exits.
 
 The stock Android kernel comes without loadable module support, which is a problem because Kprobes are usually deployed as kernel modules. The strict memory protection the Android kernel is compiled with is another issue because it prevents the patching of some parts of Kernel memory. Elfmaster's system call hooking method causes a Kernel panic on stock Lollipop and Marshmallow because the sys_call_table is non-writable. You can, however, use KProbes in a sandbox by compiling your own, more lenient Kernel (more on this later).
-
-
-
-
 
 #### Emulation-based Analysis
 
@@ -950,7 +946,7 @@ First, we'll look at some simple ways to modify and instrument mobile apps. *Tam
 Making small changes to the app Manifest or bytecode is often the quickest way to fix small annoyances that prevent you from testing or reverse engineering an app. On Android, two issues in particular happen regularly:
 
 1. You can't intercept HTTPS traffic with a proxy because the app employs SSL pinning.
-2. You can't attach a debugger to the app because the android:debuggable flag is not set to true in the Manifest.
+2. You can't attach a debugger to the app because the `android:debuggable` flag is not set to `true` in the Manifest.
 
 In most cases, both issues can be fixed by making minor changes to the app and then re-signing and repackaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
 
@@ -995,17 +991,17 @@ This modification will break the APK signature, so you'll also have to re-sign t
 
 ##### Patching Example: Making an App Debuggable
 
-Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` tag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
+Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` flag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
 
-When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to `0`, Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the run time state of a program makes understanding the program *a lot* easier.
+When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the run time state of a program makes understanding the program *a lot* easier.
 
-To _convert_ a release build into a debuggable build, you need to modify a flag in the app's manifest file (AndroidManifest.xml). Once you've unpacked the app (e.g. `apktool d --no-src UnCrackable-Level1.apk`) and decoded the AndroidManifest.xml, ddd android:debuggable = "true" to the manifest using a text editor:
+To _convert_ a release build into a debuggable build, you need to modify a flag in the app's manifest file (AndroidManifest.xml). Once you've unpacked the app (e.g. `apktool d --no-src UnCrackable-Level1.apk`) and decoded the AndroidManifest.xml, add `android:debuggable="true"` to the manifest using a text editor:
 
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
 ```
 
-Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `debuggable="true"` to the AndroidManifest file.
+Note: To get `apktool` to do this for you automatically, use the `-d` or `--debug` flag while building the APK. This will add `android:debuggable="true"` to the AndroidManifest file.
 
 Even if we haven't altered the source code, this modification also breaks the APK signature, so you'll also have to re-sign the altered APK archive.
 
@@ -1062,7 +1058,7 @@ In the Developer options, pick `Uncrackable1` as the debugging application and a
 
 <img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
 
-Note: Even with `ro.debuggable` set to 1 in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `true` in the Manifest.
+Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to "true" in the Manifest.
 
 ##### Patching React Native applications
 
@@ -1144,7 +1140,7 @@ Just like regular Android apps, modules for Xposed are developed and deployed wi
 
 ###### Frida
 
-In the "Android Basic Security Testing" chapter you have already seen that you can hook method calls with Frida. We'll use Frida to solve the OWASP UnCrackable Crackme Level 1 and demonstrate how we can easily bypass root detection and extract secret data from the app.
+In the "Android Basic Security Testing" chapter you have already seen that you can hook method calls with Frida. We'll use Frida to solve the UnCrackable App for Android Level 1 and demonstrate how we can easily bypass root detection and extract secret data from the app.
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 
@@ -1384,7 +1380,7 @@ dalvik.vm.image-dex2oat-Xmx=64m
 ro.dalvik.vm.native.bridge=0
 ```
 
-Setting ro.debuggable to 1 makes all running apps debuggable (i.e., the debugger thread will run in every process), regardless of the value of the android:debuggable attribute in the app's Manifest. Setting ro.secure to 0 causes adbd to run as root.
+Setting `ro.debuggable` to "1" makes all running apps debuggable (i.e., the debugger thread will run in every process), regardless of the value of the `android:debuggable` attribute in the app's Manifest. Setting `ro.secure` to "0" causes adbd to run as root.
 To modify initrd on any Android device, back up the original boot image with TWRP or dump it with the following command:
 
 ```shell
