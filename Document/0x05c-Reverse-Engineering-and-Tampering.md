@@ -1256,7 +1256,7 @@ $ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 
 After you see the "onClickHandler modified" message, you can safely press "OK". The app will not exit anymore.
 
-You can now try to input a "secret string." But where do you get it?
+You can now try to input a "secret string". But where do you get it?
 
 If you look at the class `sg.vantagepoint.uncrackable1.a`, you can see the encrypted string with which your input gets compared:
 
