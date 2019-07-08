@@ -1081,7 +1081,7 @@ The following approach can be used in order to patch the JavaScript file:
 
 ##### Method Hooking
 
-###### Hooking Java Methods with Xposed
+###### Xposed
 
 Let's assume you're testing an app that's stubbornly quitting on your rooted device. You decompile the app and find the following highly suspect method:
 
@@ -1142,7 +1142,7 @@ public class DisableRootCheck implements IXposedHookLoadPackage {
 
 Just like regular Android apps, modules for Xposed are developed and deployed with Android Studio. For more details on writing, compiling, and installing Xposed modules, refer to the tutorial provided by its author, [rovo89](https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/ "Rovo89: Update on Development of Xposed for Nougat").
 
-###### Dynamic Instrumentation with Frida
+###### Frida
 
 In the "Android Basic Security Testing" chapter you have already seen that you can hook method calls with Frida. We'll use Frida to solve the OWASP UnCrackable Crackme Level 1 and demonstrate how we can easily bypass root detection and extract secret data from the app.
 
