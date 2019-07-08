@@ -2,11 +2,11 @@
 
 Android's openness makes it a favorable environment for reverse engineers. In the following chapter, we'll look at some peculiarities of Android reversing and OS-specific tools as processes.
 
-Android offers reverse engineers big advantages that are not available with "the other" mobile OS. Because Android is open source, you can study its source code at the Android Open Source Project (AOSP) and modify the OS and its standard tools any way you want. Even on standard retail devices it is possible to do things like activating developer mode and sideloading apps without jumping through many hoops. From the powerful tools shipping with the SDK to the wide range of available reverse engineering tools, there's a lot of niceties to make your life easier.
+Android offers reverse engineers big advantages that are not available with iOS. Because Android is open source, you can study its source code at the Android Open Source Project (AOSP) and modify the OS and its standard tools any way you want. Even on standard retail devices it is possible to do things like activating developer mode and sideloading apps without jumping through many hoops. From the powerful tools shipping with the SDK to the wide range of available reverse engineering tools, there's a lot of niceties to make your life easier.
 
 However, there are also a few Android-specific challenges. For example, you'll need to deal with both Java bytecode and native code. Java Native Interface (JNI) is sometimes deliberately used to confuse reverse engineers (to be fair, there are legitimate reasons for using JNI, such as improving performance or supporting legacy code). Developers sometimes use the native layer to "hide" data and functionality, and they may structure their apps such that execution frequently jumps between the two layers.
 
-You'll need at least a working knowledge of both the Java-based Android environment and the Linux OS and Kernel, on which Android is based. You'll also need the right toolset to deal with both native code and bytecode running on the Java virtual machine.
+You'll need at least a working knowledge of both the Java-based Android environment and the Linux OS and Kernel, on which Android is based. You'll also need the right toolset to deal with both bytecode running on the Java virtual machine and native code.
 
 Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/ "UnCrackable Mobile Apps") as examples for demonstrating various reverse engineering techniques in the following sections, so expect partial and full spoilers. We encourage you to have a crack at the challenges yourself before reading on!
 
@@ -24,7 +24,7 @@ Make sure that the following is installed on your system:
 
 In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon](https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](https://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
-Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist; we'll cover some of them.
+Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist. We'll be covering some of them in this chapter.
 
 ##### Setting up the Android NDK
 
@@ -63,7 +63,7 @@ For navigating the decompiled sources, we recommend [IntelliJ](https://www.jetbr
 
 If you don't mind looking at Smali instead of Java, you can use the [smalidea plugin for IntelliJ](https://github.com/JesusFreke/smali/wiki/smalidea "Smalidea") for debugging. Smalidea supports single-stepping through the bytecode and identifier renaming, and it watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
-[APKTool](https://ibotpeaches.github.io/Apktool/ "APKTool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). APKTool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
+[apktool](https://ibotpeaches.github.io/Apktool/ "apktool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). apktool allows you to reassemble the package, which is useful for patching and applying changes to the Manifest.
 
 You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](https://angr.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
 
@@ -77,7 +77,7 @@ Although working with a completely free setup is possible, you should consider i
 
 ###### IDA Pro
 
-[IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic—you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious.
+[IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic: you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't performed, which can make working with more complex Java apps tedious. Nevertheless, it will come handy when reversing native code.
 
 #### Disassembling and Decompiling
 
@@ -186,7 +186,7 @@ Converting: classes.dex -> classes.jar (dex2jar)
 dex2jar HelloWord-JNI/classes.dex -> HelloWord-JNI/classes.jar
 ```
 
-The MainActivity is found in the file `MainActivity.java`. The "Hello World" text view is populated in the `onCreate()` method:
+The MainActivity is found in the file `MainActivity.java`. The "Hello World" text view is populated in the `onCreate` method:
 
 ```java
 public class MainActivity
@@ -304,7 +304,7 @@ Following the example from "Disassembling Native Code", we assume that you've su
 
 ![Hello World Disassembly](Images/Chapters/0x05c/helloworld_stringfromjni.jpg)
 
-Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table—an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
+Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI function is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table: an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
 
 ![JNI Interface](Images/Chapters/0x05c/JNI_interface.png)
 
@@ -320,7 +320,7 @@ Remember: the first argument (in R0) is a pointer to the JNI function table poin
 LDR  R1, =aHelloFromC
 ```
 
-This instruction loads into R1 the pc-relative offset of the string "Hello from C++." Note that this string comes directly after the end of the function block at offset 0xe84. Addressing relative to the program counter allows the code to run independently of its position in memory.
+This instruction loads into R1 the PC-relative offset of the string "Hello from C++." Note that this string comes directly after the end of the function block at offset 0xe84. Addressing relative to the program counter allows the code to run independently of its position in memory.
 
 ```arm
 LDR.W  R2, [R2, #0x29C]
@@ -475,11 +475,11 @@ This is the plaintext string you're looking for!
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect—it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
-To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "Statically Analyzing Java Code" section. On the device, choose the app as “debug app” on the Developer options” (Uncrackable1 in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
+To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "Reviewing Decompiled Java Code" section. On the device, choose the app as “debug app” on the Developer options” (Uncrackable1 in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
 
-Once you tap the Uncrackable app icon from the launcher, it will be suspended in "wait for a debugger" mode.
+Once you tap the Uncrackable app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
-<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting for Debugger" width="300">
+<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting For Debugger" width="300">
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
@@ -489,13 +489,13 @@ Note that only method breakpoints work when debugging an app from decompiled sou
 
 <img src="Images/Chapters/0x05c/Choose_Process.png" alt="Choose Process" width="300">
 
-After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate()` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate()` method. That's why setting a breakpoint on the `onCreate()` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
+After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate` method. That's why setting a breakpoint on the `onCreate` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
-Next, single-step through the `onCreate()` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
+Next, single-step through the `onCreate` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
 
 ![Force Step Into](Images/Chapters/0x05c/Force_Step_Into.png)
 
-Once you "Force Step Into," the debugger will stop at the beginning of the next method, which is the `a()` method of the class `sg.vantagepoint.a.c`.
+Once you "Force Step Into", the debugger will stop at the beginning of the next method, which is the `a` method of the class `sg.vantagepoint.a.c`.
 
 ![Function a](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png)
 
@@ -503,19 +503,19 @@ This method searches for the "su" binary within a list of directories (`/system/
 
 ![Function a](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png)
 
-You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a()` method .
+You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a` method.
 
 ![Step Over](Images/Chapters/0x05c/step_over.png)
 
 Step into the `System.getenv` method with the "Force Step Into" feature.
 
-After you get the colon-separated directory names, the debugger cursor will return to the beginning of the `a()` method, not to the next executable line. This happens because you're working on the decompiled code instead of the source code. This skipping makes following the code flow crucial to debugging decompiled applications. Otherwise, identifying the next line to be executed would become complicated.
+After you get the colon-separated directory names, the debugger cursor will return to the beginning of the `a` method, not to the next executable line. This happens because you're working on the decompiled code instead of the source code. This skipping makes following the code flow crucial to debugging decompiled applications. Otherwise, identifying the next line to be executed would become complicated.
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea  once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
 ![Step Out](Images/Chapters/0x05c/step_out.png)
 
-After the `a()` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
+After the `a` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
 ![Set Value](Images/Chapters/0x05c/set_value.png)
 
@@ -531,7 +531,7 @@ This defeats the first root detection control of Uncrackable App Level 1. The re
 
 ![MainActivity Verify](Images/Chapters/0x05c/MainActivity_verify.png)
 
-The secret code is verified by the method `a()` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a()` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
+The secret code is verified by the method `a` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
 
 ![Set Breakpoint](Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png)
 
@@ -557,7 +557,7 @@ If you followed the instructions at the beginning of this chapter, you should al
 $ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
 
-The `gdbserver --attach` command causes gdbserver to attach to the running process and bind to the IP address and port specified in `comm`, which in this case is a HOST:PORT descriptor. Start HelloWorld-JNI on the device, then connect to the device and determine the PID of the HelloWorld process. Then switch to the root user and attach `gdbserver`:
+The `gdbserver --attach` command causes gdbserver to attach to the running process and bind to the IP address and port specified in `comm`, which in this case is a HOST:PORT descriptor. Start HelloWorldJNI on the device, then connect to the device and determine the PID of the HelloWorldJNI process (sg.vantagepoint.helloworldjni). Then switch to the root user and attach `gdbserver`:
 
 ```shell
 $ adb shell
@@ -600,7 +600,7 @@ $ adb forward tcp:7777 jdwp:14342
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 ```
 
-Next, suspend the process where the Java runtime loads `libnative-lib.so`. In JDB, set a breakpoint at the `java.lang.System.loadLibrary` method and resume the process. After the breakpoint has been reached, execute the `step up` command, which will resume the process until `loadLibrary()`returns. At this point, `libnative-lib.so` has been loaded.
+Next, suspend the process where the Java runtime loads `libnative-lib.so`. In JDB, set a breakpoint at the `java.lang.System.loadLibrary` method and resume the process. After the breakpoint has been reached, execute the `step up` command, which will resume the process until `loadLibrary`returns. At this point, `libnative-lib.so` has been loaded.
 
 ```shell
 > stop in java.lang.System.loadLibrary
@@ -670,7 +670,7 @@ DDMS also offers a convenient heap dump button that will dump the Java heap of a
 
 Moving down a level in the OS hierarchy, you arrive at privileged functions that require the powers of the Linux kernel. These functions are available to normal processes via the system call interface. Instrumenting and intercepting calls into the kernel is an effective method for getting a rough idea of what a user process is doing, and  often the most efficient way to deactivate low-level tampering defenses.
 
-Strace is a standard Linux utility that monitors interaction between processes and the kernel. The utility is not included with Android by default, but can easily be built from source via the Android NDK. Strace is a very convenient way to monitor a process' system calls. Strace depends, however on the `ptrace()` system call to attach to the target process, so it only works up to the point at which anti-debugging measures start up.
+Strace is a standard Linux utility that monitors interaction between processes and the kernel. The utility is not included with Android by default, but can easily be built from source via the Android NDK. Strace is a very convenient way to monitor a process' system calls. Strace depends, however on the `ptrace` system call to attach to the target process, so it only works up to the point at which anti-debugging measures start up.
 
 If the Android "stop application at startup" feature is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
 
@@ -887,7 +887,7 @@ You need to provide several inputs to the symbolic execution engine:
 
 - Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x1854).
 
-Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is
+Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is:
 
 ```python
 #!/usr/bin/python
@@ -1070,12 +1070,12 @@ If the [React Native](https://facebook.github.io/react-native "React Native") fr
 
 The following approach can be used in order to patch the JavaScript file:
 
-1. Unpack the APK archive using `APKTool` tool.
+1. Unpack the APK archive using `apktool` tool.
 2. Copy the content of the file `assets/index.android.bundle` into a temporary file.
 3. Use `JStillery` to beautify and deobfuscate the content of the temporary file.
 4. Identify where the code should be patched in the temporary file and implement the changes.
 5. Put the *patched code* on a single line and copy it in the original `assets/index.android.bundle` file.
-6. Repack the APK archive using `APKTool` tool and sign it before to install it on the target device/emulator.
+6. Repack the APK archive using `apktool` tool and sign it before to install it on the target device/emulator.
 
 #### Dynamic Instrumentation
 
@@ -1110,7 +1110,7 @@ public static boolean c() {
 
 This method iterates through a list of directories and returns "true" (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false." Method hooking with an Xposed module is one way to do this (see "Android Basic Security Testing" for more details on Xposed installation and basics).
 
-The method  `XposedHelpers.findAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c()`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
+The method  `XposedHelpers.findAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
 
 ```java
 package com.awesome.pentestcompany;
@@ -1428,7 +1428,7 @@ $ find . | cpio --create --format='newc' | gzip > ../myinitd.img
 
 The Android kernel is a powerful ally to the reverse engineer. Although regular Android apps are hopelessly restricted and sandboxed, you, the reverser, can customize and alter the behavior of the operating system and kernel any way you wish. This gives you an advantage because most integrity checks and anti-tampering features ultimately rely on services performed by the kernel. Deploying a kernel that abuses this trust and unabashedly lies about itself and the environment, goes a long way in defeating most reversing defenses that malware authors (or normal developers) can throw at you.
 
-Android apps have several ways to interact with the OS. Interacting through the Android Application Framework's APIs is standard. At the lowest level, however, many important functions (such as allocating memory and accessing files) are translated into old-school Linux system calls. On ARM Linux, system calls are invoked via the SVC instruction, which triggers a software interrupt. This interrupt calls the `vector_swi()` kernel function, which then uses the system call number as an offset into a table (known as sys_call_table on Android) of function pointers.
+Android apps have several ways to interact with the OS. Interacting through the Android Application Framework's APIs is standard. At the lowest level, however, many important functions (such as allocating memory and accessing files) are translated into old-school Linux system calls. On ARM Linux, system calls are invoked via the SVC instruction, which triggers a software interrupt. This interrupt calls the `vector_swi` kernel function, which then uses the system call number as an offset into a table (known as sys_call_table on Android) of function pointers.
 
 The most straightforward way to intercept system calls is to inject your own code into kernel memory, then overwrite the original function in the system call table to redirect execution. Unfortunately, current stock Android kernels enforce memory restrictions that prevent this. Specifically, stock Lollipop and Marshmallow kernels are built with the CONFIG_STRICT_MEMORY_RWX option enabled. This prevents writing to kernel memory regions marked as read-only, so any attempt to patch kernel code or the system call table result in a segmentation fault and reboot. To get around this, build your own kernel. You can then deactivate this protection and make many other useful customizations that simplify reverse engineering. If you reverse Android apps on a regular basis, building your own reverse engineering sandbox is a no-brainer.
 
@@ -1750,7 +1750,7 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 - Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
 - Angr - <https://angr.io/>
-- APKTool - <https://ibotpeaches.github.io/Apktool/>
+- apktool - <https://ibotpeaches.github.io/apktool/>
 - apkx - <https://github.com/b-mueller/apkx>
 - CFR Decompiler - <https://www.benf.org/other/cfr/>
 - IDA Pro - <https://www.hex-rays.com/products/ida/>
