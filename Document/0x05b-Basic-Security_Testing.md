@@ -66,8 +66,8 @@ Although there exist several free Android emulators, we recommend using AVD as i
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
-- MobSF
-- Nathan (not updated since 2016)
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
+- [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
 Please also verify the "Tools" section at the end of this book.
 
@@ -97,7 +97,7 @@ Magisk ("Magic Mask") is one way to root your Android device. It's specialty lie
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
 
-Furthermore, developers can use the power of Magisk to create own modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [XPosed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
+Furthermore, developers can use the power of Magisk to create custom modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [Xposed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
 
 ###### Root Detection
 
@@ -714,11 +714,43 @@ Other resources where you might find useful information are:
 
 ##### Xposed
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1234>
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer) is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' run times—no patches to the application files are made.
+To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers Xposed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through the GUI.
 
-To use Xposed, you need to first install the Xposed framework on a rooted device. Deploy modifications deployed in the form of separate apps ("modules"), which can be toggled on and off in the Xposed GUI.
+Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to install Xposed. This way, applications with Safetynet attestation should have a higher chance of being testable with Xposed modules.
+
+Xposed has been compared to Frida. When you run Frida server on a rooted device, you will end up with a similarly effective setup. Both frameworks deliver a lot of value when you want to do dynamic instrumentation. When Frida crashes the app, you can try something similar with Xposed. Next, similar to the abudance of Frida scripts, you can easily use one of the many modules that come with Xposed, such as the earlier discussed module to bypass SSL pinning ([JustTrustMe](https://github.com/Fuzion24/JustTrustMe "JustTrustMe") and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSL Unpinning")). Xposed includes other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") which allow you to do more in depth application testing as well. On top of that, you can create your own modules as well to patch often used security mechanisms of Android applications.
+
+Xposed can also be installed on an emulator through the following script:
+
+```sh
+#!/bin/sh
+echo "Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive -wipe-data'"
+adb root && adb remount
+adb install SuperSU\ v2.79.apk #binary can be downloaded from http://www.supersu.com/download
+adb push root_avd-master/SuperSU/x86/su /system/xbin/su
+adb shell chmod 0755 /system/xbin/su
+adb shell setenforce 0
+adb shell su --install
+adb shell su --daemon&
+adb push busybox /data/busybox #binary can be downloaded from https://busybox.net/
+# adb shell "mount -o remount,rw /system && mv /data/busybox /system/bin/busybox && chmod 755 /system/bin/busybox && /system/bin/busybox --install /system/bin"
+adb shell chmod 755 /data/busybox
+adb shell 'sh -c "./data/busybox --install /data"'
+adb shell 'sh -c "mkdir /data/xposed"'
+adb push xposed8.zip /data/xposed/xposed.zip #can be downloaded from https://dl-xda.xposed.info/framework/
+adb shell chmod 0755 /data/xposed
+adb shell 'sh -c "./data/unzip /data/xposed/xposed.zip -d /data/xposed/"'
+adb shell 'sh -c "cp /data/xposed/xposed/META-INF/com/google/android/*.* /data/xposed/xposed/"'
+echo "Now adb shell and do 'su', next: go to ./data/xposed/xposed, make flash-script.sh executable and run it in that directory after running SUperSU"
+echo "Next, restart emulator"
+echo "Next, adb install XposedInstaller_3.1.5.apk"
+echo "Next, run installer and then adb reboot"
+echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
+```
+
+Please note that Xposed, as of early 2019, does not work on Android Pie yet.
 
 ##### Angr
 
@@ -1239,6 +1271,7 @@ There are several open source tools for automated security analysis of an APK.
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 
 For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
 
@@ -1716,36 +1749,60 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
-- Google Android Codelabs - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
+- Basic Network Security Configuration - <https://codelabs.developers.google.com/codelabs/android-network-security-config/#3>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
-
-#### Tools
-
-- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
-- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
-- Android tcpdump - <https://www.androidtcpdump.com/>
-- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
-- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
-- Android Studio - <https://developer.android.com/studio/index.html>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 - Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
+- Codenames, Tags and Build Numbers - <https://source.android.com/setup/start/build-numbers>
+- Create and Manage Virtual Devices - <https://developer.android.com/studio/run/managing-avds.html>
+- Guide to rooting mobile devices - <https://www.xda-developers.com/root/>
+- API Levels - <https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels>
+- AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
+- SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
+- Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
+- Android's .apk format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
+- Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
+
+#### Tools
+
+- adb - <https://developer.android.com/studio/command-line/adb>
+- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
+- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
+- Android Studio - <https://developer.android.com/studio/index.html>
+- Android tcpdump - <https://www.androidtcpdump.com/>
+- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
+- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
+- angr - <https://github.com/angr/angr>
+- APK Extractor - <https://play.google.com/store/apps/details?id=com.ext.ui>
+- APKMirror - <https://apkmirror.com>
+- APKPure - <https://apkpure.com>
 - apktool - <https://ibotpeaches.github.io/Apktool/>
 - apkx - <https://github.com/b-mueller/apkx>
-- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
 - Burp Suite Professional - <https://portswigger.net/burp/>
+- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
+- Capillary - <https://github.com/google/capillary>
+- Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
 - Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
+- FileZilla - <https://filezilla-project.org/download.php>
 - Frida - <https://www.frida.re/docs/android/>
+- InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
+- Inspeckage - <https://github.com/ac-pm/Inspeckage>
 - JAADAS - <https://github.com/flankerhqd/JAADAS>
+- JustTrustMe - <https://github.com/Fuzion24/JustTrustMe>
+- Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
 - Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
 - Mitm-relay - <https://github.com/jrmdev/mitm_relay>
+- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
+- Nathan - <https://github.com/mseclab/nathan>
 - Objection - <https://github.com/sensepost/objection>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - QARK - <https://github.com/linkedin/qark/>
-- Radare2 - <https://rada.re/r/>
 - R2frida - <https://github.com/nowsecure/r2frida/>
+- Radare2 - <https://rada.re/r/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
+- Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>
-- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Nathan - <https://github.com/mseclab/nathan>
+- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>

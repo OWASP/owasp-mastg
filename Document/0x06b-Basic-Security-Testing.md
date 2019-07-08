@@ -62,7 +62,7 @@ The purpose of jailbreaking is to disable iOS protections (Apple's code signing 
 
 Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
 
-Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
+Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
 
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
@@ -158,9 +158,13 @@ $ apt-get update
 $ apt-get install adv-cmds
 ```
 
-#### Recommended Tools - macOS Device
+##### Small note on USB of an iDevice
 
-In order to analyze iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
+On an iOS device you cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again due to the USB Restricted Mode, which was introduced with iOS 11.4.1
+
+#### Recommended Tools - Host Computer
+
+In order to analyze iOS apps, you should install the following tools on your host computer. We'll be referring to them throughout the guide. Please note that a great number of them will require macOS in order to run and therefore using a macOS computer is normally the recommendation when dealing with iOS apps.
 
 ##### Burp Suite
 
@@ -418,13 +422,13 @@ If you forget your password and want to reset it to the default `alpine`:
 
 1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
 2. Find the lines:
-  
-  ```shell
-  root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
-  mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
-  ```
-  
-3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+
+   ```shell
+    root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
+    mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
+   ```
+
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M` (which is the hashed password `alpine`)
 4. Save and exit
 
 ###### Connect to a Device via SSH over USB
@@ -1480,26 +1484,47 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 ### References
 
+- Jailbreak Exploits - <https://www.theiphonewiki.com/wiki/Jailbreak_Exploits>
+- limera1n exploit - <https://www.theiphonewiki.com/wiki/Limera1n>
+- IPSW Downloads website - <https://ipsw.me>
+- Can I Jailbreak? - <https://canijailbreak.com/>
+- The iPhone Wiki - <https://www.theiphonewiki.com/>
+- Redmond Pie - <https://www.redmondpie.com/>
+- Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
+- Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
 - UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
 
 #### Tools
 
+- Apple iOS SDK - <https://developer.apple.com/download/more/>
+- AppSync - <http://repo.hackyouriphone.org/appsyncunified>
 - Burp Suite - <https://portswigger.net/burp/communitydownload>
+- Chimera - <https://chimera.sh/>
 - Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
 - Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
 - Clutch - <https://github.com/KJCracks/Clutch>
+- Cydia Impactor - <http://www.cydiaimpactor.com/>
 - Frida - <https://www.frida.re>
 - Frida-ios-dump - <https://github.com/AloneMonkey/frida-ios-dump>
+- Ghidra - <https://ghidra-sre.org/>
 - IDB - <https://www.idbtool.com>
+- iFunBox - <http://www.i-funbox.com/>
 - Introspy - <https://github.com/iSECPartners/Introspy-iOS>
+- ios-deploy - <https://github.com/ios-control/ios-deploy>
+- IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa>
 - ipainstaller - <https://github.com/autopear/ipainstaller>
 - iProxy - <https://iphonedevwiki.net/index.php/SSH_Over_USB>
+- ITMS services asset downloader - <https://www.npmjs.com/package/itms-services>
 - Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
+- libimobiledevice - <https://www.libimobiledevice.org/>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Needle - <https://github.com/mwrlabs/needle>
 - Objection - <https://github.com/sensepost/objection>
-- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
+- Passionfruit - <https://github.com/chaitin/passionfruit/>
+- Radare2 - <https://github.com/radare/radare2>
+- Sileo - <https://cydia-app.com/sileo/>
 - SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
+- TablePlus - <https://tableplus.io/>
 - Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
 - Wireshark - <https://www.wireshark.org/download.html>
 - Xcode - <https://developer.apple.com/xcode/>

@@ -19,6 +19,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [NVISO CVBA](https://www.nviso.be)
 - [Randorisec](https://randorisec.fr/)
 - [Secarma](https://www.secarma.com/)
+- [Toreon](https://www.toreon.com/ethical-hackers/)
 - [VantagePoint](https://www.vantagepoint.sg)
 - [Xebia](https://xebia.com)
 - [Websec Canada](https://www.websec.ca/mobile-application-security)
