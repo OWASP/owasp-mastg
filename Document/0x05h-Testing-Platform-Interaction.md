@@ -290,7 +290,7 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used. //TODO: expand based on https://developer.android.com/training/app-links/verify-site-associations
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
 
@@ -382,7 +382,32 @@ Note: Instant apps require an app-bundle. App-bundles are described in the [App 
 
 #### Dynamic Analysis
 
-//TODO!
+There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
+
+The installation of instant app support is taken care off through the following command:
+
+```shell
+$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
+```
+
+Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
+
+After the preparation, you can test instant apps locally on a device running Android 8.1 or later. You can
+
+- Test the app locally:
+  Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
+  
+  ```shell
+  $ ia run output-from-build-command <app-artifact>
+  ```
+
+- Test the app using the Play Console:
+  1. Upload your app bundle to the Google Play Console
+  2. Prepare the uploaded bundle for a release to the internal test track.
+  3. Sign into an internal tester account on a device, then launch your instant experience from either an external prepared link or via the `try now` button in the App store from the testers account.
+
+Now that you can test the app, check whether 
+//TODO: extend with what to test for
 
 ### Testing for Sensitive Functionality Exposure Through IPC
 
