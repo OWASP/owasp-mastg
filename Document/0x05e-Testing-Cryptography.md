@@ -316,7 +316,7 @@ Although the key attestation process can be implemented within the application d
 
     - Verify the signature in the key attestation response.
 
-    - Now check the Keymaster(Keymaster is a software that runs in the security context and provides all the secure keystore operations) security level which will be one of Software, TrustedEnvironment or StrongBox to determine if the device has secure key storage mechanism.
+    - Now check the security level of the Keymaster to determine if the device has secure key storage mechanism. Keymaster is a piece of software that runs in the security context and provides all the secure keystore operations. The security level will be one of `Software`, `TrustedEnvironment` or `StrongBox`.
 
     - Additionally, you can check the attestation security level which will be one of Software, TrustedEnvironment or StrongBox to check how the attestation certificate was generated. Also, some other checks pertaining to keys can be made such as purpose, access time, authentication requirement, etc. to verify the key attributes.
 
