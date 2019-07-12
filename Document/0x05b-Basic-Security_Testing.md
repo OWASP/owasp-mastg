@@ -1244,17 +1244,11 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 
 #### Dynamic Analysis
 
-Dynamic Analysis tests the release version of an application, in a similar fashion to black box application testing. The way the code works should be inferred and looked at from a higher level, unlike static analysis, which takes the application's code and tries to analyze how the application will behave. This allows the tester to properly identify:
+Dynamic Analysis tests the mobile app by executing and running the app binary and analysing the workflows's for vulnerabilities. For example vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
 
-- Business logic flaws which extend over multiple services
-- Vulnerabilities in live environments
+- Business logic flaws
+- Vulnerabilities in the tested environments
 - Weak input validation and bad input/output encoding as they are processed through one or multiple services
-
- whereas static analysis would identify:
-
-- Code bad practices
-- Regex usage issues
-- Hidden code layers
 
 Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
 
@@ -1262,10 +1256,10 @@ Analysis can be assisted by automated tools, such as [MobSF](https://github.com/
 
 Non-rooted devices provide the tester with two benefits:
 
-- Replicate the same environment of the installed application
-- Use any device without the need of having it rooted
+- Replicate an environment that the application is intended to run on
+- As a tester you don't need to bypass root detection and can use objection to package the app with the Frida Gadget.
 
-In order to dynamically analyze the application, the tester could rely on [Objection](https://github.com/sensepost/objection) which is powered by Frida. This tool works by [patching](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) the target application with the [frida-gadget](https://www.frida.re/docs/gadget/) library. Objection communicates using a Python API with the mobile phone through the installed Gadget application.
+In order to dynamically analyze the application, you can rely on [Objection](https://github.com/sensepost/objection) which is leveraging Frida. One way to use objection is to [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) with the [frida-gadget](https://www.frida.re/docs/gadget/). Objection communicates then using a Python API with the mobile phone through the installed Gadget application.
 
 In order to accomplish this, the following commands can set you up and running:
 
@@ -1282,7 +1276,7 @@ $ objection explore
 
 ##### Method Tracing
 
-_Note:_ The following [section](#Setting-up-a-Network-Testing-Environment) assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
+> The section [Setting-up-a-Network-Testing-Environment](#Setting-up-a-Network-Testing-Environment) assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
 
 ### Setting up a Network Testing Environment
 
