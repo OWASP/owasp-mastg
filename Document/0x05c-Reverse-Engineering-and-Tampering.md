@@ -81,9 +81,13 @@ Although working with a completely free setup is possible, you should consider i
 
 #### Disassembling and Decompiling
 
+In Android app security testing, if the application is based solely on Java and doesn't have any native code (C/C++ code), the reverse engineering process is relatively easy and recovers (decompiles) almost all the source code. In those cases, black-box testing (with access to the compiled binary, but not the original source code) can get pretty close to white-box testing.
+
+Nevertheless, if the code has been purposefully obfuscated (or some nasty, tool-breaking anti-decompilation tricks have been applied), the reverse engineering process may be very time-consuming and unproductive. This also applies to applications that contain native code. They can still be reverse engineered, but the process is not automated and requires knowledge of low-level details.
+
 ##### Decompiling Java Code
 
-Java bytecode can be converted back into source code without many problems unless some nasty, tool-breaking anti-decompilation tricks have been applied. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
+The process of decompilation consists of converting Java bytecode back into Java source code. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 ```shell
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
@@ -161,32 +165,31 @@ See the section "Reviewing Decompiled Java Code" below to learn on how to procee
 
 ##### Disassembling Native Code
 
-Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method.
+Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged (compiled) into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method. However, instead of relying on widely used C libraries (such as glibc), Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
 
-Android JNI functions are written in native code that has been compiled into Linux ELF libraries. It's standard Linux fare. However, instead of relying on widely used C libraries (such as glibc) Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
+When reversing Android apps containing native code you'll have to consider this especial layer between Java and native code (JNI). It worths also noticing that when reversing the native code you'll need a disassembler. Once your binary is loaded, you'll be looking at disassembly, which is not _easy_ to look at as Java code.
 
-Download HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it on your emulator or Android device is optional.
-
-```shell
-$ wget HelloWord-JNI.apk
-$ adb install HelloWord-JNI.apk
-```
-
-This app is not exactly spectacular—all it does is show a label with the text "Hello from C++." This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
-
-<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
-
-Decompile the APK with `apkx`. This extracts the source code into the `HelloWorld/src` directory.
+In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it on your emulator or Android device is optional.
 
 ```shell
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+```
+
+> This app is not exactly spectacular—all it does is show a label with the text "Hello from C++." This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
+
+<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
+
+Decompile the APK with `apkx`.
+
+```shell
 $ apkx HelloWord-JNI.apk
 Extracting HelloWord-JNI.apk to HelloWord-JNI
 Converting: classes.dex -> classes.jar (dex2jar)
 dex2jar HelloWord-JNI/classes.dex -> HelloWord-JNI/classes.jar
+Decompiling to HelloWord-JNI/src (cfr)
 ```
 
-The MainActivity is found in the file `MainActivity.java`. The "Hello World" text view is populated in the `onCreate` method:
+This extracts the source code into the `HelloWord-JNI/src` directory. The main activity is found in the file `HelloWord-JNI/src/sg/vantagepoint/helloworldjni/MainActivity.java`. The "Hello World" text view is populated in the `onCreate` method:
 
 ```java
 public class MainActivity
@@ -203,8 +206,6 @@ extends AppCompatActivity {
     }
 
     public native String stringFromJNI();
-}
-
 }
 ```
 
@@ -225,6 +226,13 @@ $ greadelf -W -s libnative-lib.so | grep Java
      3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
 ```
 
+You can also see this using radare2's rabin2:
+
+```shell
+$ rabin2 -s HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so | grep -i Java
+003 0x00000e78 0x00000e78 GLOBAL   FUNC   16 Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
+```
+
 This is the native function that eventually gets executed when the `stringFromJNI` native method is called.
 
 To disassemble the code, you can load `libnative-lib.so` into any disassembler that understands ELF binaries (i.e., any disassembler). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as it is compatible with the disassembler. Each version is compiled from the same source and implements the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
@@ -235,15 +243,54 @@ To support both older and newer ARM processors, Android apps ship with multiple 
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers can handle any of those architectures. Below, we'll be viewing the `armeabi-v7a` version in IDA Pro. It is in `lib/armeabi-v7a/libnative-lib.so`. If you don't own an IDA Pro license, you can do the same thing with the demo or evaluation version available on the Hex-Rays website.
+Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "Reviewing Disassembled Native Code" below to learn on how to proceed when inspecting the disassembled native code.
+
+###### radare2
+
+To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The flag `-A` runs the `aaa` command right after loading the binary in order to analyze all referenced code.
+
+```shell
+$ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
+
+[x] Analyze all flags starting with sym. and entry0 (aa)
+[x] Analyze function calls (aac)
+[x] Analyze len bytes of instructions for references (aar)
+[x] Check for objc references
+[x] Check for vtables
+[x] Finding xrefs in noncode section with anal.in=io.maps
+[x] Analyze value pointers (aav)
+[x] Value from 0x00000000 to 0x00001dcf (aav)
+[x] 0x00000000-0x00001dcf in 0x0-0x1dcf (aav)
+[x] Emulate code to find computed references (aae)
+[x] Type matching analysis for all functions (aaft)
+[x] Use -AA or aaaa to perform additional experimental analysis.
+ -- Print the contents of the current block with the 'p' command
+[0x00000e3c]>
+```
+
+Note that for bigger binaries, starting directly with the flag `-A` might be very time consuming as well as unnecessary. Depending on your purpose, you may open the binary without this option and then apply a less complex analysis like `aa` or a more concrete type of analysis such as the ones offered in `aa` (basic analysis of all functions) or `aac` (analyze function calls). Enter `aa?` once in radare2 for the full list of commands.
+
+There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from an [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) pretty summarizes this.
+
+> Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
+>
+> People that are used to IDA or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
+
+This said, please see section "Reviewing Disassembled Native Code" to learn bore bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
+
+###### IDA Pro
+
+If you don't own an IDA Pro license, you can do the same thing with the demo or evaluation version available on the Hex-Rays website.
 
 Open the file in IDA Pro. In the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
 ![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
 
-See the section "Reviewing Disassembled Native Code" below to learn on how to proceed when inspecting the disassembled native code.
-
 ### Static Analysis
+
+For white-box source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.
+
+During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
 
 #### Manual (Reversed) Code Review
 
@@ -300,7 +347,65 @@ A faster way to get the decrypted string is to add dynamic analysis. We'll revis
 
 ##### Reviewing Disassembled Native Code
 
-Following the example from "Disassembling Native Code", we assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
+Following the example from "Disassembling Native Code" we will use different disassemblers to review the disassembled native code.
+
+###### radare2
+
+Once you've opened your file in radare2 you should first get the address of the function you're looking for. You can do this by listing or getting information `i` about the symbols `s` (`is`) and grepping (`~` radare2's built-in grep) for some keyword, in our case we're looking for JNI relates symbols so we enter "Java":
+
+```shell
+$ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
+...
+[0x00000e3c]> is~Java
+003 0x00000e78 0x00000e78 GLOBAL   FUNC   16 Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
+```
+
+The method can be found at address `0x00000e78`. To display its disassembly simply run the following commands:
+
+```shell
+[0x00000e3c]> e emu.str=true;
+[0x00000e3c]> s 0x00000e78
+[0x00000e78]> af
+[0x00000e78]> pdf
+╭ (fcn) sym.Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI 12
+│   sym.Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI (int32_t arg1);
+│           ; arg int32_t arg1 @ r0
+│           0x00000e78  ~   0268           ldr r2, [r0]                ; arg1
+│           ;-- aav.0x00000e79:
+│           ; UNKNOWN XREF from aav.0x00000189 (+0x3)
+│           0x00000e79                    unaligned
+│           0x00000e7a      0249           ldr r1, aav.0x00000f3c      ; [0xe84:4]=0xf3c aav.0x00000f3c
+│           0x00000e7c      d2f89c22       ldr.w r2, [r2, 0x29c]
+│           0x00000e80      7944           add r1, pc                  ; "Hello from C++" section..rodata
+╰           0x00000e82      1047           bx r2
+```
+
+Let's explain the previous commands:
+
+- `e emu.str=true;` enables radare2's string emulation. Thanks to this, we can see the string we're looking for ("Hello from C++").
+- `s 0x00000e78` is a _seek_ to the address `s 0x00000e78`, where our target function is located. We do this so that the following commands apply to this address.
+- `pdf` means _print disassembly of function_.
+
+Using radare2 you can quickly run commands and exit by using the flags `-qc '<commands>'`. From the previous steps we know already what to do so we will simply put everything together:
+
+```shell
+$ r2 -qc 'e emu.str=true; s 0x00000e78; af; pdf' HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
+
+╭ (fcn) sym.Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI 12
+│   sym.Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI (int32_t arg1);
+│           ; arg int32_t arg1 @ r0
+│           0x00000e78      0268           ldr r2, [r0]                ; arg1
+│           0x00000e7a      0249           ldr r1, [0x00000e84]        ; [0xe84:4]=0xf3c
+│           0x00000e7c      d2f89c22       ldr.w r2, [r2, 0x29c]
+│           0x00000e80      7944           add r1, pc                  ; "Hello from C++" section..rodata
+╰           0x00000e82      1047           bx r2
+```
+
+Notice that in this case we're not starting with the `-A` flag not running `aaa`. Instead, we just tell radare2 to analyze that one function by using the _analyze function_ `af` command. This is one fo those cases where we can speed up our workflow because you're focusing on some specific part of an app.
+
+###### IDA Pro
+
+We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
 ![Hello World Disassembly](Images/Chapters/0x05c/helloworld_stringfromjni.jpg)
 
@@ -345,6 +450,24 @@ BX   R2
 ```
 
 When this function returns, R0 contains a pointer to the newly constructed UTF string. This is the final return value, so R0 is left unchanged and the function returns.
+
+#### Automated Static Analysis
+
+You should use tools for efficient static analysis. They allow the tester to focus on the more complicated business logic. A plethora of static code analyzers are available, ranging from open source scanners to full-blown enterprise-ready scanners. The best tool for the job depends on budget, client requirements, and the tester's preferences.
+
+Some static analyzers rely on the availability of the source code; others take the compiled APK as input.
+Keep in mind that static analyzers may not be able to find all problems by themselves even though they can help us focus on potential problems. Review each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
+
+Configure the static analyzer properly to reduce the likelihood of false positives. and maybe only select several vulnerability categories in the scan. The results generated by static analyzers can otherwise be overwhelming, and your efforts can be counterproductive if you must manually investigate a large report.
+
+There are several open source tools for automated security analysis of an APK.
+
+- [QARK](https://github.com/linkedin/qark/ "QARK")
+- [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
+- [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
+- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
+
+For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools".
 
 ### Dynamic Analysis
 
