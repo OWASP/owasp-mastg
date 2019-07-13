@@ -1059,7 +1059,7 @@ To navigate through class instances that were saved in the memory dump, select t
 
 ![Create Heap Dump](Images/Chapters/0x05d/Package_Tree_View.png)
 
-For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer (MAT). It is available as an Eclipse plugin and as a standalone application.
+For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer Tool (MAT). It is available as an Eclipse plugin and as a standalone application.
 
 To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with the Android SDK.
 
@@ -1067,7 +1067,7 @@ To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with
 $ ./hprof-conv memory.hprof memory-mat.hprof
 ```
 
-Eclipse Memory Analyzer Tool (MAT) provides several tools for analyzing the memory dump. For example, the _Histogram_ provides an estimate of the number of objects that have been captured from a given type, and the _Thread Overview_ shows processes' threads and stack frames. The _Dominator Tree_ provides information about keep-alive dependencies between objects. You can use regular expressions to filter the results these tools provide.
+MAT provides several tools for analyzing the memory dump. For example, the _Histogram_ provides an estimate of the number of objects that have been captured from a given type, and the _Thread Overview_ shows processes' threads and stack frames. The _Dominator Tree_ provides information about keep-alive dependencies between objects. You can use regular expressions to filter the results these tools provide.
 
 _Object Query Language_ studio is a MAT feature that allows you to query objects from the memory dump with an SQL-like language. The tool allows you to transform simple objects by invoking Java methods on them, and it provides an API for building sophisticated tools on top of the MAT.
 

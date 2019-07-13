@@ -270,187 +270,6 @@ There are several ways of detecting `StrictMode`; the best choice depends on how
 - a warning dialog,
 - application crash.
 
-### Testing Exception Handling (MSTG-CODE-6 and MSTG-CODE-7)
-
-#### Overview
-
-Exceptions occur when an application gets into an abnormal or error state. Both Java and C++ may throw exceptions. Testing exception handling is about ensuring that the app will handle an exception and transition to a safe state without exposing sensitive information via the UI or the app's logging mechanisms.
-
-#### Static Analysis
-
-Review the source code to understand the application and identify how it handles different types of errors (IPC communications, remote services invocation, etc.). Here are some examples of things to check at this stage:
-
-- Make sure that the application uses a well-designed and unified scheme to [handle exceptions](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047 "Exceptional Behavior (ERR)").
-- Plan for standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) by creating proper null checks, bound checks, and the like. An [overview of the available subclasses of `RuntimeException`](https://developer.android.com/reference/java/lang/RuntimeException.html "Runtime Exception Class") can be found in the Android developer documentation. A child of `RuntimeException` should be thrown intentionally, and the intent should be handled by the calling method.
-- Make sure that for every non-runtime `Throwable` there's a proper catch handler, which ends up handling the actual exception properly.
-- When an exception is thrown, make sure that the application has centralized handlers for exceptions that cause similar behavior. This can be a static class. For exceptions specific to the method, provide specific catch blocks.
-- Make sure that the application doesn't expose sensitive information while handling exceptions in its UI or log-statements. Ensure that exceptions are still verbose enough to explain the issue to the user.
-- Make sure that all confidential information handled by high-risk applications is always wiped during execution of the `finally` blocks.
-
-```java
-byte[] secret;
-try{
-    //use secret
-} catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2  e) {
-    // handle any issues
-} finally {
-    //clean the secret.
-}
-```
-
-Adding a general exception handler for uncaught exceptions is a best practice for resetting the application's state when a crash is imminent:
-
-```java
-public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
-
-    private static final MemoryCleanerOnCrash S_INSTANCE = new MemoryCleanerOnCrash();
-    private final List<Thread.UncaughtExceptionHandler> mHandlers = new ArrayList<>();
-
-    //initialize the handler and set it as the default exception handler
-    public static void init() {
-        S_INSTANCE.mHandlers.add(Thread.getDefaultUncaughtExceptionHandler());
-        Thread.setDefaultUncaughtExceptionHandler(S_INSTANCE);
-    }
-
-     //make sure that you can still add exception handlers on top of it (required for ACRA for instance)
-    public void subscribeCrashHandler(Thread.UncaughtExceptionHandler handler) {
-        mHandlers.add(handler);
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-
-            //handle the cleanup here
-            //....
-            //and then show a message to the user if possible given the context
-
-        for (Thread.UncaughtExceptionHandler handler : mHandlers) {
-            handler.uncaughtException(thread, ex);
-        }
-    }
-}
-```
-
-Now the handler's initializer must be called in your custom `Application` class (e.g., the class that extends `Application`):
-
-```java
-@Override
-protected void attachBaseContext(Context base) {
-    super.attachBaseContext(base);
-    MemoryCleanerOnCrash.init();
-}
-```
-
-#### Dynamic Analysis
-
-There are several ways to do dynamic analysis:
-
-- Use Xposed to hook into methods and either call them with unexpected values or overwrite existing variables with unexpected values (e.g., null values).
-- Type unexpected values into the Android application's UI fields.
-- Interact with the application using its intents, its public providers, and unexpected values.
-- Tamper with the network communication and/or the files stored by the application.
-
-The application should never crash; it should
-
-- recover from the error or transition into a state in which it can inform the user of its inability to continue,
-- if necessary, tell the user to take appropriate action (The message should not leak sensitive information.),
-- not provide any information in logging mechanisms used by the application.
-
-### Make Sure That Free Security Features Are Activated (MSTG-CODE-9)
-
-#### Overview
-
-Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. ProGuard offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
-
-Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
-
-#### Static Analysis
-
-If source code is provided, you can check the build.gradle file to see whether obfuscation settings have been applied. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with "-keepclassmembers" and "-keep class") is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder. The file `proguard-rules.pro` is where you define custom ProGuard rules. You can see that many extended classes in our sample `proguard-rules.pro` file are common Android classes. This should be defined more granularly on specific classes or libraries.
-
-By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names, and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier. It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:
-
-```groovy
-android {
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro'
-        }
-    }
-    ...
-}
-```
-
-proguard-rules.pro
-
-```groovy
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
-```
-
-#### Dynamic Analysis
-
-If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting dex code to a jar file (e.g., dex2jar). The jar file can be opened with tools (such as JD-GUI) that can be used to make sure that class, method, and variable names are not human-readable.
-
-Sample obfuscated code block:
-
-```java
-package com.a.a.a;
-
-import com.a.a.b.a;
-import java.util.List;
-
-class a$b
-  extends a
-{
-  public a$b(List paramList)
-  {
-    super(paramList);
-  }
-
-  public boolean areAllItemsEnabled()
-  {
-    return true;
-  }
-
-  public boolean isEnabled(int paramInt)
-  {
-    return true;
-  }
-}
-```
-
-### Memory Corruption Bugs (MSTG-CODE-8)
-
-Android applications often run on a VM where most of the memory corruption issues have been taken care off.
-This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
-
-A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
-
-#### Static Analysis
-
-There are various items to look for:
-
-- Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
-- Is there Java code or Kotlin code? Look for Serialization/deserialization issues, such as described in [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization").
-
-Note that there can be Memory leaks in Java/Kotlin code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details, please check:
-
-- [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
-- [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android").
-
-#### Dynamic Analysis
-
-There are various steps to take:
-
-- In case of native code: use Valgrind or Mempatrol to analyse the memory usage and memory calls made by the code.
-- In case of Java/Kotlin code, try to recompile the app and use it with [Squares leak canary](https://github.com/square/leakcanary "Leakcanary").
-- Check with the [Memory Profiler from Android Studio](https://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
-- Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Android Java Deserialization Vulnerability Tester"), for serialization vulnerabilities.
-
 ### Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)
 
 #### Overview
@@ -544,6 +363,187 @@ When the sources are not available, one can decompile the app and check the jar 
 #### Dynamic Analysis
 
 The dynamic analysis of this section comprises validating whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
+
+### Testing Exception Handling (MSTG-CODE-6 and MSTG-CODE-7)
+
+#### Overview
+
+Exceptions occur when an application gets into an abnormal or error state. Both Java and C++ may throw exceptions. Testing exception handling is about ensuring that the app will handle an exception and transition to a safe state without exposing sensitive information via the UI or the app's logging mechanisms.
+
+#### Static Analysis
+
+Review the source code to understand the application and identify how it handles different types of errors (IPC communications, remote services invocation, etc.). Here are some examples of things to check at this stage:
+
+- Make sure that the application uses a well-designed and unified scheme to [handle exceptions](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=18581047 "Exceptional Behavior (ERR)").
+- Plan for standard `RuntimeException`s (e.g.`NullPointerException`, `IndexOutOfBoundsException`, `ActivityNotFoundException`, `CancellationException`, `SQLException`) by creating proper null checks, bound checks, and the like. An [overview of the available subclasses of `RuntimeException`](https://developer.android.com/reference/java/lang/RuntimeException.html "Runtime Exception Class") can be found in the Android developer documentation. A child of `RuntimeException` should be thrown intentionally, and the intent should be handled by the calling method.
+- Make sure that for every non-runtime `Throwable` there's a proper catch handler, which ends up handling the actual exception properly.
+- When an exception is thrown, make sure that the application has centralized handlers for exceptions that cause similar behavior. This can be a static class. For exceptions specific to the method, provide specific catch blocks.
+- Make sure that the application doesn't expose sensitive information while handling exceptions in its UI or log-statements. Ensure that exceptions are still verbose enough to explain the issue to the user.
+- Make sure that all confidential information handled by high-risk applications is always wiped during execution of the `finally` blocks.
+
+```java
+byte[] secret;
+try{
+    //use secret
+} catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2  e) {
+    // handle any issues
+} finally {
+    //clean the secret.
+}
+```
+
+Adding a general exception handler for uncaught exceptions is a best practice for resetting the application's state when a crash is imminent:
+
+```java
+public class MemoryCleanerOnCrash implements Thread.UncaughtExceptionHandler {
+
+    private static final MemoryCleanerOnCrash S_INSTANCE = new MemoryCleanerOnCrash();
+    private final List<Thread.UncaughtExceptionHandler> mHandlers = new ArrayList<>();
+
+    //initialize the handler and set it as the default exception handler
+    public static void init() {
+        S_INSTANCE.mHandlers.add(Thread.getDefaultUncaughtExceptionHandler());
+        Thread.setDefaultUncaughtExceptionHandler(S_INSTANCE);
+    }
+
+     //make sure that you can still add exception handlers on top of it (required for ACRA for instance)
+    public void subscribeCrashHandler(Thread.UncaughtExceptionHandler handler) {
+        mHandlers.add(handler);
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+
+            //handle the cleanup here
+            //....
+            //and then show a message to the user if possible given the context
+
+        for (Thread.UncaughtExceptionHandler handler : mHandlers) {
+            handler.uncaughtException(thread, ex);
+        }
+    }
+}
+```
+
+Now the handler's initializer must be called in your custom `Application` class (e.g., the class that extends `Application`):
+
+```java
+@Override
+protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MemoryCleanerOnCrash.init();
+}
+```
+
+#### Dynamic Analysis
+
+There are several ways to do dynamic analysis:
+
+- Use Xposed to hook into methods and either call them with unexpected values or overwrite existing variables with unexpected values (e.g., null values).
+- Type unexpected values into the Android application's UI fields.
+- Interact with the application using its intents, its public providers, and unexpected values.
+- Tamper with the network communication and/or the files stored by the application.
+
+The application should never crash; it should
+
+- recover from the error or transition into a state in which it can inform the user of its inability to continue,
+- if necessary, tell the user to take appropriate action (The message should not leak sensitive information.),
+- not provide any information in logging mechanisms used by the application.
+
+### Memory Corruption Bugs (MSTG-CODE-8)
+
+Android applications often run on a VM where most of the memory corruption issues have been taken care off.
+This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the stagefreight attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefreight").
+
+A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helperclasses.
+
+#### Static Analysis
+
+There are various items to look for:
+
+- Are there native code parts? If so: check for the given issues in the general memory corruption section. Native code can easily be spotted given JNI-wrappers, .CPP/.H/.C files, NDK or other native frameworks.
+- Is there Java code or Kotlin code? Look for Serialization/deserialization issues, such as described in [A brief history of Android deserialization vulnerabilities](https://lgtm.com/blog/android_deserialization "android deserialization").
+
+Note that there can be Memory leaks in Java/Kotlin code as well. Look for various items, such as: BroadcastReceivers which are not unregistered, static references to `Activity` or `View` classes, Singleton classes that have references to `Context`, Inner Class references, Anonymous Class references, AsyncTask references, Handler references, Threading done wrong, TimerTask references. For more details, please check:
+
+- [9 ways to avoid memory leaks in Android](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e "9 ways to avoid memory leaks in Android")
+- [Memory Leak Patterns in Android](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570 "Memory Leak Patterns in Android").
+
+#### Dynamic Analysis
+
+There are various steps to take:
+
+- In case of native code: use Valgrind or Mempatrol to analyse the memory usage and memory calls made by the code.
+- In case of Java/Kotlin code, try to recompile the app and use it with [Squares leak canary](https://github.com/square/leakcanary "Leakcanary").
+- Check with the [Memory Profiler from Android Studio](https://developer.android.com/studio/profile/memory-profiler "Memory profiler") for leakage.
+- Check with the [Android Java Deserialization Vulnerability Tester](https://github.com/modzero/modjoda "Android Java Deserialization Vulnerability Tester"), for serialization vulnerabilities.
+
+### Make Sure That Free Security Features Are Activated (MSTG-CODE-9)
+
+#### Overview
+
+Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. ProGuard offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
+
+Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
+
+#### Static Analysis
+
+If source code is provided, you can check the build.gradle file to see whether obfuscation settings have been applied. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with "-keepclassmembers" and "-keep class") is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder. The file `proguard-rules.pro` is where you define custom ProGuard rules. You can see that many extended classes in our sample `proguard-rules.pro` file are common Android classes. This should be defined more granularly on specific classes or libraries.
+
+By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names, and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier. It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:
+
+```groovy
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    ...
+}
+```
+
+proguard-rules.pro
+
+```groovy
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+```
+
+#### Dynamic Analysis
+
+If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting dex code to a jar file (e.g., dex2jar). The jar file can be opened with tools (such as JD-GUI) that can be used to make sure that class, method, and variable names are not human-readable.
+
+Sample obfuscated code block:
+
+```java
+package com.a.a.a;
+
+import com.a.a.b.a;
+import java.util.List;
+
+class a$b
+  extends a
+{
+  public a$b(List paramList)
+  {
+    super(paramList);
+  }
+
+  public boolean areAllItemsEnabled()
+  {
+    return true;
+  }
+
+  public boolean isEnabled(int paramInt)
+  {
+    return true;
+  }
+}
+```
 
 ### References
 

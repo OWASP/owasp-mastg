@@ -378,6 +378,98 @@ SQL injection can be exploited with the following command. Instead of getting th
 
 Drozer can also be used for dynamic testing.
 
+### Testing for Fragment Injection (MSTG-PLATFORM-2)
+
+#### Overview
+
+Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
+
+This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
+
+The first field is expected to contain the `Fragment` class name, and the second one is expected to contain the input bundle passed to the `Fragment`.
+
+Because the `PreferenceActivity` uses reflection to load the fragment, an arbitrary class may be loaded inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
+
+With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a java.lang.CastException, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor run.
+
+To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
+
+The default implementation returns true on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
+
+#### Static Analysis
+
+Steps:
+
+- Check if targetSdkVersion less than 19.
+- Find exported Activities that extend the `PreferenceActivity` class.
+- Determine whether the method isValidFragment has been overridden.
+- If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
+- In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as described.
+
+The following example shows an Activity that extends this activity:
+
+```java
+public class MyPreferences extends PreferenceActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}
+```
+
+The following examples show the isValidFragment method being overridden with an implementation that allows the loading of MyPreferenceFragment only:
+
+```Java
+@Override
+protected boolean isValidFragment(String fragmentName)
+{
+return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
+}
+
+```
+
+#### Example of Vulnerable App and Exploitation
+
+MainActivity.class
+
+```Java
+public class MainActivity extends PreferenceActivity {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}
+```
+
+MyFragment.class
+
+```Java
+public class MyFragment extends Fragment {
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragmentLayout, null);
+        WebView myWebView = (WebView) wv.findViewById(R.id.webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl(this.getActivity().getIntent().getDataString());
+        return v;
+    }
+}
+```
+
+To exploit this vulnerable Activity, you can create an application with the following code:
+
+```Java
+Intent i = new Intent();
+i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
+i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
+Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
+startActivity(i);
+```
+
+The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
+
 ### Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
 #### Overview
@@ -966,98 +1058,6 @@ Dynamic analysis of the app can show you which HTML or JavaScript files are load
 
 A full description of the attack is included in the [blog article by MWR](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution").
 
-### Testing for Fragment Injection (MSTG-PLATFORM-2)
-
-#### Overview
-
-Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
-
-This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
-
-The first field is expected to contain the `Fragment` class name, and the second one is expected to contain the input bundle passed to the `Fragment`.
-
-Because the `PreferenceActivity` uses reflection to load the fragment, an arbitrary class may be loaded inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
-
-With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a java.lang.CastException, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor run.
-
-To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
-
-The default implementation returns true on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
-
-#### Static Analysis
-
-Steps:
-
-- Check if targetSdkVersion less than 19.
-- Find exported Activities that extend the `PreferenceActivity` class.
-- Determine whether the method isValidFragment has been overridden.
-- If the app currently sets its targetSdkVersion in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of isValidFragment then, the vulnerability is inherited from the PreferenceActivity.
-- In order to fix, developers should either update the targetSdkVersion to 19 or higher. Alternatively, if the targetSdkVersion cannot be updated, then developers should implement isValidFragment as described.
-
-The following example shows an Activity that extends this activity:
-
-```java
-public class MyPreferences extends PreferenceActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-}
-```
-
-The following examples show the isValidFragment method being overridden with an implementation that allows the loading of MyPreferenceFragment only:
-
-```Java
-@Override
-protected boolean isValidFragment(String fragmentName)
-{
-return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
-}
-
-```
-
-#### Example of Vulnerable App and Exploitation
-
-MainActivity.class
-
-```Java
-public class MainActivity extends PreferenceActivity {
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-}
-```
-
-MyFragment.class
-
-```Java
-public class MyFragment extends Fragment {
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragmentLayout, null);
-        WebView myWebView = (WebView) wv.findViewById(R.id.webview);
-        myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl(this.getActivity().getIntent().getDataString());
-        return v;
-    }
-}
-```
-
-To exploit this vulnerable Activity, you can create an application with the following code:
-
-```Java
-Intent i = new Intent();
-i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
-i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
-Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
-startActivity(i);
-```
-
-The [`Vulnerable App`](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [`Exploit PoC App`](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
-
 ### Testing Object Persistence (MSTG-PLATFORM-8)
 
 #### Overview
@@ -1397,7 +1397,6 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 #### OWASP MASVS
 
-- MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 - MSTG-PLATFORM-1: "The app only requests the minimum set of permissions necessary."
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - MSTG-PLATFORM-3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
@@ -1406,6 +1405,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
 #### CWE
 

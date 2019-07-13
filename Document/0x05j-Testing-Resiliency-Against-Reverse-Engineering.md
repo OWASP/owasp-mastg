@@ -1228,6 +1228,24 @@ Work on bypassing the checks with the following techniques:
 
 Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
 
+### Testing Obfuscation (MSTG-RESILIENCE-9)
+
+#### Overview
+
+Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
+
+In this test case, we describe a few basic obfuscation techniques that are commonly used on Android.
+
+#### Effectiveness Assessment
+
+Attempt to decompile the byte-code, disassemble any included library files, and  perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
+
+- meaningful identifiers, such as class names, method names, and variable names, have been discarded,
+- string resources and strings in binaries are encrypted,
+- code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
+
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
+
 ### Testing Device Binding (MSTG-RESILIENCE-10)
 
 #### Overview
@@ -1515,24 +1533,6 @@ See section "Dynamic Analysis with an Emulator" above.
 4. Install the application on the second rooted device.
 5. In the application's data folder, overwrite the data from step 3.
 6. Can you continue in an authenticated state? If so, binding may not be working properly.
-
-### Testing Obfuscation (MSTG-RESILIENCE-9)
-
-#### Overview
-
-Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
-
-In this test case, we describe a few basic obfuscation techniques that are commonly used on Android.
-
-#### Effectiveness Assessment
-
-Attempt to decompile the byte-code, disassemble any included library files, and  perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
-
-- meaningful identifiers, such as class names, method names, and variable names, have been discarded,
-- string resources and strings in binaries are encrypted,
-- code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
-
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
 
 ### References
 

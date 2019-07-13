@@ -446,7 +446,7 @@ There might still be scenarios where this is not needed and you can still do MiT
 - If the app is running on a Android device with Android version 7.0 onwards, but the app targets API levels below 24, it will not use the network security configuration, therefore the app will still trusting user supplied CA's.
 - If the app is running on a Android device with Android version 7.0 onwards and there is no custom Network Security Configuration implemented in the app.
 
-### Testing the Security Provider (MSTG-NETWORK-2)
+### Testing the Security Provider (MSTG-NETWORK-6)
 
 #### Overview
 
