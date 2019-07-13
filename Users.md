@@ -10,6 +10,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Comsec](https://comsecglobal.com/)
 - [continuumsecurity](https://continuumsecurity.net)
 - [Cyber Ninjas](https://www.CyberNinjas.com)
+- [ESCRYPT GmbH](https://www.escrypt.com)
 - [FH Münster - University of applied sciences](https://www.fh-muenster.de)
 - [Genexus](https://www.genexus.com) & [Genexus Consulting](https://www.genexusconsulting.com/es/)
 - [hackenproof](https://hackenproof.com)
