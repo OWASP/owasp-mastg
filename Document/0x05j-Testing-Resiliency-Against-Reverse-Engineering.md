@@ -801,7 +801,7 @@ An approach similar to that for application-source integrity checks applies. Ans
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-### Testing The Detection of Reverse Engineering Tools (MSTG-RESILIENCE-4)
+### Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
 
 #### Overview
 
