@@ -223,7 +223,7 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
 
-### Testing Anti-Debugging (MSTG-RESILIENCE-2)
+### Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
 
 #### Overview
 
