@@ -223,7 +223,7 @@ Develop bypass methods for the root detection mechanisms and answer the followin
 
 If root detection is missing or too easily bypassed, make suggestions in line with the effectiveness criteria listed above. These suggestions may include more detection mechanisms and better integration of existing mechanisms with other defenses.
 
-### Testing Anti-Debugging (MSTG-RESILIENCE-2)
+### Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
 
 #### Overview
 
@@ -801,7 +801,7 @@ An approach similar to that for application-source integrity checks applies. Ans
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-### Testing The Detection of Reverse Engineering Tools (MSTG-RESILIENCE-4)
+### Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
 
 #### Overview
 

@@ -283,7 +283,7 @@ After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dn
 
 ##### Cordova Applications
 
-Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is PhoneGap SSL Certificate Checker. The check() method is used to confirm the fingerprint and callbacks will determine the next steps.
+Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is PhoneGap SSL Certificate Checker. The `check` method is used to confirm the fingerprint and callbacks will determine the next steps.
 
 ```javascript
   // Endpoint to verify against certificate pinning.
