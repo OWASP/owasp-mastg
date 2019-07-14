@@ -378,7 +378,13 @@ Note: Instant apps require an app-bundle. App-bundles are described in the [App 
 
 #### Static Analysis
 
-//TODO!
+Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the app bundle. When you analyze the app bundle: check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entrypoints, which entrypoints are set (by means of `<data android:path="</PATH/HERE>" />`).
+
+Now follow the entrypoints, like you would do for any Activity and check:
+
+- is there any data retrieved by the app which should require privacy protection of that data? If so, are all required controls in place?
+- Are all communications secured?
+- When you need more functionalities, are the right security controls downloaded as well?
 
 #### Dynamic Analysis
 
@@ -406,8 +412,11 @@ After the preparation, you can test instant apps locally on a device running And
   2. Prepare the uploaded bundle for a release to the internal test track.
   3. Sign into an internal tester account on a device, then launch your instant experience from either an external prepared link or via the `try now` button in the App store from the testers account.
 
-Now that you can test the app, check whether 
-//TODO: extend with what to test for
+Now that you can test the app, check whether:
+
+- there are any data which require privacy controls and whether these controls are in place.
+- all communications are sufficiently secured.
+- when you need more functionalities, are the right security controls downloaded as well for these functionalities?
 
 ### Testing for Sensitive Functionality Exposure Through IPC
 
