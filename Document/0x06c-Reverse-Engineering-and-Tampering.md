@@ -127,6 +127,9 @@ Several automated tools for analyzing iOS apps are available; most of them are c
 Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
 ### Dynamic Analysis
+
+Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+
 #### Dynamic Analysis on Non-Jailbroken Devices
 
 ##### Automated Repackaging with Objection
@@ -306,6 +309,35 @@ Attaching to process 2670...
 #### Tracing
 ##### Execution Tracing (calls)
 ##### Method Tracing (parameters and returns)
+
+Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
+
+In the following examples, we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in the previous section to repackage the Safari app.
+
+Frida comes with `frida-trace`, a function tracing tool. `frida-trace` accepts Objective-C methods via the `-m` flag. You can pass it wildcards as well-given `-[NSURL *]`, for example, `frida-trace` will automatically install hooks on all `NSURL` class selectors. We'll use this to get a rough idea about which library functions Safari calls when the user opens a URL.
+
+Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace` as follows:
+
+```shell
+$ frida-trace -U -m "-[NSURL *]" Safari
+Instrumenting functions...
+-[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
+-[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
+(...)
+Started tracing 248 functions. Press Ctrl+C to stop.
+```
+
+Next, navigate to a new website in Safari. You should see traced function calls on the `frida-trace` console. Note that the `initWithURL:` method is called to initialize a new URL request object.
+
+```shell
+           /* TID 0xc07 */
+  20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
+ 20313 ms  -[NSURLRequest URL]
+(...)
+ 21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
+ 21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
+```
+
 ##### Native Libraries Tracing
 
 #### Emulation-based Analysis
@@ -445,6 +477,34 @@ PID  Name
 
 We'll demonstrate a few more uses for Frida below, but let's first look at what you should do if you're forced to work on a non-jailbroken device.
 
+
+!!!!! COMPARE with this from 6b:
+
+When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
+
+To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
+
+Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering <https://build.frida.re.> You should then be able to find and install the Frida package.
+
+Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
+
+```shell
+$ frida-ps -U
+PID  Name
+---  ----------------
+963  Mail
+952  Safari
+416  BTServer
+422  BlueTool
+791  CalendarWidget
+451  CloudKeychainPro
+239  CommCenter
+764  ContactsCoreSpot
+(...)
+```
+
+We will demonstrate a few more uses for Frida below.
+
 ###### Cycript
 
 Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing run-time patches ("Cydia Substrate extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (aka saurik). It injects a JavaScriptCore VM into the running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Accessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included in the iOS chapter.
@@ -523,40 +583,15 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
   |    | <_UILayoutGuide: 0x16d92a00; frame = (0 0; 0 20); hidden = YES; layer = <CALayer: 0x16e936b0>>
   |    | <_UILayoutGuide: 0x16d92c10; frame = (0 568; 0 0); hidden = YES; layer = <CALayer: 0x16d92cb0>>`
 ```
+
 ##### Information Gathering
 ###### Getting Loaded Libraries
 ###### Getting Loaded Classes and their Methods
 ###### Getting Runtime Dependencies
+
 ##### Method Hooking
+
 ###### Frida
-
-Intercepting Objective-C methods is a useful iOS security testing technique (for data storage operations and network requests, for example). In the following example, we'll write a simple tracer for logging HTTP(S) requests made via standard iOS HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
-
-In the following examples, we'll assume that you're working on a jailbroken device. If that's not the case, you need to first follow the steps outlined in the previous section to repackage the Safari app.
-
-Frida comes with `frida-trace`, a function tracing tool. `frida-trace` accepts Objective-C methods via the `-m` flag. You can pass it wildcards as well: given `-[NSURL *]`, for example, frida-trace will automatically install hooks on all `NSURL` class selectors. We'll use this to get a rough idea of which library functions Safari calls when the user opens a URL.
-
-Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace`:
-
-```shell
-$ frida-trace -U -m "-[NSURL *]" Safari
-Instrumenting functions...
--[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
--[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
-(...)
-Started tracing 248 functions. Press Ctrl+C to stop.
-```
-
-Next, navigate to a new website in Safari. You should see traced function calls on the frida-trace console. Note that the `initWithURL:` method is called to initialize a new URL request object.
-
-```shell
-          /* TID 0xc07 */
- 20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
-20313 ms  -[NSURLRequest URL]
-(...)
-21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
-21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
-```
 
 We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
 
@@ -614,13 +649,53 @@ script.load()
 sys.stdin.read()
 ```
 
+-- TODO: the script above and below should do the same thing, they were found in two different places in the guide!!! COMPARE and test to see which one works:
+
+```python
+import sys
+import frida
+
+// JavaScript to be injected
+frida_code = """
+
+    // Obtain a reference to the initWithURL: method of the NSURLRequest class
+    var URL = ObjC.classes.NSURLRequest["- initWithURL"];
+
+    // Intercept the method
+    Interceptor.attach(URL.implementation, {
+      onEnter: function(args) {
+
+        // We should always initialize an autorelease pool before interacting with Objective-C APIs
+
+        var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
+
+        var NSString = ObjC.classes.NSString;
+
+        // Obtain a reference to the NSLog function, and use it to print the URL value
+        // args[2] refers to the first method argument (NSURL *url)
+
+        var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
+
+        NSLog(args[2].absoluteString_());
+
+        pool.release();
+      }
+    });
+"""
+
+process = frida.get_usb_device().attach("Safari")
+script = process.create_script(frida_code)
+script.on('message', message_callback)
+script.load()
+
+sys.stdin.read()
+```
+
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
 
 ![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
 
-Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its JavaScript API. The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida iOS Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples") of Frida usage on iOS.
-
-Please also take a look at the [Frida JavaScript API reference](https://www.frida.re/docs/javascript-api/).
+Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
 ###### Cycript
 
