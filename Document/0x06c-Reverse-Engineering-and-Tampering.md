@@ -53,6 +53,11 @@ The majority of this chapter applies to applications written in Objective-C or h
 ###### radare2
 ###### IDA Pro
 ### Static Analysis
+
+The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
+
+Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code.
+
 #### Manual (Reversed) Code Review
 ##### Reviewing Disassembled Objective-C and Swift Code
 ##### Reviewing Disassembled Native Code
@@ -116,6 +121,11 @@ $ otool -L <binary>
 ##### API Usage (Bluetooth, NFC, Crypto ...) -> just refer to 0x05d-j/0x06d-j
 ##### Check Secure Connections (HTTPS, TLS, cert. pinning, ATS) -> just refer to  0x05g/0x06g
 #### Automated Static Analysis
+
+Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
+
+Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
+
 ### Dynamic Analysis
 #### Dynamic Analysis on Non-Jailbroken Devices
 
