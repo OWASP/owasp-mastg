@@ -1341,6 +1341,12 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - <https://developer.android.com/guide/topics/permissions/overview>
 - <https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct>
 
+#### Android Bundles and Instant Apps
+
+- <https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle>
+- <https://developer.android.com/topic/google-play-instant/guides/multiple-entry-points>
+- <https://developer.android.com/studio/projects/dynamic-delivery>
+
 #### Android permissions changes in Android 8
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
