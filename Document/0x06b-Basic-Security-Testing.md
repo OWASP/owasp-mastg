@@ -1281,9 +1281,36 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
-#### Dynamic Analysis
+### Setting Up a Network Testing Environment
 
-Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+#### Basic Network Monitoring/Sniffing
+
+You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
+
+1. Connect your iOS device to your macOS machine via USB.
+2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
+
+```shell
+$ rvictl -s <UDID>
+Starting device <UDID> [SUCCEEDED] with interface rvi0
+```
+
+1. Launch Wireshark and select "rvi0" as the capture interface.
+1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
+
+```shell
+ip.addr == 192.168.1.1 && http
+```
+
+The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
+
+#### Setting up an Interception Proxy
+
+Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+
+Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
+
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 ##### Using Burp via USB on a Jailbroken Device
 
@@ -1315,150 +1342,6 @@ The last step would be to set the proxy globally on your iOS device:
 7. Type in 8080 as Port
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
-
-##### Using Frida
-
-When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
-
-To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
-
-Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering <https://build.frida.re.> You should then be able to find and install the Frida package.
-
-Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
-
-```shell
-$ frida-ps -U
-PID  Name
----  ----------------
-963  Mail
-952  Safari
-416  BTServer
-422  BlueTool
-791  CalendarWidget
-451  CloudKeychainPro
-239  CommCenter
-764  ContactsCoreSpot
-(...)
-```
-
-We will demonstrate a few more uses for Frida below.
-
-##### Method Tracing with Frida
-
-Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
-
-In the following examples, we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in the previous section to repackage the Safari app.
-
-Frida comes with `frida-trace`, a ready-made function tracing tool. `frida-trace` accepts Objective-C methods via the "-m" flag. You can pass it wildcards as well-given `-[NSURL *]`, for example, `frida-trace` will automatically install hooks on all `NSURL` class selectors. We'll use this to get a rough idea about which library functions Safari calls when the user opens a URL.
-
-Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace` as follows:
-
-```shell
-$ frida-trace -U -m "-[NSURL *]" Safari
-Instrumenting functions...
--[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
--[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
-(...)
-Started tracing 248 functions. Press Ctrl+C to stop.
-```
-
-Next, navigate to a new website in Safari. You should see traced function calls on the `frida-trace` console. Note that the `initWithURL:` method is called to initialize a new URL request object.
-
-```shell
-           /* TID 0xc07 */
-  20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
- 20313 ms  -[NSURLRequest URL]
-(...)
- 21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
- 21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
-```
-
-We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
-
-```objc
-- (instancetype)initWithURL:(NSURL *)url;
-```
-
-The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
-
-We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
-
-```python
-import sys
-import frida
-
-// JavaScript to be injected
-frida_code = """
-
-    // Obtain a reference to the initWithURL: method of the NSURLRequest class
-    var URL = ObjC.classes.NSURLRequest["- initWithURL"];
-
-    // Intercept the method
-    Interceptor.attach(URL.implementation, {
-      onEnter: function(args) {
-
-        // We should always initialize an autorelease pool before interacting with Objective-C APIs
-
-        var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
-
-        var NSString = ObjC.classes.NSString;
-
-        // Obtain a reference to the NSLog function, and use it to print the URL value
-        // args[2] refers to the first method argument (NSURL *url)
-
-        var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
-
-        NSLog(args[2].absoluteString_());
-
-        pool.release();
-      }
-    });
-"""
-
-process = frida.get_usb_device().attach("Safari")
-script = process.create_script(frida_code)
-script.on('message', message_callback)
-script.load()
-
-sys.stdin.read()
-```
-
-Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
-
-![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
-
-Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
-
-### Setting Up a Network Testing Environment
-
-#### Basic Network Monitoring/Sniffing
-
-You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
-
-1. Connect your iOS device to your macOS machine via USB.
-2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
-
-```shell
-$ rvictl -s <UDID>
-Starting device <UDID> [SUCCEEDED] with interface rvi0
-```
-
-1. Launch Wireshark and select "rvi0" as the capture interface.
-1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
-
-```shell
-ip.addr == 192.168.1.1 && http
-```
-
-The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
-
-#### Setting up an Interception Proxy
-
-Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
-
-Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
-
-PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 #### Certificate Pinning
 
