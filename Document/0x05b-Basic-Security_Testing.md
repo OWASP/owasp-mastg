@@ -1256,7 +1256,7 @@ Analysis can be assisted by automated tools, such as [MobSF](https://github.com/
 
 Non-rooted devices provide the tester with two benefits:
 
-- Replicate an environment that the application is intended to run on
+- Replicate an environment that the application is intended to run on.
 - As a tester you don't need to bypass root detection and can use objection to package the app with the Frida Gadget.
 
 In order to dynamically analyze the application, you can rely on [Objection](https://github.com/sensepost/objection) which is leveraging Frida. One way to use objection is to [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk) with the [frida-gadget](https://www.frida.re/docs/gadget/). Objection communicates then using a Python API with the mobile phone through the installed Gadget application.
