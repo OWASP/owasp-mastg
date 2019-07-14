@@ -2,7 +2,7 @@
 
 In the chapter [Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how identify uses of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
-### Verifying the Configuration of Cryptographic Standard Algorithms
+### Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
 
 #### Overview
 
@@ -166,7 +166,7 @@ Locate uses of the cryptographic primitives in code. Some of the most frequently
 Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
 Lastly, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
 
-### Testing Random Number Generation
+### Testing Random Number Generation (MSTG-CRYPTO-6)
 
 #### Overview
 
@@ -224,7 +224,7 @@ Once an attacker is knowing what type of weak pseudo-random number generator (PR
 
 If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp's Sequencer") to see how good the quality of the randomness is.
 
-### Testing Key Management
+### Testing Key Management (MSTG-STORAGE-1, MSTG-CRYPTO-1 and MSTG-CRYPTO-5)
 
 #### Overview
 
@@ -261,7 +261,7 @@ Now, it is clear that regularly prompting the user for its passphrase is not som
 However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since API level 23. As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android API level 22 or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the `AndroidKeyStore`. The encrypted symmetric key can now be safely stored in the `SharedPreferences`. Whenever we need the symmetric key, the application retrieves the private key from the `AndroidKeyStore` and decrypts the symmetric key.
 When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.isinsideSecureHardware()` returns true, then we know that you cannot just dump the keys nor monitor its cryptographic operations. It becomes debatable what will be eventually more safe: using `PBKDF2withHmacSHA256` to generate a key that is still in reachable dumpable memory, or using the `AndroidKeyStore` for which the keys might never get into memory. With Android Pie we see that additional security enhancements have been implemented in order to separate the TEE from the `AndroidKeyStore` which make it favorable over using `PBKDF2withHmacSHA256`. However, more testing & investigating will take place on that subject in the near future.
 
-#### Secure key import into Keystore
+#### Secure Key Import into Keystore
 
 Android Pie adds the ability to import keys securely into the `AndroidKeystore`. First `AndroidKeystore` generates a key pair using `PURPOSE_WRAP_KEY` which should also be protected with an attestation certficate, this pair aims to protect the Keys being imported to `AndroidKeystore`. The encypted keys are generated as ASN.1-encoded message in the `SecureKeyWrapper` format which also contains a description of the ways the imported key is allowed to be used. The keys are then decrypted inside the `AndroidKeystore` hardware belonging to the specific device that generated the wrapping key so they never appear as plaintext in the device's host memory.
 
@@ -283,7 +283,7 @@ SecureKeyWrapper ::= SEQUENCE {
 }
 ```
 
-The code above present the diffrent parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the Android documentation on [WrappedKeyEntry](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
+The code above present the different parameters to be set when generating the encrypted keys in the SecureKeyWrapper format. Check the Android documentation on [WrappedKeyEntry](https://developer.android.com/reference/android/security/keystore/WrappedKeyEntry) for more details.
 
 When defining the KeyDescription AuthorizationList, the following parameters will affect the encrypted keys security:
 
@@ -359,17 +359,17 @@ For the security analysis perspective the analysts may perform the following che
 
 - Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
 
-#### decryption only on unlocked devices
+#### Decryption only on Unlocked Devices
 
-For more security Android pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
+For more security Android Pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
 
-#### StrongBox Hardware Security module
+#### StrongBox Hardware Security Module
 
-Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random-number generator and a mechanism to resist package tampering. To use this feature a `True` flag must be passed to `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
+Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
 
-#### Key use authorizations
+#### Key Use Authorizations
 
-To mitigate unauthorized use of keys on the Android device, Android Keystore lets apps specify authorized uses of their keys when generating or importing the keys. Once made, authorizations cannot be changed.
+To mitigate unauthorized use of keys on the Android device, Android KeyStore lets apps specify authorized uses of their keys when generating or importing the keys. Once made, authorizations cannot be changed.
 
 Another API offered by Android is the `KeyChain`, which provides access to private keys and their corresponding certificate chains in credential storage, which is often not used due to the interaction necessary and the shared nature of the Keychain. See the [Developer Documentation](https://developer.android.com/reference/android/security/KeyChain "Keychain") for more details.
 
@@ -406,12 +406,14 @@ This will highlight all the classes that use the `SecretKeySpec` class, we now e
 
 ![Use of a static encryption key in a production ready application.](Images/Chapters/0x5e/static_encryption_key.png).
 
-When you have access to the sourcecode, check at least for the following:
+When you have access to the source code, check at least for the following:
 
 - Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
 - Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 - In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
-- Make sure that keys are not used for different purposes: for instance, make sure that encryption keys are not used for signing and vise a versa.
+- Take special care on verifying the purposes of the keys, for instance:
+  - make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
+  - make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
 
 #### Dynamic Analysis
 
@@ -463,10 +465,13 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 ##### OWASP MASVS
 
-- V3.1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- V3.5: "The app doesn't reuse the same cryptographic key for multiple purposes."
-- V3.6: "All random values are generated using a sufficiently secure random number generator."
+- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
+- MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
+- MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
+- MSTG-CRYPTO-5: "The app doesn't reuse the same cryptographic key for multiple purposes."
+- MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
 
 ##### CWE
 
