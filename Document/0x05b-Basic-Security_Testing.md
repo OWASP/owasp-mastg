@@ -1244,7 +1244,7 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 
 #### Dynamic Analysis
 
-Dynamic Analysis tests the mobile app by executing and running the app binary and analysing the workflows's for vulnerabilities. For example vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
+Dynamic Analysis tests the mobile app by executing and running the app binary and analysing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
 
 - Business logic flaws
 - Vulnerabilities in the tested environments
