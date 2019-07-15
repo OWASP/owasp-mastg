@@ -269,7 +269,6 @@ To verify if a session timeout is implemented, proxy your requests through an in
 1. Log in to the application.
 2. Access a resource that requires authentication, typically a request for private information belonging to your account.
 3. Try to access the data after an increasing number of 5-minute delays has passed (5, 10, 15, ...).
-Leave the session idle until it expires.
 4. Once the resource is no longer available, you will know the session timeout.
 
 After you have identified the session timeout, verify whether it has an appropriate length for the application. If the timeout is too long, or if the timeout does not exist, this test case fails.
