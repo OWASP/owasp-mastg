@@ -297,10 +297,9 @@ For the applications which heavily rely on Android Keystore for business-critica
 
 During key attestation, we can specify the alias of a key pair and in return, get a certificate chain, which we can use to verify the properties of that key pair. If the root certificate of the chain is [Google Hardware Attestation Root certificate]("https://developer.android.com/training/articles/security-key-attestation#root_certificate" "Google Hardware Attestation Root certificate") and the checks related to key pair storage in hardware are made it gives an assurance that the device supports hardware-level key attestation and the key is in hardware-backed keystore that Google believes to be secure. Alternatively, if the attestation chain has any other root certificate, then Google does not make any claims about the security of the hardware.
 
-
 Although the key attestation process can be implemented within the application directly but it is recommended that it should be implemented at the server-side for security reasons. The following are the high-level guidelines for the secure implementation of Key Attestation:
 
-- The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge. 
+- The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge.
 
 - The client should call the `setAttestationChallenge()` API with the challenge received from the server and should then retrieve the attestation certificate chain using the `KeyStore.getCertificateChain()` method.
 
@@ -451,9 +450,10 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
 
 #### Key Attestation References
+
 - Android Key Attestation - <https://developer.android.com/training/articles/security-key-attestation>
 - W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
-- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d> 
+- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
 - Attestation and Assertion - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API/Attestation_and_Assertion>
 - Google Sample Codes - <https://github.com/googlesamples/android-key-attestation/tree/master/server>
 - FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
