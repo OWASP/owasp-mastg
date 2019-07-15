@@ -159,7 +159,7 @@ Start using the app and trigger it's functions. You should see HTTP messages sho
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
-### Verifying Data Encryption on the Network
+### Verifying Data Encryption on the Network (MSTG‑NETWORK‑1 and MSTG‑NETWORK‑2)
 
 #### Overview
 
@@ -277,7 +277,7 @@ If you want to verify whether your server supports the right cipher suites, ther
 - nscurl - see Testing Network Communication for iOS for more details.
 - [testssl.sh](https://github.com/drwetter/testssl.sh) which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
-### Making Sure that Critical Operations Use Secure Communication Channels
+### Making Sure that Critical Operations Use Secure Communication Channels (MSTG‑NETWORK‑5)
 
 #### Overview
 
@@ -312,11 +312,9 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 #### OWASP MASVS
 
-- V1.2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
-- V5.1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
-- V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
-- V5.5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
+- MSTG‑NETWORK‑1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
+- MSTG‑NETWORK‑2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- MSTG‑NETWORK‑5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
 
 #### CWE
 

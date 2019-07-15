@@ -100,7 +100,7 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 #### OWASP Mobile Top 10 2016
 
-- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
+- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### Tools
 
