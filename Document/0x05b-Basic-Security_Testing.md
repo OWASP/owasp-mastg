@@ -107,28 +107,28 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 
 #### Recommended Tools - Android device
 
-There are many tools and frameworks for security testing Android applications used throughout this guide. In the next sections you will learn more about some of their main commands and interesting use cases. Please check the official documentation for installation instructions of the following tools/apks:
+There are many tools and frameworks used throughout this guide to assess the security of Android applications. In the next sections you will learn more about some of their main commands and interesting use cases. Please check the official documentation for installation instructions of the following tools/APKs:
 
-- APK Extractor: App to extract apks without root.
-- frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.
-- objection apk: APK for objection, the runtime mobile exploration toolkit, powered by Frida. Useful with non-rooted devices.
-- drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices.
+- APK Extractor: App to extract APKs without root.
+- Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.
+- Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices.
+- Xposed: Framework that can change the behavior of the system and apps without touching any APKs.
 
 #### Recommended Tools - Host computer
 
 In order to analyze Android apps, you should install the following tools on your host computer. Please check the official documentation for installation instructions of the following tools/frameworks. We'll be referring to them throughout the guide.
 
-- adb: Used for communication with Android devices and debugging applications.
-- apktool: Used to pack/unpack an app executable.
-- apkx: Used retrieving an APK's source through several decompilers.
-- Burp Suite: Tnterception proxy that can be used to analyze the traffic between the app and the API it's talking to. 
-- frida: Dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.
-- mobsf: An automated, all-in-one mobile application pentesting framework.
-- objection: Runtime mobile exploration toolkit, powered by Frida. Useful with non-rooted devices.
-- radare2: Reverse engineering framework for analysis, disassembling, debugging and patching.
-- r2frida: Merges the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
-- drozer: Framework that allows you to search for security vulnerabilities in apps and devices.
-- xposed: Framework that can change the behavior of the system and apps without touching any APKs.
+- Adb: Used for communication with Android devices and debugging applications.
+- Apktool: Used to pack/unpack an app executable.
+- Apkx: Used retrieving an APK's source through several decompilers.
+- Burp Suite: Tnterception proxy that can be used to analyze the traffic between the app and the API it's talking to.
+- Drozer: Framework that allows you to search for security vulnerabilities in apps and devices.
+- Frida: Dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.
+- Magisk: Allows root and custom mods without touching the  system partition, also known as systemless root method.
+- MobSF: An automated, all-in-one mobile application pentesting framework.
+- Objection: Runtime mobile exploration toolkit, powered by Frida. Useful with non-rooted devices.
+- Radare2: Reverse engineering framework for analysis, disassembling, debugging and patching.
+- R2frida: Merges the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
 
 ##### adb
 
