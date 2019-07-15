@@ -158,16 +158,16 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 
 The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application may be vulnerable to attack if it does not:
 
-- Validate all input by means of IPC communication or URL-schemes. See
+- Validate all input by means of IPC communication or URL-schemes, see also:
   - [Testing Custom URL Schemes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-custom-url-schemes "Testing Custom URL Schemes").
 - Validate all input by the user in input fields.
-- Validate the content loaded inside a webview. See:
-  - [Testing iOS webviews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
+- Validate the content loaded inside a WebView, see also:
+  - [Testing iOS WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#testing-ios-webviews "Testing iOS webviews");
   - [Determining Whether Native Methods Are Exposed Through WebViews](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06h-Testing-Platform-Interaction.md#determining-whether-native-methods-are-exposed-through-webviews "Determining Whether Native Methods Are Exposed Through WebViews")
-- Securely communicate with backend servers or is susceptible to man-in-the-middle (MitM) attacks between the server and the mobile application. See:
+- Securely communicate with backend servers or is susceptible to man-in-the-middle (MITM) attacks between the server and the mobile application, see also:
   - [Testing Network Communication](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication");
   - [iOS Network APIs](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06g-Testing-Network-Communication.md#ios-network-apis "iOS Network APIs") .
-- Securely stores all local data, or loads untrusted data from storage. See:
+- Securely stores all local data, or loads untrusted data from storage, see also:
   - [Data Storage on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md#data-storage-on-ios "Data Storage on iOS").
-- Protect itself against compromised environments, repackaging or other local attacks. See
+- Protect itself against compromised environments, repackaging or other local attacks, see also:
   - [iOS Anti-Reversing Defenses](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#ios-anti-reversing-defenses "iOS Anti-Reversing Defenses")
