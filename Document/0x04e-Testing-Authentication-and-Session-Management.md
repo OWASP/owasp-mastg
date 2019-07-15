@@ -272,7 +272,7 @@ To verify if a session timeout is implemented, proxy your requests through an in
 Leave the session idle until it expires.
 4. Once the resource is no longer available, you will know the session timeout.
 
-If you can still access the resources after a timeout, this test case fails and the session timeout is not invalidating the session on server-side.
+After you have identified the session timeout, verify whether it has an appropriate length for the application. If the timeout is too long, or if the timeout does not exist, this test case fails.
 
 > When using Burp Proxy, you can use the [Session Timeout Test extension](https://portswigger.net/bappstore/c4bfd29882974712a1d69c6d8f05874e "Session Timeout Test extension") to automate this test.
 
