@@ -1805,7 +1805,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - apktool - <https://ibotpeaches.github.io/Apktool/>
 - apkx - <https://github.com/b-mueller/apkx>
 - Burp Suite Professional - <https://portswigger.net/burp/>
-- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
 - Capillary - <https://github.com/google/capillary>
 - Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
 - Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
