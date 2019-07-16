@@ -1207,13 +1207,37 @@ $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 #### Dynamic Analysis
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1240>
+Dynamic Analysis tests the mobile app by executing and running the app binary and analysing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
+
+- Business logic flaws
+- Vulnerabilities in the tested environments
+- Weak input validation and bad input/output encoding as they are processed through one or multiple services
+
+Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
 
 ##### Using Non-Rooted Devices
 
-##### Method Tracing
+Non-rooted devices provide the tester with two benefits:
 
-##### Basic Network Monitoring/Sniffing
+- Replicate an environment that the application is intended to run on.
+- Thanks to tools like objection, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app).
+
+In order to dynamically analyze the application, you can also rely on [objection](https://github.com/sensepost/objection "objection") which is leveraging Frida. However, in order to be able to use objection on non-rooted devices you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library. Objection communicates then using a Python API with the mobile phone through the installed Frida gadget.
+
+In order to accomplish this, the following commands can set you up and running:
+
+```bash
+# Download the Uncrackable APK
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
+# Patch the APK with the Frida Gadget
+$ objection patchapk --source UnCrackable-Level1.apk
+# Install the patched APK on the android phone
+$ adb install UnCrackable-Level1.objection.apk
+# After running the mobile phone, objection will detect the running frida-server through the APK
+$ objection explore
+```
+
+> The section [Setting up a Network Testing Environment](#Setting-up-a-Network-Testing-Environment "Setting up a Network Testing Environment") assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
 
 ### Setting up a Network Testing Environment
 
@@ -1318,7 +1342,7 @@ FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only po
 $ echo "
 rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
 rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
-rdr pass inet proto tcp from any to any port 5239 -> 127.0.0.1 port 8080
+rdr pass inet proto tcp from any to any port 5230 -> 127.0.0.1 port 8080
 " | sudo pfctl -ef -
 ```
 
