@@ -599,16 +599,14 @@ We can look up the declaration of this method on the [Apple Developer Website](h
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
-The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
-
-We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
+Using this information we can write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
 
 ```python
 import sys
 import frida
 
 
-// JavaScript to be injected
+# JavaScript to be injected
 frida_code = """
 
     // Obtain a reference to the initWithURL: method of the NSURLRequest class
@@ -634,6 +632,10 @@ frida_code = """
                 // Create an immutable ObjC string object from a JS string object.
                 var str_url = NSString.stringWithString_(myNSURL.toString());
                 NSLog(str_url);
+
+                // Print the URL to the standard console
+                console.log(str_url);
+
             } finally {
                 pool.release();
             }
@@ -643,57 +645,14 @@ frida_code = """
 
 process = frida.get_usb_device().attach("Safari")
 script = process.create_script(frida_code)
-script.on('message', message_callback)
 script.load()
 
 sys.stdin.read()
 ```
 
--- TODO: the script above and below should do the same thing, they were found in two different places in the guide!!! COMPARE and test to see which one works:
+Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (as explained in the section "Monitoring System Logs" from the chapter "iOS Basic Security Testing"). Try opening a new URL in Safari, e.g. <https://github.com/OWASP/owasp-mstg>; you should see Frida's output in the logs as well as in your terminal.
 
-```python
-import sys
-import frida
-
-// JavaScript to be injected
-frida_code = """
-
-    // Obtain a reference to the initWithURL: method of the NSURLRequest class
-    var URL = ObjC.classes.NSURLRequest["- initWithURL"];
-
-    // Intercept the method
-    Interceptor.attach(URL.implementation, {
-      onEnter: function(args) {
-
-        // We should always initialize an autorelease pool before interacting with Objective-C APIs
-
-        var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
-
-        var NSString = ObjC.classes.NSString;
-
-        // Obtain a reference to the NSLog function, and use it to print the URL value
-        // args[2] refers to the first method argument (NSURL *url)
-
-        var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
-
-        NSLog(args[2].absoluteString_());
-
-        pool.release();
-      }
-    });
-"""
-
-process = frida.get_usb_device().attach("Safari")
-script = process.create_script(frida_code)
-script.on('message', message_callback)
-script.load()
-
-sys.stdin.read()
-```
-
-Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
-
-![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
+![Frida Xcode Log](Images/Chapters/0x06c/frida-xcode-log.png)
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
@@ -716,12 +675,11 @@ Of course, this example illustrates only one of the things you can do with Frida
   cy# a.delegate
   ```
 
-- Let's print out the `AppDelegate` class' methods :
+- Let's print out the `AppDelegate` class' methods:
 
   ```shell
   cy# printMethods ("AppDelegate")
   ```
-
 
 
 ##### Process Exploration (r2frida)
