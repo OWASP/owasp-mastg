@@ -145,7 +145,7 @@ Apps must implement callback methods that react to a number of events; for examp
 ##### App Bundles
 
 Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle) (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play. App Bundles are signed binaries which contain the code of the app in several modules. The base module contains the core of the application. The base module can be extended with various modules which contain new enrichments/functionalities for the app as further explained on the [developer documentation for app bundle](https://developer.android.com/guide/app-bundle "Documentation on App Bundle").
-If you have an Android App Bundle, you can best use the [Bundletool](https://developer.android.com/studio/command-line/bundletool "Bundle Tool") from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
+If you have an Android App Bundle, you can best use the [bundletool](https://developer.android.com/studio/command-line/bundletool "bundletool") command line tool from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
 
 ```shell
 
@@ -163,7 +163,7 @@ $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 --key-pass=file:/MyApp/key.pwd
 ```
 
-We recommend that you test both the APK with and without the additional modules, so that it becomes clear whether the additonal modules introduce and/or fix security issues for the base module.
+We recommend that you test both the APK with and without the additional modules, so that it becomes clear whether the additional modules introduce and/or fix security issues for the base module.
 
 ##### Android Manifest
 
