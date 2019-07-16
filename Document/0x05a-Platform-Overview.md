@@ -48,6 +48,37 @@ For example, Android Nougat defines the following system users:
     ...
 ```
 
+#### Android Device Encryption
+
+//INTRO
+
+##### Full-Disk Encryption
+
+//Full-Disk Encryption content
+
+##### File-Based Encryption
+
+//File-Based Encryption content
+
+##### Adiantum 
+
+AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
+However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially those that use Android Go (an Android version targeted at low-end devices), smartwatches or TV's. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
+
+Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES.
+
+Adiantum is a composition of other ciphers: 
+- NH: A hashing function.
+- Poly1305: A message authentication code (MAC).
+- XChaCha12: A stream cipher.
+- AES-256: A single invocation of AES.
+
+Adiantum is a new cipher but it is secure, as long as ChaCha12 and AES-256 are considered secure. Its designers didn't create any new cryptographic primitive, instead they relied on other well-known and thoroughly studied primitives to create a new performant algorithm.
+
+Adiantum is available for Android 9 and higher versions. However, modifications to the kernel and userspace have to be carried out.
+Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices.
+It should be noted that AES runs faster on those devices that have the AES instruction set. In that case the use of Adiantum is highly discouraged.
+
 ### Apps on Android
 
 #### Communication with the Operating System
