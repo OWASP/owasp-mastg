@@ -54,24 +54,11 @@ Because Objective-C and Swift are fundamentally different, the programming langu
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
---TODO add subsections to #### Disassembling and Decompiling
-##### Disassembling Objective-C and Swift Code
-##### Disassembling Native Code
-###### radare2
-###### IDA Pro
-
 ### Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
 Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code.
-
---TODO add "#### Manual (Reversed) Code Review" and subsections after "### Static Analysis"
-#### Manual (Reversed) Code Review
-##### Reviewing Disassembled Objective-C and Swift Code
-##### Reviewing Disassembled Native Code
-###### radare2
-###### IDA Pro
 
 #### Basic Information Gathering
 
@@ -125,12 +112,6 @@ The following command is listing shared libraries:
 ```shell
 $ otool -L <binary>
 ```
-
---TODO restructure "#### Basic Information Gathering" and add subsections
-##### Strings
-##### Call Diagrams and Cross References
-##### API Usage (Bluetooth, NFC, Crypto ...) -> just refer to 0x05d-j/0x06d-j
-##### Check Secure Connections (HTTPS, TLS, cert. pinning, ATS) -> just refer to  0x05g/0x06g
 
 #### Automated Static Analysis
 
@@ -243,21 +224,11 @@ zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
---TODO add "#### Basic Information Gathering" in "### Dynamic Analysis" after "#### Dynamic Analysis on Non-Jailbroken Devices"
-#### Basic Information Gathering
-##### Opened Files
-##### Opened Connections
-##### Loaded Native Libraries
-##### Sandbox Inspection (Files and Permissions)
-
 #### Debugging
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
 The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as `lldb` and `gdb`. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
-
---TODO add "##### Debugging Release Apps" subsection to "#### Debugging" before "##### Debugging with lldb" maybe extract common steps from the lldb section that might be applicable for other debuggers like gdb.
-##### Debugging Release Apps
 
 ##### Debugging with lldb
 
@@ -310,11 +281,6 @@ for armv7.
 Attaching to process 2670...
 ```
 
---TODO add more Debugging subsections to "#### Debugging" after "##### Debugging with lldb"
-##### Debugging with gdb
-##### Debugging with an IDE
-##### Debugging Native Code
-
 #### Tracing
 
 ##### Execution Tracing
@@ -346,19 +312,6 @@ Next, navigate to a new website in Safari. You should see traced function calls 
  21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
-
---TODO add more tracing subsections to "#### Tracing" after "##### Execution Tracing"
-##### Method Tracing (parameters and returns)
-##### Native Libraries Tracing
-
---TODO add "#### Emulation-based Analysis" to "### Dynamic Analysis" after "#### Tracing"
-#### Emulation-based Analysis
-##### iOS Simulator (and simctl)
-##### Corellium ???
-
---TODO add "#### Emulation-based Analysis" to "### Dynamic Analysis" before "### Tampering and Runtime Instrumentation"
-#### Binary Analysis
-##### Symbolic Execution
 
 ### Tampering and Runtime Instrumentation
 
@@ -393,9 +346,6 @@ Inserting a LC_LOAD_DYLIB command for architecture: arm64
 Successfully inserted a LC_LOAD_DYLIB command for arm64
 Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 ```
-
---TODO add more examples of patching an iOS app after "##### Patching Example: Installing Frida Gadget"
-##### Patching Example: Making an App Debuggable
 
 ##### Repackaging and Re-Signing
 
@@ -612,12 +562,6 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
   |    | <_UILayoutGuide: 0x16d92c10; frame = (0 568; 0 0); hidden = YES; layer = <CALayer: 0x16d92cb0>>`
 ```
 
---TODO add "##### Information Gathering" to "#### Dynamic Instrumentation" after "##### Tooling"
-##### Information Gathering
-###### Getting Loaded Libraries
-###### Getting Loaded Classes and their Methods
-###### Getting Runtime Dependencies
-
 ##### Method Hooking
 
 ###### Frida
@@ -709,13 +653,6 @@ Of course, this example illustrates only one of the things you can do with Frida
   ```shell
   cy# printMethods ("AppDelegate")
   ```
-
---TODO add "##### Process Exploration" to "#### Dynamic Instrumentation" after "##### Method Hooking". Use e.g. r2frida for the examples.
-##### Process Exploration
-###### Memory Maps and Inspection
-###### In-Memory Search
-###### Memory Dump
-###### Runtime Reverse Engineering
 
 ### References
 
