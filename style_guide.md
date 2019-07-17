@@ -268,6 +268,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 |  PhoneGap  |       NA        |
 |   Python   |       NA        |
 | repackage  |       NA        |
+|  runtime   |     *same*      |
 | server side|   server-side   |
 |snapshot length|    NA        |
 | use case   |    *same*       |
