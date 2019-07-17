@@ -178,10 +178,6 @@ In order to analyze iOS apps, you should install the following tools on your hos
 
 [Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from a jailbroken device. Please refer to the section "Using Frida-ios-dump" for detailed instructions on how to use it.
 
-##### Ghidra
-
-[Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts.
-
 ##### IDB
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
@@ -1373,7 +1369,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Cydia Impactor - <http://www.cydiaimpactor.com/>
 - Frida - <https://www.frida.re>
 - Frida-ios-dump - <https://github.com/AloneMonkey/frida-ios-dump>
-- Ghidra - <https://ghidra-sre.org/>
 - IDB - <https://www.idbtool.com>
 - iFunBox - <http://www.i-funbox.com/>
 - Introspy - <https://github.com/iSECPartners/Introspy-iOS>

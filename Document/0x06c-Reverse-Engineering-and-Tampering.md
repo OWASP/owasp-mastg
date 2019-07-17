@@ -8,7 +8,9 @@ In this guide, we'll introduce static and dynamic analysis and instrumentation. 
 
 #### Tooling
 
-- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") "is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols."
+Make sure that the following is installed on your system:
+
+- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
 
 - [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "Class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
 
@@ -16,21 +18,25 @@ In this guide, we'll introduce static and dynamic analysis and instrumentation. 
 
 - [MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
-- otool is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
+- [otool](http://www.manpagez.com/man/1/otool/ "otool") is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
 
-#### Reversing Frameworks
+- [nm](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm") is a tool that displays the name list (symbol table) of the given binary.
 
-[Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
+- [Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
 
-#### Commercial Disassemblers
-
-IDA Pro can deal with iOS binaries. It has a built-in iOS debugger. IDA is widely seen as the gold standard for GUI-based interactive static analysis, but it isn't cheap. For the more budget-minded reverse engineer, [Hopper](https://www.hopperapp.com/ "Hopper") offers similar static analysis features.
-
-##### Setting up Xcode and Xcode Tools
---TODO: talk about xcrun swift demangle etc.
+- [Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts.
 
 ##### Building a Reverse Engineering Environment for Free
---TODO merge prev section here ?
+
+Be sure to follow the instructions from the section "Setting up Xcode and Command Line Tools" of chapter "iOS Basic Security Testing". This way you'll have properly installed [Xcode](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") properly installed or install them straight away from your terminal:
+
+```shell
+$ xcode-select --install
+```
+
+- [`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page") can be used invoke Xcode developer tools from the command-line, without having them in the path. For example you may want to use it to locate and run swift-demangle or simctl.
+- swift-demangle is an Xcode tool that demangles Swift symbols. For more information run `xcrun swift-demangle -help` once installed.
+- simctl is an Xcode tool that allows you to interact with iOS simulators via the command line to e.g. manage simulators, launch apps, take screenshots or collect their logs.
 
 ##### Commercial Tools
 
@@ -40,7 +46,7 @@ IDA Pro can deal with iOS binaries. It has a built-in iOS debugger. IDA is widel
 
 ###### Hopper
 
---TODO add description
+[Hopper](https://www.hopperapp.com/ "Hopper) is a reverse engineering tool for macOS and Linux used to disassemble, decompile and debug 32/64bits Intel Mac, Linux, Windows and iOS executables.
 
 #### Disassembling and Decompiling
 
@@ -52,6 +58,7 @@ The majority of this chapter applies to applications written in Objective-C or h
 ##### Disassembling Native Code
 ###### radare2
 ###### IDA Pro
+
 ### Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
@@ -63,6 +70,7 @@ Black box analysis of iOS apps without access to the original source code requir
 ##### Reviewing Disassembled Native Code
 ###### radare2
 ###### IDA Pro
+
 #### Basic Information Gathering
 
 You can use class-dump to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
@@ -231,14 +239,6 @@ zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
-To execute the examples below, you need `FridaGadget.dylib`:
-
-```shell
-$ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
-```
-
-We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") installed.
-
 #### Basic Information Gathering
 
 ##### Opened Files
@@ -347,7 +347,13 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 ### Tampering and Runtime Instrumentation
 #### Patching, Repackaging, and Re-Signing
 
-Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any zip tool to unpack the archive. Copy `FridaGadget.dylib` into the app directory and use optool to add a load command to the "UnCrackable Level 1" binary.
+Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any zip tool to unpack the archive. To execute the examples below, you need `FridaGadget.dylib`:
+
+```shell
+$ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
+```
+
+Copy `FridaGadget.dylib` into the app directory and use optool to add a load command to the "UnCrackable Level 1" binary.
 
 ```shell
 $ unzip UnCrackable_Level1.ipa
@@ -704,8 +710,8 @@ Of course, this example illustrates only one of the things you can do with Frida
 - Cycript - <http://www.cycript.org/>
 - Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
 - Frida - <https://www.frida.re>
+- Ghidra - <https://ghidra-sre.org/>
 - Hopper - <https://www.hopperapp.com/>
-- Hopper Disassembler - <https://www.hopperapp.com/>
 - ios-deploy - <https://github.com/phonegap/ios-deploy>
 - IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa/>
 - ipainstaller - <https://cydia.saurik.com/package/com.slugrail.ipainstaller/>
