@@ -432,37 +432,9 @@ If you haven't already done so, install the Frida Python package on your host ma
 $ pip install frida
 ```
 
-To connect Frida to an iOS app, you need to inject the Frida runtime into the app. This is easy to do on a jailbroken device: just install frida-server through Cydia. Once it is installed, frida-server will automatically run with root privileges, allowing you to easily inject code into any process.
-
-Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering `https://build.frida.re`. You should then be able to find and install the Frida package.
-
-Connect your device via USB and make sure that Frida works by running the `frida-ps` command. This should return a list of processes running on the device:
-
-```shell
-$ frida-ps -U
-PID  Name
----  ----------------
-963  Mail
-952  Safari
-416  BTServer
-422  BlueTool
-791  CalendarWidget
-451  CloudKeychainPro
-239  CommCenter
-764  ContactsCoreSpot
-(...)
-```
-
-We'll demonstrate a few more uses for Frida below, but let's first look at what you should do if you're forced to work on a non-jailbroken device.
-
-
-!!!!! COMPARE with this from 6b:
-
-When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
-
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
 
-Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering <https://build.frida.re.> You should then be able to find and install the Frida package.
+Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering <https://build.frida.re>. You should then be able to find and install the Frida package.
 
 Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
 
@@ -481,7 +453,7 @@ PID  Name
 (...)
 ```
 
-We will demonstrate a few more uses for Frida below.
+We will demonstrate a few more uses for Frida throughout the chapter.
 
 ###### Cycript
 
