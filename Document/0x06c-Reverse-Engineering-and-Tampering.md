@@ -2,7 +2,7 @@
 
 ### Reverse Engineering
 
-iOS reverse engineering is a mixed bag. On one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called via dynamic function pointers called "selectors," which are resolved by name during run time. The advantage of run-time name resolution is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also means that no direct cross-references between methods are available in the disassembler and constructing a flow graph is challenging.
+iOS reverse engineering is a mixed bag. On one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called via dynamic function pointers called "selectors", which are resolved by name during runtime. The advantage of runtime name resolution is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also means that no direct cross-references between methods are available in the disassembler and constructing a flow graph is challenging.
 
 In this guide, we'll introduce static and dynamic analysis and instrumentation. Throughout this chapter, we refer to the [OWASP UnCrackable Apps for iOS]( https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios "OWASP UnCrackable Apps for iOS"), so download them from the MSTG repository if you're planning to follow the examples.
 
@@ -44,7 +44,7 @@ IDA Pro can deal with iOS binaries. It has a built-in iOS debugger. IDA is widel
 
 #### Disassembling and Decompiling
 
-Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at run time. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
+Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at runtime. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
@@ -507,7 +507,7 @@ We will demonstrate a few more uses for Frida below.
 
 ###### Cycript
 
-Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing run-time patches ("Cydia Substrate extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (aka saurik). It injects a JavaScriptCore VM into the running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Accessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included in the iOS chapter.
+Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing runtime patches ("Cydia Substrate extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (aka saurik). It injects a JavaScriptCore VM into the running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Accessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included in the iOS chapter.
 
 First download, unpack, and install the SDK.
 
@@ -523,7 +523,7 @@ $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
 To spawn the interactive Cycript shell, run "./cyript" or "cycript" if Cycript is on your path.
 
 ```shell
-$ cycyript
+$ cycript
 cy#
 
 ```
