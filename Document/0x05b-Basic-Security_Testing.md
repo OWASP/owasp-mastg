@@ -41,28 +41,49 @@ Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/l
 
 #### Testing Device
 
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment. On the other hand, emulators allow you to easily change SDK versions or create multiple devices. A full overview of the pros and cons of each approach is listed in the table below.
+
+| Property                   | Physical                                                                                                                                                                                                                                                     | Emulator                                                                                                                                              |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Chance for bricking        | Soft bricked devices are always possible, but new firmware can typically still be flashed. Hard bricked devices are very rare.                                                                                                                                                   | Emulators can crash or become corrupt, but a new one can be created or a snapshot can be restored.                                                    |
+| Reset                      | Can be restored to factory settings or reflashed.                                                                                                                                                                                                            | Emulators can be deleted and recreated.                                                                                                               |
+| Snapshots                  | Not possible.                                                                                                                                                                                                                                                | Supported, great for malware analysis.                                                                                                                |
+| Speed                      | Much faster than emulators.                                                                                                                                                                                                                                  | Typically slow, but improvements are being made.                                                                                                      |
+| Cost                       | Typically start at $200 for a usable device. You may require different devices, such as one with or without a biometric sensor.                                                                                                                              | Only storage costs.                                                                                                                                   |
+| Ease of rooting            | Highly dependent on the device.                                                                                                                                                                                                                              | Typically rooted by default.                                                                                                                          |
+| Ease of emulator detection | It's not an emulator, so very easy.                                                                                                                                                                                                                          | Many artefacts will exist, making it easy to detect that the app is running in an emulator.                                                           |
+| Ease of root detection     | Easier to hide root,  as many root detection algorithms check for emulator properties. With Magisk Systemless root it's nearly impossible to detect.                                                                                                         | Emulators will almost always trigger root detection algorithms due to the fact that they are built for testing with many artifacts that can be found. |
+| Hardware interaction       | Easy interaction through bluetooth, NFC, 4G, WIFI, biometrics, camera, GPS, gyroscope, receiving SMS, ...                                                                                                                                                                   | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates)                                                                    |
+| API Level support          | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched.         |
+| Native library support     | Native libraries are usually built for ARM devices, so they will work on a physical device.                                                                                                                                                                  | Some emulators run on x86 CPUs, so they may not be able to run packaged native libraries.                                                             |
+
 ##### Testing on a Real Device
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
+Almost any physical device can be used for testing, but there are a few considerations to be made. First, the device needs to be rootable. This is not always the case, and some devices may only be unlocked once the carrier contract has been terminated.
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+The best candidates are flagship Google devices, since all required resources (bootloader, radio, firmware, ...) can be found online, and you can build your own OS from the official sources if you want to. The devices are always popular in the (rooting) community and you will have much support if anything goes wrong. Finally, they have one of the longest support windows of any available devices, which allows you to use the latest Android versions for a few years.
+
+Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
 When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
-##### Testing on the Emulator
+##### Testing on an Emulator
 
-You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
+Multiple emulators exist, once again with their own strengths and weaknesses:
+
+- [Android Virtual Device (AVD)](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices") - The official android emulator, distributed with Android Studio.
+- [Android X86](https://www.android-x86.org/ "Android X86") - An x86 port of the Android code base
+- [Genymotion](https://www.genymotion.com/fun-zone/ "Genymotion") - Mature emulator with many features. Free version available for non-commercial use.
+
+Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others. In the remainder of this guide, we will use the official AVD to perform tests.
+
+AVD supports some hardware emulation, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
+
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
 ```shell
 $ ./android avd
 ```
-
-There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
-
-Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
-
-Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
