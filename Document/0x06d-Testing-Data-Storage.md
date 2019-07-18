@@ -2,7 +2,7 @@
 
 The protection of sensitive data, such as authentication tokens and private information, is key for mobile security. In this chapter, you'll learn about the iOS APIs for local data storage, and best practices for using them.
 
-### Testing Local Data Storage (MSTG‑STORAGE‑1 and MSTG‑STORAGE‑2)
+### Testing Local Data Storage (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 As little sensitive data as possible should be saved in permanent local storage. However, in most practical scenarios, at least some user data must be stored. Fortunately, iOS offers secure storage APIs, which allow developers to use the cryptographic hardware available on every iOS device. If these APIs are used correctly, sensitive data and files can be secured via hardware-backed 256-bit AES encryption.
 
@@ -362,7 +362,7 @@ iOS applications typically use SQLite databases to store data required by the ap
 [needle][files_sql] >
 ```
 
-### Checking Logs for Sensitive Data (MSTG‑STORAGE‑3)
+### Checking Logs for Sensitive Data (MSTG-STORAGE-3)
 
 There are many legitimate reasons for creating log files on a mobile device, including keeping track of crashes or errors that are stored locally while the device is offline (so that they can be sent to the app's developer once online), and storing usage statistics. However, logging sensitive data, such as credit card numbers and session information, may expose the data to attackers or malicious applications.
 Log files can be created in several ways. The following list shows the methods available on iOS:
@@ -401,7 +401,7 @@ In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testi
 
 After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
-### Determining Whether Sensitive Data Is Sent to Third Parties (MSTG‑STORAGE‑4)
+### Determining Whether Sensitive Data Is Sent to Third Parties (MSTG-STORAGE-4)
 
 Various third-party services can be embedded in the app. The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
 The downside to third-party services is that developers don't know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
@@ -423,7 +423,7 @@ All data that's sent to third-party services should be anonymized to prevent exp
 
 All requests made to external services should be analyzed for embedded sensitive information. By using an interception proxy, you can investigate the traffic between the app and the third party's endpoints. When the app is in use, all requests that don't go directly to the server that hosts the main function should be checked for sensitive information that's sent to a third party. This information could be PII in a request to a tracking or ad service.
 
-### Finding Sensitive Data in the Keyboard Cache (MSTG‑STORAGE‑5)
+### Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
 
 Several options for simplifying keyboard input are available to users. These options include autocorrection and spell checking. Most keyboard input is cached by default, in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
@@ -503,7 +503,7 @@ If you must use a non-jailbroken iPhone:
 2. Key in all sensitive data.
 3. Use the app again and determine whether autocorrect suggests previously entered sensitive information.
 
-### Determining Whether Sensitive Data Is Exposed via IPC Mechanisms (MSTG‑STORAGE‑6)
+### Determining Whether Sensitive Data Is Exposed via IPC Mechanisms (MSTG-STORAGE-6)
 
 #### Overview
 
@@ -559,7 +559,7 @@ Keywords to look for:
 
 Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available  to verify IPC usage.
 
-### Checking for Sensitive Data Disclosed Through the User Interface (MSTG‑STORAGE‑7)
+### Checking for Sensitive Data Disclosed Through the User Interface (MSTG-STORAGE-7)
 
 #### Overview
 
@@ -587,7 +587,7 @@ To determine whether the application leaks any sensitive information to the user
 
 If the information is masked by, for example, asterisks or dots, the app isn't leaking data to the user interface.
 
-### Testing Backups for Sensitive Data (MSTG‑STORAGE‑8)
+### Testing Backups for Sensitive Data (MSTG-STORAGE-8)
 
 #### Overview
 
@@ -698,7 +698,7 @@ If you can find such data it should be excluded from the backup as described in 
 
 In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
 
-### Testing Auto-Generated Screenshots for Sensitive Information (MSTG‑STORAGE‑9)
+### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
 #### Overview
 
@@ -748,7 +748,7 @@ If the application caches the sensitive information in a screenshot, the app fai
 
 The application should show a default image as the top view element when the application enters the background, so that the default image will be cached and not the sensitive information that was displayed.
 
-### Testing Memory for Sensitive Data (MSTG‑STORAGE‑10)
+### Testing Memory for Sensitive Data (MSTG-STORAGE-10)
 
 #### Overview
 
@@ -911,8 +911,6 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 
 ### References
 
-- Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>
-
 #### OWASP Mobile Top 10 2016
 
 - M1 - Improper Platform Usage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage>
@@ -920,16 +918,16 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 
 #### OWASP MASVS
 
-- MSTG‑STORAGE‑1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
-- MSTG‑STORAGE‑2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
-- MSTG‑STORAGE‑3: "No sensitive data is written to application logs."
-- MSTG‑STORAGE‑4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
-- MSTG‑STORAGE‑5: "The keyboard cache is disabled on text inputs that process sensitive data."
-- MSTG‑STORAGE‑6: "No sensitive data is exposed via IPC mechanisms."
-- MSTG‑STORAGE‑7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-- MSTG‑STORAGE‑8: "No sensitive data is included in backups generated by the mobile operating system."
-- MSTG‑STORAGE‑9: "The app removes sensitive data from views when moved to the background."
-- MSTG‑STORAGE‑10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
+- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-STORAGE-2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
+- MSTG-STORAGE-3: "No sensitive data is written to application logs."
+- MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+- MSTG-STORAGE-5: "The keyboard cache is disabled on text inputs that process sensitive data."
+- MSTG-STORAGE-6: "No sensitive data is exposed via IPC mechanisms."
+- MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
+- MSTG-STORAGE-8: "No sensitive data is included in backups generated by the mobile operating system."
+- MSTG-STORAGE-9: "The app removes sensitive data from views when moved to the background."
+- MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
 #### CWE
 
@@ -957,3 +955,4 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 #### Others
 
 - Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>
+- Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>

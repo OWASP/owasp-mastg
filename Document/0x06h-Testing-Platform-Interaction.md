@@ -1,6 +1,6 @@
 ## iOS Platform APIs
 
-### Testing App Permissions
+### Testing App Permissions (MSTG-PLATFORM-1)
 
 #### Overview
 
@@ -368,7 +368,7 @@ Next, there is a *visual* way to inspect the status of some app permissions when
 
 For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.
 
-### Testing for Sensitive Functionality Exposure Through IPC
+### Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
 During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
@@ -1516,7 +1516,7 @@ In the output we can see the following:
 
 You see that first a text was copied including the string "hola", after that a URL was copied and finally a picture was copied. Some of them are available via different UTIs. Other apps will consider these UTIs to allow pasting of this data or not.
 
-### Testing Custom URL Schemes
+### Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
 #### Overview
 
@@ -2244,7 +2244,7 @@ myURLscheme://$@$
 
 While the URL scheme is being fuzzed, watch the logs (see the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing") to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
 
-### Testing iOS WebViews
+### Testing iOS WebViews (MSTG-PLATFORM-5)
 
 #### Overview
 
@@ -2528,7 +2528,7 @@ onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1
 hasOnlySecureContent:  false
 ```
 
-### Testing WebView Protocol Handlers
+### Testing WebView Protocol Handlers (MSTG-PLATFORM-6)
 
 #### Overview
 
@@ -2768,7 +2768,7 @@ $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 allowFileAccessFromFileURLs:  1
 ```
 
-### Determining Whether Native Methods Are Exposed Through WebViews
+### Determining Whether Native Methods Are Exposed Through WebViews (MSTG-PLATFORM-7)
 
 #### Overview
 
@@ -2881,7 +2881,7 @@ Of course, you may also use the Expoitation Helper it provides:
 
 See another example for a vulnerable iOS app and function that is exposed to a WebView in [#THIEL] page 156.
 
-### Testing Object Persistence
+### Testing Object Persistence (MSTG-PLATFORM-8)
 
 #### Overview
 
@@ -3105,7 +3105,7 @@ There are several ways to perform dynamic analysis:
 - For the actual persistence: Use the techniques described in the "Data Storage on iOS" chapter.
 - For the serialization itself: use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
-### Testing enforced updating
+### Testing enforced updating (MSTG-ARCH-9)
 
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
 The challenge with iOS however, is that Apple does not provide any APIs yet to automate this proces, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libaries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truely there.
@@ -3128,52 +3128,51 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 ### References
 
 - [#THIEL] Thiel, David. iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399). No Starch Press. Kindle Edition.
-- Security Flaw with UIWebView - [https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c](https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c)
-- Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - [https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html](https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html)
+- Security Flaw with UIWebView - <https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c>
+- Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - <https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html>
 
 #### OWASP Mobile Top 10 2016
 
-- M1 - Improper Platform Usage - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage](https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage)
-- M7 - Poor Code Quality - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality](https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality)
+- M1 - Improper Platform Usage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage>
+- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
 
 #### OWASP MASVS
 
-- V1.9: "A mechanism for enforcing updates of the mobile app exists."
-- V6.1: "The app only requests the minimum set of permissions necessary."
-- V6.2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- V6.3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
-- V6.4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
-- V6.5: "JavaScript is disabled in WebViews unless explicitly required."
-- V6.6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
-- V6.7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-- V6.8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
+- MSTG-PLATFORM-1: "The app only requests the minimum set of permissions necessary."
+- MSTG-PLATFORM-3: "The app does not export sensitive functionality via custom URL schemes, unless these mechanisms are properly protected."
+- MSTG-PLATFORM-4: "The app does not export sensitive functionality through IPC facilities, unless these mechanisms are properly protected."
+- MSTG-PLATFORM-5: "JavaScript is disabled in WebViews unless explicitly required."
+- MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
+- MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
+- MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
 
 #### CWE
 
-- CWE-79 - Improper Neutralization of Input During Web Page Generation - [https://cwe.mitre.org/data/definitions/79.html](https://cwe.mitre.org/data/definitions/79.html)
-- CWE-200 - Information Leak / Disclosure - [https://cwe.mitre.org/data/definitions/200.html](https://cwe.mitre.org/data/definitions/200.html)
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme - [https://cwe.mitre.org/data/definitions/939.html](https://cwe.mitre.org/data/definitions/939.html)
+- CWE-79 - Improper Neutralization of Input During Web Page Generation - <https://cwe.mitre.org/data/definitions/79.html>
+- CWE-200 - Information Leak / Disclosure - <https://cwe.mitre.org/data/definitions/200.html>
+- CWE-939 - Improper Authorization in Handler for Custom URL Scheme - <https://cwe.mitre.org/data/definitions/939.html>
 
 #### Tools
 
-- Apple App Site Association (AASA) Validator - [https://branch.io/resources/aasa-validator](https://branch.io/resources/aasa-validator)
-- Frida - [https://www.frida.re/](https://www.frida.re/)
-- frida-trace - [https://www.frida.re/docs/frida-trace/](https://www.frida.re/docs/frida-trace/)
-- objection - [https://github.com/sensepost/objection](https://github.com/sensepost/objection)
-- ObjC Method Observer - [https://codeshare.frida.re/@mrmacete/objc-method-observer/](https://codeshare.frida.re/@mrmacete/objc-method-observer/)
-- IDB - [https://www.idbtool.com/](https://www.idbtool.com/)
-- Needle - [https://github.com/mwrlabs/needle](https://github.com/mwrlabs/needle)
-- Radare2 - [https://rada.re](https://rada.re)
+- Apple App Site Association (AASA) Validator - <https://branch.io/resources/aasa-validator>
+- Frida - <https://www.frida.re/>
+- frida-trace - <https://www.frida.re/docs/frida-trace/>
+- IDB - <https://www.idbtool.com/>
+- Needle - <https://github.com/mwrlabs/needle>
+- Objection - <https://github.com/sensepost/objection>
+- ObjC Method Observer - <https://codeshare.frida.re/@mrmacete/objc-method-observer/>
+- Radare2 - <https://rada.re>
 
 #### Regarding Object Persistence in iOS
 
-- [https://developer.apple.com/documentation/foundation/NSSecureCoding](https://developer.apple.com/documentation/foundation/NSSecureCoding)
-- [https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift](https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift)
-- [https://developer.apple.com/documentation/foundation/nskeyedarchiver](https://developer.apple.com/documentation/foundation/nskeyedarchiver)
-- [https://developer.apple.com/documentation/foundation/nscoding?language=swift](https://developer.apple.com/documentation/foundation/nscoding?language=swift)
-- [https://developer.apple.com/documentation/foundation/NSSecureCoding?language=swift](https://developer.apple.com/documentation/foundation/NSSecureCoding?language=swift)
-- [https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types)
-- [https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types](https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types)
-- [https://developer.apple.com/documentation/foundation/jsonencoder](https://developer.apple.com/documentation/foundation/jsonencoder)
-- [https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4](https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4)
-- [https://developer.apple.com/documentation/foundation/xmlparser](https://developer.apple.com/documentation/foundation/xmlparser)
+- <https://developer.apple.com/documentation/foundation/NSSecureCoding>
+- <https://developer.apple.com/documentation/foundation/archives_and_serialization?language=swift>
+- <https://developer.apple.com/documentation/foundation/nskeyedarchiver>
+- <https://developer.apple.com/documentation/foundation/nscoding?language=swift>
+- <https://developer.apple.com/documentation/foundation/NSSecureCoding?language=swift>
+- <https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types>
+- <https://developer.apple.com/documentation/foundation/archives_and_serialization/using_json_with_custom_types>
+- <https://developer.apple.com/documentation/foundation/jsonencoder>
+- <https://medium.com/if-let-swift-programming/migrating-to-codable-from-nscoding-ddc2585f28a4>
+- <https://developer.apple.com/documentation/foundation/xmlparser>

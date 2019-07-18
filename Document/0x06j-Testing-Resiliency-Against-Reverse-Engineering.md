@@ -1,6 +1,6 @@
 ## iOS Anti-Reversing Defenses
 
-### Jailbreak Detection
+### Jailbreak Detection (MSTG-RESILIENCE-1)
 
 #### Overview
 
@@ -266,7 +266,7 @@ script.load()
 sys.stdin.read()
 ```
 
-### Anti-Debugging Checks
+### Anti-Debugging Checks (MSTG-RESILIENCE-2)
 
 #### Overview
 
@@ -378,7 +378,7 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 [needle][script_jailbreak-detection-bypass] > run
 ```
 
-### File Integrity Checks
+### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
 #### Overview
 
@@ -520,7 +520,7 @@ A similar approach works. Answer the following questions:
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms??
 
-### Device Binding
+### Device Binding (MSTG-RESILIENCE-10)
 
 #### Overview
 
@@ -583,22 +583,22 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 
 ### References
 
-- Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - [http://delaat.net/rp/2015-2016/p51/report.pdf](http://delaat.net/rp/2015-2016/p51/report.pdf)
+- Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering)
+- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### OWASP MASVS
 
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-- V8.9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-- V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-- V8.12: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
+- MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
+- MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
+- MSTG-RESILIENCE-3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
+- MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
 
 #### Tools
 
-- Frida - [http://frida.re/](http://frida.re/)
-- Keychain Dumper - [https://github.com/ptoomey3/Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper)
-- Appsync Unified - [https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified)
+- Appsync Unified - <https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified>
+- Frida - <http://frida.re/>
+- Keychain Dumper - <https://github.com/ptoomey3/Keychain-Dumper>
