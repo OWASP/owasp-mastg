@@ -463,14 +463,12 @@ You can retrieve it yourself with your browser or use the [Apple App Site Associ
                 "/shop/product/*",
                 "/shop/bag/shared_bag/*",
                 "/shop/order/list",
-                ...
                 "/today",
-                ...
                 "/shop/watch/watch-accessories",
                 "/shop/watch/watch-accessories/*",
                 "/shop/watch/bands",
-                ...
-            }
+            ] } ] }
+}
 ```
 
 The "details" key inside "applinks" contains a JSON representation of an array that might contain one or more apps. The "appID" should match the “application-identifier” key from the app’s entitlements. Next, using the "paths" key, the developers can specify certain paths to be handled on a per app basis. Some apps, like Telegram use a standalone * (`"paths": ["*"]`) in order to allow all possible paths. Only if specific areas of the website should **not** be handled by some app, the developer can restrict access by excluding them by prepending a `"NOT "` (note the whitespace after the T) to the corresponding path. Also remember that the system will look for matches by following the order of the dictionaries in the array (first match wins).
@@ -3108,14 +3106,14 @@ There are several ways to perform dynamic analysis:
 ### Testing enforced updating (MSTG-ARCH-9)
 
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
-The challenge with iOS however, is that Apple does not provide any APIs yet to automate this proces, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libaries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truely there.
+The challenge with iOS however, is that Apple does not provide any APIs yet to automate this process, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libaries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truly there.
 
 Please note that newer versions of an application will not fix security issues that are living in the back-ends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
 Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
 
 #### Static Analysis
 
-First see whethere there is an update mechanism at all: if it is not yet present, it might mean that users cannot be forced to update.
+First see whether there is an update mechanism at all: if it is not yet present, it might mean that users cannot be forced to update.
 If the mechanism is present, see whether it enforces "always latest" and whether that is indeed in line with the business strategy. Otherwise check if the mechanism is supporting to update to a given version.
 Make sure that every entry of the application goes through the updating mechanism in order to make sure that the update-mechanism cannot be bypassed.
 
