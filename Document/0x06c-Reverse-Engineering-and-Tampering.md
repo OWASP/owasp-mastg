@@ -237,7 +237,7 @@ iOS ships with the console app debugserver, which allows remote debugging via gd
 To obtain the executable, mount the following DMG image:
 
 ```shell
-/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/<target-iOS-version/DeveloperDiskImage.dmg
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/<target-iOS-version>/DeveloperDiskImage.dmg
 ```
 
 You'll find the debugserver executable in the `/usr/bin/` directory on the mounted volume. Copy it to a temporary directory, then create a file called `entitlements.plist` with the following content:
