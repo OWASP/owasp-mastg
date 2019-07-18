@@ -110,8 +110,8 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 There are many tools and frameworks used throughout this guide to assess the security of Android applications. In the next sections, you will learn more about some of the commands and interesting use cases. Please check the official documentation for installation instructions of the following tools/APKs:
 
 - APK Extractor: App to extract APKs without root.
-- Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#####Frida "Frida section") section below for more information.
-- Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#####Drozer "Drozer section") section below for more information.
+- Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#Frida "Frida section") section below for more information.
+- Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#Drozer "Drozer section") section below for more information.
 
 ##### Xposed
 
@@ -255,7 +255,7 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. See [Manual Static Analysis](#####manual-static-analysis "Manual Static Analysis") for more information about usage.
+This should copy `apkx` to `/usr/local/bin`. See [Manual Static Analysis](#manual-static-analysis "Manual Static Analysis") for more information about usage.
 
 ##### Burp Suite
 
@@ -502,7 +502,7 @@ Frida also provides bindings for various languages, including Python, C, NodeJS,
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/tutorials.html#ota-installation "OTA Installation").
 
-Learn more about [rooting your device with Magisk](######rooting-with-magisk "Rooting with Magisk").
+Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting with Magisk").
 
 ##### MobSF
 
@@ -1314,7 +1314,7 @@ package:/data/app/com.awesomeproject-1/base.apk
 $ adb pull /data/app/com.awesomeproject-1/base.apk
 ```
 
-`apkx` provides an easy method of retrieving an APK's source code via the command line. It also packages `dex2jar` and CFR and automates the extraction, conversion, and decompilation steps. See [Apkx installation instructions](#####Apkx "Apkx installation instructions"). Once installed, run it against a local APK as follows:
+`apkx` provides an easy method of retrieving an APK's source code via the command line. It also packages `dex2jar` and CFR and automates the extraction, conversion, and decompilation steps. See [Apkx installation instructions](#Apkx "Apkx installation instructions"). Once installed, run it against a local APK as follows:
 
 ```shell
 $ apkx UnCrackable-Level1.apk
