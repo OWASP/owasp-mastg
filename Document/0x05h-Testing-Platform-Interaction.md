@@ -193,7 +193,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
         ActivityCompat.requestPermissions(secureActivity.this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-        // MY_PERMISSIONS_REQUEST_WRITE_EXTERAL_STORAGE will be the app-defined int constant.
+        // MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE will be the app-defined int constant.
         // The callback method gets the result of the request.
     }
 } else {
@@ -483,7 +483,7 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 App links can be used.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 (API level 23) App links can be used. App lnks, in contrast to deep links, require the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first by means of using `android:autoVerify="true"` in the intentfilter.
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
 
@@ -555,6 +555,61 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 ```
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
+
+### Testing for insecure Configuration of Instant Apps (MSTG‑ARCH‑1, MSTG‑ARCH‑7)
+
+#### Overview
+
+With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview) you can now create Instant apps. An instant apps can be instantly launched from a browser or the "try now" button from the app store from Android 6 (API level 23) onward. They do not require any form of installation. There are a few challenges with an instant app:
+
+- There is a limited amount of size you can have with an instant app (max 10 mb).
+- Only a reduced number of permissions can be used, which are documented at [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions "Permission documentation for Android Instant Apps").
+
+The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
+
+Note: Instant apps require an app-bundle. App-bundles are described in the [App Bundle](#App Bundle) section.
+
+#### Static Analysis
+
+Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the app bundle. When you analyze the app bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entrypoints, which entrypoints are set (by means of `<data android:path="</PATH/HERE>" />`).
+
+Now follow the entrypoints, like you would do for any Activity and check:
+
+- Is there any data retrieved by the app which should require privacy protection of that data? If so, are all required controls in place?
+- Are all communications secured?
+- When you need more functionalities, are the right security controls downloaded as well?
+
+#### Dynamic Analysis
+
+There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
+
+The installation of instant app support is taken care off through the following command:
+
+```shell
+$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
+```
+
+Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
+
+After the preparation, you can test instant apps locally on a device running Android 8.1 (API Level 27) or later. The app can be tested in different ways:
+
+- Test the app locally:
+  Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
+  
+  ```shell
+  $ ia run output-from-build-command <app-artifact>
+  ```
+
+- Test the app using the Play Console:
+  1. Upload your app bundle to the Google Play Console
+  2. Prepare the uploaded bundle for a release to the internal test track.
+  3. Sign into an internal tester account on a device, then launch your instant experience from either an external prepared link or via the `try now` button in the App store from the testers account.
+
+Now that you can test the app, check whether:
+
+- There are any data which require privacy controls and whether these controls are in place.
+- All communications are sufficiently secured.
+- When you need more functionalities, are the right security controls downloaded as well for these functionalities?
 
 ### Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
@@ -1386,6 +1441,12 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - <https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions>
 - <https://developer.android.com/guide/topics/permissions/overview>
 - <https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct>
+
+#### Android Bundles and Instant Apps
+
+- <https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle>
+- <https://developer.android.com/topic/google-play-instant/guides/multiple-entry-points>
+- <https://developer.android.com/studio/projects/dynamic-delivery>
 
 #### Android permissions changes in Android 8
 
