@@ -1292,7 +1292,7 @@ Starting from 0x000017dc, you can see a series of decoded values compared with v
 
 ![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
 
-Even though this doesn't look like highly sophisticated stuff, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x00001760) and the code that prints the "Product activation passed" message (0x00001840) to determine the constraints on each byte of the input string.
+Even though this doesn't look highly sophisticated, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x00001760) and the code that prints the "Product activation passed" message (0x00001840) to determine the constraints on each byte of the input string.
 
 ![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
 
