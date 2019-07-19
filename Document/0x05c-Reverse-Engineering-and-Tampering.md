@@ -19,7 +19,7 @@ Reverse engineering is the process of taking an app apart to find out how it wor
 Make sure that the following is installed on your system (see the "Android Basic Security Testing" chapter for installation instructions):
 
 - The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform.
-- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures.
+- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. You'll need it if you plan to deal with native code, e.g. to inspect it or to be able to debug or trace it (the NDK contains useful prebuilt versions of such as gdbserver or strace for various architectures).
 
 In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon](https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](https://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
 
@@ -694,7 +694,7 @@ The process is now suspended, and `gdbserver` is listening for debugging clients
 $ adb forward tcp:1234 tcp:1234
 ```
 
-You'll now use the prebuilt version of `gdb` included in the NDK toolchain (if you haven't already, follow the instructions above to install it).
+You'll now use the prebuilt version of `gdb` included in the NDK toolchain.
 
 ```shell
 $ $TOOLCHAIN/bin/gdb libnative-lib.so
@@ -1863,7 +1863,6 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 #### Tools
 
-- Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
 - Angr - <https://angr.io/>
 - apktool - <https://ibotpeaches.github.io/apktool/>
 - apkx - <https://github.com/b-mueller/apkx>
