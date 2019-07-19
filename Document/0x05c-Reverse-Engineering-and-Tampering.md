@@ -471,6 +471,36 @@ For enterprise tools, see the section "Static Source Code Analysis" in the chapt
 
 ### Dynamic Analysis
 
+Dynamic Analysis tests the mobile app by executing and running the app binary and analyzing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
+
+- Business logic flaws
+- Vulnerabilities in the tested environments
+- Weak input validation and bad input/output encoding as they are processed through one or multiple services
+
+Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
+
+#### Dynamic Analysis on Non-Rooted Devices
+
+Non-rooted devices provide the tester with two benefits:
+
+- Replicate an environment that the application is intended to run on.
+- Thanks to tools like objection, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app).
+
+In order to dynamically analyze the application, you can also rely on [objection](https://github.com/sensepost/objection "objection") which is leveraging Frida. However, in order to be able to use objection on non-rooted devices you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library. Objection communicates then using a Python API with the mobile phone through the installed Frida gadget.
+
+In order to accomplish this, the following commands can set you up and running:
+
+```bash
+# Download the Uncrackable APK
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
+# Patch the APK with the Frida Gadget
+$ objection patchapk --source UnCrackable-Level1.apk
+# Install the patched APK on the android phone
+$ adb install UnCrackable-Level1.objection.apk
+# After running the mobile phone, objection will detect the running frida-server through the APK
+$ objection explore
+```
+
 #### Debugging
 
 So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
