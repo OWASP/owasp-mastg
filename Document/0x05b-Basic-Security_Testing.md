@@ -206,7 +206,7 @@ Comprehensive documentation, including an installation guide, tutorials, and usa
 
 [Apktool](https://ibotpeaches.github.io/Apktool/) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
 
-When run with default command line flags, apktool automatically decodes the app manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+When run with default command line flags, apktool automatically decodes the Android Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
 
 ```shell
 $ apktool d base.apk
@@ -237,7 +237,7 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 
 The unpacked files are:
 
-- AndroidManifest.xml: The decoded app manifest file, which can be opened and edited in a text editor.
+- AndroidManifest.xml: The decoded Android Manifest file, which can be opened and edited in a text editor.
 - apktool.yml: file containing information about the output of apktool
 - original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
 - res: directory containing the app’s resources

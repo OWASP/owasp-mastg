@@ -226,7 +226,7 @@ All these elements are provided by the Android operating system, in the form of 
 
 Activities make up the visible part of any app. There is one activity per screen, so an app with three different screens implements three different activities. Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views, and layouts.
 
-Each activity needs to be declared in the app manifest with the following syntax:
+Each activity needs to be declared in the Android Manifest with the following syntax:
 
 ```xml
 <activity android:name="ActivityName">
@@ -338,7 +338,7 @@ Implicit intents are sent to the OS to perform a given action on a given set of 
     Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
 ```
 
-An *intent filter* is an expression in app manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
+An *intent filter* is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
 
 Android uses intents to broadcast messages to apps (such as an incoming call or SMS) important power supply information (low battery, for example), and network changes (loss of connection, for instance). Extra data may be added to intents (through `putExtra`/`getExtras`).
 
@@ -355,7 +355,7 @@ To improve security and privacy, a Local Broadcast Manager is used to send and r
 
 Broadcast Receivers are components that allow apps to receive notifications from other apps and from the system itself. With it, apps can react to events (internal, initiated by other apps, or initiated by the operating system). They are generally used to update user interfaces, start services, update content, and create user notifications.
 
-Broadcast Receivers must be declared in the app manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
+Broadcast Receivers must be declared in the Android Manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
 
