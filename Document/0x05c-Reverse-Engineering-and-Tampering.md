@@ -234,7 +234,34 @@ $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
 [0x00000e3c]>
 ```
 
-Note that for bigger binaries, starting directly with the flag `-A` might be very time consuming as well as unnecessary. Depending on your purpose, you may open the binary without this option and then apply a less complex analysis like `aa` or a more concrete type of analysis such as the ones offered in `aa` (basic analysis of all functions) or `aac` (analyze function calls). Enter `aa?` once in radare2 for the full list of commands.
+Note that for bigger binaries, starting directly with the flag `-A` might be very time consuming as well as unnecessary. Depending on your purpose, you may open the binary without this option and then apply a less complex analysis like `aa` or a more concrete type of analysis such as the ones offered in `aa` (basic analysis of all functions) or `aac` (analyze function calls). Remember to always type `?` to get the help or attach it to commands to see even more command or options. For example, if you enter `aa?` you'll get the full list of analysis commands.
+
+```bash
+[0x00001760]> aa?
+Usage: aa[0*?]   # see also 'af' and 'afna'
+| aa                  alias for 'af@@ sym.*;af@entry0;afva'
+| aaa[?]              autoname functions after aa (see afna)
+| aab                 abb across bin.sections.rx
+| aac [len]           analyze function calls (af @@ `pi len~call[1]`)
+| aac* [len]          flag function calls without performing a complete analysis
+| aad [len]           analyze data references to code
+| aae [len] ([addr])  analyze references with ESIL (optionally to address)
+| aaf[e|t]            analyze all functions (e anal.hasnext=1;afr @@c:isq) (aafe=aef@@f)
+| aaF [sym*]          set anal.in=block for all the spaces between flags matching glob
+| aaFa [sym*]         same as aaF but uses af/a2f instead of af+/afb+ (slower but more accurate)
+| aai[j]              show info of all analysis parameters
+| aan                 autoname functions that either start with fcn.* or sym.func.*
+| aang                find function and symbol names from golang binaries
+| aao                 analyze all objc references
+| aap                 find and analyze function preludes
+| aar[?] [len]        analyze len bytes of instructions for references
+| aas [len]           analyze symbols (af @@= `isq~[0]`)
+| aaS                 analyze all flags starting with sym. (af @@ sym.*)
+| aat [len]           analyze all consecutive functions in section
+| aaT [len]           analyze code after trap-sleds
+| aau [len]           list mem areas (larger than len bytes) not covered by functions
+| aav [sat]           find values referencing a specific section or map
+```
 
 There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from an [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) pretty summarizes this.
 
