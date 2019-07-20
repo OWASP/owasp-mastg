@@ -213,7 +213,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ###### radare2
 
-To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The flag `-A` runs the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "Android Basic Security Testing" already introduces radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to _analyze all referenced code_.
 
 ```shell
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
