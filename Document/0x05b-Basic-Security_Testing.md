@@ -737,7 +737,7 @@ To print all the strings use `rabin2 -Z` or the command `iz` (or the less verbos
 
 Most of the time you can append especial options to your commands such as `q` to make the command less verbose (quiet) or `j` to give the output in JSON format (use `~{}` to prettify the JSON string).
 
-```json
+```shell
 [0x000009c8]> izj~{}
 [
   {
