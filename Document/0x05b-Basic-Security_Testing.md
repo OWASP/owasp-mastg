@@ -289,7 +289,7 @@ Now you are ready to begin analyzing apps. A good first step is to enumerate the
 $ dz> run app.package.attacksurface <package>
 ```
 
-Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
+Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activities, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
 
 For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
 
