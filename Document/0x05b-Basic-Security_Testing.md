@@ -364,7 +364,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 - Frida is standalone, all you need is to run the frida-server binary from a known location in your target Android device (see "Installing Frida" below). This means that, in contrast to Xposed, it is not _deep_ installed in the target OS.
 - Reversing an app is an iterative process. As a consequence of the previous point, you obtain a shorter feedback loop when testing as you don't need to (soft) reboot to apply or simply update your hooks. So you might prefer to use Xposed when implementing more permanent hooks.
-- You may inject and update your Frida JavaScript code on the fly at any point during the runtime of your process (similarly to cycript on iOS). This way you can perform the so-called _early instrumentation_ by letting Frida spawn your app or you may prefer to attach to a running app that you might have brought to a certain state.
+- You may inject and update your Frida JavaScript code on the fly at any point during the runtime of your process (similarly to Cycript on iOS). This way you can perform the so-called _early instrumentation_ by letting Frida spawn your app or you may prefer to attach to a running app that you might have brought to a certain state.
 
 > Note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
@@ -518,7 +518,7 @@ public final void android.view.View.cancelPendingInputEvents()
 
 ###### Frida Bindings
 
-Frida can be also used from other languages which is very interesting for scripting purposes, the provided bindings include Python, C, NodeJS, and Swift. 
+Frida can be also used from other languages which is very interesting for scripting purposes, the provided bindings include Python, C, NodeJS, and Swift.
 
 Taking Python as an example, the first thing to note is that no further installation steps are required. Start your Python script with `import frida` and you're ready to go. See the following script that simply runs the previous JavaScript snippet:
 
