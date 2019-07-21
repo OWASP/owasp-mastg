@@ -369,21 +369,25 @@ The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is 
 
 ###### Installing Frida
 
-To install Frida locally, simply use PyPI:
+To install Frida locally, simply run:
 
 ```shell
-$ sudo pip install frida
+$ pip install frida-tools
 ```
 
-Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
+Or refer to the [installation page](https://www.frida.re/docs/installation/ "Frida Installation") for more details.
+
+Now it's time to setup your Android device. Assuming you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device").
+
+> Note that your Android device doesn't need to be rooted to run Frida, but it's the easiest setup.
+
+We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
 ```shell
 $ frida --version
-9.1.10
-$ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
 ```
 
-Or you can run the following command to automatically detect frida version and download the right frida-server binary:
+Or you can run the following command to automatically detect Frida version and download the right frida-server binary:
 
 ```shell
 $ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
