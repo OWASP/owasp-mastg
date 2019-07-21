@@ -346,9 +346,7 @@ Other resources where you might find useful information are:
 
 ##### Frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1229>
-
-[Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX." Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
+[Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX". Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
 
 Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
 In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app, Frida uses ptrace to hijack a thread of a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server that's running on the device, and loads a dynamically generated library file that contains the Frida agent and instrumentation code. The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
@@ -359,15 +357,15 @@ Frida injects a complete JavaScript runtime into the process, along with a power
 
 *FRIDA Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
 
-Here are some more APIs FRIDA offers on Android:
+Here are some more APIs Frida offers on Android:
 
-- Instantiate Java objects and call static and non-static class methods
-- Replace Java method implementations
-- Enumerate live instances of specific classes by scanning the Java heap (Dalvik only)
-- Scan process memory for occurrences of a string
-- Intercept native function calls to run your own code at function entry and exit
+- Instantiate Java objects and call static and non-static class methods.
+- Replace Java method implementations.
+- Enumerate live instances of specific classes by scanning the Java heap (Dalvik only).
+- Scan process memory for occurrences of a string.
+- Intercept native function calls to run your own code at function entry and exit.
 
-The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limited support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
+The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)).
 
 ###### Installing Frida
 
