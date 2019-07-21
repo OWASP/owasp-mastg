@@ -419,7 +419,7 @@ $ frida-ps -U
 (...)
 ```
 
-The -U option lets Frida search for USB devices or emulators.
+The `-U` option lets Frida search for USB devices or emulators.
 
 To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
@@ -429,7 +429,7 @@ $ frida-trace -i "open" -U com.android.chrome
 
 This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
 
-Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
+Use the Frida CLI tool (`frida`) to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
 ```shell
 $ frida -U com.android.chrome
@@ -441,7 +441,7 @@ With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to 
 $ frida -U -l myscript.js com.android.chrome
 ```
 
-Frida also provides a Java API, which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
+Frida also provides a [Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API"), which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
 
 ```java
 Java.perform(function () {
@@ -453,7 +453,7 @@ Java.perform(function () {
 });
 ```
 
-The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume()` function. The new `onResume()` function implementation prints a notice to the console and calls the original `onResume()` method by invoking `this.onResume()` every time an activity is resumed in the app.
+The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function implementation prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
 Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
@@ -484,7 +484,7 @@ The output would look like this:
 [*] Finished heap search
 ```
 
-You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods()` from the wrapper's `class` property:
+You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods` from the wrapper's `class` property:
 
 ```java
 Java.perform(function () {
@@ -496,7 +496,7 @@ Java.perform(function () {
 });
 ```
 
-Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
+Frida can be also used from other languages which is very interesting for scripting purposes, the provided bindings include Python, C, NodeJS, and Swift.
 
 ##### Magisk
 
