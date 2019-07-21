@@ -151,7 +151,7 @@ echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
 
-Please note that Xposed, as of early 2019, does not work on Android Pie yet.
+Please note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
 #### Recommended Tools - Host computer
 
