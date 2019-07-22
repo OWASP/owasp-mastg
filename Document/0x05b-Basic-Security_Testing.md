@@ -198,11 +198,13 @@ Since version 8 Angr is based on Python 3, and it's available from PyPI. With pi
 $ mkvirtualenv --python=$(which python3) angr && python -m pip install angr
 ```
 
-Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
+Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else. Alternatively, there is always a docker container which you can use.
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
 //TODO: 1235: what are the basic commands / features by starting with repl and then script
+- angr installation with repl
+- angr examples based on angr-docs
 //TODO: 1235: investigate on iOS
 
 ##### Apktool
