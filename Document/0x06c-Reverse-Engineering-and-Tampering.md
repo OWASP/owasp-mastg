@@ -40,7 +40,7 @@ $ xcode-select --install
 
 ##### Commercial Tools
 
-Although working with a completely free setup is possible, you should consider investing in commercial tools. The main advantage of these tools is convenience: they come with a nice GUI, lots of automation, and end user support. If you earn your daily bread as a reverse engineer, they will save you a lot of time.
+Building a reverse engineering environment for free is possible. However, there are some commercial alternatives. The most commonly used are:
 
 - [IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") can deal with iOS binaries. It has a built-in iOS debugger. IDA is widely seen as the gold standard for GUI-based interactive static analysis, but it isn't cheap. For the more budget-minded reverse engineer, [Hopper](https://www.hopperapp.com/ "Hopper") offers similar static analysis features.
 
@@ -285,7 +285,7 @@ Attaching to process 2670...
 
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
 
-In the following examples, we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in the previous section to repackage the Safari app.
+In the following examples, we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in section [Repackaging and Re-Signing](#Repackaging-and-Re-Signing "Repackaging and Re-Signing") to repackage the Safari app.
 
 Frida comes with `frida-trace`, a function tracing tool. `frida-trace` accepts Objective-C methods via the `-m` flag. You can pass it wildcards as well-given `-[NSURL *]`, for example, `frida-trace` will automatically install hooks on all `NSURL` class selectors. We'll use this to get a rough idea about which library functions Safari calls when the user opens a URL.
 
@@ -455,70 +455,69 @@ We will demonstrate a few more uses for Frida throughout the chapter.
 
 ###### Cycript
 
-Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing runtime patches ("Cydia Substrate extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C. Cycript is a scripting language developed by Jay Freeman (aka saurik). It injects a JavaScriptCore VM into the running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Accessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included in the iOS chapter.
+Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing Cydia runtime patches (the so-called "Cydia Substrate Extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C.
 
-First download, unpack, and install the SDK.
+Cycript is a scripting language developed by Jay Freeman (aka Saurik). It injects a JavaScriptCore VM into a running process. Via the Cycript interactive console, users can then manipulate the process with a hybrid Objective-C++ and JavaScript syntax. Accessing and instantiating Objective-C classes inside a running process is also possible. Examples of Cycript usage are included across the iOS chapters.
+
+In order to install Cycript, first download, unpack, and install the SDK.
 
 ```shell
-
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
 $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
-
 ```
 
-To spawn the interactive Cycript shell, run "./cyript" or "cycript" if Cycript is on your path.
+To spawn the interactive Cycript shell, run "./cycript" or "cycript" if Cycript is on your path.
 
 ```shell
 $ cycript
 cy#
-
 ```
 
-To inject into a running process, we first need to find the process ID (PID). Running "cycript -p" with the PID injects Cycript into the process. To illustrate, we will inject into SpringBoard.
+To inject into a running process, we first need to find the process ID (PID). Run the application and make sure the app is in the foreground. Running `cycript -p <PID>` injects Cycript into the process. To illustrate, we will inject into SpringBoard (which is always running).
 
 ```shell
-
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
 cy#
-
 ```
 
-We have injected Cycript into SpringBoard. Let's try to trigger an alert message on SpringBoard with Cycript.
+One of the first things you can try out is to get the application instance (`UIApplication`), you can use Objective-C syntax:
 
 ```shell
+cy# [UIApplication sharedApplication]
+cy# var a = [UIApplication sharedApplication]
+```
 
+Use that variable now to get the application's delegate class:
+
+```shell
+cy# a.delegate
+```
+
+Let's try to trigger an alert message on SpringBoard with Cycript.
+
+```shell
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
 cy# [alertView release]
-
 ```
 
 <img src="Images/Chapters/0x06c/cycript_sample.png" alt="Cycript Alert Sample" width="250">
 
-Find the document directory with Cycript:
+Find the app's document directory with Cycript:
 
 ```shell
-
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
-
 ```
 
-Use the following command to get the application's delegate class:
-
-```shell
-cy# [UIApplication sharedApplication].delegate
-```
-
-The command `[[UIApp keyWindow] recursiveDescription].toString()` returns the view hierarchy of keyWindow. The description of every subview and sub-subview of keyWindow is shown. The indentation space reflects the relationships between views. For example, UILabel, UITextField, and UIButton are subviews of UIView.
+The command `[[UIApp keyWindow] recursiveDescription].toString()` returns the view hierarchy of `keyWindow`. The description of every subview and sub-subview of `keyWindow` is shown. The indentation space reflects the relationships between views. For example, `UILabel`, `UITextField`, and `UIButton` are subviews of `UIView`.
 
 ```xml
-
 cy# [[UIApp keyWindow] recursiveDescription].toString()
 `<UIWindow: 0x16e82190; frame = (0 0; 320 568); gestureRecognizers = <NSArray: 0x16e80ac0>; layer = <UIWindowLayer: 0x16e63ce0>>
   | <UIView: 0x16e935f0; frame = (0 0; 320 568); autoresize = W+H; layer = <CALayer: 0x16e93680>>
@@ -531,6 +530,15 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
   |    | <_UILayoutGuide: 0x16d92a00; frame = (0 0; 0 20); hidden = YES; layer = <CALayer: 0x16e936b0>>
   |    | <_UILayoutGuide: 0x16d92c10; frame = (0 568; 0 0); hidden = YES; layer = <CALayer: 0x16d92cb0>>`
 ```
+
+You can also use Cycript's built-in functions such as `choose` which searches the heap for instances of the given Objective-C class:
+
+```shell
+cy# choose(SBIconModel)
+[#"<SBIconModel: 0x1590c8430>"]
+```
+
+Learn more in the [Cycript Manual](http://www.cycript.org/manual/ "Cycript Manual").
 
 ##### Method Hooking
 
@@ -574,9 +582,11 @@ frida_code = """
 
                 // Create an immutable ObjC string object from a JS string object.
                 var str_url = NSString.stringWithString_(myNSURL.toString());
+
+                // Call the iOS NSLog function to print the URL to the iOS device logs
                 NSLog(str_url);
 
-                // Print the URL to the standard console
+                // Use Frida's console.log to print the URL to your terminal
                 console.log(str_url);
 
             } finally {
@@ -599,35 +609,11 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
-###### Cycript
-
-- Install the application that will be hooked.
-- Run the application and make sure the app is in the foreground (it shouldn't be paused).
-- Find the PID of the app with the command `ps ax | grep App`.
-- Hook into the running process with the command `cycript -p PID`.
-- The Cycript interpreter will be provided after successful hooking. You can get the application instance by using the Objective-C syntax: `[UIApplication sharedApplication]`.
-
-  ```shell
-  cy# [UIApplication sharedApplication]
-  cy# var a = [UIApplication sharedApplication]
-  ```
-
-- To find this application's delegate class:
-
-  ```shell
-  cy# a.delegate
-  ```
-
-- Let's print out the `AppDelegate` class' methods:
-
-  ```shell
-  cy# printMethods ("AppDelegate")
-  ```
-
 ### References
 
 - Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
 - Apple's Code Signing - <https://developer.apple.com/support/code-signing/>
+- Cycript Manual - <http://www.cycript.org/manual/>
 - iOS Instrumentation without Jailbreak - <https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/>
 - Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
 - Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
