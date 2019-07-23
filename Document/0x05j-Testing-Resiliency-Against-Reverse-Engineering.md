@@ -239,7 +239,7 @@ In the chapter "Reverse Engineering and Tampering," we talked about JDWP, the pr
 
 ###### Checking the Debuggable Flag in ApplicationInfo
 
-We have already encountered the `android:debuggable` attribute. This flag in the app manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically, via the app's `ApplicationInfo` object. If the flag is set, the manifest has been tampered with and allows debugging.
+We have already encountered the `android:debuggable` attribute. This flag in the Android Manifest determines whether the JDWP thread is started for the app. Its value can be determined programmatically, via the app's `ApplicationInfo` object. If the flag is set, the manifest has been tampered with and allows debugging.
 
 ```java
     public static boolean isDebuggable(Context context){
