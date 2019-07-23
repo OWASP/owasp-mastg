@@ -10,6 +10,8 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
 
+In addition, you may want to complete your host setup by installing the [Android NDK](https://developer.android.com/ndk "Android NDK") if you're planing to work with apps containing native libraries (it will be also relevant in the chapter "Tampering and Reverse Engineering on Android").
+
 ##### Setting up the Android SDK
 
 Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab is where you install SDKs for multiple API levels. Recent API levels are:
@@ -39,30 +41,88 @@ MacOS:
 
 Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
 
+##### Setting up the Android NDK
+
+The Android NDK contains prebuilt versions of the native compiler and toolchain. Both the GCC and Clang compilers have traditionally been supported, but active support for GCC ended with NDK revision 14. The device architecture and host OS determine the appropriate version. The prebuilt toolchains are in the `toolchains` directory of the NDK, which contains one subdirectory for each architecture.
+
+|Architecture | Toolchain name|
+|------------ | --------------|
+|ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
+|x86-based|x86-&lt;gcc-version&gt;|
+|MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
+|ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
+|X86-64-based|x86_64-&lt;gcc-version&gt;|
+|MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
+
+Besides picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Native APIs vary by Android API level. Possible sysroots for each Android API level are in `$NDK/platforms/`. Each API level directory contains subdirectories for the various CPUs and architectures.
+
+One possibility for setting up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier, however, the NDK allows you to create a so-called standalone toolchain—a "temporary" toolchain that incorporates the required settings.
+
+To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
+
+```shell
+$ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
+```
+
+This creates a standalone toolchain for Android 7.0 in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
+
+```shell
+$  export TOOLCHAIN=/tmp/android-7-toolchain
+```
+
 #### Testing Device
+
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on a emulator, and simulators may not give realistic results. Testing on a real device makes for a smoother process and a more realistic environment. On the other hand, emulators allow you to easily change SDK versions or create multiple devices. A full overview of the pros and cons of each approach is listed in the table below.
+
+| Property | Physical | Emulator/Simulator |
+|---|---|---|
+| Ability to restore | Softbricks are always possible, but new firmware can typically still be flashed. Hardbricks are very rare. | Emulators can crash or become corrupt, but a new one can be created or a snapshot can be restored. |
+| Reset | Can be restored to factory settings or reflashed. | Emulators can be deleted and recreated. |
+| Snapshots | Not possible. | Supported, great for malware analysis. |
+| Speed | Much faster than emulators. | Typically slow, but improvements are being made. |
+| Cost | Typically start at $200 for a usable device. You may require different devices, such as one with or without a biometric sensor. | Both free and commercial solutions exist. |
+| Ease of rooting | Highly dependent on the device. | Typically rooted by default. |
+| Ease of emulator detection | It's not an emulator, so emulator checks are not applicable. | Many artefacts will exist, making it easy to detect that the app is running in an emulator. |
+| Ease of root detection | Easier to hide root,  as many root detection algorithms check for emulator properties. With Magisk Systemless root it's nearly impossible to detect. | Emulators will almost always trigger root detection algorithms due to the fact that they are built for testing with many artefacts that can be found. |
+| Hardware interaction | Easy interaction through Bluetooth, NFC, 4G, WiFi, biometrics, camera, GPS, gyroscope, ... | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates) |
+| API Level support | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched. |
+| Native library support | Native libraries are usually built for ARM devices, so they will work on a physical device. | Some emulators run on x86 CPUs, so they may not be able to run packaged native libraries. |
 
 ##### Testing on a Real Device
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
+Almost any physical device can be used for testing, but there are a few considerations to be made. First, the device needs to be rootable. This is typically either done through an exploit, or through an unlocked bootloader. Exploits are not always available, and the bootloader may be locked permanently, or it may only be unlocked once the carrier contract has been terminated.
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+The best candidates are flagship Google pixel devices built for developers. These devices typically come with an unlockable bootloader, opensource firmware, kernel, radio available online and official OS source code. The developer communities prefer Google devices as the OS is closest to the android open source project. These devices generally have the longest support windows with 2 years of OS updates and 1 year of security updates after that.
+
+Alternatively, Google's [Android One](https://www.android.com/one/ "Android One") project contains devices that will receive the same support windows (2 years of OS updates, 1 year of security updates) and have near-stock experiences. While it was originally started as a project for low-end devices, the program has evolved to include mid-range and high-end smartphones, many of which are actively supported by the modding community.
+
+Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
 When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
-##### Testing on the Emulator
+##### Testing on an Emulator
 
-You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
+Multiple emulators exist, once again with their own strengths and weaknesses:
+
+Free emulators:
+
+- [Android Virtual Device (AVD)](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices") - The official android emulator, distributed with Android Studio.
+- [Android X86](https://www.android-x86.org/ "Android X86") - An x86 port of the Android code base
+
+Commercial emulators:
+
+- [Genymotion](https://www.genymotion.com/fun-zone/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
+- [Corellium](https://corellium.com/ "Corellium") - Offers custom device virtualization through a cloud-based or on-prem solution.
+
+Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others. In the remainder of this guide, we will use the official AVD to perform tests.
+
+AVD supports some hardware emulation, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
+
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
 ```shell
 $ ./android avd
 ```
-
-There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
-
-Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
-
-Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
@@ -188,25 +248,27 @@ You'll come across different use cases on how you can use adb commands when test
 
 ##### Angr
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1235>
+Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. In other words: given a binary and a requested state, Angr will try to get to that state, using formal methods (a technique used for static code analysis) to find a path, as well as brute forcing. Using angr to get to the requested state is often much faster than taking manual steps for debugging and searching the path towards the required state. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native code, such as native Android binaries.
 
-Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+Angr allows for disassembly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, decompilation and more, given a large set of plugins.
 
-Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
+Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
 
 ```shell
 $ pip install angr
 ```
 
-Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
+> Some of angr's dependencies contain forked versions of the Python modules Z3 and PyVEX, which would overwrite the original versions. If you're using those modules for anything else, you should create a dedicated virtual environment with [Virtualenv](https://docs.python.org/3/tutorial/venv.html "Virtualenv documentation"). Alternatively, you can always use the provided docker container. See the [installation guide](https://docs.angr.io/introductory-errata/install "angr Installation Guide") for more details.
 
-Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
+Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
+
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic execution](#symbolic-execution "Symbolic execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
 
 ##### Apktool
 
 [Apktool](https://ibotpeaches.github.io/Apktool/) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
 
-When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+When run with default command line flags, apktool automatically decodes the Android Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
 
 ```shell
 $ apktool d base.apk
@@ -237,7 +299,7 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 
 The unpacked files are:
 
-- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- AndroidManifest.xml: The decoded Android Manifest file, which can be opened and edited in a text editor.
 - apktool.yml: file containing information about the output of apktool
 - original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
 - res: directory containing the app’s resources
@@ -418,14 +480,6 @@ $ frida-ps -U
 ```
 
 The -U option lets Frida search for USB devices or emulators.
-
-To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
-
-```shell
-$ frida-trace -i "open" -U com.android.chrome
-```
-
-This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
 
 Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
@@ -1292,94 +1346,6 @@ With the following command you can specifically grep for the log output of the a
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
-#### Static Analysis
-
-##### Manual Static Analysis
-
-In Android app security testing, black-box testing (with access to the compiled binary, but not the original source code) is almost equivalent to white-box testing. The majority of apps can be decompiled easily, and having some reverse engineering knowledge and access to bytecode and binary code is almost as good as having the original code unless the release build has been purposefully obfuscated.
-
-For source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.
-
-During **black box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered to help you retrieve parts of the source code.
-
-The following pull the APK from the device:
-
-```shell
-$ adb shell pm list packages
-(...)
-package:com.awesomeproject
-(...)
-$ adb shell pm path com.awesomeproject
-package:/data/app/com.awesomeproject-1/base.apk
-$ adb pull /data/app/com.awesomeproject-1/base.apk
-```
-
-`apkx` provides an easy method of retrieving an APK's source code via the command line. It also packages `dex2jar` and CFR and automates the extraction, conversion, and decompilation steps. See [Apkx installation instructions](#Apkx "Apkx installation instructions"). Once installed, run it against a local APK as follows:
-
-```shell
-$ apkx UnCrackable-Level1.apk
-Extracting UnCrackable-Level1.apk to UnCrackable-Level1
-Converting: classes.dex -> classes.jar (dex2jar)
-dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
-Decompiling to UnCrackable-Level1/src (cfr)
-```
-
-If the application is based solely on Java and doesn't have any native libraries (C/C++ code), the reverse engineering process is relatively easy and recovers almost all the source code. Nevertheless, if the code is obfuscated, this process may be very time-consuming and unproductive. This also applies to applications that contain a native library. They can still be reverse engineered, but the process is not automated and requires knowledge of low-level details.
-
-The "Tampering and Reverse Engineering on Android" section contains more details about reverse engineering Android.
-
-##### Automated Static Analysis
-
-You should use tools for efficient static analysis. They allow the tester to focus on the more complicated business logic. A plethora of static code analyzers are available, ranging from open source scanners to full-blown enterprise-ready scanners. The best tool for the job depends on budget, client requirements, and the tester's preferences.
-
-Some static analyzers rely on the availability of the source code; others take the compiled APK as input.
-Keep in mind that static analyzers may not be able to find all problems by themselves even though they can help us focus on potential problems. Review each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
-
-Configure the static analyzer properly to reduce the likelihood of false positives. and maybe only select several vulnerability categories in the scan. The results generated by static analyzers can otherwise be overwhelming, and your efforts can be counterproductive if you must manually investigate a large report.
-
-There are several open source tools for automated security analysis of an APK.
-
-- [QARK](https://github.com/linkedin/qark/ "QARK")
-- [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
-- [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
-- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
-
-For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
-
-#### Dynamic Analysis
-
-Dynamic Analysis tests the mobile app by executing and running the app binary and analysing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
-
-- Business logic flaws
-- Vulnerabilities in the tested environments
-- Weak input validation and bad input/output encoding as they are processed through one or multiple services
-
-Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
-
-##### Using Non-Rooted Devices
-
-Non-rooted devices provide the tester with two benefits:
-
-- Replicate an environment that the application is intended to run on.
-- Thanks to tools like objection, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app).
-
-In order to dynamically analyze the application, you can also rely on [objection](https://github.com/sensepost/objection "objection") which is leveraging Frida. However, in order to be able to use objection on non-rooted devices you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library. Objection communicates then using a Python API with the mobile phone through the installed Frida gadget.
-
-In order to accomplish this, the following commands can set you up and running:
-
-```bash
-# Download the Uncrackable APK
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
-# Patch the APK with the Frida Gadget
-$ objection patchapk --source UnCrackable-Level1.apk
-# Install the patched APK on the android phone
-$ adb install UnCrackable-Level1.objection.apk
-# After running the mobile phone, objection will detect the running frida-server through the APK
-$ objection explore
-```
-
-> The section [Setting up a Network Testing Environment](#Setting-up-a-Network-Testing-Environment "Setting up a Network Testing Environment") assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
-
 ### Setting up a Network Testing Environment
 
 #### Basic Network Monitoring/Sniffing
@@ -1864,6 +1830,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - adb - <https://developer.android.com/studio/command-line/adb>
 - Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
+- Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
 - Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
 - Android Studio - <https://developer.android.com/studio/index.html>
 - Android tcpdump - <https://www.androidtcpdump.com/>

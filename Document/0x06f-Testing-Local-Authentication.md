@@ -4,7 +4,7 @@ During local authentication, an app authenticates the user against credentials s
 
 As stated before in chapter Testing Authentication and Session Management: the tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
 
-### Testing Local Authentication
+### Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
 
 On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication framework") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain]( https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html "Introduction into the Keychain") for implementing local authentication.
 
@@ -234,12 +234,12 @@ Unlike MacOSX and Android, iOS currently (at iOS 12) does not support temporarin
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Insecure Authentication - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication](https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication)
+- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
 
 #### OWASP MASVS
 
-- V4.8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
-- V2.11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- MSTG-AUTH-8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
+- MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 
 #### CWE
 
