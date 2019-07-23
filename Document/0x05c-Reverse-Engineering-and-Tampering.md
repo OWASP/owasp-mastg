@@ -899,7 +899,7 @@ The target crackme is a simple license key validation Android app. Granted, you 
 
 The crackme takes the form of a native ELF binary that you can download here:
 
-[https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation)
+<https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation>
 
 Running the executable on any Android device should give you the following output:
 
@@ -913,113 +913,117 @@ $ adb shell /data/local/tmp/validate 12345
 Incorrect serial (wrong format).
 ```
 
-So far so good, but you know nothing about what a valid license key looks like. Where do we start? Fire up IDA Pro to get a good look at what is happening.
+So far so good, but you know nothing about what a valid license key looks like. Where do we start? Fire up Cutter to get a good look at what is happening. The main function is located at address 0x00001874 in the disassembly (note that this is a PIE-enabled binary, and Cutter chooses 0x0 as the image base address).
 
-![Disassembly of function main.](Images/Chapters/0x05c/license-check-1.jpg)
+![Disassembly of main function](Images/Chapters/0x05c/disass_main_1874.png)
 
-The main function is located at address 0x1874 in the disassembly (note that this is a PIE-enabled binary, and IDA Pro chooses 0x0 as the image base address). Function names have been stripped, but you can see some references to debugging strings. The input string appears  to be Base32-decoded (call to sub_1340). At the beginning of `main`, there's a length check at loc_1898. It makes sure that the length of the input string is exactly 16 characters. So you're looking for a Base32-encoded 16-character string! The decoded input is then passed to the function sub_1760, which validates the license key.
+Function names have been stripped, but you can see some references to debugging strings. The input string appears to be Base32-decoded (call to fcn.00001340). At the beginning of `main`, there's a length check at 0x00001898. It makes sure that the length of the input string is exactly 16 characters. So you're looking for a Base32-encoded 16-character string! The decoded input is then passed to the function fcn.00001760, which validates the license key.
 
-The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x1760:
+![Graph of main function](Images/Chapters/0x05c/graph_1874.png)
+
+The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x00001760:
 
 ```assembly_x86
-.text:00001760 ; =============== S U B R O U T I N E =======================================
-.text:00001760
-.text:00001760 ; Attributes: bp-based frame
-.text:00001760
-.text:00001760 sub_1760                                ; CODE XREF: sub_1874+B0
-.text:00001760
-.text:00001760 var_20          = -0x20
-.text:00001760 var_1C          = -0x1C
-.text:00001760 var_1B          = -0x1B
-.text:00001760 var_1A          = -0x1A
-.text:00001760 var_19          = -0x19
-.text:00001760 var_18          = -0x18
-.text:00001760 var_14          = -0x14
-.text:00001760 var_10          = -0x10
-.text:00001760 var_C           = -0xC
-.text:00001760
-.text:00001760                 STMFD   SP!, {R4,R11,LR}
-.text:00001764                 ADD     R11, SP, #8
-.text:00001768                 SUB     SP, SP, #0x1C
-.text:0000176C                 STR     R0, [R11,#var_20]
-.text:00001770                 LDR     R3, [R11,#var_20]
-.text:00001774                 STR     R3, [R11,#var_10]
-.text:00001778                 MOV     R3, #0
-.text:0000177C                 STR     R3, [R11,#var_14]
-.text:00001780                 B       loc_17D0
-.text:00001784 ; ---------------------------------------------------------------------------
-.text:00001784
-.text:00001784 loc_1784                                ; CODE XREF: sub_1760+78
-.text:00001784                 LDR     R3, [R11,#var_10]
-.text:00001788                 LDRB    R2, [R3]
-.text:0000178C                 LDR     R3, [R11,#var_10]
-.text:00001790                 ADD     R3, R3, #1
-.text:00001794                 LDRB    R3, [R3]
-.text:00001798                 EOR     R3, R2, R3
-.text:0000179C                 AND     R2, R3, #0xFF
-.text:000017A0                 MOV     R3, #0xFFFFFFF0
-.text:000017A4                 LDR     R1, [R11,#var_14]
-.text:000017A8                 SUB     R0, R11, #-var_C
-.text:000017AC                 ADD     R1, R0, R1
-.text:000017B0                 ADD     R3, R1, R3
-.text:000017B4                 STRB    R2, [R3]
-.text:000017B8                 LDR     R3, [R11,#var_10]
-.text:000017BC                 ADD     R3, R3, #2
-.text:000017C0                 STR     R3, [R11,#var_10]
-.text:000017C4                 LDR     R3, [R11,#var_14]
-.text:000017C8                 ADD     R3, R3, #1
-.text:000017CC                 STR     R3, [R11,#var_14]
-.text:000017D0
-.text:000017D0 loc_17D0                                ; CODE XREF: sub_1760+20
-.text:000017D0                 LDR     R3, [R11,#var_14]
-.text:000017D4                 CMP     R3, #4
-.text:000017D8                 BLE     loc_1784
-.text:000017DC                 LDRB    R4, [R11,#var_1C]
-.text:000017E0                 BL      sub_16F0
-.text:000017E4                 MOV     R3, R0
-.text:000017E8                 CMP     R4, R3
-.text:000017EC                 BNE     loc_1854
-.text:000017F0                 LDRB    R4, [R11,#var_1B]
-.text:000017F4                 BL      sub_170C
-.text:000017F8                 MOV     R3, R0
-.text:000017FC                 CMP     R4, R3
-.text:00001800                 BNE     loc_1854
-.text:00001804                 LDRB    R4, [R11,#var_1A]
-.text:00001808                 BL      sub_16F0
-.text:0000180C                 MOV     R3, R0
-.text:00001810                 CMP     R4, R3
-.text:00001814                 BNE     loc_1854
-.text:00001818                 LDRB    R4, [R11,#var_19]
-.text:0000181C                 BL      sub_1728
-.text:00001820                 MOV     R3, R0
-.text:00001824                 CMP     R4, R3
-.text:00001828                 BNE     loc_1854
-.text:0000182C                 LDRB    R4, [R11,#var_18]
-.text:00001830                 BL      sub_1744
-.text:00001834                 MOV     R3, R0
-.text:00001838                 CMP     R4, R3
-.text:0000183C                 BNE     loc_1854
-.text:00001840                 LDR     R3, =(aProductActivat - 0x184C)
-.text:00001844                 ADD     R3, PC, R3      ; "Product activation passed. Congratulati"...
-.text:00001848                 MOV     R0, R3          ; char *
-.text:0000184C                 BL      puts
-.text:00001850                 B       loc_1864
-.text:00001854 ; ---------------------------------------------------------------------------
-.text:00001854
-.text:00001854 loc_1854                                ; CODE XREF: sub_1760+8C
-.text:00001854                                         ; sub_1760+A0 ...
-.text:00001854                 LDR     R3, =(aIncorrectSer_0 - 0x1860)
-.text:00001858                 ADD     R3, PC, R3      ; "Incorrect serial."
-.text:0000185C                 MOV     R0, R3          ; char *
-.text:00001860                 BL      puts
-.text:00001864
-.text:00001864 loc_1864                                ; CODE XREF: sub_1760+F0
-.text:00001864                 SUB     SP, R11, #8
-.text:00001868                 LDMFD   SP!, {R4,R11,PC}
-.text:00001868 ; End of function sub_1760
+╭ (fcn) fcn.00001760 268
+│   fcn.00001760 (int32_t arg1);
+│           ; var int32_t var_20h @ fp-0x20
+│           ; var int32_t var_14h @ fp-0x14
+│           ; var int32_t var_10h @ fp-0x10
+│           ; arg int32_t arg1 @ r0
+│           ; CALL XREF from fcn.00001760 (+0x1c4)
+│           0x00001760      push {r4, fp, lr}
+│           0x00001764      add fp, sp, 8
+│           0x00001768      sub sp, sp, 0x1c
+│           0x0000176c      str r0, [var_20h]                          ; 0x20 ; "$!" ; arg1
+│           0x00001770      ldr r3, [var_20h]                          ; 0x20 ; "$!" ; entry.preinit0
+│           0x00001774      str r3, [var_10h]                          ; str.
+│                                                                      ; 0x10
+│           0x00001778      mov r3, 0
+│           0x0000177c      str r3, [var_14h]                          ; 0x14
+│       ╭─< 0x00001780      b 0x17d0
+│       │   ; CODE XREF from fcn.00001760 (0x17d8)
+│      ╭──> 0x00001784      ldr r3, [var_10h]                          ; str.
+│       │                                                              ; 0x10 ; entry.preinit0
+│      ╎│   0x00001788      ldrb r2, [r3]
+│      ╎│   0x0000178c      ldr r3, [var_10h]                          ; str.
+│      ╎│                                                              ; 0x10 ; entry.preinit0
+│      ╎│   0x00001790      add r3, r3, 1
+│      ╎│   0x00001794      ldrb r3, [r3]
+│      ╎│   0x00001798      eor r3, r2, r3
+│      ╎│   0x0000179c      and r2, r3, 0xff
+│      ╎│   0x000017a0      mvn r3, 0xf
+│      ╎│   0x000017a4      ldr r1, [var_14h]                          ; 0x14 ; entry.preinit0
+│      ╎│   0x000017a8      sub r0, fp, 0xc
+│      ╎│   0x000017ac      add r1, r0, r1
+│      ╎│   0x000017b0      add r3, r1, r3
+│      ╎│   0x000017b4      strb r2, [r3]
+│      ╎│   0x000017b8      ldr r3, [var_10h]                          ; str.
+│      ╎│                                                              ; 0x10 ; entry.preinit0
+│      ╎│   0x000017bc      add r3, r3, 2                              ; "ELF\x01\x01\x01" ; aav.0x00000001
+│      ╎│   0x000017c0      str r3, [var_10h]                          ; str.
+│      ╎│                                                              ; 0x10
+│      ╎│   0x000017c4      ldr r3, [var_14h]                          ; 0x14 ; entry.preinit0
+│      ╎│   0x000017c8      add r3, r3, 1
+│      ╎│   0x000017cc      str r3, [var_14h]                          ; 0x14
+│      ╎│   ; CODE XREF from fcn.00001760 (0x1780)
+│      ╎╰─> 0x000017d0      ldr r3, [var_14h]                          ; 0x14 ; entry.preinit0
+│      ╎    0x000017d4      cmp r3, 4                                  ; aav.0x00000004 ; aav.0x00000001 ; aav.0x00000001
+│      ╰──< 0x000017d8      ble 0x1784                                 ; likely
+│           0x000017dc      ldrb r4, [fp, -0x1c]                       ; "4"
+│           0x000017e0      bl fcn.000016f0
+│           0x000017e4      mov r3, r0
+│           0x000017e8      cmp r4, r3
+│       ╭─< 0x000017ec      bne 0x1854                                 ; likely
+│       │   0x000017f0      ldrb r4, [fp, -0x1b]
+│       │   0x000017f4      bl fcn.0000170c
+│       │   0x000017f8      mov r3, r0
+│       │   0x000017fc      cmp r4, r3
+│      ╭──< 0x00001800      bne 0x1854                                 ; likely
+│      ││   0x00001804      ldrb r4, [fp, -0x1a]
+│      ││   0x00001808      bl fcn.000016f0
+│      ││   0x0000180c      mov r3, r0
+│      ││   0x00001810      cmp r4, r3
+│     ╭───< 0x00001814      bne 0x1854                                 ; likely
+│     │││   0x00001818      ldrb r4, [fp, -0x19]
+│     │││   0x0000181c      bl fcn.00001728
+│     │││   0x00001820      mov r3, r0
+│     │││   0x00001824      cmp r4, r3
+│    ╭────< 0x00001828      bne 0x1854                                 ; likely
+│    ││││   0x0000182c      ldrb r4, [fp, -0x18]
+│    ││││   0x00001830      bl fcn.00001744
+│    ││││   0x00001834      mov r3, r0
+│    ││││   0x00001838      cmp r4, r3
+│   ╭─────< 0x0000183c      bne 0x1854                                 ; likely
+│   │││││   0x00001840      ldr r3, [0x0000186c]                       ; [0x186c:4]=0x270 section..hash ; section..hash
+│   │││││   0x00001844      add r3, pc, r3                             ; 0x1abc ; "Product activation passed. Congratulations!"
+│   │││││   0x00001848      mov r0, r3                                 ; 0x1abc ; "Product activation passed. Congratulations!" ;
+│   │││││   0x0000184c      bl sym.imp.puts                            ; int puts(const char *s)
+│   │││││                                                              ; int puts("Product activation passed. Congratulations!")
+│  ╭──────< 0x00001850      b 0x1864
+│  ││││││   ; CODE XREFS from fcn.00001760 (0x17ec, 0x1800, 0x1814, 0x1828, 0x183c)
+│  │╰╰╰╰╰─> 0x00001854      ldr r3, aav.0x00000288                     ; [0x1870:4]=0x288 aav.0x00000288
+│  │        0x00001858      add r3, pc, r3                             ; 0x1ae8 ; "Incorrect serial." ;
+│  │        0x0000185c      mov r0, r3                                 ; 0x1ae8 ; "Incorrect serial." ;
+│  │        0x00001860      bl sym.imp.puts                            ; int puts(const char *s)
+│  │                                                                   ; int puts("Incorrect serial.")
+│  │        ; CODE XREF from fcn.00001760 (0x1850)
+│  ╰──────> 0x00001864      sub sp, fp, 8
+╰           0x00001868      pop {r4, fp, pc}                           ; entry.preinit0 ; entry.preinit0 ;
 ```
 
-You can see a loop with some XOR-magic happening at loc_1784, which supposedly decodes the input string. Starting from loc_17DC, you can see a series of decoded values compared with values from further subfunction calls. Even though this doesn't look like highly sophisticated stuff, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x1760) and the code that prints the "Product activation passed" message (0x1840) to determine the constraints on each byte of the input string. The solver engine then finds an input that satisfies those constraints: the valid license key.
+If you look in the graph view you can see a loop with some XOR-magic happening at 0x00001784, which supposedly decodes the input string.
+
+![Loop](Images/Chapters/0x05c/loop_1784.png)
+
+Starting from 0x000017dc, you can see a series of decoded values compared with values from further subfunction calls.
+
+![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
+
+Even though this doesn't look highly sophisticated, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x00001760) and the code that prints the "Product activation passed" message (0x00001840) to determine the constraints on each byte of the input string.
+
+![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
+
+The solver engine then finds an input that satisfies those constraints: the valid license key.
 
 You need to provide several inputs to the symbolic execution engine:
 
@@ -1027,7 +1031,7 @@ You need to provide several inputs to the symbolic execution engine:
 
 - The address of the code block you want execution to reach. You need to find a path to the code responsible for printing the "Product activation passed" message. This code block starts at 0x1840.
 
-- Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x1854).
+- Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x00001854).
 
 Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is:
 
