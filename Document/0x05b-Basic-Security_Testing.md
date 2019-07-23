@@ -74,13 +74,14 @@ When working with an Android physical device, you'll want to enable Developer Mo
 Multiple emulators exist, once again with their own strengths and weaknesses:
 
 Free emulators:
+
 - [Android Virtual Device (AVD)](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices") - The official android emulator, distributed with Android Studio.
 - [Android X86](https://www.android-x86.org/ "Android X86") - An x86 port of the Android code base
 
 Commercial emulators:
+
 - [Genymotion](https://www.genymotion.com/fun-zone/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
 - [Corellium](https://corellium.com/ "Corellium") - Offers custom device virtualization through a cloud-based or on-prem solution.
-
 
 Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others. In the remainder of this guide, we will use the official AVD to perform tests.
 
@@ -230,10 +231,7 @@ Creating a dedicated virtual environment with Virtualenv is recommended because 
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-//TODO: 1235: what are the basic commands / features by starting with repl and then script
-- angr installation with repl
-- angr examples based on angr-docs
-//TODO: 1235: investigate on iOS
+You can use angr with a pythorn REPL or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. See [Binary Analysis Frameworks](###Binary Analysis Frameworks) as a great example of how this can work.
 
 ##### Apktool
 
