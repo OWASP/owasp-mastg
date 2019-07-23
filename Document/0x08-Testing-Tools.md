@@ -44,7 +44,7 @@ To perform security testing different tools are available in order to be able to
 - Androguard: A python based tool, which can use to disassemble and decompile Android apps - <https://github.com/androguard/androguard>
 - Android Backup Extractor: Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP - <https://github.com/nelenkov/android-backup-extractor>
 - Android Debug Bridge (adb): A versatile command line tool used to communicate with an emulator instance or connected Android device - <https://developer.android.com/studio/command-line/adb.html>
-- ApkTool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - <https://ibotpeaches.github.io/Apktool/>
+- apktool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - <https://ibotpeaches.github.io/Apktool/>
 - android-classyshark: A standalone binary inspection tool for Android developers - <https://github.com/google/android-classyshark>
 - ByteCodeViewer: Java 8 Jar and Android APK Reverse Engineering Suite (e.g. Decompiler, Editor and Debugger) - <https://bytecodeviewer.com/>
 - ClassNameDeobfuscator: Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines - <https://github.com/HamiltonianCycle/ClassNameDeobfuscator>
