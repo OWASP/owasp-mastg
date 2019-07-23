@@ -96,7 +96,7 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 **We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content"). Also, check the [issues](https://github.com/OWASP/owasp-mstg/issues "our issues section") and the [project page](https://github.com/OWASP/owasp-mstg/projects/2 "The MSTG Project") for a list of open tasks.
 
-Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
+Drop a us line on the [Slack channel](https://app.slack.com/client/T04T40NHX/C1M6ZVC6S "Come to our Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
 
 [https://owasp.slack.com/](https://join.slack.com/t/owasp/shared_invite/enQtNjExMTc3MTg0MzU4LTViMDg1MmJiMzMwZGUxZjgxZWQ1MTE0NTBlOTBhNjhhZDIzZTZiNmEwOTJlYjdkMzAxMGVhNDkwNDNiNjZiOWQ)
 
@@ -104,7 +104,7 @@ Before you start contributing, please check our [contribution guide](https://git
 
 Please note that the MSTG focuses primarely on the native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Nativescript/React-native/Xamarin/Cordova/... apps are not within the focus of the MSTG. However, some key-controls, such as pinning, have been explained already for some of these platforms.
 
-If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues "Issue") or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
+If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues "Issue") or ping us on [Slack](https://app.slack.com/client/T04T40NHX/C1M6ZVC6S "Come to our Slack!").
 If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones "Milestones").
 
 ## Authoring Credit

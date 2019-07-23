@@ -59,7 +59,7 @@ Top contributors have consistently contributed quality content and have at least
 - Henry Hoggard
 - Andreas Happe
 - Kyle Benac
-- Alexander Anthuk
+- Alexander Antukh
 - Wen Bin Kong
 - Abdessamad Temmar
 - Bolot Kerimbaev
