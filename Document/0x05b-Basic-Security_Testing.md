@@ -255,7 +255,7 @@ Angr allows for disassempbly, program instrumentation, symbolic execution, contr
 Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
 
 ```shell
-$ mkvirtualenv --python=$(which python3) angr && python -m pip install angr
+$ pip install angr
 ```
 
 > Some of angr's dependencies contain forked versions of the Python modules Z3 and PyVEX, which would overwrite the original versions. If you're using those modules for anything else, you should create a dedicated virtual environment with Virtualenv. Alternatively, you can always use the provided docker container. See the [installation guide](https://docs.angr.io/introductory-errata/install "angr Installation Guide") for more details.
