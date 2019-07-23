@@ -262,7 +262,7 @@ $ pip install angr
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. See section [Symbolic Execution](#Symbolic-Execution) as a great example on how this can work.
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic execution](#symbolic-execution "Symbolic execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
 
 ##### Apktool
 
