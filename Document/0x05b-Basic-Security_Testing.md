@@ -248,7 +248,7 @@ You'll come across different use cases on how you can use adb commands when test
 
 ##### Angr
 
-Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. In other words: given a binary and a requested state, Angr will try to get to that to the requested state in the binary, using formal methods to find a path, as well as brute forcing. This can make reverse-engineerig "I just want a solution style" - way easier than with for instance IDA Pro, Radare2, or Ghidra. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with _native_ Android binaries.
+Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. In other words: given a binary and a requested state, Angr will try to get to that to the requested state in the binary, using formal methods to find a path, as well as brute forcing. Using angr to get to the requested state is way faster than taking manual steps for debugging and searching the path towards the required state. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native code, such as native Android binaries.
 
 Angr allows for disassembly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, decompilation and more, given a large set of plugins.
 
