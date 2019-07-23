@@ -252,7 +252,7 @@ Angr is a Python framework for analyzing binaries. It is useful for both static 
 
 Angr allows for disassempbly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, decompilation and more, given a large set of plugins.
 
-Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
+Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
 
 ```shell
 $ pip install angr
