@@ -50,15 +50,15 @@ For example, Android Nougat defines the following system users:
 
 #### Android Device Encryption
 
-//INTRO
+Android supports device encryption from 2.3.4 version and it has undergone some big changes since then. Google imposed that all devices running Android 6 or higher had to support storage encryption. Although some low-end devices were exempt because it would significantly impact performance. In the following sections you can find information about device encryption and its algorithms.
 
 ##### Full-Disk Encryption
 
-//Full-Disk Encryption content
+Android 5.0 and above support full-disk encryption. This encryption uses a single key protected by the users' device password to cipher the userdata partition. This kind of encryption is now considered  deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter its password. 
 
 ##### File-Based Encryption
 
-//File-Based Encryption content
+Android 7.0 supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices that support this encryption also support Direct Boot which enables the device to have access to features such as alarms or accessibility services even if the user does not enter its password.
 
 ##### Adiantum 
 
