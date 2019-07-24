@@ -63,7 +63,7 @@ For example, Android Nougat defines the following system users:
 ##### Adiantum 
 
 AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
-However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially those that use Android Go (an Android version targeted at low-end devices), smartwatches or TV's. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
+However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
 
 Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES.
 
