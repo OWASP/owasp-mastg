@@ -58,7 +58,7 @@ Android 5.0 and above support full-disk encryption. This encryption uses a singl
 
 ##### File-Based Encryption
 
-Android 7.0 supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user does not enter its password.
+Android 7.0 supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user does not enter his password.
 
 ##### Adiantum 
 
