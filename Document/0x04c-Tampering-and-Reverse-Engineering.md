@@ -52,6 +52,45 @@ However, you can also instrument apps with Substrate by using it to inject Cycri
 
 We'll include examples of all three frameworks. We recommend starting with Frida because it is the most versatile of the three (for this reason, we'll also include more Frida details and examples). Notably, Frida can inject a JavaScript VM into a process on both Android and iOS, while Cycript injection with Substrate only works on iOS. Ultimately, however, you can of course achieve many of the same goals with either framework.
 
+##### Frida
+
+[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written in C that works by injecting a JavaScript engine ([Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
+
+Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
+In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app:
+
+- Frida uses ptrace to hijack a thread of a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper.
+- The bootstrapper starts a fresh thread, connects to the Frida debugging server that's running on the device, and loads a shared library that contains the Frida agent (`frida-agent.so`).
+- The agent establishes a bi-directional communication channel back to the tool (e.g. the Frida REPL or your custom Python script).
+- The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
+
+![Frida](Images/Chapters/0x04/frida.png)
+
+*Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
+
+Frida offers three modes of operation:
+
+1. Injected: frida-server running as a daemon in the iOS or Android device. It exposes frida-core over TCP, listening on localhost:27042 by default. Running in this mode is not possible on rooted or jailbroken devices.
+2. Embedded: this is the case when your device is rooted or jailbroken (you cannot use ptrace as an unprivileged user), you're responsible for the injection of the [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library by embedding it into your app.
+3. Preloaded: similar to LD_PRELOAD or DYLD_INSERT_LIBRARIES. You can configure the frida-gadget to run autonomously and load a script from the filesystem (e.g. path relative to where the Gadget binary resides).
+
+Frida also provides a couple of simple tools built on top of the Frida API and available right from your terminal after installing frida-tools via pip. For instance, you can use the Frida CLI for quick script prototyping and try/error scenarios; frida-ps to obtain a list of all apps (or processes) running on the device including their names and PDIs; frida-ls-devices to manage your connected devices, or frida-trace to quickly trace methods that are part of an iOS app or that are implemented inside an Android native library.
+
+In addition, you'll also find several open source Frida-based tools supporting specific platforms e.g. [Passionfruit](https://github.com/chaitin/passionfruit) (an iOS app blackbox assessment tool), but also targeting both iOS and Android apps, such as [fridump](https://github.com/Nightbringer21/fridump "fridump") (a memory dumping tool), [objection](https://github.com/sensepost/objection "objection") (a runtime mobile security assessment framework) or [r2frida](https://github.com/nowsecure/r2frida "r2frida") (a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida). We will be using all of these tools throughout the guide.
+
+You can use these tools as-is, tweak them to your needs, or take as excellent examples on how to use the APIs, which is very helpful when writing your own hooking scripts. They can also serve as inspiration when building introspection tools to support your reverse engineering workflow.
+
+One last thing to mention is the Frida CodeShare project (<https://codeshare.frida.re>). It contains a collection of ready-to-run Frida scripts which can enormously help when performing concrete tasks both on Android as on iOS as well as also serve as inspiration to build your own scripts. Two representative examples are:
+
+- Universal Android SSL Pinning Bypass with Frida - <https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/>
+- ObjC method observer - <https://codeshare.frida.re/@mrmacete/objc-method-observer/>
+
+Using them is as simple as including the `--codeshare <handler>` flag and a handler when using the Frida CLI. For example, to use "ObjC method observer", enter the following:
+
+```shell
+$ frida --codeshare mrmacete/objc-method-observer -f YOUR_BINARY
+```
+
 ### Static and Dynamic Binary Analysis
 
 Reverse engineering is the process of reconstructing the semantics of a compiled program's source code. In other words, you take the program apart, run it, simulate parts of it, and do other unspeakable things to it to understand what it does and how.
