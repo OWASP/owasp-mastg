@@ -77,7 +77,7 @@ Adiantum is a new cipher but it is secure, as long as ChaCha12 and AES-256 are c
 
 Adiantum is available for Android 9 and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching. 
 Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
-It should be noted that AES runs faster on those devices that have the AES instruction set. In that case the use of Adiantum is highly discouraged.
+It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
 
 ### Apps on Android
 
