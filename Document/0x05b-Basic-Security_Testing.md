@@ -427,6 +427,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 - Frida is standalone, all you need is to run the frida-server binary from a known location in your target Android device (see "Installing Frida" below). This means that, in contrast to Xposed, it is not _deep_ installed in the target OS.
 - Reversing an app is an iterative process. As a consequence of the previous point, you obtain a shorter feedback loop when testing as you don't need to (soft) reboot to apply or simply update your hooks. So you might prefer to use Xposed when implementing more permanent hooks.
 - You may inject and update your Frida JavaScript code on the fly at any point during the runtime of your process (similarly to Cycript on iOS). This way you can perform the so-called _early instrumentation_ by letting Frida spawn your app or you may prefer to attach to a running app that you might have brought to a certain state.
+- Frida is able to handle both Java as well as native code (JNI), allowing you to modify both of them. This is unfortunately a limitation of Xposed which lacks of native code support.
 
 > Note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
@@ -476,15 +477,31 @@ $ frida-ps -U
   276  adbd
   956  android.process.media
   198  bridgemgrd
- 1172  com.android.chrome
- 1191  com.android.nfc
- 1236  com.android.phone
- 5353  com.android.settings
-  936  com.android.systemui
+30692  com.android.chrome
+30774  com.android.chrome:privileged_process0
+30747  com.android.chrome:sandboxed
+30834  com.android.chrome:sandboxed
+ 3059  com.android.nfc
+ 1526  com.android.phone
+17104  com.android.settings
+ 1302  com.android.systemui
 (...)
 ```
 
-Search for your app in the list and take a note of the PID or its name. From now on you'll refer to your app by using one of both. For example let's take `com.android.chrome`. You can use this string now on all Frida tools, e.g. on the Frida CLI, on frida-trace or from a Python script.
+Or restrict the list with the `-Uai` flag combination to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
+
+```bash
+$ frida-ps -Uai
+  PID  Name                                      Identifier
+-----  ----------------------------------------  ---------------------------------------
+  766  Android System                            android
+30692  Chrome                                    com.android.chrome
+ 3520  Contacts Storage                          com.android.providers.contacts  
+    -  Uncrackable1                              sg.vantagepoint.uncrackable1
+    -  drozer Agent                              com.mwr.dz
+```
+
+This will show the names and identifiers of all apps, if they are currently running it will also show their PIDs. Search for your app in the list and take a note of the PID or its name/identifier. From now on you'll refer to your app by using one of them. A recommendation is to use the identifiers, as the PIDs will change on each run of the app. For example let's take `com.android.chrome`. You can use this string now on all Frida tools, e.g. on the Frida CLI, on frida-trace or from a Python script.
 
 ###### Tracing Native Libraries with frida-trace
 
@@ -495,6 +512,8 @@ $ frida-trace -U com.android.chrome -i "open"
 ```
 
 This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
+
+Unfortunately tracing high-level methods of Java classes is not yet supported (but might be [in the future](https://github.com/frida/frida-python/issues/70 "Support for tracing high-level methods of Java Classes via patterns")).
 
 ###### Frida CLI and the Java API
 
