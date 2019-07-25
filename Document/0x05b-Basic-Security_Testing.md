@@ -10,6 +10,8 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
 
+In addition, you may want to complete your host setup by installing the [Android NDK](https://developer.android.com/ndk "Android NDK") if you're planing to work with apps containing native libraries (it will be also relevant in the chapter "Tampering and Reverse Engineering on Android").
+
 ##### Setting up the Android SDK
 
 Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab is where you install SDKs for multiple API levels. Recent API levels are:
@@ -39,30 +41,88 @@ MacOS:
 
 Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
 
+##### Setting up the Android NDK
+
+The Android NDK contains prebuilt versions of the native compiler and toolchain. Both the GCC and Clang compilers have traditionally been supported, but active support for GCC ended with NDK revision 14. The device architecture and host OS determine the appropriate version. The prebuilt toolchains are in the `toolchains` directory of the NDK, which contains one subdirectory for each architecture.
+
+|Architecture | Toolchain name|
+|------------ | --------------|
+|ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
+|x86-based|x86-&lt;gcc-version&gt;|
+|MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
+|ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
+|X86-64-based|x86_64-&lt;gcc-version&gt;|
+|MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
+
+Besides picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Native APIs vary by Android API level. Possible sysroots for each Android API level are in `$NDK/platforms/`. Each API level directory contains subdirectories for the various CPUs and architectures.
+
+One possibility for setting up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier, however, the NDK allows you to create a so-called standalone toolchain—a "temporary" toolchain that incorporates the required settings.
+
+To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
+
+```shell
+$ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
+```
+
+This creates a standalone toolchain for Android 7.0 in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
+
+```shell
+$  export TOOLCHAIN=/tmp/android-7-toolchain
+```
+
 #### Testing Device
+
+For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on a emulator, and simulators may not give realistic results. Testing on a real device makes for a smoother process and a more realistic environment. On the other hand, emulators allow you to easily change SDK versions or create multiple devices. A full overview of the pros and cons of each approach is listed in the table below.
+
+| Property | Physical | Emulator/Simulator |
+|---|---|---|
+| Ability to restore | Softbricks are always possible, but new firmware can typically still be flashed. Hardbricks are very rare. | Emulators can crash or become corrupt, but a new one can be created or a snapshot can be restored. |
+| Reset | Can be restored to factory settings or reflashed. | Emulators can be deleted and recreated. |
+| Snapshots | Not possible. | Supported, great for malware analysis. |
+| Speed | Much faster than emulators. | Typically slow, but improvements are being made. |
+| Cost | Typically start at $200 for a usable device. You may require different devices, such as one with or without a biometric sensor. | Both free and commercial solutions exist. |
+| Ease of rooting | Highly dependent on the device. | Typically rooted by default. |
+| Ease of emulator detection | It's not an emulator, so emulator checks are not applicable. | Many artefacts will exist, making it easy to detect that the app is running in an emulator. |
+| Ease of root detection | Easier to hide root,  as many root detection algorithms check for emulator properties. With Magisk Systemless root it's nearly impossible to detect. | Emulators will almost always trigger root detection algorithms due to the fact that they are built for testing with many artefacts that can be found. |
+| Hardware interaction | Easy interaction through Bluetooth, NFC, 4G, WiFi, biometrics, camera, GPS, gyroscope, ... | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates) |
+| API Level support | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched. |
+| Native library support | Native libraries are usually built for ARM devices, so they will work on a physical device. | Some emulators run on x86 CPUs, so they may not be able to run packaged native libraries. |
 
 ##### Testing on a Real Device
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1226>
+Almost any physical device can be used for testing, but there are a few considerations to be made. First, the device needs to be rootable. This is typically either done through an exploit, or through an unlocked bootloader. Exploits are not always available, and the bootloader may be locked permanently, or it may only be unlocked once the carrier contract has been terminated.
 
-For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on the emulator, and this can make security testing tedious. Testing on a real device makes for a smoother process and a more realistic environment.
+The best candidates are flagship Google pixel devices built for developers. These devices typically come with an unlockable bootloader, opensource firmware, kernel, radio available online and official OS source code. The developer communities prefer Google devices as the OS is closest to the android open source project. These devices generally have the longest support windows with 2 years of OS updates and 1 year of security updates after that.
+
+Alternatively, Google's [Android One](https://www.android.com/one/ "Android One") project contains devices that will receive the same support windows (2 years of OS updates, 1 year of security updates) and have near-stock experiences. While it was originally started as a project for low-end devices, the program has evolved to include mid-range and high-end smartphones, many of which are actively supported by the modding community.
+
+Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
 When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
-##### Testing on the Emulator
+##### Testing on an Emulator
 
-You can create an Android Virtual Device with the AVD manager for testing, which is [available within Android Studio](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices").
+Multiple emulators exist, once again with their own strengths and weaknesses:
+
+Free emulators:
+
+- [Android Virtual Device (AVD)](https://developer.android.com/studio/run/managing-avds.html "Create and Manage Virtual Devices") - The official android emulator, distributed with Android Studio.
+- [Android X86](https://www.android-x86.org/ "Android X86") - An x86 port of the Android code base
+
+Commercial emulators:
+
+- [Genymotion](https://www.genymotion.com/fun-zone/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
+- [Corellium](https://corellium.com/ "Corellium") - Offers custom device virtualization through a cloud-based or on-prem solution.
+
+Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others. In the remainder of this guide, we will use the official AVD to perform tests.
+
+AVD supports some hardware emulation, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
+
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
 ```shell
 $ ./android avd
 ```
-
-There are several downsides to using an emulator. You may not be able to test an app properly in an emulator if the app relies on a specific mobile network or uses NFC or Bluetooth. Testing within an emulator is also usually slower, and the testing itself may cause issues.
-
-Nevertheless, you can emulate many hardware characteristics, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation") and [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS").
-
-Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others.
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
 
@@ -188,25 +248,27 @@ You'll come across different use cases on how you can use adb commands when test
 
 ##### Angr
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1235>
+Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. In other words: given a binary and a requested state, Angr will try to get to that state, using formal methods (a technique used for static code analysis) to find a path, as well as brute forcing. Using angr to get to the requested state is often much faster than taking manual steps for debugging and searching the path towards the required state. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native code, such as native Android binaries.
 
-Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native Android binaries.
+Angr allows for disassembly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, decompilation and more, given a large set of plugins.
 
-Since version 8 Angr is based on Python 3, and it's available from PyPI. With pip, it's easy to install on \*nix operating systems and Mac OS:
+Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
 
 ```shell
 $ pip install angr
 ```
 
-Creating a dedicated virtual environment with Virtualenv is recommended because some of its dependencies contain forked versions Z3 and PyVEX, which overwrite the original versions. You can skip this step if you don't use these libraries for anything else.
+> Some of angr's dependencies contain forked versions of the Python modules Z3 and PyVEX, which would overwrite the original versions. If you're using those modules for anything else, you should create a dedicated virtual environment with [Virtualenv](https://docs.python.org/3/tutorial/venv.html "Virtualenv documentation"). Alternatively, you can always use the provided docker container. See the [installation guide](https://docs.angr.io/introductory-errata/install "angr Installation Guide") for more details.
 
-Comprehensive documentation, including an installation guide, tutorials, and usage examples is available on [Gitbooks page of angr](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
+Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
+
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic execution](#symbolic-execution "Symbolic execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
 
 ##### Apktool
 
 [Apktool](https://ibotpeaches.github.io/Apktool/) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
 
-When run with default command line flags, apktool automatically decodes the Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
+When run with default command line flags, apktool automatically decodes the Android Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
 
 ```shell
 $ apktool d base.apk
@@ -237,7 +299,7 @@ drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
 
 The unpacked files are:
 
-- AndroidManifest.xml: The decoded Manifest file, which can be opened and edited in a text editor.
+- AndroidManifest.xml: The decoded Android Manifest file, which can be opened and edited in a text editor.
 - apktool.yml: file containing information about the output of apktool
 - original: folder containing the MANIFEST.MF file, which contains information about the files contained in the JAR file
 - res: directory containing the app’s resources
@@ -726,17 +788,19 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 ##### radare2
 
-[radare2](https://rada.re/r/ "Radare2 official website") is a popular reverse engineering framework for analysis, disassembling, debugging and patching that is scriptable and supports many architectures and file formats including Android/iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java (JNI and Java classes) are supported, and it even has a web server for collaborative work. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes handy when traditional tools fail.
+[radare2](https://rada.re/r/ "Radare2 official website") (r2) is a popular open source reverse engineering framework for disassembling, debugging, patching and analyzing binaries that is scriptable and supports [many architectures and file formats](https://rada.re/r/cmp "radare2 Comparison Table") including Android/iOS apps. For Android, Dalvik DEX (odex, multidex), ELF (executables, .so, ART) and Java (JNI and Java classes) are supported. It also contains several useful scripts that can help you during mobile application analysis as it offers low level disassembling and safe static analysis that comes in handy when traditional tools fail.
+
+radare2 implements a rich command line interface (CLI) where you can perform the mentioned tasks. However, if you're not really comfortable using the CLI for reverse engineering you may want to consider using the Web UI (via the `-H` flag) or the even more convenient Qt and C++ GUI version called [Cutter](https://github.com/radareorg/cutter "Cutter"). Do keep in mind that the CLI, and more concretely its Visual Mode and its scripting capabilities ([r2pipe](https://github.com/radare/radare2-r2pipe "r2pipe")), are the core of radare2's power and it's definitely worth learning how to use it.
 
 ###### Installing radare2
 
-Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions").
+Please refer to [radare2's official installation instructions](https://github.com/radare/radare2/blob/master/README.md "radare2 installation instructions"). We highly recommend to always install radare2 from the GitHub version instead of via common package managers such as APT. Radare2 is in very active development, which means that third party repositories are often outdated.
 
 ###### Using radare2
 
-r2 is a set of small command-line utilities that can be used together or independently. Utilities like `rabin2`, `rasm2`, `rahash2`, `radiff2`, `rafind2`, `ragg2`, `rarun2`, `rax2`, and of course `radare2`.
+The radare2 framework comprises a set of small utilities that can be used from the r2 shell or independently as CLI tools. These utilities include `rabin2`, `rasm2`, `rahash2`, `radiff2`, `rafind2`, `ragg2`, `rarun2`, `rax2`, and of course `r2`, which is the main one.
 
-You can use `rafind2` to read strings directly from the encoded AndroidManifest.xml. Use this to list permissions, activities, providers, services, receivers and other information stored in AndroidManifest.xml
+For example, you can use `rafind2` to read strings directly from an encoded Android Manifest (AndroidManifest.xml):
 
 ```shell
 # Permissions
@@ -751,67 +815,74 @@ $ rafind2 -ZS service AndroidManifest.xml
 $ rafind2 -ZS receiver AndroidManifest.xml
 ```
 
-You can load DEX classes with the following command.
+Or use `rabin2` to get information about a binary file:
+
+```shell
+$ rabin2 -I UnCrackable-Level1/classes.dex
+arch     dalvik
+baddr    0x0
+binsz    5528
+bintype  class
+bits     32
+canary   false
+retguard false
+class    035
+crypto   false
+endian   little
+havecode true
+laddr    0x0
+lang     dalvik
+linenum  false
+lsyms    false
+machine  Dalvik VM
+maxopsz  16
+minopsz  1
+nx       false
+os       linux
+pcalign  0
+pic      false
+relocs   false
+sanitiz  false
+static   true
+stripped false
+subsys   java
+va       true
+sha1  12-5508c  b7fafe72cb521450c4470043caa332da61d1bec7
+adler32  12-5528c  00000000
+```
+
+Type `rabin2 -h` to see all options:
+
+```bash
+$ rabin2 -h
+Usage: rabin2 [-AcdeEghHiIjlLMqrRsSUvVxzZ] [-@ at] [-a arch] [-b bits] [-B addr]
+              [-C F:C:D] [-f str] [-m addr] [-n str] [-N m:M] [-P[-P] pdb]
+              [-o str] [-O str] [-k query] [-D lang symname] file
+ -@ [addr]       show section, symbol or import at addr
+ -A              list sub-binaries and their arch-bits pairs
+ -a [arch]       set arch (x86, arm, .. or <arch>_<bits>)
+ -b [bits]       set bits (32, 64 ...)
+ -B [addr]       override base address (pie bins)
+ -c              list classes
+ -cc             list classes in header format
+ -H              header fields
+ -i              imports (symbols imported from libraries)
+ -I              binary info
+ -j              output in json
+ ...
+```
+
+Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries just like any other binary:
 
 ```shell
 $ r2 classes.dex
 ```
 
-In the very rare case it doesn't get detected properly, you can use the flag `-a` to manually set the architecture to Dalvik.
+Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in the chapter "Tampering and Reverse Engineering on Android".
 
-```shell
-$ r2 -a dalvik classes.dex
-```
+Once in the r2 shell, you can also access functions offered by the other radare2 utilities. For example, running `i` will print the information of the binary, exactly as `rabin2 -I` does.
 
-Once loaded, you can print the disassembly opcodes with the r2 command `pd`.
-
-```shell
-[0x000009c8]> pd
-```
-
-You can limit the number of opcodes displayed by appending the number to the command `pd`.
-
-```shell
-[0x000009c8]> pd 10
-            ;-- entry0:
-            ;-- Lsg/vantagepoint/uncrackable1/MainActivity.method.onCreate(Landroid/os/Bundle;)V:
-            ;-- method.protected.Lsg_vantagepoint_uncrackable1_MainActivity.Lsg_vantagepoint_uncrackable1_MainActivity.method.onCreate_Landroid_os_Bundle__V:
-            ;-- ip:
-            0x000009c8      710027000000   invoke-static {}, Lsg/vantagepoint/a/c.a()Z ; 0x27
-            0x000009ce      0a00           move-result v0
-        ,=< 0x000009d0      39000e00       if-nez v0, 0x000009ec
-        |   0x000009d4      710028000000   invoke-static {}, Lsg/vantagepoint/a/c.b()Z
-        ...
-            ; 0x29
-       ||   0x000009e6      0a00           move-result v0
-      ,===< 0x000009e8      38000700       if-eqz v0, 0x000009f6
-      |``-> 0x000009ec      1a003f00       const-string v0, str.Root_detected ; 0x11bf
-```
-
-You can print the class names with the r2 command `icq`.
-
-```shell
-[0x000009c8]> icq
-0x0000069c [0x0000078c - 0x000007b8] Lsg/vantagepoint/a/a Ljava/lang/Object;
-0x000006bc [0x000007c8 - 0x000007ec] Lsg/vantagepoint/a/b Ljava/lang/Object;
-...
-0x0000073c [0x00000958 - 0x00000abc] Lsg/vantagepoint/uncrackable1/MainActivity Landroid/app/Activity;
-0x0000075c [0x00000acc - 0x00000bb2] Lsg/vantagepoint/uncrackable1/a Ljava/lang/Object;
-```
-
-You can print the external methods with the r2 command `iiq`.
-
-```shell
-[0x000009c8]> iiq
-Landroid/app/Activity.method.<init>()V
-Landroid/app/Activity.method.onCreate(Landroid/os/Bundle;)V
-...
-0x0000075c [0x00000acc - 0x00000bb2]    230 class 6 Lsg/vantagepoint/uncrackable1/a super: Ljava/lang/Object;
-0x00000acc method 0 sp   Lsg/vantagepoint/uncrackable1/a.method.a(Ljava/lang/String;)Z
-0x00000b5c method 1 sp   Lsg/vantagepoint/uncrackable1/a.method.b(Ljava/lang/String;)[B
-```
-
-You can print all the strings with the r2 command `izq`.
+To print all the strings use `rabin2 -Z` or the command `iz` (or the less verbose `izq`) from the r2 shell.
 
 ```shell
 [0x000009c8]> izq
@@ -829,7 +900,111 @@ You can print all the strings with the r2 command `izq`.
 0x11bf 14 14 Root detected!
 ```
 
-Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation").
+Most of the time you can append special options to your commands such as `q` to make the command less verbose (quiet) or `j` to give the output in JSON format (use `~{}` to prettify the JSON string).
+
+```shell
+[0x000009c8]> izj~{}
+[
+  {
+    "vaddr": 3152,
+    "paddr": 3152,
+    "ordinal": 1,
+    "size": 39,
+    "length": 39,
+    "section": "file",
+    "type": "ascii",
+    "string": "L2Rldi9jb20ua291c2hpa2R1dHRhLnN1cGVydXNlci5kYWVtb24v"
+  },
+  {
+    "vaddr": 3193,
+    "paddr": 3193,
+    "ordinal": 2,
+    "size": 25,
+    "length": 25,
+    "section": "file",
+    "type": "ascii",
+    "string": "L3N5c3RlbS9hcHAvU3VwZXJ1c2VyLmFwaw=="
+  },
+```
+
+You can print the class names and their methods with the r2 command `ic` (_information classes_).
+
+```shell
+[0x000009c8]> ic
+...
+0x0000073c [0x00000958 - 0x00000abc]    356 class 5 Lsg/vantagepoint/uncrackable1/MainActivity 
+                                                                            :: Landroid/app/Activity;
+0x00000958 method 0 pC   Lsg/vantagepoint/uncrackable1/MainActivity.method.<init>()V
+0x00000970 method 1 P    Lsg/vantagepoint/uncrackable1/MainActivity.method.a(Ljava/lang/String;)V
+0x000009c8 method 2 r    Lsg/vantagepoint/uncrackable1/MainActivity.method.onCreate(Landroid/os/Bundle;)V
+0x00000a38 method 3 p    Lsg/vantagepoint/uncrackable1/MainActivity.method.verify(Landroid/view/View;)V
+0x0000075c [0x00000acc - 0x00000bb2]    230 class 6 Lsg/vantagepoint/uncrackable1/a :: Ljava/lang/Object;
+0x00000acc method 0 sp   Lsg/vantagepoint/uncrackable1/a.method.a(Ljava/lang/String;)Z
+0x00000b5c method 1 sp   Lsg/vantagepoint/uncrackable1/a.method.b(Ljava/lang/String;)[B
+```
+
+You can print the imported methods with the r2 command `ii` (_information imports_).
+
+```shell
+[0x000009c8]> ii
+[Imports]
+Num  Vaddr       Bind      Type Name
+...
+  29 0x000005cc    NONE    FUNC Ljava/lang/StringBuilder.method.append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  30 0x000005d4    NONE    FUNC Ljava/lang/StringBuilder.method.toString()Ljava/lang/String;
+  31 0x000005dc    NONE    FUNC Ljava/lang/System.method.exit(I)V
+  32 0x000005e4    NONE    FUNC Ljava/lang/System.method.getenv(Ljava/lang/String;)Ljava/lang/String;
+  33 0x000005ec    NONE    FUNC Ljavax/crypto/Cipher.method.doFinal([B)[B
+  34 0x000005f4    NONE    FUNC Ljavax/crypto/Cipher.method.getInstance(Ljava/lang/String;)Ljavax/crypto/Cipher;
+  35 0x000005fc    NONE    FUNC Ljavax/crypto/Cipher.method.init(ILjava/security/Key;)V
+  36 0x00000604    NONE    FUNC Ljavax/crypto/spec/SecretKeySpec.method.<init>([BLjava/lang/String;)V
+```
+
+A common approach when inspecting a binary is to search for something, navigate to it and visualize it in order to interpret the code. One of the ways to find something using radare2 is by filtering the output of specific commands, i.e. to grep them using `~` plus a keyword (`~+` for case-insensitive). For example, we might know that the app is verifying something, we can inspect all radare2 flags and see where we find something related to "verify".
+
+> When loading a file, radare2 tags everything it's able to find. These tagged names or references are called flags. You can access them via the command `f`.
+
+In this case we will grep the flags using the keyword "verify":
+
+```shell
+[0x000009c8]> f~+verify
+0x00000a38 132 sym.Lsg_vantagepoint_uncrackable1_MainActivity.method.verify_Landroid_view_View__V
+0x00000a38 132 method.public.Lsg_vantagepoint_uncrackable1_MainActivity.Lsg_vantagepoint_uncrackable1
+                                                        _MainActivity.method.verify_Landroid_view_View__V
+0x00001400 6 str.verify
+```
+
+It seems that we've found one method in 0x00000a38 (that was tagged two times) and one string in 0x00001400. Let's navigate (seek) to that method by using its flag:
+
+```shell
+[0x000009c8]> s sym.Lsg_vantagepoint_uncrackable1_MainActivity.method.verify_Landroid_view_View__V
+```
+
+And of course you can also use the disassembler capabilities of r2 and print the disassembly with the command `pd` (or `pdf` if you know you're already located in a function).
+
+```shell
+[0x00000a38]> pd
+```
+
+r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
+
+![radare2 r2 shell - pd 10](Images/Chapters/0x05b/r2_pd_10.png)
+
+Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
+
+![radare2 Visual Mode - V](Images/Chapters/0x05b/r2_visualmode_hex.png)
+
+By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
+
+![radare2 Visual Mode - Vp](Images/Chapters/0x05b/r2_visualmode_disass.png)
+
+Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
+
+![radare2 Graph Mode - VV](Images/Chapters/0x05b/r2_graphmode.png)
+
+This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
+
+Please refer to the chapter "Tampering and Reverse Engineering on Android" for more detailed use of radare2 on Android, especially when analyzing native libraries.
 
 ##### r2frida
 
@@ -842,19 +1017,7 @@ Radare2 is very powerful and has dozens of commands that you can find on the [ra
 
 ###### Installing r2frida
 
-Before installing r2frida, make sure you have installed [radare2](https://rada.re/r/ "radare2") on your system. On GNU/Debian you also need to install the following dependencies:
-
-```shell
-$ sudo apt install -y make gcc libzip-dev nodejs npm curl pkg-config git
-```
-
-Once the dependencies are installed, you may proceed to install r2frida. The recommended installation method is via r2pm. To install with `r2pm`, simply run the following command:
-
-```shell
-$ r2pm -ci r2frida
-```
-
-However, you may also compile r2frida yourself in the traditional way. You can find how to do this in the official documentation of [r2frida](https://github.com/nowsecure/r2frida/blob/master/README.md "r2frida readme").
+Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions").
 
 ###### Using r2frida
 
@@ -864,7 +1027,7 @@ With frida-server running, you should now be able to attach to it using the pid,
 $ r2 frida://1234
 ```
 
-For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page.](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage")
+For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage").
 
 Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
 
@@ -898,7 +1061,7 @@ hits: 23
 0x561f0732a91a hit12_1 unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61
 ```
 
-To output the search results in json format, we simply add `j` to our previous search command. This can be used in most of the commands:
+To output the search results in JSON format, we simply add `j` to our previous search command (just as we do in the r2 shell). This can be used in most of the commands:
 
 ```shell
 [0x00000000]> \/j unacceptable
@@ -942,7 +1105,7 @@ To list or set a breakpoint use the command db. This is useful when analyzing/mo
 [0x00000000]> \db
 ```
 
-Finally, remember that you can also run Frida JS code with \. script.js:
+Finally, remember that you can also run Frida JavaScript code with `\.` plus the name of the script:
 
 ```shell
 [0x00000000]> \. agent.js
@@ -1394,94 +1557,6 @@ With the following command you can specifically grep for the log output of the a
 ```shell
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
-
-#### Static Analysis
-
-##### Manual Static Analysis
-
-In Android app security testing, black-box testing (with access to the compiled binary, but not the original source code) is almost equivalent to white-box testing. The majority of apps can be decompiled easily, and having some reverse engineering knowledge and access to bytecode and binary code is almost as good as having the original code unless the release build has been purposefully obfuscated.
-
-For source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.
-
-During **black box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered to help you retrieve parts of the source code.
-
-The following pull the APK from the device:
-
-```shell
-$ adb shell pm list packages
-(...)
-package:com.awesomeproject
-(...)
-$ adb shell pm path com.awesomeproject
-package:/data/app/com.awesomeproject-1/base.apk
-$ adb pull /data/app/com.awesomeproject-1/base.apk
-```
-
-`apkx` provides an easy method of retrieving an APK's source code via the command line. It also packages `dex2jar` and CFR and automates the extraction, conversion, and decompilation steps. See [Apkx installation instructions](#Apkx "Apkx installation instructions"). Once installed, run it against a local APK as follows:
-
-```shell
-$ apkx UnCrackable-Level1.apk
-Extracting UnCrackable-Level1.apk to UnCrackable-Level1
-Converting: classes.dex -> classes.jar (dex2jar)
-dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
-Decompiling to UnCrackable-Level1/src (cfr)
-```
-
-If the application is based solely on Java and doesn't have any native libraries (C/C++ code), the reverse engineering process is relatively easy and recovers almost all the source code. Nevertheless, if the code is obfuscated, this process may be very time-consuming and unproductive. This also applies to applications that contain a native library. They can still be reverse engineered, but the process is not automated and requires knowledge of low-level details.
-
-The "Tampering and Reverse Engineering on Android" section contains more details about reverse engineering Android.
-
-##### Automated Static Analysis
-
-You should use tools for efficient static analysis. They allow the tester to focus on the more complicated business logic. A plethora of static code analyzers are available, ranging from open source scanners to full-blown enterprise-ready scanners. The best tool for the job depends on budget, client requirements, and the tester's preferences.
-
-Some static analyzers rely on the availability of the source code; others take the compiled APK as input.
-Keep in mind that static analyzers may not be able to find all problems by themselves even though they can help us focus on potential problems. Review each finding carefully and try to understand what the app is doing to improve your chances of finding vulnerabilities.
-
-Configure the static analyzer properly to reduce the likelihood of false positives. and maybe only select several vulnerability categories in the scan. The results generated by static analyzers can otherwise be overwhelming, and your efforts can be counterproductive if you must manually investigate a large report.
-
-There are several open source tools for automated security analysis of an APK.
-
-- [QARK](https://github.com/linkedin/qark/ "QARK")
-- [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
-- [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
-- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
-
-For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools."
-
-#### Dynamic Analysis
-
-Dynamic Analysis tests the mobile app by executing and running the app binary and analysing its workflows for vulnerabilities. For example, vulnerabilities regarding data storage might be sometimes hard to catch during static analysis, but in dynamic analysis you can easily spot what information is stored persistently and if the information is protected properly. Besides this, dynamic analysis allows the tester to properly identify:
-
-- Business logic flaws
-- Vulnerabilities in the tested environments
-- Weak input validation and bad input/output encoding as they are processed through one or multiple services
-
-Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
-
-##### Using Non-Rooted Devices
-
-Non-rooted devices provide the tester with two benefits:
-
-- Replicate an environment that the application is intended to run on.
-- Thanks to tools like objection, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app).
-
-In order to dynamically analyze the application, you can also rely on [objection](https://github.com/sensepost/objection "objection") which is leveraging Frida. However, in order to be able to use objection on non-rooted devices you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library. Objection communicates then using a Python API with the mobile phone through the installed Frida gadget.
-
-In order to accomplish this, the following commands can set you up and running:
-
-```bash
-# Download the Uncrackable APK
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
-# Patch the APK with the Frida Gadget
-$ objection patchapk --source UnCrackable-Level1.apk
-# Install the patched APK on the android phone
-$ adb install UnCrackable-Level1.objection.apk
-# After running the mobile phone, objection will detect the running frida-server through the APK
-$ objection explore
-```
-
-> The section [Setting up a Network Testing Environment](#Setting-up-a-Network-Testing-Environment "Setting up a Network Testing Environment") assists tremendously with the dynamic analysis process. As this is a basic guide, the two sections are separate as each can be used on its own. For advanced purposes, it is essential to combine the knowledge gained from both sections.
 
 ### Setting up a Network Testing Environment
 
@@ -1967,6 +2042,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - adb - <https://developer.android.com/studio/command-line/adb>
 - Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
+- Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
 - Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
 - Android Studio - <https://developer.android.com/studio/index.html>
 - Android tcpdump - <https://www.androidtcpdump.com/>

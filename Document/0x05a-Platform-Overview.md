@@ -145,7 +145,7 @@ Apps must implement callback methods that react to a number of events; for examp
 ##### App Bundles
 
 Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle) (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play. App Bundles are signed binaries which contain the code of the app in several modules. The base module contains the core of the application. The base module can be extended with various modules which contain new enrichments/functionalities for the app as further explained on the [developer documentation for app bundle](https://developer.android.com/guide/app-bundle "Documentation on App Bundle").
-If you have an Android App Bundle, you can best use the [Bundletool](https://developer.android.com/studio/command-line/bundletool "Bundle Tool") from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
+If you have an Android App Bundle, you can best use the [bundletool](https://developer.android.com/studio/command-line/bundletool "bundletool") command line tool from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
 
 ```shell
 
@@ -163,11 +163,11 @@ $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 --key-pass=file:/MyApp/key.pwd
 ```
 
-We recommend that you test both the APK with and without the additional modules, so that it becomes clear whether the additonal modules introduce and/or fix security issues for the base module.
+We recommend that you test both the APK with and without the additional modules, so that it becomes clear whether the additional modules introduce and/or fix security issues for the base module.
 
-##### Manifest
+##### Android Manifest
 
-Every app has a manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app’s Android Package Kit (APK) file.
+Every app has an Android Manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app’s Android Package Kit (APK) file.
 
 The manifest file describes the app structure, its components (activities, services, content providers, and intent receivers), and requested permissions. It also contains general app metadata, such as the app's icon, version number, and theme. The file may list other information, such as compatible APIs (minimal, targeted, and maximal SDK version) and the [kind of storage it can be installed on (external or internal)](https://developer.android.com/guide/topics/data/install-location.html "Define app install location").
 
@@ -226,7 +226,7 @@ All these elements are provided by the Android operating system, in the form of 
 
 Activities make up the visible part of any app. There is one activity per screen, so an app with three different screens implements three different activities. Activities are declared by extending the Activity class. They contain all user interface elements: fragments, views, and layouts.
 
-Each activity needs to be declared in the app manifest with the following syntax:
+Each activity needs to be declared in the Android Manifest with the following syntax:
 
 ```xml
 <activity android:name="ActivityName">
@@ -338,7 +338,7 @@ Implicit intents are sent to the OS to perform a given action on a given set of 
     Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
 ```
 
-An *intent filter* is an expression in app manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
+An *intent filter* is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
 
 Android uses intents to broadcast messages to apps (such as an incoming call or SMS) important power supply information (low battery, for example), and network changes (loss of connection, for instance). Extra data may be added to intents (through `putExtra`/`getExtras`).
 
@@ -355,7 +355,7 @@ To improve security and privacy, a Local Broadcast Manager is used to send and r
 
 Broadcast Receivers are components that allow apps to receive notifications from other apps and from the system itself. With it, apps can react to events (internal, initiated by other apps, or initiated by the operating system). They are generally used to update user interfaces, start services, update content, and create user notifications.
 
-Broadcast Receivers must be declared in the app's manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
+Broadcast Receivers must be declared in the Android Manifest file. The manifest must specify an association between the Broadcast Receiver and an intent filter to indicate the actions the receiver is meant to listen for. If Broadcast Receivers aren't declared, the app won't listen to broadcasted messages. However, apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
 
