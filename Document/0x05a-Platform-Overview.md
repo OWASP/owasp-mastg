@@ -54,7 +54,7 @@ Android supports device encryption from 2.3.4 version and it has undergone some 
 
 ##### Full-Disk Encryption
 
-Android 5.0 and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt & decrypt the userdata partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter its password. 
+Android 5.0 and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the userdata partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter his password. 
 
 ##### File-Based Encryption
 
