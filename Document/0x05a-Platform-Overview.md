@@ -369,7 +369,7 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 The other way is to create the receiver dynamically in code and register it with the `Context.registerReceiver()` method.
 
-An example of registering Broadcast Receiver programmatically:
+An example of registering Broadcast Receiver dynamically:
 
 ```Java
 // Define a broadcast receiver
@@ -395,6 +395,10 @@ After receiving an implicit intent, Android will list all apps that have registe
 An interesting feature of Broadcast Receivers is that they are assigned a priority; this way, an intent will be delivered to all authorized receivers according to their priority.
 
 A Local Broadcast Manager can be used to make sure intents are received from the internal app only, and any intent from any other app will be discarded. This is very useful for improving security.
+
+###### Implicit Broadcast Receiver Limitiation
+
+According to [Background Execution Limits](https://developer.android.com/about/versions/oreo/background.html#broadcasts), apps that target Android 8.0 (API level 26) or higher can no longer register Broadcast Receivers for implicit broadcasts in their manifest, except for those listed in [Implicit Broadcast Exceptions](https://developer.android.com/guide/components/broadcast-exceptions). The Broadcast Receivers created at runtime by calling `Context.registerReceiver()` are not affected by this limitation.
 
 ##### Content Providers
 
