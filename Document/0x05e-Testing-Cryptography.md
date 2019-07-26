@@ -56,7 +56,7 @@ Apps that target modern API levels, went through the following changes:
   - If a Socket read is interrupted, you get an `SocketException`.
 - For Android Pie (9.0) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P
 ") shows even more aggressive changes:
-  - You get a warning if you still specify a provider using the `getInstance()` method and you target any API below P. If you target P or above, you get an error.
+  - You get a warning if you still specify a provider using the `getInstance` method and you target any API below P. If you target P or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (Marshmallow, API 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
@@ -259,7 +259,7 @@ Note that if you take a rooted device, or unpatched device, or a patched (e.g. r
 Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the AndroidKeyStore is hardware-backed in case a fingerprint sensor is present. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
 
 However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since API level 23. As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android API level 22 or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the `AndroidKeyStore`. The encrypted symmetric key can now be safely stored in the `SharedPreferences`. Whenever we need the symmetric key, the application retrieves the private key from the `AndroidKeyStore` and decrypts the symmetric key.
-When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.isinsideSecureHardware()` returns true, then we know that you cannot just dump the keys nor monitor its cryptographic operations. It becomes debatable what will be eventually more safe: using `PBKDF2withHmacSHA256` to generate a key that is still in reachable dumpable memory, or using the `AndroidKeyStore` for which the keys might never get into memory. With Android Pie we see that additional security enhancements have been implemented in order to separate the TEE from the `AndroidKeyStore` which make it favorable over using `PBKDF2withHmacSHA256`. However, more testing & investigating will take place on that subject in the near future.
+When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.isinsideSecureHardware` returns true, then we know that you cannot just dump the keys nor monitor its cryptographic operations. It becomes debatable what will be eventually more safe: using `PBKDF2withHmacSHA256` to generate a key that is still in reachable dumpable memory, or using the `AndroidKeyStore` for which the keys might never get into memory. With Android Pie we see that additional security enhancements have been implemented in order to separate the TEE from the `AndroidKeyStore` which make it favorable over using `PBKDF2withHmacSHA256`. However, more testing & investigating will take place on that subject in the near future.
 
 #### Secure Key Import into Keystore
 
@@ -301,7 +301,7 @@ Although the key attestation process can be implemented within the application d
 
 - The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge.
 
-- The client should call the `setAttestationChallenge()` API with the challenge received from the server and should then retrieve the attestation certificate chain using the `KeyStore.getCertificateChain()` method.
+- The client should call the `setAttestationChallenge` API with the challenge received from the server and should then retrieve the attestation certificate chain using the `KeyStore.getCertificateChain` method.
 
 - The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
 
@@ -360,11 +360,11 @@ For the security analysis perspective the analysts may perform the following che
 
 #### Decryption only on Unlocked Devices
 
-For more security Android Pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired()` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
+For more security Android Pie introduces the `unlockedDeviceRequied` flag. By passing `true` to the `setUnlockedDeviceRequired` method the app prevents its keys stored in `AndroidKeystore` from being decrypted when the device is locked, and it requires the screen to be unlocked before allowing decryption.
 
 #### StrongBox Hardware Security Module
 
-Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked()` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
+Devices running Android 9 and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
 
 #### Key Use Authorizations
 

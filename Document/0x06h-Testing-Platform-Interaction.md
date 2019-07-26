@@ -2818,7 +2818,7 @@ func enableJavaScriptBridge(_ enabled: Bool) {
 }
 ```
 
-Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in the  example above) causes the JavaScript function `window.webkit.messageHandlers.myJavaScriptMessageHandler.postMessage()` to be defined in all frames in all web views that use the user content controller. It can be then [used from the HTML file like this](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/d4e2d9efbde8841bf7e4a8800418dda6bb116ec6/WheresMyBrowser/web/WKWebView/scenario3.html#L33 "Where's My Browser? WKWebView/scenario3.html Line 33"):
+Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in the  example above) causes the JavaScript function `window.webkit.messageHandlers.myJavaScriptMessageHandler.postMessage` to be defined in all frames in all web views that use the user content controller. It can be then [used from the HTML file like this](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/d4e2d9efbde8841bf7e4a8800418dda6bb116ec6/WheresMyBrowser/web/WKWebView/scenario3.html#L33 "Where's My Browser? WKWebView/scenario3.html Line 33"):
 
 ```javascript
 function invokeNativeOperation() {

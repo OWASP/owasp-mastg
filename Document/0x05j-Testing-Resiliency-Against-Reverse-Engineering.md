@@ -63,7 +63,7 @@ On the other hand, `ctsProfileMatch` gives you a much stricter signal about the 
 - Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
 - Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
 - The entire JWS response should be sent to your server, using a secure connection, for verification. It isn't recommended to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
-- The `verify()` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.
+- The `verify` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.
 - The SafetyNet Attestation API gives you a snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommended to plan a strategy to use the least amount of attestations required to satisfy the use case.
 - To prevent inadvertently reaching your `SafetyNetApi.attest` quota and getting attestation errors, you should build a system that monitors your usage of the API and warns you well before you reach your quota so you can get it increased. You should also be prepared to handle attestation failures because of an exceeded quota and avoid blocking all your users in this situation. If you are close to reaching your quota, or expect a short-term spike that may lead you to exceed your quota, you can submit this [form](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request") to request short or long-term increases to the quota for your API key. This process, as well as the additional quota, is free of charge.
 
@@ -815,7 +815,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
+With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices` will even only return the caller's own services.
 
 A working solution to detect the frida-server process is to us the command `ps` instead.
 
@@ -1046,7 +1046,7 @@ public String getSignature() {
 }
 ```
 
-When calling the `getSignature()` function you would just need to verify if the signature matches your predefined and hardcoded signature.
+When calling the `getSignature` function you would just need to verify if the signature matches your predefined and hardcoded signature.
 
 ```Java
 String appSignature = getSignature();
