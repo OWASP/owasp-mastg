@@ -16,7 +16,7 @@ Root detection can also be implemented through libraries such as [RootBeer](http
 
 ##### SafetyNet
 
-SafetyNet is an Android API that provides a set of services and creates profiles of devices according to software and hardware information. This profile is then compared to a list of whitelisted device models that have passed Android compatibility testing. Google [recommends](https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet "SafetyNet Documentation") using the feature as "an additional in-depth defense signal as part of an anti-abuse system."
+SafetyNet is an Android API that provides a set of services and creates profiles of devices according to software and hardware information. This profile is then compared to a list of whitelisted device models that have passed Android compatibility testing. Google [recommends](https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet "SafetyNet Documentation") using the feature as "an additional in-depth defense signal as part of an anti-abuse system".
 
 How exactly SafetyNet works is not well documented and may change at any time. When you call this API, SafetyNet downloads a binary package containing the device validation code provided from Google, and the code is then dynamically executed via reflection. An [analysis by John Kozyrakis](https://koz.io/inside-safetynet/ "SafetyNet: Google's tamper detection for Android") showed that SafetyNet also attempts to detect whether the device is rooted, but exactly how that's determined is unclear.
 
@@ -580,7 +580,7 @@ The following methods describe different approaches to bypass debugger detection
 
 ###### Bypassing Example: UnCrackable App for Android Level 2
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in level 2 of the "UnCrackable App for Android."
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in level 2 of the "UnCrackable App for Android".
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a *native* method.
 
@@ -944,7 +944,7 @@ if (fp) {
 }
 ```
 
-This detects any libraries whose names include "frida." This check works, but there are some major issues:
+This detects any libraries whose names include "frida". This check works, but there are some major issues:
 
 - Remember that relying on frida-server being referred to as "fridaserver" wasn't a good idea? The same applies here; with some small modifications, the Frida agent libraries could simply be renamed.
 - Detection depends on standard library calls such as `fopen` and `strstr`. Essentially, we're attempting to detect Frida by using functions that can be easily hooked with-you guessed it-Frida. Obviously, this isn't a very solid strategy.

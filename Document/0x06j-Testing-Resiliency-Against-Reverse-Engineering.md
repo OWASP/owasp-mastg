@@ -75,7 +75,7 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 ##### Calling System APIs
 
-Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1." This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
+Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1". This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
 
 #### Bypassing Jailbreak Detection
 
@@ -100,7 +100,7 @@ cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
 ```
 
-As you can see, our class method was called directly, and it returned "true." Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
+As you can see, our class method was called directly, and it returned "true". Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
 
 ```shell
 cy# a=choose(JailbreakDetectionVC)

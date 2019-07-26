@@ -4,7 +4,7 @@ Protecting authentication tokens, private information, and other sensitive data 
 
 The guidelines for saving data can be summarized quite easily: Public data should be available to everyone, but sensitive and private data must be protected, or, better yet, kept out of device storage.
 
-Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "Identifying Sensitive Data" section of the chapter "Mobile App Security Testing."
+Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "Identifying Sensitive Data" section of the chapter "Mobile App Security Testing".
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
 
@@ -478,7 +478,7 @@ As part of Android's IPC mechanisms, content providers allow an app's stored dat
 
 The first step is to look at `AndroidManifest.xml` to detect content providers exposed by the app. You can identify content providers by the `<provider>` element. Complete the following steps:
 
-- Determine whether the value of the export tag is "true" (`android:exported="true"`). Even if it is not, the tag will be set to "true" automatically if an `<intent-filter>` has been defined for the tag. If the content is meant to be accessed only by the app itself, set `android:exported` to "false." If not, set the flag to "true" and define proper read/write permissions.
+- Determine whether the value of the export tag is "true" (`android:exported="true"`). Even if it is not, the tag will be set to "true" automatically if an `<intent-filter>` has been defined for the tag. If the content is meant to be accessed only by the app itself, set `android:exported` to "false". If not, set the flag to "true" and define proper read/write permissions.
 - Determine whether the data is being protected by a permission tag (`android:permission`). Permission tags limit exposure to other apps.
 - Determine whether the `android:protectionLevel` attribute has the value `signature`. This setting indicates that the data is intended to be accessed only by apps from the same enterprise (i.e., signed with the same key). To make the data accessible to other apps, apply a security policy with the `<permission>` element and set a proper `android:protectionLevel`. If you use `android:permission`, other applications must declare corresponding `<uses-permission>` elements in their manifests to interact with your content provider. You can use the `android:grantUriPermissions` attribute to grant more specific access to other apps; you can limit access with the `<grant-uri-permission>` element.
 
@@ -729,7 +729,7 @@ Given its diverse ecosystem, Android supports many backup options:
 
   - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
 
-  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature." This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (>= API level 23), Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
 
 - OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
 

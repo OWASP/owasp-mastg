@@ -129,7 +129,7 @@ In Objective-C, developers can use preprocessor macros to filter out debug code:
 #endif
 ```
 
-In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D." So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
+In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D". So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
 
 ```swift
 #if MSTG-DEBUG
@@ -378,8 +378,8 @@ Make sure that
 Developers can implement proper error handling in several ways:
 
 - Make sure that the application uses a well-designed and unified scheme to handle errors.
-- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging."
-- For a high-risk application written in Objective-C: create an exception handler that  removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
+- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
+- For a high-risk application written in Objective-C: create an exception handler that removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
 - Refrain from using `try!` in Swift unless you're certain that there's no error in the throwing method that's being called.
 - Make sure that the Swift error doesn't propagate into too many intermediate methods.
 
