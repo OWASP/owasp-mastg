@@ -410,7 +410,7 @@ Other resources where you might find useful information are:
 
 [Frida](https://www.frida.re "Frida") is a free and open-source dynamic code instrumentation toolkit that lets you execute snippets of JavaScript into your native apps. It was already introduced in the chapter "Tampering and Reverse Engineering" of the general testing guide.
 
-In what regards to Android we can highlight that Frida supports interaction with the Android Java runtime. You'll be able to hook and call both Java and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
+Frida supports interaction with the Android Java runtime. You'll be able to hook and call both Java and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
 
 Here are some tasks that Frida APIs offers and are relevant or exclusive on Android:
 
@@ -420,7 +420,7 @@ Here are some tasks that Frida APIs offers and are relevant or exclusive on Andr
 - Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
 - Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
 
-Remember that on Android, you can also benefit from the built-in tools provided when installing Frida, that includes the Frida CLI, `frida-ps`, `frida-ls-devices` and `frida-trace`, to name some of them.
+Remember that on Android, you can also benefit from the built-in tools provided when installing Frida, that includes the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name some of them.
 
 Frida is often compared to Xposed, however this comparison is far from fair as both frameworks were designed with different goals in mind. This is important to understand as an app security tester so that you can know which framework to use in which situation:
 
@@ -600,7 +600,7 @@ public final void android.view.View.cancelPendingInputEvents()
 
 ###### Frida Bindings
 
-Frida can be also used from other languages which is very interesting for scripting purposes, the provided bindings include Python, C, NodeJS, and Swift.
+In order to extend the scripting experience, Frida offers bindings to programming languages such as Python, C, NodeJS, and Swift.
 
 Taking Python as an example, the first thing to note is that no further installation steps are required. Start your Python script with `import frida` and you're ready to go. See the following script that simply runs the previous JavaScript snippet:
 
