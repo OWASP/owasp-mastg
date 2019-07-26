@@ -72,7 +72,7 @@ Frida offers three modes of operation:
 
 1. Injected: this is the most common scenario when frida-server is running as a daemon in the iOS or Android device. frida-core is exposed over TCP, listening on localhost:27042 by default. Running in this mode is not possible on rooted or jailbroken devices.
 2. Embedded: this is the case when your device is rooted or jailbroken (you cannot use ptrace as an unprivileged user), you're responsible for the injection of the [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library by embedding it into your app.
-3. Preloaded: similar to LD_PRELOAD or DYLD_INSERT_LIBRARIES. You can configure the frida-gadget to run autonomously and load a script from the filesystem (e.g. path relative to where the Gadget binary resides).
+3. Preloaded: similar to `LD_PRELOAD` or `DYLD_INSERT_LIBRARIES`. You can configure the frida-gadget to run autonomously and load a script from the filesystem (e.g. path relative to where the Gadget binary resides).
 
 Frida also provides a couple of simple tools built on top of the Frida API and available right from your terminal after installing frida-tools via pip. For instance, you can use the Frida CLI for quick script prototyping and try/error scenarios; frida-ps to obtain a list of all apps (or processes) running on the device including their names and PDIs; frida-ls-devices to manage your connected devices, or frida-trace to quickly trace methods that are part of an iOS app or that are implemented inside an Android native library.
 
