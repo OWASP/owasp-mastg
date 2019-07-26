@@ -420,7 +420,7 @@ Here are some tasks that Frida APIs offers and are relevant or exclusive on Andr
 - Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
 - Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
 
-Remember that on Android, you can also benefit from the built-in tools provided when installing Frida, that includes the Frida CLI, frida-ps, frida-ls-devices and frida-trace, to name some of them.
+Remember that on Android, you can also benefit from the built-in tools provided when installing Frida, that includes the Frida CLI, `frida-ps`, `frida-ls-devices` and `frida-trace`, to name some of them.
 
 Frida is often compared to Xposed, however this comparison is far from fair as both frameworks were designed with different goals in mind. This is important to understand as an app security tester so that you can know which framework to use in which situation:
 
