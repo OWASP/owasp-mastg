@@ -83,7 +83,7 @@ Frida also provides a couple of simple tools built on top of the Frida API and a
 
 In addition, you'll also find several open source Frida-based tools, such as:
 
-- [Passionfruit](https://github.com/chaitin/passionfruit): an iOS app blackbox assessment tool.
+- [Passionfruit](https://github.com/chaitin/passionfruit "Passionfruit"): an iOS app blackbox assessment tool.
 - [Fridump](https://github.com/Nightbringer21/fridump "fridump"): a memory dumping tool for both Android and iOS.
 - [Objection](https://github.com/sensepost/objection "objection"): a runtime mobile security assessment framework.
 - [r2frida](https://github.com/nowsecure/r2frida "r2frida"): a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
@@ -158,6 +158,14 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 - Angr - <https://github.com/angr/angr>
 - Cycript - <http://www.cycript.org/>
 - Frida - <https://www.frida.re/>
+- Frida CLI - <https://www.frida.re/docs/frida-cli/>
+- frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
+- frida-ps - <https://www.frida.re/docs/frida-ps/>
+- frida-trace - <https://www.frida.re/docs/frida-trace/>
+- Fridump - <https://github.com/Nightbringer21/fridump>
+- Objection - <https://github.com/sensepost/objection>
+- Passionfruit - <https://github.com/chaitin/passionfruit>
+- r2frida - <https://github.com/nowsecure/r2frida>
 - Radare2 - <https://github.com/radare/radare2>
 - Substrate - <http://www.cydiasubstrate.com/>
 - Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
