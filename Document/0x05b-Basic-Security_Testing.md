@@ -179,9 +179,9 @@ There are many tools and frameworks used throughout this guide to assess the sec
 
 To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers Xposed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through the GUI.
 
-Note: given that a plain installation of the Xposed framework is easily detected with Safetynet, we recommend using Magisk to install Xposed. This way, applications with Safetynet attestation should have a higher chance of being testable with Xposed modules.
+Note: given that a plain installation of the Xposed framework is easily detected with SafetyNet, we recommend using Magisk to install Xposed. This way, applications with SafetyNet attestation should have a higher chance of being testable with Xposed modules.
 
-Xposed has been compared to Frida. When you run Frida server on a rooted device, you will end up with a similarly effective setup. Both frameworks deliver a lot of value when you want to do dynamic instrumentation. When Frida crashes the app, you can try something similar with Xposed. Next, similar to the abudance of Frida scripts, you can easily use one of the many modules that come with Xposed, such as the earlier discussed module to bypass SSL pinning ([JustTrustMe](https://github.com/Fuzion24/JustTrustMe "JustTrustMe") and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSL Unpinning")). Xposed includes other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") which allow you to do more in depth application testing as well. On top of that, you can create your own modules as well to patch often used security mechanisms of Android applications.
+Xposed has been compared to Frida. When you run Frida server on a rooted device, you will end up with a similarly effective setup. Both frameworks deliver a lot of value when you want to do dynamic instrumentation. When Frida crashes the app, you can try something similar with Xposed. Next, similar to the abundance of Frida scripts, you can easily use one of the many modules that come with Xposed, such as the earlier discussed module to bypass SSL pinning ([JustTrustMe](https://github.com/Fuzion24/JustTrustMe "JustTrustMe") and [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSL Unpinning")). Xposed includes other modules, such as [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") which allow you to do more in depth application testing as well. On top of that, you can create your own modules as well to patch often used security mechanisms of Android applications.
 
 Xposed can also be installed on an emulator through the following script:
 
@@ -211,7 +211,7 @@ echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
 
-Please note that Xposed, as of early 2019, does not work on Android Pie yet.
+Please note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
 #### Recommended Tools - Host computer
 
@@ -351,7 +351,7 @@ Now you are ready to begin analyzing apps. A good first step is to enumerate the
 $ dz> run app.package.attacksurface <package>
 ```
 
-Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activies, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
+Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activities, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
 
 For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
 
@@ -408,46 +408,51 @@ Other resources where you might find useful information are:
 
 ##### Frida
 
--- ToDo: <https://github.com/OWASP/owasp-mstg/issues/1229>
+[Frida](https://www.frida.re "Frida") is a free and open-source dynamic code instrumentation toolkit that lets you execute snippets of JavaScript into your native apps. It was already introduced in the chapter "Tampering and Reverse Engineering" of the general testing guide.
 
-[Frida](https://www.frida.re "Frida") "lets you inject snippets of JavaScript or your own library into native apps on Windows, macOS, Linux, iOS, Android, and QNX." Although it was originally based on Google's V8 JavaScript runtime, Frida has used Duktape since version 9.
+Frida supports interaction with the Android Java runtime. You'll be able to hook and call both Java and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
 
-Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
-In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app, Frida uses ptrace to hijack a thread of a running process. This thread is used to allocate a chunk of memory and populate it with a mini-bootstrapper. The bootstrapper starts a fresh thread, connects to the Frida debugging server that's running on the device, and loads a dynamically generated library file that contains the Frida agent and instrumentation code. The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
+Here are some tasks that Frida APIs offers and are relevant or exclusive on Android:
 
-Frida injects a complete JavaScript runtime into the process, along with a powerful API that provides a lot of useful functionality, including calling and hooking native functions and injecting structured data into memory. It also supports interaction with the Android Java runtime.
+- Instantiate Java objects and call static and non-static class methods ([Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API")).
+- Replace Java method implementations ([Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API")).
+- Enumerate live instances of specific classes by scanning the Java heap ([Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API")).
+- Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
+- Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
 
-![Frida](Images/Chapters/0x04/frida.png)
+Remember that on Android, you can also benefit from the built-in tools provided when installing Frida, that includes the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name some of them.
 
-*FRIDA Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
+Frida is often compared to Xposed, however this comparison is far from fair as both frameworks were designed with different goals in mind. This is important to understand as an app security tester so that you can know which framework to use in which situation:
 
-Here are some more APIs FRIDA offers on Android:
+- Frida is standalone, all you need is to run the frida-server binary from a known location in your target Android device (see "Installing Frida" below). This means that, in contrast to Xposed, it is not _deep_ installed in the target OS.
+- Reversing an app is an iterative process. As a consequence of the previous point, you obtain a shorter feedback loop when testing as you don't need to (soft) reboot to apply or simply update your hooks. So you might prefer to use Xposed when implementing more permanent hooks.
+- You may inject and update your Frida JavaScript code on the fly at any point during the runtime of your process (similarly to Cycript on iOS). This way you can perform the so-called _early instrumentation_ by letting Frida spawn your app or you may prefer to attach to a running app that you might have brought to a certain state.
+- Frida is able to handle both Java as well as native code (JNI), allowing you to modify both of them. This is unfortunately a limitation of Xposed which lacks of native code support.
 
-- Instantiate Java objects and call static and non-static class methods
-- Replace Java method implementations
-- Enumerate live instances of specific classes by scanning the Java heap (Dalvik only)
-- Scan process memory for occurrences of a string
-- Intercept native function calls to run your own code at function entry and exit
-
-The FRIDA Stalker —a code tracing engine based on dynamic recompilation— is available for Android (with support for ARM64), including various enhancements, since Frida version 10.5 ([https://www.frida.re/news/2017/08/25/frida-10-5-released/](https://www.frida.re/news/2017/08/25/frida-10-5-released/)). Some features have limited support on current Android devices, such as support for ART ([https://www.frida.re/docs/android/](https://www.frida.re/docs/android/)), so it is recommended to start out with the Dalvik runtime.
+> Note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
 ###### Installing Frida
 
-To install Frida locally, simply use PyPI:
+To install Frida locally, simply run:
 
 ```shell
-$ sudo pip install frida
+$ pip install frida-tools
 ```
 
-Your Android device doesn't need to be rooted to run Frida, but it's the easiest setup. We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
+Or refer to the [installation page](https://www.frida.re/docs/installation/ "Frida Installation") for more details.
+
+The next step is to set up Frida on your Android device:
+
+- If your device is not rooted, you can also use Frida, please refer to section [Using Non-Rooted Devices](#Using-Non-Rooted-Devices "Using Non-Rooted Devices").
+- If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
+
+We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
 ```shell
 $ frida --version
-9.1.10
-$ wget https://github.com/frida/frida/releases/download/9.1.10/frida-server-9.1.10-android-arm.xz
 ```
 
-Or you can run the following command to automatically detect frida version and download the right frida-server binary:
+Or you can run the following command to automatically detect Frida version and download the right frida-server binary:
 
 ```shell
 $ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
@@ -461,9 +466,9 @@ $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
 ```
 
-###### Using Frida
+###### Using Frida on Android
 
-With frida-server running, you should now be able to get a list of running processes with the following command:
+With frida-server running, you should now be able to get a list of running processes with the following command (use the `-U` option to indicate Frida to use a connected USB devices or emulator):
 
 ```shell
 $ frida-ps -U
@@ -472,16 +477,47 @@ $ frida-ps -U
   276  adbd
   956  android.process.media
   198  bridgemgrd
- 1191  com.android.nfc
- 1236  com.android.phone
- 5353  com.android.settings
-  936  com.android.systemui
+30692  com.android.chrome
+30774  com.android.chrome:privileged_process0
+30747  com.android.chrome:sandboxed
+30834  com.android.chrome:sandboxed
+ 3059  com.android.nfc
+ 1526  com.android.phone
+17104  com.android.settings
+ 1302  com.android.systemui
 (...)
 ```
 
-The -U option lets Frida search for USB devices or emulators.
+Or restrict the list with the `-Uai` flag combination to get all apps (`-a`) currently installed (`-i`) on the connected USB device (`-U`):
 
-Use `frida CLI` to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
+```bash
+$ frida-ps -Uai
+  PID  Name                                      Identifier
+-----  ----------------------------------------  ---------------------------------------
+  766  Android System                            android
+30692  Chrome                                    com.android.chrome
+ 3520  Contacts Storage                          com.android.providers.contacts  
+    -  Uncrackable1                              sg.vantagepoint.uncrackable1
+    -  drozer Agent                              com.mwr.dz
+```
+
+This will show the names and identifiers of all apps, if they are currently running it will also show their PIDs. Search for your app in the list and take a note of the PID or its name/identifier. From now on you'll refer to your app by using one of them. A recommendation is to use the identifiers, as the PIDs will change on each run of the app. For example let's take `com.android.chrome`. You can use this string now on all Frida tools, e.g. on the Frida CLI, on frida-trace or from a Python script.
+
+###### Tracing Native Libraries with frida-trace
+
+To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
+
+```shell
+$ frida-trace -U com.android.chrome -i "open"
+```
+
+This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
+
+Unfortunately tracing high-level methods of Java classes is not yet supported (but might be [in the future](https://github.com/frida/frida-python/issues/70 "Support for tracing high-level methods of Java Classes via patterns")).
+
+###### Frida CLI and the Java API
+
+Use the Frida CLI tool (`frida`) to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
 ```shell
 $ frida -U com.android.chrome
@@ -493,7 +529,7 @@ With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to 
 $ frida -U -l myscript.js com.android.chrome
 ```
 
-Frida also provides a Java API, which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
+Frida also provides a [Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API"), which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
 
 ```java
 Java.perform(function () {
@@ -505,7 +541,7 @@ Java.perform(function () {
 });
 ```
 
-The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume()` function. The new `onResume()` function implementation prints a notice to the console and calls the original `onResume()` method by invoking `this.onResume()` every time an activity is resumed in the app.
+The above script calls `Java.perform` to make sure that your code gets executed in the context of the Java VM. It instantiates a wrapper for the `android.app.Activity` class via `Java.use` and overwrites the `onResume` function. The new `onResume` function implementation prints a notice to the console and calls the original `onResume` method by invoking `this.onResume` every time an activity is resumed in the app.
 
 Frida also lets you search for and work with instantiated objects that are on the heap. The following script searches for instances of `android.view.View` objects and calls their `toString` method. The result is printed to the console:
 
@@ -536,7 +572,7 @@ The output would look like this:
 [*] Finished heap search
 ```
 
-You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods()` from the wrapper's `class` property:
+You can also use Java's reflection capabilities. To list the public methods of the `android.view.View` class, you could create a wrapper for this class in Frida and call `getMethods` from the wrapper's `class` property:
 
 ```java
 Java.perform(function () {
@@ -548,7 +584,101 @@ Java.perform(function () {
 });
 ```
 
-Frida also provides bindings for various languages, including Python, C, NodeJS, and Swift.
+This will print a very long list of methods to the terminal:
+
+```java
+public boolean android.view.View.canResolveLayoutDirection()
+public boolean android.view.View.canResolveTextAlignment()
+public boolean android.view.View.canResolveTextDirection()
+public boolean android.view.View.canScrollHorizontally(int)
+public boolean android.view.View.canScrollVertically(int)
+public final void android.view.View.cancelDragAndDrop()
+public void android.view.View.cancelLongPress()
+public final void android.view.View.cancelPendingInputEvents()
+...
+```
+
+###### Frida Bindings
+
+In order to extend the scripting experience, Frida offers bindings to programming languages such as Python, C, NodeJS, and Swift.
+
+Taking Python as an example, the first thing to note is that no further installation steps are required. Start your Python script with `import frida` and you're ready to go. See the following script that simply runs the previous JavaScript snippet:
+
+```python
+# frida_python.py
+import frida
+
+session = frida.get_usb_device().attach('com.android.chrome')
+
+source = """
+Java.perform(function () {
+    var view = Java.use("android.view.View");
+    var methods = view.class.getMethods();
+    for(var i = 0; i < methods.length; i++) {
+        console.log(methods[i].toString());
+    }
+});
+"""
+
+script = session.create_script(source)
+script.load()
+
+session.detach()
+```
+
+In this case, running the Python script (`python3 frida_python.py`) has the same result as the previous example: it will print all methods of the `android.view.View` class to the terminal. However, you might want to work with that data from Python. Using `send` instead of `console.log` will send data in JSON format from JavaScript to Python. Please read the comments in the example below:
+
+```python
+# python3 frida_python_send.py
+import frida
+
+session = frida.get_usb_device().attach('com.android.chrome')
+
+# 1. we want to store method names inside a list
+android_view_methods = []
+
+source = """
+Java.perform(function () {
+    var view = Java.use("android.view.View");
+    var methods = view.class.getMethods();
+    for(var i = 0; i < methods.length; i++) {
+        send(methods[i].toString());
+    }
+});
+"""
+
+script = session.create_script(source)
+
+# 2. this is a callback function, only method names containing "Text" will be appended to the list
+def on_message(message, data):
+    if "Text" in message['payload']:
+        android_view_methods.append(message['payload'])
+
+# 3. we tell the script to run our callback each time a message is received
+script.on('message', on_message)
+
+script.load()
+
+# 4. we do something with the collected data, in this case we just print it
+for method in android_view_methods:
+    print(method)
+
+session.detach()
+```
+
+This effectively filters the methods and prints only the ones containing the string "Text":
+
+```java
+$ python3 frida_python_send.py
+public boolean android.view.View.canResolveTextAlignment()
+public boolean android.view.View.canResolveTextDirection()
+public void android.view.View.setTextAlignment(int)
+public void android.view.View.setTextDirection(int)
+public void android.view.View.setTooltipText(java.lang.CharSequence)
+...
+```
+
+In the end, it is up to you to decide where would you like to work with the data. Sometimes it will be more convenient to do it from JavaScript and in other cases Python will be the best choice. Of course you can also send messages from Python to JavaScript by using `script.post`. Refer to the Frida docs for more information about [sending](https://www.frida.re/docs/messages/#sending-messages-from-a-target-process "Sending messages from a target process") and [receiving](https://www.frida.re/docs/messages/#receiving-messages-in-a-target-process "Receiving messages in a target process") messages.
 
 ##### Magisk
 
@@ -1950,6 +2080,10 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
 - FileZilla - <https://filezilla-project.org/download.php>
 - Frida - <https://www.frida.re/docs/android/>
+- Frida CLI - <https://www.frida.re/docs/frida-cli/>
+- frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
+- frida-ps - <https://www.frida.re/docs/frida-ps/>
+- frida-trace - <https://www.frida.re/docs/frida-trace/>
 - InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
 - Inspeckage - <https://github.com/ac-pm/Inspeckage>
 - JAADAS - <https://github.com/flankerhqd/JAADAS>
