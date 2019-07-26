@@ -78,7 +78,7 @@ Frida also provides a couple of simple tools built on top of the Frida API and a
 
 In addition, you'll also find several open source Frida-based tools supporting specific platforms e.g. [Passionfruit](https://github.com/chaitin/passionfruit) (an iOS app blackbox assessment tool), but also targeting both iOS and Android apps, such as [fridump](https://github.com/Nightbringer21/fridump "fridump") (a memory dumping tool), [objection](https://github.com/sensepost/objection "objection") (a runtime mobile security assessment framework) or [r2frida](https://github.com/nowsecure/r2frida "r2frida") (a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida). We will be using all of these tools throughout the guide.
 
-You can use these tools as-is, tweak them to your needs, or take as excellent examples on how to use the APIs, which is very helpful when writing your own hooking scripts or when building introspection tools to support your reverse engineering workflow.
+You can use these tools as-is, tweak them to your needs, or take as excellent examples on how to use the APIs. Having them as an example is very helpful when you write your own hooking scripts or when you build introspection tools to support your reverse engineering workflow.
 
 One more thing to mention is the Frida CodeShare project (<https://codeshare.frida.re>). It contains a collection of ready-to-run Frida scripts which can enormously help when performing concrete tasks both on Android as on iOS as well as also serve as inspiration to build your own scripts. Two representative examples are:
 
