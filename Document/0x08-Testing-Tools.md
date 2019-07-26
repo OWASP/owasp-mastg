@@ -27,6 +27,7 @@ To perform security testing different tools are available in order to be able to
 - Frida: A dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. It works using a client-server model and allows to inject code into running processes on Android and iOS - <https://www.frida.re>
 - Frida CodeShare: A project hosting Frida scripts publicly that can help to bypass client side security controls in mobile apps (e.g. SSL Pinning) - <https://codeshare.frida.re/>
 - NowSecure Workstation (Commercial Tool): Pre-configured hardware and software kit for vulnerability assessment and penetration testing of mobile apps - <https://www.nowsecure.com/solutions/power-tools-for-security-analysts/>
+- r2frida: A project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida <https://github.com/nowsecure/r2frida>
 
 ### Reverse Engineering and Static Analysis
 
