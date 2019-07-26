@@ -81,7 +81,14 @@ Frida also provides a couple of simple tools built on top of the Frida API and a
 - [`frida-ls-devices`](https://www.frida.re/docs/frida-ls-devices/ "frida-ls-devices") to list your connected devices;
 - [`frida-trace`](https://www.frida.re/docs/frida-trace/ "frida-trace") to quickly trace methods that are part of an iOS app or that are implemented inside an Android native library.
 
-In addition, you'll also find several open source Frida-based tools supporting specific platforms e.g. [Passionfruit](https://github.com/chaitin/passionfruit) (an iOS app blackbox assessment tool), but also targeting both iOS and Android apps, such as [fridump](https://github.com/Nightbringer21/fridump "fridump") (a memory dumping tool), [objection](https://github.com/sensepost/objection "objection") (a runtime mobile security assessment framework) or [r2frida](https://github.com/nowsecure/r2frida "r2frida") (a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida). We will be using all of these tools throughout the guide.
+In addition, you'll also find several open source Frida-based tools, such as:
+
+- [Passionfruit](https://github.com/chaitin/passionfruit): an iOS app blackbox assessment tool.
+- [Fridump](https://github.com/Nightbringer21/fridump "fridump"): a memory dumping tool for both Android and iOS.
+- [Objection](https://github.com/sensepost/objection "objection"): a runtime mobile security assessment framework.
+- [r2frida](https://github.com/nowsecure/r2frida "r2frida"): a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
+
+We will be using all of these tools throughout the guide.
 
 You can use these tools as-is, tweak them to your needs, or take as excellent examples on how to use the APIs. Having them as an example is very helpful when you write your own hooking scripts or when you build introspection tools to support your reverse engineering workflow.
 
