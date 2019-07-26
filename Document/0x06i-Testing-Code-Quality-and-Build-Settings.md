@@ -217,7 +217,7 @@ Next, check the Cartfile.resolved for actual versions used and inspect the given
 When a library is found to contain vulnerabilities, then the following reasoning applies:
 
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
-- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
 In case frameworks are added manually as linked libraries:
 
@@ -379,7 +379,7 @@ Developers can implement proper error handling in several ways:
 
 - Make sure that the application uses a well-designed and unified scheme to handle errors.
 - Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging."
-- For a high-risk application written in Objective-C: create an exception handler that  removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
+- For a high-risk application written in Objective-C: create an exception handler that removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
 - Refrain from using `try!` in Swift unless you're certain that there's no error in the throwing method that's being called.
 - Make sure that the Swift error doesn't propagate into too many intermediate methods.
 
