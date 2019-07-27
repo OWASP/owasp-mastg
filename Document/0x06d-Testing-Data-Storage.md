@@ -179,7 +179,7 @@ When checking an iOS app for insecure data storage, consider the following ways 
 
 ##### `NSUserDefaults`
 
-The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user  preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
+The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
 
 ##### File system
 
@@ -557,7 +557,7 @@ Keywords to look for:
 
 #### Dynamic Analysis
 
-Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available  to verify IPC usage.
+Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available to verify IPC usage.
 
 ### Checking for Sensitive Data Disclosed Through the User Interface (MSTG-STORAGE-7)
 

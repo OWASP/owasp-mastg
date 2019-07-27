@@ -1589,7 +1589,7 @@ $ adb remount
 $ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 ```
 
-If execution of `adb root` returns the  error `adbd cannot run as root in production builds`, install tcpdump as follows:
+If execution of `adb root` returns the error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
 ```shell
 $ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump

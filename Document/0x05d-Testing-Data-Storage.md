@@ -753,7 +753,7 @@ If the flag value is **true**, determine whether the app saves any kind of sensi
 
 ##### Cloud
 
-Regardless of  whether you use key/value backup or auto backup, you must determine the following:
+Regardless of whether you use key/value backup or auto backup, you must determine the following:
 
 - which files are sent to the cloud (e.g., SharedPreferences)
 - whether the files contain sensitive information
