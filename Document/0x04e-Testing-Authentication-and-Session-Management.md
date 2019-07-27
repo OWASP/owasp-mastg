@@ -172,7 +172,7 @@ function(password) {
 
 ##### Login Throttling
 
-Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name  and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
+Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
 
 Observe the following best practices when implementing anti-brute-force controls:
 
@@ -318,7 +318,7 @@ The secondary authentication can be performed at login or later in the user's se
 
 #### Dangers of SMS-OTP
 
-Although one-time passwords (OTP) sent via SMS are a common second factor for two-factor authentication, this method has its shortcomings. In 2016, NIST suggested that "Due to the risk that SMS messages may be intercepted or redirected, implementers of new systems SHOULD carefully consider alternative authenticators." Below you will find a list of some related threats and suggestions to avoid successful attacks on SMS-OTP.
+Although one-time passwords (OTP) sent via SMS are a common second factor for two-factor authentication, this method has its shortcomings. In 2016, NIST suggested: "Due to the risk that SMS messages may be intercepted or redirected, implementers of new systems SHOULD carefully consider alternative authenticators.". Below you will find a list of some related threats and suggestions to avoid successful attacks on SMS-OTP.
 
 Threats:
 

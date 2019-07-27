@@ -92,7 +92,7 @@ Dynamic analysis is not applicable for finding debugging symbols.
 
 #### Overview
 
-To speed up verification and get a better understanding of errors, developers often include debugging code, such as verbose logging statements (using `NSLog`, `println`, `print`, `dump`, and `debugPrint`) about responses from their APIs and about their application's progress and/or state. Furthermore, there may be debugging code for "management-functionality," which is used by developers to set the application's state or mock responses from an API. Reverse engineers can easily use this information to track what's happening with the application. Therefore, debugging code should be removed from the application's release version.
+To speed up verification and get a better understanding of errors, developers often include debugging code, such as verbose logging statements (using `NSLog`, `println`, `print`, `dump`, and `debugPrint`) about responses from their APIs and about their application's progress and/or state. Furthermore, there may be debugging code for "management-functionality", which is used by developers to set the application's state or mock responses from an API. Reverse engineers can easily use this information to track what's happening with the application. Therefore, debugging code should be removed from the application's release version.
 
 #### Static Analysis
 
@@ -129,7 +129,7 @@ In Objective-C, developers can use preprocessor macros to filter out debug code:
 #endif
 ```
 
-In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D." So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
+In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D". So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
 
 ```swift
 #if MSTG-DEBUG
@@ -217,7 +217,7 @@ Next, check the Cartfile.resolved for actual versions used and inspect the given
 When a library is found to contain vulnerabilities, then the following reasoning applies:
 
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
-- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
 In case frameworks are added manually as linked libraries:
 
@@ -378,8 +378,8 @@ Make sure that
 Developers can implement proper error handling in several ways:
 
 - Make sure that the application uses a well-designed and unified scheme to handle errors.
-- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging."
-- For a high-risk application written in Objective-C: create an exception handler that  removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
+- Make sure that all logging is removed or guarded as described in the test case "Testing for Debugging Code and Verbose Error Logging".
+- For a high-risk application written in Objective-C: create an exception handler that removes secrets that shouldn't be easily retrievable. The handler can be set via `NSSetUncaughtExceptionHandler`.
 - Refrain from using `try!` in Swift unless you're certain that there's no error in the throwing method that's being called.
 - Make sure that the Swift error doesn't propagate into too many intermediate methods.
 
@@ -408,7 +408,7 @@ Are there native code parts? If so: check for the given issues in the general me
 
 For any managed code (Objective-C / Swift) in the project, check the following items:
 
-- The doubleFree issue: when `free()` is called twice for a given region instead of once.
+- The doubleFree issue: when `free` is called twice for a given region instead of once.
 - Retaining cycles: look for cyclic dependencies by means of strong references of components to one another which keep materials in memory.
 - Using instances of `UnsafePointer` can be managed wrongly, which will allow for various memory corruption issues.
 - Trying to manage the reference count to an object by `Unmanaged` manually, leading to wrong counter numbers and a too late/too soon release.

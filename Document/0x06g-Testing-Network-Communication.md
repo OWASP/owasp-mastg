@@ -205,7 +205,7 @@ Verify that the server certificate is pinned. Pinning can be implemented on vari
 2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
 3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
-The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored  in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
+The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
 
 The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.  
 
@@ -275,7 +275,7 @@ If you have a jailbroken device you can try one of the following tools that can 
 In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
 
 - the API calls `NSURLSession`, `CFStream`, and `AFNetworking`
-- methods/strings containing words like "pinning," "X.509," "Certificate," etc.
+- methods/strings containing words like "pinning", "X.509", "Certificate", etc.
 
 If you don't have access to the source, you can try binary patching:
 

@@ -98,7 +98,7 @@ Alternatively, Google's [Android One](https://www.android.com/one/ "Android One"
 
 Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
-When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information." Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information". Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
 ##### Testing on an Emulator
 
@@ -175,7 +175,7 @@ There are many tools and frameworks used throughout this guide to assess the sec
 
 ##### Xposed
 
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a "framework for modules that can change the behavior of the system and apps without touching any APKs." Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a "framework for modules that can change the behavior of the system and apps without touching any APKs.". Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
 
 To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers Xposed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through the GUI.
 
@@ -1589,7 +1589,7 @@ $ adb remount
 $ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 ```
 
-If execution of `adb root` returns the  error `adbd cannot run as root in production builds`, install tcpdump as follows:
+If execution of `adb root` returns the error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
 ```shell
 $ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
@@ -1753,7 +1753,7 @@ An easy way to install a CA certificate is to push the certificate to the device
     $ adb push cacert.cer /sdcard/
     ```
 
-4. Navigate to "Settings" -> "Security" -> "Install from SD Card."
+4. Navigate to "Settings" -> "Security" -> "Install from SD Card".
 5. Scroll down and tap `cacert.cer`.
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).

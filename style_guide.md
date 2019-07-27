@@ -318,7 +318,7 @@ When they do not occur in a code block, place the following code-related keyword
 | function names  |  section titles | application name |
 |   method names  |  chapter titles | folder names  |
 |    commands     |    book titles  | navigation (e.g., Home -> Menu)|
-|   class names   | flags values (e.g., "true," lowercase) | ID #s |
+|   class names   | flags values (e.g., "true", lowercase) | ID #s |
 |   block names   | command options (e.g., "help" option)||
 |   flag names    | single menu item (e.g., "Home" menu)||
 |   file names    | system error msgs.|

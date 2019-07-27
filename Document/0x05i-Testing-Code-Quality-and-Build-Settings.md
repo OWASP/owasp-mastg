@@ -19,7 +19,7 @@ Three APK signing schemes are available:
 - APK Signature Scheme v3 (v3 scheme).
 
 The v2 signature, which is supported by Android 7.0 and above, offers improved security and performance compared to v1 scheme.
-The V3 signature, which is supported by Android 9.0 and above, gives apps the ability to change  their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availibility by allowing both the new and the old keys to be used.
+The V3 signature, which is supported by Android 9.0 and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used.
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
@@ -325,7 +325,7 @@ Lastly, please note that for hybrid applications, one will have to check the Jav
 When a library is found to contain vulnerabilities, then the following reasoning applies:
 
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
-- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the  implications of the vulnerability for the build-process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
+- Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build-process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
 When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
 
@@ -385,7 +385,7 @@ Review the source code to understand the application and identify how it handles
 byte[] secret;
 try{
     //use secret
-} catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2  e) {
+} catch (SPECIFICEXCEPTIONCLASS | SPECIFICEXCEPTIONCLASS2 e) {
     // handle any issues
 } finally {
     //clean the secret.

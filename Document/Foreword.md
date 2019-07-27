@@ -1,7 +1,7 @@
 # Foreword
 
 ---
-Welcome to the OWASP Mobile Security Testing Guide. Feel free to explore the existing content, but do note  that it may change at any time. New APIs and best practices are introduced in iOS and Android with every major (and minor) release and also vulnerabilities are found every day.
+Welcome to the OWASP Mobile Security Testing Guide. Feel free to explore the existing content, but do note that it may change at any time. New APIs and best practices are introduced in iOS and Android with every major (and minor) release and also vulnerabilities are found every day.
 
 If you have feedback or suggestions, or want to contribute, create an issue on GitHub or ping us on Slack. See the README for instructions:
 

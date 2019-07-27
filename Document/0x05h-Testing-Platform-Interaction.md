@@ -23,17 +23,17 @@ Note that starting at Android 8 the permissions bellow contain the following cha
 
 #### Activity Permission Enforcement
 
-Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest. These permissions restrict which applications can start that Activity. The permission is checked during `Context.startActivity()` and `Activity.startActivityForResult()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
+Permissions are applied via `android:permission` attribute within the `<activity>` tag in the manifest. These permissions restrict which applications can start that Activity. The permission is checked during `Context.startActivity` and `Activity.startActivityForResult`. Not holding the required permission results in a `SecurityException` being thrown from the call.
 
 #### Service Permission Enforcement
 
-Permissions applied via `android:permission` attribute within the `<service>` tag in the manifest restrict who can start or bind to the associated Service. The permission is checked during `Context.startService()`, `Context.stopService()` and `Context.bindService()`. Not holding the required permission results in a `SecurityException` being thrown from the call.
+Permissions applied via `android:permission` attribute within the `<service>` tag in the manifest restrict who can start or bind to the associated Service. The permission is checked during `Context.startService`, `Context.stopService` and `Context.bindService`. Not holding the required permission results in a `SecurityException` being thrown from the call.
 
 #### Broadcast Permission Enforcement
 
-Permissions applied via `android:permission` attribute within the `<receiver>` tag restrict access to send broadcasts to the associated BroadcastReceiver. The held permissions are checked after `Context.sendBroadcast()` returns, while trying to deliver the sent broadcast to the given receiver. Please note failure to hold proper permissions doesn't throw an exception, the result is an unsent broadcast.
+Permissions applied via `android:permission` attribute within the `<receiver>` tag restrict access to send broadcasts to the associated BroadcastReceiver. The held permissions are checked after `Context.sendBroadcast` returns, while trying to deliver the sent broadcast to the given receiver. Please note failure to hold proper permissions doesn't throw an exception, the result is an unsent broadcast.
 
-A permission can be supplied to `Context.registerReceiver()` to control who can broadcast to a programmatically registered receiver. Going the other way, a permission can be supplied when calling `Context.sendBroadcast()` to restrict which broadcast receivers are allowed to receive the broadcast.
+A permission can be supplied to `Context.registerReceiver` to control who can broadcast to a programmatically registered receiver. Going the other way, a permission can be supplied when calling `Context.sendBroadcast` to restrict which broadcast receivers are allowed to receive the broadcast.
 
 Note that both a receiver and a broadcaster can require a permission. When this happens, both permission checks must pass for the intent to be delivered to the associated target. For more information, please reference [Restricting broadcasts with permissions](https://developer.android.com/guide/components/broadcasts#restricting_broadcasts_with_permissions).
 
@@ -43,7 +43,7 @@ Permissions applied via `android:permission` attribute within the `<provider>` t
 
 The permissions are checked when you first retrieve a provider (if you don't have either permission, a SecurityException is thrown), and as you perform operations on the provider. Using ContentResolver.query() requires holding the read permission; using ContentResolver.insert(), ContentResolver.update(), ContentResolver.delete() requires the write permission. In all of these cases, not holding the required permission results in a SecurityException being thrown from the call.
 
-Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query()` requires holding the read permission; using `ContentResolver.insert()`, `ContentResolver.update()`, `ContentResolver.delete()` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
+Permissions are checked when you first retrieve a provider and as operations are performed using the ContentProvider. Using `ContentResolver.query` requires holding the read permission; using `ContentResolver.insert`, `ContentResolver.update`, `ContentResolver.delete` requires the write permission. A `SecurityException` will be thrown from the call if proper permissions are not held in all these cases.
 
 #### Content Provider URI Permissions
 
@@ -159,7 +159,7 @@ if (canProcess != PERMISSION_GRANTED)
 throw new SecurityException();
 ```
 
-Or with `ContextCompat.checkSelfPermission()` which compares it to the manifest file.
+Or with `ContextCompat.checkSelfPermission` which compares it to the manifest file.
 
 ```java
 if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMING_MSG)
@@ -171,7 +171,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMIN
 
 #### Requesting Permissions
 
-If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions()` method in order to obtain them. The app passes the permissions needed and an integer request code you have specified to the user asynchronously, returning once the user chooses to accept or deny the request in the same thread. After the response is returned the same request code is passed to the app's callback method.
+If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions` method in order to obtain them. The app passes the permissions needed and an integer request code you have specified to the user asynchronously, returning once the user chooses to accept or deny the request in the same thread. After the response is returned the same request code is passed to the app's callback method.
 
 ```java
 private static final String TAG = "LOG";
@@ -202,11 +202,11 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
 }
 ```
 
-Please note that if you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions()`, since the system dialog box can not be altered once called.
+Please note that if you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions`, since the system dialog box can not be altered once called.
 
 #### Handling the permissions response
 
-Now your app has to override the system method `onRequestPermissionsResult()` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions()`.
+Now your app has to override the system method `onRequestPermissionsResult` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions`.
 
 The following callback method may be used for `WRITE_EXTERNAL_STORAGE`.
 
@@ -554,7 +554,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes."
+Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes".
 
 ### Testing for insecure Configuration of Instant Apps (MSTG‑ARCH‑1, MSTG‑ARCH‑7)
 
@@ -635,11 +635,11 @@ We start by looking at the AndroidManifest.xml, where all activities, services, 
 - [`<provider>`](https://developer.android.com/guide/topics/manifest/provider-element.html "ProviderElement")
 - [`<receiver>`](https://developer.android.com/guide/topics/manifest/receiver-element.html "ReceiverElement")
 
-An "exported" activity, service, or content  can be accessed by other apps. There are two common ways to designate a component as exported. The obvious one is setting the export tag to true `android:exported="true"`. The second way involves defining an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When this is done, the export tag is automatically set to "true." To prevent all other Android apps from interacting with the IPC component element, be sure that the `android:exported="true"` value and an `<intent-filter>` aren't in their `AndroidManifest.xml` files unless this is necessary.
+An "exported" activity, service, or content can be accessed by other apps. There are two common ways to designate a component as exported. The obvious one is setting the export tag to true `android:exported="true"`. The second way involves defining an `<intent-filter>` within the component element (`<activity>`, `<service>`, `<receiver>`). When this is done, the export tag is automatically set to "true". To prevent all other Android apps from interacting with the IPC component element, be sure that the `android:exported="true"` value and an `<intent-filter>` aren't in their `AndroidManifest.xml` files unless this is necessary.
 
 Remember that using the permission tag (`android:permission`) will also limit other applications' access to a component. If your IPC is intended to be accessible to other applications, you can apply a security policy with the `<permission>` element and set a proper `android:protectionLevel`. When `android:permission` is used in a service declaration, other applications must declare a corresponding `<uses-permission>` element in their own manifest to start, stop, or bind to the service.
 
-For more information about the content providers, please refer to the test case "Testing Whether Stored Sensitive Data Is Exposed via IPC Mechanisms" in chapter "Testing Data Storage."
+For more information about the content providers, please refer to the test case "Testing Whether Stored Sensitive Data Is Exposed via IPC Mechanisms" in chapter "Testing Data Storage".
 
 Once you identify a list of IPC mechanisms, review the source code to see whether sensitive data is leaked when the mechanisms are used. For example, content providers can be used to access database information, and services can be probed to see if they return data. Broadcast receivers can leak sensitive information if probed or sniffed.
 
@@ -823,7 +823,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 This content provider can be accessed without permission.
 
 ```shell
-dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string  Password "newpassword"
+dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string Password "newpassword"
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password    | pin  |
 | newpassword | 1234 |
@@ -870,7 +870,7 @@ To communicate with a service, you must first use static analysis to identify th
 Because this service is exported, you can use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
 ```shell
-dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg  6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
+dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg 6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
 Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
   what: 4
   arg1: 42
@@ -947,7 +947,7 @@ This allows the WebView to interpret JavaScript. It should be enabled only if ne
 - the communication to the endpoints consistently relies on HTTPS (or other protocols that allow encryption) to protect HTML and JavaScript from tampering during transmission
 - JavaScript and HTML are loaded locally, from within the app data directory or from trusted web servers only.
 
-To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache()`](https://goo.gl/7dnhdi "clearCache() in WebViews") when the app closes.
+To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache`](https://goo.gl/7dnhdi "clearCache in WebViews") when the app closes.
 
 Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
 
@@ -992,7 +992,7 @@ Check the source code for WebView usage. The following [WebView settings](https:
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL()`](https://goo.gl/4vdSQM "loadURL() in WebView") method.
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL`](https://goo.gl/4vdSQM "loadURL in WebView") method.
 
 ```Java
 WebView = new WebView(this);

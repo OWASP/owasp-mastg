@@ -16,7 +16,7 @@ Root detection can also be implemented through libraries such as [RootBeer](http
 
 ##### SafetyNet
 
-SafetyNet is an Android API that provides a set of services and creates profiles of devices according to software and hardware information. This profile is then compared to a list of whitelisted device models that have passed Android compatibility testing. Google [recommends](https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet "SafetyNet Documentation") using the feature as "an additional in-depth defense signal as part of an anti-abuse system."
+SafetyNet is an Android API that provides a set of services and creates profiles of devices according to software and hardware information. This profile is then compared to a list of whitelisted device models that have passed Android compatibility testing. Google [recommends](https://developers.google.com/android/reference/com/google/android/gms/safetynet/SafetyNet "SafetyNet Documentation") using the feature as "an additional in-depth defense signal as part of an anti-abuse system".
 
 How exactly SafetyNet works is not well documented and may change at any time. When you call this API, SafetyNet downloads a binary package containing the device validation code provided from Google, and the code is then dynamically executed via reflection. An [analysis by John Kozyrakis](https://koz.io/inside-safetynet/ "SafetyNet: Google's tamper detection for Android") showed that SafetyNet also attempts to detect whether the device is rooted, but exactly how that's determined is unclear.
 
@@ -63,7 +63,7 @@ On the other hand, `ctsProfileMatch` gives you a much stricter signal about the 
 - Create a large (16 bytes or longer) random number on your server using a cryptographically-secure random function so that a malicious user can not reuse a successful attestation result in place of an unsuccessful result
 - Trust APK information (`apkPackageName`, `apkCertificateDigestSha256` and `apkDigestSha256`) only if the value of `ctsProfileMatch` is true.
 - The entire JWS response should be sent to your server, using a secure connection, for verification. It isn't recommended to perform the verification directly in the app because, in that case, there is no guarantee that the verification logic itself hasn't been modified.
-- The `verify()` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.
+- The `verify` method only validates that the JWS message was signed by SafetyNet. It doesn't verify that the payload of the verdict matches your expectations. As useful as this service may seem, it is designed for test purposes only, and it has very strict usage quotas of 10,000 requests per day, per project which will not be increased upon request. Hence, you should refer [SafetyNet Verification Samples](https://github.com/googlesamples/android-play-safetynet/tree/master/server/java/src/main/java "Google SafetyNet Sample") and implement the digital signature verification logic on your server in a way that it doesn't depend on Google's servers.
 - The SafetyNet Attestation API gives you a snapshot of the state of a device at the moment when the attestation request was made. A successful attestation doesn't necessarily mean that the device would have passed attestation in the past, or that it will in the future. It's recommended to plan a strategy to use the least amount of attestations required to satisfy the use case.
 - To prevent inadvertently reaching your `SafetyNetApi.attest` quota and getting attestation errors, you should build a system that monitors your usage of the API and warns you well before you reach your quota so you can get it increased. You should also be prepared to handle attestation failures because of an exceeded quota and avoid blocking all your users in this situation. If you are close to reaching your quota, or expect a short-term spike that may lead you to exceed your quota, you can submit this [form](https://support.google.com/googleplay/android-developer/contact/safetynetqr "quota request") to request short or long-term increases to the quota for your API key. This process, as well as the additional quota, is free of charge.
 
@@ -235,7 +235,7 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 ##### Anti-JDWP-Debugging Examples
 
-In the chapter "Reverse Engineering and Tampering," we talked about JDWP, the protocol used for communication between the debugger and the Java Virtual Machine. We showed that it is easy to enable debugging for any app by patching its manifest file, and changing the `ro.debuggable` system property which enables debugging for all apps. Let's look at a few things developers do to detect and disable JDWP debuggers.
+In the chapter "Reverse Engineering and Tampering", we talked about JDWP, the protocol used for communication between the debugger and the Java Virtual Machine. We showed that it is easy to enable debugging for any app by patching its manifest file, and changing the `ro.debuggable` system property which enables debugging for all apps. Let's look at a few things developers do to detect and disable JDWP debuggers.
 
 ###### Checking the Debuggable Flag in ApplicationInfo
 
@@ -327,7 +327,7 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 }
 ```
 
-You can disable debugging by using similar techniques in ART even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes `JdwpSocketState` and `JdwpAdbState`, which handle JDWP connections via network sockets and ADB, respectively. You can manipulate the behavior of the debugging runtime [by overwriting the method pointers in the associated  vtables](https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art "Vantage Point Security - Anti-Debugging Fun with Android ART").
+You can disable debugging by using similar techniques in ART even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes `JdwpSocketState` and `JdwpAdbState`, which handle JDWP connections via network sockets and ADB, respectively. You can manipulate the behavior of the debugging runtime [by overwriting the method pointers in the associated vtables](https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art "Vantage Point Security - Anti-Debugging Fun with Android ART").
 
 One way to overwrite the method pointers is to overwrite the address of the function `jdwpAdbState::ProcessIncoming` with the address of `JdwpAdbState::Shutdown`. This will cause the debugger to disconnect immediately.
 
@@ -580,7 +580,7 @@ The following methods describe different approaches to bypass debugger detection
 
 ###### Bypassing Example: UnCrackable App for Android Level 2
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in level 2 of the "UnCrackable App for Android."
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in level 2 of the "UnCrackable App for Android".
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a *native* method.
 
@@ -815,7 +815,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices()` will even only return the caller's own services.
+With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices` will even only return the caller's own services.
 
 A working solution to detect the frida-server process is to us the command `ps` instead.
 
@@ -944,12 +944,12 @@ if (fp) {
 }
 ```
 
-This detects any libraries whose names include "frida." This check works, but there are some major issues:
+This detects any libraries whose names include "frida". This check works, but there are some major issues:
 
 - Remember that relying on frida-server being referred to as "fridaserver" wasn't a good idea? The same applies here; with some small modifications, the Frida agent libraries could simply be renamed.
 - Detection depends on standard library calls such as `fopen` and `strstr`. Essentially, we're attempting to detect Frida by using functions that can be easily hooked with-you guessed it-Frida. Obviously, this isn't a very solid strategy.
 
-The first issue can be addressed by implementing a classic-virus-scanner-like strategy: scanning memory for "gadgets" found in Frida's libraries. I chose the string "LIBFRIDA," which appears to be in all versions of frida-gadget and frida-agent. Using the following code, we iterate through the memory mappings listed in `/proc/self/maps` and search for the string in every executable section. Although I omitted the most boring functions for the sake of brevity, you can find them on GitHub.
+The first issue can be addressed by implementing a classic-virus-scanner-like strategy: scanning memory for "gadgets" found in Frida's libraries. I chose the string "LIBFRIDA", which appears to be in all versions of frida-gadget and frida-agent. Using the following code, we iterate through the memory mappings listed in `/proc/self/maps` and search for the string in every executable section. Although I omitted the most boring functions for the sake of brevity, you can find them on GitHub.
 
 ```c
 static char keyword[] = "LIBFRIDA";
@@ -1046,7 +1046,7 @@ public String getSignature() {
 }
 ```
 
-When calling the `getSignature()` function you would just need to verify if the signature matches your predefined and hardcoded signature.
+When calling the `getSignature` function you would just need to verify if the signature matches your predefined and hardcoded signature.
 
 ```Java
 String appSignature = getSignature();
@@ -1169,7 +1169,7 @@ Controls in this category verify the integrity of the app's memory space to defe
 1. comparing the contents of memory or a checksum over the contents to good values,
 2. searching memory for the signatures of unwanted modifications.
 
-There's some overlap with the category "detecting reverse engineering tools and frameworks," and, in fact, we demonstrated the signature-based approach in that chapter when we showed how to search process memory for Frida-related strings. Below are a few more examples of various kinds of integrity monitoring.
+There's some overlap with the category "detecting reverse engineering tools and frameworks", and, in fact, we demonstrated the signature-based approach in that chapter when we showed how to search process memory for Frida-related strings. Below are a few more examples of various kinds of integrity monitoring.
 
 ##### Run Time Integrity Check Examples
 
@@ -1238,7 +1238,7 @@ In this test case, we describe a few basic obfuscation techniques that are commo
 
 #### Effectiveness Assessment
 
-Attempt to decompile the byte-code, disassemble any included library files, and  perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
+Attempt to decompile the byte-code, disassemble any included library files, and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
 
 - meaningful identifiers, such as class names, method names, and variable names, have been discarded,
 - string resources and strings in binaries are encrypted,
