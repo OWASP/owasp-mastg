@@ -408,7 +408,7 @@ Are there native code parts? If so: check for the given issues in the general me
 
 For any managed code (Objective-C / Swift) in the project, check the following items:
 
-- The doubleFree issue: when `free()` is called twice for a given region instead of once.
+- The doubleFree issue: when `free` is called twice for a given region instead of once.
 - Retaining cycles: look for cyclic dependencies by means of strong references of components to one another which keep materials in memory.
 - Using instances of `UnsafePointer` can be managed wrongly, which will allow for various memory corruption issues.
 - Trying to manage the reference count to an object by `Unmanaged` manually, leading to wrong counter numbers and a too late/too soon release.
