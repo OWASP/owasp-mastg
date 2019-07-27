@@ -66,7 +66,7 @@ In contrast, Frida implements code injection by writing code directly into proce
 
 ![Frida](Images/Chapters/0x04/frida.png)
 
-*Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking)*
+*Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")*
 
 Frida offers three modes of operation:
 

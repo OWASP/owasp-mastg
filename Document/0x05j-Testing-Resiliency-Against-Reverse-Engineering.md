@@ -109,7 +109,7 @@ Checking whether `su` is on the PATH also works:
     }
 ```
 
-File checks can be easily implemented in both Java and native code. The following JNI example (adapted from [rootinspector](https://github.com/devadvance/rootinspector/)) uses the `stat` system call to retrieve information about a file and returns "1" if the file exists.
+File checks can be easily implemented in both Java and native code. The following JNI example (adapted from [rootinspector](https://github.com/devadvance/rootinspector/ "rootinspector")) uses the `stat` system call to retrieve information about a file and returns "1" if the file exists.
 
 ```c
 jboolean Java_com_example_statfile(JNIEnv * env, jobject this, jstring filepath) {
@@ -135,7 +135,7 @@ Another way of determining whether `su` exists is attempting to execute it throu
 
 ###### Checking running processes
 
-Supersu-by far the most popular rooting tool-runs an authentication daemon named `daemonsu`, so the presence of this process is another sign of a rooted device. Running processes can be enumerated with the `ActivityManager.getRunningAppProcesses` and `manager.getRunningServices` APIs, the `ps` command, and browsing through the `/proc` directory. The following is an example implemented in [rootinspector](https://github.com/devadvance/rootinspector/):
+Supersu-by far the most popular rooting tool-runs an authentication daemon named `daemonsu`, so the presence of this process is another sign of a rooted device. Running processes can be enumerated with the `ActivityManager.getRunningAppProcesses` and `manager.getRunningServices` APIs, the `ps` command, and browsing through the `/proc` directory. The following is an example implemented in [rootinspector](https://github.com/devadvance/rootinspector/ "rootinspector"):
 
 ```java
     public boolean checkRunningProcesses() {
@@ -191,7 +191,7 @@ for (int i = 1; ; i = 0)
 }
 ```
 
-Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://blog.netspi.com/android-root-detection-techniques/).
+Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: on stock Android builds, [OTA updates Google's public certificates](https://blog.netspi.com/android-root-detection-techniques/ "Android Root Detection Techniques").
 
 ##### Bypassing Root Detection
 
@@ -401,7 +401,7 @@ Most Anti-JDWP tricks (which may be safe for timer-based checks) won't catch cla
 
 When the `ptrace` system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is 0 (no process attached). Consequently, finding anything other than 0 in that field is a sign of debugging or other ptrace shenanigans.
 
-The following implementation is from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/):
+The following implementation is from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/ "anti-emulator"):
 
 ```java
     public static boolean hasTracerPid() throws IOException {
@@ -642,7 +642,7 @@ Integrity checks often calculate a checksum or hash over selected files. Commonl
 - class files *.dex,
 - native libraries (*.so).
 
-The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html) calculates a CRC over `classes.dex` and compares it to the expected value.
+The following [sample implementation from the Android Cracking blog](https://androidcracking.blogspot.com/2011/06/anti-tampering-with-crc-check.html "anti-tampering with crc check") calculates a CRC over `classes.dex` and compares it to the expected value.
 
 ```java
 private void crcTest() throws IOException {
@@ -687,7 +687,7 @@ Complete the following procedure when verifying the HMAC with BouncyCastle:
 3. Repeat steps 1-4 of the procedure for generating an HMAC.
 4. Compare the extracted HMAC-bytes to the result of step 3.
 
-When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html), then it is best to only do this for Android 6 and higher.
+When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android Keystore"), then it is best to only do this for Android 6 and higher.
 
 The following is a convenient HMAC implementation without `AndroidKeyStore`:
 
@@ -855,7 +855,7 @@ public boolean checkRunningProcesses() {
 
 ```
 
-Starting with Android Nougat (API Level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox) . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
+Starting with Android Nougat (API Level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox "Application Sandbox") . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
 
 ![Executing ps on Android Lollipop](Images/Chapters/0x05j/Android_Lollipop_ps.png)
 
@@ -1465,7 +1465,7 @@ For devices running Android version O and later, you can request the device's se
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     ```
 
-2. Request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html) for more details.
+2. Request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
 3. Get the serial:
 
     ```java
@@ -1480,7 +1480,7 @@ Retrieve the IMEI:
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     ```
 
-2. If you're using Android version M or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html) for more details.
+2. If you're using Android version M or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
 
 3. Get the IMEI:
 

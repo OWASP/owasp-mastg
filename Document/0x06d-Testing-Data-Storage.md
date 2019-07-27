@@ -855,7 +855,7 @@ libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/sys
 
 ##### Fridump (No Jailbreak needed)
 
-To use Fridump you need to have either a jailbroken/rooted device with Frida-server installed, or build the original application with the Frida library attached instructions on [Frida’s site](https://www.frida.re/docs/ios/)
+To use Fridump you need to have either a jailbroken/rooted device with Frida-server installed, or build the original application with the Frida library attached instructions on [Frida’s site](https://www.frida.re/docs/ios/ "Frida - iOS")
 
 The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
 

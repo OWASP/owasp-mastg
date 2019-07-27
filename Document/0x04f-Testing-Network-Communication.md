@@ -8,9 +8,9 @@ In many cases, it is most practical to configure a system proxy on the mobile de
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
-- [Burp Suite](https://portswigger.net/burp)
-- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
-- [Charles Proxy](https://www.charlesproxy.com)
+- [Burp Suite](https://portswigger.net/burp "Burp Suite")
+- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project "OWASP ZAP")
+- [Charles Proxy](https://www.charlesproxy.com "Charles Proxy")
 
 To use the interception proxy, you'll need run it on your machine and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
@@ -22,8 +22,8 @@ Using a proxy breaks SSL certificate verification and the app will usually fail 
 
 Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
-- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) and
-- [Mitm-relay](https://github.com/jrmdev/mitm_relay).
+- [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") and
+- [Mitm-relay](https://github.com/jrmdev/mitm_relay "Mitm-relay").
 
 These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
 
@@ -40,7 +40,7 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host machine. You can set up your machine as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org) to sniff any traffic from the mobile device;
+- Route the traffic through the host machine. You can set up your machine as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org "Wireshark") to sniff any traffic from the mobile device;
 
 - Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") to redirect network traffic from the mobile device to your host machine (see below);
 
@@ -119,7 +119,7 @@ In both scenarios the AP needs to be configured to point to your machines IP. To
 
 #### Setting a Proxy Through Runtime Instrumentation
 
-On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage) or code injection frameworks like [Frida](https://www.frida.re) and [cycript](http://www.cycript.org). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
+On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") or code injection frameworks like [Frida](https://www.frida.re "Frida") and [cycript](http://www.cycript.org "cycript"). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
 
 #### Example: Dealing with Xamarin
 
@@ -202,58 +202,58 @@ In the following listing, we’ll present the different algorithms of each part 
 Protocols:
 
 - `SSLv1`
-- `SSLv2` - [RFC 6176](https://tools.ietf.org/html/rfc6176)
-- `SSLv3` - [RFC 6101](https://tools.ietf.org/html/rfc6101)
-- `TLSv1.0` - [RFC 2246](https://www.ietf.org/rfc/rfc2246)
-- `TLSv1.1` - [RFC 4346](https://tools.ietf.org/html/rfc4346)
-- `TLSv1.2` - [RFC 5246](https://tools.ietf.org/html/rfc5246)
-- `TLSv1.3` - [RFC 8446](https://tools.ietf.org/html/rfc8446)
+- `SSLv2` - [RFC 6176](https://tools.ietf.org/html/rfc6176 "RFC 6176")
+- `SSLv3` - [RFC 6101](https://tools.ietf.org/html/rfc6101 "RFC 6101")
+- `TLSv1.0` - [RFC 2246](https://www.ietf.org/rfc/rfc2246 "RFC 2246")
+- `TLSv1.1` - [RFC 4346](https://tools.ietf.org/html/rfc4346 "RFC 4346")
+- `TLSv1.2` - [RFC 5246](https://tools.ietf.org/html/rfc5246 "RFC 5246")
+- `TLSv1.3` - [RFC 8446](https://tools.ietf.org/html/rfc8446 "RFC 8446")
 
 Key Exchange Algorithms:
 
-- `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979)
-- `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979)
-- `RSA` - [RFC 8017](https://tools.ietf.org/html/rfc8017)
-- `DHE` - [RFC 2631](https://tools.ietf.org/html/rfc2631)  - [RFC 7919](https://tools.ietf.org/html/rfc7919)
-- `ECDHE` - [RFC 4492](https://tools.ietf.org/html/rfc4492)
-- `PSK` - [RFC 4279](https://tools.ietf.org/html/rfc4279)
-- `DSS`[FIPS186-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf)
-- `DH_anon` - [RFC 2631](https://tools.ietf.org/html/rfc2631)  - [RFC 7919](https://tools.ietf.org/html/rfc7919)
-- `DHE_RSA` - [RFC 2631](https://tools.ietf.org/html/rfc2631)  - [RFC 7919](https://tools.ietf.org/html/rfc7919)
-- `DHE_DSS` - [RFC 2631](https://tools.ietf.org/html/rfc2631)  - [RFC 7919](https://tools.ietf.org/html/rfc7919)
-- `ECDHE_ECDSA` - [RFC 8422](https://tools.ietf.org/html/rfc8422)
-- `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422)  - [RFC 5489](https://tools.ietf.org/html/rfc5489)
-- `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422)
+- `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
+- `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
+- `RSA` - [RFC 8017](https://tools.ietf.org/html/rfc8017 "RFC 8017")
+- `DHE` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `ECDHE` - [RFC 4492](https://tools.ietf.org/html/rfc4492 "RFC 4492")
+- `PSK` - [RFC 4279](https://tools.ietf.org/html/rfc4279 "RFC 4279")
+- `DSS` - [FIPS186-4](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf "FIPS186-4")
+- `DH_anon` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE_RSA` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `DHE_DSS` - [RFC 2631](https://tools.ietf.org/html/rfc2631 "RFC 2631")  - [RFC 7919](https://tools.ietf.org/html/rfc7919 "RFC 7919")
+- `ECDHE_ECDSA` - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
+- `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")  - [RFC 5489](https://tools.ietf.org/html/rfc5489 "RFC 5489")
+- `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
 
 Block Ciphers:
 
-- `DES`  - [RFC 4772](https://tools.ietf.org/html/rfc4772)
-- `DES_CBC`  - [RFC 1829](https://tools.ietf.org/html/rfc1829)
-- `3DES`  - [RFC 2420](https://tools.ietf.org/html/rfc2420)
-- `3DES_EDE_CBC` - [RFC 2420](https://tools.ietf.org/html/rfc2420)
-- `AES_128_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268)
-- `AES_128_GCM`  - [RFC 5288](https://tools.ietf.org/html/rfc5288)
-- `AES_256_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268)
-- `AES_256_GCM` - [RFC 5288](https://tools.ietf.org/html/rfc5288)
-- `RC4_40`  - [RFC 7465](https://tools.ietf.org/html/rfc7465)
-- `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465)
-- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905)  - [RFC 7539](https://tools.ietf.org/html/rfc7539)
+- `DES`  - [RFC 4772](https://tools.ietf.org/html/rfc4772 "RFC 4772")
+- `DES_CBC`  - [RFC 1829](https://tools.ietf.org/html/rfc1829 "RFC 1829")
+- `3DES`  - [RFC 2420](https://tools.ietf.org/html/rfc2420 "RFC 2420")
+- `3DES_EDE_CBC` - [RFC 2420](https://tools.ietf.org/html/rfc2420 "RFC 2420")
+- `AES_128_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268 "RFC 3268")
+- `AES_128_GCM`  - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
+- `AES_256_CBC` - [RFC 3268](https://tools.ietf.org/html/rfc3268 "RFC 3268")
+- `AES_256_GCM` - [RFC 5288](https://tools.ietf.org/html/rfc5288 "RFC 5288")
+- `RC4_40`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
+- `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
+- `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905 "RFC 7905")  - [RFC 7539](https://tools.ietf.org/html/rfc7539 "RFC 7539")
 
 Integrity Check Algorithms:
 
-- `MD5`  - [RFC 6151](https://tools.ietf.org/html/rfc6151)
-- `SHA`  - [RFC 6234](https://tools.ietf.org/html/rfc6234)
-- `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234)
-- `SHA384`  - [RFC 6234](https://tools.ietf.org/html/rfc6234)
+- `MD5`  - [RFC 6151](https://tools.ietf.org/html/rfc6151 "RFC 6151")
+- `SHA`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
+- `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
+- `SHA384`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
 
 Note that The efficiency of a cipher suite depends on the efficiency of its algorithms.
 
 In the following, we’ll present the updated recommended cipher suites list to use with TLS. These cipher suites are recommended by both IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
 
-- IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4).
+- IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
 
-Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites) and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc) versions and choose the top supported cipher suites.
+Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
 
 #### Static Analysis
 
@@ -268,14 +268,14 @@ Verify that the server or termination proxy at which the HTTPS connection termin
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
 - Capture all HTTP(S) and Websocket traffic with an interception proxy like OWASP ZAP or Burp Suite and make sure all requests are made via HTTPS instead of HTTP.
-- Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension) or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay) to decode and visualize communication via XMPP and other protocols.
+- Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
 > Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning".
 
 If you want to verify whether your server supports the right cipher suites, there are various tools you can use:
 
 - nscurl - see Testing Network Communication for iOS for more details.
-- [testssl.sh](https://github.com/drwetter/testssl.sh) which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
+- [testssl.sh](https://github.com/drwetter/testssl.sh "mitm-relay") which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
 ### Making Sure that Critical Operations Use Secure Communication Channels (MSTG‑NETWORK‑5)
 
