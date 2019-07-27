@@ -483,9 +483,9 @@ Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receiver
 
 *Content Providers* are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
 
-- `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing
-- `android:permission`: general permission that will control reading and writing to the content provider
-- `android:grantUriPermissions`: true if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and false otherwise
+- `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
+- `android:permission`: general permission that will control reading and writing to the content provider.
+- `android:grantUriPermissions`: "true" if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and "false" otherwise.
 
 ### Signing and Publishing Process
 

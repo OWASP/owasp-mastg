@@ -1320,7 +1320,7 @@ Inspect the app extension's `Info.plist` file and search for `NSExtensionActivat
     </dict>
 ```
 
-Only the data types present here and not having `0` as `MaxCount` will be supported. However, more complex filtering is possible by using a so-called predicate string that will evaluate the UTIs given. Please refer to the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW8 "Declaring Supported Data Types for a Share or Action Extension") for more detailed information about this.
+Only the data types present here and not having "0" as `MaxCount` will be supported. However, more complex filtering is possible by using a so-called predicate string that will evaluate the UTIs given. Please refer to the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW8 "Declaring Supported Data Types for a Share or Action Extension") for more detailed information about this.
 
 ###### Checking Data Sharing with the Containing App
 
@@ -1619,7 +1619,7 @@ Before calling the `openURL:options:completionHandler:` method, apps can call [`
     </array>
 ```
 
-`canOpenURL` will always return `NO` for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme, even if the `LSApplicationQueriesSchemes` array was declared**, and return `YES` / `NO` depending on the result.
+`canOpenURL` will always return"NO" for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme, even if the `LSApplicationQueriesSchemes` array was declared**, and return "YES" / "NO" depending on the result.
 
 As an example, Telegram declares in its [`Info.plist`](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Telegram-iOS/Info.plist#L63 "Telegram's Info.plist Line 63") these Queries Schemes, among others:
 
@@ -1938,7 +1938,7 @@ Now we know that:
 - It receives our URL as a parameter: `igoat://`.
 - We also can verify the source application: `com.apple.mobilesafari`.
 - We can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`.
-- The method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
+- The method returns "0x1" which means "YES" ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
 
 The call was successful and we see now that the iGoat app was open:
 
@@ -2757,7 +2757,7 @@ hasOnlySecureContent:  false
 allowUniversalAccessFromFileURLs:  0
 ```
 
-Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to `0`, meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to `1` this time:
+Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to "0", meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to "1" this time:
 
 ```shell
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
