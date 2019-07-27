@@ -275,7 +275,7 @@ If you have a jailbroken device you can try one of the following tools that can 
 In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
 
 - the API calls `NSURLSession`, `CFStream`, and `AFNetworking`
-- methods/strings containing words like "pinning," "X.509," "Certificate," etc.
+- methods/strings containing words like "pinning", "X.509", "Certificate", etc.
 
 If you don't have access to the source, you can try binary patching:
 
