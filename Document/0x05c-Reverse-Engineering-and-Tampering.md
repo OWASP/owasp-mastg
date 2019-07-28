@@ -582,7 +582,7 @@ main[1] locals
 flag = false
 ```
 
-You've now reached a call to `setCancelable` with the argument `false`. Set the variable to "true" with the `set` command and resume.
+You've now reached a call to `setCancelable` with the argument `false`. Set the variable to `true` with the `set` command and resume.
 
 ```shell
 main[1] set flag = true
