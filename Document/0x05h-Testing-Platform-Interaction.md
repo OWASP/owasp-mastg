@@ -394,7 +394,7 @@ With this vulnerability, an attacker can call fragments inside the target applic
 
 To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
 
-The default implementation returns "true" on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
+The default implementation returns `true` on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
 
 #### Static Analysis
 
