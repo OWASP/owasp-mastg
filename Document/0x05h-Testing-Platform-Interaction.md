@@ -987,7 +987,7 @@ Check the source code for WebView usage. The following [WebView settings](https:
 
 - `setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
 - `setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
-- `setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is "true" for API level 15 (Ice Cream Sandwich) and below and "false" for API level 16 (Jelly Bean) and above.
+- `setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is `true` for API level 15 (Ice Cream Sandwich) and below and `false` for API level 16 (Jelly Bean) and above.
 - `setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is "true" for API level 15 (Ice Cream Sandwich) and below and "false" for API level 16 (Jelly Bean) and above.
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
