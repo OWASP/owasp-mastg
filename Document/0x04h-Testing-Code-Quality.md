@@ -95,9 +95,9 @@ We will cover details related to input sources and potentially vulnerable APIs f
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
-In the context of *native apps*, XSS risks are far less prevalent for the simple reason these kinds of applications do not rely on a web browser. However, apps using WebView components, such as ‘WKWebView’ or the deprecated 'UIWebView' on iOS and ‘WebView’ on Android, are potentially vulnerable to such attacks.
+In the context of *native apps*, XSS risks are far less prevalent for the simple reason these kinds of applications do not rely on a web browser. However, apps using WebView components, such as `WKWebView` or the deprecated `UIWebView` on iOS and `WebView` on Android, are potentially vulnerable to such attacks.
 
-An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance]( https://superevr.com/blog/2011/xss-in-skype-for-ios). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
+An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "XSS in Skype for iOS"). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
 #### Static Analysis
 
@@ -117,7 +117,7 @@ Kotlin
 webView.loadUrl("javascript:initialize($myNumber);")
 ```
 
-Another example of XSS issues determined by user input is public overriden methods.
+Another example of XSS issues determined by user input is public overridden methods.
 
 Java
 
@@ -158,7 +158,7 @@ Sergey Bobrov was able to take advantage of this in the following [HackerOne rep
   '<script>alert(QuoraAndroid.getClipboardData());</script>'
   ```
 
-- 3rd party Intent in Java or kotlin:
+- 3rd party Intent in Java or Kotlin:
 
   ```java
   Intent i = new Intent();
@@ -178,12 +178,11 @@ Sergey Bobrov was able to take advantage of this in the following [HackerOne rep
   view.context.startActivity(i)
   ```
 
-If WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
+If a WebView is used to display a remote website, the burden of escaping HTML shifts to the server side. If an XSS flaw exists on the web server, this can be used to execute script in the context of the WebView. As such, it is important to perform static analysis of the web application source code.
 
 Verify that the following best practices have been followed:
 
 - No untrusted data is rendered in HTML, JavaScript or other interpreted contexts unless it is absolutely necessary.
-
 - Appropriate encoding is applied to escape characters, such as HTML entity encoding. Note: escaping rules become complicated when HTML is nested within other code, for example, rendering a URL located inside a JavaScript block.
 
 Consider how data will be rendered in a response. For example, if data is rendered in a HTML context, six control characters that must be escaped:
