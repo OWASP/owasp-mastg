@@ -3055,7 +3055,7 @@ In this first example, the `NSUserDefaults` are used, which is the primary *prop
 
 ```
 
-Note that `plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
+Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
 
 ##### XML
 
@@ -3073,7 +3073,7 @@ Next to the libraries, you can make use of Apple's [`XMLParser` class](https://d
 
 When not using third party libraries, but Apple's `XMLParser`, be sure to let `shouldResolveExternalEntities` return `false`.
 
-##### Object-Relational Mapping (Coredata and Realm)
+##### Object-Relational Mapping (CoreData and Realm)
 
 There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Encryption with Realm"). This allows for handling secure data. Note that the encryption is turned off by default.
 
