@@ -1619,7 +1619,7 @@ Before calling the `openURL:options:completionHandler:` method, apps can call [`
     </array>
 ```
 
-`canOpenURL` will always return"NO" for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme, even if the `LSApplicationQueriesSchemes` array was declared**, and return "YES" / "NO" depending on the result.
+`canOpenURL` will always return `NO` for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme, even if the `LSApplicationQueriesSchemes` array was declared**, and return `YES` / `NO` depending on the result.
 
 As an example, Telegram declares in its [`Info.plist`](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Telegram-iOS/Info.plist#L63 "Telegram's Info.plist Line 63") these Queries Schemes, among others:
 
@@ -1938,7 +1938,7 @@ Now we know that:
 - It receives our URL as a parameter: `igoat://`.
 - We also can verify the source application: `com.apple.mobilesafari`.
 - We can also know from where it was called, as expected from `-[UIApplication _applicationOpenURLAction:payload:origin:]`.
-- The method returns "0x1" which means "YES" ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
+- The method returns `0x1` which means `YES` ([the delegate successfully handled the request](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc#return-value "application:openURL:options: Return Value")).
 
 The call was successful and we see now that the iGoat app was open:
 
@@ -2611,7 +2611,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
 
-In a case like this, it is recommended to perform dynamic anaylsis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "Checking How WebViews are Loaded" for an example about this.
+In a case like this, it is recommended to perform dynamic analysis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "Checking How WebViews are Loaded" for an example about this.
 
 In addition, you should also verify if the app is using the method [`loadFileURL:allowingReadAccessToURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "WKWebView loadFileURL:allowingReadAccessToURL:"). Its first parameter is `URL` and contains the URL to be loaded in the WebView, its second parameter `allowingReadAccessToURL` may contain a single file or a directory. If containing a single file, that file will be available to the WebView. However, if it contains a directory, all files on that directory will be made available to the WebView. Therefore, it is worth inspecting this and in case it is a directory, verifying that no sensitive data can be found inside it.
 
@@ -2709,7 +2709,7 @@ $ frida-trace -U "Where's My Browser?"
  14190 ms  baseURL: nil
 ```
 
-In this case, `baseURL` is set to `nil`, meaning that the effective origin is "null". You can obtain the effective origin by running `window.origin` from the JavaScript of the page (this app has an explotation helper that allows to write and run JavaScript, but you could also implement a MITM or simply use Frida to inject JavaScript, e.g. via `evaluateJavaScript:completionHandler` of `WKWebView`).
+In this case, `baseURL` is set to `nil`, meaning that the effective origin is "null". You can obtain the effective origin by running `window.origin` from the JavaScript of the page (this app has an exploitation helper that allows to write and run JavaScript, but you could also implement a MITM or simply use Frida to inject JavaScript, e.g. via `evaluateJavaScript:completionHandler` of `WKWebView`).
 
 As an additional note regarding `UIWebView`s, if you retrieve the effective origin from a `UIWebView` where `baseURL` is also set to `nil` you will see that it is not set to "null", instead you'll obtain something similar to the following:
 

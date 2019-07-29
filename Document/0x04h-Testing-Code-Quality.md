@@ -41,7 +41,7 @@ This results in the following query:
 SELECT * FROM users WHERE username='1' OR '1' = '1' AND Password='1' OR '1' = '1'
 ```
 
-Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return "true" even though no valid user account was entered.
+Because the condition `'1' = '1'` always evaluates as true, this query return all records in the database, causing the login function to return `true` even though no valid user account was entered.
 
 Ostorlab exploited the sort parameter of [Yahoo's weather mobile application](https://blog.ostorlab.co/android-sql-contentProvider-sql-injections.html "Android, SQL and ContentProviders or Why SQL injections aren't dead yet ?") with adb using this SQL injection payload.
 

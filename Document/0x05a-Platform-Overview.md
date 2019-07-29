@@ -451,7 +451,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 
 ###### Declaring Permissions
 
-Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html "predefined permissions")  or define its own. A new permission is declared with the `<permission>` element.
+Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html "predefined permissions") or define its own. A new permission is declared with the `<permission>` element.
 The example below shows an app declaring a permission:
 
 ```xml
@@ -485,7 +485,7 @@ Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receiver
 
 - `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
 - `android:permission`: general permission that will control reading and writing to the content provider.
-- `android:grantUriPermissions`: "true" if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and "false" otherwise.
+- `android:grantUriPermissions`: `"true"` if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and `"false"` otherwise.
 
 ### Signing and Publishing Process
 

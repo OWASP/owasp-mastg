@@ -125,7 +125,7 @@ To customize their network security settings in a safe, declarative configuratio
 
 The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. If an application uses this feature, two things should be checked to identify the defined configuration:
 
-First, find the Network Security Configuration file in the Android application manifest via the "android:networkSecurityConfig" attribute on the application tag:
+First, find the Network Security Configuration file in the Android application manifest via the `android:networkSecurityConfig` attribute on the application tag:
 
   ```xml
   <?xml version="1.0" encoding="utf-8"?>
