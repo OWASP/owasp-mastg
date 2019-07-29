@@ -371,7 +371,7 @@ After the instruction at offset *0xC13C*, MOVNE R0, #1 is patched and changed to
 
 You can bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
-Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns false when the device is jailbroken. Use the following command to execute this module:
+Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns "false" when the device is jailbroken. Use the following command to execute this module:
 
 ```shell
 [needle] > use dynamic/detection/script_jailbreak-detection-bypass

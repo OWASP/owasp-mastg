@@ -4,7 +4,7 @@
 
 #### Overview
 
-In contrast to Android, where each app runs on its own user ID, iOS makes all third-party apps run under the non-privileged `mobile` user. Each app has a unique home directory and is sandboxed, so that they cannot access protected system resources or files stored by the system or by other apps. These restrictions are implemented via sandbox policies (aka. *profiles*), which are enforced by the [Trusted BSD (MAC) Mandatory Access Control Framework](http://www.trustedbsd.org/mac.html "TrustedBSD Mandatory Access Control (MAC) Framework") via a kernel extension. iOS applies a generic sandbox profile to all third-party apps called *container*. Access to protected resources or data (some also known as [app capabilities](https://developer.apple.com/support/app-capabilities/)) is possible, but it's strictly controlled via special permissions known as *entitlements*.
+In contrast to Android, where each app runs on its own user ID, iOS makes all third-party apps run under the non-privileged `mobile` user. Each app has a unique home directory and is sandboxed, so that they cannot access protected system resources or files stored by the system or by other apps. These restrictions are implemented via sandbox policies (aka. *profiles*), which are enforced by the [Trusted BSD (MAC) Mandatory Access Control Framework](http://www.trustedbsd.org/mac.html "TrustedBSD Mandatory Access Control (MAC) Framework") via a kernel extension. iOS applies a generic sandbox profile to all third-party apps called *container*. Access to protected resources or data (some also known as [app capabilities](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities")) is possible, but it's strictly controlled via special permissions known as *entitlements*.
 
 Some permissions can be configured by the app's developers (e.g. Data Protection or Keychain Sharing) and will directly take effect after the installation. However, for others, the user will be explicitly asked the first time the app attempts to access a protected resource, [for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"):
 
@@ -1324,7 +1324,7 @@ Only the data types present here and not having `0` as `MaxCount` will be suppor
 
 ###### Checking Data Sharing with the Containing App
 
-Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group") and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults) API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11 "An app extension’s container is distinct from its containing app’s container"):
+Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group") and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults") API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11 "An app extension’s container is distinct from its containing app’s container"):
 
 ![App Extensions Container Restrictions](Images/Chapters/0x06h/app_extensions_container_restrictions.png)
 
@@ -1997,7 +1997,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 ###### Opening a Link by Navigating to a Page and Letting Safari Open It
 
-You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "[https://telegram.me/fridadotre](https://telegram.me/fridadotre)" will trigger this behaviour.
+You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behaviour.
 
 ![Open this page in "Telegram"?](Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png)
 
@@ -2080,7 +2080,7 @@ There you can observe the following:
 - The URL being opened is `tg://resolve?domain=fridadotre`.
 - It uses the `tg://` custom URL scheme from Telegram.
 
-It is interesting to see that if you navigate again to "[https://telegram.me/fridadotre](https://telegram.me/fridadotre)", click on cancel and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
+It is interesting to see that if you navigate again to "<https://telegram.me/fridadotre>", click on cancel and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
 
 ![Open in the Telegram app](Images/Chapters/0x06h/open_in_telegram_via_universallink.png)
 
@@ -2355,7 +2355,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
 ```
 
-If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller) and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript "WKUserScript") for more information on injecting user scripts to WKWebViews.
+If user scripts were defined, they will continue running as the `javaScriptEnabled` property won't affect them. See [WKUserContentController](https://developer.apple.com/documentation/webkit/wkusercontentcontroller "WKUserContentController") and [WKUserScript](https://developer.apple.com/documentation/webkit/wkuserscript "WKUserScript") for more information on injecting user scripts to WKWebViews.
 
 ##### Testing for Mixed Content
 
@@ -2611,7 +2611,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
 
-In a case like this, it is recommended to perform dynamic anaylsis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "Checking How WebViews are Loaded" for an example about this.
+In a case like this, it is recommended to perform dynamic analysis to ensure that this is in fact being used and from which kind of WebView. The `baseURL` parameter here doesn't present an issue as it will be set to "null" but could be an issue if not set properly when using a `UIWebView`. See "Checking How WebViews are Loaded" for an example about this.
 
 In addition, you should also verify if the app is using the method [`loadFileURL:allowingReadAccessToURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1414973-loadfileurl?language=objc "WKWebView loadFileURL:allowingReadAccessToURL:"). Its first parameter is `URL` and contains the URL to be loaded in the WebView, its second parameter `allowingReadAccessToURL` may contain a single file or a directory. If containing a single file, that file will be available to the WebView. However, if it contains a directory, all files on that directory will be made available to the WebView. Therefore, it is worth inspecting this and in case it is a directory, verifying that no sensitive data can be found inside it.
 
@@ -2709,7 +2709,7 @@ $ frida-trace -U "Where's My Browser?"
  14190 ms  baseURL: nil
 ```
 
-In this case, `baseURL` is set to `nil`, meaning that the effective origin is "null". You can obtain the effective origin by running `window.origin` from the JavaScript of the page (this app has an explotation helper that allows to write and run JavaScript, but you could also implement a MITM or simply use Frida to inject JavaScript, e.g. via `evaluateJavaScript:completionHandler` of `WKWebView`).
+In this case, `baseURL` is set to `nil`, meaning that the effective origin is "null". You can obtain the effective origin by running `window.origin` from the JavaScript of the page (this app has an exploitation helper that allows to write and run JavaScript, but you could also implement a MITM or simply use Frida to inject JavaScript, e.g. via `evaluateJavaScript:completionHandler` of `WKWebView`).
 
 As an additional note regarding `UIWebView`s, if you retrieve the effective origin from a `UIWebView` where `baseURL` is also set to `nil` you will see that it is not set to "null", instead you'll obtain something similar to the following:
 
@@ -2757,7 +2757,7 @@ hasOnlySecureContent:  false
 allowUniversalAccessFromFileURLs:  0
 ```
 
-Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to `0`, meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to `1` this time:
+Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to "0", meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to "1" this time:
 
 ```shell
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
@@ -3055,7 +3055,7 @@ In this first example, the `NSUserDefaults` are used, which is the primary *prop
 
 ```
 
-Note that `plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
+Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
 
 ##### XML
 
@@ -3073,7 +3073,7 @@ Next to the libraries, you can make use of Apple's [`XMLParser` class](https://d
 
 When not using third party libraries, but Apple's `XMLParser`, be sure to let `shouldResolveExternalEntities` return `false`.
 
-##### Object-Relational Mapping (Coredata and Realm)
+##### Object-Relational Mapping (CoreData and Realm)
 
 There are various ORM-like solutions for iOS. The first one is [Realm](https://realm.io/docs/swift/latest/ "Realm"), which comes with its own storage engine. Realm has settings to encrypt the data as explained in [Realm's documentation](https://academy.realm.io/posts/tim-oliver-realm-cocoa-tutorial-on-encryption-with-realm/ "Encryption with Realm"). This allows for handling secure data. Note that the encryption is turned off by default.
 

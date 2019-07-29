@@ -470,7 +470,7 @@ Dynamic Analysis tests the mobile app by executing and running the app binary an
 - Vulnerabilities in the tested environments
 - Weak input validation and bad input/output encoding as they are processed through one or multiple services
 
-Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
+Analysis can be assisted by automated tools, such as [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF/ "MobSF"), while assessing an application. An application can be assessed by side-loading it, re-packaging it, or by simply attacking the installed version.
 
 #### Dynamic Analysis on Non-Rooted Devices
 
@@ -582,7 +582,7 @@ main[1] locals
 flag = false
 ```
 
-You've now reached a call to `setCancelable` with the argument `false`. Set the variable to true with the `set` command and resume.
+You've now reached a call to `setCancelable` with the argument `false`. Set the variable to `true` with the `set` command and resume.
 
 ```shell
 main[1] set flag = true
@@ -590,7 +590,7 @@ main[1] set flag = true
 main[1] resume
 ```
 
-Repeat this process, setting `flag` to "true" each time the breakpoint is reached, until the alert box is finally displayed (the breakpoint will be reached five or six times). The alert box should now be cancelable! Tap the screen next to the box and it will close without terminating the app.
+Repeat this process, setting `flag` to `true` each time the breakpoint is reached, until the alert box is finally displayed (the breakpoint will be reached five or six times). The alert box should now be cancelable! Tap the screen next to the box and it will close without terminating the app.
 
 Now that the anti-tampering is out of the way, you're ready to extract the secret string! In the "static analysis" section, you saw that the string is decrypted with AES, then compared with the string input to the message box. The method `equals` of the `java.lang.String` class compares the string input with the secret string. Set a method breakpoint on `java.lang.String.equals`, enter an arbitrary text string in the edit field, and tap the "verify" button. Once the breakpoint is reached, you can read the method argument with the `locals` command.
 
@@ -872,7 +872,7 @@ All of this makes it possible to build tracers that are practically transparent 
 
 ##### PANDA
 
-[PANDA](https://github.com/moyix/panda/blob/master/docs/) is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered by certain QEMU events. The twist PANDA adds is its record/replay feature. This allows an iterative workflow: the reverse engineer records an execution trace of the target app (or some part of it), then replays it repeatedly, refining the analysis plugins with each iteration.
+[PANDA](https://github.com/moyix/panda/blob/master/docs/ "PANDA Docs") is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered by certain QEMU events. The twist PANDA adds is its record/replay feature. This allows an iterative workflow: the reverse engineer records an execution trace of the target app (or some part of it), then replays it repeatedly, refining the analysis plugins with each iteration.
 
 PANDA comes with pre-made plugins, including a string search tool and a syscall tracer. Most importantly, it supports Android guests, and some of the DroidScope code has even been ported. Building and running PANDA for Android ("PANDROID") is relatively straightforward. To test it, clone Moiyx's git repository and build PANDA:
 
@@ -1096,7 +1096,7 @@ First, we'll look at some simple ways to modify and instrument mobile apps. *Tam
 Making small changes to the Android Manifest or bytecode is often the quickest way to fix small annoyances that prevent you from testing or reverse engineering an app. On Android, two issues in particular happen regularly:
 
 1. You can't intercept HTTPS traffic with a proxy because the app employs SSL pinning.
-2. You can't attach a debugger to the app because the `android:debuggable` flag is not set to "true" in the Android Manifest.
+2. You can't attach a debugger to the app because the `android:debuggable` flag is not set to `"true"` in the Android Manifest.
 
 In most cases, both issues can be fixed by making minor changes to the app (aka. patching) and then re-signing and repackaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
 
@@ -1208,7 +1208,7 @@ In the Developer options, pick `Uncrackable1` as the debugging application and a
 
 <img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
 
-Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to "true" in the Android Manifest.
+Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `"true"` in the Android Manifest.
 
 ##### Patching React Native applications
 
@@ -1254,7 +1254,7 @@ public static boolean c() {
 }
 ```
 
-This method iterates through a list of directories and returns "true" (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false". Method hooking with an Xposed module is one way to do this (see "Android Basic Security Testing" for more details on Xposed installation and basics).
+This method iterates through a list of directories and returns `true` (device rooted) if it finds the `su` binary in any of them. Checks like this are easy to deactivate all you have to do is replace the code with something that returns "false". Method hooking with an Xposed module is one way to do this (see "Android Basic Security Testing" for more details on Xposed installation and basics).
 
 The method  `XposedHelpers.findAndHookMethod` allows you to override existing class methods. By inspecting the decompiled source code, you can find out that the method performing the check is `c`. This method is located in the class `com.example.a.b`. The following is an Xposed module that overrides the function so that it always returns false:
 
@@ -1580,7 +1580,7 @@ The most straightforward way to intercept system calls is to inject your own cod
 
 For hacking, I recommend an AOSP-supported device. Google's Nexus smartphones and tablets are the most logical candidates because kernels and system components built from the AOSP run on them without issues. Sony's Xperia series is also known for its openness. To build the AOSP kernel, you need a toolchain (a set of programs for cross-compiling the sources) and the appropriate version of the kernel sources. Follow Google's instructions to identify the correct git repo and branch for a given device and Android version.
 
-[https://source.android.com/source/building-kernels.html#id-version](https://source.android.com/source/building-kernels.html#id-version)
+<https://source.android.com/source/building-kernels.html#id-version>
 
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the `msm` repository and check out one of the `android-msm-hammerhead` branches (hammerhead is the codename of the Nexus 5, and finding the right branch is confusing). Once you have downloaded the sources, create the default kernel config with the command `make hammerhead_defconfig` (replacing "hammerhead" with your target device).
 
