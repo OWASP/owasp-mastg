@@ -951,7 +951,7 @@ You can print the class names and their methods with the r2 command `ic` (_infor
 ```shell
 [0x000009c8]> ic
 ...
-0x0000073c [0x00000958 - 0x00000abc]    356 class 5 Lsg/vantagepoint/uncrackable1/MainActivity 
+0x0000073c [0x00000958 - 0x00000abc]    356 class 5 Lsg/vantagepoint/uncrackable1/MainActivity
                                                                             :: Landroid/app/Activity;
 0x00000958 method 0 pC   Lsg/vantagepoint/uncrackable1/MainActivity.method.<init>()V
 0x00000970 method 1 P    Lsg/vantagepoint/uncrackable1/MainActivity.method.a(Ljava/lang/String;)V

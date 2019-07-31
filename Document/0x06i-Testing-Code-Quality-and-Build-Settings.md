@@ -82,7 +82,7 @@ Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/ "Binutils") and c
 
 Make sure that debugging symbols are stripped when the application is being built for production. Stripping debugging symbols will reduce the size of the binary and increase the difficulty of reverse engineering. To strip debugging symbols, set `Strip Debug Symbols During Copy` to `YES` via the project's build settings.
 
-A proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html "Crash Reporter System) is possible because the system doesn't require any symbols in the application binary.
+A proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html "Crash Reporter System") is possible because the system doesn't require any symbols in the application binary.
 
 #### Dynamic Analysis
 
