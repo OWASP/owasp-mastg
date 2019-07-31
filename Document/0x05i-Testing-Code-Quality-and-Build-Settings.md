@@ -75,7 +75,7 @@ Static analysis should be used to verify the APK signature.
 
 #### Overview
 
-The `android:debuggable` attribute in the [`Application`  element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") that is defined in the Android manifest determines whether the app can be debugged or not.
+The `android:debuggable` attribute in the [`Application` element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") that is defined in the Android manifest determines whether the app can be debugged or not.
 
 #### Static Analysis
 
@@ -87,7 +87,7 @@ Check `AndroidManifest.xml` to determine whether the `android:debuggable` attrib
     ...
 ```
 
-For a release build, this attribute should always be set to "false" (the default value).
+For a release build, this attribute should always be set to `"false"` (the default value).
 
 #### Dynamic Analysis
 

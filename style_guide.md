@@ -328,6 +328,9 @@ When they do not occur in a code block, place the following code-related keyword
 |  port numbers   ||
 |   binary names  ||
 |method/function arguments||
+|method/function argument or return values (e.g., `true`, `0`, `YES`)||
+|  XML attributes (e.g., `get-task-allow` on iOS Plists, `"@string/app_name"` on Android Manifests)||
+|  XML attribute values (e.g., `android:label` on Android Manifests)||
 |  property names ||
 |  object names   ||
 |    API calls    ||
