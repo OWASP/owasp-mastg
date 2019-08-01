@@ -2,6 +2,28 @@
 
 This document is automatically generated at {{gitbook.time}}
 
+## 1.1.3 (WIP)
+
+- Updated contributorlist, with 2 new co-authors.
+- Translated various parts into Japanese.
+- A large restructuring of the general testing, platform specific testing and reverse-engineering chapters.
+- Updated description of many tools: Adb, Drozer, ClassDump(Z/etc), Frida, Hopper, Needle, Objection, Radare, Termux, and many more.
+- Updated most of the iOS hacking/verification techniques using iOS 12 or 11 as a base instead of iOS 9/10.
+- Removed tools which were no longer updated, such as introspy-Android and AndBug.
+- Added missing MASVS references from version 1.1.4: v1.X, V3.5, V5.6, V6.2-V6.5, V8.2-V8.6.
+- Rewrote device-binding explanation and testcases for Android.
+- Added parts on testing unmanaged code: things to check for at unsafe Objective-C, Parcelling in Java, and the usage of C/C++.
+- Applied many spelling, punctuation and style-related fixes.
+- Updated many cryptography related parts.
+- Added testaces for upgrade-mechanism verification for apps.
+- Updated Readme, Code of Conduct, Contribution guidelines, verification and generation scripts.
+- Added ISBN as the book is now available at Hulu.
+- Added various fixes for the .epub format.
+- Added testcases on Android and iOS backup verification.
+- Improved key-attestation related explanation for Android.
+- Restructured OWASP Mobile Wiki.
+- Removed Yahoo Weather app and simplified reference on using SQL injection.
+
 ## 1.1.2 12 May 2019
 
 - Added missing mappings for MASVS V1.X.
