@@ -369,7 +369,7 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 The other way is to create the receiver dynamically in code and register it with the `Context.registerReceiver()` method.
 
-An example of registering Broadcast Receiver dynamically:
+An example of registering a Broadcast Receiver dynamically:
 
 ```Java
 // Define a broadcast receiver
@@ -388,7 +388,7 @@ registerReceiver(myReceiver, intentFilter);
 unregisterReceiver(myReceiver);
 ```
 
-Note that Android apps don’t need to be running to receive intents; the system starts apps automatically when a relevant intent is raised.
+Note that the system starts an app with the registered receiver automatically when a relevant intent is raised.
 
 After receiving an implicit intent, Android will list all apps that have registered a given action in their filters. If more than one app has registered for the same action, Android will prompt the user to select from the list of available apps.
 
@@ -398,7 +398,7 @@ A Local Broadcast Manager can be used to make sure intents are received from the
 
 ###### Implicit Broadcast Receiver Limitiation
 
-According to [Background Execution Limits](https://developer.android.com/about/versions/oreo/background.html#broadcasts), apps that target Android 8.0 (API level 26) or higher can no longer register Broadcast Receivers for implicit broadcasts in their manifest, except for those listed in [Implicit Broadcast Exceptions](https://developer.android.com/guide/components/broadcast-exceptions). The Broadcast Receivers created at runtime by calling `Context.registerReceiver()` are not affected by this limitation.
+According to [Background Execution Limits](https://developer.android.com/about/versions/oreo/background.html#broadcasts "Background Execution Limits"), apps that target Android 8.0 (API level 26) or higher can no longer register Broadcast Receivers for implicit broadcasts in their manifest, except for those listed in [Implicit Broadcast Exceptions](https://developer.android.com/guide/components/broadcast-exceptions "Implicit Broadcast Exceptions"). The Broadcast Receivers created at runtime by calling `Context.registerReceiver()` are not affected by this limitation.
 
 ##### Content Providers
 
