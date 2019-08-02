@@ -108,4 +108,4 @@ This document is automatically generated at {{gitbook.time}}
 - Updated test cases for sensitive data in memory.
 - Added code quality sections.
 
-## 1.0 15 Jun 2018 : First release
+## 1.0 15 Jun 2018 (First release)
