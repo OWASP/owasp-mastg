@@ -2,7 +2,7 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## 1.1.3 (WIP)
+## 1.1.3 2 August 2019
 
 - Updated Acknowledgments, with 2 new co-authors.
 - Translated various parts into Japanese.
