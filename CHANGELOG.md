@@ -4,7 +4,7 @@ This document is automatically generated at {{gitbook.time}}
 
 ## 1.1.3 (WIP)
 
-- Updated contributorlist, with 2 new co-authors.
+- Updated Acknowledgments, with 2 new co-authors.
 - Translated various parts into Japanese.
 - A large restructuring of the general testing, platform specific testing and reverse-engineering chapters.
 - Updated description of many tools: Adb, Angr, APK axtractor, Apkx, Burp Suite, Drozer, ClassDump(Z/etc), Clutch, Drozer, Frida, Hopper, Ghidra, IDB, Ipa Installer, iFunBox, iOS-deploy, KeychainDumper, Mobile-Security-Framework, Nathan, Needle, Objection, Magisk, PassionFruit, Radare 2, Tableplus, SOcket CAT, Xposed, and others.
