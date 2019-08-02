@@ -12,7 +12,7 @@ This document is automatically generated at {{gitbook.time}}
 - Removed tools which were no longer updated, such as introspy-Android and AndBug.
 - Added missing MASVS references from version 1.1.4: v1.X, V3.5, V5.6, V6.2-V6.5, V8.2-V8.6.
 - Rewrote device-binding explanation and testcases for Android.
-- Added parts on testing unmanaged code: things to check for at unsafe Objective-C, Parcelling in Java, and the usage of C/C++.
+- Added parts on testing unmanaged code in Objective-C, Java, and C/C++.
 - Applied many spelling, punctuation and style-related fixes.
 - Updated many cryptography related parts.
 - Added testaces for upgrade-mechanism verification for apps.
