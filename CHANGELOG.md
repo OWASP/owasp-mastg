@@ -33,7 +33,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added list of adopters of the MASVS/MSTG.
 - Updated English, Japanese, French and Spanish checklists to be compatible with MSTG 1.1.2.
 - Added a small write-up on Adiantum for Google.
-- Added MSTG-ID to the paragraphs create a better link between MSTG paragraphs and MASVS requirements.
+- Added MSTG-ID to the paragraphs to create a link between MSTG paragraphs and MASVS requirements.
 - Added review criteria for Android instant apps and guidance for app-bundle evaluation.
 - Clarified the differences between various methods of dynamic analysis.
 
