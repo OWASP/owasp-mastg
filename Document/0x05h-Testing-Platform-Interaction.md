@@ -277,7 +277,7 @@ Note that this method can't be used for `signature` level permissions because Dr
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
-### Testing for Injection Flaws (MSTG‑PLATFORM‑2)
+### Testing for Injection Flaws (MSTG-PLATFORM-2)
 
 #### Overview
 
@@ -556,7 +556,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes".
 
-### Testing for insecure Configuration of Instant Apps (MSTG‑ARCH‑1, MSTG‑ARCH‑7)
+### Testing for insecure Configuration of Instant Apps (MSTG-ARCH-1, MSTG-ARCH-7)
 
 #### Overview
 
