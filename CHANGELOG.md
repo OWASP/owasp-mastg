@@ -23,7 +23,7 @@ This document is automatically generated at {{gitbook.time}}
 - Improved key-attestation related explanation for Android.
 - Restructured OWASP Mobile Wiki.
 - Removed Yahoo Weather app and simplified reference on using SQL injection.
-- iOS app sideloading is better explained with the various methods available.
+- Improve explanation for iOS app sideloading to include various available methods.
 - Added explanation on using ADB and device shell for Android.
 - Added explanation on using device shell for iOS.
 - Provided comparison for using emulators/simulators and real devices for iOS/Android.
