@@ -32,6 +32,9 @@ For sensitive apps ("Level 2"), the MASVS adds the following:
 
 You can find details on how to test for the requirements above in the following sections.
 
+<br/>
+<br/>
+
 #### Stateful vs. Stateless Authentication
 
 You'll usually find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so there must be a way to associate a user's subsequent HTTP requests with that user—otherwise, the user's log in credentials would have to be sent with every request. Also, both the server and client need to keep track of user data (e.g., the user's privileges or role). This can be done in two different ways:
@@ -58,7 +61,7 @@ Authentication schemes are sometimes supplemented by [passive contextual authent
 
 Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
 
-### Verifying that Appropriate Authentication is in Place (MSTG‑ARCH‑2 and MSTG‑AUTH‑1)
+### Verifying that Appropriate Authentication is in Place (MSTG-ARCH-2 and MSTG-AUTH-1)
 
 Perform the following steps when testing authentication and authorization:
 
@@ -86,7 +89,7 @@ Security experts used to recommend using session-based authentication and mainta
 
 To prevent tampering cryptographic signatures are added to client-side tokens. Of course, things may go wrong, and popular implementations of stateless authentication have been vulnerable to attacks. For example, the signature verification of some JSON Web Token (JWT) implementations could be deactivated by [setting the signature type to "None"](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical vulnerabilities in JSON Web Token libraries"). We'll discuss this attack in more detail in the "Testing JSON Web Tokens" chapter.
 
-### Testing Best Practices for Passwords (MSTG‑AUTH‑5 and MSTG‑AUTH‑6)
+### Testing Best Practices for Passwords (MSTG-AUTH-5 and MSTG-AUTH-6)
 
 Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
 
@@ -103,6 +106,9 @@ Confirm the existence of a password policy and verify the implemented password c
   - at least one lowercase character (a-z)
   - at least one digit (0-9)
   - at least one special character
+
+<br/>
+<br/>
 
 ##### zxcvbn
 
@@ -183,7 +189,7 @@ Observe the following best practices when implementing anti-brute-force controls
 
 Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
-#### Dynamic Testing (MSTG‑AUTH‑6)
+#### Dynamic Testing (MSTG-AUTH-6)
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
@@ -215,7 +221,7 @@ To test if your own test accounts are prone to brute forcing, append the correct
 
 > Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
 
-### Testing Stateful Session Management (MSTG‑AUTH‑2)
+### Testing Stateful Session Management (MSTG-AUTH-2)
 
 Stateful (or "session-based") authentication is characterized by authentication records on both the client and server. The authentication flow is as follows:
 
@@ -249,7 +255,7 @@ Authentication shouldn't be implemented from scratch but built on top of proven 
 
 A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
 
-### Testing Session Timeout (MSTG‑AUTH‑7)
+### Testing Session Timeout (MSTG-AUTH-7)
 
 Minimizing the lifetime of session identifiers and tokens decreases the likelihood of successful account hijacking.
 
@@ -275,7 +281,7 @@ After you have identified the session timeout, verify whether it has an appropri
 
 > When using Burp Proxy, you can use the [Session Timeout Test extension](https://portswigger.net/bappstore/c4bfd29882974712a1d69c6d8f05874e "Session Timeout Test extension") to automate this test.
 
-### Testing User Logout (MSTG‑AUTH‑4)
+### Testing User Logout (MSTG-AUTH-4)
 
 The purpose of this test case is verifying logout functionality and determining whether it effectively terminates the session on both client and server and invalidates a stateless token.
 
@@ -305,7 +311,7 @@ Use an interception proxy for dynamic application analysis and execute the follo
 If the logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
 The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
 
-### Testing Two-Factor Authentication and Step-up Authentication (MSTG‑AUTH‑9 and MSTG‑AUTH‑10)
+### Testing Two-Factor Authentication and Step-up Authentication (MSTG-AUTH-9 and MSTG-AUTH-10)
 
 Two-factor authentication (2FA) is standard for apps that allow users to access sensitive functions and data. Common implementations use a password for the first factor and any of the following as the second factor:
 
@@ -359,7 +365,7 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
-### Testing Stateless (Token-Based) Authentication (MSTG‑AUTH‑3)
+### Testing Stateless (Token-Based) Authentication (MSTG-AUTH-3)
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined in [RFC7519](https://tools.ietf.org/html/rfc7519 "RFC7519"). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
@@ -468,7 +474,7 @@ There are two different Burp Plugins that can help you for testing the vulnerabi
 
 Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java") for additional information.
 
-### Testing OAuth 2.0 Flows (MSTG‑AUTH‑1 and MSTG‑AUTH‑3)
+### Testing OAuth 2.0 Flows (MSTG-AUTH-1 and MSTG-AUTH-3)
 
 [OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/ "OAuth 2.0 delegation protocols"). It is used in a variety of applications, including user authentication applications.
 
@@ -553,7 +559,7 @@ For additional best practices and detailed information please refer to the follo
 - [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
 - [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
 
-### Testing Login Activity and Device Blocking (MSTG‑AUTH‑11)
+### Testing Login Activity and Device Blocking (MSTG-AUTH-11)
 
 For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices.". This can be broken down into various scenarios:
 
@@ -577,17 +583,17 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 #### OWASP MASVS
 
-- MSTG‑ARCH‑2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
-- MSTG‑AUTH‑1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
-- MSTG‑AUTH‑2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
-- MSTG‑AUTH‑3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
-- MSTG‑AUTH‑4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
-- MSTG‑AUTH‑5: "A password policy exists and is enforced at the remote endpoint."
-- MSTG‑AUTH‑6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
-- MSTG‑AUTH‑7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
-- MSTG‑AUTH‑9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
-- MSTG‑AUTH‑10: "Sensitive transactions require step-up authentication."
-- MSTG‑AUTH‑11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
+- MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
+- MSTG-AUTH-1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
+- MSTG-AUTH-2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
+- MSTG-AUTH-3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
+- MSTG-AUTH-4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
+- MSTG-AUTH-5: "A password policy exists and is enforced at the remote endpoint."
+- MSTG-AUTH-6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
+- MSTG-AUTH-7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
+- MSTG-AUTH-9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
+- MSTG-AUTH-10: "Sensitive transactions require step-up authentication."
+- MSTG-AUTH-11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
 
 #### CWE
 

@@ -19,7 +19,11 @@ Encryption algorithms converts plaintext data into cipher text that conceals the
 
 **Key Derivation Functions** (KDFs) derive secret keys from a secret value (such as a password) and are used to turn keys into other formats or to increase their length. KDFs are similar to hashing functions but have other uses as well (for example, they are used as components of multi-party key-agreement protocols). While both hashing functions and KDFs must be difficult to reverse, KDFs have the added requirement that the keys they produce must have a level of randomness.
 
-### Identifying Insecure and/or Deprecated Cryptographic Algorithms (MSTG‑CRYPTO‑4)
+<br/>
+<br/>
+<br/>
+
+### Identifying Insecure and/or Deprecated Cryptographic Algorithms (MSTG-CRYPTO-4)
 
 When assessing a mobile app, you should make sure that it does not use cryptographic algorithms and protocols that have significant known weaknesses or are otherwise insufficient for modern security requirements. Algorithms that were considered secure in the past may become insecure over time; therefore, it's important to periodically check current best practices and adjust configurations accordingly.
 
@@ -59,7 +63,7 @@ For more information on algorithm choice and best practices, see the following r
 - [NIST recommendations (2016)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2017)](https://www.keylength.com/en/8/ "BSI recommendations")
 
-### Common Configuration Issues (MSTG‑CRYPTO‑1, MSTG‑CRYPTO‑2 and MSTG‑CRYPTO‑3)
+### Common Configuration Issues (MSTG-CRYPTO-1, MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
 
 #### Insufficient Key Length
 
@@ -179,11 +183,11 @@ In larger organizations, or when high risk applications are created, it can ofte
 
 ##### OWASP MASVS
 
-- MSTG‑ARCH‑8: "There is an explicit policy for how cryptographic keys (if any) are managed, and the lifecycle of cryptographic keys is enforced. Ideally, follow a key management standard such as NIST SP 800-57."
-- MSTG‑CRYPTO‑1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
-- MSTG‑CRYPTO‑2: "The app uses proven implementations of cryptographic primitives."
-- MSTG‑CRYPTO‑3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- MSTG‑CRYPTO‑4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
+- MSTG-ARCH-8: "There is an explicit policy for how cryptographic keys (if any) are managed, and the lifecycle of cryptographic keys is enforced. Ideally, follow a key management standard such as NIST SP 800-57."
+- MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
+- MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
+- MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
+- MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 
 ##### CWE
 

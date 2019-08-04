@@ -121,7 +121,7 @@ In both scenarios the AP needs to be configured to point to your machines IP. To
 
 On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") or code injection frameworks like [Frida](https://www.frida.re "Frida") and [cycript](http://www.cycript.org "cycript"). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
 
-#### Example: Dealing with Xamarin
+#### Example - Dealing with Xamarin
 
 As an example, we will now redirect all requests from a Xamarin app to an interception proxy.
 
@@ -145,6 +145,9 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
+<br/>
+<br/>
+
 ##### CA Certificates
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
@@ -159,7 +162,7 @@ Start using the app and trigger it's functions. You should see HTTP messages sho
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
-### Verifying Data Encryption on the Network (MSTG‑NETWORK‑1 and MSTG‑NETWORK‑2)
+### Verifying Data Encryption on the Network (MSTG-NETWORK-1 and MSTG-NETWORK-2)
 
 #### Overview
 
@@ -277,7 +280,7 @@ If you want to verify whether your server supports the right cipher suites, ther
 - nscurl - see Testing Network Communication for iOS for more details.
 - [testssl.sh](https://github.com/drwetter/testssl.sh "mitm-relay") which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
-### Making Sure that Critical Operations Use Secure Communication Channels (MSTG‑NETWORK‑5)
+### Making Sure that Critical Operations Use Secure Communication Channels (MSTG-NETWORK-5)
 
 #### Overview
 
@@ -312,9 +315,9 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 #### OWASP MASVS
 
-- MSTG‑NETWORK‑1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
-- MSTG‑NETWORK‑2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
-- MSTG‑NETWORK‑5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
+- MSTG-NETWORK-1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
+- MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- MSTG-NETWORK-5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
 
 #### CWE
 
@@ -359,6 +362,9 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
 - How to protect yourself against a SIM swap attack - <https://www.wired.com/story/sim-swap-attack-defend-phone/>
+
+<br/>
+<br/>
 
 #### IETF
 

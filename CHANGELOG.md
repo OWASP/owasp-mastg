@@ -2,7 +2,42 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## 1.1.2 12 May 2019
+## v1.1.3 2 August 2019
+
+- Updated Acknowledgments, with 2 new co-authors.
+- Translated various parts into Japanese.
+- A large restructuring of the general testing, platform specific testing and reverse-engineering chapters.
+- Updated description of many tools: Adb, Angr, APK axtractor, Apkx, Burp Suite, Drozer, ClassDump(Z/etc), Clutch, Drozer, Frida, Hopper, Ghidra, IDB, Ipa Installer, iFunBox, iOS-deploy, KeychainDumper, Mobile-Security-Framework, Nathan, Needle, Objection, Magisk, PassionFruit, Radare 2, Tableplus, SOcket CAT, Xposed, and others.
+- Updated most of the iOS hacking/verification techniques using iOS 12 or 11 as a base instead of iOS 9/10.
+- Removed tools which were no longer updated, such as introspy-Android and AndBug.
+- Added missing MASVS references from version 1.1.4: v1.X, V3.5, V5.6, V6.2-V6.5, V8.2-V8.6.
+- Rewrote device-binding explanation and testcases for Android.
+- Added parts on testing unmanaged code in Objective-C, Java, and C/C++.
+- Applied many spelling, punctuation and style-related fixes.
+- Updated many cryptography related parts.
+- Added testaces for upgrade-mechanism verification for apps.
+- Updated Readme, Code of Conduct, Contribution guidelines, verification, funding link, and generation scripts.
+- Added ISBN as the book is now available at Hulu.
+- Added various fixes for the .epub format.
+- Added testcases on Android and iOS backup verification.
+- Improved key-attestation related explanation for Android.
+- Restructured OWASP Mobile Wiki.
+- Removed Yahoo Weather app and simplified reference on using SQL injection.
+- Improve explanation for iOS app sideloading to include various available methods.
+- Added explanation on using ADB and device shell for Android.
+- Added explanation on using device shell for iOS.
+- Provided comparison for using emulators/simulators and real devices for iOS/Android.
+- Fixed Uncrackable Level 3 for Android.
+- Improved explanation on how to exfiltrate data and apps on iOS 12 and Android 8.
+- Improved/updated explanation on SSL-pinning.
+- Added list of adopters of the MASVS/MSTG.
+- Updated English, Japanese, French and Spanish checklists to be compatible with MSTG 1.1.2.
+- Added a small write-up on Adiantum for Google.
+- Added MSTG-ID to the paragraphs to create a link between MSTG paragraphs and MASVS requirements.
+- Added review criteria for Android instant apps and guidance for app-bundle evaluation.
+- Clarified the differences between various methods of dynamic analysis.
+
+## v1.1.2 12 May 2019
 
 - Added missing mappings for MASVS V1.X.
 - Updated markdown throughout the English MSTG to be consistent.
@@ -13,7 +48,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added missing iOS test case regarding memory corruption issues.
 - Added contributing, code of conduct, markdown linting and dead link detection.
 
-## 1.1.1 7 May 2019
+## v1.1.1 7 May 2019
 
 - Improvements on various tool related parts, such as how to use on-device console, adb, nscurl, Frida and Needle.
 - Updated 0x4e regarding SMS communication.
@@ -34,7 +69,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added a lot of information to iOS platform testing.
 - Added a lot of fixes for our book-release.
 
-## 1.1.0 30 Nov 2018
+## v1.1.0 30 Nov 2018
 
 - Added more samples in Kotlin.
 - Simplified leanpub and gitbook publishing.
@@ -53,7 +88,7 @@ This document is automatically generated at {{gitbook.time}}
 - Fixed some of the anti-reverse-engineering test cases.
 - Added debugging test case for iOS.
 
-## 1.0.2 13 Oct 2018
+## v1.0.2 13 Oct 2018
 
 - Updated guiding documentation (README).
 - Improved automated build of the pdf, epub and mobi.
@@ -64,7 +99,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added fix for Fragment Injection on older Android versions.
 - Improved sections on iOS WebView related testing.
 
-## 1.0.1 17 Sept 2018
+## v1.0.1 17 Sept 2018
 
 - Updated guiding documentation (README, PR templates, improved style guide, issue templates).
 - Added automated build of the pdf and DocX.
@@ -108,4 +143,4 @@ This document is automatically generated at {{gitbook.time}}
 - Updated test cases for sensitive data in memory.
 - Added code quality sections.
 
-## 1.0 15 Jun 2018 : First release
+## v1.0 15 Jun 2018 : First release

@@ -4,7 +4,7 @@ Mobile app developers use a wide variety of programming languages and frameworks
 
 The same programming flaws may affect both Android and iOS apps to some degree, so we'll provide an overview of the most common vulnerability classes frequently in the general section of the guide. In later sections, we will cover OS-specific instances and exploit mitigation features.
 
-### Injection Flaws (MSTG‑ARCH‑2 and MSTG‑PLATFORM‑2)
+### Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
 
 An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into back-end queries or commands. By injecting meta-characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the back-end database.
 
@@ -91,7 +91,7 @@ Verify that the following best practices have been followed:
 
 We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
-### Cross-Site Scripting Flaws (MSTG‑ARCH‑2 and MSTG‑PLATFORM‑2)
+### Cross-Site Scripting Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
@@ -171,7 +171,7 @@ Sergey Bobrov was able to take advantage of this in the following [HackerOne rep
 
   ```kotlin
   val i = Intent()
-  i.component = ComponentName("com.quora.android", 
+  i.component = ComponentName("com.quora.android",
   "com.quora.android.ActionBarContentActivity")
   i.putExtra("url", "http://test/test")
   i.putExtra("html", "XSS PoC <script>alert(123)</script>")
@@ -204,7 +204,7 @@ XSS issues can be best detected using manual and/or automated input fuzzing, i.e
 
 A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site scripting (OTG-INPVAL-001)") refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be an effective method. For example, the [BURP Scanner](https://portswigger.net/burp/ "Burp Suite") is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
 
-### Memory Corruption Bugs (MSTG‑CODE‑8)
+### Memory Corruption Bugs (MSTG-CODE-8)
 
 Memory corruption bugs are a popular mainstay with hackers. This class of bug results from a programming error that causes the program to access an unintended memory location. Under the right conditions, attackers can capitalize on this behavior to hijack the execution flow of the vulnerable program and execute arbitrary code. This kind of vulnerability occurs in a number of ways:
 
@@ -279,9 +279,9 @@ For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.
 
 #### OWASP MASVS
 
-- MSTG‑ARCH‑2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
-- MSTG‑PLATFORM‑2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-- MSTG‑CODE‑8: "In unmanaged code, memory is allocated, freed and used securely."
+- MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
+- MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
+- MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 
 #### CWE
 

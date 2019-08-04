@@ -151,6 +151,9 @@ Virtually any Android mobile can be rooted. Commercial versions of Android OS (w
 
 To root a mobile device, first unlock its boot loader. The unlocking procedure depends on the device manufacturer. However, for practical reasons, rooting some mobile devices is more popular than rooting others, particularly when it comes to security testing: devices created by Google and manufactured by companies like Samsung, LG, and Motorola are among the most popular, particularly because they are used by many developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself. A curated list of guides for rooting all major brand devices is posted on the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
 
+<br/>
+<br/>
+
 ###### Rooting with Magisk
 
 Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
@@ -170,8 +173,8 @@ For a typical mobile app security build, you'll usually want to test a debug bui
 There are many tools and frameworks used throughout this guide to assess the security of Android applications. In the next sections, you will learn more about some of the commands and interesting use cases. Please check the official documentation for installation instructions of the following tools/APKs:
 
 - APK Extractor: App to extract APKs without root.
-- Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#Frida "Frida section") section below for more information.
-- Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#Drozer "Drozer section") section below for more information.
+- Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#frida "Frida section") section below for more information.
+- Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#drozer "Drozer section") section below for more information.
 
 ##### Xposed
 
@@ -262,7 +265,7 @@ $ pip install angr
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic execution](#symbolic-execution "Symbolic execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic Execution](0x05c-Reverse-Engineering-And-Tampering.md#symbolic-execution "Symbolic Execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
 
 ##### Apktool
 
@@ -317,7 +320,7 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. See [Manual Static Analysis](#manual-static-analysis "Manual Static Analysis") for more information about usage.
+This should copy `apkx` to `/usr/local/bin`. See [Decompiling Java Code](0x05c-Reverse-Engineering-And-Tampering.md#decompiling-java-code "Decompiling Java Code") for more information about usage.
 
 ##### Burp Suite
 
@@ -443,7 +446,7 @@ Or refer to the [installation page](https://www.frida.re/docs/installation/ "Fri
 
 The next step is to set up Frida on your Android device:
 
-- If your device is not rooted, you can also use Frida, please refer to section [Using Non-Rooted Devices](#Using-Non-Rooted-Devices "Using Non-Rooted Devices").
+- If your device is not rooted, you can also use Frida, please refer to section [Dynamic Analysis on Non-Rooted Devices](0x05c-Reverse-Engineering-And-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices").
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
@@ -1731,7 +1734,7 @@ The following procedure, which works on the Android emulator that ships with And
     - Enter "127.0.0.1" in the "Host Name" field and your proxy port in the "Port number" field (e.g., "8080")
     - Tap "Apply"
 
-<img width=600px src="Images/Chapters/0x05b/emulator-proxy.png"/>
+<img width=600px src="Images/Chapters/0x05b/emulator-proxy.png" alt="Emulator proxy"/>
 
 HTTP and HTTPS requests should now be routed over the proxy on the host machine. If not, try toggling airplane mode off and on.
 
@@ -1841,7 +1844,7 @@ To implement this new setting you must follow the steps below:
     $ apktool b
     ```
 
-- You need to repackage the app, as explained in the [repackaging chapter](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging"). For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
+- You need to repackage the app, as explained in the [repackaging chapter](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging"). For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 
