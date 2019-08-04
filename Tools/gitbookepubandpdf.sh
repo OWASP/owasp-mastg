@@ -8,10 +8,10 @@
 # gitbook install ../
 
 #gitbook pdf ../ ../Generated/MSTG-EN.pdf
-sed -i -.bak 's/^(?!(http)$)md\#/html\#/g' ../Document/*
+sed -i -.bak 's/(^((?!http).)+(\.md\#))/html\#/g' ../Document/*
 rm ../Document/*.bak
 gitbook epub ../ ../Generated/MSTG-EN.epub
-sed -i -.bak 's/^(?!(http)$)html\#/md\#/g' ../Document/*
+sed -i -.bak 's/(^((?!http).)+(\.html\#))/md\#/g' ../Document/*
 rm ../Document/*.bak
 #gitbook mobi ../ ../Generated/MSTG-EN.mobi
 
