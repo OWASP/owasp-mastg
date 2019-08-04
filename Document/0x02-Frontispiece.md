@@ -66,6 +66,9 @@ Top contributors have consistently contributed quality content and have at least
 - Cláudio André
 - Slawomir Kosowski
 
+<br/>
+<br/>
+
 ### Contributors
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
@@ -100,6 +103,9 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 [![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
 
+<br/>
+<br/>
+
 ### Older Versions
 
 The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. The original document was hosted on Google Drive. Guide development was moved to GitHub in October 2016.
@@ -109,8 +115,6 @@ The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. T
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
 | Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Ali Yazdani, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner, Javier Dominguez | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
-
-<br/>
 
 #### OWASP MSTG "Beta 1" (Google Doc)
 

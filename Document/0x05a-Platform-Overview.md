@@ -48,6 +48,9 @@ For example, Android Nougat defines the following system users:
     ...
 ```
 
+<br/>
+<br/>
+
 #### Android Device Encryption
 
 Android supports device encryption from 2.3.4 version and it has undergone some big changes since then. Google imposed that all devices running Android 6 or higher had to support storage encryption. Although some low-end devices were exempt because it would significantly impact performance. In the following sections you can find information about device encryption and its algorithms.

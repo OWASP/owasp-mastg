@@ -145,6 +145,9 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
+<br/>
+<br/>
+
 ##### CA Certificates
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
@@ -359,6 +362,9 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
 - How to protect yourself against a SIM swap attack - <https://www.wired.com/story/sim-swap-attack-defend-phone/>
+
+<br/>
+<br/>
 
 #### IETF
 
