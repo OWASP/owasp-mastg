@@ -262,7 +262,7 @@ $ pip install angr
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic Execution](0x05c-reverse-engineering-and-tampering.md#symbolic-execution "Symbolic Execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic Execution](0x05c-Reverse-Engineering-And-Tampering.md#symbolic-execution "Symbolic Execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
 
 ##### Apktool
 
@@ -317,7 +317,7 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. See [Decompiling Java Code](0x05c-reverse-engineering-and-tampering.md#decompiling-java-code "Decompiling Java Code") for more information about usage.
+This should copy `apkx` to `/usr/local/bin`. See [Decompiling Java Code](0x05c-Reverse-Engineering-And-Tampering.md#decompiling-java-code "Decompiling Java Code") for more information about usage.
 
 ##### Burp Suite
 
@@ -443,7 +443,7 @@ Or refer to the [installation page](https://www.frida.re/docs/installation/ "Fri
 
 The next step is to set up Frida on your Android device:
 
-- If your device is not rooted, you can also use Frida, please refer to section [Dynamic Analysis on Non-Rooted Devices](0x05c-reverse-engineering-and-tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices").
+- If your device is not rooted, you can also use Frida, please refer to section [Dynamic Analysis on Non-Rooted Devices](0x05c-Reverse-Engineering-And-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices").
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:

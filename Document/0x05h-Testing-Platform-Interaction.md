@@ -567,7 +567,7 @@ With [Google Play Instant](https://developer.android.com/topic/google-play-insta
 
 The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
 
-Note: Instant apps require an app-bundle. App-bundles are described in the [App Bundles](0x05a-platform-overview.md#app-bundles) section.
+Note: Instant apps require an app-bundle. App-bundles are described in the [App Bundles](0x05a-Platform-Overview.md#app-bundles) section.
 
 #### Static Analysis
 
