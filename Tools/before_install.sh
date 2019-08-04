@@ -7,4 +7,4 @@ fi
 brew install pandoc
 brew cask install calibre
 brew install epubcheck
-brew install gsed
+brew install gnu-sed
