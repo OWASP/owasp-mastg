@@ -22,8 +22,8 @@ Fragmentation is a problem we deal with especially on Android devices. Not every
 
 Mobile devices regularly connect to a variety of networks, including public WiFi networks shared with other (potentially malicious) clients. This creates opportunities for a wide variety of network-based attacks ranging from simple to complicated and old to new. It's crucial to maintain the confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. As a basic requirement, mobile apps must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings.
 
-<br/>
-<br/>
+<div style="page-break-after: always;">
+</div>
 
 #### Authentication and Authorization
 
