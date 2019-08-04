@@ -320,7 +320,7 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. See [Decompiling Java Code](0x05c-Reverse-Engineering-And-Tampering.md#decompiling-java-code "Decompiling Java Code") for more information about usage.
+This should copy `apkx` to `/usr/local/bin`. See [Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code") for more information about usage.
 
 ##### Burp Suite
 
