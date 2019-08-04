@@ -104,6 +104,9 @@ Confirm the existence of a password policy and verify the implemented password c
   - at least one digit (0-9)
   - at least one special character
 
+<br/>
+<br/>
+
 ##### zxcvbn
 
 [zxcvbn](https://github.com/dropbox/zxcvbn "zxcvbn") is a common library that can be used for estimating password strength, inspired by password crackers. It is available in JavaScript but also for many other programming languages on the server side. There are different methods of installation, please check the Github repo for your preferred method. Once installed, zxcvbn can be used to calculate the complexity and the amount of guesses to crack the password.
