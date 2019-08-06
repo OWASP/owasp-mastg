@@ -556,7 +556,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
 Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes".
 
-### Testing for insecure Configuration of Instant Apps (MSTG-ARCH-1, MSTG-ARCH-7)
+### Testing for Insecure Configuration of Instant Apps (MSTG-ARCH-1, MSTG-ARCH-7)
 
 #### Overview
 
@@ -571,9 +571,9 @@ Note: Instant apps require an app-bundle. App-bundles are described in the [App 
 
 #### Static Analysis
 
-Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the app bundle. When you analyze the app bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entrypoints, which entrypoints are set (by means of `<data android:path="</PATH/HERE>" />`).
+Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the app bundle. When you analyze the app bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entry points, which entry points are set (by means of `<data android:path="</PATH/HERE>" />`).
 
-Now follow the entrypoints, like you would do for any Activity and check:
+Now follow the entry points, like you would do for any Activity and check:
 
 - Is there any data retrieved by the app which should require privacy protection of that data? If so, are all required controls in place?
 - Are all communications secured?
