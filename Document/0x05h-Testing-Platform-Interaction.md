@@ -58,6 +58,14 @@ Apps targeting Android 9, i.e. [only API level 28 or higher](https://developer.a
 - **Restricted foreground services**: apps using foreground services must request the `FOREGROUND_SERVICE` permission in their Android manifest (it's a normal permission and therefore automatically granted at installation time).
 - **Build serial number deprecation**: the `READ_PHONE_STATE` permission is required now in order to read the device's hardware serial number via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial() "getSerial") ([`Build.SERIAL`](https://developer.android.com/reference/android/os/Build.html#SERIAL "Build.SERIAL") is now set to "UNKNOWN").
 
+##### Android 10 Changes (Beta)
+
+Android 10 Beta introduces several [user privacy enhancements](https://developer.android.com/preview/privacy/permissions "Android Q privacy: Changes to permissions"). The changes regarding permissions affect to all apps running on Android 10, including those targeting lower API levels.
+
+- **Restricted access to screen contents**: `READ_FRAME_BUFFER`, `CAPTURE_VIDEO_OUTPUT`, and `CAPTURE_SECURE_VIDEO_OUTPUT` permissions are now signature-access only, which prevents silent access to the device's screen contents.
+- **User-facing permission check on legacy apps**: when running an app targeting Android 5.1 (API level 22) or lower for the first time, users will be prompted with a permissions screen where they can revoke access to specific _legacy permissions_ (which previously would be automatically granted at installation time).
+- **Physical activity recognition**: there is a new `ACTIVITY_RECOGNITION` runtime permission for apps that need to detect the user's step count or classify the user's physical activity
+- **Permission groups removed from UI**: despite its misleading name, this change means that apps are not able to [programmatically look up](https://stackoverflow.com/a/35000855 "Link between Android Permissions and Permission Groups") how permissions are grouped (e.g. by using PackageManager's `getAllPermissionGroups` and `queryPermissionsByGroup` methods). Developers may look up manually in the corresponding [platform manifest](https://github.com/aosp-mirror/platform_frameworks_base/blob/android-q-preview-5/core/res/AndroidManifest.xml "Android Q Preview 5 - Platform Manifest") and request them.
 
 #### Activity Permission Enforcement
 
