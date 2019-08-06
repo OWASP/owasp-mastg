@@ -19,6 +19,10 @@ Encryption algorithms converts plaintext data into cipher text that conceals the
 
 **Key Derivation Functions** (KDFs) derive secret keys from a secret value (such as a password) and are used to turn keys into other formats or to increase their length. KDFs are similar to hashing functions but have other uses as well (for example, they are used as components of multi-party key-agreement protocols). While both hashing functions and KDFs must be difficult to reverse, KDFs have the added requirement that the keys they produce must have a level of randomness.
 
+<br/>
+<br/>
+<br/>
+
 ### Identifying Insecure and/or Deprecated Cryptographic Algorithms (MSTG-CRYPTO-4)
 
 When assessing a mobile app, you should make sure that it does not use cryptographic algorithms and protocols that have significant known weaknesses or are otherwise insufficient for modern security requirements. Algorithms that were considered secure in the past may become insecure over time; therefore, it's important to periodically check current best practices and adjust configurations accordingly.
