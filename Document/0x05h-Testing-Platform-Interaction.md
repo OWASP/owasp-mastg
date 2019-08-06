@@ -83,7 +83,7 @@ The first code block defines the new permission, which is self-explanatory. The 
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVTY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below that is based on the [permission overview](https://developer.android.com/guide/topics/permissions/overview "permission overview") and [manifest-intro](https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct  "manifest-intro").
+Once the permission `START_MAIN_ACTIVITY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below that is based on the [permission overview](https://developer.android.com/guide/topics/permissions/overview "permission overview") and [manifest-intro](https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct "manifest-intro").
 
 ```xml
 <manifest>
@@ -120,37 +120,37 @@ uses-permission: android.permission.INTERNAL_SYSTEM_WINDOW
 Please reference this [permissions overview](https://developer.android.com/guide/topics/permissions/overview#permission-groups "Table 1. Dangerous permissions and permission groups.") for descriptions of the listed permissions that are considered dangerous.
 
 ```text
-READ_CALENDAR,
-WRITE_CALENDAR,
-READ_CALL_LOG,
-WRITE_CALL_LOG,
-PROCESS_OUTGOING_CALLS,
-CAMERA,
-READ_CONTACTS,
-WRITE_CONTACTS,
-GET_ACCOUNTS,
-ACCESS_FINE_LOCATION,
-ACCESS_COARSE_LOCATION,
-RECORD_AUDIO,
-READ_PHONE_STATE,
-READ_PHONE_NUMBERS,
-CALL_PHONE,
-ANSWER_PHONE_CALLS,
-ADD_VOICEMAIL,
-USE_SIP,
-BODY_SENSORS,
-SEND_SMS,
-RECEIVE_SMS,
-READ_SMS,
-RECEIVE_WAP_PUSH,
-RECEIVE_MMS,
-READ_EXTERNAL_STORAGE,
-WRITE_EXTERNAL_STORAGE.
+READ_CALENDAR
+WRITE_CALENDAR
+READ_CALL_LOG
+WRITE_CALL_LOG
+PROCESS_OUTGOING_CALLS
+CAMERA
+READ_CONTACTS
+WRITE_CONTACTS
+GET_ACCOUNTS
+ACCESS_FINE_LOCATION
+ACCESS_COARSE_LOCATION
+RECORD_AUDIO
+READ_PHONE_STATE
+READ_PHONE_NUMBERS
+CALL_PHONE
+ANSWER_PHONE_CALLS
+ADD_VOICEMAIL
+USE_SIP
+BODY_SENSORS
+SEND_SMS
+RECEIVE_SMS
+READ_SMS
+RECEIVE_WAP_PUSH
+RECEIVE_MMS
+READ_EXTERNAL_STORAGE
+WRITE_EXTERNAL_STORAGE
 ```
 
 ##### Custom Permissions
 
-Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the ContextCompat.checkSelfPermission() method is called to check if an activity has a specified permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file.
+Apart from enforcing custom permissions via the application manifest file, you can also check permissions programmatically. This is not recommended, however, because it is more error-prone and can be bypassed more easily with, e.g., runtime instrumentation. It is recommended that the `ContextCompat.checkSelfPermission` method is called to check if an activity has a specified permission. Whenever you see code like the following snippet, make sure that the same permissions are enforced in the manifest file.
 
 ```java
 private static final String TAG = "LOG";
@@ -171,7 +171,7 @@ if (ContextCompat.checkSelfPermission(secureActivity.this, Manifest.READ_INCOMIN
 
 #### Requesting Permissions
 
-If your application has permissions that need to be requested at runtime, the application must call a `requestPermissions` method in order to obtain them. The app passes the permissions needed and an integer request code you have specified to the user asynchronously, returning once the user chooses to accept or deny the request in the same thread. After the response is returned the same request code is passed to the app's callback method.
+If your application has permissions that need to be requested at runtime, the application must call the `requestPermissions` method in order to obtain them. The app passes the permissions needed and an integer request code you have specified to the user asynchronously, returning once the user chooses to accept or deny the request in the same thread. After the response is returned the same request code is passed to the app's callback method.
 
 ```java
 private static final String TAG = "LOG";
@@ -204,9 +204,9 @@ if (ContextCompat.checkSelfPermission(secureActivity.this,
 
 Please note that if you need to provide any information or explanation to the user it needs to be done before the call to `requestPermissions`, since the system dialog box can not be altered once called.
 
-#### Handling the permissions response
+#### Handling Responses to Permission Requests
 
-Now your app has to override the system method `onRequestPermissionsResult` to see if the permission was granted. This is where the same request code is passed that was created in `requestPermissions`.
+Now your app has to override the system method `onRequestPermissionsResult` to see if the permission was granted. This method receives the `requestCode` integer as input parameter (which is the same request code that was created in `requestPermissions`).
 
 The following callback method may be used for `WRITE_EXTERNAL_STORAGE`.
 
