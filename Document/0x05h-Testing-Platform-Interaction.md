@@ -36,9 +36,28 @@ Apps targeting Android 8, i.e. [only API level 26 or higher](https://developer.a
 
 You can see the list of permission groups in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html#permission-groups "Permission groups"). To make this a bit more confusing, [Google also warns](https://developer.android.com/guide/topics/permissions/overview.html#perm-groups "Permission groups") that particular permissions might be moved from one group to another in future versions of the Android SDK and therefore, the logic of the app shouldn't rely on the structure of these permission groups. The best practice is to explicitly request every permission whenever it's needed.
 
+##### Android 9 Changes
 
-- READ_CONTACTS : When an app request this permission, queries for usage data will return approximations rather than exact values.
-- GET_ACCOUNTs : Apps no longer get access to user accounts with this permission unless the authenticator owns the accounts or the user grants that access.
+The [following changes](https://developer.android.com/about/versions/pie/android-9.0-changes-all "Behavior changes: all apps") affect all apps running on Android 9, even to those apps targeting API levels lower than 28.
+
+- **Restricted access to call logs**: `READ_CALL_LOG`, `WRITE_CALL_LOG`, and `PROCESS_OUTGOING_CALLS` permissions are moved from `PHONE` to the new `CALL_LOG` permission group.
+- **Restricted access to phone numbers**: apps wanting to read the phone number field provided in [`ACTION_PHONE_STATE_CHANGED`](https://developer.android.com/reference/android/telephony/TelephonyManager#ACTION_PHONE_STATE_CHANGED "ACTION_PHONE_STATE_CHANGED") broadcasts and via the [`PhoneStateListener`](https://developer.android.com/reference/android/telephony/PhoneStateListener "PhoneStateListener") class require the `READ_CALL_LOG` permission when running on Android 9. If not, the phone number field will be empty.
+- **Restricted access to Wi-Fi location and connection information**:
+  - Calling [`WifiManager.startScan`](https://developer.android.com/reference/android/net/wifi/WifiManager#startScan() "WifiManager.startScan") requires *all* of the following:
+    - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
+    - The `CHANGE_WIFI_STATE` permission.
+    - Location services are enabled (under Settings -> Location).
+
+  - Calling [`WifiManager.getScanResults`](https://developer.android.com/reference/android/net/wifi/WifiManager.html#getScanResults() "WifiManager.getScanResults") and/or [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo() "WifiManager.getConnectionInfo") (used to retrieve SSID and BSSID values) require *all* of the following:
+    - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
+    - The `ACCESS_WIFI_STATE` permission.
+    - Location services are enabled (under Settings -> Location).
+
+Apps targeting Android 9, i.e. [only API level 28 or higher](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") are affected by the following:
+
+- **Restricted foreground services**: apps using foreground services must request the `FOREGROUND_SERVICE` permission in their Android manifest (it's a normal permission and therefore automatically granted at installation time).
+- **Build serial number deprecation**: the `READ_PHONE_STATE` permission is required now in order to read the device's hardware serial number via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial() "getSerial") ([`Build.SERIAL`](https://developer.android.com/reference/android/os/Build.html#SERIAL "Build.SERIAL") is now set to "UNKNOWN").
+
 
 #### Activity Permission Enforcement
 
