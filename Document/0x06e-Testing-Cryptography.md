@@ -12,23 +12,23 @@ Apple provides libraries that include implementations of most common cryptograph
 
 The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 
-- The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations,
-- The `CommonDigest.h` gives the parameters for the hashing Algorithms
+- The `Commoncryptor.h` gives the parameters for the symmetric cryptographic operations.
+- The `CommonDigest.h` gives the parameters for the hashing Algorithms.
 - The `CommonHMAC.h` gives the parameters for the supported HMAC operations.
-- The `CommonKeyDerivation.h` gives the parameters for supported KDF functions
+- The `CommonKeyDerivation.h` gives the parameters for supported KDF functions.
 - The `CommonSymmetricKeywrap.h` gives the function used for wrapping a symmetric key with a Key Encryption Key.
 
-Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its sourcecode](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
+Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
 Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
 
 As noted before: some wrapper-libraries exist for both in order to provide convenience. Typical libraries that are used are, for instance:
 
-- [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto"),
-- [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall"),
-- [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA"),
-- [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL"),
-- [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor"),
+- [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto")
+- [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall")
+- [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA")
+- [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL")
+- [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor")
 - [Arcane](https://github.com/onmyway133/Arcane "Arcane")
 
 ##### Third party libraries
@@ -37,7 +37,7 @@ There are various third party libraries available, such as:
 
 - **CJOSE**: With the rise of JWE, and the lack of public support for AES GCM, other libraries have found their way, such as [CJOSE](https://github.com/cisco/cjose "cjose"). CJOSE still requires a higher level wrapping as they only provide a C/C++ implementation.
 - **CryptoSwift**: A library in Swift, which can be found at [GitHub](https://github.com/krzyzanowskim/CryptoSwift "CryptoSwift"). The library supports various hash-functions, MAC-functions, CRC-functions, symmetric ciphers, and password-based key derivation functions. It is not a wrapper, but a fully self-implemented version of each of the ciphers. It is important to verify the effective implementation of a function.
-- **OpenSSL**: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in . Most of its cryptographic functions can be used to do the various cryptographic actions necessary, such as creating (H)MACs, signatures, symmetric- & asymmetric ciphers, hashing, etc.. There are various wrappers, such as [OpenSSL](https://github.com/ZewoGraveyard/OpenSSL "OpenSSL") and [MIHCrypto](https://github.com/hohl/MIHCrypto "MIHCrypto").
+- **OpenSSL**: [OpenSSL](https://www.openssl.org/ "OpenSSL") is the toolkit library used for TLS, written in C. Most of its cryptographic functions can be used to do the various cryptographic actions necessary, such as creating (H)MACs, signatures, symmetric- & asymmetric ciphers, hashing, etc.. There are various wrappers, such as [OpenSSL](https://github.com/ZewoGraveyard/OpenSSL "OpenSSL") and [MIHCrypto](https://github.com/hohl/MIHCrypto "MIHCrypto").
 - **LibSodium**: Sodium is a modern, easy-to-use software library for encryption, decryption, signatures, password hashing and more. It is a portable, cross-compilable, installable, packageable fork of NaCl, with a compatible API, and an extended API to improve usability even further. See [LibSodiums documentation](https://download.libsodium.org/doc/installation "LibSodium docs") for more details. There are some wrapper libraries, such as [Swift-sodium](https://github.com/jedisct1/swift-sodium "Swift-sodium"), [NAChloride](https://github.com/gabriel/NAChloride "NAChloride"), and [libsodium-ios](https://github.com/mochtu/libsodium-ios "libsodium ios").
 - **Tink**: A new cryptography library by Google. Google explains its reasoning behind the library [on its security blog](https://security.googleblog.com/2018/08/introducing-tink-cryptographic-software.html "Introducing Tink"). The sources can be found at [Tinks GitHub repository](https://github.com/google/tink "Tink at GitHub").
 - **Themis**: a Crypto library for storage and messaging for Swift, Obj-C, Android/Java, С++, JS, Python, Ruby, PHP, Go. [Themis](https://github.com/cossacklabs/themis "Themis") uses LibreSSL/OpenSSL engine libcrypto as a dependency. It supports Objective-C and Swift for key generation, secure messaging (e.g. payload encryption and signing), secure storage and setting up a secure session. See [their wiki](https://github.com/cossacklabs/themis/wiki/Objective-C-Howto "Themis wiki") for more details.

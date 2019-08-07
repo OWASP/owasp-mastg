@@ -439,7 +439,7 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 #### Dynamic Analysis
 
-When performing dynamic analysis using an interception proxy such as Burp, you may want to patch the Network Security Configuration file, as described in the "Setting up a Testing Environment for Android Apps" chapter, section "Bypassing the Network Security Configuration".
+You can test the Network Security Configuration settings of a target app by using a dynamic approach, typically using an interception proxy such as Burp. However, it might be possible that you're not able to see the traffic at first, e.g. when testing an app targeting Android 7.0 (API level 24) or higher and effectively applying the Network Security Configuration. In that situation, you should patch the Network Security Configuration file. You'll find the necessary steps in section "[Bypassing the Network Security Configuration](0x05b-Basic-Security_Testing.md#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" in the "Android Basic Security Testing" chapter.
 
 There might still be scenarios where this is not needed and you can still do MITM attacks without patching:
 
