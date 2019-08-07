@@ -13,13 +13,12 @@ Android permissions are classified into four different categories on the basis o
 - **Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at installation time. Example: `android.permission.ACCESS_MOCK_LOCATION`.
 - **SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`.
 
-A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
+A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html "Permissions overview").
 
 ##### Android 8.0 (API level 26) Changes
 
-The [following changes](https://developer.android.com/about/versions/oreo/android-8.0-changes#atap "Changes for all apps") affect all apps running on Android 8.0 (API level 26), even to those apps targeting lower API levels.
+The [following changes](https://developer.android.com/about/versions/oreo/android-8.0-changes#atap "Android 8.0 (API level 26) - Changes for all apps") affect all apps running on Android 8.0 (API level 26), even to those apps targeting lower API levels.
 
-- **Alert windows above other apps**: a new window type called `TYPE_APPLICATION_OVERLAY` must be used by apps having the [`SYSTEM_ALERT_WINDOW`](https://developer.android.com/reference/android/Manifest.permission.html#SYSTEM_ALERT_WINDOW "SYSTEM_ALERT_WINDOW") permission. This must replace the following window types used to display alert windows above other apps and system windows: `TYPE_PHONE`, `TYPE_PRIORITY_PHONE`, `TYPE_SYSTEM_ALERT`, `TYPE_SYSTEM_OVERLAY`, `TYPE_SYSTEM_ERROR`.
 - **Contacts provider usage stats change**: when an app requests the [`READ_CONTACTS`](https://developer.android.com/reference/android/Manifest.permission.html#READ_CONTACTS "READ_CONTACTS") permission, queries for contact's usage data will return approximations rather than exact values (the auto-complete API is not affected by this change).
 
 Apps targeting Android 8.0 (API level 26) or higher [are affected](https://developer.android.com/about/versions/oreo/android-8.0-changes#o-apps "Apps targeting Android 8.0") by the following:
@@ -28,8 +27,6 @@ Apps targeting Android 8.0 (API level 26) or higher [are affected](https://devel
 - **New telephony permissions**: the following permissions (classified as dangerous) are now part of the `PHONE` permissions group:
   - The `ANSWER_PHONE_CALLS` permission allows to answer incoming phone calls programmatically (via `acceptRingingCall`).
   - The `READ_PHONE_NUMBERS` permission grants read access to the phone numbers stored in the device.
-- **Direct document access**: the new [`getDocumentUri`](https://developer.android.com/reference/android/provider/MediaStore.html#getDocumentUri(android.content.Context,%20android.net.Uri) "getDocumentUri") method can be used to locate media files. However, it doesn't grant apps permission to access those files.
-- **Wi-Fi scanning restrictions**: Calling `WifiManager.getScanResults` requires at least one of the following permissions: `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`, `CHANGE_WIFI_STATE`.
 - **Restrictions when granting dangerous permissions**: Dangerous permissions are classified into permission groups (e.g. the `STORAGE` group contains `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE`). Before Android 8.0 (API level 26), it was sufficient to request one permission of the group in order to get all permissions of that group also granted at the same time. This has changed [starting at Android 8.0 (API level 26)](https://developer.android.com/about/versions/oreo/android-8.0-changes#rmp "Android 8 Permissions Changes"): whenever an app requests a permission at runtime, the system will grant exclusively that specific permission. However, note that **all subsequent requests for permissions in that permission group will be automatically granted** without showing the permissions dialog to the user. See this example from the Android developer documentation:
 
     > Suppose an app lists both READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE in its manifest. The app requests READ_EXTERNAL_STORAGE and the user grants it. If the app targets API level 25 or lower, the system also grants WRITE_EXTERNAL_STORAGE at the same time, because it belongs to the same STORAGE permission group and is also registered in the manifest. If the app targets Android 8.0 (API level 26), the system grants only READ_EXTERNAL_STORAGE at that time; however, if the app later requests WRITE_EXTERNAL_STORAGE, the system immediately grants that privilege without prompting the user.
@@ -40,23 +37,16 @@ Apps targeting Android 8.0 (API level 26) or higher [are affected](https://devel
 
 The [following changes](https://developer.android.com/about/versions/pie/android-9.0-changes-all "Behavior changes: all apps") affect all apps running on Android 9, even to those apps targeting API levels lower than 28.
 
-- **Restricted access to call logs**: `READ_CALL_LOG`, `WRITE_CALL_LOG`, and `PROCESS_OUTGOING_CALLS` permissions are moved from `PHONE` to the new `CALL_LOG` permission group.
-- **Restricted access to phone numbers**: apps wanting to read the phone number field provided in [`ACTION_PHONE_STATE_CHANGED`](https://developer.android.com/reference/android/telephony/TelephonyManager#ACTION_PHONE_STATE_CHANGED "ACTION_PHONE_STATE_CHANGED") broadcasts and via the [`PhoneStateListener`](https://developer.android.com/reference/android/telephony/PhoneStateListener "PhoneStateListener") class require the `READ_CALL_LOG` permission when running on Android 9 (API Level 28). If not, the phone number field will be empty.
-- **Restricted access to Wi-Fi location and connection information**:
-  - Calling [`WifiManager.startScan`](https://developer.android.com/reference/android/net/wifi/WifiManager#startScan() "WifiManager.startScan") requires *all* of the following:
-    - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
-    - The `CHANGE_WIFI_STATE` permission.
-    - Location services are enabled (under Settings -> Location).
-
-  - Calling [`WifiManager.getScanResults`](https://developer.android.com/reference/android/net/wifi/WifiManager.html#getScanResults() "WifiManager.getScanResults") and/or [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo() "WifiManager.getConnectionInfo") (used to retrieve SSID and BSSID values) require *all* of the following:
-    - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
-    - The `ACCESS_WIFI_STATE` permission.
-    - Location services are enabled (under Settings -> Location).
+- **Restricted access to call logs**: `READ_CALL_LOG`, `WRITE_CALL_LOG`, and `PROCESS_OUTGOING_CALLS` (dangerous) permissions are moved from `PHONE` to the new `CALL_LOG` permission group. This means that being able to make phone calls (e.g. by having the permissions of the `PHONE` group granted) is not sufficient to get access to the call logs.
+- **Restricted access to phone numbers**: apps wanting to read the phone number require the `READ_CALL_LOG` permission when running on Android 9 (API Level 28).
+- **Restricted access to Wi-Fi location and connection information**: SSID and BSSID values cannot be retrieved (e.g. via [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo() "WifiManager.getConnectionInfo") unless *all* of the following is true:
+  - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
+  - The `ACCESS_WIFI_STATE` permission.
+  - Location services are enabled (under Settings -> Location).
 
 Apps targeting Android 9 (API Level 28) or higher [are affected](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") by the following:
 
-- **Restricted foreground services**: apps using foreground services must request the `FOREGROUND_SERVICE` permission in their Android manifest (it's a normal permission and therefore automatically granted at installation time).
-- **Build serial number deprecation**: the `READ_PHONE_STATE` permission is required now in order to read the device's hardware serial number via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial() "getSerial") ([`Build.SERIAL`](https://developer.android.com/reference/android/os/Build.html#SERIAL "Build.SERIAL") is now set to "UNKNOWN").
+- **Build serial number deprecation**: device's hardware serial number cannot be read (e.g. via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial() "getSerial")) unless the `READ_PHONE_STATE` (dangerous) permission is granted.
 
 ##### Android 10 Changes (Beta)
 
@@ -64,8 +54,6 @@ Android 10 Beta introduces several [user privacy enhancements](https://developer
 
 - **Restricted access to screen contents**: `READ_FRAME_BUFFER`, `CAPTURE_VIDEO_OUTPUT`, and `CAPTURE_SECURE_VIDEO_OUTPUT` permissions are now signature-access only, which prevents silent access to the device's screen contents.
 - **User-facing permission check on legacy apps**: when running an app targeting Android 5.1 (API level 22) or lower for the first time, users will be prompted with a permissions screen where they can revoke access to specific _legacy permissions_ (which previously would be automatically granted at installation time).
-- **Physical activity recognition**: there is a new `ACTIVITY_RECOGNITION` runtime permission for apps that need to detect the user's step count or classify the user's physical activity
-- **Permission groups removed from UI**: despite its misleading name, this change means that apps are not able to [programmatically look up](https://stackoverflow.com/a/35000855 "Link between Android Permissions and Permission Groups") how permissions are grouped (e.g. by using PackageManager's `getAllPermissionGroups` and `queryPermissionsByGroup` methods). Developers may look up manually in the corresponding [platform manifest](https://github.com/aosp-mirror/platform_frameworks_base/blob/android-q-preview-5/core/res/AndroidManifest.xml "Android Q Preview 5 - Platform Manifest") and request them.
 
 #### Activity Permission Enforcement
 
