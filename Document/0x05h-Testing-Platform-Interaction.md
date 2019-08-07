@@ -38,13 +38,13 @@ Apps targeting Android 8.0 (API level 26) or higher [are affected](https://devel
 The [following changes](https://developer.android.com/about/versions/pie/android-9.0-changes-all "Behavior changes: all apps") affect all apps running on Android 9, even to those apps targeting API levels lower than 28.
 
 - **Restricted access to call logs**: `READ_CALL_LOG`, `WRITE_CALL_LOG`, and `PROCESS_OUTGOING_CALLS` (dangerous) permissions are moved from `PHONE` to the new `CALL_LOG` permission group. This means that being able to make phone calls (e.g. by having the permissions of the `PHONE` group granted) is not sufficient to get access to the call logs.
-- **Restricted access to phone numbers**: apps wanting to read the phone number require the `READ_CALL_LOG` permission when running on Android 9 (API Level 28).
+- **Restricted access to phone numbers**: apps wanting to read the phone number require the `READ_CALL_LOG` permission when running on Android 9 (API level 28).
 - **Restricted access to Wi-Fi location and connection information**: SSID and BSSID values cannot be retrieved (e.g. via [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo() "WifiManager.getConnectionInfo") unless *all* of the following is true:
   - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
   - The `ACCESS_WIFI_STATE` permission.
   - Location services are enabled (under Settings -> Location).
 
-Apps targeting Android 9 (API Level 28) or higher [are affected](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") by the following:
+Apps targeting Android 9 (API level 28) or higher [are affected](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") by the following:
 
 - **Build serial number deprecation**: device's hardware serial number cannot be read (e.g. via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial() "getSerial")) unless the `READ_PHONE_STATE` (dangerous) permission is granted.
 
@@ -426,9 +426,9 @@ Because the `PreferenceActivity` uses reflection to load the fragment, an arbitr
 
 With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a `java.lang.CastException`, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor run.
 
-To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
+To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 (API level 19). It allows developers to override this method and define the fragments that may be used in this context.
 
-The default implementation returns `true` on versions older than Android 4.4 (API Level 19); it will throw an exception on later versions.
+The default implementation returns `true` on versions older than Android 4.4 (API level 19); it will throw an exception on later versions.
 
 #### Static Analysis
 
@@ -625,7 +625,7 @@ $ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
 
 Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
 
-After the preparation, you can test instant apps locally on a device running Android 8.1 (API Level 27) or later. The app can be tested in different ways:
+After the preparation, you can test instant apps locally on a device running Android 8.1 (API level 27) or later. The app can be tested in different ways:
 
 - Test the app locally:
   Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
@@ -1071,11 +1071,11 @@ Android offers a way for JavaScript executed in a WebView to call and use native
 
 The `addJavascriptInterface` method allows you to expose Java Objects to WebViews. When you use this method in an Android app, JavaScript in a WebView can invoke the Android app's native methods.
 
-Before Android 4.2 (API Level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
+Before Android 4.2 (API level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
 
-This vulnerability was fixed by API Level 17, and the access to Java Object methods granted to JavaScript was changed. When you use `addJavascriptInterface`, methods of Java Objects are only accessible to JavaScript when the annotation `@JavascriptInterface` is added. Before API Level 17, all Java Object methods were accessible by default.
+This vulnerability was fixed by API level 17, and the access to Java Object methods granted to JavaScript was changed. When you use `addJavascriptInterface`, methods of Java Objects are only accessible to JavaScript when the annotation `@JavascriptInterface` is added. Before API level 17, all Java Object methods were accessible by default.
 
-An app that targets an Android version older than API Level 17 is still vulnerable to the flaw in `addJavascriptInterface` and should be used only with extreme care. Several best practices should be used when this method is necessary.
+An app that targets an Android version older than API level 17 is still vulnerable to the flaw in `addJavascriptInterface` and should be used only with extreme care. Several best practices should be used when this method is necessary.
 
 #### Static Analysis
 

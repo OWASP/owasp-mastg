@@ -6,20 +6,20 @@ Using TLS to transport sensitive information over the network is essential for s
 
 Two key issues should be addressed:
 
-- Verify that a certificate comes from a trusted source (CA).
+- Verify that a certificate comes from a trusted source, i.e. a trusted CA (Certificate Authority).
 - Determine whether the endpoint server presents the right certificate.
 
 Make sure that the hostname and the certificate itself are verified correctly. Examples and common pitfalls are available in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for examples of `TrustManager` and `HostnameVerifier` usage. In the sections below, you can find examples of the kind of insecure usage that you should look for.
 
-> Note that from Android 8.0 (API level 26) onward, there is no support for SSLv3 and HttpsURLConnection will no longer perform a fallback to an insecure TLS/SSL protocol.
+> Note that from Android 8.0 (API level 26) onward, there is no support for SSLv3 and `HttpsURLConnection` will no longer perform a fallback to an insecure TLS/SSL protocol.
 
 #### Static Analysis
 
 ##### Verifying the Server Certificate
 
-"TrustManager" is a means of verifying conditions necessary for establishing a trusted connection in Android. The following conditions should be checked at this point:
+`TrustManager` is a means of verifying conditions necessary for establishing a trusted connection in Android. The following conditions should be checked at this point:
 
-- Has the certificate been signed by a "trusted" CA?
+- Has the certificate been signed by a trusted CA?
 - Has the certificate expired?
 - Is the certificate self-signed?
 
@@ -361,13 +361,13 @@ Hook each method with Frida and print the arguments. One of them will print out 
 
 #### Overview
 
-Network Security Configuration was introduced on Android 7.0 (API level 24) and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
+Network Security Configuration was introduced on Android 7.0 (API level 24) and lets apps customize their network security settings such as custom trust anchors and certificate pinning.
 
 ##### Trust Anchors
 
-When apps target API Levels 24+ and are running on an Android device with versions 7+, they use a default Network Security Configuration that doest not trust user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+When running on Android 7.0 (API level 24) or higher, apps targeting those API levels will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CA's.
+This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
 
 #### Static Analysis
 
@@ -375,7 +375,7 @@ Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After
 
 The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
 
-If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CA's for those particular domains or for all domains. Example:
+If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CAs for those particular domains or for all domains. Example:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -439,12 +439,12 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 #### Dynamic Analysis
 
-For dynamic analysis by using an interception proxy as Burp you can patch the Network Security Configuration file, as described in the "Setting up a Testing Environment for Android Apps" chapter, section "Bypassing the Network Security Configuration".
+When performing dynamic analysis using an interception proxy such as Burp, you may want to patch the Network Security Configuration file, as described in the "Setting up a Testing Environment for Android Apps" chapter, section "Bypassing the Network Security Configuration".
 
-There might still be scenarios where this is not needed and you can still do MiTM attacks without patching:
+There might still be scenarios where this is not needed and you can still do MITM attacks without patching:
 
-- If the app is running on a Android device with Android version 7.0 onwards, but the app targets API levels below 24, it will not use the network security configuration, therefore the app will still trusting user supplied CA's.
-- If the app is running on a Android device with Android version 7.0 onwards and there is no custom Network Security Configuration implemented in the app.
+- When the app is running on an Android device with Android 7.0 (API level 24) onwards, but the app targets API levels below 24, it will not use the Network Security Configuration file. Instead, the app will still trust any user supplied CAs.
+- When the app is running on an Android device with Android 7.0 (API level 24) onwards and there is no custom Network Security Configuration implemented in the app.
 
 ### Testing the Security Provider (MSTG-NETWORK-6)
 

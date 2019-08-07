@@ -815,7 +815,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-With API Level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API Level 26 and above `getRunningServices` will even only return the caller's own services.
+With API level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API level 26 and above `getRunningServices` will even only return the caller's own services.
 
 A working solution to detect the frida-server process is to us the command `ps` instead.
 
@@ -855,7 +855,7 @@ public boolean checkRunningProcesses() {
 
 ```
 
-Starting with Android 7.0 (API Level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox "Application Sandbox") . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
+Starting with Android 7.0 (API level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox "Application Sandbox") . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
 
 ![Executing ps on Android 5.0 (API level 21)](Images/Chapters/0x05j/Android_Lollipop_ps.png)
 
@@ -1013,7 +1013,7 @@ my_openat:
 
 This implementation is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added.
 
-Another approach would be to check the signature of the APK when the app is starting. In order to include the frida-gadget within the APK it would need to be repackaged and resigned. A check for the signature1 could be implemented by using [GET_SIGNATURES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNATURES "GET_SIGNATURES") (deprecated in API Level 28) or [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") which was introduced with API level 28.
+Another approach would be to check the signature of the APK when the app is starting. In order to include the frida-gadget within the APK it would need to be repackaged and resigned. A check for the signature1 could be implemented by using [GET_SIGNATURES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNATURES "GET_SIGNATURES") (deprecated in API level 28) or [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") which was introduced with API level 28.
 
 The following example is using GET_SIGNATURES;
 

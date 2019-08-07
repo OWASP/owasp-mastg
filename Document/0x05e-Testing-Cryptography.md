@@ -58,7 +58,7 @@ Apps that target modern API levels, went through the following changes:
   - You get a warning if you still specify a provider using the `getInstance` method and you target any API below P. If you target P or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
 
-Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API Level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
+Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
 Here's an example of using AES/CBC/PKCS7Padding on API 23+:
 
