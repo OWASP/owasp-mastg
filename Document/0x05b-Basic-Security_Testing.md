@@ -21,7 +21,7 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 - Android 8.0 (API level 26)
 - Android 7.1 (API level 25)
 
-An overview of all Android codenames, their version number and API Levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
+An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
 <img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager">
 
@@ -64,7 +64,7 @@ To set up a standalone toolchain, download the [latest stable version of the NDK
 $ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
 ```
 
-This creates a standalone toolchain for Android 7.0 in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
+This creates a standalone toolchain for Android 7.0 (API level 24) in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
 
 ```shell
 $  export TOOLCHAIN=/tmp/android-7-toolchain
@@ -85,7 +85,7 @@ For dynamic analysis, you'll need an Android device to run the target app on. In
 | Ease of emulator detection | It's not an emulator, so emulator checks are not applicable. | Many artefacts will exist, making it easy to detect that the app is running in an emulator. |
 | Ease of root detection | Easier to hide root,  as many root detection algorithms check for emulator properties. With Magisk Systemless root it's nearly impossible to detect. | Emulators will almost always trigger root detection algorithms due to the fact that they are built for testing with many artefacts that can be found. |
 | Hardware interaction | Easy interaction through Bluetooth, NFC, 4G, WiFi, biometrics, camera, GPS, gyroscope, ... | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates) |
-| API Level support | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched. |
+| API level support | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched. |
 | Native library support | Native libraries are usually built for ARM devices, so they will work on a physical device. | Some emulators run on x86 CPUs, so they may not be able to run packaged native libraries. |
 
 ##### Testing on a Real Device
@@ -98,7 +98,7 @@ Alternatively, Google's [Android One](https://www.android.com/one/ "Android One"
 
 Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
-When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2, the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information". Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2 (API level 16), the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information". Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
 
 ##### Testing on an Emulator
 
@@ -265,7 +265,7 @@ $ pip install angr
 
 Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the [Symbolic Execution](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution") section of the Reverse Engineering and Tampering as a great example on how this can work.
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the "[Symbolic Execution](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution")" section of the "Reverse Engineering and Tampering" chapter as a great example on how this can work.
 
 ##### Apktool
 
@@ -320,7 +320,7 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. See [Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code") for more information about usage.
+This should copy `apkx` to `/usr/local/bin`. See section "[Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code")" of the "Reverse Engineering and Tampering" chapter for more information about usage.
 
 ##### Burp Suite
 
@@ -446,7 +446,7 @@ Or refer to the [installation page](https://www.frida.re/docs/installation/ "Fri
 
 The next step is to set up Frida on your Android device:
 
-- If your device is not rooted, you can also use Frida, please refer to section [Dynamic Analysis on Non-Rooted Devices](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices").
+- If your device is not rooted, you can also use Frida, please refer to section "[Dynamic Analysis on Non-Rooted Devices](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices")" of the "Reverse Engineering and Tampering" chapter.
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
@@ -1544,7 +1544,7 @@ Readable: True  Writable: True
 Each folder has its own purpose:
 
 - **cache**: This location is used for data caching. For example, the WebView cache is found in this directory.
-- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Android 5 (API level 21) or later, the system will delete any files stored in this location when the app or the entire platform is upgraded.
+- **code_cache**: This is the location of the file system's application-specific cache directory designed for storing cached code. On devices running Android 5.0 (API level 21) or later, the system will delete any files stored in this location when the app or the entire platform is upgraded.
 - **lib**: This folder stores native libraries written in C/C++. These libraries can have one of several file extensions, including .so and .dll (x86 support). This folder contains subdirectories for the platforms the app has native libraries for, including
   - armeabi: compiled code for all ARM-based processors
   - armeabi-v7a: compiled code for all ARM-based processors, version 7 and above only
@@ -1761,7 +1761,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
-For Android 7 and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
+For Android 7.0 (API level 24) and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
 
 ##### Interception Proxy for a Physical Device
 
@@ -1777,13 +1777,13 @@ After completing these steps and starting the app, the requests should show up i
 
 > A video of setting up OWASP ZAP with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
 
-A few other differences: from Android 8 onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 onward, the SSLSocket and SSLEngine will behave a little bit different in terms of erroring when something goes wrong during the handshakes.
+A few other differences: from Android 8.0 (API level 26) onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 (API level 28) onward, the SSLSocket and SSLEngine will behave a little bit different in terms of error handling when something goes wrong during the handshakes.
 
-As mentioned before, starting with Android 7, the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security control.
+As mentioned before, starting with Android 7.0 (API level 24), the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security control.
 
 ###### Bypassing the Network Security Configuration
 
-From Android 7 onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
+From Android 7.0 (API level 24) onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
 In order to implement the network security configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in one of the [Google Android Codelabs](https://codelabs.developers.google.com/codelabs/android-network-security-config/#3 "Basic Network Security Configuration").
 
@@ -1844,7 +1844,7 @@ To implement this new setting you must follow the steps below:
     $ apktool b
     ```
 
-- You need to repackage the app, as explained in the [repackaging chapter](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging"). For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
+- You need to repackage the app, as explained in the "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" section of the "Reverse Engineering and Tampering" chapter. For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
 
 Note that even if this method is quite simple its major drawback is that you have to apply this operation for each application you want to evaluate which is additional overhead for testing.
 
