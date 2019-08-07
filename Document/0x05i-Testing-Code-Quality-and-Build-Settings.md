@@ -10,7 +10,7 @@ When an APK is signed, a public-key certificate is attached to it. This certific
 
 The [final release build](https://developer.android.com/studio/publish/app-signing.html "Android Application Signing") of an app must be signed with a valid release key. In Android Studio, the app can be signed manually or via creation of a signing configuration that's assigned to the release build type.
 
-Prior Android Pie all app updates on Android need to be signed with the same certificate, so a [validity period of 25 years or more is recommended](https://developer.android.com/studio/publish/app-signing#considerations "Android Signing Considerations"). Apps published on Google Play must be signed with a key that that has a validity period ending after October 22th, 2033.
+Prior Android 9 (API level 28) all app updates on Android need to be signed with the same certificate, so a [validity period of 25 years or more is recommended](https://developer.android.com/studio/publish/app-signing#considerations "Android Signing Considerations"). Apps published on Google Play must be signed with a key that that has a validity period ending after October 22th, 2033.
 
 Three APK signing schemes are available:
 
@@ -18,14 +18,14 @@ Three APK signing schemes are available:
 - APK Signature Scheme v2 (v2 scheme),
 - APK Signature Scheme v3 (v3 scheme).
 
-The v2 signature, which is supported by Android 7.0 and above, offers improved security and performance compared to v1 scheme.
-The V3 signature, which is supported by Android 9.0 and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used.
+The v2 signature, which is supported by Android 7.0 (API level 24) and above, offers improved security and performance compared to v1 scheme.
+The V3 signature, which is supported by Android 9 (API level 28) and above, gives apps the ability to change their signing keys as part of an APK update. This functionality assures compatibility and apps continuous availability by allowing both the new and the old keys to be used.
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
 #### Static Analysis
 
-Make sure that the release build has been signed via both the v1 and v2 schemes for Android 7 and above and via all the three schemes for android 9 and above, and that the code-signing certificate in the APK belongs to the developer.
+Make sure that the release build has been signed via both the v1 and v2 schemes for Android 7.0 (API level 24) and above and via all the three schemes for Android 9 (API level 28) and above, and that the code-signing certificate in the APK belongs to the developer.
 
 APK signatures can be verified with the `apksigner` tool. It is located at `[SDK-Path]/build-tools/[version]`.
 

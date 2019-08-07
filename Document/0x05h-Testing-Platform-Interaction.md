@@ -8,21 +8,21 @@ Android assigns a distinct system identity (Linux user ID and group ID) to every
 
 Android permissions are classified into four different categories on the basis of the protection level they offer:
 
-- **Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting Android 6 (API level 23) or higher, these permissions are granted automatically at installation time. For apps targeting a lower API level, the user needs to approve them at installation time. Example: `android.permission.INTERNET`.
+- **Normal**: This permission gives apps access to isolated application-level features with minimal risk to other apps, the user, and the system. For apps targeting Android 6.0 (API level 23) or higher, these permissions are granted automatically at installation time. For apps targeting a lower API level, the user needs to approve them at installation time. Example: `android.permission.INTERNET`.
 - **Dangerous**: This permission usually gives the app control over user data or control over the device in a way that impacts the user. This type of permission may not be granted at installation time; whether the app should have the permission may be left for the user to decide. Example: `android.permission.RECORD_AUDIO`.
 - **Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at installation time. Example: `android.permission.ACCESS_MOCK_LOCATION`.
 - **SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`.
 
 A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/requesting.html "Android Permissions").
 
-##### Android 8 Changes
+##### Android 8.0 (API level 26) Changes
 
-The [following changes](https://developer.android.com/about/versions/oreo/android-8.0-changes#atap "Changes for all apps") affect all apps running on Android 8, even to those apps targeting API levels lower than 26.
+The [following changes](https://developer.android.com/about/versions/oreo/android-8.0-changes#atap "Changes for all apps") affect all apps running on Android 8.0 (API level 26), even to those apps targeting lower API levels.
 
 - **Alert windows above other apps**: a new window type called `TYPE_APPLICATION_OVERLAY` must be used by apps having the [`SYSTEM_ALERT_WINDOW`](https://developer.android.com/reference/android/Manifest.permission.html#SYSTEM_ALERT_WINDOW "SYSTEM_ALERT_WINDOW") permission. This must replace the following window types used to display alert windows above other apps and system windows: `TYPE_PHONE`, `TYPE_PRIORITY_PHONE`, `TYPE_SYSTEM_ALERT`, `TYPE_SYSTEM_OVERLAY`, `TYPE_SYSTEM_ERROR`.
 - **Contacts provider usage stats change**: when an app requests the [`READ_CONTACTS`](https://developer.android.com/reference/android/Manifest.permission.html#READ_CONTACTS "READ_CONTACTS") permission, queries for contact's usage data will return approximations rather than exact values (the auto-complete API is not affected by this change).
 
-Apps targeting Android 8, i.e. [only API level 26 or higher](https://developer.android.com/about/versions/oreo/android-8.0-changes#o-apps "Apps targeting Android 8.0") are affected by the following:
+Apps targeting Android 8.0 (API level 26) or higher [are affected](https://developer.android.com/about/versions/oreo/android-8.0-changes#o-apps "Apps targeting Android 8.0") by the following:
 
 - **Account access and discoverability improvements**: Apps can no longer get access to user accounts only by having the [`GET_ACCOUNTS`](https://developer.android.com/reference/android/Manifest.permission.html#GET_ACCOUNTS "GET_ACCOUNTS") permission granted, unless the authenticator owns the accounts or the user grants that access.
 - **New telephony permissions**: the following permissions (classified as dangerous) are now part of the `PHONE` permissions group:
@@ -30,18 +30,18 @@ Apps targeting Android 8, i.e. [only API level 26 or higher](https://developer.a
   - The `READ_PHONE_NUMBERS` permission grants read access to the phone numbers stored in the device.
 - **Direct document access**: the new [`getDocumentUri`](https://developer.android.com/reference/android/provider/MediaStore.html#getDocumentUri(android.content.Context,%20android.net.Uri) "getDocumentUri") method can be used to locate media files. However, it doesn't grant apps permission to access those files.
 - **Wi-Fi scanning restrictions**: Calling `WifiManager.getScanResults` requires at least one of the following permissions: `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`, `CHANGE_WIFI_STATE`.
-- **Restrictions when granting dangerous permissions**: Dangerous permissions are classified into permission groups (e.g. the `STORAGE` group contains `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE`). Before Android 8, it was sufficient to request one permission of the group in order to get all permissions of that group also granted at the same time. This has changed [starting at Android 8](https://developer.android.com/about/versions/oreo/android-8.0-changes#rmp "Android 8 Permissions Changes"): whenever an app requests a permission at runtime, the system will grant exclusively that specific permission. However, note that **all subsequent requests for permissions in that permission group will be automatically granted** without showing the permissions dialog to the user. See this example from the Android developer documentation:
+- **Restrictions when granting dangerous permissions**: Dangerous permissions are classified into permission groups (e.g. the `STORAGE` group contains `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE`). Before Android 8.0 (API level 26), it was sufficient to request one permission of the group in order to get all permissions of that group also granted at the same time. This has changed [starting at Android 8.0 (API level 26)](https://developer.android.com/about/versions/oreo/android-8.0-changes#rmp "Android 8 Permissions Changes"): whenever an app requests a permission at runtime, the system will grant exclusively that specific permission. However, note that **all subsequent requests for permissions in that permission group will be automatically granted** without showing the permissions dialog to the user. See this example from the Android developer documentation:
 
     > Suppose an app lists both READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE in its manifest. The app requests READ_EXTERNAL_STORAGE and the user grants it. If the app targets API level 25 or lower, the system also grants WRITE_EXTERNAL_STORAGE at the same time, because it belongs to the same STORAGE permission group and is also registered in the manifest. If the app targets Android 8.0 (API level 26), the system grants only READ_EXTERNAL_STORAGE at that time; however, if the app later requests WRITE_EXTERNAL_STORAGE, the system immediately grants that privilege without prompting the user.
 
     You can see the list of permission groups in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html#permission-groups "Permission groups"). To make this a bit more confusing, [Google also warns](https://developer.android.com/guide/topics/permissions/overview.html#perm-groups "Permission groups") that particular permissions might be moved from one group to another in future versions of the Android SDK and therefore, the logic of the app shouldn't rely on the structure of these permission groups. The best practice is to explicitly request every permission whenever it's needed.
 
-##### Android 9 Changes
+##### Android 9 (API Level 28) Changes
 
 The [following changes](https://developer.android.com/about/versions/pie/android-9.0-changes-all "Behavior changes: all apps") affect all apps running on Android 9, even to those apps targeting API levels lower than 28.
 
 - **Restricted access to call logs**: `READ_CALL_LOG`, `WRITE_CALL_LOG`, and `PROCESS_OUTGOING_CALLS` permissions are moved from `PHONE` to the new `CALL_LOG` permission group.
-- **Restricted access to phone numbers**: apps wanting to read the phone number field provided in [`ACTION_PHONE_STATE_CHANGED`](https://developer.android.com/reference/android/telephony/TelephonyManager#ACTION_PHONE_STATE_CHANGED "ACTION_PHONE_STATE_CHANGED") broadcasts and via the [`PhoneStateListener`](https://developer.android.com/reference/android/telephony/PhoneStateListener "PhoneStateListener") class require the `READ_CALL_LOG` permission when running on Android 9. If not, the phone number field will be empty.
+- **Restricted access to phone numbers**: apps wanting to read the phone number field provided in [`ACTION_PHONE_STATE_CHANGED`](https://developer.android.com/reference/android/telephony/TelephonyManager#ACTION_PHONE_STATE_CHANGED "ACTION_PHONE_STATE_CHANGED") broadcasts and via the [`PhoneStateListener`](https://developer.android.com/reference/android/telephony/PhoneStateListener "PhoneStateListener") class require the `READ_CALL_LOG` permission when running on Android 9 (API Level 28). If not, the phone number field will be empty.
 - **Restricted access to Wi-Fi location and connection information**:
   - Calling [`WifiManager.startScan`](https://developer.android.com/reference/android/net/wifi/WifiManager#startScan() "WifiManager.startScan") requires *all* of the following:
     - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
@@ -53,7 +53,7 @@ The [following changes](https://developer.android.com/about/versions/pie/android
     - The `ACCESS_WIFI_STATE` permission.
     - Location services are enabled (under Settings -> Location).
 
-Apps targeting Android 9, i.e. [only API level 28 or higher](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") are affected by the following:
+Apps targeting Android 9 (API Level 28) or higher [are affected](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") by the following:
 
 - **Restricted foreground services**: apps using foreground services must request the `FOREGROUND_SERVICE` permission in their Android manifest (it's a normal permission and therefore automatically granted at installation time).
 - **Build serial number deprecation**: the `READ_PHONE_STATE` permission is required now in order to read the device's hardware serial number via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial() "getSerial") ([`Build.SERIAL`](https://developer.android.com/reference/android/os/Build.html#SERIAL "Build.SERIAL") is now set to "UNKNOWN").
@@ -438,9 +438,9 @@ Because the `PreferenceActivity` uses reflection to load the fragment, an arbitr
 
 With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a `java.lang.CastException`, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor run.
 
-To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 KitKat (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
+To prevent this vulnerability, a new method called `isValidFragment` was added in Android 4.4 (API Level 19). It allows developers to override this method and define the fragments that may be used in this context.
 
-The default implementation returns `true` on versions older than Android 4.4 KitKat (API Level 19); it will throw an exception on later versions.
+The default implementation returns `true` on versions older than Android 4.4 (API Level 19); it will throw an exception on later versions.
 
 #### Static Analysis
 
@@ -529,7 +529,7 @@ Consider this contrived example: `sms://compose/to=your.boss@company.com&message
 
 Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6 (API level 23) App links can be used. App lnks, in contrast to deep links, require the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first by means of using `android:autoVerify="true"` in the intentfilter.
+URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6.0 (API level 23) App links can be used. App lnks, in contrast to deep links, require the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first by means of using `android:autoVerify="true"` in the intentfilter.
 
 Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
 
@@ -606,7 +606,7 @@ Defining and using your own URL scheme can be risky in this situation if data is
 
 #### Overview
 
-With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview "Google Play Instant") you can now create Instant apps. An instant apps can be instantly launched from a browser or the "try now" button from the app store from Android 6 (API level 23) onward. They do not require any form of installation. There are a few challenges with an instant app:
+With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview "Google Play Instant") you can now create Instant apps. An instant apps can be instantly launched from a browser or the "try now" button from the app store from Android 6.0 (API level 23) onward. They do not require any form of installation. There are a few challenges with an instant app:
 
 - There is a limited amount of size you can have with an instant app (max 10 mb).
 - Only a reduced number of permissions can be used, which are documented at [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions "Permission documentation for Android Instant Apps").
@@ -1033,8 +1033,8 @@ Check the source code for WebView usage. The following [WebView settings](https:
 
 - `setAllowContentAccess`: Content URL access allows WebViews to load content from a content provider installed on the system, which is enabled by default .
 - `setAllowFileAccess`: Enables and disables file access within a WebView. File access is enabled by default. Note that this enables and disables [file system access](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccess%28boolean%29 "File Access in WebView") only. Asset and resource access is unaffected and accessible via `file:///android_asset` and `file:///android_res`.
-- `setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is `true` for API level 15 (Ice Cream Sandwich) and below and `false` for API level 16 (Jelly Bean) and above.
-- `setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is `true` for API level 15 (Ice Cream Sandwich) and below and `false` for API level 16 (Jelly Bean) and above.
+- `setAllowFileAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from other file scheme URLs. The default value is `true` for Android 4.0.3 - 4.0.4 (API level 15) and below and `false` for Android 4.1 (API level 16) and above.
+- `setAllowUniversalAccessFromFileURLs`: Does or does not allow JavaScript running in the context of a file scheme URL to access content from any origin. The default value is `true` for Android 4.0.3 - 4.0.4 (API level 15) and below and `false` for Android 4.1 (API level 16) and above.
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
@@ -1083,11 +1083,11 @@ Android offers a way for JavaScript executed in a WebView to call and use native
 
 The `addJavascriptInterface` method allows you to expose Java Objects to WebViews. When you use this method in an Android app, JavaScript in a WebView can invoke the Android app's native methods.
 
-Before Android 4.2 Jelly Bean (API Level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
+Before Android 4.2 (API Level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
 
 This vulnerability was fixed by API Level 17, and the access to Java Object methods granted to JavaScript was changed. When you use `addJavascriptInterface`, methods of Java Objects are only accessible to JavaScript when the annotation `@JavascriptInterface` is added. Before API Level 17, all Java Object methods were accessible by default.
 
-An app that targets an Android version older than Android 4.2 is still vulnerable to the flaw in `addJavascriptInterface` and should be used only with extreme care. Several best practices should be used when this method is necessary.
+An app that targets an Android version older than API Level 17 is still vulnerable to the flaw in `addJavascriptInterface` and should be used only with extreme care. Several best practices should be used when this method is necessary.
 
 #### Static Analysis
 
@@ -1107,7 +1107,7 @@ myWebView.loadURL("http://example.com/file.html");
 setContentView(myWebView);
 ```
 
-In Android API levels 17 and above, an annotation called `JavascriptInterface` explicitly allows JavaScript to access a Java method.
+In Android 4.2 (API level 17) and above, an annotation called `JavascriptInterface` explicitly allows JavaScript to access a Java method.
 
 ```Java
 public class MSTG_ENV_008_JS_Interface {
@@ -1132,7 +1132,7 @@ public class MSTG_ENV_008_JS_Interface {
 }
 ```
 
-If the annotation `@JavascriptInterface` is defined for a method, it can be called by JavaScript. If the app targets API level < 17, all Java Object methods are exposed by default to JavaScript and can be called.
+If the annotation `@JavascriptInterface` is defined for a method, it can be called by JavaScript. If the app targets API level lower than 17, all Java Object methods are exposed by default to JavaScript and can be called.
 
 The method `returnString` can then be called in JavaScript in order to retrieve the return value. The value is then stored in the parameter `result`.
 
@@ -1144,7 +1144,7 @@ With access to the JavaScript code, via, for example, stored XSS or a MITM attac
 
 If `addJavascriptInterface` is necessary, only JavaScript provided with the APK should be allowed to call it; no JavaScript should be loaded from remote endpoints.
 
-Another solution is limiting the API level to 17 (JELLY_BEAN_MR1) and above in the manifest file of the app. Only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614 "DRD13 addJavascriptInterface()") can be accessed via JavaScript at these API levels.
+Another solution is limiting the API level to 17 and above in the manifest file of the app. Only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614 "DRD13 addJavascriptInterface()") can be accessed via JavaScript at these API levels.
 
 ```xml
 <uses-sdk android:minSdkVersion="17" />
@@ -1376,7 +1376,7 @@ There are several ways to perform dynamic analysis:
 
 ### Testing enforced updating (MSTG-ARCH-9)
 
-Starting from API level 21 (Android 5.0), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
+Starting from Android 5.0 (API level 21), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
 
 Please note that newer versions of an application will not fix security issues that are living in the back-ends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.

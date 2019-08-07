@@ -687,7 +687,7 @@ Complete the following procedure when verifying the HMAC with BouncyCastle:
 3. Repeat steps 1-4 of the procedure for generating an HMAC.
 4. Compare the extracted HMAC-bytes to the result of step 3.
 
-When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android Keystore"), then it is best to only do this for Android 6 and higher.
+When generating the HMAC based on the [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android Keystore"), then it is best to only do this for Android 6.0 (API level 23) and higher.
 
 The following is a convenient HMAC implementation without `AndroidKeyStore`:
 
@@ -855,11 +855,11 @@ public boolean checkRunningProcesses() {
 
 ```
 
-Starting with Android Nougat (API Level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox "Application Sandbox") . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
+Starting with Android 7.0 (API Level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox "Application Sandbox") . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
 
-![Executing ps on Android Lollipop](Images/Chapters/0x05j/Android_Lollipop_ps.png)
+![Executing ps on Android 5.0 (API level 21)](Images/Chapters/0x05j/Android_Lollipop_ps.png)
 
-![Executing ps on Android Nougat](Images/Chapters/0x05j/Android_Nougat_ps.png)
+![Executing ps on Android 7.0 (API level 24)](Images/Chapters/0x05j/Android_Nougat_ps.png)
 
 Even if the process name could easily be detected, this would only work if Frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies during their first steps in reverse engineering. It can, however, be easily bypassed by renaming the frida-server binary. So because of this and the technical limitations of querying the process names in recent Android versions, we should find a better method.
 
