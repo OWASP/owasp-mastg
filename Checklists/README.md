@@ -12,3 +12,5 @@ The checklists contained in the excel files allow a mapping between a given vers
 The MSTG version element (Dashboard - row 13) in the excel file represent the version of mstg which the links in the excel file will lead to.
 
 Note that due to the continuous updating and restructuring of the MSTG, the links of different versions are not all identical. And changing the mstg version (Dashboard - row 13) may break the links in the excel file.
+
+Newer and older versions of the Excel are released on a regular basis and can be found at [the release page](https://github.com/OWASP/owasp-mstg/releases "Releases").
