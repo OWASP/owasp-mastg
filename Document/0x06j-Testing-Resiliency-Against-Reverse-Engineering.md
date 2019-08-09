@@ -498,7 +498,7 @@ When verifying the HMAC with CC, follow these steps:
 
 ###### When you're trying to bypass the storage integrity checks
 
-1. Retrieve the data from the device, as described in the section on device binding.
+1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
 2. Alter the retrieved data and return it to storage.
 
 #### Effectiveness Assessment
@@ -526,7 +526,7 @@ A similar approach works. Answer the following questions:
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "Remediation" section for more details.
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "[Remediation](#remediation "Remediation")" section for more details.
 
 #### Static Analysis
 

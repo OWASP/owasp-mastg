@@ -129,7 +129,7 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
-Please also verify the "Tools" section at the end of this book.
+Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
 
 ##### Getting Privileged Access
 
@@ -308,7 +308,7 @@ The unpacked files are:
 - res: directory containing the app’s resources
 - smali: directory containing the disassembled Dalvik bytecode.
 
-You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "Exploring the App Package" later on this chapter and section "Repackaging" in the chapter "Tampering and Reverse Engineering on Android" for more information and practical examples.
+You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter "Tampering and Reverse Engineering on Android" for more information and practical examples.
 
 ##### Apkx
 
@@ -900,7 +900,7 @@ Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries 
 $ r2 classes.dex
 ```
 
-Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in the chapter "Tampering and Reverse Engineering on Android".
+Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)".
 
 Once in the r2 shell, you can also access functions offered by the other radare2 utilities. For example, running `i` will print the information of the binary, exactly as `rabin2 -I` does.
 
@@ -1162,7 +1162,7 @@ bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 ```
 
-> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "Host-Device Data Transfer" below.
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "[Host-Device Data Transfer](#host-device-data-transfer "Host-Device Data Transfer")" below.
 
 ###### Connect to Multiple Devices
 
@@ -1464,9 +1464,9 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 ###### App Binary
 
-As seen above in "Exploring the App Package", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
+As seen above in "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")", the app binary (`classes.dex`) can be found in the root directory of the app package. It is a so-called DEX (Dalvik Executable) file that contains compiled Java code. Due to its nature, after applying some conversions you'll be able to use a decompiler to produce Java code. We've also seen the folder `smali` that was obtained after we run apktool. This contains the disassembled Dalvik bytecode in an intermediate language called smali, which is a human-readable representation of the Dalvik executable.
 
-Refer to the section "Statically Analyzing Java Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
+Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer DEX files.
 
 ###### Native Libraries
 
@@ -1492,7 +1492,7 @@ File    ...  libstlport_shared.so
 File    ...  libsqlcipher_android.so
 ```
 
-For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "Statically Analyzing Native Code" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
+For now this is all information you can get about the native libraries unless you start reverse engineering them, which is done using a different approach than the one used to reverse the app binary as this code cannot be decompiled but only disassembled. Refer to the section "[Reviewing Disassemble Native Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-disassembled-native-code "Reviewing Disassemble Native Code")" in the chapter "Tampering and Reverse Engineering on Android" for more information about how to reverse engineer these libraries.
 
 ###### Other App Resources
 
@@ -1761,7 +1761,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
-For Android 7.0 (API level 24) and above follow the same procedure described in the "Bypassing the Network Security Configuration" section.
+For Android 7.0 (API level 24) and above follow the same procedure described in the "[Bypassing the Network Security Configuration](#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" section.
 
 ##### Interception Proxy for a Physical Device
 
