@@ -263,7 +263,7 @@ If you want to test for randomness, you can try to capture a large set of number
 
 - Apple Developer Documentation on randomization - <https://developer.apple.com/documentation/security/randomization_services>
 - Apple Developer Documentation on secrandomcopybytes - <https://developer.apple.com/reference/security/1399291-secrandomcopybytes>
-- Burp Suite Sequencer  - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
+- Burp Suite Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
 
 #### Key Management
 

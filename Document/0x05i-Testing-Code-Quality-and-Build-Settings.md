@@ -580,7 +580,7 @@ class a$b
 - Drozer - <https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf>
 - GNU nm - <https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html>
 - Black Duck - <https://www.blackducksoftware.com/>
-- Sourceclear -  <https://www.sourceclear.com/>
+- Sourceclear - <https://www.sourceclear.com/>
 - Snyk - <https://snyk.io/>
 - Gradle license plugn - <https://github.com/hierynomus/license-gradle-plugin>
 - Dependency-check-gradle - <https://github.com/jeremylong/dependency-check-gradle>

@@ -185,7 +185,7 @@ Observe the following best practices when implementing anti-brute-force controls
 - After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
 - A five-minute account lock is commonly used for temporary account locking.
 - The controls must be implemented on the server because client-side controls are easily bypassed.
-- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
+- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.
 
 Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
@@ -219,7 +219,7 @@ In this example, you can identify the successful attempt according to the differ
 
 To test if your own test accounts are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
 
-> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
+> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.
 
 ### Testing Stateful Session Management (MSTG-AUTH-2)
 
