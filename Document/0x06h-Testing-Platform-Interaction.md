@@ -1156,7 +1156,7 @@ After performing the static analysis you would know the *document types that the
 
 - *Share* a file with the app from another app or send it via AirDrop or e-mail. Choose the file so that it will trigger the "Open with..." dialogue (that is, there is no default app that will open the file, a PDF for example).
 - Hook `application:openURL:options:` and any other methods that were identified in a previous static analysis.
-- Observe the app behaviour.
+- Observe the app behavior.
 - In addition, you could send specific malformed files and/or use a fuzzing technique.
 
 To illustrate this with an example we have chosen the same real-world file manager app from the static analysis section and followed these steps:
@@ -1997,7 +1997,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 ###### Opening a Link by Navigating to a Page and Letting Safari Open It
 
-You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behaviour.
+You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behavior.
 
 ![Open this page in "Telegram"?](Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png)
 

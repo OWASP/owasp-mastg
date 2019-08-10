@@ -569,7 +569,7 @@ Publishing an app is quite straightforward; the main operation is making the sig
 
 The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
 
-- Validate all input by means of IPC communication or URL-schemes, see also:
+- Validate all input by means of IPC communication or URL schemes, see also:
   - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4 "Testing for Sensitive Functionality Exposure Through IPC")
   - [Testing Custom URL Schemes](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")
 - Validate all input by the user in input fields.
