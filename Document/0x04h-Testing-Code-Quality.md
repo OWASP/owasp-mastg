@@ -91,7 +91,7 @@ Verify that the following best practices have been followed:
 
 We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
-### Cross-Site Scripting Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
+### Cross-Site Scripting Flaws (MSTG-PLATFORM-2)
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
