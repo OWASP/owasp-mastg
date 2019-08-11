@@ -90,24 +90,24 @@ When using any number higher than ten, use the numeric version (e.g., "12" or �
 ### American spelling and terminology
 
 Use American spelling and terminology.
-Change all British spelling and terminology to the American equivalents where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), "color" (US) vs "colour" (UK), "flashlight" (US) vs "torch" (UK), etc.
+Change all British spelling and terminology to the American equivalents where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), "analyze" (US) vs. "analyse" (UK), "behavior" (US) vs "behaviour" (UK), etc.
 
 ### Plurals
 
 Adhere to standard grammar and punctuation rules when it comes to pluralization of typical words.
 
-The plural of calendar years does not take the apostrophe before the “s.” For example, the plural form of 1990 is 1990s
+The plural of calendar years does not take the apostrophe before the “s”. For example, the plural form of 1990 is 1990s.
 
 ### Title Capitalization
 
 We follow the title case rules from the "Chicago Manual of Style":  
 
 - Capitalize the first and last word in a title, regardless of part of speech
-- Capitalize all nouns (baby, country, picture), pronouns (you, she, it), verbs (walk, think, dream), adjectives (sweet, large, perfect), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
+- Capitalize all nouns (app, encryption, package), pronouns (you, she, it), verbs (analyze, compile, inspect), adjectives (active, insecure, weak), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
 - Lowercase “to” as part of an infinitive
 - Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
 
-When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
+When in doubt, you can verify proper capitalization on [https://titlecaseconverter.com/](https://titlecaseconverter.com/).
 
 ### Standardization
 
