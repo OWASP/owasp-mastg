@@ -161,6 +161,8 @@ JAR (Java ARchive) files are [...]
 APKs are packed using the ZIP format. An APK is a variation of a JAR file [...]
 ```
 
+For commonly used file formats such as APK, IPA or ZIP, please do not refer to them as ".apk", ".ipa" or ".zip" unless you're explicitly referring to the file extension.
+
 ### Referencing Android versions
 
 Use the following format when referring to an Android version: Android X (API level YY). Usage of the descriptive name (Ex: Oreo) is discouraged.
