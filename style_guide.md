@@ -127,7 +127,7 @@ do not -> don't
 does not -> doesn't  
 has not -> hasn't  
 had not -> hadn't  
-have not -> haven't  
+have not -> haven't
 is not -> isn't
 it is -> it's
 that is -> that's  
@@ -142,9 +142,24 @@ you will -> you'll
 
 ### Abbreviations
 
-Spell out abbreviations the first time they are used.
+Abbreviations include acronyms, initialisms, shortened words, and contractions.
 
-Ex: United States (U.S.)
+- Spell out the term the first time it's used, followed by the abbreviation in parentheses. Example: Mobile Security Testing Guide (MSTG). Subsequent usages in the same chapter may include the abbreviation only.
+- If it only appears once in the content, spell out the term instead of using the abbreviation.
+- In titles and headings, use the abbreviation but be sure to properly introduce it (see above) in the text that follows.
+- Use "a" or "an" depending on the pronunciation (as with regular words). Example: a DLL, an APK, a URL.
+- Add an "s" for the plural form unless the abbreviation already stands for a plural noun. Example: the APIs, CSS (not CSSs).
+- If the abbreviation is better known as its full spelled-out term, use only the abbreviation. Example: PDF, URL, USB, ZIP.
+
+The following snippet demonstrates most of these points:
+
+```markdown
+## JAR Files
+
+JAR (Java ARchive) files are [...]
+
+APKs are packed using the ZIP format. An APK is a variation of a JAR file [...]
+```
 
 ### Referencing Android versions
 
