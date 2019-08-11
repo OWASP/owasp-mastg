@@ -568,8 +568,13 @@ For applications which require L2 protection, the MASVS states that: "The app in
 3. The application provides an overview of the last session after login at all times.
 4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
 
-In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.
+In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. 
+//TODO: HVG, REWRITE IDENTIFIER FOR VENDOR BASED ON https://developer.apple.com/documentation/uikit/uidevice/1620059-identifierforvendor
+In iOS, a developer can use `identifierForVendor`, which might differ 
 
+For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` till Android 8.0 (API level 26) to identify an application instance. 
+
+//TODO: HVG, REWRITE BASED ON https://developer.android.com/training/articles/user-data-ids
 Note that starting at Android 8.0 (API level 26), `Android_ID` is no longer a device unique ID. Instead it becomes scoped by the combination of app-signing key, user and device. So validating `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices. This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, you should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
 
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.

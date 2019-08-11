@@ -1325,6 +1325,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 #### Static Analysis
 
+//TODO: HVG, MAKE SURE IT IS CONSISTENT (FULL CHAPTER BLEOW)
 In the past, Android developers often relied on the Settings.Secure.ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O, and the behavior of MAC addresses [changed with the release of Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. These last recommendations boil down to: either use the `Advertising ID` when it comes to advertising - so that a user can decline - or use the `Instance ID` for device identification. Both are not stable accross device upgrades and device-resets, but `Instance ID` will at least allow to identify the current software installation on a device.
 
 There are a few key terms you can look for when the source code is available:
