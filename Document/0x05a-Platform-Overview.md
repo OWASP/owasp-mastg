@@ -36,7 +36,7 @@ Even though the Android operating system is based on Linux, it doesn't implement
 
 The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
 
-For example, Android Nougat defines the following system users:
+For example, Android 7.0 (API level 24) defines the following system users:
 
 ```c
     #define AID_ROOT             0  /* traditional unix root user */
@@ -53,15 +53,15 @@ For example, Android Nougat defines the following system users:
 
 #### Android Device Encryption
 
-Android supports device encryption from 2.3.4 version and it has undergone some big changes since then. Google imposed that all devices running Android 6 or higher had to support storage encryption. Although some low-end devices were exempt because it would significantly impact performance. In the following sections you can find information about device encryption and its algorithms.
+Android supports device encryption from Android 2.3.4 (API level 10) and it has undergone some big changes since then. Google imposed that all devices running Android 6.0 (API level 23) or higher had to support storage encryption. Although some low-end devices were exempt because it would significantly impact performance. In the following sections you can find information about device encryption and its algorithms.
 
 ##### Full-Disk Encryption
 
-Android 5.0 and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the userdata partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter his password.
+Android 5.0 (API level 21) and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the userdata partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter his password.
 
 ##### File-Based Encryption
 
-Android 7.0 supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user does not enter his password.
+Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user does not enter his password.
 
 ##### Adiantum
 
@@ -79,7 +79,7 @@ Adiantum is a composition of other ciphers:
 
 Adiantum is a new cipher but it is secure, as long as ChaCha12 and AES-256 are considered secure. Its designers didn't create any new cryptographic primitive, instead they relied on other well-known and thoroughly studied primitives to create a new performant algorithm.
 
-Adiantum is available for Android 9 and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching.
+Adiantum is available for Android 9 (API level 28) and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching.
 Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
 It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
 
@@ -97,18 +97,18 @@ Android apps interact with system services via the Android Framework, an abstrac
 
 The framework also offers common security functions, such as cryptography.
 
-The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is 4.4 (KitKat), API level 19, and the current Android version is 7.1 (Nougat), API level 25.
+The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 7.0 (API level 24-25) and the current Android version is Android 9 (API level 28).
 
 Noteworthy API versions:
 
-- Android 4.2 (API Level 16) in November 2012 (introduction of SELinux)
-- Android 4.3 (API Level 18) in July 2013 (SELinux became enabled by default)
-- Android 4.4 (API Level 19) in October 2013 (several new APIs and ART introduced)
-- Android 5.0 (API Level 21) in November 2014 (ART used by default and many other features added)
-- Android 6.0 (API Level 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
-- Android 7.0 (API Level 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 (API Level 26-27) in August 2017 (A lot of security improvements)
-- Android 9 (API Level 28) in August 2018.
+- Android 4.2 (API level 16) in November 2012 (introduction of SELinux)
+- Android 4.3 (API level 18) in July 2013 (SELinux became enabled by default)
+- Android 4.4 (API level 19) in October 2013 (several new APIs and ART introduced)
+- Android 5.0 (API level 21) in November 2014 (ART used by default and many other features added)
+- Android 6.0 (API level 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
+- Android 7.0 (API level 24-25) in August 2016 (new JIT compiler on ART)
+- Android 8.0 (API level 26-27) in August 2017 (A lot of security improvements)
+- Android 9 (API level 28) in August 2018.
 
 #### Linux UID/GID for Normal Applications
 
@@ -286,7 +286,7 @@ An app may not explicitly implement all event managers, in which case default ac
 
 ##### Fragments
 
-A fragment represents a behavior or a portion of the user interface within the activity. Fragments were introduced Android with the version Honeycomb 3.0 (API Level level 11).
+A fragment represents a behavior or a portion of the user interface within the activity. Fragments were introduced Android with the version Honeycomb 3.0 (API level 11).
 
 Fragments are meant to encapsulate parts of the interface to facilitate re-usability and adaptation to different screen sizes. Fragments are autonomous entities in that they include all their required components (they have their own layout, buttons, etc.). However, they must be integrated with activities to be useful: fragments can't exist on their own. They have their own life cycle, which is tied to the life cycle of the Activities that implement them.
 
@@ -357,7 +357,7 @@ Found 99 services:
 - Starting an activity
   - An activity represents a single screen in an app. You can start a new instance of an activity by passing an intent to `startActivity`. The intent describes the activity and carries necessary data.
 - Starting a service
-  - A Service is a component that performs operations in the background, without a user interface. With Android 5.0 (API Level level 21) and later, you can start a service with JobScheduler.
+  - A Service is a component that performs operations in the background, without a user interface. With Android 5.0 (API level 21) and later, you can start a service with JobScheduler.
 - Delivering a broadcast
   - A broadcast is a message that any app can receive. The system delivers broadcasts for system events, including system boot and charging initialization. You can deliver a broadcast to other apps by passing an intent to `sendBroadcast` or `sendOrderedBroadcast`.
 
@@ -424,7 +424,7 @@ Services are Android OS components (based on the Service class) that perform tas
 
 Because Android apps are installed in a sandbox and initially can't access user information and system components (such as the camera and the microphone), Android provides a system with a predefined set of permissions for certain tasks that the app can request.
 For example, if you want your app to use a phone's camera, you have to request the `android.permission.CAMERA` permission.
-Prior to Marshmallow (API Level 23), all permissions an app requested were granted at installation. From Android Marshmallow onwards, the user must approve some permissions requests during app execution.
+Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during app execution.
 
 ###### Protection Levels
 
@@ -502,7 +502,7 @@ When an application is installed on the Android device, the Package Manager ensu
 
 #### APK Signing Schemes
 
-Android supports three application signing schemes. Starting with Android 9.0, APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports three application signing schemes. Starting with Android 9 (API level 28), APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 (API level 24) and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
 
 ##### JAR Signing (v1 Scheme)
 
@@ -516,7 +516,7 @@ With the APK signature scheme, the complete APK is hashed and signed, and an APK
 
 #### APK Signature Scheme (v3 Scheme)
 
-The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
+The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 (API level 28) and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
 
 The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certificates sign the new set of certificates, thus providing each new key with evidence that it should be as trusted as the older key(s).
 It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certificates signing the new set of certificates, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
@@ -541,7 +541,7 @@ An Android certificate must have a validity period that's longer than that of th
 The goal of the signing process is to associate the app file (.apk) with the developer's public key.  To achieve this, the developer calculates a hash of the APK file and encrypts it with their own private key. Third parties can then verify the app's authenticity (e.g., the fact that the app really comes from the user who claims to be the originator) by decrypting the encrypted hash with the author’s public key and verifying that it matches the actual hash of the APK file.
 
 Many Integrated Development Environments (IDE) integrate the app signing process to make it easier for the user. Be aware that some IDEs store private keys in clear text in configuration files; double-check this in case others are able to access such files and remove the information if necessary.
-Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API Level 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
+Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API level 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
 
 ```shell
 $ apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk

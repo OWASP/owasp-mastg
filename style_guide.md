@@ -210,8 +210,13 @@ e.g.
 
 ## 4. References Within The Guide
 
-For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly. Alternatively you can create a link:
-'See the section "[Apktool](0x05b-Basic-Security_Testing.md#apktool)" in the chapter "Basic Security Testing"'. Note that in such a case the anchor should be without capitals, and spaces should be replaced with hyphens.
+For references to other chapters in the MSTG, simply name the chapter, e.g.: `See also the chapter "Basic Security Testing"`, `See the section "Apktool" in the chapter "Basic Security Testing"` etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly. Alternatively you can create a link for the specific section:
+
+```markdown
+See the section "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" in the chapter ...
+```
+
+Note that in such a case the anchor (everything after the `#`) should be lowercase, and spaces should be replaced with hyphens.
 
 ## 5. Insert pictures
 

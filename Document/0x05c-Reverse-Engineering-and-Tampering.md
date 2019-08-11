@@ -881,7 +881,7 @@ $ cd qemu
 $ ./configure --target-list=arm-softmmu --enable-android $ makee
 ```
 
-As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
+As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 (API level 9) Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
 
 ##### VxStripper
 
@@ -1621,7 +1621,7 @@ $ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
 $ make
 ```
 
-You can now create a standalone toolchain for cross-compiling the kernel and subsequent tasks. To create a toolchain for Android Nougat, run make-standalone-toolchain.sh from the Android NDK package:
+You can now create a standalone toolchain for cross-compiling the kernel and subsequent tasks. To create a toolchain for Android 7.0 (API level 24), run make-standalone-toolchain.sh from the Android NDK package:
 
 ```shell
 $ cd android-ndk-rXXX
