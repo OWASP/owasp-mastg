@@ -128,6 +128,8 @@ does not -> doesn't
 has not -> hasn't  
 had not -> hadn't  
 have not -> haven't  
+is not -> isn't
+it is -> it's
 that is -> that's  
 there is -> there's  
 was not -> wasn't  
@@ -282,7 +284,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 
 ## 7. Comments
 
-Markdown blockquotes can be used for comments in the documents by using ">"/
+Markdown blockquotes can be used for comments in the documents by using `>`
 
 > This is a blockquote
 
