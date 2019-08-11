@@ -8,7 +8,7 @@ Code signing your app assures users that the app has a known source and hasn't b
 
 You can retrieve the signing certificate information from the application's .app file with [codesign](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html "Code Signing Tasks"). Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
-After you get the application's .ipa file, re-save it as a ZIP file and decompress the ZIP file. Navigate to the Payload directory, where the application's .app file will be.
+After you get the application's IPA file, re-save it as a ZIP file and decompress the ZIP file. Navigate to the Payload directory, where the application's .app file will be.
 
 Execute the following `codesign` command to display the signing information:
 

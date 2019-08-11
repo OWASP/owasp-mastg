@@ -228,7 +228,7 @@ If vulnerable, the module will automatically bypass the login form.
 
 ### Note regarding temporariness of keys in the Keychain
 
-Unlike MacOSX and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (E.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
+Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
 ### References
 

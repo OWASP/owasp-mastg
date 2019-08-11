@@ -50,12 +50,12 @@ To perform security testing different tools are available in order to be able to
 - ByteCodeViewer: Java 8 Jar and Android APK Reverse Engineering Suite (e.g. Decompiler, Editor and Debugger) - <https://bytecodeviewer.com/>
 - ClassNameDeobfuscator: Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines - <https://github.com/HamiltonianCycle/ClassNameDeobfuscator>
 - FindSecurityBugs: FindSecurityBugs is a extension for SpotBugs which includes security rules for Java applications - <https://find-sec-bugs.github.io>
-- Jadx (Dex to Java Decompiler): Command line and GUI tools for producing Java source code from Android Dex and Apk files - <https://github.com/skylot/jadx>
+- Jadx (Dex to Java Decompiler): Command line and GUI tools for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>
 - Oat2dex: A tool for converting .oat file to .dex files - <https://github.com/testwhat/SmaliEx>
 - Qark: A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
-- Sign: A Java JAR executable (Sign.jar) which automatically signs an apk with the Android test certificate - <https://github.com/appium/sign>
-- Simplify: A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file - <https://github.com/CalebFenton/simplify>
-- SUPER: A command-line application that can be used in Windows, macOS and Linux, that analyzes .apk files in search for vulnerabilities - <https://github.com/SUPERAndroidAnalyzer/super>
+- Sign: A Java JAR executable (Sign.jar) which automatically signs an APK with the Android test certificate - <https://github.com/appium/sign>
+- Simplify: A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of DEX file - <https://github.com/CalebFenton/simplify>
+- SUPER: A command-line application that can be used in Windows, macOS and Linux, that analyzes APK files in search for vulnerabilities - <https://github.com/SUPERAndroidAnalyzer/super>
 - SpotBugs: Static analysis tool for Java - <https://spotbugs.github.io/>
 
 #### Dynamic and Runtime Analysis
@@ -91,7 +91,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 #### Reverse Engineering and Static Analysis
 
 - class-dump: A command-line utility for examining the Objective-C runtime information stored in Mach-O files - <http://stevenygard.com/projects/class-dump/>
-- Clutch: Decrypt the application and dump specified bundleID into binary or .ipa file - <https://github.com/KJCracks/Clutch>
+- Clutch: Decrypt the application and dump specified bundleID into binary or IPA file - <https://github.com/KJCracks/Clutch>
 - Dumpdecrypted: Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk - <https://github.com/stefanesser/dumpdecrypted>
 - hopperscripts: Collection of scripts that can be used to demangle Swift function names in HopperApp - <https://github.com/Januzellij/hopperscripts>
 - otool: A tool that displays specified parts of object files or libraries - <https://www.unix.com/man-page/osx/1/otool/>
