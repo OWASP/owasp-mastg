@@ -1514,7 +1514,7 @@ There are a few key terms you can look for when the source code is available:
   - `Build.SERIAL` without `Build.getSerial`
   - `htc.camera.sensor.front_SN` for HTC devices
   - `persist.service.bdroid.bdadd`
-  - `Settings.Secure.bluetooth_address` or `WifiInfo.getMacAddress();` from `WifiManager`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
+  - `Settings.Secure.bluetooth_address` or `WifiInfo.getMacAddress` from `WifiManager`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
 
 - Usage of ANDROID_ID as an identifier only. Over time, this will influence the binding quality on older devices.
 - The absence of Instance ID, `Build.SERIAL`, and the IMEI.
