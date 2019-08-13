@@ -1457,7 +1457,7 @@ Please note that [Firebase also supports Instance ID](https://firebase.google.co
 
 Google recommends not using these identifiers unless the application is at a high risk.
 
-For pre-Android O devices, you can request the serial as follows:
+For pre-Android c devices, you can request the serial as follows:
 
 ```java
    String serial = android.os.Build.SERIAL;
@@ -1487,7 +1487,7 @@ Retrieve the IMEI:
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     ```
 
-2. If you're using Android version M or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
+2. If you're using Android version Android 6 (API level 23) or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
 
 3. Get the IMEI:
 
@@ -1504,7 +1504,7 @@ Google recommends not using these identifiers unless the application is at a hig
   String SSAID = Settings.Secure.ANDROID_ID;
 ```
 
-The behavior of the SSAID has changed since Android 8.0 (API level 26), and the behavior of MAC addresses [changed with the release of Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are [new recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") for identifiers in Google's SDK documentation. Because of this new behavior, we recommend that developers not rely on the SSAID alone. The identifier has become less stable. For example, the SSAID may change after a factory reset or when the app is reinstalled after the upgrade to Android 8.0 (API level 26). There are devices that have the same `ANDROID_ID` and/or have an `ANDROID_ID` that can be overridden.
+The behavior of the SSAID and MAC addresses have [changed since Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are [new recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") for identifiers in Google's SDK documentation. Because of this new behavior, we recommend that developers not rely on the SSAID alone. The identifier has become less stable. For example, the SSAID may change after a factory reset or when the app is reinstalled after the upgrade to Android 8.0 (API level 26). There are devices that have the same `ANDROID_ID` and/or have an `ANDROID_ID` that can be overridden. Therefore it is better to encrypt the `ANDROID_ID` with a randomly generated key from the `AndroidKeyStore` using `AES_GCM` encryption. The encrypted `ANDROID_ID` should then be stored in the `SharedPreferences` (privately). The moment the app-signature changes, the application can check for a delta and register the new `ANDROID_ID`. The moment this changes without a new application signing key, it should indicate that something else is wrong.
 
 #### Effectiveness Assessment
 
