@@ -107,7 +107,7 @@ We follow the title case rules from the "Chicago Manual of Style":
 - Lowercase “to” as part of an infinitive
 - Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
 
-When in doubt, you can verify proper capitalization on [https://titlecaseconverter.com/](https://titlecaseconverter.com/).
+When in doubt, you can verify proper capitalization on [https://titlecaseconverter.com/](https://titlecaseconverter.com/ "Title Case Converter").
 
 ### Standardization
 
