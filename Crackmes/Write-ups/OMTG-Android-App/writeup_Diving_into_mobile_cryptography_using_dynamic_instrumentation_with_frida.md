@@ -531,7 +531,7 @@ SEQUENCE (3 elem)
       INTEGER 65537
 ```
 
-To know what this means we can check the corresponding [RFC2313][]:
+To know what this means we can check the corresponding [RFC2313](https://tools.ietf.org/html/rfc2313 "RSA Encryption Version 1.5"):
 
 ```shell
 7.2 Private-key syntax
