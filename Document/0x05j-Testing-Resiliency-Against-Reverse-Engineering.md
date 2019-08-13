@@ -1325,7 +1325,14 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 #### Static Analysis
 
-In the past, Android developers often relied on the Settings.Secure.ANDROID_ID (SSAID) and MAC addresses. However, the behavior of the SSAID has changed since Android O, and the behavior of MAC addresses [changed with the release of Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. These last recommendations boil down to: either use the `Advertising ID` when it comes to advertising - so that a user can decline - or use the `Instance ID` for device identification. Both are not stable accross device upgrades and device-resets, but `Instance ID` will at least allow to identify the current software installation on a device.
+In the past, Android developers often relied on the `Settings.Secure.ANDROID_ID` (SSAID) and MAC addresses. This [changed with the release of Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). As the MAC address is now often randomized when not connected to an access point and the SSAID is no longer a device bound ID. Instead, it became a value bound to the user, the device and the app signing key of the application which requests the SSAID.
+In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. Basically, Gooogle recommends to:
+
+- use the Advertising ID (`AdvertisingIdClient.Info`) when it comes to advertising -so that the user has the option to decline.
+- use the Instance ID (`FirebaseInstanceId`) for device identification.
+- use the SSAID only for fraud detection and for sharing state between apps signed by the same developer.
+
+Note that the Instance ID and the Advertising ID are not stable accross device upgrades and device-resets. However, the Instance ID will at least allow to identify the current software installation on a device.
 
 There are a few key terms you can look for when the source code is available:
 
@@ -1334,7 +1341,7 @@ There are a few key terms you can look for when the source code is available:
   - `htc.camera.sensor.front_SN` for HTC devices
   - `persist.service.bdroid.bdadd`
   - `Settings.Secure.bluetooth_address`, unless the system permission LOCAL_MAC_ADDRESS is enabled in the manifest
-- ANDROID_ID used only as an identifier. This will influence the binding quality over time for older devices.
+- `ANDROID_ID` used only as an identifier. This will influence the binding quality over time for older devices.
 - The absence of Instance ID, `Build.SERIAL`, and the IMEI.
 
 ```java
@@ -1450,7 +1457,7 @@ Please note that [Firebase also supports Instance ID](https://firebase.google.co
 
 Google recommends not using these identifiers unless the application is at a high risk.
 
-For pre-Android O devices, you can request the serial as follows:
+For Android devices before Android 8.0 (API level 26), you can request the serial as follows:
 
 ```java
    String serial = android.os.Build.SERIAL;
@@ -1480,7 +1487,7 @@ Retrieve the IMEI:
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     ```
 
-2. If you're using Android version M or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
+2. If you're using Android version Android 6 (API level 23) or later, request the permission at run time from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
 
 3. Get the IMEI:
 
@@ -1497,7 +1504,7 @@ Google recommends not using these identifiers unless the application is at a hig
   String SSAID = Settings.Secure.ANDROID_ID;
 ```
 
-The behavior of the SSAID has changed since Android O, and the behavior of MAC addresses [changed with the release of Android N](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are [new recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") for identifiers in Google's SDK documentation. Because of this new behavior, we recommend that developers not rely on the SSAID alone. The identifier has become less stable. For example, the SSAID may change after a factory reset or when the app is reinstalled after the upgrade to Android O. There are devices that have the same ANDROID_ID and/or have an ANDROID_ID that can be overridden.
+The behavior of the SSAID and MAC addresses have [changed since Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). In addition, there are [new recommendations](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation") for identifiers in Google's SDK documentation. Because of this new behavior, we recommend that developers not rely on the SSAID alone. The identifier has become less stable. For example, the SSAID may change after a factory reset or when the app is reinstalled after the upgrade to Android 8.0 (API level 26). There are devices that have the same `ANDROID_ID` and/or have an `ANDROID_ID` that can be overridden. Therefore it is better to encrypt the `ANDROID_ID` with a randomly generated key from the `AndroidKeyStore` using `AES_GCM` encryption. The encrypted `ANDROID_ID` should then be stored in the `SharedPreferences` (privately). The moment the app-signature changes, the application can check for a delta and register the new `ANDROID_ID`. The moment this changes without a new application signing key, it should indicate that something else is wrong.
 
 #### Effectiveness Assessment
 
@@ -1507,7 +1514,7 @@ There are a few key terms you can look for when the source code is available:
   - `Build.SERIAL` without `Build.getSerial`
   - `htc.camera.sensor.front_SN` for HTC devices
   - `persist.service.bdroid.bdadd`
-  - `Settings.Secure.bluetooth_address`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
+  - `Settings.Secure.bluetooth_address` or `WifiInfo.getMacAddress` from `WifiManager`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
 
 - Usage of ANDROID_ID as an identifier only. Over time, this will influence the binding quality on older devices.
 - The absence of Instance ID, `Build.SERIAL`, and the IMEI.
