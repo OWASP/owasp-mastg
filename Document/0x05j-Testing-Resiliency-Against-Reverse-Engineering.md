@@ -1325,7 +1325,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 #### Static Analysis
 
-In the past, Android developers often relied on the `Settings.Secure.ANDROID_ID` (SSAID) and MAC addresses. This [changed with the release of Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). As the MAC address is now often randomized when not connected to an access point and the SSAID is no longer a device bound ID. Instead, it became a value bound to the user, the device and the app-signing key of the application which requests the SSAID.
+In the past, Android developers often relied on the `Settings.Secure.ANDROID_ID` (SSAID) and MAC addresses. This [changed with the release of Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). As the MAC address is now often randomized when not connected to an access point and the SSAID is no longer a device bound ID. Instead, it became a value bound to the user, the device and the app signing key of the application which requests the SSAID.
 In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. Basically, Gooogle recommends to:
 
 - use the Advertising ID (`AdvertisingIdClient.Info`) when it comes to advertising -so that the user has the option to decline. 
