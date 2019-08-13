@@ -16,7 +16,7 @@ Reverse engineering is the process of taking an app apart to find out how it wor
 
 #### Tooling
 
-Make sure that the following is installed on your system (see the "Android Basic Security Testing" chapter for installation instructions):
+Make sure that the following is installed on your system (see the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md)" chapter for installation instructions):
 
 - The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform.
 - The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. You'll need it if you plan to deal with native code, e.g. to inspect it or to be able to debug or trace it (the NDK contains useful prebuilt versions of such as gdbserver or strace for various architectures).
@@ -127,7 +127,7 @@ You'll end up with a structure that resembles the original Android Studio projec
 
 <img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300">
 
-See the section "Reviewing Decompiled Java Code" below to learn on how to proceed when inspecting the decompiled Java code.
+See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
 
 ##### Disassembling Native Code
 
@@ -209,7 +209,7 @@ To support both older and newer ARM processors, Android apps ship with multiple 
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
 - arm64-v8a: ABI for ARMv8-based CPUs that support AArch64, the new 64-bit ARM architecture.
 
-Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "Reviewing Disassembled Native Code" below to learn on how to proceed when inspecting the disassembled native code.
+Most disassemblers can handle any of those architectures. Below, we'll be viewing the armeabi-v7a version (located in `HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`) in radare2 and in IDA Pro. See the section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" below to learn on how to proceed when inspecting the disassembled native code.
 
 ###### radare2
 
@@ -269,7 +269,7 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 >
 > People that are used to IDA or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
-This said, please see section "Reviewing Disassembled Native Code" to learn bore bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
+This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
 
 ###### IDA Pro
 
@@ -460,7 +460,7 @@ There are several open source tools for automated security analysis of an APK.
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
 - [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 
-For enterprise tools, see the section "Static Source Code Analysis" in the chapter "Testing Tools".
+For commercial tools, see the section "[Static Source Code Analysis (Commercial Tools)](0x08-Testing-Tools.md#static-source-code-analysis-commercial-tools "Static Source Code Analysis (Commercial Tools)")" in the chapter "Testing Tools".
 
 ### Dynamic Analysis
 
@@ -621,7 +621,7 @@ This is the plaintext string you're looking for!
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect—it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
-To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "Reviewing Decompiled Java Code" section. On the device, choose the app as “debug app” on the Developer options” (Uncrackable1 in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
+To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code ""Reviewing Decompiled Java Code"")" section. On the device, choose the app as “debug app” on the Developer options” (Uncrackable1 in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 

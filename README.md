@@ -35,7 +35,7 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 ### Android Testing Guide
 
 - [Platform Overview](Document/0x05a-Platform-Overview.md)
-- [Setting up a Testing Environment for Android Apps](Document/0x05b-Basic-Security_Testing.md)
+- [Android Basic Security Testing](Document/0x05b-Basic-Security_Testing.md)
 - [Data Storage on Android](Document/0x05d-Testing-Data-Storage.md)
 - [Android Cryptographic APIs](Document/0x05e-Testing-Cryptography.md)
 - [Local Authentication on Android](Document/0x05f-Testing-Local-Authentication.md)
@@ -48,7 +48,7 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 ### iOS Testing Guide
 
 - [Platform Overview](Document/0x06a-Platform-Overview.md)
-- [Setting up a Testing Environment for iOS Apps](Document/0x06b-Basic-Security-Testing.md)
+- [iOS Basic Security Testing](Document/0x06b-Basic-Security-Testing.md)
 - [Data Storage on iOS](Document/0x06d-Testing-Data-Storage.md)
 - [iOS Cryptographic APIs](Document/0x06e-Testing-Cryptography.md)
 - [Local Authentication on iOS](Document/0x06f-Testing-Local-Authentication.md)

@@ -774,11 +774,11 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
-Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
 
 ###### Bypassing the storage integrity checks
 
-1. Retrieve the data from the device, as described in the section on device binding.
+1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
 2. Alter the retrieved data and then put it back into storage.
 
 #### Effectiveness Assessment
@@ -1070,7 +1070,7 @@ Even so, there are of course many ways to bypass this. Patching and system call 
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
 3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
-Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
 
 #### Effectiveness Assessment
 
@@ -1147,7 +1147,7 @@ Keep in mind that a hooking framework, such as Xposed or Frida, can hook this AP
 1. Patch the emulator detection functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
 2. Use Frida or Xposed APIs to hook file system APIs on the Java and native layers. Return innocent-looking values (preferably taken from a real device) instead of the telltale emulator values. For example, you can override the `TelephonyManager.getDeviceID` method to return an IMEI value.
 
-Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
 
 #### Effectiveness Assessment
 
@@ -1226,7 +1226,7 @@ Work on bypassing the checks with the following techniques:
 1. Patch the integrity checks. Disable the unwanted behavior by overwriting the respective byte-code or native code with NOP instructions.
 2. Use Frida or Xposed to hook the APIs used for detection and return fake values.
 
-Refer to the "Tampering and Reverse Engineering" section for examples of patching, code injection, and kernel modules.
+Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
 
 ### Testing Obfuscation (MSTG-RESILIENCE-9)
 
@@ -1523,7 +1523,7 @@ There are a few ways to test device binding dynamically:
 
 ##### Using an Emulator
 
-See section "Dynamic Analysis with an Emulator" above.
+See section "[Dynamic Analysis with an Emulator](#dynamic-analysis-with-an-emulator "Dynamic Analysis with an Emulator")" above.
 
 ##### Using two different rooted devices
 

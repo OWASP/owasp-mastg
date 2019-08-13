@@ -21,7 +21,7 @@
 ## Android Testing Guide
 
 - [Platform Overview](0x05a-Platform-Overview.md)
-- [Setting up a Testing Environment for Android Apps](0x05b-Basic-Security_Testing.md)
+- [Android Basic Security Testing](0x05b-Basic-Security_Testing.md)
 - [Data Storage on Android](0x05d-Testing-Data-Storage.md)
 - [Android Cryptographic APIs](0x05e-Testing-Cryptography.md)
 - [Local Authentication on Android](0x05f-Testing-Local-Authentication.md)
@@ -34,7 +34,7 @@
 ## iOS Testing Guide
 
 - [Platform Overview](0x06a-Platform-Overview.md)
-- [Setting up a Testing Environment for iOS Apps](0x06b-Basic-Security-Testing.md)
+- [iOS Basic Security Testing](0x06b-Basic-Security-Testing.md)
 - [Data Storage on iOS](0x06d-Testing-Data-Storage.md)
 - [iOS Cryptographic APIs](0x06e-Testing-Cryptography.md)
 - [Local Authentication on iOS](0x06f-Testing-Local-Authentication.md)

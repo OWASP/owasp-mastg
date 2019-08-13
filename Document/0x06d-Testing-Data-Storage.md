@@ -36,7 +36,7 @@ Since iOS 7, the default data protection class is "Protected Until First User Au
 
 The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as an SQLite database that can be accessed through the Keychain APIs only.
 
-On macOS, every user application can create as many Keychains as desired, and every login account has its own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different: only one Keychain is available to all apps. Access to the items can be shared between apps signed by the same developer via the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") of the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access according to the app's `Keychain-access-groups`, `application-identifier`, and `application-group` entitlements.
+On macOS, every user application can create as many Keychains as desired, and every login account has its own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different: only one Keychain is available to all apps. Access to the items can be shared between apps signed by the same developer via the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") of the attribute [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access according to the app's `Keychain-access-groups`, `application-identifier`, and `application-group` entitlements.
 
 The [Keychain API](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "Keychain concepts") includes the following main operations:
 
@@ -252,7 +252,7 @@ do {
 
 ##### Couchbase Lite Databases
 
-[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL)  database engine that can be synced. It compiles natively for iOS and macOS.
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL) database engine that can be synced. It compiles natively for iOS and macOS.
 
 ##### YapDatabase
 
@@ -279,7 +279,7 @@ You can analyze the app's data directory on a non-jailbroken iOS device by using
 
 > Note that tools like iMazing don't copy data directly from the device. They try to extract data from the backups they create. Therefore, getting all the app data that's stored on the iOS device is impossible: not all folders are included in backups. Use a jailbroken device or repackage the app with Frida and use a tool like objection to access all the data and files.
 
-If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Tampering and Reverse Engineering on iOS" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "Host-Device Data Transfer".
+If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Tampering and Reverse Engineering on iOS" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "[Host-Device Data Transfer](0x06b-Basic-Security-Testing.md#host-device-data-transfer "Host-Device Data Transfer")".
 
 The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS".
 
@@ -811,7 +811,7 @@ On a non-jailbroken device, you can dump the app's process memory with [objectio
 With objection it is possible to dump all memory of the running process on the device.
 
 ```shell
-(virtual-python3) ➜ objection explore
+$ objection explore
 
      _     _         _   _
  ___| |_  |_|___ ___| |_|_|___ ___
@@ -862,7 +862,7 @@ The original version of Fridump is no longer maintained, and the tool works only
 If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
 
 ```shell
-➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
+$ python fridump.py -u Gadget
 
         ______    _     _
         |  ___|  (_)   | |
@@ -879,12 +879,12 @@ Can't connect to App. Have you connected the device?
 Once Fridump is working, you need the name of the app you want to dump, which you can get with `frida-ps`. Afterwards, specify the app name in Fridump.
 
 ```shell
-➜  fridump git:(master) ✗ frida-ps -U
+$ frida-ps -U
  PID  Name
 ----  ------
 1026  Gadget
 
-➜  fridump git:(master) python3 fridump.py -u Gadget -s
+$ python3 fridump.py -u Gadget -s
 
         ______    _     _
         |  ___|  (_)   | |

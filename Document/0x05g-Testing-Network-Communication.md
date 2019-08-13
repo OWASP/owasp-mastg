@@ -365,7 +365,7 @@ This command will search for all methods that take a string and a variable list 
 
 Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
 
-### Testing the Network Security Configuration settings (MSTG-NETWORK-4)
+### Testing the Network Security Configuration Settings (MSTG-NETWORK-4)
 
 #### Overview
 
