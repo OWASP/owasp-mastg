@@ -392,7 +392,7 @@ unregisterReceiver(myReceiver);
 
 Note that the system starts an app with the registered receiver automatically when a relevant intent is raised.
 
-After receiving an implicit intent, Android will list all apps that have registered a given action in their filters. If more than one app has registered for the same action, Android will prompt the user to select from the list of available apps.
+According to [Broadcasts Overview](https://developer.android.com/guide/components/broadcasts "Broadcasts Overview"), a broadcast is considered "implicit" if it does not target an app specifically. After receiving an implicit broadcast, Android will list all apps that have registered a given action in their filters. If more than one app has registered for the same action, Android will prompt the user to select from the list of available apps.
 
 An interesting feature of Broadcast Receivers is that they can be prioritized; this way, an intent will be delivered to all authorized receivers according to their priority. A priority can be assigned to an intent filter in the manifest via the `android:priority` attribute as well as programmatically via the [`IntentFilter.setPriority`](https://developer.android.com/reference/android/content/IntentFilter#setPriority(int) "IntentFilter.setPriority") method. However, note that receivers with the same priority will be [run in an arbitrary order](https://developer.android.com/guide/components/broadcasts.html#sending-broadcasts "Sending Broadcasts").
 
