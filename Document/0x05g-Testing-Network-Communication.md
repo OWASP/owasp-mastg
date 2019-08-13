@@ -117,6 +117,14 @@ Certificate pinning is the process of associating the backend server with a part
 
 The certificate can be pinned and hardcoded into the app or retrieved at the time the app first connects to the backend. In the latter case, the certificate is associated with ("pinned" to) the host when the host is seen for the first time. This alternative is less secure because attackers intercepting the initial connection can inject their own certificates.
 
+Note that there are various ways to work with a failing pin:
+
+- Inform the user about not being able to connect to the back-end and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available. 
+  - Additionally a call can be made to the back-end or to a crash-reporting service that the pinning has failed to inform the developer and/or back-end of the attack or misconfiguration.
+- Only inform the back-end by doing a call with slightly different parameters, which automatically informs the back-end that pinning failed. From here on, only a limited amounts of APIs should be available which do not involve processing information that has a higher risk rating.
+
+Which option you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases the back-end or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration.
+
 #### Static Analysis
 
 ##### Network Security Configuration
