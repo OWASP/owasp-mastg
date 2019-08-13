@@ -30,8 +30,10 @@ Currently the MASVS and MSTG are used by at least the following companies:
  Currently, the MASVS and MSTG are recommended by:
 
 - [Egov standards for India](http://egovstandards.gov.in/notified-standards-0)
-- [Vetting the Security of Mobile Applications: NIST Publishes SP 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1)
+- [Finish Transport and Communication Agency (TRAFICOM) - Assessment guideline for electronic identification services (Draft)](https://www.traficom.fi/sites/default/files/media/file/DRAFT%20Traficom%20guideline%20211%202019%20conformity%20assessment%20of%20eID%20service.pdf)
 - [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/implementation-guidelines/mobile-initiated-sepa-credit-transfer-interoperability)
+
+- [Vetting the Security of Mobile Applications: NIST Publishes SP 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1)
 
 ## Application in scientific research
 
