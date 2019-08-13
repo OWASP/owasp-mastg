@@ -450,7 +450,7 @@ int xyz(char *dst) {
 
 ##### Sample Implementation - Storage
 
-When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device.  The CommonCrypto implementation is best for creating an HMAC.
+When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device. The CommonCrypto implementation is best for creating an HMAC.
 If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 When you generate an HMAC with CC:
@@ -498,7 +498,7 @@ When verifying the HMAC with CC, follow these steps:
 
 ###### When you're trying to bypass the storage integrity checks
 
-1. Retrieve the data from the device, as described in the section on device binding.
+1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
 2. Alter the retrieved data and return it to storage.
 
 #### Effectiveness Assessment
@@ -526,7 +526,7 @@ A similar approach works. Answer the following questions:
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "Remediation" section for more details.
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "[Remediation](#remediation "Remediation")" section for more details.
 
 #### Static Analysis
 
@@ -575,7 +575,11 @@ Take the following steps when you want to verify app-binding with two jailbroken
 
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods for device binding in iOS:
 
+<<<<<<< HEAD
 - You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). These may not be available after you reinstall the application if no other applications from the same vendor are installed and it may change when you update your app-bundle's name. Therefore it is best to combine it with something in the Keychain.
+=======
+- You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C), `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). These may not be available after you reinstall the application if no other applications from the same vendor are installed.
+>>>>>>> master
 - You can store something in the Keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or touch-id requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
 - You can use Google and its Instance ID for [iOS](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation Google Instance ID").
 

@@ -23,10 +23,10 @@ This app is compatible with Android 4.4 and up.
 
 ### Solutions
 
-- [Solution using frida by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/ "Solution by c0dmtr1x")
-- [Solution using static analysis](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-statically-analyzing-java-code "Solution using static analysis")
-- [Solution using jdb](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#user-content-debugging-release-apps "Solution using jdb")
-- [Solution using frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html "Solution by Eduardo Novella")
+- [Solution using Frida by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/ "Solution by c0dmtr1x")
+- [Solution using static analysis](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Solution using static analysis")
+- [Solution using jdb](0x05c-Reverse-Engineering-and-Tampering.md#debugging-release-apps "Solution using jdb")
+- [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html "Solution by Eduardo Novella")
 - [Solution using Xposed by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level1/ "Solution by sh3llc0d3r")
 
 ## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_02/ "Android level 2")
@@ -48,8 +48,8 @@ This app is compatible with Android 4.4 and up.
 
 ### Solutions
 
-- [Solution using frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/ "Solution by c0dmtr1x")
-- [Solution using frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html "Solution by Eduardo Novella")
+- [Solution using Frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/ "Solution by c0dmtr1x")
+- [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html "Solution by Eduardo Novella")
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level2/ "Solution by sh3llc0d3r")
 
 ## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_03/ "Android level 3")
@@ -71,7 +71,7 @@ This app is compatible with Android 4.4 and up.
 
 ### Solutions
 
-- [Solution using frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html "Solution by Eduarod Novella")
+- [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html "Solution by Eduardo Novella")
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level3/ "Solution by sh3llc0d3r")
 
 ## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01/ "Android License Validator")
@@ -98,7 +98,7 @@ Copy the binary to your Android device and run using the shell.
 
 ### Solutions
 
-- [Dynamic Symbolic Execution in the Android Reverse Engineering Guide](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#binary-analysis-frameworks "Dynamic Symbolic Execution in the Android Reverse Engineering Guide" ) (by the author)
+- [Solution using symbolic execution by Bernhard Mueller](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Tampering and Reverse Engineering on Android - Symbolic Execution")
 
 # iOS
 
@@ -143,9 +143,11 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html "Solution by Ryan Teoh")
 
-## Mobile Security testing playground
+## MSTG Hacking Playground
+
 Did you enjoy working with the Crackmes? There is more! Go to [the MSTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG-playground") and find out!
 Having troubles with getting through the playground challenges, check the Write-ups folder right here!
 
 ## Issues with the Crackmes
+
 Currently, the code is being maintained by [@commjoen](https://github.com/commjoen "Jeroen Willemsen"). If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to](https://github.com/commjoen/uncrackable_app "uncrackable_app repo").
