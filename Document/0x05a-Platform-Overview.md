@@ -367,7 +367,7 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 </receiver>
 ```
 
-The other way is to create the receiver dynamically in code and register it with the `Context.registerReceiver()` method.
+The other way is to create the receiver dynamically in code and register it with the [`Context.registerReceiver`](https://developer.android.com/reference/android/content/Context.html#registerReceiver(android.content.BroadcastReceiver,%2520android.content.IntentFilter) "Context.registerReceiver") method.
 
 An example of registering a Broadcast Receiver dynamically:
 
