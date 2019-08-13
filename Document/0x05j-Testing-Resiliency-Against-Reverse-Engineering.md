@@ -1328,11 +1328,11 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 In the past, Android developers often relied on the `Settings.Secure.ANDROID_ID` (SSAID) and MAC addresses. This [changed with the release of Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). As the MAC address is now often randomized when not connected to an access point and the SSAID is no longer a device bound ID. Instead, it became a value bound to the user, the device and the app-signing key of the application which requests the SSAID.
 In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. Basically, Gooogle recommends to:
 
-- use the Advertising ID (`AdvertisingIdClient.Info`) when it comes to advertising -so that a user can decline 
+- use the Advertising ID (`AdvertisingIdClient.Info`) when it comes to advertising -so that the user has the option to decline. 
 - use the Instance ID (`FirebaseInstanceId`) for device identification. 
-- use the SSAID only in case to detect fraud.
+- use the SSAID only for fraud detection and for sharing state between apps signed by the same developer.
 
-Note that Instance ID and Advertising ID are not stable accross device upgrades and device-resets. However, Instance ID will at least allow to identify the current software installation on a device. 
+Note that the Instance ID and the Advertising ID are not stable accross device upgrades and device-resets. However, the Instance ID will at least allow to identify the current software installation on a device. 
 
 There are a few key terms you can look for when the source code is available:
 
@@ -1514,7 +1514,8 @@ There are a few key terms you can look for when the source code is available:
   - `Build.SERIAL` without `Build.getSerial`
   - `htc.camera.sensor.front_SN` for HTC devices
   - `persist.service.bdroid.bdadd`
-  - `Settings.Secure.bluetooth_address`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
+  - `Settings.Secure.bluetooth_address` or `WifiInfo.getMacAddress();` from `WifiManager`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
+
 
 - Usage of ANDROID_ID as an identifier only. Over time, this will influence the binding quality on older devices.
 - The absence of Instance ID, `Build.SERIAL`, and the IMEI.
