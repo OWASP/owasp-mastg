@@ -1457,7 +1457,7 @@ Please note that [Firebase also supports Instance ID](https://firebase.google.co
 
 Google recommends not using these identifiers unless the application is at a high risk.
 
-For pre-Android c devices, you can request the serial as follows:
+For Android devices before Android 8.0 (API level 26), you can request the serial as follows:
 
 ```java
    String serial = android.os.Build.SERIAL;
