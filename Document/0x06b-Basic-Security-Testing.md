@@ -261,7 +261,7 @@ Please also ensure that you install the Darwin CC Tools from the Coolstar reposi
 
 In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
 
-> There are known issues with Needle when running on iOS devices that are [jailbroken with Chimera](https://github.com/mwrlabs/needle/issues/273 "Many modules dont work with chimera jail break"). Instead the unc0ver jailbreak should be used.
+> There are known issues with Needle when running on iOS devices that are [jailbroken with Chimera](https://github.com/mwrlabs/needle/issues/273 "Many modules dont work with chimera jail break"). Instead, the unc0ver jailbreak should be used.
 
 ##### Objection
 
