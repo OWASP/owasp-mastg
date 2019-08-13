@@ -203,7 +203,7 @@ Note that there are various ways to work with a failing pin:
   - Additionally a call can be made to the back-end or to a crash-reporting service that the pinning has failed to inform the developer and/or back-end of the attack or misconfiguration.
 - Only inform the back-end by doing a call with slightly different parameters, which automatically informs the back-end that pinning failed. From here on, only a limited amounts of APIs should be available which do not involve processing information that has a higher risk rating.
 
-Which option you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases the back-end or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration.
+Which option you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases, the back-end or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration.
 
 #### Static Analysis
 
