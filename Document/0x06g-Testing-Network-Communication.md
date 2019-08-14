@@ -197,13 +197,9 @@ In order to address this risk you can use certificate pinning. Certificate pinni
 The certificate can be pinned during development, or at the time the app first connects to the backend.
 In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
-Note that there are various ways to work with a failing pin:
+#### When the pin fails
 
-- Inform the user about not being able to connect to the backend and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available. 
-  - Additionally a call can be made to the backend or to a crash-reporting service that the pinning has failed to inform the developer and/or backend of the attack or misconfiguration.
-- Only inform the backend by doing a call with slightly different parameters, which automatically informs the backend that pinning failed. From here on, only a limited amounts of APIs should be available which do not involve processing information that has a higher risk rating.
-
-Which option you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases, the backend or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration.
+Pinning failurs can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or loadbalancer, or there might be a Man in the Middle attack going on. In both cases, there are various ways to respond to such a situation, similar as with android. Please see the section "[When the pin fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network APIs"
 
 #### Static Analysis
 

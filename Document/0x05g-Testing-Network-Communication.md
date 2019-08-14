@@ -117,17 +117,20 @@ Certificate pinning is the process of associating the backend server with a part
 
 The certificate can be pinned and hardcoded into the app or retrieved at the time the app first connects to the backend. In the latter case, the certificate is associated with ("pinned" to) the host when the host is seen for the first time. This alternative is less secure because attackers intercepting the initial connection can inject their own certificates.
 
+##### When the pin fails
+
 Note that there are various ways to work with a failing pin:
 
-- Inform the user about not being able to connect to the backend and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available.
+- Inform the user about not being able to connect to the backend and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available. The app allows no longer for any form of interaction with the user until it is updated or the pin works again.
 - Do a call to a crash-reporting service including that the pinning has failed to notify the responsible developer(s) about a security misconfiguration.
-- Only inform the backend by doing a call with slightly different parameters and no pinning enabled, which automatically informs the backend that pinning failed. This can either be an HTTP request or a call usling TLS with additional information (e.g. extend an existing JWT token or add another value to a header).
-- After calling the API or backend to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
+- The app calls the backend using a TLS enabled call with no pinning to inform the backend of a pinning failure. The call can either differ in user-agent, JWT token-contents, or have other headers with a flag enabled of pinning failure.
+- After calling the backend or crash-reporting service to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
 
-From here on, only a limited amounts of APIs should be available which do not involve processing information that has a higher risk rating.
+Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application.
 
-Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases, the backend or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration or a security incident can be detected.
-When only a single app reports a pinning-failure, then this indicates a security issue with that app. In case multiple apps report it at once, it might be a clear indicator that the application distributed to the various mobile devices are pinning to key material that are not available a the TLS terminating endpoint.
+When a large amount of pinfailures are reported to the backend or crash-reporting service, the developer should understand that there is probably a misconfiguration. There is a large chance that the keymaterials used at the TLS terminating endpoint (e.g. server/loadbalancer) is different than what the app is expecting. In that case an update of either that keymaterial or an update of the app should be pushed through.
+
+When only very few pinfailures are reported, then the network is sitll ok, and so is the configuration of the TLS terminating endpoint. Instead, it might well be that there is a Man in The Middle attack ongoing at the app instance of which the pin is failing.
 
 #### Static Analysis
 
