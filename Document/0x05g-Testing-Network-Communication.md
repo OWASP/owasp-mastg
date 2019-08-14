@@ -119,15 +119,14 @@ The certificate can be pinned and hardcoded into the app or retrieved at the tim
 
 Note that there are various ways to work with a failing pin:
 
-- Inform the user about not being able to connect to the back-end and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available.
+- Inform the user about not being able to connect to the backend and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available.
 - Do a call to a crash-reporting service including that the pinning has failed to notify the responsible developer(s) about a security misconfiguration.
-- Only inform the back-end by doing a call with slightly different parameters and no pinning enabled, which automatically informs the back-end that pinning failed. This can either be an HTTP request or a call usling TLS with additional information (e.g. extend an existing JWT token or add another value to a header).
-- After calling the API or back-end to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
-
+- Only inform the backend by doing a call with slightly different parameters and no pinning enabled, which automatically informs the backend that pinning failed. This can either be an HTTP request or a call usling TLS with additional information (e.g. extend an existing JWT token or add another value to a header).
+- After calling the API or backend to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
 
 From here on, only a limited amounts of APIs should be available which do not involve processing information that has a higher risk rating.
 
-Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases, the back-end or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration or a security incident can be detected.
+Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application. In all cases, the backend or crash-reporting service should be informed in order to make sure that the app can be fixed in case of a misconfiguration or a security incident can be detected.
 When only a single app reports a pinning-failure, then this indicates a security issue with that app. In case multiple apps report it at once, it might be a clear indicator that the application distributed to the various mobile devices are pinning to key material that are not available a the TLS terminating endpoint.
 
 #### Static Analysis
