@@ -256,7 +256,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 | Noun Form  | Adjectival Form |
 | ---------  | --------------- |
 | App Store  |       NA       |
-|  back end  |    backend      |
+|  backend  |    backend      |
 |  Base64    |    Base64-      |
 | black box  |     *same*      |
 | Bundle ID  |      NA        |
