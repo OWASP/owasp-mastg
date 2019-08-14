@@ -117,7 +117,7 @@ Certificate pinning is the process of associating the backend server with a part
 
 The certificate can be pinned and hardcoded into the app or retrieved at the time the app first connects to the backend. In the latter case, the certificate is associated with ("pinned" to) the host when the host is seen for the first time. This alternative is less secure because attackers intercepting the initial connection can inject their own certificates.
 
-##### When the pin fails
+##### When the Pin Fails
 
 Note that there are various ways to work with a failing pin:
 
