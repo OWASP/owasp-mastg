@@ -128,7 +128,7 @@ Note that there are various options when dealing with a failing pin:
 
 Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application.
 
-When a large amount of pinfailures are reported to the backend or crash-reporting service, the developer should understand that there is probably a misconfiguration. There is a large chance that the keymaterials used at the TLS terminating endpoint (e.g. server/loadbalancer) is different than what the app is expecting. In that case an update of either that keymaterial or an update of the app should be pushed through.
+When a large amount of pinfailures are reported to the backend or crash-reporting service, the developer should understand that there is probably a misconfiguration. There is a large chance that the key materials used at the TLS terminating endpoint (e.g. server/loadbalancer) is different than what the app is expecting. In that case, an update of either that key material or an update of the app should be pushed through.
 
 When only very few pinfailures are reported, then the network is sitll ok, and so is the configuration of the TLS terminating endpoint. Instead, it might well be that there is a Man in The Middle attack ongoing at the app instance of which the pin is failing.
 
