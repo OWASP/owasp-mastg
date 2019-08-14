@@ -120,7 +120,7 @@ The certificate can be pinned and hardcoded into the app or retrieved at the tim
 Note that there are various ways to work with a failing pin:
 
 - Inform the user about not being able to connect to the back-end and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available.
-- Do a call to a crash-reporting service that the pinning has failed to inform the responsible developer(s) for a security misconfiguration.
+- Do a call to a crash-reporting service including that the pinning has failed to notify the responsible developer(s) about a security misconfiguration.
 - Only inform the back-end by doing a call with slightly different parameters and no pinning enabled, which automatically informs the back-end that pinning failed. This can either be an HTTP request or a call usling TLS with additional information (e.g. extend an existing JWT token or add another value to a header).
 - After calling the API or back-end to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
 
