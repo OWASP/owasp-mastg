@@ -84,7 +84,7 @@ If the app is using two-way SSL (both server and client certificates are validat
 
 If the app relies on an additional encrypted container stored in app data, check how the encryption key is used. If a key-wrapping scheme is used, ensure that the master secret is initialized for each user or the container is re-encrypted with new key. If you can use the master secret or previous password to decrypt the container, check how password changes are handled.
 
-Secret keys must be stored in secure device storage whenever symmetric cryptography is used in mobile apps. For more information on the platform-specific APIs, see the [**Testing Data Storage on Android**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md) and [**Testing Data Storage on iOS**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md) chapters.
+Secret keys must be stored in secure device storage whenever symmetric cryptography is used in mobile apps. For more information on the platform-specific APIs, see the "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" chapters.
 
 #### Weak Key Generation Functions
 
@@ -162,7 +162,7 @@ When keys need to be transported from one device to another, or from the app to 
 
 ### Cryptographic APIs on Android and iOS
 
-While same basic cryptographic principles apply independent of the particular OS, each operating system offers its own implementation and APIs. Platform-specific cryptographic APIs for data storage are covered in greater detail in the [**Testing Data Storage on Android**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md) and [**Testing Data Storage on iOS**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06d-Testing-Data-Storage.md) chapters. Encryption of network traffic, especially Transport Layer Security (TLS), is covered in the [**Testing Network Communication**](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md) chapter.
+While same basic cryptographic principles apply independent of the particular OS, each operating system offers its own implementation and APIs. Platform-specific cryptographic APIs for data storage are covered in greater detail in the "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Testing Data Storage on iOS](0x06d-Testing-Data-Storage.md)" chapters. Encryption of network traffic, especially Transport Layer Security (TLS), is covered in the "[Android Network APIs](0x05g-Testing-Network-Communication.md)" chapter.
 
 ### Cryptographic policy
 

@@ -1,4 +1,4 @@
-## iOS Cryptography APIs
+## iOS Cryptographic APIs
 
 In the "Cryptography for Mobile Apps" chapter, we introduced general cryptography best practices and described typical problems that may occur when cryptography is used incorrectly. In this chapter, we'll detail the cryptography APIs available for iOS. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When you're reviewing code, compare the cryptographic parameters with the current best practices linked in this guide.
 
@@ -140,7 +140,7 @@ There are various methods on how to store the key on the device. Not storing a k
 "), tested in the testsuite of the `Arcane` library*
 
 When you need to store the key, it is recommended to use the Keychain as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, property list files or by any other sink from Core Data or Realm, is usually less secure than using the KeyChain.
-Even when the sync of Core Data or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the Testing Data Storage section for more details.
+Even when the sync of Core Data or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
 
 The KeyChain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Secure Enclave") for more details on its implementation.
 
@@ -263,7 +263,7 @@ If you want to test for randomness, you can try to capture a large set of number
 
 - Apple Developer Documentation on randomization - <https://developer.apple.com/documentation/security/randomization_services>
 - Apple Developer Documentation on secrandomcopybytes - <https://developer.apple.com/reference/security/1399291-secrandomcopybytes>
-- Burp Suite Sequencer  - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
+- Burp Suite Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
 
 #### Key Management
 

@@ -185,7 +185,7 @@ Observe the following best practices when implementing anti-brute-force controls
 - After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
 - A five-minute account lock is commonly used for temporary account locking.
 - The controls must be implemented on the server because client-side controls are easily bypassed.
-- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
+- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.
 
 Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
@@ -219,7 +219,7 @@ In this example, you can identify the successful attempt according to the differ
 
 To test if your own test accounts are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
 
-> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
+> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.
 
 ### Testing Stateful Session Management (MSTG-AUTH-2)
 
@@ -568,9 +568,12 @@ For applications which require L2 protection, the MASVS states that: "The app in
 3. The application provides an overview of the last session after login at all times.
 4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
 
-In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.
+In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. 
+In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.
 
-Note that starting at Android 8.0 (API level 26), `Android_ID` is no longer a device unique ID. Instead it becomes scoped by the combination of app-signing key, user and device. So validating `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices. This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, you should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+In Android, the developer can use `Settings.Secure.ANDROID_ID` till Android 8.0 (API level 26) to identify an application instance. Note that starting at Android 8.0 (API level 26), `ANDROID_ID` is no longer a device unique ID. Instead, it becomes scoped by the combination of app signing key, user and device. So validating `ANDROID_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `ANDROID_ID` will change and it won't be able to recognize old users devices. Therefore, it's better to store the `ANDROID_ID` encrypted and privately in a private a shared preferences file using a randomly generated key from the `AndroidKeyStore` and preferably AES_GCM encryption. The moment the app signature changes, the application can check for a delta and register the new `ANDROID_ID`. The moment this new ID changes without a new application signing key, it should indicate that something else is wrong.
+Next, the device binding can be extended by signing requests with a key stored in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. 
+You should also test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
 
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.

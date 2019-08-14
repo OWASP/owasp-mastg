@@ -4,7 +4,7 @@ Protecting authentication tokens, private information, and other sensitive data 
 
 The guidelines for saving data can be summarized quite easily: Public data should be available to everyone, but sensitive and private data must be protected, or, better yet, kept out of device storage.
 
-Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "Identifying Sensitive Data" section of the chapter "Mobile App Security Testing".
+Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section of the chapter "Mobile App Security Testing".
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
 
@@ -404,7 +404,7 @@ Then configure ProGuard to strip its calls.
 
 #### Dynamic Analysis
 
-Use all the mobile app functions at least once, then identify the application's data directory and look for log files (`/data/data/<package-name>`). Check the application logs to determine whether log data has been generated; some mobile applications create and store their own logs in the data directory.  
+Use all the mobile app functions at least once, then identify the application's data directory and look for log files (`/data/data/<package-name>`). Check the application logs to determine whether log data has been generated; some mobile applications create and store their own logs in the data directory.
 
 Many application developers still use `System.out.println` or `printStackTrace` instead of a proper logging class. Therefore, your testing strategy must include all output generated while the application is starting, running and closing. To determine what data is directly printed by `System.out.println` or `printStackTrace`, you can use [`Logcat`](https://developer.android.com/tools/debugging/debugging-log.html "Debugging with Logcat") as explained in the chapter "Basic Security Testing", section "Monitoring System Logs".
 
@@ -439,7 +439,7 @@ Check the source code for API calls and third-party library functions or SDKs. R
 
 Review loaded libraries to determine whether they are necessary and whether they are out of date or contain known vulnerabilities.
 
-All data sent to third-party services should be anonymized. Data (such as application IDs) that can be traced to a user account or session should not be sent to a third party.  
+All data sent to third-party services should be anonymized. Data (such as application IDs) that can be traced to a user account or session should not be sent to a third party.
 
 #### Dynamic Analysis
 
@@ -939,7 +939,7 @@ This doesn't, however, guarantee that the content will be overwritten at run tim
 
 There is no silver bullet for this problem because different solutions have different consequences. For example, you may perform additional calculations (e.g., XOR the data into a dummy buffer), but you'll have no way to know the extent of the compiler's optimization analysis. On the other hand, using the overwritten data outside the compiler's scope (e.g., serializing it in a temp file) guarantees that it will be overwritten but obviously impacts performance and maintenance.
 
-Then, using `Arrays.fill` to overwrite the data is a bad idea because the method is an obvious hooking target (see the chapter "Tampering and Reverse Engineering on Android" for more details).
+Then, using `Arrays.fill` to overwrite the data is a bad idea because the method is an obvious hooking target (see the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more details).
 
 The final issue with the above example is that the content was overwritten with zeroes only. You should try to overwrite critical objects with random data or content from non-critical objects. This will make it really difficult to construct scanners that can identify sensitive data on the basis of its management.
 
