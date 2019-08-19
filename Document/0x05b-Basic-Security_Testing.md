@@ -312,7 +312,7 @@ You can also use apktool to repackage decoded resources back to binary APK/JAR. 
 
 ##### Apkx
 
-`Apkx` is a Python wrapper to popular free dex converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
+`Apkx` is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
 
 ```shell
 $ git clone https://github.com/b-mueller/apkx
@@ -1677,7 +1677,7 @@ FCM can use either XMPP or HTTP to communicate with the Google backend.
 
 FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only port 5228 is used.
 
-- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
+- Configure local port forwarding for the ports used by FCM. The following example applies to macOS:
 
 ```shell
 $ echo "
@@ -1693,7 +1693,7 @@ rdr pass inet proto tcp from any to any port 5230 -> 127.0.0.1 port 8080
 
 For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-messaging/xmpp-server-ref "Firebase via XMPP") 5235 (Production) and 5236 (Testing).
 
-- Configure local port forwarding for the ports used by FCM. The following example applies to Mac OS X:
+- Configure local port forwarding for the ports used by FCM. The following example applies to macOS:
 
 ```shell
 $ echo "
@@ -2056,7 +2056,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
 - SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
 - Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
-- Android's .apk format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
 

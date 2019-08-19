@@ -563,7 +563,7 @@ Apps can be installed on an Android device from a variety of sources: locally vi
 
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this minimizes the time between the beginning of the publishing process and public app availability.
 
-Publishing an app is quite straightforward; the main operation is making the signed .apk file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://developer.android.com/distribute/googleplay/start.html "Review the checklists to plan your launch").
+Publishing an app is quite straightforward; the main operation is making the signed APK file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://developer.android.com/distribute/googleplay/start.html "Review the checklists to plan your launch").
 
 ### Android Application Attack surface
 

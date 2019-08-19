@@ -327,7 +327,7 @@ When a library is found to contain vulnerabilities, then the following reasoning
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build-process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
-When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
+When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or Proguard are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
 
 ##### Detecting the licenses used by the libraries of the application
 
@@ -358,7 +358,7 @@ When a library contains a license in which the application IP needs to be open-s
 
 Note: In case of a hybrid app, please check the build tools used: most of them do have a license enumeration plugin to find the licenses being used.
 
-When the sources are not available, one can decompile the app and check the jar files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
+When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 
 #### Dynamic Analysis
 
@@ -515,7 +515,7 @@ proguard-rules.pro
 
 #### Dynamic Analysis
 
-If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting dex code to a jar file (e.g., dex2jar). The jar file can be opened with tools (such as JD-GUI) that can be used to make sure that class, method, and variable names are not human-readable.
+If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting DEX code to a JAR file (e.g., dex2jar). The JAR file can be opened with tools (such as JD-GUI) that can be used to make sure that class, method, and variable names are not human-readable.
 
 Sample obfuscated code block:
 

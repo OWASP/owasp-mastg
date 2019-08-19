@@ -143,7 +143,7 @@ After adding all the suggested repositories above you can install the following 
 - IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
 - Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
 - Grep: Handy tool to filter lines.
-- Gzip: A well known zip utility.
+- Gzip: A well known ZIP utility.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
 - Open for iOS 11: Tool required to make Needle Agent function.
 - PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
@@ -852,7 +852,7 @@ You can also directly open passionfruit and after selecting your iOS device you'
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
-You can unzip the IPA using the standard `unzip` or any other zip utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```shell
 $ ls -1 Payload/iGoat-Swift.app

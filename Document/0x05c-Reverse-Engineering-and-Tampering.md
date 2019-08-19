@@ -283,7 +283,7 @@ If you own an IDA Pro license, open the file and once in the "Load new file" dia
 
 For white-box source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.
 
-During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's .apk format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
+During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's APK format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
 
 #### Manual (Reversed) Code Review
 
