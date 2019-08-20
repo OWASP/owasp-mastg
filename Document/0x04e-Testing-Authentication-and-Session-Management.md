@@ -97,16 +97,6 @@ Password strength is a key concern when passwords are used for authentication. T
 
 Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
-- Password Length:
-  - Minimum password length (10 characters) should be enforced.
-  - Maximum password length should not be too short because it will prevent users from creating passphrases. The typical maximum length is 128 characters.
-
-- Password Complexity - The password must meet at least three out of the following four complexity rules:
-  - at least one uppercase character (A-Z)
-  - at least one lowercase character (a-z)
-  - at least one digit (0-9)
-  - at least one special character
-
 <br/>
 <br/>
 
@@ -130,50 +120,6 @@ The score is defined as follows and can be used for a password strength bar for 
 3 # safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
 
 4 # very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
-```
-
-Regular Expressions are also often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
-
-```javascript
-function(password) {
-  if (password.length < owasp.configs.minLength) {
-    return 'The password must be at least ' + owasp.configs.minLength + ' characters long.';
-  }
-},
-
-// forbid repeating characters
-function(password) {
-  if (/(.)\1{2,}/.test(password)) {
-    return 'The password may not contain sequences of three or more repeated characters.';
-  }
-},
-
-function(password) {
-  if (!/[a-z]/.test(password)) {
-    return 'The password must contain at least one lowercase letter.';
-  }
-},
-
-// require at least one uppercase letter
-function(password) {
-  if (!/[A-Z]/.test(password)) {
-    return 'The password must contain at least one uppercase letter.';
-  }
-},
-
-// require at least one number
-function(password) {
-  if (!/[0-9]/.test(password)) {
-    return 'The password must contain at least one number.';
-  }
-},
-
-// require at least one special character
-function(password) {
-  if (!/[^A-Za-z0-9]/.test(password)) {
-    return 'The password must contain at least one special character.';
-  }
-},
 ```
 
 ##### Login Throttling
