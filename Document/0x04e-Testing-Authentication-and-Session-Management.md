@@ -122,6 +122,22 @@ The score is defined as follows and can be used for a password strength bar for 
 4 # very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
 ```
 
+Note that zxcvbn can be implemented by the app-developer as well using the Java (or other) implementation in order to guide the user into suing a strongpassword.
+
+#### Have I Been Pwned: PwnedPasswords
+
+In order to further reduce the likelihood of a succesfull dictionary attack against a sinlge factor authentication scheme (e.g. password only), you can verify whether a password has been used too often. This can be done using services offered through api.pwnedpasswords.com based on [Have i been pwned?](https://haveibeenpwned.com "';--have i been pwned?") as setup by Troy Hunt.
+Based on the SHA-1 hash of a possible password candidate, the api can return whether how many times the hash of the given password has been found in the various breaches collected by the service. The workflow takes the following steps:
+
+1. Encode the user input to UTF-8 (eg: the password `test`)
+2. Take the SHA-1 hash of the result of step 1. (eg: the hash of `test` is `A94A8FE5CCB19BA61C4C0873D391E987982FBBD3`)
+3. Copy the first 5 characters (the hash prefix) and use them for a range-search: `http GET https://api.pwnedpasswords.com/range/A94A8`
+4. Iterate through the result and look for the rest of the hash (e.g. is `FE5CCB19BA61C4C0873D391E987982FBBD3` part of the returned list)? If it is not part of the list, then the password with a given hash has not been found. Otherwise, as in case of `FE5CCB19BA61C4C0873D391E987982FBBD3`, it will have a counter to show how many times it has been found in breaches (e.g.: `FE5CCB19BA61C4C0873D391E987982FBBD3:76479`).
+
+Further documentation on the API of the service can be found [online](https://haveibeenpwned.com/API/v3 "Api Docs V3").
+
+Note that this API is best used by the app-developer when the user needs to register and enter a password to check whether it is a recommended password or not.
+
 ##### Login Throttling
 
 Check the source code for a throttling procedure: a counter for logins attempted in a short period of time with a given user name and a method to prevent login attempts after the maximum number of attempts has been reached. After an authorized login attempt, the error counter should be reset.
@@ -134,9 +150,6 @@ Observe the following best practices when implementing anti-brute-force controls
 - Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.
 
 Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
-
-#### Have I Been Pwned
-In order to further reduce the likelihood of a succesfull dictionary attack against a sinlge factor authentication scheme (e.g. password only), can be the application of TODO CONTINUE HERE: https://haveibeenpwned.com/API/v2#PwnedPasswords
 
 #### Dynamic Testing (MSTG-AUTH-6)
 
