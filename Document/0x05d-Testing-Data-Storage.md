@@ -1049,7 +1049,16 @@ Refer to the `SecureSecretKey` example above for an example `Editable` implement
 
 Static analysis will help you identify potential problems, but it can't provide statistics about how long data has been exposed in memory, nor can it help you identify problems in closed-source dependencies. This is where dynamic analysis comes into play.
 
-There are basically two ways to analyze the memory of a process: live analysis via a debugger and analyzing one or more memory dumps. Because the former is more of a general debugging approach, we will concentrate on the latter.
+There are basically two ways to analyze the memory of a process: live analysis via a debugger/dynamic instrumentation and analyzing one or more memory dumps.
+
+##### Runtime Memory Analysis
+
+##### Retrieving and Analyzing a Memory Dump
+
+Use objection or Fridump as described in section "[]( "")" of chapter "...".
+
+
+##### Explicitly Dumping and Analyzing the Java Heap
 
 For rudimentary analysis, you can use Android Studio's built-in tools. They are on the _Android Monitor_ tab. To dump memory, select the device and app you want to analyze and click _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory, which is on the app's project path.
 
