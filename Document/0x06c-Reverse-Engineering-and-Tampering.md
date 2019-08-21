@@ -609,6 +609,385 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
+##### Process Exploration
+
+Process exploration is a very useful technique to test for sensitive data that might be present in the app memory.
+
+###### Memory Maps and Inspection
+
+You can use r2frida to retrieve information straight from runtime. Use the following command to attach r2frida to the iGoat-Swift app that should be running on your iPhone (connected per USB).
+
+```bash
+$ r2 frida://usb//iGoat-Swift
+```
+
+Memory maps:
+
+```bash
+[0x00000000]> \dm
+0x0000000100708000 - 0x000000010096c000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+0x000000010096c000 - 0x00000001009f4000 rw- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+0x00000001009f4000 - 0x0000000100a23000 r-- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+0x0000000100a24000 - 0x0000000100a2c000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/libswiftCoreFoundation.dylib
+0x0000000100a2c000 - 0x0000000100a30000 rw- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/libswiftCoreFoundation.dylib
+0x0000000100a30000 - 0x0000000100a34000 r-- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/libswiftCoreFoundation.dylib
+0x0000000100a34000 - 0x0000000100a3c000 rw-
+0x0000000100a3c000 - 0x0000000100a40000 r--
+0x0000000100a40000 - 0x0000000100a44000 r-x /usr/lib/TweakInject.dylib
+```
+
+Loaded libraries:
+
+```shell
+[0x00000000]> \il
+0x00000001002a0000 iGoat-Swift
+0x00000001005d4000 TweakInject.dylib
+0x00000001862c0000 SystemConfiguration
+0x00000001847c0000 libc++.1.dylib
+0x00000001854a2000 libz.1.dylib
+0x00000001859f1000 libsqlite3.dylib
+0x0000000185ed9000 Foundation
+0x000000018483c000 libobjc.A.dylib
+0x00000001847be000 libSystem.B.dylib
+0x0000000185b77000 CFNetwork
+0x000000018fbdf000 CloudKit
+0x0000000187d64000 CoreData
+0x00000001854b4000 CoreFoundation
+```
+
+You can also use objection to display the current process' loaded modules.
+
+```shell
+OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # memory list modules
+Save the output by adding `--json modules.json` to this command
+
+Name                              Base         Size                  Path
+--------------------------------  -----------  --------------------  ------------------------------------------------------------------------------
+iGoat-Swift                       0x1002a0000  2506752 (2.4 MiB)     /var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGo...
+TweakInject.dylib                 0x1005d4000  16384 (16.0 KiB)      /usr/lib/TweakInject.dylib
+SystemConfiguration               0x1862c0000  446464 (436.0 KiB)    /System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguratio...
+libc++.1.dylib                    0x1847c0000  368640 (360.0 KiB)    /usr/lib/libc++.1.dylib
+libz.1.dylib                      0x1854a2000  73728 (72.0 KiB)      /usr/lib/libz.1.dylib
+libsqlite3.dylib                  0x1859f1000  1437696 (1.4 MiB)     /usr/lib/libsqlite3.dylib
+Foundation                        0x185ed9000  3121152 (3.0 MiB)     /System/Library/Frameworks/Foundation.framework/Foundation
+libobjc.A.dylib                   0x18483c000  7061504 (6.7 MiB)     /usr/lib/libobjc.A.dylib
+libSystem.B.dylib                 0x1847be000  8192 (8.0 KiB)        /usr/lib/libSystem.B.dylib
+CFNetwork                         0x185b77000  3547136 (3.4 MiB)     /System/Library/Frameworks/CFNetwork.framework/CFNetwork
+CloudKit                          0x18fbdf000  1097728 (1.0 MiB)     /System/Library/Frameworks/CloudKit.framework/CloudKit
+CoreData                          0x187d64000  3145728 (3.0 MiB)     /System/Library/Frameworks/CoreData.framework/CoreData
+CoreFoundation                    0x1854b4000  3751936 (3.6 MiB)     /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation
+```
+
+###### In-Memory Search
+
+```bash
+$ r2 frida://usb//iGoat-Swift
+
+[0x00000000]> \/ owasp-mstg
+Searching 10 bytes: 6f 77 61 73 70 2d 6d 73 74 67
+Searching 10 bytes in [0x0000000100708000-0x000000010096c000]
+...
+hits: 3
+0x1c0019d20 hit0_0 owasp-mstg
+0x1c0019ee0 hit0_1 owasp-mstg
+0x1c4474980 hit0_2 owasp-mstg
+
+[0x00000000]> ps @hit0_0
+owasp-mstg
+[0x00000000]> \/w owasp-mstg
+Searching 20 bytes: 6f 00 77 00 61 00 73 00 70 00 2d 00 6d 00 73 00 74 00 67 00
+Searching 20 bytes in [0x0000000100708000-0x000000010096c000]
+...
+hits: 3
+0x143daec40 hit1_0 6f0077006100730070002d006d00730074006700
+0x1448ddc21 hit1_1 6f0077006100730070002d006d00730074006700
+0x1448ea3e1 hit1_2 6f0077006100730070002d006d00730074006700
+```
+
+Additionally you may want to know in which memory region is located:
+
+```shell
+[0x00000000]> s hit0_0
+
+[0x1c0019d20]> \dm.
+0x00000001c0000000 - 0x00000001c8000000 rw-
+```
+
+This can be very useful to quickly know if the string is located in the main app binary, inside a shared library or in another region.
+
+See r2frida's help on the search command (`\/?`) for more information and a list of options. The following shows only a subset of them:
+
+```bash
+[0x1c0670a80]> \/?
+ /      search
+ /j     search json
+ /w     search wide
+ /wj    search wide json
+ /x     search hex
+ /xj    search hex json
+...
+```
+
+###### Memory Dump
+
+Wether you are using a jailbroken with Frida-server installed or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices").
+
+With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
+
+```shell
+$ objection explore
+
+iPhone on (iPhone: 10.3.1) [usb] # memory dump all /Users/foo/memory_iOS/memory
+Dumping 768.0 KiB from base: 0x1ad200000  [####################################]  100%
+Memory dumped to file: /Users/foo/memory_iOS/memory
+```
+
+Alternatively you can use Fridump.
+
+> The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
+>
+> If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
+>
+>  ```shell
+>  $ python fridump.py -u Gadget
+>
+>  Can't connect to App. Have you connected the device?
+>  ```
+
+First, you need the name of the app you want to dump, which you can get with `frida-ps`.
+
+```shell
+$ frida-ps -U
+ PID  Name
+----  ------
+1026  Gadget
+```
+
+Afterwards, specify the app name in Fridump.
+
+```shell
+$ python3 fridump.py -u Gadget -s
+
+Current Directory: /Users/foo/PentestTools/iOS/fridump
+Output directory is set to: /Users/foo/PentestTools/iOS/fridump/dump
+Creating directory...
+Starting Memory dump...
+Progress: [##################################################] 100.0% Complete
+
+Running strings on all files:
+Progress: [##################################################] 100.0% Complete
+
+Finished! Press Ctrl+C
+```
+
+When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is stored in Fridump's dump directory.
+
+In both cases, if you open the file in radare2 you can use its search command. Note that first we do a standard string search which doesn't succeed and next we search for a [wide string](https://en.wikipedia.org/wiki/Wide_character "Wide character"), which successfully finds our string "owasp-mstg".
+
+```bash
+$ r2 memory_ios
+[0x00000000]> / owasp-mstg
+Searching 10 bytes in [0x0-0x628c000]
+hits: 0
+[0x00000000]> /w owasp-mstg
+Searching 20 bytes in [0x0-0x628c000]
+hits: 1
+0x0036f800 hit4_0 6f0077006100730070002d006d00730074006700
+```
+
+Once found we can seek to its address using `s 0x0036f800`  or `s hit4_0` and print it using `psw` (which stands for _print string wide_) or use `px` to print its raw hexadecimal values:
+
+```bash
+[0x0036f800]> psw
+owasp-mstg
+
+[0x0036f800]> px 48
+- offset -   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0123456789ABCDEF
+0x0036f800  6f00 7700 6100 7300 7000 2d00 6d00 7300  o.w.a.s.p.-.m.s.
+0x0036f810  7400 6700 0000 0000 0000 0000 0000 0000  t.g.............
+0x0036f820  0000 0000 0000 0000 0000 0000 0000 0000  ................
+```
+
+Note that in order to find this string using the `strings` command you'll have to specify an encoding using the `-e` flag and in this case `l` for 16-bit little-endian character.
+
+```bash
+$ strings -e l memory_ios | grep owasp-mstg
+owasp-mstg
+```
+
+###### Runtime Reverse Engineering
+
+Show target information:
+
+```shell
+[0x1c0670a80]> \i
+arch                arm
+bits                64
+os                  darwin
+pid                 2166
+uid                 501
+objc                true
+runtime             V8
+java                false
+cylang              true
+pageSize            16384
+pointerSize         8
+codeSigningPolicy   optional
+isDebuggerAttached  false
+cwd                 /
+```
+
+List all imports:
+
+> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `\ii iGoat-Swift~..`
+
+```shell
+\ii iGoat-Swift
+0x18481beb0 f _ZNSt12length_errorD1Ev /usr/lib/libc++.1.dylib
+0x1b6190480 v _ZNSt3__14cerrE /usr/lib/libc++.1.dylib
+0x1b6190718 v _ZNSt3__15ctypeIcE2idE /usr/lib/libc++.1.dylib
+0x1aeaf24a0 v _ZTISt12length_error /usr/lib/libc++.1.dylib
+0x1aeaf22c0 v _ZTISt9exception /usr/lib/libc++.1.dylib
+0x18481b6dc f _Znwm /usr/lib/libc++.1.dylib
+0x18481b6dc f _Znwm /usr/lib/libc++.1.dylib
+0x184835700 f __cxa_pure_virtual /usr/lib/libc++.1.dylib
+0x1848345f8 f __gxx_personality_v0 /usr/lib/libc++.1.dylib
+0x1aecf93e8 v NSCocoaErrorDomain /System/Library/Frameworks/Foundation.framework/Foundation
+0x1aecf9a98 v NSFileCreationDate /System/Library/Frameworks/Foundation.framework/Foundation
+0x1aecf9a30 v NSFileModificationDate /System/Library/Frameworks/Foundation.framework/Foundation
+0x1aecf9378 v NSFilePathErrorKey /System/Library/Frameworks/Foundation.framework/Foundation
+0x1aecf9af0 v NSFileProtectionComplete /System/Library/Frameworks/Foundation.framework/Foundation
+0x1aecf9af8 v NSFileProtectionCompleteUnlessOpen /System/Library/Frameworks/Foundation.framework/Foundation
+...
+```
+
+List all exports or from any other module (e.g. `\iE /usr/lib/libc++.1.dylib~..`):
+
+```shell
+[0x1c0670a80]> \iE iGoat-Swift
+0x1002a0000 v _mh_execute_header
+```
+
+Example with boringsssl:
+
+```shell
+[0x1c0670a80]> \il~ssl
+0x00000001863a6000 libboringssl.dylib
+[0x1c0670a80]> \ii libboringssl.dylib~+aes
+0x184f1efa8 f ccaes_cbc_decrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f184 f ccaes_cbc_encrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f318 f ccaes_cfb_decrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f6d0 f ccaes_cfb_encrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f6dc f ccaes_ctr_crypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f744 f ccaes_ecb_decrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f750 f ccaes_ecb_encrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f75c f ccaes_gcm_decrypt_mode /usr/lib/libSystem.B.dylib
+0x184f1f804 f ccaes_gcm_encrypt_mode /usr/lib/libSystem.B.dylib
+0x184f20d0c f ccaes_ofb_crypt_mode /usr/lib/libSystem.B.dylib
+[0x1c0670a80]> \iE libboringssl.dylib~+aes
+0x1863d6efc f EVP_aead_aes_128_gcm
+0x1863d6f08 f EVP_aead_aes_256_gcm
+```
+
+List classes:
+
+> Use `~+` to do a case insensitive grep.
+
+```shell
+[0x00000000]> \ic~+passcode
+PSPasscodeField
+_UITextFieldPasscodeCutoutBackground
+UIPasscodeField
+PasscodeFieldCell
+...
+```
+
+List class fields:
+
+```shell
+[0x19687256c]> \ic UIPasscodeField
+0x000000018eec6680 - becomeFirstResponder
+0x000000018eec5d78 - appendString:
+0x000000018eec6650 - canBecomeFirstResponder
+0x000000018eec6700 - isFirstResponder
+0x000000018eec6a60 - hitTest:forEvent:
+0x000000018eec5384 - setKeyboardType:
+0x000000018eec5c8c - setStringValue:
+0x000000018eec5c64 - stringValue
+...
+```
+
+Imagine that you are interested into `0x000000018eec5c8c - setStringValue:`. You can seek to that address with `s 0x000000018eec5c8c` and analyze that function `af`:
+
+```shell
+[0x18eec5c8c]> pd 10
+╭ (fcn) fcn.18eec5c8c 35
+│   fcn.18eec5c8c (int32_t arg1, int32_t arg3);
+│ bp: 0 (vars 0, args 0)
+│ sp: 0 (vars 0, args 0)
+│ rg: 2 (vars 0, args 2)
+│           0x18eec5c8c      f657bd         not byte [rdi - 0x43]      ; arg1
+│           0x18eec5c8f      a9f44f01a9     test eax, 0xa9014ff4
+│           0x18eec5c94      fd             std
+│       ╭─< 0x18eec5c95      7b02           jnp 0x18eec5c99
+│       │   0x18eec5c97      a9fd830091     test eax, 0x910083fd
+│           0x18eec5c9c      f30300         add eax, dword [rax]
+│           0x18eec5c9f      aa             stosb byte [rdi], al
+│       ╭─< 0x18eec5ca0      e003           loopne 0x18eec5ca5
+│       │   0x18eec5ca2      02aa9b494197   add ch, byte [rdx - 0x68beb665] ; arg3
+╰           0x18eec5ca8      f4             hlt
+[0x18eec5c8c]> 
+```
+
+However, it would be better if we actually could see the actual symbols and information, for that we can import it from r2frida to radare2 using `.\ic* UIPasscodeField`:
+
+we will switch from this:
+
+```shell
+[0x18eec5c64]> af
+[0x18eec5c64]> pd 10
+╭ (fcn) fcn.18eec5c64 88
+│   fcn.18eec5c64 (int32_t arg1, int32_t arg3, int32_t arg4);
+│ bp: 1 (vars 1, args 0)
+│ sp: 0 (vars 0, args 0)
+│ rg: 3 (vars 0, args 3)
+│       ╎   0x18eec5c64      fd             std
+│       ╰─< 0x18eec5c65      7bbf           jnp 0x18eec5c26
+│           0x18eec5c67      a9fd030091     test eax, 0x910003fd
+│           0x18eec5c6c      c8f512b0       enter 0x12f5, 0xffffffffffffffb0
+│           0x18eec5c70      084d86         or byte [var_7ah], cl
+│           0x18eec5c73      b9006868f8     mov ecx, 0xf8686800
+│           0x18eec5c78      28f3           sub bl, dh
+│           0x18eec5c7a      129001d143f9   adc dl, byte [rax - 0x6bc2eff]
+│           0x18eec5c80      97             xchg eax, edi              ; arg1
+│           0x18eec5c81      494197         xchg eax, r15d
+```
+
+To:
+
+```
+[0x00000000]> .\ic* UIPasscodeField
+[0x00000000]> s 0x000000018eec5c8c
+[0x18eec5c8c]> af
+[0x18eec5c8c]> pd 10
+╭ (fcn) sym.objc.UIPasscodeField.setStringValue 35
+│   sym.objc.UIPasscodeField.setStringValue (int32_t arg1, int32_t arg3);
+│ bp: 0 (vars 0, args 0)
+│ sp: 0 (vars 0, args 0)
+│ rg: 2 (vars 0, args 2)
+│           0x18eec5c8c      f657bd         not byte [rdi - 0x43]      ; arg1
+│           0x18eec5c8f      a9f44f01a9     test eax, 0xa9014ff4
+│           0x18eec5c94      fd             std
+│       ╭─< 0x18eec5c95      7b02           jnp 0x18eec5c99
+│       │   0x18eec5c97  ~   a9fd830091     test eax, 0x910083fd
+│       ╰─> 0x18eec5c99      830091         add dword [rax], 0xffffff91
+│           0x18eec5c9c      f30300         add eax, dword [rax]
+│           0x18eec5c9f      aa             stosb byte [rdi], al
+│       ╭─< 0x18eec5ca0      e003           loopne 0x18eec5ca5
+│       │   0x18eec5ca2  ~   02aa9b494197   add ch, byte [rdx - 0x68beb665] ; arg3
+[0x18eec5c8c]> 
+```
+
 ### References
 
 - Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
