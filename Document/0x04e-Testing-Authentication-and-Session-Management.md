@@ -134,7 +134,7 @@ Based on the SHA-1 hash of a possible password candidate, the API returns the nu
 3. Copy the first 5 characters (the hash prefix) and use them for a range-search: `http GET https://api.pwnedpasswords.com/range/A94A8`
 4. Iterate through the result and look for the rest of the hash (e.g. is `FE5CCB19BA61C4C0873D391E987982FBBD3` part of the returned list?). If it is not part of the returned list, then the password for the given hash has not been found. Otherwise, as in case of `FE5CCB19BA61C4C0873D391E987982FBBD3`, it will return a counter showing how many times it has been found in breaches (e.g.: `FE5CCB19BA61C4C0873D391E987982FBBD3:76479`).
 
-Further documentation on the API of the service can be found [online](https://haveibeenpwned.com/API/v3 "Api Docs V3").
+Further documentation on the Pwned Passwords API can be found [online](https://haveibeenpwned.com/API/v3 "Api Docs V3").
 
 Note that this API is best used by the app-developer when the user needs to register and enter a password to check whether it is a recommended password or not.
 
