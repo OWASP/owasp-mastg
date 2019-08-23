@@ -438,6 +438,7 @@ Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "
 
 ### Testing OAuth 2.0 Flows (MSTG-AUTH-1 and MSTG-AUTH-3)
 
+//TODO: ADD https://github.com/OWASP/owasp-mstg/issues/1402 AND https://github.com/OWASP/owasp-mstg/issues/1174 
 [OAuth 2.0 defines a delegation protocol for conveying authorization decisions across APIs and a network of web-enabled applications](https://oauth.net/articles/authentication/ "OAuth 2.0 delegation protocols"). It is used in a variety of applications, including user authentication applications.
 
 Common uses for OAuth2 include:
