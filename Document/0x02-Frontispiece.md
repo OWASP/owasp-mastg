@@ -34,13 +34,13 @@ Sven is an experienced web and mobile penetration tester and assessed everything
 
 Jeroen is a principal security architect at Xebia with a passion for mobile security and risk management. He has supported companies as a security coach, a security engineer and as a full-stack developer, which makes him a jack of all trades. He loves explaining technical subjects: from security issues to programming challenges.
 
-### Co-Authors
-
-Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
-
 #### Carlos Holguera
 
 Carlos is a security engineer leading the mobile penetration testing team at ESCRYPT. He has gained many years of hands-on experience in the field of security testing for mobile apps and embedded systems such as automotive control units and IoT devices. He is passionate about reverse engineering and dynamic instrumentation of mobile apps and is continuously learning and sharing his knowledge.
+
+### Co-Authors
+
+Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
 
 #### Romuald Szkudlarek
 
