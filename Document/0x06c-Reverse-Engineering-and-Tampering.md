@@ -774,7 +774,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ###### Memory Dump
 
-Wether you are using a jailbroken with frida-server installed or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices").
+Wether you are using a jailbroken device with frida-server installed or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices").
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
