@@ -820,10 +820,11 @@ $ rabin2 -ZZ memory > strings.txt
 
 Open `strings.txt` in your favorite editor and dig through it to identify sensitive information.
 
-However if you're rather focusing on binary data, you'd rather want to use radare2 and its search capabilities. See radare2's help on the search command (`/?`) for more information and a list of options. The following shows only a subset of them:
+However if you'd like to inspect other kind of data, you'd rather want to use radare2 and its search capabilities. See radare2's help on the search command (`/?`) for more information and a list of options. The following shows only a subset of them:
 
 ```bash
-$ r2 --
+$ r2 <name_of_your_dump_file>
+
 [0x00000000]> /?
 Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 |Use io.va for searching in non virtual addressing spaces
@@ -841,7 +842,9 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 
 ##### Runtime Memory Analysis
 
-Using r2frida you can analyze and inspect the app's memory while it's running and without needing to dump it.
+Using r2frida you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
+
+For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".
 
 ### References
 

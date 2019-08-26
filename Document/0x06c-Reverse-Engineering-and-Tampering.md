@@ -611,51 +611,68 @@ Of course, this example illustrates only one of the things you can do with Frida
 
 ##### Process Exploration
 
-Process exploration is a very useful technique to test for sensitive data that might be present in the app memory.
+When testing an app, process exploration can provide the tester with deep insights into the app process memory. It can be achieved via runtime instrumentation and allows to perform tasks such as:
 
-###### Memory Maps and Inspection
+- Retrieving the memory map and loaded libraries.
+- Searching for occurrences of certain data.
+- After doing a search, obtaining the location of a certain offset in the memory map.
+- Performing a memory dump and inspect or reverse engineer the binary data _offline_.
+- Reverse engineering a binary or Framework while it's running.
 
-You can use r2frida to retrieve information straight from runtime. Use the following command to attach r2frida to the iGoat-Swift app that should be running on your iPhone (connected per USB).
+As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
+
+In the following sections you will be using r2frida to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. iGoat-Swift) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
 $ r2 frida://usb//iGoat-Swift
 ```
 
-Memory maps:
+> See all options with `r2 frida://?`.
+
+Once in the r2frida session, all commands start with `\`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `\i`.
+
+###### Memory Maps and Inspection
+
+You can retrieve the app's memory maps by running `\dm`:
 
 ```bash
 [0x00000000]> \dm
-0x0000000100708000 - 0x000000010096c000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
-0x000000010096c000 - 0x00000001009f4000 rw- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
-0x00000001009f4000 - 0x0000000100a23000 r-- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
-0x0000000100a24000 - 0x0000000100a2c000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/libswiftCoreFoundation.dylib
-0x0000000100a2c000 - 0x0000000100a30000 rw- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/libswiftCoreFoundation.dylib
-0x0000000100a30000 - 0x0000000100a34000 r-- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/libswiftCoreFoundation.dylib
-0x0000000100a34000 - 0x0000000100a3c000 rw-
-0x0000000100a3c000 - 0x0000000100a40000 r--
-0x0000000100a40000 - 0x0000000100a44000 r-x /usr/lib/TweakInject.dylib
+0x0000000100b7c000 - 0x0000000100de0000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+0x0000000100de0000 - 0x0000000100e68000 rw- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+0x0000000100e68000 - 0x0000000100e97000 r-- /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+...
+0x0000000100ea8000 - 0x0000000100eb0000 rw-
+0x0000000100eb0000 - 0x0000000100eb4000 r--
+0x0000000100eb4000 - 0x0000000100eb8000 r-x /usr/lib/TweakInject.dylib
+0x0000000100eb8000 - 0x0000000100ebc000 rw- /usr/lib/TweakInject.dylib
+0x0000000100ebc000 - 0x0000000100ec0000 r-- /usr/lib/TweakInject.dylib
+0x0000000100f60000 - 0x00000001012dc000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/Frameworks/Realm.framework/Realm
 ```
 
-Loaded libraries:
+While you're searching or exploring the app memory, you can always verify where you're located in each moment (where your current offset is located) in the memory map. Instead of noting and searching for the memory address in this list you can simply run `\dm.`. You'll find an example in the following section "In-Memory Search".
+
+If you're only interested into the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
 
 ```shell
 [0x00000000]> \il
-0x00000001002a0000 iGoat-Swift
-0x00000001005d4000 TweakInject.dylib
+0x0000000100b7c000 iGoat-Swift
+0x0000000100eb4000 TweakInject.dylib
 0x00000001862c0000 SystemConfiguration
 0x00000001847c0000 libc++.1.dylib
-0x00000001854a2000 libz.1.dylib
-0x00000001859f1000 libsqlite3.dylib
 0x0000000185ed9000 Foundation
 0x000000018483c000 libobjc.A.dylib
 0x00000001847be000 libSystem.B.dylib
 0x0000000185b77000 CFNetwork
-0x000000018fbdf000 CloudKit
 0x0000000187d64000 CoreData
 0x00000001854b4000 CoreFoundation
+0x00000001861d3000 Security
+0x000000018ea1d000 UIKit
+0x0000000100f60000 Realm
 ```
 
-You can also use objection to display the current process' loaded modules.
+As you might expect you can correlate the addresses of the libraries with the memory maps: e.g. the main app binary iGoat-Swift is located at `0x0000000100b7c000` and the Realm Framework at `0x0000000100f60000`.
+
+You can also use objection to display the same information.
 
 ```shell
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # memory list modules
@@ -663,62 +680,20 @@ Save the output by adding `--json modules.json` to this command
 
 Name                              Base         Size                  Path
 --------------------------------  -----------  --------------------  ------------------------------------------------------------------------------
-iGoat-Swift                       0x1002a0000  2506752 (2.4 MiB)     /var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGo...
-TweakInject.dylib                 0x1005d4000  16384 (16.0 KiB)      /usr/lib/TweakInject.dylib
+iGoat-Swift                       0x100b7c000  2506752 (2.4 MiB)     /var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGo...
+TweakInject.dylib                 0x100eb4000  16384 (16.0 KiB)      /usr/lib/TweakInject.dylib
 SystemConfiguration               0x1862c0000  446464 (436.0 KiB)    /System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguratio...
 libc++.1.dylib                    0x1847c0000  368640 (360.0 KiB)    /usr/lib/libc++.1.dylib
-libz.1.dylib                      0x1854a2000  73728 (72.0 KiB)      /usr/lib/libz.1.dylib
-libsqlite3.dylib                  0x1859f1000  1437696 (1.4 MiB)     /usr/lib/libsqlite3.dylib
-Foundation                        0x185ed9000  3121152 (3.0 MiB)     /System/Library/Frameworks/Foundation.framework/Foundation
-libobjc.A.dylib                   0x18483c000  7061504 (6.7 MiB)     /usr/lib/libobjc.A.dylib
-libSystem.B.dylib                 0x1847be000  8192 (8.0 KiB)        /usr/lib/libSystem.B.dylib
-CFNetwork                         0x185b77000  3547136 (3.4 MiB)     /System/Library/Frameworks/CFNetwork.framework/CFNetwork
-CloudKit                          0x18fbdf000  1097728 (1.0 MiB)     /System/Library/Frameworks/CloudKit.framework/CloudKit
-CoreData                          0x187d64000  3145728 (3.0 MiB)     /System/Library/Frameworks/CoreData.framework/CoreData
-CoreFoundation                    0x1854b4000  3751936 (3.6 MiB)     /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation
 ```
 
 ###### In-Memory Search
 
-```bash
-$ r2 frida://usb//iGoat-Swift
+In-memory search is a very useful technique to test for sensitive data that might be present in the app memory.
 
-[0x00000000]> \/ owasp-mstg
-Searching 10 bytes: 6f 77 61 73 70 2d 6d 73 74 67
-Searching 10 bytes in [0x0000000100708000-0x000000010096c000]
-...
-hits: 3
-0x1c0019d20 hit0_0 owasp-mstg
-0x1c0019ee0 hit0_1 owasp-mstg
-0x1c4474980 hit0_2 owasp-mstg
-
-[0x00000000]> ps @hit0_0
-owasp-mstg
-[0x00000000]> \/w owasp-mstg
-Searching 20 bytes: 6f 00 77 00 61 00 73 00 70 00 2d 00 6d 00 73 00 74 00 67 00
-Searching 20 bytes in [0x0000000100708000-0x000000010096c000]
-...
-hits: 3
-0x143daec40 hit1_0 6f0077006100730070002d006d00730074006700
-0x1448ddc21 hit1_1 6f0077006100730070002d006d00730074006700
-0x1448ea3e1 hit1_2 6f0077006100730070002d006d00730074006700
-```
-
-Additionally you may want to know in which memory region is located:
-
-```shell
-[0x00000000]> s hit0_0
-
-[0x1c0019d20]> \dm.
-0x00000001c0000000 - 0x00000001c8000000 rw-
-```
-
-This can be very useful to quickly know if the string is located in the main app binary, inside a shared library or in another region.
-
-See r2frida's help on the search command (`\/?`) for more information and a list of options. The following shows only a subset of them:
+See r2frida's help on the search command (`\/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
 
 ```bash
-[0x1c0670a80]> \/?
+[0x00000000]> \/?
  /      search
  /j     search json
  /w     search wide
@@ -728,9 +703,78 @@ See r2frida's help on the search command (`\/?`) for more information and a list
 ...
 ```
 
+You can adjust your search by using the search settings `\e~search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
+
+```bash
+[0x00000000]> \e~search
+e search.in=perm:r--
+e search.quiet=false
+```
+
+For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know it should be located in the main binary of the app:
+
+```bash
+[0x00000000]> \/ iGoat
+Searching 5 bytes: 69 47 6f 61 74
+Searching 5 bytes in [0x0000000100b7c000-0x0000000100de0000]
+...
+hits: 509
+0x100d7d332 hit2_0 iGoat_Swift24StringAnalysisExerciseVCC
+0x100d7d3b2 hit2_1 iGoat_Swift28BrokenCryptographyExerciseVCC
+0x100d7d442 hit2_2 iGoat_Swift23BackgroundingExerciseVCC
+0x100d7d4b2 hit2_3 iGoat_Swift9AboutCellC
+0x100d7d522 hit2_4 iGoat_Swift12FadeAnimatorV
+```
+
+Now take the first hit, seek to it and check your current location in the memory map:
+
+```bash
+[0x00000000]> s 0x100d7d332
+[0x100d7d332]> \dm.
+0x0000000100b7c000 - 0x0000000100de0000 r-x /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app/iGoat-Swift
+```
+
+As expected, you are located in the region of the main iGoat-Swift binary (r-x, read and execute). In the previous section, you saw that the main binary is located between `0x0000000100b7c000` and `0x0000000100e97000`.
+
+Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the iGoat-Swift app and navigate in the menu to Authentication -> Remote Authentication -> Start. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on Login just yet. You will perform two steps.
+
+```bash
+[0x00000000]> \/ owasp-mstg
+hits: 1
+0x1c06619c0 hit3_0 owasp-mstg
+
+[0x100d7d332]> s 0x1c06619c0
+[0x1c06619c0]> \dm.
+0x00000001c0000000 - 0x00000001c8000000 rw-
+```
+
+In fact, the string can be already found in memory in a rw- (read and write) region.
+
+Additionally, you can search for occurrences of the [wide version of the string](https://en.wikipedia.org/wiki/Wide_character "Wide character") (`\/w`) and, again, check their memory regions:
+
+> This time we run the `\dm.` command for all `@@` hits matching the glob `hit5_*`.
+
+```bash
+[0x00000000]> \/w owasp-mstg
+Searching 20 bytes: 6f 00 77 00 61 00 73 00 70 00 2d 00 6d 00 73 00 74 00 67 00
+Searching 20 bytes in [0x0000000100708000-0x000000010096c000]
+...
+hits: 2
+0x1020d1280 hit5_0 6f0077006100730070002d006d00730074006700
+0x1030c9c85 hit5_1 6f0077006100730070002d006d00730074006700
+
+[0x00000000]> \dm.@@ hit5_*
+0x0000000102000000 - 0x0000000102100000 rw-
+0x0000000103084000 - 0x00000001030cc000 rw-
+```
+
+They are in a different rw- region. Note that searching for the wide versions of strings is sometimes the only way to find them as you'll see in the following section.
+
+In-memory search can be very useful to quickly know if certain data is located in the main app binary, inside a shared library or in another region. You may also use it to test the behavior of the app regarding how the data is kept in memory. For instance, you could continue the previous example, this time clicking on Login and searching again for occurrences of the data. Also, you may check if you still can find those strings in memory after the login is completed to verify if this _sensitive data_ is wiped from memory after its use.
+
 ###### Memory Dump
 
-Wether you are using a jailbroken with Frida-server installed or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices").
+Wether you are using a jailbroken with frida-server installed or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices").
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
@@ -782,7 +826,7 @@ Finished! Press Ctrl+C
 
 When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is stored in Fridump's dump directory.
 
-In both cases, if you open the file in radare2 you can use its search command. Note that first we do a standard string search which doesn't succeed and next we search for a [wide string](https://en.wikipedia.org/wiki/Wide_character "Wide character"), which successfully finds our string "owasp-mstg".
+In both cases, if you open the file in radare2 you can use its search command (`/`). Note that first we do a standard string search which doesn't succeed and next we search for a [wide string](https://en.wikipedia.org/wiki/Wide_character "Wide character"), which successfully finds our string "owasp-mstg".
 
 ```bash
 $ r2 memory_ios
@@ -795,7 +839,7 @@ hits: 1
 0x0036f800 hit4_0 6f0077006100730070002d006d00730074006700
 ```
 
-Once found we can seek to its address using `s 0x0036f800`  or `s hit4_0` and print it using `psw` (which stands for _print string wide_) or use `px` to print its raw hexadecimal values:
+Next, we can seek to its address using `s 0x0036f800`  or `s hit4_0` and print it using `psw` (which stands for _print string wide_) or use `px` to print its raw hexadecimal values:
 
 ```bash
 [0x0036f800]> psw
@@ -817,10 +861,12 @@ owasp-mstg
 
 ###### Runtime Reverse Engineering
 
-Show target information:
+Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't need, want or can't retrieve the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
+
+We'll keep using the iGoat-Swift app, open a session with r2frida `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `\i` command:
 
 ```shell
-[0x1c0670a80]> \i
+[0x00000000]> \i
 arch                arm
 bits                64
 os                  darwin
@@ -837,61 +883,31 @@ isDebuggerAttached  false
 cwd                 /
 ```
 
-List all imports:
+Search all symbols of a certain module with `\is <lib>`, e.g. `\is libboringssl.dylib`.
 
-> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `\ii iGoat-Swift~..`
+The following does a case-insensitive search (grep) for symbols including "aes" (`~+aes`).
 
-```shell
-\ii iGoat-Swift
-0x18481beb0 f _ZNSt12length_errorD1Ev /usr/lib/libc++.1.dylib
-0x1b6190480 v _ZNSt3__14cerrE /usr/lib/libc++.1.dylib
-0x1b6190718 v _ZNSt3__15ctypeIcE2idE /usr/lib/libc++.1.dylib
-0x1aeaf24a0 v _ZTISt12length_error /usr/lib/libc++.1.dylib
-0x1aeaf22c0 v _ZTISt9exception /usr/lib/libc++.1.dylib
-0x18481b6dc f _Znwm /usr/lib/libc++.1.dylib
-0x18481b6dc f _Znwm /usr/lib/libc++.1.dylib
-0x184835700 f __cxa_pure_virtual /usr/lib/libc++.1.dylib
-0x1848345f8 f __gxx_personality_v0 /usr/lib/libc++.1.dylib
-0x1aecf93e8 v NSCocoaErrorDomain /System/Library/Frameworks/Foundation.framework/Foundation
-0x1aecf9a98 v NSFileCreationDate /System/Library/Frameworks/Foundation.framework/Foundation
-0x1aecf9a30 v NSFileModificationDate /System/Library/Frameworks/Foundation.framework/Foundation
-0x1aecf9378 v NSFilePathErrorKey /System/Library/Frameworks/Foundation.framework/Foundation
-0x1aecf9af0 v NSFileProtectionComplete /System/Library/Frameworks/Foundation.framework/Foundation
-0x1aecf9af8 v NSFileProtectionCompleteUnlessOpen /System/Library/Frameworks/Foundation.framework/Foundation
+```bash
+[0x00000000]> \is libboringssl.dylib~+aes
+0x1863d6ed8 s EVP_aes_128_cbc
+0x1863d6ee4 s EVP_aes_192_cbc
+0x1863d6ef0 s EVP_aes_256_cbc
+0x1863d6f14 s EVP_has_aes_hardware
+0x1863d6f1c s aes_init_key
+0x1863d728c s aes_cipher
+0x0 u ccaes_cbc_decrypt_mode
+0x0 u ccaes_cbc_encrypt_mode
 ...
 ```
 
-List all exports or from any other module (e.g. `\iE /usr/lib/libc++.1.dylib~..`):
+Or you might prefer to look into the imports/exports. For example:
 
-```shell
-[0x1c0670a80]> \iE iGoat-Swift
-0x1002a0000 v _mh_execute_header
-```
+- List all imports of the main binary: `\ii iGoat-Swift`.
+- List exports of the libc++.1.dylib library: `\iE /usr/lib/libc++.1.dylib`.
 
-Example with boringsssl:
+> For big binaries it's recommended to pipe the output to the internal less program by appending `~..`, i.e. `\ii iGoat-Swift~..` (if not, for this binary, you'd get almost 5000 lines printed to your terminal).
 
-```shell
-[0x1c0670a80]> \il~ssl
-0x00000001863a6000 libboringssl.dylib
-[0x1c0670a80]> \ii libboringssl.dylib~+aes
-0x184f1efa8 f ccaes_cbc_decrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f184 f ccaes_cbc_encrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f318 f ccaes_cfb_decrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f6d0 f ccaes_cfb_encrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f6dc f ccaes_ctr_crypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f744 f ccaes_ecb_decrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f750 f ccaes_ecb_encrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f75c f ccaes_gcm_decrypt_mode /usr/lib/libSystem.B.dylib
-0x184f1f804 f ccaes_gcm_encrypt_mode /usr/lib/libSystem.B.dylib
-0x184f20d0c f ccaes_ofb_crypt_mode /usr/lib/libSystem.B.dylib
-[0x1c0670a80]> \iE libboringssl.dylib~+aes
-0x1863d6efc f EVP_aead_aes_128_gcm
-0x1863d6f08 f EVP_aead_aes_256_gcm
-```
-
-List classes:
-
-> Use `~+` to do a case insensitive grep.
+The next thing you might want to look at are the classes:
 
 ```shell
 [0x00000000]> \ic~+passcode
@@ -917,7 +933,7 @@ List class fields:
 ...
 ```
 
-Imagine that you are interested into `0x000000018eec5c8c - setStringValue:`. You can seek to that address with `s 0x000000018eec5c8c` and analyze that function `af`:
+Imagine that you are interested into `0x000000018eec5c8c - setStringValue:`. You can seek to that address with `s 0x000000018eec5c8c`, analyze that function `af` and print 10 lines of its disassembly `pd 10`:
 
 ```shell
 [0x18eec5c8c]> pd 10
@@ -936,57 +952,35 @@ Imagine that you are interested into `0x000000018eec5c8c - setStringValue:`. You
 │       ╭─< 0x18eec5ca0      e003           loopne 0x18eec5ca5
 │       │   0x18eec5ca2      02aa9b494197   add ch, byte [rdx - 0x68beb665] ; arg3
 ╰           0x18eec5ca8      f4             hlt
-[0x18eec5c8c]> 
 ```
 
-However, it would be better if we actually could see the actual symbols and information, for that we can import it from r2frida to radare2 using `.\ic* UIPasscodeField`:
+Finally, instead of doing a full memory search for strings, you may want to retrieve the strings from a certain binary and filter them, as you'd do _offline_ with radare2. For this you have to find the binary, seek to it and then run the `\iz` command.
 
-we will switch from this:
+> It's recommended to apply a filter with a keyword `~<keyword>`/`~+<keyword>` to minimize the terminal output. If just want to explore all results you can also pipe them to the internal less `\iz~..`.
 
-```shell
-[0x18eec5c64]> af
-[0x18eec5c64]> pd 10
-╭ (fcn) fcn.18eec5c64 88
-│   fcn.18eec5c64 (int32_t arg1, int32_t arg3, int32_t arg4);
-│ bp: 1 (vars 1, args 0)
-│ sp: 0 (vars 0, args 0)
-│ rg: 3 (vars 0, args 3)
-│       ╎   0x18eec5c64      fd             std
-│       ╰─< 0x18eec5c65      7bbf           jnp 0x18eec5c26
-│           0x18eec5c67      a9fd030091     test eax, 0x910003fd
-│           0x18eec5c6c      c8f512b0       enter 0x12f5, 0xffffffffffffffb0
-│           0x18eec5c70      084d86         or byte [var_7ah], cl
-│           0x18eec5c73      b9006868f8     mov ecx, 0xf8686800
-│           0x18eec5c78      28f3           sub bl, dh
-│           0x18eec5c7a      129001d143f9   adc dl, byte [rax - 0x6bc2eff]
-│           0x18eec5c80      97             xchg eax, edi              ; arg1
-│           0x18eec5c81      494197         xchg eax, r15d
+```bash
+[0x00000000]> \il~iGoa
+0x00000001006b8000 iGoat-Swift
+[0x00000000]> s 0x00000001006b8000
+[0x1006b8000]> \iz
+Reading 2.390625MB ...
+Do you want to print 8568 lines? (y/N) N
+[0x1006b8000]> \iz~+hill
+Reading 2.390625MB ...
+[0x1006b8000]> \iz~+pass
+Reading 2.390625MB ...
+0x00000001006b93ed  "passwordTextField"
+0x00000001006bb11a  "11iGoat_Swift20KeychainPasswordItemV0C5ErrorO"
+0x00000001006bb164  "unexpectedPasswordData"
+0x00000001006d3f62  "Error reading password from keychain - "
+0x00000001006d40f2  "Incorrect Password"
+0x00000001006d4112  "Enter the correct password"
+0x00000001006d4632  "T@"UITextField",N,W,VpasswordField"
+0x00000001006d46f2  "CREATE TABLE IF NOT EXISTS creds (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT);"
+0x00000001006d4792  "INSERT INTO creds(username, password) VALUES(?, ?)"
 ```
 
-To:
-
-```
-[0x00000000]> .\ic* UIPasscodeField
-[0x00000000]> s 0x000000018eec5c8c
-[0x18eec5c8c]> af
-[0x18eec5c8c]> pd 10
-╭ (fcn) sym.objc.UIPasscodeField.setStringValue 35
-│   sym.objc.UIPasscodeField.setStringValue (int32_t arg1, int32_t arg3);
-│ bp: 0 (vars 0, args 0)
-│ sp: 0 (vars 0, args 0)
-│ rg: 2 (vars 0, args 2)
-│           0x18eec5c8c      f657bd         not byte [rdi - 0x43]      ; arg1
-│           0x18eec5c8f      a9f44f01a9     test eax, 0xa9014ff4
-│           0x18eec5c94      fd             std
-│       ╭─< 0x18eec5c95      7b02           jnp 0x18eec5c99
-│       │   0x18eec5c97  ~   a9fd830091     test eax, 0x910083fd
-│       ╰─> 0x18eec5c99      830091         add dword [rax], 0xffffff91
-│           0x18eec5c9c      f30300         add eax, dword [rax]
-│           0x18eec5c9f      aa             stosb byte [rdi], al
-│       ╭─< 0x18eec5ca0      e003           loopne 0x18eec5ca5
-│       │   0x18eec5ca2  ~   02aa9b494197   add ch, byte [rdx - 0x68beb665] ; arg3
-[0x18eec5c8c]> 
-```
+To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
 
 ### References
 
@@ -996,6 +990,7 @@ To:
 - iOS Instrumentation without Jailbreak - <https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/>
 - Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
 - Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
+- r2frida Wiki - <https://github.com/enovella/r2frida-wiki/blob/master/README.md>
 
 #### Tools
 
@@ -1014,6 +1009,7 @@ To:
 - Objection - <https://github.com/sensepost/objection>
 - Optool - <https://github.com/alexzielenski/optool>
 - OWASP UnCrackable Apps for iOS - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios>
+- r2frida - <https://github.com/nowsecure/r2frida>
 - Radare2 - <https://rada.re/r/>
 - Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
 - Swizzler project - <https://github.com/vtky/Swizzler2/>
