@@ -1505,7 +1505,7 @@ As you can see, these tasks are rather supportive and/or passive, they'll help u
 In the following sections you will be using r2frida to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
-$ r2 frida://usb//sg.vp.owasp_mobile.omtg_android
+$ r2 frida://usb//sg.vantagepoint.helloworldjni
 ```
 
 > See all options with `r2 frida://?`.
@@ -1692,10 +1692,10 @@ $ r2 /Users/foo/memory_Android/memory
 1136 0x00065270 0x00065270  14  15 () ascii Hello from C++
 ```
 
-Alternatively you can use Fridump. First, you need the package name of the app you want to dump, in this case `sg.vantagepoint.helloworldjni`.
+Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the [MSTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android "MSTG Hacking Playground") app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
 
-```shell
-$ python fridump.py -U sg.vantagepoint.helloworldjni -s
+```bash
+python3 fridump.py -U sg.vp.owasp_mobile.omtg_android -s
 
 Current Directory: /Users/foo/git/fridump
 Output directory is set to: /Users/foo/git/fridump/dump
@@ -1708,14 +1708,22 @@ Progress: [##################################################] 100.0% Complete
 Finished!
 ```
 
-It will take a while until it's completed and you'll get a collection of *.data files inside the dump folder:
+It will take a while until it's completed (you might get several memory access violation errors) and you'll get a collection of *.data files inside the dump folder. When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is also stored in the dump directory.
 
 ```bash
-ls dump/*.data
-dump/1007943680_dump.data dump/357826560_dump.data  dump/630456320_dump.data ...
+ls dump/
+dump/1007943680_dump.data dump/357826560_dump.data  dump/630456320_dump.data ... strings.txt
 ```
 
-When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is stored in Fridump's dump directory.
+Finally, search for the input string in the dump directory:
+
+```bash
+$ grep -nri owasp-mstg dump/
+Binary file dump//316669952_dump.data matches
+Binary file dump//strings.txt matches
+```
+
+The "owasp-mstg" string can be found in one of the dump files as well as in the processed strings file.
 
 ###### Runtime Reverse Engineering
 
