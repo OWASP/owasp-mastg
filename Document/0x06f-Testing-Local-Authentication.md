@@ -61,21 +61,22 @@ In the following example we will save the string "test_strong_password" to the K
 ##### Swift
 
 ```swift
-
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
 
 guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-    kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-    .touchIDCurrentSet,
-    &error) else {
+                                                          kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+                                                          SecAccessControlCreateFlags.biometryCurrentSet,
+                                                          &error) else {
     // failed to create AccessControl object
+
+    return
 }
 
 // 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 
-var query: Dictionary<String, Any> = [:]
+var query: [String: Any] = [:]
 
 query[kSecClass as String] = kSecClassGenericPassword
 query[kSecAttrLabel as String] = "com.me.myapp.password" as CFString
