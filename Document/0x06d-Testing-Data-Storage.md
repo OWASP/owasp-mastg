@@ -69,22 +69,24 @@ iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key i
 
 In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. In iOS 8, you will need to check whether you can read/write from an item in the Keychain protected by the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute. From iOS 9 onward you can check whether a lock screen is set, using `LAContext`:
 
+Swift:
+
 ```swift
-
-  public func devicePasscodeEnabled() -> Bool {
-        return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
-    }
-
+public func devicePasscodeEnabled() -> Bool {
+    return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+}
 ```
 
+Objective-C:
+
 ```objc
-  -(BOOL)devicePasscodeEnabled:(LAContex)context{
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
-          return true;
-      } else {
-          creturn false;
-      }
-  }
+-(BOOL)devicePasscodeEnabled:(LAContex)context{
+  if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
+        return true;
+    } else {
+        creturn false;
+    }
+}
 ```
 
 ###### Keychain Data Persistence
@@ -127,11 +129,11 @@ There's no iOS API that developers can use to force wipe data when an applicatio
 let userDefaults = UserDefaults.standard
 
 if userDefaults.bool(forKey: "hasRunBefore") == false {
-     // Remove Keychain items here
+    // Remove Keychain items here
 
-     // Update the flag indicator
-     userDefaults.set(true, forKey: "hasRunBefore")
-     userDefaults.synchronize() // Forces the app to update UserDefaults
+    // Update the flag indicator
+    userDefaults.set(true, forKey: "hasRunBefore")
+    userDefaults.synchronize() // Forces the app to update UserDefaults
 }
 ```
 
@@ -148,31 +150,35 @@ The encryption must be implemented so that the secret key is stored in the Keych
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
 ```swift
- // private key parameters
-    let privateKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "privateLabel",
-        kSecAttrIsPermanent as String: true,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
-    // public key parameters
-    let publicKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "publicLabel",
-        kSecAttrIsPermanent as String: false,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
+// private key parameters
+let privateKeyParams = [
+    kSecAttrLabel as String: "privateLabel",
+    kSecAttrIsPermanent as String: true,
+    kSecAttrApplicationTag as String: "applicationTag",
+] as CFDictionary
 
-    // global parameters
-    let parameters: [String: AnyObject] = [
-        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-        kSecAttrKeySizeInBits as String: 256,
-        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-        kSecPublicKeyAttrs as String: publicKeyParams,
-        kSecPrivateKeyAttrs as String: privateKeyParams
-    ]
+// public key parameters
+let publicKeyParams = [
+    kSecAttrLabel as String: "publicLabel",
+    kSecAttrIsPermanent as String: false,
+    kSecAttrApplicationTag as String: "applicationTag",
+] as CFDictionary
 
-    var pubKey, privKey: SecKeyRef?
-    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+// global parameters
+let parameters = [
+    kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+    kSecAttrKeySizeInBits as String: 256,
+    kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+    kSecPublicKeyAttrs as String: publicKeyParams,
+    kSecPrivateKeyAttrs as String: privateKeyParams,
+] as CFDictionary
 
+var pubKey, privKey: SecKey?
+let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+
+if status != errSecSuccess {
+    print("Keys created successfully.")
+}
 ```
 
 When checking an iOS app for insecure data storage, consider the following ways to store data because none of them encrypt data by default:
@@ -633,26 +639,30 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 }
 ```
 
-The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
+The following is sample Swift code for excluding a file from a backup on iOS 5.1 and later, see [Swift excluding files from iCloud backup](https://bencoding.com/2017/02/20/swift-excluding-files-from-icloud-backup/) for more information:
 
 ```swift
- func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
-    {
-        let URL:NSURL = NSURL.fileURLWithPath(filePath)
+func excludeFileFromBackup(filePath: URL) -> Bool {
+  var file = filePath
+  var success: Bool
 
-        assert(NSFileManager.defaultManager().fileExistsAtPath(filePath), "File \(filePath) doesn't exist")
+  do {
+      if FileManager.default.fileExists(atPath: file.path) {
+          var res = URLResourceValues()
+          res.isExcludedFromBackup = true
+          try file.setResourceValues(res)
+          success = true
+      } else {
+          success = false
+          print("File \(file) doesn't exist")
+      }
+  } catch {
+      success = false
+      print("Error excluding \(file.lastPathComponent) from backup \(error)")
+  }
 
-        var success: Bool
-        do {
-            try URL.setResourceValue(true, forKey:NSURLIsExcludedFromBackupKey)
-            success = true
-        } catch let error as NSError {
-            success = false
-            print("Error excluding \(URL.lastPathComponent) from backup \(error)");
-        }
-
-        return success
-    }
+  return success
+}
 ```
 
 #### Dynamic Analysis
