@@ -512,10 +512,10 @@ As stated in the [Apple Developer Documentation](https://developer.apple.com/doc
 
 ```swift
 func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-    ...
+                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    // ...
     if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
-        self.openUrl(url: url)
+        application.open(url, options: [:], completionHandler: nil)
     }
 
     return true
@@ -3036,23 +3036,21 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 In this first example, the `NSUserDefaults` are used, which is the primary *property list*. We can do the same with the `Codable` version:
 
 ```swift
+struct CustomPointStruct: Codable {
+        var point: Double
+        var name: String
+    }
 
-  struct CustomPointStruct:Codable {
-      var x: Double
-      var name: String
-  }
+    var points: [CustomPointStruct] = [
+        CustomPointStruct(point: 1, name: "test"),
+        CustomPointStruct(point: 2, name: "test"),
+        CustomPointStruct(point: 3, name: "test"),
+    ]
 
-  var points: [CustomPointStruct] = [
-      CustomPointStruct(x: 1, name "test"),
-      CustomPointStruct(x: 2, name "test"),
-      CustomPointStruct(x: 3, name "test"),
-  ]
-
-  UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
-  if let data = UserDefaults.standard.value(forKey:"points") as? Data {
-      let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
-  }
-
+    UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey: "points")
+    if let data = UserDefaults.standard.value(forKey: "points") as? Data {
+        let points2 = try? PropertyListDecoder().decode([CustomPointStruct].self, from: data)
+    }
 ```
 
 Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
