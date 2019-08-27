@@ -311,8 +311,8 @@ Bear in mind that using `NSException` comes with memory management pitfalls: you
 
 ##### Exception Handling in Swift
 
-Exception handing in Swift (2 - 4) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
-Methods that can throw errors use the `throws` keyword. There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):
+Exception handing in Swift (2 - 5) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
+Methods that can throw errors use the `throws` keyword. The `Result` type represents a success or failure, see [Result](https://developer.apple.com/documentation/swift/result). There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):
 
 - Propagate the error from a function to the code that calls that function. In this situation, there's no `do-catch`; there's only a `throw` throwing the actual error or a `try` to execute the method that throws. The method containing the `try` also requires the `throws` keyword:
 
@@ -346,6 +346,34 @@ func dosomething(argumentx:TypeX) throws {
     ```
 
 - Use the `try!` expression to assert that the error won't occur.
+
+
+- Handle the error as a `Result` return:
+
+```swift
+enum ErrorType: Error {
+    case typeOne
+    case typeTwo
+}
+
+func functionWithResult(param: String?) -> Result<String, ErrorType> {
+    guard let value = param else {
+        return .failure(.typeOne)
+    }
+    return .success(value)
+}
+
+func callResultFunction() {
+    let result = functionWithResult(param: "OWASP")
+
+    switch result {
+    case let .success(value):
+        print(value)
+    case let .failure(error):
+        print("Error: \(error)")
+    }
+}
+```
 
 #### Static Analysis
 
