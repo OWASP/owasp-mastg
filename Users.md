@@ -24,9 +24,9 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Secarma](https://www.secarma.com/ "Secarma")
 - [Toreon](https://www.toreon.com/ethical-hackers/ "Toreon")
 - [VantagePoint](https://www.vantagepoint.sg "VantagePoint")
-- [Xebia](https://xebia.com "Xebia")
-- [Websec Canada](https://www.websec.ca/mobile-application-security "Websec Canada")
 - [Vertical Structure](https://www.verticalstructure.com "Vertical Structure Ltd")
+- [Websec Canada](https://www.websec.ca/mobile-application-security "Websec Canada")
+- [Xebia](https://xebia.com "Xebia")
 
 ## Standards, frameworks and guidelines recommending the MASVS and MSTG
 
