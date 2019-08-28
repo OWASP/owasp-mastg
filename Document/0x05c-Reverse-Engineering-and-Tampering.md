@@ -1727,7 +1727,7 @@ The "owasp-mstg" string can be found in one of the dump files as well as in the 
 
 ###### Runtime Reverse Engineering
 
-Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't need, want or can't retrieve the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
+Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
 We'll keep using the HelloWorld JNI app, open a session with r2frida `r2 frida://usb//sg.vantagepoint.helloworldjni` and you can start by displaying the target binary information by using the `\i` command:
 
