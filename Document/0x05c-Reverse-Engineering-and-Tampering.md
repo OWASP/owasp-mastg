@@ -1776,7 +1776,7 @@ Which are empty in this case. Or you might prefer to look into the imports/expor
 0x7dbe115868 f __cxa_atexit /system/lib64/libc.so
 ```
 
-And the exports with `\iE <lib>`:
+And list the exports with `\iE <lib>`:
 
 ```bash
 [0x00000000]> \iE libnative-lib.so
