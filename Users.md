@@ -4,6 +4,7 @@
 
 Currently the MASVS and MSTG are used by at least the following companies:
 
+- [Lucideus Inc.](https://www.lucideus.com "Lucideus Inc.")
 - [Brewsec](https://brewsec.io/ "Brewsec")
 - [Briskinfosec Technology and Consulting Pvt Ltd](https://www.briskinfosec.com/ "Briskinfosec Technology and Consulting Pvt Ltd")
 - [Citadelo](https://citadelo.com/en/blog/how-to-order-a-pen-test/ "Citadelo")
