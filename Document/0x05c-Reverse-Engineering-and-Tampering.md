@@ -1500,7 +1500,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 - Performing a memory dump and inspect or reverse engineer the binary data _offline_.
 - Reverse engineering a native library while it's running.
 
-As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
+As you can see, these passive tasks help us collect information. Information is often used for other techniques, such as method hooking.
 
 In the following sections you will be using r2frida to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
