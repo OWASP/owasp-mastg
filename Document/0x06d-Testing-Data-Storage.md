@@ -642,26 +642,27 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 The following is sample Swift code for excluding a file from a backup on iOS 5.1 and later, see [Swift excluding files from iCloud backup](https://bencoding.com/2017/02/20/swift-excluding-files-from-icloud-backup/) for more information:
 
 ```swift
-func excludeFileFromBackup(filePath: URL) -> Bool {
-  var file = filePath
-  var success: Bool
+enum ExcludeFileError: Error {
+    case fileDoesNotExist
+    case error(String)
+}
 
-  do {
-      if FileManager.default.fileExists(atPath: file.path) {
-          var res = URLResourceValues()
-          res.isExcludedFromBackup = true
-          try file.setResourceValues(res)
-          success = true
-      } else {
-          success = false
-          print("File \(file) doesn't exist")
-      }
-  } catch {
-      success = false
-      print("Error excluding \(file.lastPathComponent) from backup \(error)")
-  }
+func excludeFileFromBackup(filePath: URL) -> Result<Bool, ExcludeFileError> {
+    var file = filePath
 
-  return success
+    do {
+        if FileManager.default.fileExists(atPath: file.path) {
+            var res = URLResourceValues()
+            res.isExcludedFromBackup = true
+            try file.setResourceValues(res)
+            return .success(true)
+
+        } else {
+            return .failure(.fileDoesNotExist)
+        }
+    } catch {
+        return .failure(.error("Error excluding \(file.lastPathComponent) from backup \(error)"))
+    }
 }
 ```
 
