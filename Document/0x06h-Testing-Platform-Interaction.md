@@ -508,11 +508,11 @@ You should check how the received data is validated. Apple [explicitly warns abo
 
 > Universal links offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow universal links to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
 
-As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift from the Telegram app verifies exactly this before opening the URL:
+As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift verifies exactly this before opening the URL:
 
 ```swift
 func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+                 restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     // ...
     if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
         application.open(url, options: [:], completionHandler: nil)
