@@ -312,7 +312,7 @@ Bear in mind that using `NSException` comes with memory management pitfalls: you
 ##### Exception Handling in Swift
 
 Exception handing in Swift (2 - 5) is quite different. The try-catch block is not there to handle `NSException`. The block is used to handle errors that conform to the `Error` (Swift 3) or `ErrorType` (Swift 2) protocol. This can be challenging when Objective-C and Swift code are combined in an application. Therefore, `NSError` is preferable to `NSException` for programs written in both languages. Furthermore, error-handling is opt-in in Objective-C, but `throws` must be explicitly handled in Swift. To convert error-throwing, look at the [Apple documentation](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html "Adopting Cocoa Design Patterns").
-Methods that can throw errors use the `throws` keyword. The `Result` type represents a success or failure, see [Result](https://developer.apple.com/documentation/swift/result). There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):
+Methods that can throw errors use the `throws` keyword. The `Result` type represents a success or failure, see [Result](https://developer.apple.com/documentation/swift/result), [How to use Result in Swift 5](https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift) and [The power of Result types in Swift](https://www.swiftbysundell.com/posts/the-power-of-result-types-in-swift). There are four ways to [handle errors in Swift](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html "Error Handling in Swift"):
 
 - Propagate the error from a function to the code that calls that function. In this situation, there's no `do-catch`; there's only a `throw` throwing the actual error or a `try` to execute the method that throws. The method containing the `try` also requires the `throws` keyword:
 
@@ -348,7 +348,7 @@ func dosomething(argumentx:TypeX) throws {
 - Use the `try!` expression to assert that the error won't occur.
 
 
-- Handle the error as a `Result` return:
+- Handle the generic error as a `Result` return:
 
 ```swift
 enum ErrorType: Error {
@@ -372,6 +372,69 @@ func callResultFunction() {
     case let .failure(error):
         print("Error: \(error)")
     }
+}
+```
+
+- Handle network and JSON decoding errors with a `Result` type:
+
+```swift 
+struct MSTG: Codable {
+    var root: String
+    var plugins: [String]
+    var structure: MSTGStructure
+    var title: String
+    var language: String
+    var description: String
+}
+
+struct MSTGStructure: Codable {
+    var readme: String
+}
+
+enum RequestError: Error {
+    case requestError(Error)
+    case noData
+    case jsonError
+}
+
+func getMSTGInfo() {
+    guard let url = URL(string: "https://raw.githubusercontent.com/OWASP/owasp-mstg/master/book.json") else {
+        return
+    }
+
+    request(url: url) { result in
+        switch result {
+        case let .success(data):
+            print("OWASP MSTG title: \(data.title)")
+            print("OWASP MSTG description: \(data.description)")
+        case let .failure(error):
+            switch error {
+            case let .requestError(error):
+                print(error.localizedDescription)
+            case .noData:
+                print("No data received.")
+            case .jsonError:
+                print("Error parsing JSON")
+            }
+        }
+    }
+}
+
+func request(url: URL, completion: @escaping (Result<MSTG, RequestError>) -> Void) {
+    let task = URLSession.shared.dataTask(with: url) { data, _, error in
+        if let error = error {
+            return completion(.failure(.requestError(error)))
+        } else {
+            if let data = data {
+                let decoder = JSONDecoder()
+                guard let response = try? decoder.decode(MSTG.self, from: data) else {
+                    return completion(.failure(.jsonError))
+                }
+                return completion(.success(response))
+            }
+        }
+    }
+    task.resume()
 }
 ```
 
