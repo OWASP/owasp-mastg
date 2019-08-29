@@ -561,22 +561,27 @@ For additional best practices and detailed information please refer to the follo
 
 ### Testing Login Activity and Device Blocking (MSTG-AUTH-11)
 
-For applications which require L2 protection, the MASVS states that: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block or allow specific devices.". 
+For applications which require L2 protection, the MASVS states that they should inform the user about all login activities within the app with the possiblity of blocking certain devices. This can be broken down into various scenarios:
 
-In order to identify different activities within the application, the developper can use some meta-information and associate them with each activity, which will make it easier for the user to spot suspicious activies and block its giving source device:
+1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification. 
+2. The application provides an overview of the last session after login, if the previous session was with a different configuration (e.g. location, device, app-version) then the user his current configuration. The user then has the option to report suspicious activities and block devices used in the previous session.
+3. The application provides an overview of the last session after login at all times.
+4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
 
-- Device : The user can identify devices he is unable to recognize
-- Date&Time : The user can identify times when he didn't use the application
-- Location : The user can identify the locations where he didn't use the application
+The developer can make use of specific meta-information and associate it to each different activity or event within the application. This will make it easier for the user to spot suspicious behavior and block the corresponding device. The meta-information may include:
 
-The application can provide a push notification after each activity within the application or only for critical activities. The choice of which activities to follow needs to be done for each application based on the data it handles and the level of security risk the team is willing to have. Below is a list of common critical activies to identify:
+- Device: The user can clearly identify all devices where the app is being used.
+- Date and Time: The user can clearly see the latest date and time when the app was used.
+- Location: The user can clearly identify the lastest locations where the app was used.
 
-- Login
-- Password change
-- PII change (Name, email, Number, etc)
-- Critical Activities (Purchase, Accessing important ressources, etc)
+The application can provide a push notification after each sensitive activity within the application. The choice of which activities to audit needs to be done for each application based on the data it handles and the level of security risk the team is willing to have. Below is a list of common sensitive activies that are usually audited:
 
-Paid content requires special care, and additional meta-information (e.g., operation Cost,credit, etc) might be used to ensure user's knowledge about the whole operation's parameters.   
+- Login attempts
+- Password changes
+- PII changes (name, email address, telephone number, etc.)
+- Sensitive activities (purchase, accessing important ressources, etc.)
+
+Paid content requires special care, and additional meta-information (e.g., operation Cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.   
 
 In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.
 
