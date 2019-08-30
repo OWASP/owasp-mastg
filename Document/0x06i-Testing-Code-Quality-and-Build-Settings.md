@@ -325,24 +325,42 @@ func dosomething(argumentx:TypeX) throws {
 - Handle the error with a `do-catch` statement. You can use the following pattern:
 
     ```swift
+func doTryExample() {
     do {
-        try functionThatThrows()
-        defer {
-            //use this as your finally block as with Objective-c
-        }
-        statements
-    } catch pattern 1 {
-        statements
-    } catch pattern 2 where condition {
-        statements
+        try functionThatThrows(number: 203)
+    } catch NumberError.lessThanZero {
+        // Handle number is less than zero
+    } catch let NumberError.tooLarge(delta) {
+        // Handle number is too large (with delta value)
+    } catch {
+        // Handle any other errors
     }
+}
+
+enum NumberError: Error {
+    case lessThanZero
+    case tooLarge(Int)
+    case tooSmall(Int)
+}
+
+func functionThatThrows(number: Int) throws -> Bool {
+    if number < 0 {
+        throw NumberError.lessThanZero
+    } else if number < 10 {
+        throw NumberError.tooSmall(10 - number)
+    } else if number > 100 {
+        throw NumberError.tooLarge(100 - number)
+    } else {
+        return true
+    }
+}
     ```
 
 - Handle the error as an optional value:
 
     ```swift
         let x = try? functionThatThrows()
-        //In this case the value of x is nil in case of an error.
+        // In this case the value of x is nil in case of an error.
     ```
 
 - Use the `try!` expression to assert that the error won't occur.
@@ -368,9 +386,9 @@ func callResultFunction() {
 
     switch result {
     case let .success(value):
-        print(value)
+    	// Handle success
     case let .failure(error):
-        print("Error: \(error)")
+        // Handle failure (with error)
     }
 }
 ```
@@ -405,16 +423,18 @@ func getMSTGInfo() {
     request(url: url) { result in
         switch result {
         case let .success(data):
-            print("OWASP MSTG title: \(data.title)")
-            print("OWASP MSTG description: \(data.description)")
+            // Handle success with MSTG data
+            let mstgTitle = data.title
+            let mstgDescription = data.description
         case let .failure(error):
+        	// Handle failure
             switch error {
             case let .requestError(error):
-                print(error.localizedDescription)
+                // Handle request error (with error)
             case .noData:
-                print("No data received.")
+                // Handle no data received in response
             case .jsonError:
-                print("Error parsing JSON")
+                // Handle error parsing JSON
             }
         }
     }
