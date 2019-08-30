@@ -86,58 +86,55 @@ Given the continuous evolution of all third party libraries, this should not be 
 There are various methods on how to store the key on the device. Not storing a key at all will ensure that no key material can be dumped. This can be achieved by using a Password Key Derivation function, such as PKBDF-2. See the example below:
 
 ```swift
+func pbkdf2SHA1(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+    return pbkdf2(hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA1), password: password, salt: salt, keyByteCount: keyByteCount, rounds: rounds)
+}
 
-        func pbkdf2SHA1(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
-        return pbkdf2(hash:CCPBKDFAlgorithm(kCCPRFHmacAlgSHA1), password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
-    }
+func pbkdf2SHA256(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+    return pbkdf2(hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA256), password: password, salt: salt, keyByteCount: keyByteCount, rounds: rounds)
+}
 
-    func pbkdf2SHA256(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
-        return pbkdf2(hash:CCPBKDFAlgorithm(kCCPRFHmacAlgSHA256), password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
-    }
+func pbkdf2SHA512(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+    return pbkdf2(hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512), password: password, salt: salt, keyByteCount: keyByteCount, rounds: rounds)
+}
 
-    func pbkdf2SHA512(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
-        return pbkdf2(hash:CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512), password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
-    }
+func pbkdf2(hash: CCPBKDFAlgorithm, password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
+    let passwordData = password.data(using: String.Encoding.utf8)!
+    var derivedKeyData = Data(repeating: 0, count: keyByteCount)
+    let derivedKeyDataLength = derivedKeyData.count
+    let derivationStatus = derivedKeyData.withUnsafeMutableBytes { derivedKeyBytes in
+        salt.withUnsafeBytes { saltBytes in
 
-    func pbkdf2(hash :CCPBKDFAlgorithm, password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
-        let passwordData = password.data(using:String.Encoding.utf8)!
-        var derivedKeyData = Data(repeating:0, count:keyByteCount)
-        let derivedKeyDataLength = derivedKeyData.count
-        let derivationStatus = derivedKeyData.withUnsafeMutableBytes {derivedKeyBytes in
-            salt.withUnsafeBytes { saltBytes in
-
-                CCKeyDerivationPBKDF(
-                    CCPBKDFAlgorithm(kCCPBKDF2),
-                    password, passwordData.count,
-                    saltBytes, salt.count,
-                    hash,
-                    UInt32(rounds),
-                    derivedKeyBytes, derivedKeyDataLength)
-            }
+            CCKeyDerivationPBKDF(
+                CCPBKDFAlgorithm(kCCPBKDF2),
+                password, passwordData.count,
+                saltBytes, salt.count,
+                hash,
+                UInt32(rounds),
+                derivedKeyBytes, derivedKeyDataLength
+            )
         }
-        if (derivationStatus != 0) {
-            print("Error: \(derivationStatus)")
-            return nil;
-        }
-
-        return derivedKeyData
+    }
+    if derivationStatus != 0 {
+        // Error
+        return nil
     }
 
-    func testKeyDerivation(){
-        //test run in the 'Arcane' librarie its testingsuite to show how you can use it
-        let password     = "password"
-        //let salt       = "saltData".data(using: String.Encoding.utf8)!
-        let salt         = Data(bytes: [0x73, 0x61, 0x6c, 0x74, 0x44, 0x61, 0x74, 0x61])
-        let keyByteCount = 16
-        let rounds       = 100000
+    return derivedKeyData
+}
 
-        let derivedKey = pbkdf2SHA1(password:password, salt:salt, keyByteCount:keyByteCount, rounds:rounds)
-        print("derivedKey (SHA1): \(derivedKey! as NSData)")
-    }
+func testKeyDerivation() {
+    let password = "password"
+    let salt = Data([0x73, 0x61, 0x6C, 0x74, 0x44, 0x61, 0x74, 0x61])
+    let keyByteCount = 16
+    let rounds = 100_000
+
+    let derivedKey = pbkdf2SHA1(password: password, salt: salt, keyByteCount: keyByteCount, rounds: rounds)
+}
 ```
 
  *Source: [https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios](https://stackoverflow.com/questions/8569555/pbkdf2-using-commoncrypto-on-ios "PBKDF2 using CommonCrypto on iOS
-"), tested in the testsuite of the `Arcane` library*
+"), tested in the test suite of the `Arcane` library*
 
 When you need to store the key, it is recommended to use the Keychain as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, property list files or by any other sink from Core Data or Realm, is usually less secure than using the KeyChain.
 Even when the sync of Core Data or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.

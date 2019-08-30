@@ -508,14 +508,14 @@ You should check how the received data is validated. Apple [explicitly warns abo
 
 > Universal links offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow universal links to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
 
-As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift from the Telegram app verifies exactly this before opening the URL:
+As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift verifies exactly this before opening the URL:
 
 ```swift
 func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-    ...
+                 restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    // ...
     if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
-        self.openUrl(url: url)
+        application.open(url, options: [:], completionHandler: nil)
     }
 
     return true
@@ -529,27 +529,24 @@ The `NSURLComponents` API can be used to parse and manipulate the components of 
 ```swift
 func application(_ application: UIApplication,
                  continue userActivity: NSUserActivity,
-                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool
-{
+                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
     guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
         let incomingURL = userActivity.webpageURL,
         let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
         let path = components.path,
         let params = components.queryItems else {
-            return false
+        return false
     }
 
-    print("path = \(path)")
-
-    if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
+    if let albumName = params.first(where: { $0.name == "albumname" })?.value,
         let photoIndex = params.first(where: { $0.name == "index" })?.value {
+        // Interact with album name and photo index
 
-        print("album = \(albumName)")
-        print("photoIndex = \(photoIndex)")
         return true
 
     } else {
-        print("Either album name or photo index missing")
+        // Handle when album and/or album name or photo index missing
+
         return false
     }
 }
@@ -2994,23 +2991,22 @@ Again, note in case of immutability: confidential information cannot be removed 
 Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
 
 ```swift
-struct CustomPointStruct:Codable {
-    var x: Double
+struct CustomPointStruct: Codable {
+    var point: Double
     var name: String
 }
 
 let encoder = JSONEncoder()
 encoder.outputFormatting = .prettyPrinted
 
-let test = CustomPointStruct(x: 10, name: "test")
+let test = CustomPointStruct(point: 10, name: "test")
 let data = try encoder.encode(test)
-print(String(data: data, encoding: .utf8)!)
-// Prints:
-// {
-//   "x" : 10,
-//   "name" : "test"
-// }
+let stringData = String(data: data, encoding: .utf8)
 
+// stringData = Optional ({
+// "point" : 10,
+// "name" : "test"
+// })
 ```
 
 JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
@@ -3036,23 +3032,21 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 In this first example, the `NSUserDefaults` are used, which is the primary *property list*. We can do the same with the `Codable` version:
 
 ```swift
+struct CustomPointStruct: Codable {
+        var point: Double
+        var name: String
+    }
 
-  struct CustomPointStruct:Codable {
-      var x: Double
-      var name: String
-  }
+    var points: [CustomPointStruct] = [
+        CustomPointStruct(point: 1, name: "test"),
+        CustomPointStruct(point: 2, name: "test"),
+        CustomPointStruct(point: 3, name: "test"),
+    ]
 
-  var points: [CustomPointStruct] = [
-      CustomPointStruct(x: 1, name "test"),
-      CustomPointStruct(x: 2, name "test"),
-      CustomPointStruct(x: 3, name "test"),
-  ]
-
-  UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
-  if let data = UserDefaults.standard.value(forKey:"points") as? Data {
-      let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
-  }
-
+    UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey: "points")
+    if let data = UserDefaults.standard.value(forKey: "points") as? Data {
+        let points2 = try? PropertyListDecoder().decode([CustomPointStruct].self, from: data)
+    }
 ```
 
 Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
