@@ -1688,7 +1688,9 @@ Dumping 8.0 MiB from base: 0x7fc753e000  [####################################] 
 Memory dumped to file: /Users/foo/memory_Android/memory
 ```
 
-In this case there was an error but it could obtain part of the binary. We are able to find the "Hello from C++" strings with radare2:
+> In this case there was an error, which we can ignore for now as we are able to see the extracted dump in the file system. Sometimes there are memory access violation when the Frida agent within the app tries to read memory where it's not allowed to.
+
+Next, we are able to find the "Hello from C++" strings with radare2:
 
 ```bash
 $ r2 /Users/foo/memory_Android/memory
@@ -1712,7 +1714,9 @@ Progress: [##################################################] 100.0% Complete
 Finished!
 ```
 
-It will take a while until it's completed (you might get several memory access violation errors) and you'll get a collection of *.data files inside the dump folder. When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is also stored in the dump directory.
+> You might get several memory access violation errors. Sometimes these errors occur when the Frida agent within the app tries to read memory where it's not allowed to.
+
+It will take a while until it's completed and you'll get a collection of *.data files inside the dump folder. When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is also stored in the dump directory.
 
 ```bash
 ls dump/

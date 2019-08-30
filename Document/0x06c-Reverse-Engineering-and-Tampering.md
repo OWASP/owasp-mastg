@@ -744,13 +744,17 @@ Now, for this second example, you can search for something that's not in the app
 [0x00000000]> \/ owasp-mstg
 hits: 1
 0x1c06619c0 hit3_0 owasp-mstg
+```
 
+In fact, the string could be found at address `0x1c06619c0`. Seek `s` to there and retrieve the current memory region with `\dm.`.
+
+```bash
 [0x100d7d332]> s 0x1c06619c0
 [0x1c06619c0]> \dm.
 0x00000001c0000000 - 0x00000001c8000000 rw-
 ```
 
-In fact, the string can be already found in memory in a rw- (read and write) region.
+Now you know that the string is located in a rw- (read and write) region of the memory map.
 
 Additionally, you can search for occurrences of the [wide version of the string](https://en.wikipedia.org/wiki/Wide_character "Wide character") (`\/w`) and, again, check their memory regions:
 
@@ -788,19 +792,7 @@ Dumping 768.0 KiB from base: 0x1ad200000  [####################################]
 Memory dumped to file: /Users/foo/memory_iOS/memory
 ```
 
-Alternatively you can use Fridump.
-
-> The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
->
-> If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
->
->  ```shell
->  $ python fridump.py -u Gadget
->
->  Can't connect to App. Have you connected the device?
->  ```
-
-First, you need the name of the app you want to dump, which you can get with `frida-ps`.
+Alternatively you can use Fridump. First, you need the name of the app you want to dump, which you can get with `frida-ps`.
 
 ```shell
 $ frida-ps -U
@@ -863,7 +855,7 @@ owasp-mstg
 
 ###### Runtime Reverse Engineering
 
-Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't need, want or can't retrieve the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
+Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
 We'll keep using the iGoat-Swift app, open a session with r2frida `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `\i` command:
 
