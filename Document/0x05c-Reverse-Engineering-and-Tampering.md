@@ -1500,7 +1500,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 - Performing a memory dump and inspect or reverse engineer the binary data _offline_.
 - Reverse engineering a native library while it's running.
 
-As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
+As you can see, these passive tasks help us collect information. Information is often used for other techniques, such as method hooking.
 
 In the following sections you will be using r2frida to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
@@ -1731,7 +1731,7 @@ The "owasp-mstg" string can be found in one of the dump files as well as in the 
 
 ###### Runtime Reverse Engineering
 
-Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't need, want or can't retrieve the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
+Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
 We'll keep using the HelloWorld JNI app, open a session with r2frida `r2 frida://usb//sg.vantagepoint.helloworldjni` and you can start by displaying the target binary information by using the `\i` command:
 
@@ -1780,7 +1780,7 @@ Which are empty in this case. Alternatively, you might prefer to look into the i
 0x7dbe115868 f __cxa_atexit /system/lib64/libc.so
 ```
 
-And the exports with `\iE <lib>`:
+And list the exports with `\iE <lib>`:
 
 ```bash
 [0x00000000]> \iE libnative-lib.so
