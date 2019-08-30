@@ -56,26 +56,27 @@ The iOS Keychain APIs can (and should) be used to implement local authentication
 
 The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such a fallback is allowed by attribute parameters).
 
-In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
+In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`SecAccessControlCreateFlags.biometryCurrentSet` parameter):
 
 ##### Swift
 
 ```swift
-
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
 
 guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-    kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-    .touchIDCurrentSet,
-    &error) else {
+                                                          kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+                                                          SecAccessControlCreateFlags.biometryCurrentSet,
+                                                          &error) else {
     // failed to create AccessControl object
+
+    return
 }
 
 // 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 
-var query: Dictionary<String, Any> = [:]
+var query: [String: Any] = [:]
 
 query[kSecClass as String] = kSecClassGenericPassword
 query[kSecAttrLabel as String] = "com.me.myapp.password" as CFString
