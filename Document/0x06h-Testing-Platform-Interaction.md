@@ -529,27 +529,24 @@ The `NSURLComponents` API can be used to parse and manipulate the components of 
 ```swift
 func application(_ application: UIApplication,
                  continue userActivity: NSUserActivity,
-                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool
-{
+                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
     guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
         let incomingURL = userActivity.webpageURL,
         let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
         let path = components.path,
         let params = components.queryItems else {
-            return false
+        return false
     }
 
-    print("path = \(path)")
-
-    if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
+    if let albumName = params.first(where: { $0.name == "albumname" })?.value,
         let photoIndex = params.first(where: { $0.name == "index" })?.value {
+        // Interact with album name and photo index
 
-        print("album = \(albumName)")
-        print("photoIndex = \(photoIndex)")
         return true
 
     } else {
-        print("Either album name or photo index missing")
+        // Handle when album and/or album name or photo index missing
+
         return false
     }
 }
@@ -2994,23 +2991,22 @@ Again, note in case of immutability: confidential information cannot be removed 
 Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
 
 ```swift
-struct CustomPointStruct:Codable {
-    var x: Double
+struct CustomPointStruct: Codable {
+    var point: Double
     var name: String
 }
 
 let encoder = JSONEncoder()
 encoder.outputFormatting = .prettyPrinted
 
-let test = CustomPointStruct(x: 10, name: "test")
+let test = CustomPointStruct(point: 10, name: "test")
 let data = try encoder.encode(test)
-print(String(data: data, encoding: .utf8)!)
-// Prints:
-// {
-//   "x" : 10,
-//   "name" : "test"
-// }
+let stringData = String(data: data, encoding: .utf8)
 
+// stringData = Optional ({
+// "point" : 10,
+// "name" : "test"
+// })
 ```
 
 JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.

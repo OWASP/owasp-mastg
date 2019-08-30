@@ -177,7 +177,7 @@ var pubKey, privKey: SecKey?
 let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
 
 if status != errSecSuccess {
-    print("Keys created successfully.")
+    // Keys created successfully
 }
 ```
 
