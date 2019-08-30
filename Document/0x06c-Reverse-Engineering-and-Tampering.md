@@ -675,6 +675,8 @@ As you might expect you can correlate the addresses of the libraries with the me
 You can also use objection to display the same information.
 
 ```shell
+$ objection --gadget OWASP.iGoat-Swift explore
+
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # memory list modules
 Save the output by adding `--json modules.json` to this command
 
@@ -736,7 +738,7 @@ Now take the first hit, seek to it and check your current location in the memory
 
 As expected, you are located in the region of the main iGoat-Swift binary (r-x, read and execute). In the previous section, you saw that the main binary is located between `0x0000000100b7c000` and `0x0000000100e97000`.
 
-Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the iGoat-Swift app and navigate in the menu to Authentication -> Remote Authentication -> Start. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on Login just yet. You will perform two steps.
+Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the iGoat-Swift app and navigate in the menu to Authentication -> Remote Authentication -> Start. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on Login just yet. Perform the following two steps.
 
 ```bash
 [0x00000000]> \/ owasp-mstg
@@ -774,7 +776,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ###### Memory Dump
 
-Wether you are using a jailbroken device with frida-server installed or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices").
+You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices"). To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 

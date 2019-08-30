@@ -1502,7 +1502,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
 
-In the following sections you will be using r2frida to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
+In the following sections you will be using r2frida to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
 $ r2 frida://usb//sg.vantagepoint.helloworldjni
@@ -1563,6 +1563,8 @@ As you might expect you can correlate the addresses of the libraries with the me
 You can also use objection to display the same information.
 
 ```shell
+$ objection --gadget sg.vantagepoint.helloworldjni explore
+
 sg.vantagepoint.helloworldjni on (google: 8.1.0) [usb] # memory list modules
 Save the output by adding `--json modules.json` to this command
 
@@ -1667,9 +1669,11 @@ They are in the same rw- region as one of the previous strings (`0x0000007d30a00
 
 In-memory search can be very useful to quickly know if certain data is located in the main app binary, inside a shared library or in another region. You may also use it to test the behavior of the app regarding how the data is kept in memory. For instance, you could analyze an app that performs a login and search for occurrences of the user password. Also, you may check if you still can find the password in memory after the login is completed to verify if this sensitive data is wiped from memory after its use.
 
+In addition, you could use this approach to locate and extract cryptographic keys. For instance, in the case of an app encrypting/decrypting data and handling keys in memory instead of using the AndroidKeyStore API. See the section "[Testing Key Management](0x05e-Testing-Cryptography.md#testing-key-management-mstg-storage-1-mstg-crypto-1-and-mstg-crypto-5 "Testing Key Management")" in the chapter "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md)" for more details.
+
 ###### Memory Dump
 
-Wether you are using a rooted phone with frida-server installed or a non-rooted device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices").
+You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices"). To use these tools on a rooted phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
@@ -1768,7 +1772,7 @@ Search all symbols of a certain module with `\is <lib>`, e.g. `\is libnative-lib
 [0x00000000]>
 ```
 
-Which are empty in this case. Or you might prefer to look into the imports/exports. For example, list the imports with `\ii <lib>`:
+Which are empty in this case. Alternatively, you might prefer to look into the imports/exports. For example, list the imports with `\ii <lib>`:
 
 ```bash
 [0x00000000]> \ii libnative-lib.so
