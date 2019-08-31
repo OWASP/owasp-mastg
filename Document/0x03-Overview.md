@@ -60,4 +60,4 @@ The MSTG contains descriptions of all requirements specified in the MASVS. The M
 
 2. The [Android Testing Guide](0x05a-Platform-Overview.md) covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and prevention, and tampering techniques and prevention.
 
-3. The [iOS Testing Guide](0x06a-iOS-Testing-Guide.md) covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering techniques and prevention, and tampering techniques and prevention.
+3. The [iOS Testing Guide](0x06a-Platform-Overview.md) covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering techniques and prevention, and tampering techniques and prevention.
