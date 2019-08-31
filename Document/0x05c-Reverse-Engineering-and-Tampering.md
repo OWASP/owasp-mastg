@@ -1675,6 +1675,8 @@ In addition, you could use this approach to locate and extract cryptographic key
 
 You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-rooted device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Rooted Devices](#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices"). To use these tools on a rooted phone, simply have frida-server installed and running.
 
+> Note: When using these tools, you might get several memory access violation errors which can be normally ignored. These tools inject a Frida agent and try to dump all the mapped memory of the app regardless of the access permissions (read/write/execute). Therefore, when the injected Frida agent tries to read a region that's not readable, it'll return the corresponding _memory access violation errors_. Refer to previous section "Memory Maps and Inspection" for more details.
+
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
 ```shell
@@ -1688,7 +1690,7 @@ Dumping 8.0 MiB from base: 0x7fc753e000  [####################################] 
 Memory dumped to file: /Users/foo/memory_Android/memory
 ```
 
-> In this case there was an error, which we can ignore for now as we are able to see the extracted dump in the file system. Sometimes there are memory access violation when the Frida agent within the app tries to read memory where it's not allowed to.
+> In this case there was an error, which is probably due to memory access violations as we already anticipated. This error can be safely ignored as long as we are able to see the extracted dump in the file system. If you have any problems, a first step would be to enable the debug flag `-d` when running objection or, if that doesn't help, file an issue in [objection's GitHub](https://github.com/sensepost/objection/issues "objection Issues").
 
 Next, we are able to find the "Hello from C++" strings with radare2:
 
@@ -1714,7 +1716,7 @@ Progress: [##################################################] 100.0% Complete
 Finished!
 ```
 
-> You might get several memory access violation errors. Sometimes these errors occur when the Frida agent within the app tries to read memory where it's not allowed to.
+> Tip: Enable verbosity by including the flag `-v` if you want to see more details, e.g. the regions provoking memory access violations.
 
 It will take a while until it's completed and you'll get a collection of *.data files inside the dump folder. When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is also stored in the dump directory.
 
