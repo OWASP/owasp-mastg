@@ -197,6 +197,10 @@ In order to address this risk you can use certificate pinning. Certificate pinni
 The certificate can be pinned during development, or at the time the app first connects to the backend.
 In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
+##### When the Pin Fails
+
+Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or load balancer, or there might be a man-in-the-middle attack going on. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network APIs".
+
 #### Static Analysis
 
 Verify that the server certificate is pinned. Pinning can be implemented on various levels in terms of the certificate tree presented by the server:
@@ -207,7 +211,7 @@ Verify that the server certificate is pinned. Pinning can be implemented on vari
 
 The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
 
-The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.  
+The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.
 
 ```objc
 
@@ -243,7 +247,7 @@ Our test approach is to gradually relax security of the SSL handshake negotiatio
 
 1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (Settings -> General -> Profiles) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
 2. Now, install the Burp certificate, as explained in [Burp's user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that the certificate is validated against the device's trust store, but no pinning is performed.
-3. If executing the instructions from the previous step doesn't lead to traffic being proxied through burp, it may mean that the certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section below titled "Bypassing Certificate Pinning" for more information on this.
+3. If executing the instructions from the previous step doesn't lead to traffic being proxied through burp, it may mean that the certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section "[Bypassing Certificate Pinning](#bypassing-certificate-pinning "Bypassing Certificate Pinning")" below for more information on this.
 
 ##### Client certificate validation
 

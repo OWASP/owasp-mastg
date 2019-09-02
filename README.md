@@ -35,7 +35,7 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 ### Android Testing Guide
 
 - [Platform Overview](Document/0x05a-Platform-Overview.md)
-- [Setting up a Testing Environment for Android Apps](Document/0x05b-Basic-Security_Testing.md)
+- [Android Basic Security Testing](Document/0x05b-Basic-Security_Testing.md)
 - [Data Storage on Android](Document/0x05d-Testing-Data-Storage.md)
 - [Android Cryptographic APIs](Document/0x05e-Testing-Cryptography.md)
 - [Local Authentication on Android](Document/0x05f-Testing-Local-Authentication.md)
@@ -48,7 +48,7 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 ### iOS Testing Guide
 
 - [Platform Overview](Document/0x06a-Platform-Overview.md)
-- [Setting up a Testing Environment for iOS Apps](Document/0x06b-Basic-Security-Testing.md)
+- [iOS Basic Security Testing](Document/0x06b-Basic-Security-Testing.md)
 - [Data Storage on iOS](Document/0x06d-Testing-Data-Storage.md)
 - [iOS Cryptographic APIs](Document/0x06e-Testing-Cryptography.md)
 - [Local Authentication on iOS](Document/0x06f-Testing-Local-Authentication.md)
@@ -71,7 +71,7 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 2. Check the [releases](https://github.com/OWASP/owasp-mstg/releases "Our releases"). Here you can find a PDF, an archive containing the sources and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 
-3. Get the book as printed version. A hardcopy of the book can be ordered via [lulu.com](http://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24091501.html "MSTG on Lulu.com"). This version of the book is not completely aligned with book printing standards, but we are improving each version. If you recognise any issues or mistakes, even small ones, please raise an [issue](https://github.com/OWASP/owasp-mstg/issues "our issues section") so we can fix it in the next version.
+3. Get the book as printed version. A hardcopy of the book can be ordered via [lulu.com](http://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24091501.html "MSTG on Lulu.com"). This version of the book is not completely aligned with book printing standards, but we are improving each version. If you recognize any issues or mistakes, even small ones, please raise an [issue](https://github.com/OWASP/owasp-mstg/issues "our issues section") so we can fix it in the next version.
 
 4. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
@@ -121,7 +121,7 @@ Contributors are added to the acknowledgements table based on their contribution
 
 Please ping us or create a pull request if you are missing from the table or in the wrong column (note that we update the table frequently, but not in realtime).
 
-If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *sushi2k*) or Jeroen Willemsen (Slack: *jeroenwillemsen*) for more information.
+If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *Sven*), Jeroen Willemsen (Slack: *jeroenwillemsen*) or Carlos Holguera (Slack: *Carlos*) for more information.
 
 ## Crackmes
 

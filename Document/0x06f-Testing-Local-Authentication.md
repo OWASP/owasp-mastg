@@ -2,7 +2,7 @@
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password, face-recognition or fingerprint, verified by referencing local data. Generally, this done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
-As stated before in chapter Testing Authentication and Session Management: the tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
+As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Testing-Authentication-and-Session-Management.md)": the tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
 
 ### Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
 
@@ -56,26 +56,27 @@ The iOS Keychain APIs can (and should) be used to implement local authentication
 
 The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such a fallback is allowed by attribute parameters).
 
-In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
+In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`SecAccessControlCreateFlags.biometryCurrentSet` parameter):
 
 ##### Swift
 
 ```swift
-
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
 
 guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-    kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-    .touchIDCurrentSet,
-    &error) else {
+                                                          kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+                                                          SecAccessControlCreateFlags.biometryCurrentSet,
+                                                          &error) else {
     // failed to create AccessControl object
+
+    return
 }
 
 // 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 
-var query: Dictionary<String, Any> = [:]
+var query: [String: Any] = [:]
 
 query[kSecClass as String] = kSecClassGenericPassword
 query[kSecAttrLabel as String] = "com.me.myapp.password" as CFString
@@ -228,7 +229,7 @@ If vulnerable, the module will automatically bypass the login form.
 
 ### Note regarding temporariness of keys in the Keychain
 
-Unlike MacOSX and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (E.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
+Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
 ### References
 

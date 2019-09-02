@@ -143,7 +143,7 @@ After adding all the suggested repositories above you can install the following 
 - IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
 - Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
 - Grep: Handy tool to filter lines.
-- Gzip: A well known zip utility.
+- Gzip: A well known ZIP utility.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
 - Open for iOS 11: Tool required to make Needle Agent function.
 - PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
@@ -168,7 +168,7 @@ In order to analyze iOS apps, you should install the following tools on your hos
 
 ##### Burp Suite
 
-[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
+[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "[Setting up an Interception Proxy](#setting-up-an-interception-proxy "Setting up an Interception Proxy")" for detailed instructions on how to set it up in an iOS environment.
 
 ##### Frida
 
@@ -194,7 +194,7 @@ With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you ca
 $ brew install ios-deploy
 ```
 
-For the usage please refer to the section "ios-deploy" below which is part of "Installing Apps".
+For the usage please refer to the section "ios-deploy" below which is part of "[Installing Apps](#installing-apps "Installing Apps")".
 
 ##### iFunBox
 
@@ -204,7 +204,7 @@ It has several features, like app installation, access the app sandbox without j
 
 ##### Keychain-Dumper
 
-[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "Keychain-dumper (Jailbroken)" for detailed instructions on how to use it.
+[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
 
 ##### Mobile-Security-Framework - MobSF
 
@@ -260,6 +260,8 @@ Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framewor
 Please also ensure that you install the Darwin CC Tools from the Coolstar repository, to get Needle to work on iOS 12.
 
 In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
+
+> There are known issues with Needle when running on iOS devices that are [jailbroken with Chimera](https://github.com/mwrlabs/needle/issues/273 "Many modules dont work with chimera jail break"). Instead, the unc0ver jailbreak should be used.
 
 ##### Objection
 
@@ -850,7 +852,7 @@ You can also directly open passionfruit and after selecting your iOS device you'
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
-You can unzip the IPA using the standard `unzip` or any other zip utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```shell
 $ ls -1 Payload/iGoat-Swift.app
@@ -1000,7 +1002,7 @@ Application: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-
 Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 ```
 
-Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
+Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "[Recommended Tools - Objection](#using-objection "Recommended Tools - Objection")".
 
 ```shell
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env

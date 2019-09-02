@@ -2,7 +2,7 @@
 
 Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project").
 
-Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the back end service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
+Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the backend service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
 
 Since the basic concepts are identical on iOS and Android, we'll discuss prevalent authentication and authorization architectures and pitfalls in this generic guide. OS-specific authentication issues, such as local and biometric authentication, will be discussed in the respective OS-specific chapters.
 
@@ -91,21 +91,11 @@ To prevent tampering cryptographic signatures are added to client-side tokens. O
 
 ### Testing Best Practices for Passwords (MSTG-AUTH-5 and MSTG-AUTH-6)
 
-Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections describe key areas for strong passwords, for further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls")
+Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The followig sections will cover various areas regarding password best practices. For further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls").
 
 #### Static Analysis
 
-Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity "Password Complexity"). Identify all password-related functions in the source code and make sure that a verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
-
-- Password Length:
-  - Minimum password length (10 characters) should be enforced.
-  - Maximum password length should not be too short because it will prevent users from creating passphrases. The typical maximum length is 128 characters.
-
-- Password Complexity - The password must meet at least three out of the following four complexity rules:
-  - at least one uppercase character (A-Z)
-  - at least one lowercase character (a-z)
-  - at least one digit (0-9)
-  - at least one special character
+Confirm the existence of a password policy and verify the implemented password complexity requirements according to the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls") which focuses on length and an unlimited character set. Identify all password-related functions in the source code and make sure that a verification check is performed in each of them. Review the password verification function and make sure that it rejects passwords that violate the password policy.
 
 <br/>
 <br/>
@@ -132,49 +122,21 @@ The score is defined as follows and can be used for a password strength bar for 
 4 # very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
 ```
 
-Regular Expressions are also often used to enforce password rules. For example, the [JavaScript implementation by NowSecure](https://github.com/nowsecure/owasp-password-strength-test "NowSecure - OWASP Password Strength Test") uses regular expressions to test the password for various characteristics, such as length and character type. The following is an excerpt of the code:
+Note that zxcvbn can be implemented by the app-developer as well using the Java (or other) implementation in order to guide the user into creating a strong password.
 
-```javascript
-function(password) {
-  if (password.length < owasp.configs.minLength) {
-    return 'The password must be at least ' + owasp.configs.minLength + ' characters long.';
-  }
-},
+#### Have I Been Pwned: PwnedPasswords
 
-// forbid repeating characters
-function(password) {
-  if (/(.)\1{2,}/.test(password)) {
-    return 'The password may not contain sequences of three or more repeated characters.';
-  }
-},
+In order to further reduce the likelihood of a successful dictionary attack against a single factor authentication scheme (e.g. password only), you can verify whether a password has been compromised in a data breach. This can be done using services based on the Pwned Passwords API by Troy Hunt (available at api.pwnedpasswords.com). For example, the "[Have I been pwned?](https://haveibeenpwned.com "';--have i been pwned?")" companion website.
+Based on the SHA-1 hash of a possible password candidate, the API returns the number of times the hash of the given password has been found in the various breaches collected by the service. The workflow takes the following steps:
 
-function(password) {
-  if (!/[a-z]/.test(password)) {
-    return 'The password must contain at least one lowercase letter.';
-  }
-},
+1. Encode the user input to UTF-8 (e.g.: the password `test`).
+2. Take the SHA-1 hash of the result of step 1 (e.g.: the hash of `test` is `A94A8FE5CCB19BA61C4C0873D391E987982FBBD3`).
+3. Copy the first 5 characters (the hash prefix) and use them for a range-search: `http GET https://api.pwnedpasswords.com/range/A94A8`
+4. Iterate through the result and look for the rest of the hash (e.g. is `FE5CCB19BA61C4C0873D391E987982FBBD3` part of the returned list?). If it is not part of the returned list, then the password for the given hash has not been found. Otherwise, as in case of `FE5CCB19BA61C4C0873D391E987982FBBD3`, it will return a counter showing how many times it has been found in breaches (e.g.: `FE5CCB19BA61C4C0873D391E987982FBBD3:76479`).
 
-// require at least one uppercase letter
-function(password) {
-  if (!/[A-Z]/.test(password)) {
-    return 'The password must contain at least one uppercase letter.';
-  }
-},
+Further documentation on the Pwned Passwords API can be found [online](https://haveibeenpwned.com/API/v3 "Api Docs V3").
 
-// require at least one number
-function(password) {
-  if (!/[0-9]/.test(password)) {
-    return 'The password must contain at least one number.';
-  }
-},
-
-// require at least one special character
-function(password) {
-  if (!/[^A-Za-z0-9]/.test(password)) {
-    return 'The password must contain at least one special character.';
-  }
-},
-```
+Note that this API is best used by the app-developer when the user needs to register and enter a password to check whether it is a recommended password or not.
 
 ##### Login Throttling
 
@@ -185,7 +147,7 @@ Observe the following best practices when implementing anti-brute-force controls
 - After a few unsuccessful login attempts, targeted accounts should be locked (temporarily or permanently), and additional login attempts should be rejected.
 - A five-minute account lock is commonly used for temporary account locking.
 - The controls must be implemented on the server because client-side controls are easily bypassed.
-- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.  
+- Unauthorized login attempts must tallied with respect to the targeted account, not a particular session.
 
 Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
@@ -219,7 +181,7 @@ In this example, you can identify the successful attempt according to the differ
 
 To test if your own test accounts are prone to brute forcing, append the correct password of your test account to the end of the password list. The list shouldn't have more than 25 passwords. If you can complete the attack without permanently or temporarily locking the account or solving a CAPTCHA after a certain amount of requests with wrong passwords, that means the account isn't protected against brute force attacks.
 
-> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.  
+> Tip: Perform these kinds of tests only at the very end of your penetration test. You don't want to lock out your account on the first day of testing and potentially having to wait for it to be unlocked. For some projects unlocking accounts might be more difficult than you think.
 
 ### Testing Stateful Session Management (MSTG-AUTH-2)
 
@@ -345,7 +307,7 @@ You can find below several suggestions to reduce the likelihood of exploitation 
 
 Another alternative and strong mechanisms to implement a second factor is transaction signing.
 
-Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the back end. The private key is securely stored in the KeyStore (Android) or KeyChain (iOS). To authorize a transaction, the back end sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
+Transaction signing requires authentication of the user's approval of critical transactions. Asymmetric cryptography is the best way to implement transaction signing. The app will generate a public/private key pair when the user signs up, then registers the public key on the backend. The private key is securely stored in the KeyStore (Android) or KeyChain (iOS). To authorize a transaction, the backend sends the mobile app a push notification containing the transaction data. The user is then asked to confirm or deny the transaction. After confirmation, the user is prompted to unlock the Keychain (by entering the PIN or fingerprint), and the data is signed with user's private key. The signed transaction is then sent to the server, which verifies the signature with the user's public key.
 
 #### Static Analysis
 
@@ -393,7 +355,7 @@ The signature is created by applying the algorithm specified in the JWT header t
 HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
 ```
 
-Note that the secret is shared between the authentication server and the back end service - the client does not know it. This proves that the token was obtained from a legitimate authentication service. It also prevents the client from tampering with the claims contained in the token.
+Note that the secret is shared between the authentication server and the backend service - the client does not know it. This proves that the token was obtained from a legitimate authentication service. It also prevents the client from tampering with the claims contained in the token.
 
 #### Static Analysis
 
@@ -428,7 +390,7 @@ DecodedJWT decodedToken = verifier.verify(token);
 
 ##### Token Expiration
 
-Once signed, a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the back end doesn't process expired tokens.
+Once signed, a stateless authentication token is valid forever unless the signing key changes. A common way to limit token validity is to set an expiration date. Make sure that the tokens include an ["exp" expiration claim](https://tools.ietf.org/html/rfc7519#section-4.1.4 "RFC 7519") and the backend doesn't process expired tokens.
 
 A common method of granting tokens combines [access tokens and refresh tokens](https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ "Refresh tokens & access tokens"). When the user logs in, the backend service issues a short-lived *access token* and a long-lived *refresh token*. The application can then use the refresh token to obtain a new access token, if the access token expires.
 
@@ -583,9 +545,12 @@ The application can provide a push notification after each sensitive activity wi
 
 Paid content requires special care, and additional meta-information (e.g., operation Cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.   
 
-In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested. For instance: in iOS a developer can use `identifierForVendor` whereas in Android, the developer can use `Settings.Secure.ANDROID_ID` to identify an application instance.
+In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested.
+In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.
 
-Note that starting at Android 8.0 (API level 26), `Android_ID` is no longer a device unique ID. Instead it becomes scoped by the combination of app-signing key, user and device. So validating `Android_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `Android_ID` will change and it won't be able to recognize old users devices. This together with keying material in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding. Next, you should test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
+In Android, the developer can use `Settings.Secure.ANDROID_ID` till Android 8.0 (API level 26) to identify an application instance. Note that starting at Android 8.0 (API level 26), `ANDROID_ID` is no longer a device unique ID. Instead, it becomes scoped by the combination of app signing key, user and device. So validating `ANDROID_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `ANDROID_ID` will change and it won't be able to recognize old users devices. Therefore, it's better to store the `ANDROID_ID` encrypted and privately in a private a shared preferences file using a randomly generated key from the `AndroidKeyStore` and preferably AES_GCM encryption. The moment the app signature changes, the application can check for a delta and register the new `ANDROID_ID`. The moment this new ID changes without a new application signing key, it should indicate that something else is wrong.
+Next, the device binding can be extended by signing requests with a key stored in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding.
+You should also test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
 
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.

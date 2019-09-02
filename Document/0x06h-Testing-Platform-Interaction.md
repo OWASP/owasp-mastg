@@ -27,9 +27,9 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 
 Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
-Some permissions like camera, photos, calendar data, motion, contacts or speech recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. For example, a QR Code scanning app [requires the camera](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_ios "Requesting Authorization for Media Capture on iOS") to function but might be [requesting the photos permission](https://developer.apple.com/documentation/photokit/requesting_authorization_to_access_photos "Requesting Authorization to Access Photos") as well which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos). A malicious app could use this to leak the user pictures. For this reason, apps using the camera permission might rather want to avoid requesting the photos permission and store the taken pictures inside the app sandbox to avoid other apps (having the photos permission) to access them. Additional steps might be required if the pictures are considered sensitive, e.g. corporate data, passwords or credit cards. See the chapter "Data Storage" for more information.
+Some permissions like camera, photos, calendar data, motion, contacts or speech recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. For example, a QR Code scanning app [requires the camera](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_ios "Requesting Authorization for Media Capture on iOS") to function but might be [requesting the photos permission](https://developer.apple.com/documentation/photokit/requesting_authorization_to_access_photos "Requesting Authorization to Access Photos") as well which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos). A malicious app could use this to leak the user pictures. For this reason, apps using the camera permission might rather want to avoid requesting the photos permission and store the taken pictures inside the app sandbox to avoid other apps (having the photos permission) to access them. Additional steps might be required if the pictures are considered sensitive, e.g. corporate data, passwords or credit cards. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information.
 
-Other permissions like Bluetooth or Location require deeper verification steps. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected. For more information and some examples please refer to the "Source Code Inspection" in the "Static Analysis" section below and to the "Dynamic Analysis" section.
+Other permissions like Bluetooth or Location require deeper verification steps. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected. For more information and some examples please refer to the "[Source Code Inspection](#source-code-inspection "Source Code Inspection")" in the "Static Analysis" section below and to the "Dynamic Analysis" section.
 
 When collecting or simply handling (e.g. caching) sensitive data, an app should provide proper mechanisms to give the user control over it, e.g. to be able to revoke access or to delete it. However, sensitive data might not only be stored or cached but also sent over the network. In both cases, it has to be ensured that the app properly follows the appropriate best practices, which in this case involve implementing proper data protection and transport security. More information on how to protect this kind of data can be found in the chapter "Network APIs".
 
@@ -113,7 +113,7 @@ Since iOS 10, these are the main areas which you need to inspect for permissions
 
 ##### Purpose Strings in the Info.plist File
 
-[*Purpose strings*](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or *usage description strings*  are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
+[*Purpose strings*](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or *usage description strings* are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
 
 ![iOS Permission Request Alert](Images/Chapters/0x06h/permission_request_alert.png)
 
@@ -185,7 +185,7 @@ The entitlement outlined above does not require any additional permissions from 
 As documented at [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group"), the App Groups entitlement is required to share information between different apps through IPC or a shared file container, which means that data can be shared on the device directly between the apps.
 This entitlement is also required if an app extension requires to [share information with its containing app](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html "Sharing Data with Your Containing App").
 
-Depending on the data to-be-shared it might be more appropriate to share it using another method such as through a back end where this data could be potentially verified, avoiding tampering by e.g. the user himself.
+Depending on the data to-be-shared it might be more appropriate to share it using another method such as through a backend where this data could be potentially verified, avoiding tampering by e.g. the user himself.
 
 ##### Embedded Provisioning Profile File
 
@@ -382,7 +382,7 @@ In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS 
 
 #### Custom URL Schemes
 
-Please refer to the next section "Testing Custom URL Schemes" for more information on what custom URL schemes are and how to test them.
+Please refer to the section "[Testing Custom URL Schemes](#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")" for more information on what custom URL schemes are and how to test them.
 
 #### Universal Links
 
@@ -508,14 +508,14 @@ You should check how the received data is validated. Apple [explicitly warns abo
 
 > Universal links offer a potential attack vector into your app, so make sure to validate all URL parameters and discard any malformed URLs. In addition, limit the available actions to those that do not risk the user’s data. For example, do not allow universal links to directly delete content or access sensitive information about the user. When testing your URL-handling code, make sure your test cases include improperly formatted URLs.
 
-As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift from the Telegram app verifies exactly this before opening the URL:
+As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift verifies exactly this before opening the URL:
 
 ```swift
 func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-    ...
+                 restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    // ...
     if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
-        self.openUrl(url: url)
+        application.open(url, options: [:], completionHandler: nil)
     }
 
     return true
@@ -529,27 +529,24 @@ The `NSURLComponents` API can be used to parse and manipulate the components of 
 ```swift
 func application(_ application: UIApplication,
                  continue userActivity: NSUserActivity,
-                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool
-{
+                 restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
     guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
         let incomingURL = userActivity.webpageURL,
         let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
         let path = components.path,
         let params = components.queryItems else {
-            return false
+        return false
     }
 
-    print("path = \(path)")
-
-    if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
+    if let albumName = params.first(where: { $0.name == "albumname" })?.value,
         let photoIndex = params.first(where: { $0.name == "index" })?.value {
+        // Interact with album name and photo index
 
-        print("album = \(albumName)")
-        print("photoIndex = \(photoIndex)")
         return true
 
     } else {
-        print("Either album name or photo index missing")
+        // Handle when album and/or album name or photo index missing
+
         return false
     }
 }
@@ -597,7 +594,7 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep openURL
 0x1000df772 35 34 openURL:options:completionHandler:
 ```
 
-As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "Identifying and Hooking the URL Handler Method" in the "Dynamic Analysis" of "Testing Custom URL Schemes" section for some examples on hooking and tracing this method.
+As expected, `openURL:options:completionHandler:` is among the ones found (remember that it might be also present because the app opens custom URL schemes). Next, to ensure that no sensitive information is being leaked you'll have to perform dynamic analysis and inspect the data being transmitted. Please refer to "[Identifying and Hooking the URL Handler Method](#identifying-and-hooking-the-url-handler-method "Identifying and Hooking the URL Handler Method")" in the "Dynamic Analysis" of "Testing Custom URL Schemes" section for some examples on hooking and tracing this method.
 
 ##### Dynamic Analysis
 
@@ -626,7 +623,7 @@ Unlike custom URL schemes, unfortunately you cannot test universal links from Sa
 
 > To do it from Safari you will have to find an existing link on a website that once clicked, it will be recognized as a Universal Link. This can be a bit time consuming.
 
-Alternatively you can also use Frida for this, see the section "Performing URL Requests" for more details.
+Alternatively you can also use Frida for this, see the section "[Performing URL Requests](#performing-url-requests "Performing URL Requests")" for more details.
 
 ###### Identifying Valid Universal Links
 
@@ -1156,7 +1153,7 @@ After performing the static analysis you would know the *document types that the
 
 - *Share* a file with the app from another app or send it via AirDrop or e-mail. Choose the file so that it will trigger the "Open with..." dialogue (that is, there is no default app that will open the file, a PDF for example).
 - Hook `application:openURL:options:` and any other methods that were identified in a previous static analysis.
-- Observe the app behaviour.
+- Observe the app behavior.
 - In addition, you could send specific malformed files and/or use a fuzzing technique.
 
 To illustrate this with an example we have chosen the same real-world file manager app from the static analysis section and followed these steps:
@@ -1206,7 +1203,7 @@ RET: 0x1
 
 If you look at the stack trace, you can see how `application:openURL:options:` called `__handleOpenURL:`, which called `moveItemAtPath:toPath:error:`. Notice that we have now this information without having the source code for the target app. The first thing that we had to do was clear: hook `application:openURL:options:`. Regarding the rest, we had to think a little bit and come up with methods that we could start tracing and are related to the file manager, for example, all methods containing the strings "copy", "move", "remove", etc. until we have found that the one being called was `moveItemAtPath:toPath:error:`.
 
-A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to "Testing Custom URL Schemes" for more information.
+A final thing worth noticing here is that this way of handling incoming files is the same for custom URL schemes. Please refer to the "[Testing Custom URL Schemes](#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")" section for more information.
 
 #### App Extensions
 
@@ -1451,7 +1448,7 @@ When monitoring the pasteboards, there is several details that may be dynamicall
 - Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275 "Getting and Setting Pasteboard Items of Standard Data Types").
 - Get the number of items with `numberOfItems`.
 - Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142 "Checking for Data Types on a Pasteboard"), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10).
-- Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](https://developer.apple.com/documentation/mobilecoreservices/uttype?language=objc "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "UIActivity Sharing" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
+- Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](https://developer.apple.com/documentation/mobilecoreservices/uttype?language=objc "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#uiactivity-sharing "UIActivity Sharing")" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
 - Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`.
 
 If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
@@ -1997,7 +1994,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 ###### Opening a Link by Navigating to a Page and Letting Safari Open It
 
-You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behaviour.
+You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behavior.
 
 ![Open this page in "Telegram"?](Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png)
 
@@ -2240,7 +2237,7 @@ In the "URL Handlers" section, go to the "Fuzzer" tab. On the left side default 
 myURLscheme://$@$
 ```
 
-While the URL scheme is being fuzzed, watch the logs (see the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing") to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
+While the URL scheme is being fuzzed, watch the logs (see the section "[Monitoring System Logs](0x06b-Basic-Security-Testing.md#monitoring-system-logs "Monitoring System Logs")" of the chapter "iOS Basic Security Testing" to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
 
 ### Testing iOS WebViews (MSTG-PLATFORM-5)
 
@@ -2263,7 +2260,7 @@ WebViews are in-app browser components for displaying interactive web content. T
 - The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
-A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "Determining Whether Native Methods Are Exposed Through WebViews" below for more information.
+A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](#determining-whether-native-methods-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Native Methods Are Exposed Through WebViews")" below for more information.
 
 ##### SFSafariViewController
 
@@ -2500,7 +2497,7 @@ javaScriptEnabled:  true
 
 ##### Verifying that Only Secure Content is Allowed
 
-`UIWebView`'s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "Enumerating WebView Instances".
+`UIWebView`'s do not provide a method for this. However, you may inspect if the system enables the "Upgrade-Insecure-Requests" CSP (Content Security Policy) directive by calling the `request` method of each `UIWebView` instance ("Upgrade-Insecure-Requests" [should be available starting on iOS 10](https://www.thesslstore.com/blog/ios-10-will-support-upgrade-insecure-requests/ "iOS 10 Will Support Upgrade-Insecure-Requests") which included a new version of WebKit, the browser engine powering the iOS WebViews). See an example in the previous section "[Enumerating WebView Instances](#enumerating-webview-instances "Enumerating WebView Instances")".
 
 For `WKWebView`'s, you may call the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") for each of the `WKWebView`s found in the heap. Remember to do so once the WebView has loaded.
 
@@ -2567,7 +2564,7 @@ do {
 
 The page loads resources from the internet using HTTP, enabling a potential MITM to exfiltrate secrets contained in local files, e.g. in shared preferences.
 
-When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:")/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others:  [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
+When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:")/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others: [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
 
 Search the source code for the mentioned methods and inspect their parameters.
 
@@ -2680,7 +2677,7 @@ If it's possible to load local files via a WebView, the app might be vulnerable 
 
 To simulate an attack, you may inject your own JavaScript into the WebView with an interception proxy or simply by using dynamic instrumentation. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a MITM attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross-Site Scripting) Prevention Cheat Sheet") and the chapter "Testing Network Communication" for more information.
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a MITM attack. See the OWASP [XSS cheat sheet](https://goo.gl/x1mMMj "XSS (Cross-Site Scripting) Prevention Cheat Sheet") and the chapter "[iOS Network APIs](0x06g-Testing-Network-Communication.md)" for more information.
 
 For what concerns this section we will learn about:
 
@@ -2818,7 +2815,7 @@ func enableJavaScriptBridge(_ enabled: Bool) {
 }
 ```
 
-Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in the  example above) causes the JavaScript function `window.webkit.messageHandlers.myJavaScriptMessageHandler.postMessage` to be defined in all frames in all web views that use the user content controller. It can be then [used from the HTML file like this](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/d4e2d9efbde8841bf7e4a8800418dda6bb116ec6/WheresMyBrowser/web/WKWebView/scenario3.html#L33 "Where's My Browser? WKWebView/scenario3.html Line 33"):
+Adding a script message handler with name `"name"` (or `"javaScriptBridge"` in the example above) causes the JavaScript function `window.webkit.messageHandlers.myJavaScriptMessageHandler.postMessage` to be defined in all frames in all web views that use the user content controller. It can be then [used from the HTML file like this](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/d4e2d9efbde8841bf7e4a8800418dda6bb116ec6/WheresMyBrowser/web/WKWebView/scenario3.html#L33 "Where's My Browser? WKWebView/scenario3.html Line 33"):
 
 ```javascript
 function invokeNativeOperation() {
@@ -2954,7 +2951,7 @@ guard let customPoint = NSKeyedUnarchiver.unarchiveObjectWithFile("/path/to/arch
 
 When decoding a keyed archive, because values are requested by name, values can be decoded out of sequence or not at all. Keyed archives, therefore, provide better support for forward and backward compatibility. This means that an archive on disk could actually contain additional data which is not detected by the program, unless the key for that given data is provided at a later stage.
 
-Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the "Data Storage on iOS" chapter for more details.
+Note that additional protection needs to be in place to secure the file in case of confidential data, as the data is not encrypted within the file. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
 
 ##### Codable
 
@@ -2994,26 +2991,25 @@ Again, note in case of immutability: confidential information cannot be removed 
 Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
 
 ```swift
-struct CustomPointStruct:Codable {
-    var x: Double
+struct CustomPointStruct: Codable {
+    var point: Double
     var name: String
 }
 
 let encoder = JSONEncoder()
 encoder.outputFormatting = .prettyPrinted
 
-let test = CustomPointStruct(x: 10, name: "test")
+let test = CustomPointStruct(point: 10, name: "test")
 let data = try encoder.encode(test)
-print(String(data: data, encoding: .utf8)!)
-// Prints:
-// {
-//   "x" : 10,
-//   "name" : "test"
-// }
+let stringData = String(data: data, encoding: .utf8)
 
+// stringData = Optional ({
+// "point" : 10,
+// "name" : "test"
+// })
 ```
 
-JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the "Data Storage on iOS" chapter for more details.
+JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just need to make sure that any JSON that contains secrets has been appropriately protected (e.g., encrypted/HMACed). See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
 
 ##### Property Lists and Codable
 
@@ -3036,23 +3032,21 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 In this first example, the `NSUserDefaults` are used, which is the primary *property list*. We can do the same with the `Codable` version:
 
 ```swift
+struct CustomPointStruct: Codable {
+        var point: Double
+        var name: String
+    }
 
-  struct CustomPointStruct:Codable {
-      var x: Double
-      var name: String
-  }
+    var points: [CustomPointStruct] = [
+        CustomPointStruct(point: 1, name: "test"),
+        CustomPointStruct(point: 2, name: "test"),
+        CustomPointStruct(point: 3, name: "test"),
+    ]
 
-  var points: [CustomPointStruct] = [
-      CustomPointStruct(x: 1, name "test"),
-      CustomPointStruct(x: 2, name "test"),
-      CustomPointStruct(x: 3, name "test"),
-  ]
-
-  UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey:"points")
-  if let data = UserDefaults.standard.value(forKey:"points") as? Data {
-      let points2 = try? PropertyListDecoder().decode(Array<CustomPointStruct>.self, from: data)
-  }
-
+    UserDefaults.standard.set(try? PropertyListEncoder().encode(points), forKey: "points")
+    if let data = UserDefaults.standard.value(forKey: "points") as? Data {
+        let points2 = try? PropertyListDecoder().decode([CustomPointStruct].self, from: data)
+    }
 ```
 
 Note that **`plist` files are not meant to store secret information**. They are designed to hold user preferences for an app.
@@ -3091,9 +3085,9 @@ All different flavors of object persistence share the following concerns:
 
 - If you use object persistence to store sensitive information on the device, then make sure that the data is encrypted: either at the database level, or specifically at the value level.
 - Need to guarantee the integrity of the information? Use an HMAC mechanism or sign the information stored. Always verify the HMAC/signature before processing the actual information stored in the objects.
-- Make sure that keys used in the two notions above are safely stored in the KeyChain and well protected. See the "Data Storage on iOS" chapter for more details.
+- Make sure that keys used in the two notions above are safely stored in the KeyChain and well protected. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
 - Ensure that the data within the deserialized object is carefully validated before it is actively used (e.g., no exploit of business/application logic is possible).
-- Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C Runtime Reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (see the "iOS Anti-Reversing Defenses" chapter for more details).
+- Do not use persistence mechanisms that use [Runtime Reference](https://developer.apple.com/library/archive/#documentation/Cocoa/Reference/ObjCRuntimeRef/Reference/reference.html "Objective-C Runtime Reference") to serialize/deserialize objects in high risk applications, as the attacker might be able to manipulate the steps to execute business logic via this mechanism (see the chapter "[iOS Anti-Reversing Defenses](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md)" for more details).
 - Note that in Swift 2 and beyond, a [Mirror](https://developer.apple.com/documentation/swift/mirror "Mirror") can be used to read parts of an object, but cannot be used to write against the object.
 
 #### Dynamic Analysis
@@ -3101,14 +3095,14 @@ All different flavors of object persistence share the following concerns:
 There are several ways to perform dynamic analysis:
 
 - For the actual persistence: Use the techniques described in the "Data Storage on iOS" chapter.
-- For the serialization itself: use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
+- For the serialization itself: Use a debug build or use Frida / objection to see how the serialization methods are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
 ### Testing enforced updating (MSTG-ARCH-9)
 
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
 The challenge with iOS however, is that Apple does not provide any APIs yet to automate this process, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libaries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truly there.
 
-Please note that newer versions of an application will not fix security issues that are living in the back-ends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
+Please note that newer versions of an application will not fix security issues that are living in the backends to which the app communicates. Allowing an app not to communicate with it might not be enough. Having proper API-lifecycle management is key here.
 Similarly, when a user is not forced to update, do not forget to test older versions of your app against your API and/or use proper API versioning.
 
 #### Static Analysis
@@ -3120,7 +3114,7 @@ Make sure that every entry of the application goes through the updating mechanis
 #### Dynamic analysis
 
 In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
-Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the back-end will stop calls to vulnerable back-ends and/or whether the vulnerable app-version itself is blocked by the back-end.
+Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the backend will stop calls to vulnerable backends and/or whether the vulnerable app-version itself is blocked by the backend.
 Finally, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
 ### References
