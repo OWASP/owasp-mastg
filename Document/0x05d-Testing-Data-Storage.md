@@ -124,7 +124,7 @@ python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
 ```java
-//the getKey() method either gets the key from the server or from a KeyStore, or is deferred from a password.
+//the getKey() method either gets the key from the server or from a KeyStore, or is derived from a password.
 RealmConfiguration config = new RealmConfiguration.Builder()
   .encryptionKey(getKey())
   .build();
