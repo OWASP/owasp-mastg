@@ -17,6 +17,8 @@ Newer and older versions of the Excel are released on a regular basis and can be
 
 ## Files Hash
 
+You should ensure that the generated hash is similar to the one in the table below! File hashes serve as a file verification mechanism to ensure that you are using the same excel found in this guide, and that it was downloaded properly.
+
 | Filename | SHA256 Sum |
 |---|---|
 | Mobile_App_Security_Checklist-English_1.1.2.xlsx | b1f101bd3ea87e3a7e556cce2c00de925799e6acab06f406fd9f07cf5f990f17 |
