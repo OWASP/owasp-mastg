@@ -31,12 +31,11 @@ $ xcode-select --install
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
 
-It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id -l`:
+It is also possible to get the UDID via the command line, from a device attached via USB using `ioreg`:
 
 ```shell
-$ brew install ideviceinstaller
-$ idevice_id -l
-316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+$ ioreg -p IOUSB -l | grep "USB Serial"
+  |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
 ```
 
 Alternatively you can also use the Xcode command `instruments -s devices`.
