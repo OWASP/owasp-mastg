@@ -104,7 +104,7 @@ Drop a us line on the [Slack channel](https://app.slack.com/client/T04T40NHX/C1M
 Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started.
 
 Please note that the MSTG focuses primarely on the native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Nativescript/React-native/Xamarin/Cordova/... apps are not within the focus of the MSTG. However, some key-controls, such as pinning, have been explained already for some of these platforms.
-If you are looking for more security recommendations on this field, take a look at: 
+If you are looking for more security recommendations on this field, take a look the work-in-progress Google sheets based on the compliancy checklist 1.1.2: 
 
  - for Flutter [there is a Google sheet in progress based on the compliancy checklist 1.1.2](https://drive.google.com/file/d/1P5FZ_Bup5eSPOmkePZA8cIpKGOKvngkN/view?usp=sharing "Compliancy Checklist");
  - for React-Native [there is a Google sheet in progress based on the compliancy checklist 1.1.2](https://drive.google.com/file/d/1wHK3VI1cU1xmYrCu9yb5OHKUEeLIPSkC/view?usp=sharing "Compliancy Checklist").
