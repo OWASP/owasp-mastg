@@ -525,7 +525,7 @@ For additional best practices and detailed information please refer to the follo
 
 For applications which require L2 protection, the MASVS states that they should inform the user about all login activities within the app with the possiblity of blocking certain devices. This can be broken down into various scenarios:
 
-1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification. 
+1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification.
 2. The application provides an overview of the last session after login, if the previous session was with a different configuration (e.g. location, device, app-version) then the user his current configuration. The user then has the option to report suspicious activities and block devices used in the previous session.
 3. The application provides an overview of the last session after login at all times.
 4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
@@ -536,14 +536,17 @@ The developer can make use of specific meta-information and associate it to each
 - Date and Time: The user can clearly see the latest date and time when the app was used.
 - Location: The user can clearly identify the lastest locations where the app was used.
 
-The application can provide a push notification after each sensitive activity within the application. The choice of which activities to audit needs to be done for each application based on the data it handles and the level of security risk the team is willing to have. Below is a list of common sensitive activies that are usually audited:
+The application can provide a list of activities history which will be updated after each sensitive activity within the application. The choice of which activities to audit needs to be done for each application based on the data it handles and the level of security risk the team is willing to have. Below is a list of common sensitive activies that are usually audited:
 
 - Login attempts
 - Password changes
 - PII changes (name, email address, telephone number, etc.)
 - Sensitive activities (purchase, accessing important ressources, etc.)
+- Consent to Terms & Conditions
 
-Paid content requires special care, and additional meta-information (e.g., operation Cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.   
+Paid content requires special care, and additional meta-information (e.g., operation Cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
+
+In addition and to ensure non-repudiation, actions (E.g. payed content access, given consent to T&Cs, etc.) should be signed when necessary to be sure that these actions are being performed by the exact user.
 
 In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested.
 In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.
