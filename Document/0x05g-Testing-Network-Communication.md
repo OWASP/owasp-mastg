@@ -101,7 +101,7 @@ In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` sect
 
 - Accepting certificates with an untrusted CA
 
-In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname`, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all certificates.
+In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname`, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting certificates with untrusted CAs.
 
 - Accepting incorrect hostnames
 
