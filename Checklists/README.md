@@ -21,7 +21,7 @@ You should ensure that the generated hash is similar to the one in the table bel
 
 | Filename | SHA256 Sum |
 |---|---|
-| Mobile_App_Security_Checklist-English_1.1.2.xlsx | b1f101bd3ea87e3a7e556cce2c00de925799e6acab06f406fd9f07cf5f990f17 |
+| Mobile_App_Security_Checklist-English_1.1.2.xlsx | 9f0118a3149c5fe0e495440897be8ccbf4e546f5b52518ef54a3f403015b284e |
 | Mobile_App_Security_Checklist-French_1.1.2.xlsx | 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5 |
 | Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx | a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542 |
 | Mobile_App_Security_Checklist-Spanish_1.1.xlsx | f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc |
@@ -30,7 +30,7 @@ You should ensure that the generated hash is similar to the one in the table bel
 
 ```bash
 $ sha256sum Mobile_App_Security_Checklist-*
-b1f101bd3ea87e3a7e556cce2c00de925799e6acab06f406fd9f07cf5f990f17 *Mobile_App_Security_Checklist-English_1.1.2.xlsx
+9f0118a3149c5fe0e495440897be8ccbf4e546f5b52518ef54a3f403015b284e *Mobile_App_Security_Checklist-English_1.1.2.xlsx
 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5 *Mobile_App_Security_Checklist-French_1.1.2.xlsx
 a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542 *Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
 f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc *Mobile_App_Security_Checklist-Spanish_1.1.xlsx
@@ -43,7 +43,7 @@ owasp-mstg\Checklists> Get-FileHash -Algorithm SHA256 -Path .\Mobile_App_Securit
 
 
 Algorithm : SHA256
-Hash      : B1F101BD3EA87E3A7E556CCE2C00DE925799E6ACAB06F406FD9F07CF5F990F17
+Hash      : 9F0118A3149C5FE0E495440897BE8CCBF4E546F5B52518EF54A3F403015B284E
 Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-English_1.1.2.xlsx
 
 Algorithm : SHA256
@@ -63,7 +63,7 @@ Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_
 
 ```bash
 owasp-mstg/Checklists> shasum -a 256 Mobile_App_Security_Checklist-*
-b1f101bd3ea87e3a7e556cce2c00de925799e6acab06f406fd9f07cf5f990f17  Mobile_App_Security_Checklist-English_1.1.2.xlsx
+9f0118a3149c5fe0e495440897be8ccbf4e546f5b52518ef54a3f403015b284e  Mobile_App_Security_Checklist-English_1.1.2.xlsx
 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5  Mobile_App_Security_Checklist-French_1.1.2.xlsx
 a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542  Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
 f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc  Mobile_App_Security_Checklist-Spanish_1.1.xlsx
