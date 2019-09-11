@@ -540,7 +540,7 @@ The application can provide a list of activities history which will be updated a
 
 - Login attempts
 - Password changes
-- PII changes (name, email address, telephone number, etc.)
+- Personal Identifiable Information changes (name, email address, telephone number, etc.)
 - Sensitive activities (purchase, accessing important ressources, etc.)
 - Consent to Terms and Conditions clauses
 
