@@ -114,7 +114,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 #### Recommended Tools - iOS Device
 
-Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to Sources -> Edit, then clicking "Add" in the top left:
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
 
 - <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
 - <http://repo.hackyouriphone.org>: Add the HackYouriPhone repository to get the AppSync package.
@@ -182,7 +182,7 @@ In order to analyze iOS apps, you should install the following tools on your hos
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
 
-Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyze and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+Once you click on the button **Connect to USB/SSH device** in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on **Select App...**, select the app you want to analyze and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
@@ -786,8 +786,8 @@ $ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
 It is also possible to use the Xcode IDE to install iOS apps by doing the following steps:
 
 1. Start Xcode
-2. Select "Window/Devices and Simulators"
-3. Select the connected iOS device and click on the "+" sign in "Installed Apps".
+2. Select **Window/Devices and Simulators**
+3. Select the connected iOS device and click on the **+** sign in **Installed Apps**.
 
 ##### Allow Application Installation on a Non-iPad Device
 
@@ -1101,7 +1101,7 @@ Regular           420  None                ...  Info.plist
 Regular           493  None                ...  iGoat-Swift
 ```
 
-You can also visualize the Bundle directory from Passionfruit by clicking on "Files" -> "App Bundle":
+You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
 <img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View">
 
@@ -1109,7 +1109,7 @@ Including the `Info.plist` file:
 
 <img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View">
 
-As well as the Data directory in "Files" -> "Data":
+As well as the Data directory in **Files** -> **Data**:
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View">
 
@@ -1117,18 +1117,18 @@ Refer to the "Testing Data Storage" chapter for more information and best practi
 
 ##### Monitoring System Logs
 
-Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
+Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode **Devices** window as follows:
 
 1. Launch Xcode.
 2. Connect your device to your host computer.
-3. Choose "Window" -> "Devices and Simulators".
+3. Choose **Window** -> **Devices and Simulators**.
 4. Click on your connected iOS device in the left section of the Devices window.
 5. Reproduce the problem.
-6. Click on the "Open Console" button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
+6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
 ![Opening the Device Console in Xcode](Images/Chapters/0x06b/open_device_console.png)
 
-To save the console output to a text file, go to the top right side of the Console window and click on the "Save" button.
+To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
 
@@ -1149,7 +1149,7 @@ Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch
 ...
 ```
 
-Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the "Console" -> "Output" tab:
+Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the **Console** -> **Output** tab:
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
 
@@ -1240,7 +1240,7 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 ###### Passionfruit (Jailbroken / non-Jailbroken)
 
-With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keychain information.
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 
@@ -1333,13 +1333,12 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 
 The last step would be to set the proxy globally on your iOS device:
 
-1. Go to Settings
-2. Wi-Fi
-3. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-4. Once connected click on the small blue icon on the right side of the connect Wi-Fi
-5. Configure your Proxy by selecting Manual
-6. Type in 127.0.0.1 as Server
-7. Type in 8080 as Port
+1. Go to **Settings** -> **Wi-Fi**
+2. Connect to *any* Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+3. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+4. Configure your Proxy by selecting **Manual**
+5. Type in 127.0.0.1 as **Server**
+6. Type in 8080 as **Port**
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 

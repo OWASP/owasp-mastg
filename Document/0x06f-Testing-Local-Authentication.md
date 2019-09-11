@@ -202,19 +202,19 @@ It is important to remember that Local Authentication framework is an event-base
 
 On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
 
-- Settings->Swizzler
-- Enable "Inject Swizzler into Apps"
-- Enable "Log Everything to Syslog"
-- Enable "Log Everything to File"
-- Enter the submenu "iOS Frameworks"
-- Enable "LocalAuthentication"
-- Enter the submenu "Select Target Apps"
+- **Settings** -> **Swizzler**
+- Enable **Inject Swizzler into Apps**
+- Enable **Log Everything to Syslog**
+- Enable **Log Everything to File**
+- Enter the submenu **iOS Frameworks**
+- Enable **LocalAuthentication**
+- Enter the submenu **Select Target Apps**
 - Enable the target app
 - Close the app and start it again
-- When the Touch ID prompt shows click "cancel"
+- When the Touch ID prompt shows click **cancel**
 - If the application flow continues without requiring the Touch ID then the bypass has worked.
 
-If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses Cycript instead of Frida is also available in Needle.
+If you're using Needle, run the `hooking/frida/script_touch-id-bypass` module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses Cycript instead of Frida is also available in Needle.
 
 Alternatively, you can use [objection to bypass Touch ID](https://github.com/sensepost/objection/wiki/Understanding-the-Touch-ID-Bypass "Understanding the Touch ID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
