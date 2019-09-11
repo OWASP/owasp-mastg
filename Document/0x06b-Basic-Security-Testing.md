@@ -1117,7 +1117,7 @@ Refer to the "Testing Data Storage" chapter for more information and best practi
 
 ##### Monitoring System Logs
 
-Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode *Devices* window as follows:
+Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode **Devices** window as follows:
 
 1. Launch Xcode.
 2. Connect your device to your host computer.
@@ -1132,7 +1132,7 @@ To save the console output to a text file, go to the top right side of the Conso
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
 
-You can also connect to the device shell as explained in **Accessing the Device Shell**, install socat via apt-get and run the following command:
+You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
 
 ```shell
 iPhone:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock
@@ -1240,7 +1240,7 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 ###### Passionfruit (Jailbroken / non-Jailbroken)
 
-With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** and **Keychain** and you can see a listing of the stored Keychain information.
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 

@@ -365,4 +365,4 @@ If nouns in backticks are plural, place the "s" after the second backtick (e.g. 
 
 ### Navigation
 
-When referring to any UI element by name, put its name in boldface, using ** (e.g., **Home** -> **Menu**).
+When referring to any UI element by name, put its name in boldface, using `**<name>**` (e.g., **Home** -> **Menu**).

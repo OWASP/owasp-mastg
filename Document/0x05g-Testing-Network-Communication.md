@@ -97,15 +97,15 @@ Dynamic analysis requires an interception proxy. To test improper certificate ve
 
 - Self-signed certificate
 
-In Burp, go to the **Proxy** tap, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Use a self-signed certificate**, and click **Ok**. Now, run your application. If you're able to see HTTPS traffic, your application is accepting self-signed certificates.
+In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Use a self-signed certificate**, and click **Ok**. Now, run your application. If you're able to see HTTPS traffic, your application is accepting self-signed certificates.
 
 - Accepting certificates with an untrusted CA
 
-In Burp, go to the **Proxy** tap, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting certificates with an untrusted CA.
+In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting certificates with an untrusted CA.
 
 - Accepting incorrect hostnames
 
-In Burp,go to the **Proxy** tap, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
+In Burp,go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
 
 If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
 
