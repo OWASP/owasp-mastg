@@ -86,7 +86,7 @@ The [Apple Developer Documentation](https://developer.apple.com/library/archive/
 - The provisioning profile is embedded into the app bundle during the build (`embedded.mobileprovision`).
 - Entitlements from the "Code Signing Entitlements" section in Xcode's "Build Settings" tab are transferred to the app's signature.
 
-For example, if a developer wants to set the "Default Data Protection" capability, he would go to the "Capabilities" tab in Xcode and enable "Data Protection". This is directly written by Xcode to the `<appname>.entitlements` file as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
+For example, if a developer wants to set the "Default Data Protection" capability, he would go to the **Capabilities** tab in Xcode and enable **Data Protection**. This is directly written by Xcode to the `<appname>.entitlements` file as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
 
 ```xml
 <key>Entitlements</key>
@@ -321,7 +321,7 @@ The following methods are displayed:
   1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
 ```
 
-If we click on "Location", another method will be traced:
+If we click on **Location**, another method will be traced:
 
 ```shell
  11186 ms  +[CLLocationManager authorizationStatus]
@@ -419,7 +419,7 @@ Testing universal links on a static approach includes doing the following:
 
 Universal links require the developer to add the Associated Domains entitlement and include in it a list of the domains that the app supports.
 
-In Xcode, go to the "Capabilities" tab and search for "Associated Domains". You can also inspect the `.entitlements` file looking for `com.apple.developer.associated-domains`. Each of the domains must be prefixed with `applinks:`, such as `applinks:www.mywebsite.com`.
+In Xcode, go to the **Capabilities** tab and search for **Associated Domains**. You can also inspect the `.entitlements` file looking for `com.apple.developer.associated-domains`. Each of the domains must be prefixed with `applinks:`, such as `applinks:www.mywebsite.com`.
 
 Here's an example from Telegram's `.entitlements` file:
 
@@ -1159,11 +1159,11 @@ After performing the static analysis you would know the *document types that the
 To illustrate this with an example we have chosen the same real-world file manager app from the static analysis section and followed these steps:
 
 1. Send a PDF file from another Apple device (e.g. a MacBook) via Airdrop.
-2. Wait for the "AirDrop" popup to appear and click on Accept.
-3. As there is no default app that will open the file, it switches to the "Open with..." popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
+2. Wait for the **AirDrop** popup to appear and click on **Accept**.
+3. As there is no default app that will open the file, it switches to the **Open with...** popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
 
     ![AirDrop Open With Dialog](Images/Chapters/0x06h/airdrop_openwith.png)
-4. After selecting "SomeFileManager" we can see the following:
+4. After selecting **SomeFileManager** we can see the following:
 
     ```shell
     (0x1c4077000)  -[AppDelegate application:openURL:options:]
@@ -1566,7 +1566,7 @@ There are a couple of things that we can do in the static analysis. In the next 
 
 The first step to test custom URL schemes is finding out whether an application registers any protocol handlers.
 
-If you have the original source code and want to view registered protocol handlers, simply open the project in Xcode, go to the "Info" tab and open the "URL Types" section as presented in the screenshot below:
+If you have the original source code and want to view registered protocol handlers, simply open the project in Xcode, go to the **Info** tab and open the **URL Types** section as presented in the screenshot below:
 
 ![Document Overview](Images/Chapters/0x06h/URL_scheme.png)
 
@@ -1853,7 +1853,7 @@ function openURL(url) {
 For this you can also use [IDB](https://www.idbtool.com/ "IDB"):
 
 - Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](https://www.idbtool.com/documentation/setup.html "IDB Setup").
-- Go to the "URL Handlers" section. In "URL schemes", click "Refresh", and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking "Open", on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
+- Go to the **URL Handlers** section. In **URL schemes**, click **Refresh**, and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking **Open**, on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
 
 ###### Using Needle
 
@@ -2077,7 +2077,7 @@ There you can observe the following:
 - The URL being opened is `tg://resolve?domain=fridadotre`.
 - It uses the `tg://` custom URL scheme from Telegram.
 
-It is interesting to see that if you navigate again to "<https://telegram.me/fridadotre>", click on cancel and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
+It is interesting to see that if you navigate again to "<https://telegram.me/fridadotre>", click on **cancel** and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
 
 ![Open in the Telegram app](Images/Chapters/0x06h/open_in_telegram_via_universallink.png)
 
@@ -2231,7 +2231,7 @@ The script will detect if a crash occurred. On this run it did not detect any cr
 
 ###### Using IDB
 
-In the "URL Handlers" section, go to the "Fuzzer" tab. On the left side default IDB payloads are listed. Once you have generated your payload list (e.g. using FuzzDB), go to the "Fuzz Template" section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
+In the **URL Handlers** section, go to the **Fuzzer** tab. On the left side default IDB payloads are listed. Once you have generated your payload list (e.g. using FuzzDB), go to the **Fuzz Template** section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
 ```shell
 myURLscheme://$@$
