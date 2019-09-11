@@ -544,9 +544,9 @@ The application can provide a list of activities history which will be updated a
 - Sensitive activities (purchase, accessing important ressources, etc.)
 - Consent to Terms & Conditions
 
-Paid content requires special care, and additional meta-information (e.g., operation Cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
+Paid content requires special care, and additional meta-information (e.g., operation cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
 
-In addition and to ensure non-repudiation, actions (E.g. payed content access, given consent to T&Cs, etc.) should be signed when necessary to be sure that these actions are being performed by the exact user.
+In addition, non-repudiation mechanisms should be applied to sensitive transactions (e.g. payed content access, given consent to Terms and Conditions clauses, etc.) in order to prove that a specific transaction was in fact performed (integrity) and by whom (authentication).
 
 In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested.
 In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.
