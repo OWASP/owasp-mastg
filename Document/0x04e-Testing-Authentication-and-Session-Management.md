@@ -542,7 +542,7 @@ The application can provide a list of activities history which will be updated a
 - Password changes
 - PII changes (name, email address, telephone number, etc.)
 - Sensitive activities (purchase, accessing important ressources, etc.)
-- Consent to Terms & Conditions
+- Consent to Terms and Conditions clauses
 
 Paid content requires special care, and additional meta-information (e.g., operation cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
 
