@@ -42,7 +42,7 @@ The [following changes](https://developer.android.com/about/versions/pie/android
 - **Restricted access to Wi-Fi location and connection information**: SSID and BSSID values cannot be retrieved (e.g. via [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo%28%29 "WifiManager.getConnectionInfo") unless *all* of the following is true:
   - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
   - The `ACCESS_WIFI_STATE` permission.
-  - Location services are enabled (under Settings -> Location).
+  - Location services are enabled (under **Settings** -> **Location**).
 
 Apps targeting Android 9 (API level 28) or higher [are affected](https://developer.android.com/about/versions/pie/android-9.0-changes-28 "Behavior changes: apps targeting API level 28+") by the following:
 

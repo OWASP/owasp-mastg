@@ -339,11 +339,11 @@ $ adb pull <remote_file> <target_destination>
 When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
 
 |    Backticks    | Quotation Marks | No Punctuation |
-| --------------- | --------------- | -------------- |
+| --- | --- | --- |
 | function names  |  section titles | application name |
 |   method names  |  chapter titles | folder names  |
-|    commands     |    book titles  | navigation (e.g., Home -> Menu)|
-|   class names   | flags values (e.g., "true", lowercase) | ID #s |
+|    commands     |    book titles  | |
+|   class names   | flags values (e.g., "true", lowercase) ||
 |   block names   | command options (e.g., "help" option)||
 |   flag names    | single menu item (e.g., "Home" menu)||
 |   file names    | system error msgs.|
@@ -362,3 +362,7 @@ When they do not occur in a code block, place the following code-related keyword
 | interface names ||
 
 If nouns in backticks are plural, place the "s" after the second backtick (e.g. `RuntimeException`s). Do not add parentheses, brackets, or other punctuation to any keywords that are in backticks (e.g., `main` not `main()`).
+
+### Navigation
+
+When referring to any UI element by name, put its name in boldface, using `**<name>**` (e.g., **Home** -> **Menu**).

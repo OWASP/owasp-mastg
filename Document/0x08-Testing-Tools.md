@@ -151,6 +151,7 @@ The applications listed below can be used as training materials. Note: only the 
 #### Android
 
 - Crackmes: A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
+- AndroGoat: An open source vulnerable/insecure app using Kotlin. This app has a wide range of vulnerabilities related to certificate pinning, custom URL schemes, Android Network Security Configuration, WebViews, root detection and over 20 other vulnerabilities - <https://github.com/satishpatnayak/AndroGoat>
 - DVHMA: A hybrid mobile app (for Android) that intentionally contains vulnerabilities - <https://github.com/logicalhacking/DVHMA>
 - Digitalbank: A vulnerable app created in 2015, which can be used on older Android platforms - <https://github.com/CyberScions/Digitalbank>
 - DIVA Android: An app intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges - <https://github.com/payatu/diva-android>
