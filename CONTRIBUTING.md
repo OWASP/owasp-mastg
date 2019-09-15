@@ -15,8 +15,8 @@ Contributing to the MSTG can be done in many different ways:
 In order to increase the chances of your PR being accepted, please make sure that:
 
 - Your submission is compliant with our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide").
-- Your code snippets are well-tested and provide comments for key code lines
-- Your test cases explain issues on open-source or specifically designed vulnerable applications. Do not show vulnerabilities or bad coding practices on commercial applications. Example applications you can use are [OWASP iGOAT](https://www.owasp.org/index.php/OWASP_iGoat_Tool_Project "OWASP iGOAT"), applications from the [MSTG Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground") or any of the [MSTG Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes").
+- Your code snippets are well-tested and provide comments for key code lines.
+- Your test cases explain issues on open-source or specifically designed vulnerable applications. Do not show vulnerabilities or bad coding practices on commercial applications. Example applications you can use are [OWASP iGoat](https://www.owasp.org/index.php/OWASP_iGoat_Tool_Project "OWASP iGoat"), applications from the [MSTG Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground") or any of the [MSTG Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes").
 
 After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the size of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 7 days have passed.
 
@@ -60,7 +60,8 @@ If at any time you want to work on a different issue, you can simply switch to a
 ## Translating
 
 Our current goal is to publish one minor release every 6 months. Next, we will often create patch updates in order to provide intermediary updates in PDF and DocX format. Releases that have been tagged can then be translated into preferred languages.
-(Note we use semantic versioning: major.minor.patch)
+
+> Note we use semantic versioning: major.minor.patch
 
 ## What not to do
 
@@ -68,3 +69,5 @@ Although we greatly appreciate any and all contributions to the project, there a
 
 - The MSTG should not be used as a platform for advertisement of commercial tools, companies or individuals. Write-ups should be written with free and open-source tools in mind and commercial tools are typically not accepted, unless as a reference in the security tools section.
 - Unnecessary self-promotion of tools or blog posts is frowned upon. If you have a relation with on of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
+
+Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") for all the details.
