@@ -4,11 +4,11 @@
 
 Contributing to the MSTG can be done in many different ways:
 
-- Create [issues](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues") for missing content or errors. Explain what you think is missing and give a suggestion as to where it could be added.
-- Create a [Pull Request (PR)](https://github.com/OWASP/owasp-mstg/pulls "Create a pull request"). This is a direct contribution to the guide and your PR may be merged after review. Be sure to follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide") when writing content. You should ideally create an issue for any PR you would like to submit, as we can first review the merit of the PR and avoid any unnecessary work. This is of course not needed for small modifications such as correcting typos.
-- Review pull requests. If you are a fluent speaker in any of the different languages that the MSTG is available in, feel free to give feedback on any of the submitted PRs.
-- Proofread and fix errors. If you are studying the MSTG, write down any error, no matter how small, and submit them in an Issue or fix them yourself through a PR.
-- Extending and maintaining our existing mobile applications, which are the [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes") and the applications on our [Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground")
+- **File [issues](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues")** for missing content or errors. Explain what you think is missing and give a suggestion as to where it could be added.
+- **Create a [Pull Request (PR)](https://github.com/OWASP/owasp-mstg/pulls "Create a pull request")**. This is a direct contribution to the guide and your PR may be merged after review. Be sure to follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide") when writing content. You should ideally create an issue for any PR you would like to submit, as we can first review the merit of the PR and avoid any unnecessary work. This is of course not needed for small modifications such as correcting typos.
+- **Review pull requests**. If you are a fluent speaker in any of the different languages that the MSTG is available in, feel free to give feedback on any of the submitted PRs.
+- **Proofread and fix errors**. If you are studying the MSTG, write down any error, no matter how small, and submit them in an issue or fix them yourself through a PR.
+- **Contribute to the MSTG Apps**. Extend and maintain our existing mobile applications, which are the [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes") and the applications on our [Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground")
 
 ## Making sure your PR is accepted
 
@@ -31,7 +31,9 @@ After your PR has been submitted, we will review it as quickly as possible. This
     $ git remote -v
     origin git@github.com:<your Github handle>/owasp-mstg.git (fetch)
     origin git@github.com:<your Github handle>/owasp-mstg.git (push)
+
     $ git remote add upstream git@github.com:OWASP/owasp-mstg.git
+
     $ git remote -v
     origin git@github.com:<your Github handle>/owasp-mstg.git (fetch)
     origin git@github.com:<your Github handle>/owasp-mstg.git (push)
@@ -55,7 +57,9 @@ After your PR has been submitted, we will review it as quickly as possible. This
 
     See also the following article for further explanation on "[How to Keep a Downstream git Repository Current with Upstream Repository Changes](https://medium.com/sweetmeat/how-to-keep-a-downstream-git-repository-current-with-upstream-repository-changes-10b76fad6d97 "How to Keep a Downstream git Repository Current with Upstream Repository Changes")".
 
-If at any time you want to work on a different issue, you can simply switch to a different branch, as explained in step 5. Don't try to work on too many issues at once though, as it will be a lot more difficult to merge branches the longer they are open.
+If at any time you want to work on a different issue, you can simply switch to a different branch, as explained in step 5.
+
+> Tip: Don't try to work on too many issues at once though, as it will be a lot more difficult to merge branches the longer they are open.
 
 ## Translating
 
