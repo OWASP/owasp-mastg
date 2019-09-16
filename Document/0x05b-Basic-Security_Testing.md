@@ -1310,9 +1310,9 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 
 ##### Extracting the App Package from the Device
 
-Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party.
+Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party. To obtain applications from a rooted or non-rooted device, you can the following methods.
 
-To obtain applications from a non-rooted device, you could use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
+Typically you'd use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
 
 ```shell
 $ adb shell pm list packages
@@ -1324,17 +1324,15 @@ Once you have located the package name of the application, you need the full pat
 $ adb shell pm path <package name>
 ```
 
-With the full path to the apk, you can now simply use `adb pull` to extract the apk.
+With the full path to the APK, you can now simply use `adb pull` to extract it.
 
 ```shell
 $ adb pull <apk path>
 ```
 
-The apk will be downloaded in your working directory.
+The APK will be downloaded in your working directory.
 
-There are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted apk via your prefered method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
-
-Both of the methods mentioned previously do not require root, hence, they can be used on rooted and non-rooted devices.
+Alternatively, there are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted APK via your preferred method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
 
 #### Installing Apps
 
