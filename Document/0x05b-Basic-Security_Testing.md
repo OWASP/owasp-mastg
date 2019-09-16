@@ -1297,11 +1297,11 @@ Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remot
 
 #### Obtaining and Extracting Apps
 
-There are several ways of extracting apk files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
+There are several ways of extracting APK files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
 
 ##### Alternative App Stores
 
-One of the easiest options is to download the apk from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not offical and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host APKs and are not known for modifying apps and even list SHA-1 and SHA-256 checksums of the apps are:
+One of the easiest options is to download the APK from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not official and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host APKs and are not known for modifying apps and even list SHA-1 and SHA-256 checksums of the apps are:
 
 - [APKMirror](https://apkmirror.com "APKMirror")
 - [APKPure](https://apkpure.com "APKPure")
