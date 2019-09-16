@@ -1308,6 +1308,38 @@ One of the easiest options is to download the APK from websites that mirror publ
 
 Beware that you do not have control over these sites and you cannot guarantee what they do in the future. Only use them if it's your only option left.
 
+##### Using gplaycli
+
+[gplaycli](https://github.com/matlink/gplaycli "gplaycli") is a Python based CLI tool to search, install, update Android applications from the Google Play Store. Follow the [installation steps](https://github.com/matlink/gplaycli#installation "gplaycli Installation") and you're ready to run it. gplaycli offers several options, please refer to its help (`-h`) for more information.
+
+If you're unsure about the package name (or AppID) of an app, you may perform a keyword based search for APKs (`-s`):
+
+```bash
+gplaycli -s "google keep"
+
+Title                          Creator     Size      Last Update  AppID                                    Version
+
+Google Keep - notes and lists  Google LLC  15.78MB   4 Sep 2019   com.google.android.keep                  193510330
+Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.android.apps.maps             1016200134
+Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
+```
+
+Next, you can download (`-d`) the selected APK by specifying its AppID:
+
+```bash
+$ gplaycli -p -v -d com.google.android.keep
+[INFO] GPlayCli version 3.26 [Python3.7.4]
+[INFO] Configuration file is ~/.config/gplaycli/gplaycli.conf
+[INFO] Device is bacon
+[INFO] Using cached token.
+[INFO] Using auto retrieved token to connect to API
+[INFO] 1 / 1 com.google.android.keep
+[################################] 15.78MB/15.78MB - 00:00:02 6.57MB/s/s
+[INFO] Download complete
+```
+
+The `com.google.android.keep.apk` file will be in your current directory. As you might imagine, this approach is a very convenient way to download APKs, especially with regards to automation.
+
 ##### Extracting the App Package from the Device
 
 Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party. To obtain applications from a rooted or non-rooted device, you can the following methods.
