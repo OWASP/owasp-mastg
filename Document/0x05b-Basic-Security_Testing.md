@@ -2118,6 +2118,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
 - frida-ps - <https://www.frida.re/docs/frida-ps/>
 - frida-trace - <https://www.frida.re/docs/frida-trace/>
+- gplaycli - <https://github.com/matlink/gplaycli>
 - InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
 - Inspeckage - <https://github.com/ac-pm/Inspeckage>
 - JAADAS - <https://github.com/flankerhqd/JAADAS>
