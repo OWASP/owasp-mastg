@@ -6,7 +6,8 @@ Contributing to the MSTG can be done in many different ways:
 
 - **File [issues](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues")** for missing content or errors. Explain what you think is missing and give a suggestion as to where it could be added.
 - **Create a [Pull Request (PR)](https://github.com/OWASP/owasp-mstg/pulls "Create a pull request")**. This is a direct contribution to the guide and may be merged after review. Be sure to follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide") when writing content. You should ideally [create an issue](https://github.com/OWASP/owasp-mstg/issues "MSTG Issues") for any PR you would like to submit, as we can first review the merit of the PR and avoid any unnecessary work. This is of course not needed for small modifications such as correcting typos.
-- **Review pull requests**. If you are a fluent speaker in any of the different languages that the MSTG is available in, feel free to give feedback on any of the submitted PRs.
+- **Review pull requests for style, spelling and grammar**. If you are a fluent speaker in any of the different languages that the MSTG is available in, feel free to give feedback on any of the submitted PRs.
+- **Review pull requests for technical content**. Do you have tons of experience with the technical subject described in the PR? Chip in with constructive feedback.
 - **Proofread and fix errors**. If you are studying the MSTG, write down any error, no matter how small, and submit them in an issue or fix them yourself through a PR.
 - **Contribute to the MSTG Apps**. Extend and maintain our existing mobile applications, which are the [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes") and the applications on our [Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground").
 
