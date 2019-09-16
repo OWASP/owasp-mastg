@@ -493,7 +493,7 @@ After starting Passionfruit you can select the app that is in scope for testing.
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory">
 
-When navigating through the directories and selecting a file, a TextViewer pop-up will show up that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, including:
+When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
 - Text viewer
 - SQLite viewer
@@ -529,7 +529,7 @@ Writing bytes to destination...
 Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 ```
 
-You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case file an issue in the [objection GitHub repo](https://github.com/sensepost/objection/issues "Objection Issues").
+You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case, file an issue in the [objection GitHub repo](https://github.com/sensepost/objection/issues "Objection Issues").
 
 #### Obtaining and Extracting Apps
 
@@ -541,7 +541,7 @@ During development, apps are sometimes provided to testers via over-the-air (OTA
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
+You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPA from an OTA distribution URL. Install it via npm:
 
 ```shell
 $ npm install -g itms-services
@@ -557,7 +557,7 @@ Save the IPA file locally with the following command:
 
 1. From an IPA:
 
-   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
+   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. `Payload/Telegram X.app/Telegram X`. See the following subsection for details on the extraction of the property lists.
 
     > On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
 
@@ -595,11 +595,11 @@ $ class-dump Telegram
 //
 ```
 
-In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-iOS-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways for extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or modify Clutch as discussed later.
+In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways for extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or a modified version of Clutch as discussed later.
 
 ###### Using Clutch
 
-After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through scp. Run Cluch with the -i flag to list all installed applications:
+After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
 
 ```shell
 root# ./Clutch -i
@@ -660,12 +660,17 @@ Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](http
 
 ###### Using Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
-Note: before we get started, please note that the Frida-ios-dump tool is not always compatible with the latest version of Frida. Therefore: it might well be that you have to install an older version of Frida on your jailbroken device.
-First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the username and password to the ones you use. Now you can safely use the tool to enumerate the apps installed:
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida script (`dump.js`) to dump the decrypted binary from memory onto a file.
+
+> Frida-ios-dump might not be compatible with the latest version of Frida. If that's the case, you might have to install an older version of Frida server on your device.
+> In addition, note that we'll be using the master branch of frida-ios-dump, which runs on Python 2. If you have any issues with it you might try checking out the 3.x branch and run frida-ios-dump again using Python 3.
+
+First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
+
+Now you can safely use the tool to enumerate the apps installed:
 
 ```shell
-$ ./dump.py -l
+$ python dump.py -l
  PID  Name             Identifier
 ----  ---------------  -------------------------------------
  860  Cydia            com.saurik.Cydia
@@ -680,12 +685,7 @@ and you can dump one of the listed binaries:
 
 ```shell
 $ python dump.py ph.telegra.Telegraph
-/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
-  m.add_string(self.Q_C.public_numbers().encode_point())
-/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
-  self.curve, Q_S_bytes
-/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
-  hm.add_string(self.Q_C.public_numbers().encode_point())
+
 Start the target app ph.telegra.Telegraph
 Dumping Telegram to /var/folders/qw/gz47_8_n6xx1c_lwq7pq5k040000gn/T
 [frida-ios-dump]: HockeySDK.framework has been loaded.
@@ -700,7 +700,7 @@ libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00
 0.00B [00:00, ?B/s]Generating "Telegram.ipa"
 ```
 
-After this, the Telegram.ipa file will be created in your current directory. You can validate the successfulness of the dump by removing the application and reinstalling it through io-deploy using `ios-deploy -b Telegram.ipa`. Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
+After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 #### Installing Apps
 
