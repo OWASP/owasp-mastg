@@ -1344,7 +1344,7 @@ The `com.google.android.keep.apk` file will be in your current directory. As you
 
 Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party. To obtain applications from a rooted or non-rooted device, you can use the following methods:
 
-Typically you'd use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
+Use `adb pull` to retrieve the APK. If you don't know the package name, the first step is to list all the applications installed on the device:
 
 ```shell
 $ adb shell pm list packages
