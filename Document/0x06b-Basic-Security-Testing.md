@@ -595,7 +595,7 @@ $ class-dump Telegram
 //
 ```
 
-In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways for extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or a modified version of Clutch as discussed later.
+In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or a modified version of Clutch as discussed later.
 
 ###### Using Clutch
 
