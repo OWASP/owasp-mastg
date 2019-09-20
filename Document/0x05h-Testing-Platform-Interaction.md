@@ -141,7 +141,7 @@ Check permissions to make sure that the app really needs them and remove unneces
 
 Go through the permissions with the developer to identify the purpose of every permission set and remove unnecessary permissions.
 
-Besides going through the AndroidManifest.xml file manually, you can also use the Android Asset Packaging tool to examine the permissions of an APK file.
+Besides going through the AndroidManifest.xml file manually, you can also use the Android Asset Packaging tool (aapt) to examine the permissions of an APK file.
 
 > aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by doing `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](0x05b-Basic-Security_Testing.md#listing-installed-apps "Listing Installed Apps")".
 
