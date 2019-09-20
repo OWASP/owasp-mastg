@@ -146,7 +146,7 @@ Besides going through the AndroidManifest.xml file manually, you can also use th
 > aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by doing `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](0x05b-Basic-Security_Testing.md#listing-installed-apps "Listing Installed Apps")".
 
 ```shell
-$ aapt d permissions ~/Downloads/app-x86-debug.apk
+$ aapt d permissions app-x86-debug.apk
 package: sg.vp.owasp_mobile.omtg_android
 uses-permission: name='android.permission.WRITE_EXTERNAL_STORAGE'
 uses-permission: name='android.permission.INTERNET'
