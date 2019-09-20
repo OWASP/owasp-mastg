@@ -1315,7 +1315,7 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 If you're unsure about the package name (or AppID) of an app, you may perform a keyword based search for APKs (`-s`):
 
 ```bash
-gplaycli -s "google keep"
+$ gplaycli -s "google keep"
 
 Title                          Creator     Size      Last Update  AppID                                    Version
 
