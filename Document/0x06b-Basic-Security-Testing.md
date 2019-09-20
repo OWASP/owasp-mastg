@@ -663,7 +663,7 @@ Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](http
 [Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida script (`dump.js`) to dump the decrypted binary from memory onto a file.
 
 > Frida-ios-dump might not be compatible with the latest version of Frida. If that's the case, you might have to install an older version of Frida server on your device.
-> In addition, note that we'll be using the master branch of frida-ios-dump, which runs on Python 2. If you have any issues with it you might try checking out the 3.x branch and run frida-ios-dump again using Python 3.
+> In addition, note that the examples below are using the master branch of frida-ios-dump, which runs on Python 2. If you have any issues with it you might try checking out the 3.x branch and run frida-ios-dump again using Python 3.
 
 First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
 
