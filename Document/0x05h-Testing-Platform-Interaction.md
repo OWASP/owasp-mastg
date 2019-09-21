@@ -143,7 +143,7 @@ Go through the permissions with the developer to identify the purpose of every p
 
 Besides going through the AndroidManifest.xml file manually, you can also use the Android Asset Packaging tool (aapt) to examine the permissions of an APK file.
 
-> aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by doing `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](0x05b-Basic-Security_Testing.md#listing-installed-apps "Listing Installed Apps")".
+> aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by running `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](0x05b-Basic-Security_Testing.md#listing-installed-apps "Listing Installed Apps")".
 
 ```shell
 $ aapt d permissions app-x86-debug.apk
