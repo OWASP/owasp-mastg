@@ -529,7 +529,7 @@ Writing bytes to destination...
 Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 ```
 
-You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case, file an issue in the [objection GitHub repo](https://github.com/sensepost/objection/issues "Objection Issues").
+You can also upload files to the iOS device with `file upload <local_file_path>`.
 
 #### Obtaining and Extracting Apps
 
@@ -660,10 +660,7 @@ Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](http
 
 ###### Using Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida script (`dump.js`) to dump the decrypted binary from memory onto a file.
-
-> Frida-ios-dump might not be compatible with the latest version of Frida. If that's the case, you might have to install an older version of Frida server on your device.
-> In addition, note that the examples below are using the master branch of frida-ios-dump, which runs on Python 2. If you have any issues with it you might try checking out the 3.x branch and run frida-ios-dump again using Python 3.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") is a Python script that helps you retrieving the decrypted version of an iOS app to your host machine. It supports both Python 2 and Python 3 and requires Frida running on your iOS device (jailbroken or not). It is basically injecting a JavaScript script (`dump.js`) that uses Frida's [Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida Memory API") to dump the memory of the running app onto a file (as it is already decrypted by iOS).
 
 First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
 
