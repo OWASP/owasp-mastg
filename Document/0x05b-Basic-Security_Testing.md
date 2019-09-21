@@ -1324,7 +1324,7 @@ Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.and
 Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
 ```
 
-Next, you can download (`-d`) the selected APK by specifying its AppID:
+Next, you can download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
 
 ```bash
 $ gplaycli -p -v -d com.google.android.keep
@@ -1339,6 +1339,8 @@ $ gplaycli -p -v -d com.google.android.keep
 ```
 
 The `com.google.android.keep.apk` file will be in your current directory. As you might imagine, this approach is a very convenient way to download APKs, especially with regards to automation.
+
+> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").  
 
 ##### Extracting the App Package from the Device
 
