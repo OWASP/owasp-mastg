@@ -50,6 +50,56 @@ Building a reverse engineering environment for free is possible. However, there 
 
 Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at runtime. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
 
+In iOS, all the application code, for both Swift and Objective-C, is compiled to native, unlike Android where code is compiled into Dalvik Bytecode and native code (if code written in C/C++). Thus, to analyze iOS application a disassembler is needed. 
+
+Before getting into how to disassemble an application's code, it is important to know that the application downloaded via Apple Appstore is encrypted using Fairplay DRM and need to be decrypted before it can be analyzed. This has been already discussed in "[Acquiring the App Binary](0x06b-basic-security-testing.md#acquiring-the-app-binary "Acquiring the App Binary")" section. In this section we assume you already have access to a decrypted iOS application.
+
+In this section the term "app binary" refers to the Macho-O file in the application bundle which contains the compiled code, and should not be confused with the application bundle - the IPA file. Composition of an application bundle has already been discussed in "[Exploring the App Package](0x06b-basic-security-testing.md#exploring-the-app-package "Exploring the App Package")" section. 
+
+##### Disassembling With Ghidra
+As mentioned in "[Tooling](#tooling "Tooling")" section, Ghidra is an open source software reverse engineering tool. Among multiple functionalities offered by Ghidra, it can also be used to analyze iOS application binaries. 
+
+To get started with Ghidra is easy. Start Ghidra using *ghidraRun* (\*nix) or *ghidraRun.bat* (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
+
+![Ghidra New Project Window](Images/Chapters/0x06c/Ghidra_new_project.png)
+
+In your newly created project space from above, you can import the app binary into this project, by going to *File* -> *Import File* and choosing the desired file. 
+
+![Ghidra import file](Images/Chapters/0x06c/Ghidra_import_binary.png)
+
+If correct file is specified, Ghidra will show meta-information about the binary before starting the analysis. 
+
+![Ghidra Mach-O file import](Images/Chapters/0x06c/Ghidra_macho_import.png)
+
+To get the disassembled code for the binary file choosen above, double click the imported file. Click "yes" and "analyze" for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
+
+![Ghidra code browser window](Images/Chapters/0x06c/Ghidra_main_window.png)
+
+In above annotated main window of Ghidra, disassembly window and symbol tree window are most important for moving around and exploring the binary. Decompiler window shows the decompiled version of the function selected for disassembly. It is important to note decompilation is not always accurate, but nevertheless very helpful in getting a quick understanding of the function being analyzed. It is always a good idea to keep cross-checking decompiled code against disassembled code for maximum accuracy.
+
+There are many other functionalities available in Ghidra, you can explore them by checking *Window* in menu. For example, if you want to check the strings present in the binary, which can be very helpful in reversing a binary, use *Defined Strings* option.  
+
+![Ghidra strings window](Images/Chapters/0x06c/Ghidra_string_window.png)
+
+Often the core logic of the application is implemented in the frameworks and the app binary is just a wrapper around it. In such cases, the above approach can be used to analyze *framework* binaries as well. 
+
+##### Disassembling With IDA Pro
+If you have license for IDA Pro, you can analyze app binary using IDA Pro as well. 
+
+To get started with IDA Pro, simply open the app binary in IDA Pro. 
+
+![IDA Pro open a Mach-O file](Images/Chapters/0x06c/ida_macho_import.png)
+
+Upon opening the file, IDA will perform auto-analysis, this is a good time to take a coffee break and check your emails. Once analysis is completed you can browse the disassembly in the disassembly window and explore functions in function window, both shown in the screenshot below. 
+
+![IDA Pro main window](Images/Chapters/0x06c/ida_main_window.png)
+
+IDA Pro license does not include decompiler by default and requires an additional license for Hex-Rays decompiler, which is expensive as well. On the other hand, Ghidra comes with a very capable free inbuilt decompiler, making it a compelling alternative to use for reverse engineering.  
+
+If you have IDA Pro license and do not want to buy Hex-Rays decompiler, you can use Ghidra decompiler by installing [GhIDA plugin](https://github.com/Cisco-Talos/GhIDA/) for IDA. 
+
+> The freeware version of IDA Pro unfortunately does not support ARM processor type.
+
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
 ### Static Analysis
