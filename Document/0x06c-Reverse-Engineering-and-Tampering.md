@@ -171,6 +171,25 @@ Several automated tools for analyzing iOS apps are available; most of them are c
 
 Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
+### Manual (Reversed) Code Review
+##### Reviewing Disassembled Objective-C and Swift Code
+iOS application, it is native code, need a disassembler to review the code. 
+iOS applications are written in Obj-C and Swift, and since now swift is stable, in future more applications will be written in swift. 
+
+###### Objective-C
+- there are many calls to the obj-c runtime , like obj_msgsend, retain object etc , talk breifly about them and point out to the resources to deal with them. 
+- language calls functions via message passing, thus there are certain quirks in the decompiled or disassembled objc code, inspite being a C code.  
+
+- use of decompiler, and sometimes its inconsistency.
+
+###### Swift
+
+##### Reviewing Disassembled Native Code
+- understanding of arm assembly language
+###### Ghidra
+###### IDA Pro
+###### radare2
+
 ### Dynamic Analysis
 
 Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
