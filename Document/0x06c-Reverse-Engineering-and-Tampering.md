@@ -86,6 +86,8 @@ It often happens that the core logic of the application is implemented in a fram
 ##### Disassembling With IDA Pro
 If you have a license for IDA Pro, you can analyze the app binary using IDA Pro as well. 
 
+> The freeware version of IDA Pro unfortunately does not support ARM processor type.
+
 To get started with IDA Pro, simply open the app binary in IDA Pro. 
 
 ![IDA Pro open a Mach-O file](Images/Chapters/0x06c/ida_macho_import.png)
@@ -97,8 +99,6 @@ Upon opening the file, IDA will perform auto-analysis, which can take a while de
 A normal IDA Pro license does not include a decompiler by default and requires an additional license for the Hex-Rays decompiler, which is expensive as well. On the other hand, Ghidra comes with a very capable free builtin decompiler, making it a compelling alternative to use for reverse engineering.  
 
 If you have an IDA Pro license and do not want to buy the Hex-Rays decompiler, you can use Ghidra's decompiler by installing the [GhIDA plugin](https://github.com/Cisco-Talos/GhIDA/) for IDA. 
-
-> The freeware version of IDA Pro unfortunately does not support ARM processor type.
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
