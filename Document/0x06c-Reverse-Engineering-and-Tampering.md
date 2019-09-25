@@ -67,7 +67,7 @@ In your newly created project space from above, you can import the app binary in
 
 ![Ghidra import file](Images/Chapters/0x06c/Ghidra_import_binary.png)
 
-If correct file is specified, Ghidra will show meta-information about the binary before starting the analysis. 
+If the correct file is specified, Ghidra will show meta-information about the binary before starting the analysis. 
 
 ![Ghidra Mach-O file import](Images/Chapters/0x06c/Ghidra_macho_import.png)
 
