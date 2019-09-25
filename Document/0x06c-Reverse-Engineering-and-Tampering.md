@@ -77,7 +77,7 @@ To get the disassembled code for the binary file choosen above, double click the
 
 In above annotated main window of Ghidra, disassembly window and symbol tree window are most important for moving around and exploring the binary. Decompiler window shows the decompiled version of the function selected for disassembly. It is important to note decompilation is not always accurate, but nevertheless very helpful in getting a quick understanding of the function being analyzed. It is always a good idea to keep cross-checking decompiled code against disassembled code for maximum accuracy.
 
-There are many other functionalities available in Ghidra, you can explore them by checking *Window* in menu. For example, if you want to check the strings present in the binary, which can be very helpful in reversing a binary, use *Defined Strings* option.  
+There are many other functionalities available in Ghidra, you can explore them by checking *Window* in menu. For example, if you want to check the strings present in the binary, which can be very helpful in reversing a binary, use **Defined Strings** option.  
 
 ![Ghidra strings window](Images/Chapters/0x06c/Ghidra_string_window.png)
 
