@@ -63,7 +63,7 @@ To get started with Ghidra is easy. Start Ghidra using `ghidraRun` (\*nix) or `g
 
 ![Ghidra New Project Window](Images/Chapters/0x06c/Ghidra_new_project.png)
 
-In your newly created project space from above, you can import the app binary into this project, by going to *File* -> *Import File* and choosing the desired file. 
+In your newly created project space from above, you can import the app binary into this project, by going to **File** -> **Import File** and choosing the desired file. 
 
 ![Ghidra import file](Images/Chapters/0x06c/Ghidra_import_binary.png)
 
