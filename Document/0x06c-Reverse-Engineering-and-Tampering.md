@@ -94,7 +94,7 @@ Upon opening the file, IDA will perform auto-analysis, this is a good time to ta
 
 ![IDA Pro main window](Images/Chapters/0x06c/ida_main_window.png)
 
-IDA Pro license does not include decompiler by default and requires an additional license for Hex-Rays decompiler, which is expensive as well. On the other hand, Ghidra comes with a very capable free inbuilt decompiler, making it a compelling alternative to use for reverse engineering.  
+A normal IDA Pro license does not include a decompiler by default and requires an additional license for the Hex-Rays decompiler, which is expensive as well. On the other hand, Ghidra comes with a very capable free builtin decompiler, making it a compelling alternative to use for reverse engineering.  
 
 If you have IDA Pro license and do not want to buy Hex-Rays decompiler, you can use Ghidra decompiler by installing [GhIDA plugin](https://github.com/Cisco-Talos/GhIDA/) for IDA. 
 
