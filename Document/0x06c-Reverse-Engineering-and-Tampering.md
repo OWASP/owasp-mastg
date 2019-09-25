@@ -50,7 +50,7 @@ Building a reverse engineering environment for free is possible. However, there 
 
 Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at runtime. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
 
-In iOS, all the application code, for both Swift and Objective-C, is compiled to machine code (e.g. ARM). Thus, to analyze iOS application a disassembler is needed. 
+On iOS, all the application code (both Swift and Objective-C) is compiled to machine code (e.g. ARM). Thus, to analyze iOS applications a disassembler is needed. 
 
 If you want to disassemble an application's code from the Apple Appstore, remove the Fairplay DRM first. Section "[Acquiring the App Binary](0x06b-basic-security-testing.md#acquiring-the-app-binary "Acquiring the App Binary")" in the chapter "iOS Basic Security Testing" explains how. 
 
