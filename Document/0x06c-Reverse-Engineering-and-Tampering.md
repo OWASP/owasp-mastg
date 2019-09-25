@@ -86,7 +86,7 @@ It often happens that the core logic of the application is implemented in a fram
 ##### Disassembling With IDA Pro
 If you have a license for IDA Pro, you can analyze the app binary using IDA Pro as well. 
 
-> The freeware version of IDA Pro unfortunately does not support ARM processor type.
+> The free version of IDA unfortunately does not support the ARM processor type.
 
 To get started with IDA Pro, simply open the app binary in IDA Pro. 
 
