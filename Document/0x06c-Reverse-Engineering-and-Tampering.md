@@ -96,7 +96,7 @@ Upon opening the file, IDA will perform auto-analysis, this is a good time to ta
 
 A normal IDA Pro license does not include a decompiler by default and requires an additional license for the Hex-Rays decompiler, which is expensive as well. On the other hand, Ghidra comes with a very capable free builtin decompiler, making it a compelling alternative to use for reverse engineering.  
 
-If you have IDA Pro license and do not want to buy Hex-Rays decompiler, you can use Ghidra decompiler by installing [GhIDA plugin](https://github.com/Cisco-Talos/GhIDA/) for IDA. 
+If you have an IDA Pro license and do not want to buy the Hex-Rays decompiler, you can use Ghidra's decompiler by installing the [GhIDA plugin](https://github.com/Cisco-Talos/GhIDA/) for IDA. 
 
 > The freeware version of IDA Pro unfortunately does not support ARM processor type.
 
