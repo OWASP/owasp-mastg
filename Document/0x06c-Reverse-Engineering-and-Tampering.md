@@ -81,7 +81,7 @@ There are many other functionalities available in Ghidra and most of them can be
 
 ![Ghidra strings window](Images/Chapters/0x06c/Ghidra_string_window.png)
 
-Often the core logic of the application is implemented in the frameworks and the app binary is just a wrapper around it. In such cases, the above approach can be used to analyze *framework* binaries as well. 
+It often happens that the core logic of the application is implemented in a framework and the app binary is just a wrapper around that framework. In such cases, the above approach can be used to analyze *framework* binaries as well. 
 
 ##### Disassembling With IDA Pro
 If you have license for IDA Pro, you can analyze app binary using IDA Pro as well. 
