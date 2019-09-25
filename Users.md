@@ -4,6 +4,8 @@
 
 Currently the MASVS and MSTG are used by at least the following companies:
 
+> Note: the quality of the application of the MASVS/MSTG by these companies has not been vetted by the MSTG team. It is just an indicator of adoption reported publicly.
+
 - [7asecurity](https://7asecurity.com "7asecurity")
 - [Brewsec](https://brewsec.io/ "Brewsec")
 - [Briskinfosec Technology and Consulting Pvt Ltd](https://www.briskinfosec.com/ "Briskinfosec Technology and Consulting Pvt Ltd")
