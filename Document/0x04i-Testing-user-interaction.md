@@ -5,7 +5,9 @@
 A lot has happened lately in terms of responsibilities that developers have to educate users on what they need to know.
 This has shifted especially with the introduction of the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe. Ever since then, it is best to educate users on what is happening with their private data and why.
 Additionally, it is a good practice to inform the user about how he can best use the application to ensure a secure processing of his information.
-Both items will be dealt with here.
+Next, a user should be informed on what type of device-data the app will access, whether that is PII or not.
+Last, you need to share OSS related information with the user.
+All four items will be covered here.
 
 > Please note that this is the MSTG project and not a legal handbook. Therefore, we will not cover the GDPR and other possibly relevant laws here.
 
@@ -29,6 +31,10 @@ Here is a list of best practices where a user could be informed of:
 - **Rooting/Jailbreaking**: When an app detects a rooted or jailbroken device, inform the user of the fact that certain high-risk actions will carry additional risk due to the jailbroken/rooted status of the device.
 - **Specific credentials**: When a user gets a recovery code, a password or a pin from the application (or sets one), instruct the user to never share this with anyone else and that only the app will request it.
 - **Application distribution**: In case of a high-risk application it is recommended to communicate what the official way of distributing the app is. Otherwise, users might use other channels in which they download a compromised version of the application.
+
+#### Access to device-data
+
+Allthough partially covered by the Google Play Store and the Apple App Store, you still need to explain to the user which services your app consumes and why. For instance: does your app require access to the contact list? Explain the user why. Does your app need access to location services of the device? Explain the user why. Does your app use device-identifiers to identify the device? Explain the user why your app needs to do that.
 
 #### Other information you have to share (OSS information)
 
