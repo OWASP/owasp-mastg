@@ -90,7 +90,7 @@ To get started with IDA Pro, simply open the app binary in IDA Pro.
 
 ![IDA Pro open a Mach-O file](Images/Chapters/0x06c/ida_macho_import.png)
 
-Upon opening the file, IDA will perform auto-analysis, this is a good time to take a coffee break and check your emails. Once analysis is completed you can browse the disassembly in the disassembly window and explore functions in function window, both shown in the screenshot below. 
+Upon opening the file, IDA will perform auto-analysis, which can take a while depending on the size of the binary. Once analysis is completed you can browse the disassembly in the disassembly window and explore functions in function window, both shown in the screenshot below. 
 
 ![IDA Pro main window](Images/Chapters/0x06c/ida_main_window.png)
 
