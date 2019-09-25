@@ -193,12 +193,12 @@ If `Security.framework` is used, only the second one will be shown.
 
 #### Static Analysis
 
-It is important to remember that Local Authentication framework is an event-based procedure and as such, should not the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation.
+It is important to remember that Local Authentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation.
 
 - Verify that sensitive processes, such as re-authenticating a user triggering a payment transaction, are protected using the Keychain services method.
-- Verify that the `kSecAccessControlTouchIDAny` or `kSecAccessControlTouchIDCurrentSet` flags are set and `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` protection classes are set when the `SecAccessControlCreateWithFlags` method is called. Note that, alternatively, `kSecAccessControlUserPresence` can be used as a flag as well when you want to be able to use passcode as a fallback. Last, note that, when `kSecAccessControlTouchIDCurrentSet` is set, changing the fingerprints registered to the device will invalidate the entry which is protected with the flag.
+- Verify that the `kSecAccessControlTouchIDAny` (since iOS 11.3 `kSecAccessControlBiometryAny`) or `kSecAccessControlTouchIDCurrentSet` flags are set and `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (since iOS 11.3 `kSecAccessControlBiometryCurrentSet`) protection classes are set when the `SecAccessControlCreateWithFlags` method is called. Note that, alternatively, `kSecAccessControlUserPresence` can be used as a flag as well when you want to be able to use passcode as a fallback. Last, note that, when `kSecAccessControlBiometryCurrentSet` is set, changing the fingerprints or FaceID representation registered to the device will invalidate the entry which is protected with the flag.
 
-Please note that using `kSecAccessControlTouchIDAny` will allow the entry to be used when the user (re-)enroles new fingerprints. However, it also means that attackers, who are somehow able to enrole their fingerprints to the device, can now access those entries as well.
+Please note that using `kSecAccessControlBiometryCurrentSet` will allow the entry to be used when the user (re-)enroles new fingerprints. However, it also means that attackers, who are somehow able to enrole their fingerprints to the device, can now access those entries as well.
 
 #### Dynamic Analysis
 
