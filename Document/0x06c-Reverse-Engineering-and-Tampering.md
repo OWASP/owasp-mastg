@@ -52,7 +52,7 @@ Because Objective-C and Swift are fundamentally different, the programming langu
 
 In iOS, all the application code, for both Swift and Objective-C, is compiled to machine code (e.g. ARM). Thus, to analyze iOS application a disassembler is needed. 
 
-Before getting into how to disassemble an application's code, it is important to know that the application downloaded via Apple Appstore is encrypted using Fairplay DRM and need to be decrypted before it can be analyzed. This has been already discussed in "[Acquiring the App Binary](0x06b-basic-security-testing.md#acquiring-the-app-binary "Acquiring the App Binary")" section. In this section we assume you already have access to a decrypted iOS application.
+If you want to disassemble an application's code from the Apple Appstore, remove the Fairplay DRM first. Section "[Acquiring the App Binary](0x06b-basic-security-testing.md#acquiring-the-app-binary "Acquiring the App Binary")" in the chapter "iOS Basic Security Testing" explains how. 
 
 In this section the term "app binary" refers to the Macho-O file in the application bundle which contains the compiled code, and should not be confused with the application bundle - the IPA file. Composition of an application bundle has already been discussed in "[Exploring the App Package](0x06b-basic-security-testing.md#exploring-the-app-package "Exploring the App Package")" section. 
 
