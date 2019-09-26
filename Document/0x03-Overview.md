@@ -57,8 +57,8 @@ For example, the MASVS requirements can be used in an app's planning and archite
 
 The MSTG contains descriptions of all requirements specified in the MASVS. The MSTG contains the following main sections:
 
-1. The [General Testing Guide](0x04-General-Testing-Guide.md) contains a mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security. It also contains additional technical test cases that are OS-independent, such as authentication and session management, network communications, and cryptography.
+1. The [General Testing Guide](0x04a-Mobile-App-Taxonomy.md) contains a mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security. It also contains additional technical test cases that are OS-independent, such as authentication and session management, network communications, and cryptography.
 
-2. The [Android Testing Guide](0x05-Android-Testing-Guide.md) covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and prevention, and tampering techniques and prevention.
+2. The [Android Testing Guide](0x05a-Platform-Overview.md) covers mobile security testing for the Android platform, including security basics, security test cases, reverse engineering techniques and prevention, and tampering techniques and prevention.
 
-3. The [iOS Testing Guide](0x06-iOS-Testing-Guide.md) covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering techniques and prevention, and tampering techniques and prevention.
+3. The [iOS Testing Guide](0x06a-Platform-Overview.md) covers mobile security testing for the iOS platform, including an overview of the iOS OS, security testing, reverse engineering techniques and prevention, and tampering techniques and prevention.

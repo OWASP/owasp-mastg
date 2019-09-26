@@ -142,9 +142,9 @@ With the terminal pointing to the directory where this files is we will run the 
 
 `frida -U sg.vp.owasp_mobile.OMTG_Android -l hook_decryptString.js`
 
-The frida cli will open, connect to the device (`-U`) and will load the script (`-l`).
+The Frida CLI will open, connect to the device (`-U`) and will load the script (`-l`).
 
-From now on, every time we click on decrypt it will print a log as indicated in our script.
+From now on, every time we click on **decrypt** it will print a log as indicated in our script.
 
 ```shell
 [*] script loaded
@@ -214,7 +214,7 @@ Cipher.init.overload('int', 'java.security.Key').implementation  = function(opmo
 }
 ```
 
-Whenever we click on encrypt or decrypt we will get this logged.
+Whenever we click on **encrypt** or **decrypt** we will get this logged.
 
 ```shell
 [*] script loaded

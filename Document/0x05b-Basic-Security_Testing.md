@@ -14,7 +14,7 @@ In addition, you may want to complete your host setup by installing the [Android
 
 ##### Setting up the Android SDK
 
-Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select "Tools->Android->SDK Manager" to open the SDK Manager GUI. The "SDK Platforms" tab is where you install SDKs for multiple API levels. Recent API levels are:
+Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **Android** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
 
 - Android 9.0 (API level 28)
 - Android 8.1 (API level 27)
@@ -87,6 +87,7 @@ For dynamic analysis, you'll need an Android device to run the target app on. In
 | Hardware interaction | Easy interaction through Bluetooth, NFC, 4G, WiFi, biometrics, camera, GPS, gyroscope, ... | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates) |
 | API level support | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched. |
 | Native library support | Native libraries are usually built for ARM devices, so they will work on a physical device. | Some emulators run on x86 CPUs, so they may not be able to run packaged native libraries. |
+| Malware danger | Malware samples can infect a device, but if you can clear out the device storage and flash a clean firmware, thereby restoring it to factory settings, this should not be a problem. Be aware that there are malware samples that try to exploit the USB bridge. | Malware samples can infect an emulator, but the emulator can simply be removed and recreated. It is also possible to create snapshots and compare different snapshots to help in malware analysis. Be aware that there are malware proofs of concept which try to attack the hypervisor. |
 
 ##### Testing on a Real Device
 
@@ -98,7 +99,7 @@ Alternatively, Google's [Android One](https://www.android.com/one/ "Android One"
 
 Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
-When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2 (API level 16), the "Developer options" sub menu in the Settings app is hidden by default. To activate it, tap the "Build number" section of the "About phone" view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under "About phone -> Software information". Once you have done this, "Developer options" will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the "USB debugging" switch.
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the ADB debugging interface. Since Android 4.2 (API level 16), the **Developer options** sub menu in the Settings app is hidden by default. To activate it, tap the **Build number** section of the **About phone** view seven times. Note that the build number field's location varies slightly by device—for example, on LG Phones, it is under **About phone** -> **Software information**. Once you have done this, **Developer options** will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the **USB debugging** switch.
 
 ##### Testing on an Emulator
 
@@ -1185,7 +1186,7 @@ You can also access your Android device without using the USB cable. For this yo
 
 However, notice that by doing this you leave your device open to anyone being in the same network and knowing the IP address of your device. You may rather prefer using the USB connection.
 
-> For example, on a Nexus device, you can find the IP address at Settings -> System -> About phone -> Status -> IP address or by going to the Wi-Fi menu and tapping once on the network you're connected to.
+> For example, on a Nexus device, you can find the IP address at **Settings** -> **System** -> **About phone** -> **Status** -> **IP address** or by going to the **Wi-Fi** menu and tapping once on the network you're connected to.
 
 See the full instructions and considerations in the [Android Developers Documentation](https://developer.android.com/studio/command-line/adb#wireless "Connect to a device over Wi-Fi").
 
@@ -1218,7 +1219,7 @@ $ adb pull /sdcard
 
 ##### Using Android Studio Device File Explorer
 
-Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to View -> Tool Windows -> Device File Explorer.
+Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
 ![Android Studio Device File Explorer](Images/Chapters/0x05b/android-studio-file-device-explorer.png)
 
@@ -1728,11 +1729,11 @@ The following procedure, which works on the Android emulator that ships with And
 2. Configure the HTTP proxy in the emulator settings:
 
     - Click on the three dots in the emulator menu bar
-    - Open the Settings Menu
-    - Click on the Proxy tab
-    - Select "Manual proxy configuration"
-    - Enter "127.0.0.1" in the "Host Name" field and your proxy port in the "Port number" field (e.g., "8080")
-    - Tap "Apply"
+    - Open the **Settings** Menu
+    - Click on the **Proxy** tab
+    - Select **Manual proxy configuration**
+    - Enter "127.0.0.1" in the **Host Name** field and your proxy port in the **Port number** field (e.g., "8080")
+    - Tap **Apply**
 
 <img width=600px src="Images/Chapters/0x05b/emulator-proxy.png" alt="Emulator proxy"/>
 
@@ -1756,7 +1757,7 @@ An easy way to install a CA certificate is to push the certificate to the device
     $ adb push cacert.cer /sdcard/
     ```
 
-4. Navigate to "Settings" -> "Security" -> "Install from SD Card".
+4. Navigate to **Settings** -> **Security** -> **Install from SD Card**.
 5. Scroll down and tap `cacert.cer`.
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).

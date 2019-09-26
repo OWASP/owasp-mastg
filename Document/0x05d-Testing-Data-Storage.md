@@ -68,7 +68,7 @@ SQLite is an SQL database engine that stores data in `.db` files. The Android SD
 You may use the following code to store sensitive information within an activity:
 
 ```java
-SQLiteDatabase notSoSecure = openOrCreateDatabase("privateNotSoSecure",MODE_PRIVATE,null);
+SQLiteDatabase notSoSecure = openOrCreateDatabase("privateNotSoSecure", MODE_PRIVATE, null);
 notSoSecure.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR, Password VARCHAR);");
 notSoSecure.execSQL("INSERT INTO Accounts VALUES('admin','AdminPass');");
 notSoSecure.close();
@@ -105,7 +105,7 @@ Secure ways to retrieve the key include:
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on more than 2 Million mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
+In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on more than 2 Million mobile applications and found that around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
 
 The misconfigured Firebase instance can be identified by making the following network call:
 
@@ -124,7 +124,7 @@ python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 The [Realm Database for Java](https://realm.io/docs/java/latest/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
 ```java
-//the getKey() method either gets the key from the server or from a KeyStore, or is deferred from a password.
+//the getKey() method either gets the key from the server or from a KeyStore, or is derived from a password.
 RealmConfiguration config = new RealmConfiguration.Builder()
   .encryptionKey(getKey())
   .build();
@@ -1049,7 +1049,52 @@ Refer to the `SecureSecretKey` example above for an example `Editable` implement
 
 Static analysis will help you identify potential problems, but it can't provide statistics about how long data has been exposed in memory, nor can it help you identify problems in closed-source dependencies. This is where dynamic analysis comes into play.
 
-There are basically two ways to analyze the memory of a process: live analysis via a debugger and analyzing one or more memory dumps. Because the former is more of a general debugging approach, we will concentrate on the latter.
+There are various ways to analyze the memory of a process, e.g. live analysis via a debugger/dynamic instrumentation and analyzing one or more memory dumps.
+
+##### Retrieving and Analyzing a Memory Dump
+
+Wether you are using a rooted or a non-rooted device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on Android".
+
+After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
+
+```shell
+# using strings
+$ strings memory > strings.txt
+
+# using rabin2
+$ rabin2 -ZZ memory > strings.txt
+```
+
+Open `strings.txt` in your favorite editor and dig through it to identify sensitive information.
+
+However if you'd like to inspect other kind of data, you'd rather want to use radare2 and its search capabilities. See radare2's help on the search command (`/?`) for more information and a list of options. The following shows only a subset of them:
+
+```bash
+$ r2 <name_of_your_dump_file>
+
+[0x00000000]> /?
+Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
+|Use io.va for searching in non virtual addressing spaces
+| / foo\x00                    search for string 'foo\0'
+| /c[ar]                       search for crypto materials
+| /e /E.F/i                    match regular expression
+| /i foo                       search for string 'foo' ignoring case
+| /m[?][ebm] magicfile         search for magic, filesystems or binary headers
+| /v[1248] value               look for an `cfg.bigendian` 32bit value
+| /w foo                       search for wide string 'f\0o\0o\0'
+| /x ff0033                    search for hex string
+| /z min max                   search for strings of given size
+...
+```
+
+##### Runtime Memory Analysis
+
+Instead of dumping the memory to your host computer, you can alternatively use r2frida. With it, you can analyze and inspect the app's memory while it's running.
+For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
+
+For more information, options and approaches, please refer to section "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android".
+
+##### Explicitly Dumping and Analyzing the Java Heap
 
 For rudimentary analysis, you can use Android Studio's built-in tools. They are on the _Android Monitor_ tab. To dump memory, select the device and app you want to analyze and click _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory, which is on the app's project path.
 

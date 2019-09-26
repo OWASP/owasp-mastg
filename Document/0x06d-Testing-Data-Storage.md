@@ -69,22 +69,24 @@ iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key i
 
 In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. In iOS 8, you will need to check whether you can read/write from an item in the Keychain protected by the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute. From iOS 9 onward you can check whether a lock screen is set, using `LAContext`:
 
+Swift:
+
 ```swift
-
-  public func devicePasscodeEnabled() -> Bool {
-        return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
-    }
-
+public func devicePasscodeEnabled() -> Bool {
+    return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+}
 ```
 
+Objective-C:
+
 ```objc
-  -(BOOL)devicePasscodeEnabled:(LAContex)context{
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
-          return true;
-      } else {
-          creturn false;
-      }
-  }
+-(BOOL)devicePasscodeEnabled:(LAContex)context{
+  if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
+        return true;
+    } else {
+        creturn false;
+    }
+}
 ```
 
 ###### Keychain Data Persistence
@@ -127,11 +129,11 @@ There's no iOS API that developers can use to force wipe data when an applicatio
 let userDefaults = UserDefaults.standard
 
 if userDefaults.bool(forKey: "hasRunBefore") == false {
-     // Remove Keychain items here
+    // Remove Keychain items here
 
-     // Update the flag indicator
-     userDefaults.set(true, forKey: "hasRunBefore")
-     userDefaults.synchronize() // Forces the app to update UserDefaults
+    // Update the flag indicator
+    userDefaults.set(true, forKey: "hasRunBefore")
+    userDefaults.synchronize() // Forces the app to update UserDefaults
 }
 ```
 
@@ -148,31 +150,35 @@ The encryption must be implemented so that the secret key is stored in the Keych
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
 ```swift
- // private key parameters
-    let privateKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "privateLabel",
-        kSecAttrIsPermanent as String: true,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
-    // public key parameters
-    let publicKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "publicLabel",
-        kSecAttrIsPermanent as String: false,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
+// private key parameters
+let privateKeyParams = [
+    kSecAttrLabel as String: "privateLabel",
+    kSecAttrIsPermanent as String: true,
+    kSecAttrApplicationTag as String: "applicationTag",
+] as CFDictionary
 
-    // global parameters
-    let parameters: [String: AnyObject] = [
-        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-        kSecAttrKeySizeInBits as String: 256,
-        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-        kSecPublicKeyAttrs as String: publicKeyParams,
-        kSecPrivateKeyAttrs as String: privateKeyParams
-    ]
+// public key parameters
+let publicKeyParams = [
+    kSecAttrLabel as String: "publicLabel",
+    kSecAttrIsPermanent as String: false,
+    kSecAttrApplicationTag as String: "applicationTag",
+] as CFDictionary
 
-    var pubKey, privKey: SecKeyRef?
-    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+// global parameters
+let parameters = [
+    kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+    kSecAttrKeySizeInBits as String: 256,
+    kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+    kSecPublicKeyAttrs as String: publicKeyParams,
+    kSecPrivateKeyAttrs as String: privateKeyParams,
+] as CFDictionary
 
+var pubKey, privKey: SecKey?
+let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+
+if status != errSecSuccess {
+    // Keys created successfully
+}
 ```
 
 When checking an iOS app for insecure data storage, consider the following ways to store data because none of them encrypt data by default:
@@ -633,26 +639,31 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 }
 ```
 
-The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
+The following is sample Swift code for excluding a file from a backup on iOS 5.1 and later, see [Swift excluding files from iCloud backup](https://bencoding.com/2017/02/20/swift-excluding-files-from-icloud-backup/) for more information:
 
 ```swift
- func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
-    {
-        let URL:NSURL = NSURL.fileURLWithPath(filePath)
+enum ExcludeFileError: Error {
+    case fileDoesNotExist
+    case error(String)
+}
 
-        assert(NSFileManager.defaultManager().fileExistsAtPath(filePath), "File \(filePath) doesn't exist")
+func excludeFileFromBackup(filePath: URL) -> Result<Bool, ExcludeFileError> {
+    var file = filePath
 
-        var success: Bool
-        do {
-            try URL.setResourceValue(true, forKey:NSURLIsExcludedFromBackupKey)
-            success = true
-        } catch let error as NSError {
-            success = false
-            print("Error excluding \(URL.lastPathComponent) from backup \(error)");
+    do {
+        if FileManager.default.fileExists(atPath: file.path) {
+            var res = URLResourceValues()
+            res.isExcludedFromBackup = true
+            try file.setResourceValues(res)
+            return .success(true)
+
+        } else {
+            return .failure(.fileDoesNotExist)
         }
-
-        return success
+    } catch {
+        return .failure(.error("Error excluding \(file.lastPathComponent) from backup \(error)"))
     }
+}
 ```
 
 #### Dynamic Analysis
@@ -802,112 +813,49 @@ In summary, when performing static analysis for sensitive data exposed via memor
 
 #### Dynamic Analysis
 
-Several approaches and tools are available for dumping an iOS app's memory.
+There are several approaches and tools available for dynamically testing the memory of an iOS app for sensitive data.
 
-On a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "Dynamic Analysis on Non-Jailbroken Devices", in the chapter "Tampering and Reverse Engineering on iOS".
+##### Retrieving and Analyzing a Memory Dump
 
-##### Objection (No Jailbreak needed)
+Wether you are using a jailbroken or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x06c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on iOS".
 
-With objection it is possible to dump all memory of the running process on the device.
-
-```shell
-$ objection explore
-
-     _     _         _   _
- ___| |_  |_|___ ___| |_|_|___ ___
-| . | . | | | -_|  _|  _| | . |   |
-|___|___|_| |___|___|_| |_|___|_|_|
-        |___|(object)inject(ion) v0.1.0
-
-     Runtime Mobile Exploration
-        by: @leonjza from @sensepost
-
-[tab] for command suggestions
-iPhone on (iPhone: 10.3.1) [usb] # memory dump all /Users/foo/memory_iOS/memory
-Dumping 768.0 KiB from base: 0x1ad200000  [####################################]  100%
-Memory dumped to file: /Users/foo/memory_iOS/memory
-```
-
-After the memory has been dumped, executing the command `strings` with the dump as argument will extract the strings.
+After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
 ```shell
+# using strings
 $ strings memory > strings.txt
+
+# using rabin2
+$ rabin2 -ZZ memory > strings.txt
 ```
 
 Open `strings.txt` in your favorite editor and dig through it to identify sensitive information.
 
-You can also display the current process' loaded modules.
+However if you'd like to inspect other kind of data, you'd rather want to use radare2 and its search capabilities. See radare2's help on the search command (`/?`) for more information and a list of options. The following shows only a subset of them:
 
-```shell
-iPhone on (iPhone: 10.3.1) [usb] # memory list modules
-Name                              Base         Size                 Path
---------------------------------  -----------  -------------------  ---------------------------------------------------------------------------------
-foobar                            0x1000d0000  11010048 (10.5 MiB)  /var/containers/Bundle/Application/D1FDA1C6-D161-44D0-BA5D-60F73BB18B75/...
-FridaGadget.dylib                 0x100ec8000  3883008 (3.7 MiB)    /var/containers/Bundle/Application/D1FDA1C6-D161-44D0-BA5D-60F73BB18B75/...
-libsqlite3.dylib                  0x187290000  1118208 (1.1 MiB)    /usr/lib/libsqlite3.dylib
-libSystem.B.dylib                 0x18577c000  8192 (8.0 KiB)       /usr/lib/libSystem.B.dylib
-libcache.dylib                    0x185bd2000  20480 (20.0 KiB)     /usr/lib/system/libcache.dylib
-libsystem_pthread.dylib           0x185e5a000  40960 (40.0 KiB)     /usr/lib/system/libsystem_pthread.dylib
-libsystem_kernel.dylib            0x185d76000  151552 (148.0 KiB)   /usr/lib/system/libsystem_kernel.dylib
-libsystem_platform.dylib          0x185e53000  28672 (28.0 KiB)     /usr/lib/system/libsystem_platform.dylib
-libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/system/libdyld.dylib
+```bash
+$ r2 <name_of_your_dump_file>
+
+[0x00000000]> /?
+Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
+|Use io.va for searching in non virtual addressing spaces
+| / foo\x00                    search for string 'foo\0'
+| /c[ar]                       search for crypto materials
+| /e /E.F/i                    match regular expression
+| /i foo                       search for string 'foo' ignoring case
+| /m[?][ebm] magicfile         search for magic, filesystems or binary headers
+| /v[1248] value               look for an `cfg.bigendian` 32bit value
+| /w foo                       search for wide string 'f\0o\0o\0'
+| /x ff0033                    search for hex string
+| /z min max                   search for strings of given size
+...
 ```
 
-##### Fridump (No Jailbreak needed)
+##### Runtime Memory Analysis
 
-To use Fridump you need to have either a jailbroken/rooted device with Frida-server installed, or build the original application with the Frida library attached instructions on [Frida’s site](https://www.frida.re/docs/ios/ "Frida - iOS")
+Using r2frida you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
-The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
-
-If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
-
-```shell
-$ python fridump.py -u Gadget
-
-        ______    _     _
-        |  ___|  (_)   | |
-        | |_ _ __ _  __| |_   _ _ __ ___  _ __
-        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
-        | | | |  | | (_| | |_| | | | | | | |_) |
-        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
-                                         | |
-                                         |_|
-
-Can't connect to App. Have you connected the device?
-```
-
-Once Fridump is working, you need the name of the app you want to dump, which you can get with `frida-ps`. Afterwards, specify the app name in Fridump.
-
-```shell
-$ frida-ps -U
- PID  Name
-----  ------
-1026  Gadget
-
-$ python3 fridump.py -u Gadget -s
-
-        ______    _     _
-        |  ___|  (_)   | |
-        | |_ _ __ _  __| |_   _ _ __ ___  _ __
-        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
-        | | | |  | | (_| | |_| | | | | | | |_) |
-        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
-                                         | |
-                                         |_|
-
-Current Directory: /Users/foo/PentestTools/iOS/fridump
-Output directory is set to: /Users/foo/PentestTools/iOS/fridump/dump
-Creating directory...
-Starting Memory dump...
-Progress: [##################################################] 100.0% Complete
-
-Running strings on all files:
-Progress: [##################################################] 100.0% Complete
-
-Finished! Press Ctrl+C
-```
-
-When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is stored in Fridump's dump directory.
+For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".
 
 ### References
 

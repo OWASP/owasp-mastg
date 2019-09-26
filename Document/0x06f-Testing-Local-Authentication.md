@@ -15,7 +15,7 @@ Developers have two options for incorporating Touch ID/Face ID authentication:
 - `LocalAuthentication.framework` is a high-level API that can be used to authenticate the user via Touch ID. The app can't access any data associated with the enrolled fingerprint and is notified only whether authentication was successful.
 - `Security.framework` is a lower level API to access [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services"). This is a secure option if your app needs to protect some secret data with biometric authentication, since the access control is managed on a system-level and can not easily be bypassed. `Security.framework` has a C API, but there are several [open source wrappers available](https://www.raywenderlich.com/147308/secure-ios-user-data-keychain-touch-id "How To Secure iOS User Data: The Keychain and Touch ID"), making access to the Keychain as simple as to NSUserDefaults. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
 
-Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lidner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM "Don't Touch Me That Way - David Linder") for more details.
+Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lindner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM "Don't Touch Me That Way - David Lindner") for more details.
 
 #### Local Authentication Framework
 
@@ -56,26 +56,27 @@ The iOS Keychain APIs can (and should) be used to implement local authentication
 
 The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such a fallback is allowed by attribute parameters).
 
-In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`.touchIDCurrentSet parameter`):
+In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`SecAccessControlCreateFlags.biometryCurrentSet` parameter):
 
 ##### Swift
 
 ```swift
-
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
 
 guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-    kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-    .touchIDCurrentSet,
-    &error) else {
+                                                          kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+                                                          SecAccessControlCreateFlags.biometryCurrentSet,
+                                                          &error) else {
     // failed to create AccessControl object
+
+    return
 }
 
 // 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 
-var query: Dictionary<String, Any> = [:]
+var query: [String: Any] = [:]
 
 query[kSecClass as String] = kSecClassGenericPassword
 query[kSecAttrLabel as String] = "com.me.myapp.password" as CFString
@@ -201,19 +202,19 @@ It is important to remember that Local Authentication framework is an event-base
 
 On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
 
-- Settings->Swizzler
-- Enable "Inject Swizzler into Apps"
-- Enable "Log Everything to Syslog"
-- Enable "Log Everything to File"
-- Enter the submenu "iOS Frameworks"
-- Enable "LocalAuthentication"
-- Enter the submenu "Select Target Apps"
+- **Settings** -> **Swizzler**
+- Enable **Inject Swizzler into Apps**
+- Enable **Log Everything to Syslog**
+- Enable **Log Everything to File**
+- Enter the submenu **iOS Frameworks**
+- Enable **LocalAuthentication**
+- Enter the submenu **Select Target Apps**
 - Enable the target app
 - Close the app and start it again
-- When the Touch ID prompt shows click "cancel"
+- When the Touch ID prompt shows click **cancel**
 - If the application flow continues without requiring the Touch ID then the bypass has worked.
 
-If you're using Needle, run the "hooking/frida/script_touch-id-bypass" module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses Cycript instead of Frida is also available in Needle.
+If you're using Needle, run the `hooking/frida/script_touch-id-bypass` module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses Cycript instead of Frida is also available in Needle.
 
 Alternatively, you can use [objection to bypass Touch ID](https://github.com/sensepost/objection/wiki/Understanding-the-Touch-ID-Bypass "Understanding the Touch ID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
 
