@@ -809,81 +809,36 @@ Reverse engineers use a lot of tools, frameworks, and apps, many of which you've
 
 ##### Detection Methods
 
-You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll demonstrate different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through run time integrity checks, which are discussed below.
+You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through run time integrity checks, which are discussed below.
 
-###### Example: Ways to Detect Frida
+> Some of these detection methods are presented in the article ["The Jiu-Jitsu of Detecting Frida" by Berdhard Mueller](http://www.vantagepoint.sg/blog/90-the-jiu-jitsu-of-detecting-frida "The Jiu-Jitsu of Detecting Frida"). Please refer to it for more details and for example code snippets.
 
-An obvious way to detect Frida and similar frameworks is to check the environment for related artifacts, such as package files, binaries, libraries, processes, and temporary files. As an example, I'll hone in on `frida-server`, the daemon responsible for exposing Frida over TCP.
+**It is important to note that all of these methods are just increasing the complexity of the reverse engineer. None of them can assure a 100% effectiveness. You also have to consider that integrating some of them into your app might mine the performance of your app.**
 
-With API level 25 and below it was possible to query for all running services by using the Java method  [getRunningServices](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices"). This allows to iterate through the list of running UI activities, but will not show you daemons like the frida-server. Starting with API level 26 and above `getRunningServices` will even only return the caller's own services.
+##### Check the environment for related artifacts
 
-A working solution to detect the frida-server process is to us the command `ps` instead.
+Artifact can be package files, binaries, libraries, processes, and temporary files. For example, `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-```Java
-public boolean checkRunningProcesses() {
+**Method**: A working solution to detect the frida-server process is to inspect the running services and processes. However,
 
-    boolean returnValue = false;
+- Use the Java method [`getRunningServices`](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices") (since API level 26, `getRunningServices` only returns the caller's own services).
+- Using the command `ps` (since Android 7.0 (API level 24), `ps` only returns processes started by the app itself.
 
-    try {
-        Process process = Runtime.getRuntime().exec("ps");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        int read;
-        char[] buffer = new char[4096];
-        StringBuffer output = new StringBuffer();
-        while ((read = reader.read(buffer)) > 0) {
-            output.append(buffer, 0, read);
-        }
-        reader.close();
+**Downside**: Neither of the solutions will show you daemons like the frida-server as it is not being started by the app itself. Even if the process name could be detected using these methods, bypassing this detection would be as easy as not using the default configuration of Frida, in this case by just renaming the frida-server binary. So because of this and the technical limitations of querying the process names in recent Android versions, we should find a better method.
 
-        // Waits for the command to finish.
-        process.waitFor();
-        Log.d("fridaserver", output.toString());
+##### Checking for open TCP ports
 
-        if(output.toString().contains("frida-server")) {
-            Log.d("fridaserver","Frida Server process found!" );
-            returnValue = true;
-        }
+The frida-server process binds to TCP port 27042 by default.
 
-    } catch (IOException e) {
+**Method**: Check whether this port is open is another method of detecting the daemon.
 
-    } catch (InterruptedException e) {
+**Downside**: this code detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial.
 
-    }
+##### Checking for ports responding to D-Bus AUTH
 
-    return returnValue;
-}
+`frida-server` uses the D-Bus protocol to communicate.
 
-```
-
-Starting with Android 7.0 (API level 24) the `ps` command will only return processes started by the user itself, which is due to a stricter enforcement of namespace separation to increase the strength of the [Application Sandbox](https://source.android.com/security/app-sandbox "Application Sandbox") . When executing `ps` it will read the information from `/proc` and it's not possible to access information that belongs to other user ids.
-
-![Executing ps on Android 5.0 (API level 21)](Images/Chapters/0x05j/Android_Lollipop_ps.png)
-
-![Executing ps on Android 7.0 (API level 24)](Images/Chapters/0x05j/Android_Nougat_ps.png)
-
-Even if the process name could easily be detected, this would only work if Frida is run in its default configuration. Perhaps it's also enough to stump some script kiddies during their first steps in reverse engineering. It can, however, be easily bypassed by renaming the frida-server binary. So because of this and the technical limitations of querying the process names in recent Android versions, we should find a better method.
-
-The frida-server process binds to TCP port 27042 by default, so checking whether this port is open is another method of detecting the daemon. The following native code implements this method:
-
-```c
-boolean is_frida_server_listening() {
-    struct sockaddr_in sa;
-
-    memset(&sa, 0, sizeof(sa));
-    sa.sin_family = AF_INET;
-    sa.sin_port = htons(27042);
-    inet_aton("127.0.0.1", &(sa.sin_addr));
-
-    int sock = socket(AF_INET , SOCK_STREAM , 0);
-
-    if (connect(sock , (struct sockaddr*)&sa , sizeof sa) != -1) {
-      /* Frida server detected. Do something… */
-    }
-
-}
-```
-
-Again, this code detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial. This method can be improved with an `nmap -sV`. `frida-server` uses the D-Bus protocol to communicate, so we send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself.
+**Method**: send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself.
 
 ```c
 /*
@@ -919,37 +874,24 @@ for(i = 0 ; i <= 65535 ; i++) {
 }
 ```
 
-We now have a fairly robust method of detecting `frida-server`, but there are still some glaring issues. Most importantly, Frida offers alternative modes of operation that don't require frida-server! How do we detect those?
+**Downside**: This is a fairly robust method of detecting `frida-server`, but there are still some glaring issues. Most importantly, Frida offers alternative modes of operation that don't require frida-server! How do we detect those?
 
-The common theme for all Frida's modes is code injection, so we can expect to have Frida libraries mapped into memory whenever Frida is used. The straightforward way to detect these libraries is to walk through the list of loaded libraries and check for suspicious ones:
+##### Checking for injection in process memory
 
-```c
-char line[512];
-FILE* fp;
+The common theme for all Frida's modes is code injection, so we can expect to have Frida libraries mapped into memory whenever Frida is used.
 
-fp = fopen("/proc/self/maps", "r");
+**Method**: The straightforward way to detect these libraries is to walk through the list of loaded libraries and check for suspicious ones.
 
-if (fp) {
-    while (fgets(line, 512, fp)) {
-        if (strstr(line, "frida")) {
-            /* Evil library is loaded. Do something… */
-        }
-    }
-
-    fclose(fp);
-
-    } else {
-       /* Error opening /proc/self/maps. If this happens, something is of. */
-    }
-}
-```
-
-This detects any libraries whose names include "frida". This check works, but there are some major issues:
+**Downside**: This detects any libraries whose names include "frida". This check works, but there are some major issues:
 
 - Remember that relying on frida-server being referred to as "fridaserver" wasn't a good idea? The same applies here; with some small modifications, the Frida agent libraries could simply be renamed.
 - Detection depends on standard library calls such as `fopen` and `strstr`. Essentially, we're attempting to detect Frida by using functions that can be easily hooked with-you guessed it-Frida. Obviously, this isn't a very solid strategy.
 
-The first issue can be addressed by implementing a classic-virus-scanner-like strategy: scanning memory for "gadgets" found in Frida's libraries. I chose the string "LIBFRIDA", which appears to be in all versions of frida-gadget and frida-agent. Using the following code, we iterate through the memory mappings listed in `/proc/self/maps` and search for the string in every executable section. Although I omitted the most boring functions for the sake of brevity, you can find them on GitHub.
+The first issue can be addressed by implementing a classic-virus-scanner-like strategy: scanning memory for "gadgets" found in Frida's libraries. For example we could choose the string "LIBFRIDA", which appears to be in all versions of frida-gadget and frida-agent.
+
+Using the following code, we iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) and search for the string in every executable section. Although I omitted the most boring functions for the sake of brevity, you can find them on GitHub.
+
+> An app can obtain its own PID by using `android.os.Process.myPid()`, then use this to read `/proc/<pid>/maps` via `Runtime.getRuntime().exec`.
 
 ```c
 static char keyword[] = "LIBFRIDA";
@@ -1013,7 +955,11 @@ my_openat:
 
 This implementation is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added.
 
-Another approach would be to check the signature of the APK when the app is starting. In order to include the frida-gadget within the APK it would need to be repackaged and resigned. A check for the signature1 could be implemented by using [GET_SIGNATURES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNATURES "GET_SIGNATURES") (deprecated in API level 28) or [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") which was introduced with API level 28.
+##### Checking the app signature
+
+Another approach would be to check the signature of the APK when the app is starting. In order to include the frida-gadget within the APK it would need to be repackaged and resigned.
+
+**Method**: A check for the signature could be implemented by using [GET_SIGNATURES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNATURES "GET_SIGNATURES") (deprecated in API level 28) or [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") which was introduced with API level 28.
 
 The following example is using GET_SIGNATURES;
 
@@ -1062,7 +1008,7 @@ if(appSignature.isEmpty()) {
 }
 ```
 
-Even so, there are of course many ways to bypass this. Patching and system call hooking come to mind. Remember, the reverse engineer always wins!
+**Downside**: There are of course many ways to bypass this. Patching and system call hooking come to mind. Remember, the reverse engineer always wins!
 
 ##### Bypassing Detection of Reverse Engineering Tools
 
