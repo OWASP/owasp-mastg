@@ -397,11 +397,11 @@ A common method of granting tokens combines [access tokens and refresh tokens](h
 For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
 
 ```Java
- app.post('/refresh_token', function (req, res) {
-  // verify the existing token
+ app.post('/renew_access_token', function (req, res) {
+  // verify the existing refresh token
   var profile = jwt.verify(req.body.token, secret);
 
-  // if more than 14 days old, force login
+  // if refresh token is more than 14 days old, force login
   if (profile.original_iat - new Date() > 14) { // iat == issued at
     return res.send(401); // re-login
   }
@@ -409,9 +409,9 @@ For apps that handle sensitive data, make sure that the refresh token expires af
   // check if the user still exists or if authorization hasn't been revoked
   if (!valid) return res.send(401); // re-logging
 
-  // issue a new token
-  var refreshed_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
-  res.json({ token: refreshed_token });
+  // issue a new access token
+  var renewed_access_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
+  res.json({ token: renewed_access_token });
 });
 ```
 
