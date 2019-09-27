@@ -807,234 +807,51 @@ An approach similar to that for application-source integrity checks applies. Ans
 
 Reverse engineers use a lot of tools, frameworks, and apps, many of which you've encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is attempting to reverse engineer the app. Users increase their risk by installing such tools.
 
-##### Detection Methods
+#### Detection Methods
 
 You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through run time integrity checks, which are discussed below.
 
-> Some of these detection methods are presented in the article ["The Jiu-Jitsu of Detecting Frida" by Berdhard Mueller](http://www.vantagepoint.sg/blog/90-the-jiu-jitsu-of-detecting-frida "The Jiu-Jitsu of Detecting Frida"). Please refer to it for more details and for example code snippets.
+> Some of the following detection methods are presented in the article ["The Jiu-Jitsu of Detecting Frida" by Berdhard Mueller](http://www.vantagepoint.sg/blog/90-the-jiu-jitsu-of-detecting-frida "The Jiu-Jitsu of Detecting Frida"). Please refer to it for more details and for example code snippets.
 
-**It is important to note that all of these methods are just increasing the complexity of the reverse engineer. None of them can assure a 100% effectiveness. You also have to consider that integrating some of them into your app might mine the performance of your app.**
+The following table shortly presents a set of some typical Frida detection methods.
 
-##### Check the environment for related artifacts
+|    Method    | Description | Downside |
+| --- | --- | --- |
+| **Checking the App Signature** | In order to include the frida-gadget within the APK it would need to be repackaged and resigned, so you could check the signature of the APK when the app is starting (e.g. [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") since API level 28) and compare it to the one you pinned in your APK. | This is unfortunately too trivial to bypass: patching the APK and system call hooking come to mind. |
+| **Check The Environment For Related Artifacts**  |  Artifacts can be package files, binaries, libraries, processes, and temporary files. For Frida, this could be the frida-server running in the target (rooted) system (the daemon responsible for exposing Frida over TCP). Inspect the running services (`getRunningServices`) and processes (`ps`) searching for one whose name is "frida-server". You could also walk through the list of loaded libraries and check for suspicious ones (e.g. those including "frida" in its name). | Inspect the running services/processes won't show you daemons like the frida-server as it is not being started by the app itself (since Android 7.0 (API level 24)). Even if the process or library name could be detected using these methods, bypassing this detection would be as easy as not using the default configuration of Frida, in this case by just renaming the frida-server or the frida-gadget/frida-agent binaries. |
+| **Checking For Open TCP Ports** | The frida-server process binds to TCP port 27042 by default. Check whether this port is open is another method of detecting the daemon. | This method detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial. |
+| **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. See [Berdhard Mueller's article](http://www.vantagepoint.sg/blog/90-the-jiu-jitsu-of-detecting-frida "The Jiu-Jitsu of Detecting Frida") for more details. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
+| **Scanning Process Memory for Known Artifacts** | Scan the memory for "gadgets" found in Frida's libraries, e.g. the string "LIBFRIDA" present in all versions of frida-gadget and frida-agent. For example, iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version, an app can obtain its own PID by using `android.os.Process.myPid()`) using `Runtime.getRuntime().exec` and search for the string in every executable section. See [Berdhard Mueller's article](http://www.vantagepoint.sg/blog/90-the-jiu-jitsu-of-detecting-frida "The Jiu-Jitsu of Detecting Frida") for all the details and find the source code on [GitHub](https://github.com/b-mueller/frida-detection-demo/blob/master/AntiFrida/app/src/main/cpp/native-lib.cpp "frida-detection-demo"). | This method is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added and if multiple artifacts are being scanned. However, remember that this doesn't guarantee any 100% detection, the chosen artifacts might be patched in the Frida binaries. |
 
-Artifact can be package files, binaries, libraries, processes, and temporary files. For example, `frida-server`, the daemon responsible for exposing Frida over TCP.
+Please remember that these methods are far from exhaustive. We could start talking about detecting trampolines (indirect jump vectors inserted at the prologue of functions), which would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
-**Method**: A working solution to detect the frida-server process is to inspect the running services and processes.
+**It is important to note that these methods are just increasing the complexity of the reverse engineer. If being used, the best approach is to combine them cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, remember that the reverse engineer always wins! You also have to consider that integrating some of them into your app might mine the performance of your app.**
 
-- Use the Java method [`getRunningServices`](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices") (since API level 26, `getRunningServices` only returns the caller's own services).
-- Using the command `ps` (since Android 7.0 (API level 24), `ps` only returns processes started by the app itself.
+#### Effectiveness Assessment
 
-**Downside**: Neither of the solutions will show you daemons like the frida-server as it is not being started by the app itself. Even if the process name could be detected using these methods, bypassing this detection would be as easy as not using the default configuration of Frida, in this case by just renaming the frida-server binary. So because of this and the technical limitations of querying the process names in recent Android versions, we should find a better method.
+Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Substrate for Android, Xposed, Frida, Drozer, RootCloak, Android SSL Trust Killer.
 
-##### Checking for open TCP ports
+The app should respond in some way to the presence of those tools. For example by:
 
-The frida-server process binds to TCP port 27042 by default.
+- Alerting the user and asking for accepting liability.
+- Preventing execution by gracefully terminating.
+- Securely wiping any sensitive data stored on the device.
+- Reporting to a backend server, e.g, for fraud detection.
 
-**Method**: Check whether this port is open is another method of detecting the daemon.
+Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
 
-**Downside**: this code detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial.
+- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- How difficult is identifying the anti-debugging code via static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
 
-##### Checking for ports responding to D-Bus AUTH
-
-`frida-server` uses the D-Bus protocol to communicate.
-
-**Method**: send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself.
-
-```c
-/*
- * Mini-portscan to detect frida-server on any local port.
- */
-
-for(i = 0 ; i <= 65535 ; i++) {
-
-    sock = socket(AF_INET , SOCK_STREAM , 0);
-    sa.sin_port = htons(i);
-
-    if (connect(sock , (struct sockaddr*)&sa , sizeof sa) != -1) {
-
-        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME,  "FRIDA DETECTION [1]: Open Port: %d", i);
-
-        memset(res, 0 , 7);
-
-        // send a D-Bus AUTH message. Expected answer is "REJECT"
-
-        send(sock, "\x00", 1, NULL);
-        send(sock, "AUTH\r\n", 6, NULL);
-
-        usleep(100);
-
-        if (ret = recv(sock, res, 6, MSG_DONTWAIT) != -1) {
-
-            if (strcmp(res, "REJECT") == 0) {
-               /* Frida server detected. Do something… */
-            }
-        }
-    }
-    close(sock);
-}
-```
-
-**Downside**: This is a fairly robust method of detecting `frida-server`, but there are still some glaring issues. Most importantly, Frida offers alternative modes of operation that don't require frida-server! How do we detect those?
-
-##### Checking for injection in process memory
-
-The common theme for all Frida's modes is code injection, so we can expect to have Frida libraries mapped into memory whenever Frida is used.
-
-**Method**: The straightforward way to detect these libraries is to walk through the list of loaded libraries and check for suspicious ones.
-
-**Downside**: This detects any libraries whose names include "frida". This check works, but there are some major issues:
-
-- Remember that relying on frida-server being referred to as "fridaserver" wasn't a good idea? The same applies here; with some small modifications, the Frida agent libraries could simply be renamed.
-- Detection depends on standard library calls such as `fopen` and `strstr`. Essentially, we're attempting to detect Frida by using functions that can be easily hooked with-you guessed it-Frida. Obviously, this isn't a very solid strategy.
-
-The first issue can be addressed by implementing a classic-virus-scanner-like strategy: scanning memory for "gadgets" found in Frida's libraries. For example we could choose the string "LIBFRIDA", which appears to be in all versions of frida-gadget and frida-agent.
-
-Using the following code, we iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) and search for the string in every executable section. Although I omitted the most boring functions for the sake of brevity, you can find them on GitHub.
-
-> An app can obtain its own PID by using `android.os.Process.myPid()`, then use this to read `/proc/<pid>/maps` via `Runtime.getRuntime().exec`.
-
-```c
-static char keyword[] = "LIBFRIDA";
-num_found = 0;
-
-int scan_executable_segments(char * map) {
-    char buf[512];
-    unsigned long start, end;
-
-    sscanf(map, "%lx-%lx %s", &start, &end, buf);
-
-    if (buf[2] == 'x') {
-        return (find_mem_string(start, end, (char*)keyword, 8) == 1);
-    } else {
-        return 0;
-    }
-}
-
-void scan() {
-
-    if ((fd = my_openat(AT_FDCWD, "/proc/self/maps", O_RDONLY, 0)) >= 0) {
-
-    while ((read_one_line(fd, map, MAX_LINE)) > 0) {
-        if (scan_executable_segments(map) == 1) {
-            num_found++;
-        }
-    }
-
-    if (num_found > 1) {
-
-        /* Frida Detected */
-    }
-
-}
-```
-
-Note the use of `my_openat`, etc., instead of the normal libc library functions. These are custom implementations that do the same things as their Bionic libc counterparts: they set up the arguments for the respective system call and execute the `swi` instruction (see the following code). Using these functions eliminates the reliance on public APIs, thus making them less susceptible to the typical libc hooks. The complete implementation is in `syscall.S`. The following is an assembler implementation of `my_openat`.
-
-```arm
-#include "bionic_asm.h"
-
-.text
-    .globl my_openat
-    .type my_openat,function
-my_openat:
-    .cfi_startproc
-    mov ip, r7
-    .cfi_register r7, ip
-    ldr r7, =__NR_openat
-    swi #0
-    mov r7, ip
-    .cfi_restore r7
-    cmn r0, #(4095 + 1)
-    bxls lr
-    neg r0, r0
-    b __set_errno_internal
-    .cfi_endproc
-
-    .size my_openat, .-my_openat;
-```
-
-This implementation is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added.
-
-##### Checking the app signature
-
-Another approach would be to check the signature of the APK when the app is starting. In order to include the frida-gadget within the APK it would need to be repackaged and resigned.
-
-**Method**: A check for the signature could be implemented by using [GET_SIGNATURES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNATURES "GET_SIGNATURES") (deprecated in API level 28) or [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES") which was introduced with API level 28.
-
-The following example is using GET_SIGNATURES;
-
-```Java
-public String getSignature() {
-
-    PackageInfo info;
-    String signatureBase64 = "";
-
-    // https://stackoverflow.com/a/52043065
-    try {
-      info = getPackageManager().getPackageInfo("antifrida.android.mstg.owasp.org.antifrida", PackageManager.GET_SIGNATURES);
-
-      for (Signature signature : info.signatures) {
-          MessageDigest md;
-          md = MessageDigest.getInstance("SHA");
-
-          md.update(signature.toByteArray());
-          signatureBase64 = new String(Base64.encode(md.digest(), 0));
-          //String something = new String(Base64.encodeBytes(md.digest()));
-          Log.e("Sign Base64 API < 28 ", signatureBase64);
-        }
-    } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-        e.printStackTrace();
-    } catch (Exception e){
-        Log.e("exception", e.toString());
-    }
-
-    return signatureBase64;
-}
-```
-
-When calling the `getSignature` function you would just need to verify if the signature matches your predefined and hardcoded signature.
-
-```Java
-String appSignature = getSignature();
-
-if(appSignature.isEmpty()) {
-    Toast.makeText(MainActivity.this,"App Signature is empty! You were tampering the App!", Toast.LENGTH_LONG).show();
-    Log.e("Sign Base64 empty", appSignature);
-} else if (appSignature.contains("<Base64-encoded-Signature")) {
-    Log.e("Sign Base64", "App Signature is verified and ok");
-} else {
-    Toast.makeText(MainActivity.this,"App Signature changed! You were tampering the App!", Toast.LENGTH_LONG).show();
-    Log.e("Sign Base64 changed", appSignature);
-}
-```
-
-**Downside**: There are of course many ways to bypass this. Patching and system call hooking come to mind. Remember, the reverse engineer always wins!
-
-##### Bypassing Detection of Reverse Engineering Tools
+The following steps should guide you when bypassing detection of reverse engineering tools:
 
 1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
 3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
 Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
-
-#### Effectiveness Assessment
-
-Launch the app with various apps and frameworks installed. Include at least the following:
-
-- Substrate for Android
-- Xposed
-- Frida
-- Drozer
-- RootCloak
-- Android SSL Trust Killer
-
-The app should respond in some way to the presence of each of those tools. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the detection of the reverse engineering tools and answer the following questions:
-
-- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the anti-debugging code via static and dynamic analysis?
-- Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms?
 
 ### Testing Emulator Detection (MSTG-RESILIENCE-5)
 
@@ -1204,7 +1021,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would then extract the data from a device, he would not have access to the key to decrypt the encrypted data. Implementing this, takes the following steps:
 
-  - Generate the key pair in the Android keystore using `KeyGenParameterSpec` API.
+  - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
 
     ```java
     //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
@@ -1249,7 +1066,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     key = (SecretKey) keyStore.getKey("key2", null);
     ```
 
-  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data
+  - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data:
   
     ```java
     Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -1264,21 +1081,21 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     //use the cipher to encrypt the authentication data see 0x50e for more details.
     ```
 
-  - Encrypt the secret key using the public key stored in Android keystore and store the encrypted secret key in the private storage of the application
-  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android keystore and then use the decrypted secret key to decrypt the ciphertext
+  - Encrypt the secret key using the public key stored in Android Keystore and store the encrypted secret key in the private storage of the application.
+  - Whenever authentication data such as access tokens or other sensitive data is required, decrypt the secret key using private key stored in Android Keystore and then use the decrypted secret key to decrypt the ciphertext.
 
 - Use token-based device authentication (Instance ID) to make sure that the same instance of the app is used.
 
 #### Static Analysis
 
 In the past, Android developers often relied on the `Settings.Secure.ANDROID_ID` (SSAID) and MAC addresses. This [changed with the release of Android 8.0 (API level 26)](https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html "Changes in the Android device identifiers"). As the MAC address is now often randomized when not connected to an access point and the SSAID is no longer a device bound ID. Instead, it became a value bound to the user, the device and the app signing key of the application which requests the SSAID.
-In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. Basically, Gooogle recommends to:
+In addition, there are new [recommendations for identifiers](https://developer.android.com/training/articles/user-data-ids.html "Developer Android documentation - User data IDs") in Google's SDK documentation. Basically, Google recommends to:
 
 - use the Advertising ID (`AdvertisingIdClient.Info`) when it comes to advertising -so that the user has the option to decline.
 - use the Instance ID (`FirebaseInstanceId`) for device identification.
 - use the SSAID only for fraud detection and for sharing state between apps signed by the same developer.
 
-Note that the Instance ID and the Advertising ID are not stable accross device upgrades and device-resets. However, the Instance ID will at least allow to identify the current software installation on a device.
+Note that the Instance ID and the Advertising ID are not stable across device upgrades and device-resets. However, the Instance ID will at least allow to identify the current software installation on a device.
 
 There are a few key terms you can look for when the source code is available:
 
@@ -1299,7 +1116,7 @@ There are a few key terms you can look for when the source code is available:
 
 To be sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The file should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
 
-> Apps for Android O will get the result "UNKNOWN" when they request `Build.Serial`.
+> Apps for Android 8.0 (API level 26) will get the result "UNKNOWN" when they request `Build.Serial`.
 
 #### Dynamic Analysis
 
