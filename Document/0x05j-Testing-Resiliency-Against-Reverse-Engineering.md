@@ -819,7 +819,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 
 Artifact can be package files, binaries, libraries, processes, and temporary files. For example, `frida-server`, the daemon responsible for exposing Frida over TCP.
 
-**Method**: A working solution to detect the frida-server process is to inspect the running services and processes. However,
+**Method**: A working solution to detect the frida-server process is to inspect the running services and processes.
 
 - Use the Java method [`getRunningServices`](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices") (since API level 26, `getRunningServices` only returns the caller's own services).
 - Using the command `ps` (since Android 7.0 (API level 24), `ps` only returns processes started by the app itself.
