@@ -1297,22 +1297,58 @@ Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remot
 
 #### Obtaining and Extracting Apps
 
-There are several ways of extracting apk files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
+There are several ways of extracting APK files from a device. You will need to decide which one is the easiest method depending if the app is public or private.
 
 ##### Alternative App Stores
 
-One of the easiest options is to download the apk from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not offical and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host APKs and are not known for modifying apps and even list SHA-1 and SHA-256 checksums of the apps are:
+One of the easiest options is to download the APK from websites that mirror public applications from the Google Play Store. However, keep in mind that these sites are not official and there is no guarantee that the application hasn't been repackaged or contain malware. A few reputable websites that host APKs and are not known for modifying apps and even list SHA-1 and SHA-256 checksums of the apps are:
 
 - [APKMirror](https://apkmirror.com "APKMirror")
 - [APKPure](https://apkpure.com "APKPure")
 
 Beware that you do not have control over these sites and you cannot guarantee what they do in the future. Only use them if it's your only option left.
 
+##### Using gplaycli
+
+[gplaycli](https://github.com/matlink/gplaycli "gplaycli") is a Python based CLI tool to search, install and update Android applications from the Google Play Store. Follow the [installation steps](https://github.com/matlink/gplaycli#installation "gplaycli Installation") and you're ready to run it. gplaycli offers several options, please refer to its help (`-h`) for more information.
+
+If you're unsure about the package name (or AppID) of an app, you may perform a keyword based search for APKs (`-s`):
+
+```bash
+$ gplaycli -s "google keep"
+
+Title                          Creator     Size      Last Update  AppID                                    Version
+
+Google Keep - notes and lists  Google LLC  15.78MB   4 Sep 2019   com.google.android.keep                  193510330
+Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.android.apps.maps             1016200134
+Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
+```
+
+> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](#alternative-app-stores "Alternative App Stores")".
+
+Next, you can download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
+
+```bash
+$ gplaycli -p -v -d com.google.android.keep
+[INFO] GPlayCli version 3.26 [Python3.7.4]
+[INFO] Configuration file is ~/.config/gplaycli/gplaycli.conf
+[INFO] Device is bacon
+[INFO] Using cached token.
+[INFO] Using auto retrieved token to connect to API
+[INFO] 1 / 1 com.google.android.keep
+[################################] 15.78MB/15.78MB - 00:00:02 6.57MB/s/s
+[INFO] Download complete
+```
+
+The `com.google.android.keep.apk` file will be in your current directory. As you might imagine, this approach is a very convenient way to download APKs, especially with regards to automation.
+
+> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").  
+
 ##### Extracting the App Package from the Device
 
-Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party.
+Obtaining app packages from the device is the recommended method as we can guarantee the app hasn't been modified by a third-party. To obtain applications from a rooted or non-rooted device, you can use the following methods:
 
-To obtain applications from a non-rooted device, you could use `adb`. If you don't know the package name, the first step is to list all the applications installed on the device:
+Use `adb pull` to retrieve the APK. If you don't know the package name, the first step is to list all the applications installed on the device:
 
 ```shell
 $ adb shell pm list packages
@@ -1324,17 +1360,15 @@ Once you have located the package name of the application, you need the full pat
 $ adb shell pm path <package name>
 ```
 
-With the full path to the apk, you can now simply use `adb pull` to extract the apk.
+With the full path to the APK, you can now simply use `adb pull` to extract it.
 
 ```shell
 $ adb pull <apk path>
 ```
 
-The apk will be downloaded in your working directory.
+The APK will be downloaded in your working directory.
 
-There are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted apk via your prefered method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
-
-Both of the methods mentioned previously do not require root, hence, they can be used on rooted and non-rooted devices.
+Alternatively, there are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted APK via your preferred method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
 
 #### Installing Apps
 
@@ -2088,6 +2122,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
 - frida-ps - <https://www.frida.re/docs/frida-ps/>
 - frida-trace - <https://www.frida.re/docs/frida-trace/>
+- gplaycli - <https://github.com/matlink/gplaycli>
 - InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
 - Inspeckage - <https://github.com/ac-pm/Inspeckage>
 - JAADAS - <https://github.com/flankerhqd/JAADAS>
