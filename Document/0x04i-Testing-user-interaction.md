@@ -32,7 +32,7 @@ Here is a list of best practices where a user could be informed of:
 - **Specific credentials**: When a user gets a recovery code, a password or a pin from the application (or sets one), instruct the user to never share this with anyone else and that only the app will request it.
 - **Application distribution**: In case of a high-risk application it is recommended to communicate what the official way of distributing the app is. Otherwise, users might use other channels in which they download a compromised version of the application.
 
-#### Access to device-data
+#### Access to Device Data
 
 Allthough partially covered by the Google Play Store and the Apple App Store, you still need to explain to the user which services your app consumes and why. For instance: does your app require access to the contact list? Explain the user why. Does your app need access to location services of the device? Explain the user why. Does your app use device-identifiers to identify the device? Explain the user why your app needs to do that.
 
