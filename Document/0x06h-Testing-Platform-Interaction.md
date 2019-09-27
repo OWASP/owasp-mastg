@@ -307,7 +307,7 @@ First we launch Telegram and start a trace for all methods matching the string "
 $ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 ```
 
-> `-U` connects to the USB device. `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming) "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *authorizationStatus*]"` means "include any Objective-C method of any class containing 'authorizationStatus'"). Type `frida-trace -h` for more information.
+> `-U` connects to the USB device. `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_%28programming%29 "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *authorizationStatus*]"` means "include any Objective-C method of any class containing 'authorizationStatus'"). Type `frida-trace -h` for more information.
 
 Now we open the share dialog:
 
@@ -2538,7 +2538,7 @@ WebViews can load remote content from an endpoint, but they can also load local 
 Use the following best practices as defensive-in-depth measures:
 
 - Create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
-- Create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_(programming) "Minification (programming)") to make them harder to read.
+- Create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_%28programming%29) "Minification (programming)") to make them harder to read.
 
 #### Static Analysis
 
