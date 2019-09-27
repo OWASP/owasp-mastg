@@ -56,7 +56,7 @@ Given copyright laws, you must make sure you inform the user on any third party 
 
 - <https://www.bignerdranch.com/blog/open-source-licenses-and-android/>
 
-#### Website to help with understanding licenses
+#### Website to Help with Understanding Licenses
 
 - <https://tldrlegal.com/>
 
