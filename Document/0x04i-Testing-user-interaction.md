@@ -40,7 +40,7 @@ Although partially covered by the Google Play Store and the Apple App Store, you
 - Does your app need access to location services of the device?
 - Does your app use device identifiers to identify the device?
 
-Explain the user why your app needs to do this kind of things.
+Explain the user why your app needs to do this kind of things. More information on this subject can be found at the [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Apple Human Interface Guidelines") and the [Android App permissions best practices](https://developer.android.com/training/permissions/requesting.html#explain "Android App permissions best practices").
 
 #### Other Information You Have to Share (OSS Information)
 
@@ -59,3 +59,8 @@ Given copyright laws, you must make sure you inform the user on any third party 
 #### Website to help with understanding licenses
 
 - <https://tldrlegal.com/>
+
+#### Guidance on permission requesting
+
+- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Apple Human Interface Guidelines")
+- [Android App permissions best practices](https://developer.android.com/training/permissions/requesting.html#explain "Android App permissions best practices")
