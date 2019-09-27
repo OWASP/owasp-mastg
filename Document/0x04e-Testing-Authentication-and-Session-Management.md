@@ -52,7 +52,8 @@ As a mobile security tester, you should be familiar with both types of authentic
 
 #### Supplementary Authentication
 
-Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for Step-up Multi-factor Authentication"), which can incorporate:
+Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for 
+Multi-factor Authentication"), which can incorporate:
 
 - Geolocation
 - IP address
@@ -298,10 +299,10 @@ Threats:
 
 You can find below several suggestions to reduce the likelihood of exploitation when using SMS for OTP:
 
-- Messaging: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
-- Dedicated Channel: Send OTPs to a dedicated application that is only used to receive OTPs and that other applications can't access.
-- Entropy: Use authenticators with high entropy to make OTPs harder to crack or guess.
-- Avoid Voicemail: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
+- **Messaging**: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
+- **Dedicated Channel**: When using the OS push notification feature (APN on iOS and FCM on Android), OTPs can be sent securely to a registered application. This information is, compared to SMS, not accessible by other applications. Alternatively of a OTP the push notification could trigger a pop-up to approve the requested access.  
+- **Entropy**: Use authenticators with high entropy to make OTPs harder to crack or guess and use at least 6 digits. Make sure that digits are separates in smaller groups in case people have to remember them to copy them to your app.
+- **Avoid Voicemail**: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
 
 #### Transaction Signing with Push Notifications and PKI
 
@@ -397,11 +398,11 @@ A common method of granting tokens combines [access tokens and refresh tokens](h
 For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
 
 ```Java
- app.post('/refresh_token', function (req, res) {
-  // verify the existing token
+ app.post('/renew_access_token', function (req, res) {
+  // verify the existing refresh token
   var profile = jwt.verify(req.body.token, secret);
 
-  // if more than 14 days old, force login
+  // if refresh token is more than 14 days old, force login
   if (profile.original_iat - new Date() > 14) { // iat == issued at
     return res.send(401); // re-login
   }
@@ -409,9 +410,9 @@ For apps that handle sensitive data, make sure that the refresh token expires af
   // check if the user still exists or if authorization hasn't been revoked
   if (!valid) return res.send(401); // re-logging
 
-  // issue a new token
-  var refreshed_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
-  res.json({ token: refreshed_token });
+  // issue a new access token
+  var renewed_access_token = jwt.sign(profile, secret, { expiresInMinutes: 60*5 });
+  res.json({ token: renewed_access_token });
 });
 ```
 
