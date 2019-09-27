@@ -71,7 +71,7 @@ Threats:
 Mitigation Suggestions:
 
 - **Messaging**: When sending an OTP via SMS, be sure to include a message that lets the user know 1) what to do if they did not request the code 2) your company will never call or text them requesting that they relay their password or code.
-- **Dedicated Channel**: When using the OS push notification feature (APN on iOS and FCM on Android), OTPs can be sent securely to a registered application. This information is compared to SMS not accessible by other applications. Alternatively of a OTP the push notification could trigger a pop-up to approve the requested access.  
+- **Dedicated Channel**: When using the OS push notification feature (APN on iOS and FCM on Android), OTPs can be sent securely to a registered application. This information is, compared to SMS, not accessible by other applications. Alternatively of a OTP the push notification could trigger a pop-up to approve the requested access.  
 - **Entropy**: Use authenticators with high entropy to make OTPs harder to crack or guess and use at least 6 digits.
 - **Avoid Voicemail**: If a user prefers to receive a phone call, do not leave the OTP information as a voicemail.
 
