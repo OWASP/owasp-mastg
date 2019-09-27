@@ -188,7 +188,7 @@ $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 
 ```
 
-If you want to create signed APKs ready for deployment to a test-device, use:
+If you want to create signed APKs ready for deployment to a test device, use:
 
 ```shell
 $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
