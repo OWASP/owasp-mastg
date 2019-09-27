@@ -57,6 +57,7 @@ If you want to disassemble an application from the App Store, remove the Fairpla
 In this section the term "app binary" refers to the Macho-O file in the application bundle which contains the compiled code, and should not be confused with the application bundle - the IPA file. See section "[Exploring the App Package](0x06b-basic-security-testing.md#exploring-the-app-package "Exploring the App Package")" in chapter "Basic iOS Security Testing" for more details on the composition of IPA files. 
 
 ##### Disassembling With Ghidra
+
 As mentioned in "[Tooling](#tooling "Tooling")" section, Ghidra is an open source software reverse engineering tool. Among multiple functionalities offered by Ghidra, it can also be used to analyze iOS application binaries. 
 
 To get started with Ghidra is easy. Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
