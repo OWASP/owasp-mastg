@@ -85,6 +85,7 @@ There are many other functionalities available in Ghidra and most of them can be
 It often happens that the core logic of the application is implemented in a framework and the app binary is just a wrapper around that framework. In such cases, the above approach can be used to analyze *framework* binaries as well. 
 
 ##### Disassembling With IDA Pro
+
 If you have a license for IDA Pro, you can analyze the app binary using IDA Pro as well. 
 
 > The free version of IDA unfortunately does not support the ARM processor type.
