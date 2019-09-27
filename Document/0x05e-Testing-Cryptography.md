@@ -414,40 +414,40 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 #### Cryptography references
 
-- Android Developer blog: Crypto provider deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
-- Android Developer blog: cryptography changes in android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
-- Ida Pro - <https://www.hex-rays.com/products/ida/>
-- Android Developer blog: changes for NDK developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
-- security providers -  <https://developer.android.com/reference/java/security/Provider.html>
-- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
-- Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
+- Android Developer blog: Changes for NDK Developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
+- Android Developer blog: Crypto Provider Deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
+- Android Developer blog: Cryptography Changes in Android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
 - Android Developer documentation - <https://developer.android.com/guide>
-- NIST keylength recommendations - <https://www.keylength.com/en/4/>
-- BSI recommendations - 2017 - <https://www.keylength.com/en/8/>
+- BSI Recommendations - 2017 - <https://www.keylength.com/en/8/>
+- Ida Pro - <https://www.hex-rays.com/products/ida/>
+- Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
+- NIST Key Length Recommendations - <https://www.keylength.com/en/4/>
+- Security Providers -  <https://developer.android.com/reference/java/security/Provider.html>
+- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
 
 #### SecureRandom references
 
-- Proper seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
 - Burpproxy its Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
+- Proper Seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
 
 #### Testing Key Management references
 
-- Android KeyStore API - <https://developer.android.com/reference/java/security/KeyStore.html>
 - Android Keychain API - <https://developer.android.com/reference/android/security/KeyChain>
-- SharedPreferences - <https://developer.android.com/reference/android/content/SharedPreferences.html>
-- KeyInfo documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
-- Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
+- Android KeyStore API - <https://developer.android.com/reference/java/security/KeyStore.html>
 - Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
+- Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
+- KeyInfo Documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
+- SharedPreferences - <https://developer.android.com/reference/android/content/SharedPreferences.html>
 
 #### Key Attestation References
 
 - Android Key Attestation - <https://developer.android.com/training/articles/security-key-attestation>
-- W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
-- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
 - Attestation and Assertion - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API/Attestation_and_Assertion>
-- Google Sample Codes - <https://github.com/googlesamples/android-key-attestation/tree/master/server>
-- FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
 - FIDO Alliance TechNotes - <https://fidoalliance.org/fido-technotes-the-truth-about-attestation/>
+- FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
+- Google Sample Codes - <https://github.com/googlesamples/android-key-attestation/tree/master/server>
+- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
+- W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
 
 ##### OWASP Mobile Top 10 2016
 
