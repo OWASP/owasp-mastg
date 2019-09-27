@@ -5,7 +5,7 @@
 A lot has happened lately in terms of responsibilities that developers have to educate users on what they need to know.
 This has shifted especially with the introduction of the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe. Ever since then, it is best to educate users on what is happening with their private data and why.
 Additionally, it is a good practice to inform the user about how he can best use the application to ensure a secure processing of his information.
-Next, a user should be informed on what type of device-data the app will access, whether that is PII or not.
+Next, a user should be informed on what type of device data the app will access, whether that is PII or not.
 Last, you need to share OSS related information with the user.
 All four items will be covered here.
 
