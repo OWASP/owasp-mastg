@@ -126,7 +126,7 @@ if status == noErr {
     }
 ```
 
-Now we can request the saved item from the keychain. keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
+Now we can request the saved item from the keychain. Keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
 
 ##### Swift
 
