@@ -92,7 +92,7 @@ If you have a license for IDA Pro, you can analyze the app binary using IDA Pro 
 
 > The free version of IDA unfortunately does not support the ARM processor type.
 
-To get started with IDA Pro, simply open the app binary in IDA Pro. 
+To get started, simply open the app binary in IDA Pro. 
 
 ![IDA Pro open a Mach-O file](Images/Chapters/0x06c/ida_macho_import.png)
 
