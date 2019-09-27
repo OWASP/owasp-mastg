@@ -193,7 +193,7 @@ If `Security.framework` is used, only the second one will be shown.
 
 #### Static Analysis
 
-It is important to remember that Local Authentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation. Therefore, it is best to use the Keychain service method. Which means you should:
+It is important to remember that the LocalAuthentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation. Therefore, it is best to use the Keychain service method, which means you should:
 
 - Verify that sensitive processes, such as re-authenticating a user triggering a payment transaction, are protected using the Keychain services method.
 - Verify that access control flags are set for the keychain entry which ensure that the keychain item its data can only be unlocked by means of authenticating the user. This can be with one of the following flags:
