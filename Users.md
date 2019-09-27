@@ -28,6 +28,8 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Websec Canada](https://www.websec.ca/mobile-application-security "Websec Canada")
 - [Xebia](https://xebia.com "Xebia")
 
+> Note: the quality of the application of the MASVS/MSTG by these companies has not been vetted by the MSTG team. It is just an indicator of adoption reported publicly.
+
 ## Standards, frameworks and guidelines recommending the MASVS and MSTG
 
  Currently, the MASVS and MSTG are recommended by:
