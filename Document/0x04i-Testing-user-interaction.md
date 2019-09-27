@@ -60,7 +60,7 @@ Given copyright laws, you must make sure you inform the user on any third party 
 
 - <https://tldrlegal.com/>
 
-#### Guidance on permission requesting
+#### Guidance on Permission Requesting
 
 - [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Apple Human Interface Guidelines")
 - [Android App permissions best practices](https://developer.android.com/training/permissions/requesting.html#explain "Android App permissions best practices")
