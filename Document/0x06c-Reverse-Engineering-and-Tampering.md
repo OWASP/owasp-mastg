@@ -72,7 +72,7 @@ If the file can be properly processed, Ghidra will show meta-information about t
 
 ![Ghidra Mach-O file import](Images/Chapters/0x06c/Ghidra_macho_import.png)
 
-To get the disassembled code for the binary file chosen above, double click the imported file. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress of which can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
+To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
 
 ![Ghidra code browser window](Images/Chapters/0x06c/Ghidra_main_window.png)
 
