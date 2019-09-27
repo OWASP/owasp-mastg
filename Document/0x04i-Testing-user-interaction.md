@@ -36,7 +36,7 @@ Here is a list of best practices where a user could be informed of:
 
 Allthough partially covered by the Google Play Store and the Apple App Store, you still need to explain to the user which services your app consumes and why. For instance: does your app require access to the contact list? Explain the user why. Does your app need access to location services of the device? Explain the user why. Does your app use device-identifiers to identify the device? Explain the user why your app needs to do that.
 
-#### Other information you have to share (OSS information)
+#### Other Information You Have to Share (OSS Information)
 
 Given copyright laws, you must make sure you inform the user on any third party libraries that are used in the app. For each third party library you should consult the license to see if certain information (such as copyright, modifications, original author, ...) should be presented to the user. For this, it is best to request legal advice from a specialist. An example can be found at [a blog post from Big Nerd Ranch](https://www.bignerdranch.com/blog/open-source-licenses-and-android/ "Example on license overview"). Additionally, the website [TL;DR - Legal](https://tldrlegal.com/ "TL;DR - Legal") can help you in figuring out what is necessary for each license.
 
