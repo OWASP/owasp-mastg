@@ -2,7 +2,9 @@
 
 To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile Apps, investigate the behavior of running Apps and other test cases and automate them.
 
-> The MSTG project has no preference in any of the tools below, or in promoting or selling any of the tools. All tools below have been verified if they are "alive", meaning that updates have been pushed recently. Nevertheless, not all tools have been used/tested by the authors, but they might still be useful when analysing a mobile app. The listing is sorted in alphabetical order. The list is also pointing out commercial tools.
+> The MSTG project has no preference in any of the tools below, or in promoting or selling any of the tools. All tools below have been verified if they are "alive", meaning that updates have been pushed recently. Nevertheless, not all tools have been used/tested by the authors, but they might still be useful when analyzing a mobile app. The listing is sorted in alphabetical order. The list is also pointing out commercial tools.
+
+> Disclaimer: At the time of writing, we ensure that the tools being used in the MSTG examples are properly working. However, the tools might be broken or not work properly depending on your OS version of both your host computer and your test device. The functioning of the tooling can be further impeded by whether you're using a rooted/jailbroken device, the specific version of the rooting/jailbreak method and/or the version of the tool. The MSTG does not take any responsibility over the working status of the tools. If you find a broken tool or example, please search or file an issue in the tool original page, e.g. in the GitHub issues page.
 
 ### Mobile Application Security Testing Distributions
 
@@ -27,6 +29,7 @@ To perform security testing different tools are available in order to be able to
 - Frida: A dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. It works using a client-server model and allows to inject code into running processes on Android and iOS - <https://www.frida.re>
 - Frida CodeShare: A project hosting Frida scripts publicly that can help to bypass client side security controls in mobile apps (e.g. SSL Pinning) - <https://codeshare.frida.re/>
 - NowSecure Workstation (Commercial Tool): Pre-configured hardware and software kit for vulnerability assessment and penetration testing of mobile apps - <https://www.nowsecure.com/solutions/power-tools-for-security-analysts/>
+- r2frida: A project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida <https://github.com/nowsecure/r2frida>
 
 ### Reverse Engineering and Static Analysis
 
@@ -44,17 +47,17 @@ To perform security testing different tools are available in order to be able to
 - Androguard: A python based tool, which can use to disassemble and decompile Android apps - <https://github.com/androguard/androguard>
 - Android Backup Extractor: Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP - <https://github.com/nelenkov/android-backup-extractor>
 - Android Debug Bridge (adb): A versatile command line tool used to communicate with an emulator instance or connected Android device - <https://developer.android.com/studio/command-line/adb.html>
-- ApkTool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - <https://ibotpeaches.github.io/Apktool/>
+- apktool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - <https://ibotpeaches.github.io/Apktool/>
 - android-classyshark: A standalone binary inspection tool for Android developers - <https://github.com/google/android-classyshark>
 - ByteCodeViewer: Java 8 Jar and Android APK Reverse Engineering Suite (e.g. Decompiler, Editor and Debugger) - <https://bytecodeviewer.com/>
 - ClassNameDeobfuscator: Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines - <https://github.com/HamiltonianCycle/ClassNameDeobfuscator>
 - FindSecurityBugs: FindSecurityBugs is a extension for SpotBugs which includes security rules for Java applications - <https://find-sec-bugs.github.io>
-- Jadx (Dex to Java Decompiler): Command line and GUI tools for producing Java source code from Android Dex and Apk files - <https://github.com/skylot/jadx>
+- Jadx (Dex to Java Decompiler): Command line and GUI tools for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>
 - Oat2dex: A tool for converting .oat file to .dex files - <https://github.com/testwhat/SmaliEx>
 - Qark: A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
-- Sign: A Java JAR executable (Sign.jar) which automatically signs an apk with the Android test certificate - <https://github.com/appium/sign>
-- Simplify: A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of dex file - <https://github.com/CalebFenton/simplify>
-- SUPER: A command-line application that can be used in Windows, macOS and Linux, that analyzes .apk files in search for vulnerabilities - <https://github.com/SUPERAndroidAnalyzer/super>
+- Sign: A Java JAR executable (Sign.jar) which automatically signs an APK with the Android test certificate - <https://github.com/appium/sign>
+- Simplify: A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of DEX file - <https://github.com/CalebFenton/simplify>
+- SUPER: A command-line application that can be used in Windows, macOS and Linux, that analyzes APK files in search for vulnerabilities - <https://github.com/SUPERAndroidAnalyzer/super>
 - SpotBugs: Static analysis tool for Java - <https://spotbugs.github.io/>
 
 #### Dynamic and Runtime Analysis
@@ -90,7 +93,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 #### Reverse Engineering and Static Analysis
 
 - class-dump: A command-line utility for examining the Objective-C runtime information stored in Mach-O files - <http://stevenygard.com/projects/class-dump/>
-- Clutch: Decrypt the application and dump specified bundleID into binary or .ipa file - <https://github.com/KJCracks/Clutch>
+- Clutch: Decrypt the application and dump specified bundleID into binary or IPA file - <https://github.com/KJCracks/Clutch>
 - Dumpdecrypted: Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk - <https://github.com/stefanesser/dumpdecrypted>
 - hopperscripts: Collection of scripts that can be used to demangle Swift function names in HopperApp - <https://github.com/Januzellij/hopperscripts>
 - otool: A tool that displays specified parts of object files or libraries - <https://www.unix.com/man-page/osx/1/otool/>
@@ -150,6 +153,7 @@ The applications listed below can be used as training materials. Note: only the 
 #### Android
 
 - Crackmes: A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
+- AndroGoat: An open source vulnerable/insecure app using Kotlin. This app has a wide range of vulnerabilities related to certificate pinning, custom URL schemes, Android Network Security Configuration, WebViews, root detection and over 20 other vulnerabilities - <https://github.com/satishpatnayak/AndroGoat>
 - DVHMA: A hybrid mobile app (for Android) that intentionally contains vulnerabilities - <https://github.com/logicalhacking/DVHMA>
 - Digitalbank: A vulnerable app created in 2015, which can be used on older Android platforms - <https://github.com/CyberScions/Digitalbank>
 - DIVA Android: An app intentionally designed to be insecure which has received updates in 2016 and contains 13 different challenges - <https://github.com/payatu/diva-android>

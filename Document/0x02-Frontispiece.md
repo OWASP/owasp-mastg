@@ -8,7 +8,7 @@ OWASP thanks the many authors, reviewers, and editors for their hard work in dev
 
 ## Copyright and License
 
-Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/). For any reuse or distribution, you must make clear to others the license terms of this work.
+Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
 <img src="Images/CC-license.png" alt="drawing" width="150">
 
@@ -34,13 +34,13 @@ Sven is an experienced web and mobile penetration tester and assessed everything
 
 Jeroen is a principal security architect at Xebia with a passion for mobile security and risk management. He has supported companies as a security coach, a security engineer and as a full-stack developer, which makes him a jack of all trades. He loves explaining technical subjects: from security issues to programming challenges.
 
-### Co-Authors
-
-Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
-
 #### Carlos Holguera
 
 Carlos is a security engineer leading the mobile penetration testing team at ESCRYPT. He has gained many years of hands-on experience in the field of security testing for mobile apps and embedded systems such as automotive control units and IoT devices. He is passionate about reverse engineering and dynamic instrumentation of mobile apps and is continuously learning and sharing his knowledge.
+
+### Co-Authors
+
+Co-authors have consistently contributed quality content and have at least 2,000 additions logged in the GitHub repository.
 
 #### Romuald Szkudlarek
 
@@ -59,18 +59,22 @@ Top contributors have consistently contributed quality content and have at least
 - Henry Hoggard
 - Andreas Happe
 - Kyle Benac
-- Alexander Anthuk
+- Alexander Antukh
 - Wen Bin Kong
 - Abdessamad Temmar
 - Bolot Kerimbaev
 - Cláudio André
 - Slawomir Kosowski
+- Abderrahmane Aftahi
+
+<br/>
+<br/>
 
 ### Contributors
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Abderrahmane Aftahi, Jin Kung Ong, Koki Takeyama, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, Dharshin De Silva, Paulino Calderon, Anatoly Rosencrantz, Abhinav Sejpal, José Carlos Andreu, Dominique Righetto, Raul Siles, Daniel Ramirez Martin, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Emil Tostrup, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Sijo Abraham, David Fern, Pishu Mahtani, Anuruddha E, Jay Mbolda.
+Jin Kung Ong, Koki Takeyama, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Caleb Kinney, Denis Pilipchuk, Dharshin De Silva, Paulino Calderon, Anatoly Rosencrantz, Abhinav Sejpal, José Carlos Andreu, Dominique Righetto, Raul Siles, Daniel Ramirez Martin, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Emil Tostrup, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Dario Incalza, Akanksha Bana, Oguzhan Topgul, Vikas Gupta, Sijo Abraham, David Fern, Pishu Mahtani, Anuruddha E, Jay Mbolda, Elie Saad.
 
 ### Reviewers
 
@@ -100,6 +104,9 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 [![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
 
+<br/>
+<br/>
+
 ### Older Versions
 
 The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. The original document was hosted on Google Drive. Guide development was moved to GitHub in October 2016.
@@ -109,8 +116,6 @@ The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. T
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
 | Milan Singh Thakur, Abhinav Sejpal, Blessen Thomas, Dennis Titze, Davide Cioccia, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Ali Yazdani, Mirza Ali, Rahil Parikh, Anant Shrivastava, Stephen Corbiaux, Ryan Dewhurst, Anto Joseph, Bao Lee, Shiv Patel, Nutan Kumar Panda, Julian Schütte, Stephanie Vanroelen, Bernard Wagner, Gerhard Wagner, Javier Dominguez | Andrew Muller, Jonathan Carter, Stephanie Vanroelen, Milan Singh Thakur  | Jim Manico, Paco Hope, Pragati Singh, Yair Amit, Amin Lalji, OWASP Mobile Team|
-
-<br/>
 
 #### OWASP MSTG "Beta 1" (Google Doc)
 

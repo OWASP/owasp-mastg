@@ -2,7 +2,7 @@
 
 The protection of sensitive data, such as authentication tokens and private information, is key for mobile security. In this chapter, you'll learn about the iOS APIs for local data storage, and best practices for using them.
 
-### Testing Local Data Storage
+### Testing Local Data Storage (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 As little sensitive data as possible should be saved in permanent local storage. However, in most practical scenarios, at least some user data must be stored. Fortunately, iOS offers secure storage APIs, which allow developers to use the cryptographic hardware available on every iOS device. If these APIs are used correctly, sensitive data and files can be secured via hardware-backed 256-bit AES encryption.
 
@@ -30,13 +30,13 @@ Files can be assigned to one of four different protection classes, which are exp
 
 All class keys except `NSFileProtectionNone` are encrypted with a key derived from the device UID and the user's passcode. As a result, decryption can happen only on the device itself and requires the correct passcode.
 
-Since iOS 7, the default data protection class is "Protected Until First User Authentication."
+Since iOS 7, the default data protection class is "Protected Until First User Authentication".
 
 ##### The Keychain
 
 The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as an SQLite database that can be accessed through the Keychain APIs only.
 
-On macOS, every user application can create as many Keychains as desired, and every login account has its own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different: only one Keychain is available to all apps. Access to the items can be shared between apps signed by the same developer via the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") of the attribute  [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access according to the app's `Keychain-access-groups`, `application-identifier`, and `application-group` entitlements.
+On macOS, every user application can create as many Keychains as desired, and every login account has its own Keychain. The [structure of the Keychain on iOS](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html") is different: only one Keychain is available to all apps. Access to the items can be shared between apps signed by the same developer via the [access groups feature](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html "Adding capabilities") of the attribute [`kSecAttrAccessGroup`](https://developer.apple.com/documentation/security/ksecattraccessgroup "Attribute kSecAttrAccessGroup"). Access to the Keychain is managed by the `securityd` daemon, which grants access according to the app's `Keychain-access-groups`, `application-identifier`, and `application-group` entitlements.
 
 The [Keychain API](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html "Keychain concepts") includes the following main operations:
 
@@ -69,22 +69,24 @@ iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key i
 
 In case you want to use these mechanisms, it is recommended to test whether the passcode has been set. In iOS 8, you will need to check whether you can read/write from an item in the Keychain protected by the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute. From iOS 9 onward you can check whether a lock screen is set, using `LAContext`:
 
+Swift:
+
 ```swift
-
-  public func devicePasscodeEnabled() -> Bool {
-        return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
-    }
-
+public func devicePasscodeEnabled() -> Bool {
+    return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+}
 ```
 
+Objective-C:
+
 ```objc
-  -(BOOL)devicePasscodeEnabled:(LAContex)context{
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
-          return true;
-      } else {
-          creturn false;
-      }
-  }
+-(BOOL)devicePasscodeEnabled:(LAContex)context{
+  if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
+        return true;
+    } else {
+        creturn false;
+    }
+}
 ```
 
 ###### Keychain Data Persistence
@@ -127,11 +129,11 @@ There's no iOS API that developers can use to force wipe data when an applicatio
 let userDefaults = UserDefaults.standard
 
 if userDefaults.bool(forKey: "hasRunBefore") == false {
-     // Remove Keychain items here
+    // Remove Keychain items here
 
-     // Update the flag indicator
-     userDefaults.set(true, forKey: "hasRunBefore")
-     userDefaults.synchronize() // Forces the app to update UserDefaults
+    // Update the flag indicator
+    userDefaults.set(true, forKey: "hasRunBefore")
+    userDefaults.synchronize() // Forces the app to update UserDefaults
 }
 ```
 
@@ -148,38 +150,42 @@ The encryption must be implemented so that the secret key is stored in the Keych
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
 ```swift
- // private key parameters
-    let privateKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "privateLabel",
-        kSecAttrIsPermanent as String: true,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
-    // public key parameters
-    let publicKeyParams: [String: AnyObject] = [
-        kSecAttrLabel as String: "publicLabel",
-        kSecAttrIsPermanent as String: false,
-        kSecAttrApplicationTag as String: "applicationTag"
-    ]
+// private key parameters
+let privateKeyParams = [
+    kSecAttrLabel as String: "privateLabel",
+    kSecAttrIsPermanent as String: true,
+    kSecAttrApplicationTag as String: "applicationTag",
+] as CFDictionary
 
-    // global parameters
-    let parameters: [String: AnyObject] = [
-        kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-        kSecAttrKeySizeInBits as String: 256,
-        kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-        kSecPublicKeyAttrs as String: publicKeyParams,
-        kSecPrivateKeyAttrs as String: privateKeyParams
-    ]
+// public key parameters
+let publicKeyParams = [
+    kSecAttrLabel as String: "publicLabel",
+    kSecAttrIsPermanent as String: false,
+    kSecAttrApplicationTag as String: "applicationTag",
+] as CFDictionary
 
-    var pubKey, privKey: SecKeyRef?
-    let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+// global parameters
+let parameters = [
+    kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+    kSecAttrKeySizeInBits as String: 256,
+    kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+    kSecPublicKeyAttrs as String: publicKeyParams,
+    kSecPrivateKeyAttrs as String: privateKeyParams,
+] as CFDictionary
 
+var pubKey, privKey: SecKey?
+let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+
+if status != errSecSuccess {
+    // Keys created successfully
+}
 ```
 
 When checking an iOS app for insecure data storage, consider the following ways to store data because none of them encrypt data by default:
 
 ##### `NSUserDefaults`
 
-The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user  preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
+The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
 
 ##### File system
 
@@ -252,7 +258,7 @@ do {
 
 ##### Couchbase Lite Databases
 
-[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL)  database engine that can be synced. It compiles natively for iOS and Mac OS.
+[Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL) database engine that can be synced. It compiles natively for iOS and macOS.
 
 ##### YapDatabase
 
@@ -273,13 +279,13 @@ You can analyze the app's data directory on a non-jailbroken iOS device by using
 
 1. Trigger the functionality that stores potentially sensitive data.
 2. Connect the iOS device to your workstation and launch iMazing.
-3. Select "Apps," right-click the desired iOS application, and select "Extract App."
+3. Select "Apps", right-click the desired iOS application, and select "Extract App".
 4. Navigate to the output directory and locate $APP_NAME.imazing. Rename it `$APP_NAME.zip`.
-5. Unpack the zip file. You can then analyze the application data.
+5. Unpack the ZIP file. You can then analyze the application data.
 
 > Note that tools like iMazing don't copy data directly from the device. They try to extract data from the backups they create. Therefore, getting all the app data that's stored on the iOS device is impossible: not all folders are included in backups. Use a jailbroken device or repackage the app with Frida and use a tool like objection to access all the data and files.
 
-If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Basic Security Testing" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "Host-Device Data Transfer".
+If you added the Frida library to the app and repackaged it as described in "Dynamic Analysis on Non-Jailbroken Devices" (from the "Tampering and Reverse Engineering on iOS" chapter), you can use [objection](https://github.com/sensepost/objection "objection") to transfer files directly from the app's data directory or [read files in objection](https://github.com/sensepost/objection/wiki/Using-objection#getting-started-ios-edition "Getting started iOS edition") as explained in the chapter "Basic Security Testing on iOS", section "[Host-Device Data Transfer](0x06b-Basic-Security-Testing.md#host-device-data-transfer "Host-Device Data Transfer")".
 
 The Keychain contents can be dumped during dynamic analysis. On a jailbroken device, you can use [Keychain dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain Dumper") as described in the chapter "Basic Security Testing on iOS".
 
@@ -362,7 +368,7 @@ iOS applications typically use SQLite databases to store data required by the ap
 [needle][files_sql] >
 ```
 
-### Checking Logs for Sensitive Data
+### Checking Logs for Sensitive Data (MSTG-STORAGE-3)
 
 There are many legitimate reasons for creating log files on a mobile device, including keeping track of crashes or errors that are stored locally while the device is offline (so that they can be sent to the app's developer once online), and storing usage statistics. However, logging sensitive data, such as credit card numbers and session information, may expose the data to attackers or malicious applications.
 Log files can be created in several ways. The following list shows the methods available on iOS:
@@ -401,7 +407,7 @@ In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testi
 
 After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
-### Determining Whether Sensitive Data Is Sent to Third Parties
+### Determining Whether Sensitive Data Is Sent to Third Parties (MSTG-STORAGE-4)
 
 Various third-party services can be embedded in the app. The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
 The downside to third-party services is that developers don't know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
@@ -423,14 +429,14 @@ All data that's sent to third-party services should be anonymized to prevent exp
 
 All requests made to external services should be analyzed for embedded sensitive information. By using an interception proxy, you can investigate the traffic between the app and the third party's endpoints. When the app is in use, all requests that don't go directly to the server that hosts the main function should be checked for sensitive information that's sent to a third party. This information could be PII in a request to a tracking or ad service.
 
-### Finding Sensitive Data in the Keyboard Cache
+### Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
 
 Several options for simplifying keyboard input are available to users. These options include autocorrection and spell checking. Most keyboard input is cached by default, in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
 The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uitextinputtraits "UITextInputTraits protocol") is used for keyboard caching. The UITextField, UITextView, and UISearchBar classes automatically support this protocol and it offers the following properties:
 
 - `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled during typing. When autocorrection is enabled, the text object tracks unknown words and suggests suitable replacements, replacing the typed text automatically unless the user overrides the replacement. The default value of this property is `UITextAutocorrectionTypeDefault`, which for most input methods enables autocorrection.
-- `var secureTextEntry: BOOL` determines whether text copying and text caching are disabled and hides the text being entered for `UITextField`. The default value of this property is "NO."
+- `var secureTextEntry: BOOL` determines whether text copying and text caching are disabled and hides the text being entered for `UITextField`. The default value of this property is `NO`.
 
 #### Static Analysis
 
@@ -443,7 +449,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 - Open xib and storyboard files in the `Interface Builder` of Xcode and verify the states of `Secure Text Entry` and `Correction` in the `Attributes Inspector` for the appropriate object.
 
-The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to "YES."
+The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to `YES`.
 
 ```objc
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
@@ -503,7 +509,7 @@ If you must use a non-jailbroken iPhone:
 2. Key in all sensitive data.
 3. Use the app again and determine whether autocorrect suggests previously entered sensitive information.
 
-### Determining Whether Sensitive Data Is Exposed via IPC Mechanisms
+### Determining Whether Sensitive Data Is Exposed via IPC Mechanisms (MSTG-STORAGE-6)
 
 #### Overview
 
@@ -557,9 +563,9 @@ Keywords to look for:
 
 #### Dynamic Analysis
 
-Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available  to verify IPC usage.
+Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available to verify IPC usage.
 
-### Checking for Sensitive Data Disclosed Through the User Interface
+### Checking for Sensitive Data Disclosed Through the User Interface (MSTG-STORAGE-7)
 
 #### Overview
 
@@ -575,7 +581,7 @@ A text field that masks its input can be configured in two ways:
 In the iOS project's storyboard, navigate to the configuration options for the text field that takes sensitive data. Make sure that the option "Secure Text Entry" is selected. If this option is activated, dots are shown in the text field in place of the text input.
 
 **Source Code**
-If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true." This option obscures the text input by showing dots.
+If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true". This option obscures the text input by showing dots.
 
 ```Swift
 sensitiveTextField.isSecureTextEntry = true
@@ -587,7 +593,7 @@ To determine whether the application leaks any sensitive information to the user
 
 If the information is masked by, for example, asterisks or dots, the app isn't leaking data to the user interface.
 
-### Testing Backups for Sensitive Data
+### Testing Backups for Sensitive Data (MSTG-STORAGE-8)
 
 #### Overview
 
@@ -633,26 +639,31 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 }
 ```
 
-The following is [sample Swift code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
+The following is sample Swift code for excluding a file from a backup on iOS 5.1 and later, see [Swift excluding files from iCloud backup](https://bencoding.com/2017/02/20/swift-excluding-files-from-icloud-backup/) for more information:
 
 ```swift
- func addSkipBackupAttributeToItemAtURL(filePath:String) -> Bool
-    {
-        let URL:NSURL = NSURL.fileURLWithPath(filePath)
+enum ExcludeFileError: Error {
+    case fileDoesNotExist
+    case error(String)
+}
 
-        assert(NSFileManager.defaultManager().fileExistsAtPath(filePath), "File \(filePath) doesn't exist")
+func excludeFileFromBackup(filePath: URL) -> Result<Bool, ExcludeFileError> {
+    var file = filePath
 
-        var success: Bool
-        do {
-            try URL.setResourceValue(true, forKey:NSURLIsExcludedFromBackupKey)
-            success = true
-        } catch let error as NSError {
-            success = false
-            print("Error excluding \(URL.lastPathComponent) from backup \(error)");
+    do {
+        if FileManager.default.fileExists(atPath: file.path) {
+            var res = URLResourceValues()
+            res.isExcludedFromBackup = true
+            try file.setResourceValues(res)
+            return .success(true)
+
+        } else {
+            return .failure(.fileDoesNotExist)
         }
-
-        return success
+    } catch {
+        return .failure(.error("Error excluding \(file.lastPathComponent) from backup \(error)"))
     }
+}
 ```
 
 #### Dynamic Analysis
@@ -698,7 +709,7 @@ If you can find such data it should be excluded from the backup as described in 
 
 In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
 
-### Testing Auto-Generated Screenshots for Sensitive Information
+### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
 #### Overview
 
@@ -748,7 +759,7 @@ If the application caches the sensitive information in a screenshot, the app fai
 
 The application should show a default image as the top view element when the application enters the background, so that the default image will be cached and not the sensitive information that was displayed.
 
-### Testing Memory for Sensitive Data
+### Testing Memory for Sensitive Data (MSTG-STORAGE-10)
 
 #### Overview
 
@@ -802,116 +813,51 @@ In summary, when performing static analysis for sensitive data exposed via memor
 
 #### Dynamic Analysis
 
-Several approaches and tools are available for dumping an iOS app's memory.
+There are several approaches and tools available for dynamically testing the memory of an iOS app for sensitive data.
 
-On a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools, the iOS app must be repackaged with `FridaGadget.dylib` and re-signed. A detailed explanation of this process is in the section "Dynamic Analysis on Non-Jailbroken Devices," in the chapter "Basic Security Testing."
+##### Retrieving and Analyzing a Memory Dump
 
-##### Objection (No Jailbreak needed)
+Wether you are using a jailbroken or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x06c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on iOS".
 
-With objection it is possible to dump all memory of the running process on the device.
-
-```shell
-(virtual-python3) ➜ objection explore
-
-     _     _         _   _
- ___| |_  |_|___ ___| |_|_|___ ___
-| . | . | | | -_|  _|  _| | . |   |
-|___|___|_| |___|___|_| |_|___|_|_|
-        |___|(object)inject(ion) v0.1.0
-
-     Runtime Mobile Exploration
-        by: @leonjza from @sensepost
-
-[tab] for command suggestions
-iPhone on (iPhone: 10.3.1) [usb] # memory dump all /Users/foo/memory_iOS/memory
-Dumping 768.0 KiB from base: 0x1ad200000  [####################################]  100%
-Memory dumped to file: /Users/foo/memory_iOS/memory
-```
-
-After the memory has been dumped, executing the command `strings` with the dump as argument will extract the strings.
+After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
 ```shell
+# using strings
 $ strings memory > strings.txt
+
+# using rabin2
+$ rabin2 -ZZ memory > strings.txt
 ```
 
 Open `strings.txt` in your favorite editor and dig through it to identify sensitive information.
 
-You can also display the current process' loaded modules.
+However if you'd like to inspect other kind of data, you'd rather want to use radare2 and its search capabilities. See radare2's help on the search command (`/?`) for more information and a list of options. The following shows only a subset of them:
 
-```shell
-iPhone on (iPhone: 10.3.1) [usb] # memory list modules
-Name                              Base         Size                 Path
---------------------------------  -----------  -------------------  ---------------------------------------------------------------------------------
-foobar                            0x1000d0000  11010048 (10.5 MiB)  /var/containers/Bundle/Application/D1FDA1C6-D161-44D0-BA5D-60F73BB18B75/...
-FridaGadget.dylib                 0x100ec8000  3883008 (3.7 MiB)    /var/containers/Bundle/Application/D1FDA1C6-D161-44D0-BA5D-60F73BB18B75/...
-libsqlite3.dylib                  0x187290000  1118208 (1.1 MiB)    /usr/lib/libsqlite3.dylib
-libSystem.B.dylib                 0x18577c000  8192 (8.0 KiB)       /usr/lib/libSystem.B.dylib
-libcache.dylib                    0x185bd2000  20480 (20.0 KiB)     /usr/lib/system/libcache.dylib
-libsystem_pthread.dylib           0x185e5a000  40960 (40.0 KiB)     /usr/lib/system/libsystem_pthread.dylib
-libsystem_kernel.dylib            0x185d76000  151552 (148.0 KiB)   /usr/lib/system/libsystem_kernel.dylib
-libsystem_platform.dylib          0x185e53000  28672 (28.0 KiB)     /usr/lib/system/libsystem_platform.dylib
-libdyld.dylib                     0x185c81000  20480 (20.0 KiB)     /usr/lib/system/libdyld.dylib
+```bash
+$ r2 <name_of_your_dump_file>
+
+[0x00000000]> /?
+Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
+|Use io.va for searching in non virtual addressing spaces
+| / foo\x00                    search for string 'foo\0'
+| /c[ar]                       search for crypto materials
+| /e /E.F/i                    match regular expression
+| /i foo                       search for string 'foo' ignoring case
+| /m[?][ebm] magicfile         search for magic, filesystems or binary headers
+| /v[1248] value               look for an `cfg.bigendian` 32bit value
+| /w foo                       search for wide string 'f\0o\0o\0'
+| /x ff0033                    search for hex string
+| /z min max                   search for strings of given size
+...
 ```
 
-##### Fridump (No Jailbreak needed)
+##### Runtime Memory Analysis
 
-To use Fridump you need to have either a jailbroken/rooted device with Frida-server installed, or build the original application with the Frida library attached instructions on [Frida’s site](https://www.frida.re/docs/ios/)
+Using r2frida you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
-The original version of Fridump is no longer maintained, and the tool works only with Python 2. The latest Python version (3.x) should be used for Frida, so Fridump doesn't work out of the box.
-
-If you're getting the following error message despite your iOS device being connected via USB, checkout [Fridump with the fix for Python 3](https://github.com/sushi2k/fridump "Fridump for Python3").
-
-```shell
-➜  fridump_orig git:(master) ✗ python fridump.py -u Gadget
-
-        ______    _     _
-        |  ___|  (_)   | |
-        | |_ _ __ _  __| |_   _ _ __ ___  _ __
-        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
-        | | | |  | | (_| | |_| | | | | | | |_) |
-        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
-                                         | |
-                                         |_|
-
-Can't connect to App. Have you connected the device?
-```
-
-Once Fridump is working, you need the name of the app you want to dump, which you can get with `frida-ps`. Afterwards, specify the app name in Fridump.
-
-```shell
-➜  fridump git:(master) ✗ frida-ps -U
- PID  Name
-----  ------
-1026  Gadget
-
-➜  fridump git:(master) python3 fridump.py -u Gadget -s
-
-        ______    _     _
-        |  ___|  (_)   | |
-        | |_ _ __ _  __| |_   _ _ __ ___  _ __
-        |  _| '__| |/ _` | | | | '_ ` _ \| '_ \
-        | | | |  | | (_| | |_| | | | | | | |_) |
-        \_| |_|  |_|\__,_|\__,_|_| |_| |_| .__/
-                                         | |
-                                         |_|
-
-Current Directory: /Users/foo/PentestTools/iOS/fridump
-Output directory is set to: /Users/foo/PentestTools/iOS/fridump/dump
-Creating directory...
-Starting Memory dump...
-Progress: [##################################################] 100.0% Complete
-
-Running strings on all files:
-Progress: [##################################################] 100.0% Complete
-
-Finished! Press Ctrl+C
-```
-
-When you add the `-s` flag, all strings are extracted from the dumped raw memory files and added to the file `strings.txt`, which is stored in Fridump's dump directory.
+For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".
 
 ### References
-
-- [Demystifying the Secure Enclave Processor](https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf)
 
 #### OWASP Mobile Top 10 2016
 
@@ -920,17 +866,16 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 
 #### OWASP MASVS
 
-- V2.1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
-- V2.2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
-- V2.3: "No sensitive data is written to application logs."
-- V2.4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
-- V2.5: "The keyboard cache is disabled on text inputs that process sensitive data."
-- V2.6: "No sensitive data is exposed via IPC mechanisms."
-- V2.7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-- V2.8: "No sensitive data is included in backups generated by the mobile operating system."
-- V2.9: "The app removes sensitive data from views when moved to the background."
-- V2.10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
-- v2.11:  "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
+- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-STORAGE-2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
+- MSTG-STORAGE-3: "No sensitive data is written to application logs."
+- MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+- MSTG-STORAGE-5: "The keyboard cache is disabled on text inputs that process sensitive data."
+- MSTG-STORAGE-6: "No sensitive data is exposed via IPC mechanisms."
+- MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
+- MSTG-STORAGE-8: "No sensitive data is included in backups generated by the mobile operating system."
+- MSTG-STORAGE-9: "The app removes sensitive data from views when moved to the background."
+- MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
 #### CWE
 
@@ -949,12 +894,13 @@ When you add the `-s` flag, all strings are extracted from the dumped raw memory
 
 #### Tools
 
-- [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
-- [objection](https://github.com/sensepost/objection "objection")
-- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
-- [Burp Suite Professional](https://portswigger.net/burp)
-- [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Misconfiguration Scanner")
+- Fridump - <https://github.com/Nightbringer21/fridump>
+- Objection - <https://github.com/sensepost/objection>
+- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
+- Burp Suite - <https://portswigger.net/burp>
+- Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 
 #### Others
 
 - Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>
+- Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>

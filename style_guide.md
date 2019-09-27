@@ -75,9 +75,9 @@ When presenting your content in a list format:
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
 - Punctuate and capitalize list items consistently (CMOS 6.124–6.126).
-- - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
-- - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
-- - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
+  - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
+  - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
+  - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
 ### Numbering conventions
 
@@ -90,24 +90,24 @@ When using any number higher than ten, use the numeric version (e.g., "12" or �
 ### American spelling and terminology
 
 Use American spelling and terminology.
-Change all British spelling and terminology to the American equivalents where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), "color" (US) vs "colour" (UK), "flashlight" (US) vs "torch" (UK), etc.
+Change all British spelling and terminology to the American equivalents where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), "analyze" (US) vs. "analyse" (UK), "behavior" (US) vs "behaviour" (UK), etc.
 
 ### Plurals
 
 Adhere to standard grammar and punctuation rules when it comes to pluralization of typical words.
 
-The plural of calendar years does not take the apostrophe before the “s.” For example, the plural form of 1990 is 1990s
+The plural of calendar years does not take the apostrophe before the “s”. For example, the plural form of 1990 is 1990s.
 
 ### Title Capitalization
 
 We follow the title case rules from the "Chicago Manual of Style":  
 
 - Capitalize the first and last word in a title, regardless of part of speech
-- Capitalize all nouns (baby, country, picture), pronouns (you, she, it), verbs (walk, think, dream), adjectives (sweet, large, perfect), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
+- Capitalize all nouns (app, encryption, package), pronouns (you, she, it), verbs (analyze, compile, inspect), adjectives (active, insecure, weak), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
 - Lowercase “to” as part of an infinitive
 - Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
 
-When in doubt, you can verify proper capitalization on [www.titlecapitalization.com](http://www.titlecapitalization.com/).
+When in doubt, you can verify proper capitalization on [https://titlecaseconverter.com/](https://titlecaseconverter.com/ "Title Case Converter").
 
 ### Standardization
 
@@ -127,7 +127,9 @@ do not -> don't
 does not -> doesn't  
 has not -> hasn't  
 had not -> hadn't  
-have not -> haven't  
+have not -> haven't
+is not -> isn't
+it is -> it's
 that is -> that's  
 there is -> there's  
 was not -> wasn't  
@@ -140,9 +142,26 @@ you will -> you'll
 
 ### Abbreviations
 
-Spell out abbreviations the first time they are used.
+Abbreviations include acronyms, initialisms, shortened words, and contractions.
 
-Ex: United States (U.S.)
+- Spell out the term the first time it's used, followed by the abbreviation in parentheses. Example: Mobile Security Testing Guide (MSTG). Subsequent usages in the same chapter may include the abbreviation only.
+- If it only appears once in the content, spell out the term instead of using the abbreviation.
+- In titles and headings, use the abbreviation but be sure to properly introduce it (see above) in the text that follows.
+- Use "a" or "an" depending on the pronunciation of the acronym. Example: a DLL, an APK, a URL, a SQL.
+- Add an "s" for the plural form unless the abbreviation already stands for a plural noun. Example: the APIs, CSS (not CSSs).
+- If the abbreviation is better known as its full spelled-out term, use only the abbreviation. Example: PDF, URL, USB, ZIP.
+
+The following snippet demonstrates most of these points:
+
+```markdown
+## JAR Files
+
+JAR (Java ARchive) files are [...]
+
+APKs are packed using the ZIP format. An APK is a variation of a JAR file [...]
+```
+
+For commonly used file formats such as APK, IPA or ZIP, please do not refer to them as ".apk", ".ipa" or ".zip" unless you're explicitly referring to the file extension.
 
 ### Referencing Android versions
 
@@ -210,7 +229,13 @@ e.g.
 
 ## 4. References Within The Guide
 
-For references to other chapters in the MSTG, simply name the chapter, e.g.: 'See also the chapter "Basic Security Testing"', etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly.
+For references to other chapters in the MSTG, simply name the chapter, e.g.: `See also the chapter "Basic Security Testing"`, `See the section "Apktool" in the chapter "Basic Security Testing"` etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly. Alternatively you can create a link for the specific section:
+
+```markdown
+See the section "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" in the chapter ...
+```
+
+Note that in such a case the anchor (everything after the `#`) should be lowercase, and spaces should be replaced with hyphens.
 
 ## 5. Insert pictures
 
@@ -250,7 +275,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 | Noun Form  | Adjectival Form |
 | ---------  | --------------- |
 | App Store  |       NA       |
-|  back end  |    backend      |
+|  backend  |    backend      |
 |  Base64    |    Base64-      |
 | black box  |     *same*      |
 | Bundle ID  |      NA        |
@@ -268,6 +293,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 |  PhoneGap  |       NA        |
 |   Python   |       NA        |
 | repackage  |       NA        |
+|  runtime   |     *same*      |
 | server side|   server-side   |
 |snapshot length|    NA        |
 | use case   |    *same*       |
@@ -275,7 +301,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 
 ## 7. Comments
 
-Markdown blockquotes can be used for comments in the documents by using ">"/
+Markdown blockquotes can be used for comments in the documents by using `>`
 
 > This is a blockquote
 
@@ -313,11 +339,11 @@ $ adb pull <remote_file> <target_destination>
 When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
 
 |    Backticks    | Quotation Marks | No Punctuation |
-| --------------- | --------------- | -------------- |
+| --- | --- | --- |
 | function names  |  section titles | application name |
 |   method names  |  chapter titles | folder names  |
-|    commands     |    book titles  | navigation (e.g., Home -> Menu)|
-|   class names   | flags values (e.g., "true," lowercase) | ID #s |
+|    commands     |    book titles  | |
+|   class names   | flags values (e.g., "true", lowercase) ||
 |   block names   | command options (e.g., "help" option)||
 |   flag names    | single menu item (e.g., "Home" menu)||
 |   file names    | system error msgs.|
@@ -327,9 +353,16 @@ When they do not occur in a code block, place the following code-related keyword
 |  port numbers   ||
 |   binary names  ||
 |method/function arguments||
+|method/function argument or return values (e.g., `true`, `0`, `YES`)||
+|  XML attributes (e.g., `get-task-allow` on iOS Plists, `"@string/app_name"` on Android Manifests)||
+|  XML attribute values (e.g., `android:label` on Android Manifests)||
 |  property names ||
 |  object names   ||
 |    API calls    ||
 | interface names ||
 
 If nouns in backticks are plural, place the "s" after the second backtick (e.g. `RuntimeException`s). Do not add parentheses, brackets, or other punctuation to any keywords that are in backticks (e.g., `main` not `main()`).
+
+### Navigation
+
+When referring to any UI element by name, put its name in boldface, using `**<name>**` (e.g., **Home** -> **Menu**).
