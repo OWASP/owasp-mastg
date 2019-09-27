@@ -6,14 +6,14 @@ As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Tes
 
 ### Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
 
-On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication framework") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [Keychain]( https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html "Introduction into the Keychain") for implementing local authentication.
+On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication framework") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [keychain](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html "Keychain Services") for implementing local authentication.
 
 Fingerprint authentication on iOS is known as *Touch ID*. The fingerprint ID sensor is operated by the [SecureEnclave security coprocessor](http://mista.nu/research/sep-paper.pdf "Demystifying the Secure Enclave Processor by Tarjei Mandt, Mathew Solnik, and David Wang") and does not expose fingerprint data to any other parts of the system. Next to Touch ID, Apple introduced *Face ID*: which allows authentication based on facial recognition. Both use similar APIs on an application level, the actual method of storing the data and retrieving the data (e.g. facial data or fingerprint related data is different).
 
 Developers have two options for incorporating Touch ID/Face ID authentication:
 
 - `LocalAuthentication.framework` is a high-level API that can be used to authenticate the user via Touch ID. The app can't access any data associated with the enrolled fingerprint and is notified only whether authentication was successful.
-- `Security.framework` is a lower level API to access [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services"). This is a secure option if your app needs to protect some secret data with biometric authentication, since the access control is managed on a system-level and can not easily be bypassed. `Security.framework` has a C API, but there are several [open source wrappers available](https://www.raywenderlich.com/147308/secure-ios-user-data-keychain-touch-id "How To Secure iOS User Data: The Keychain and Touch ID"), making access to the Keychain as simple as to NSUserDefaults. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
+- `Security.framework` is a lower level API to access [keychain services](https://developer.apple.com/documentation/security/keychain_services "keychain Services"). This is a secure option if your app needs to protect some secret data with biometric authentication, since the access control is managed on a system-level and can not easily be bypassed. `Security.framework` has a C API, but there are several [open source wrappers available](https://www.raywenderlich.com/147308/secure-ios-user-data-keychain-touch-id "How To Secure iOS User Data: The keychain and Touch ID"), making access to the keychain as simple as to NSUserDefaults. `Security.framework` underlies  `LocalAuthentication.framework`; Apple recommends to default to higher-level APIs whenever possible.
 
 Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lindner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM "Don't Touch Me That Way - David Lindner") for more details.
 
@@ -52,11 +52,11 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 
 #### Using Keychain Services for Local Authentication
 
-The iOS Keychain APIs can (and should) be used to implement local authentication. During this process, the app stores either a secret authentication token or another piece of secret data identifying the user in the Keychain. In order to authenticate to a remote service, the user must unlock the Keychain using their passphrase or fingerprint to obtain the secret data.
+The iOS keychain APIs can (and should) be used to implement local authentication. During this process, the app stores either a secret authentication token or another piece of secret data identifying the user in the keychain. In order to authenticate to a remote service, the user must unlock the keychain using their passphrase or fingerprint to obtain the secret data.
 
-The Keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the Keychain only after the user has passed Touch ID authentication (or passcode, if such a fallback is allowed by attribute parameters).
+The keychain allows saving items with the special `SecAccessControl` attribute, which will allow access to the item from the keychain only after the user has passed Touch ID authentication (or passcode, if such a fallback is allowed by attribute parameters).
 
-In the following example we will save the string "test_strong_password" to the Keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`SecAccessControlCreateFlags.biometryCurrentSet` parameter):
+In the following example we will save the string "test_strong_password" to the keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`SecAccessControlCreateFlags.biometryCurrentSet` parameter):
 
 ##### Swift
 
@@ -74,7 +74,7 @@ guard let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
     return
 }
 
-// 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
+// 2. define keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
 
 var query: [String: Any] = [:]
 
@@ -107,7 +107,7 @@ if status == noErr {
         kSecAccessControlUserPresence,
         err);
 
-    // 2. define Keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
+    // 2. define keychain services query. Pay attention that kSecAttrAccessControl is mutually exclusive with kSecAttrAccessible attribute
     NSDictionary* query = @{
         (_ _bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrLabel: @"com.me.myapp.password",
@@ -126,7 +126,7 @@ if status == noErr {
     }
 ```
 
-Now we can request the saved item from the Keychain. Keychain Services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
+Now we can request the saved item from the keychain. keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
 
 ##### Swift
 
@@ -193,12 +193,12 @@ If `Security.framework` is used, only the second one will be shown.
 
 #### Static Analysis
 
-It is important to remember that the LocalAuthentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation. Therefore, it is best to use the Keychain service method, which means you should:
+It is important to remember that the LocalAuthentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation. Therefore, it is best to use the keychain service method, which means you should:
 
-- Verify that sensitive processes, such as re-authenticating a user performing a payment transaction, are protected using the Keychain services method.
-- Verify that access control flags are set for the keychain entry which ensure that the keychain item its data can only be unlocked by means of authenticating the user. This can be with one of the following flags:
-  - `kSecAccessControlTouchIDCurrentSet`(since iOS 11.3 `kSecAccessControlBiometryCurrentSet`). This will make sure that a user needs to authenticate with his biometrics (e.g. Face ID or Touch ID)before he can access the data in the Keychain entry. Whenever the user adds a fingerprint or facial representation to the device, it will automatically invalidate the entry in the Keychain. This makes sure that the Keychain-entry is protected against adversarial additions to the Keychain.
-  - `kSecAccessControlTouchIDAny` (since iOS 11.3 `kSecAccessControlBiometryAny`). This will make sure that a user needs to authenticate with his biometrics (e.g. Face ID or Touch ID)before he can access the data in the Keychain entry. The Keychain-entry will survive any (re-)enroling of new fingerprints or facial representation. This can be very practical if the user has a changing fingerprint (which happens in case of lumberjackers for instance). However, it also means that attackers, who are somehow able to enrole their fingerprints or facial representations to the device, can now access those entries as well.
+- Verify that sensitive processes, such as re-authenticating a user performing a payment transaction, are protected using the keychain services method.
+- Verify that access control flags are set for the keychain item which ensure that the keychain item its data can only be unlocked by means of authenticating the user. This can be with one of the following flags:
+  - `kSecAccessControlTouchIDCurrentSet`(since iOS 11.3 `kSecAccessControlBiometryCurrentSet`). This will make sure that a user needs to authenticate with his biometrics (e.g. Face ID or Touch ID)before he can access the data in the keychain item. Whenever the user adds a fingerprint or facial representation to the device, it will automatically invalidate the item in the keychain. This makes sure that the keychain item is protected against adversarial additions to the keychain.
+  - `kSecAccessControlTouchIDAny` (since iOS 11.3 `kSecAccessControlBiometryAny`). This will make sure that a user needs to authenticate with his biometrics (e.g. Face ID or Touch ID)before he can access the data in the keychain item. The keychain item will survive any (re-)enroling of new fingerprints or facial representation. This can be very practical if the user has a changing fingerprint (which happens in case of lumberjackers for instance). However, it also means that attackers, who are somehow able to enrole their fingerprints or facial representations to the device, can now access those entries as well.
   - `kSecAccessControlUserPresence` can be used as an alternative. This will allow the user to authenticate himself through a PassCode if the biometric authentication no longer works.
 - Verify that `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` protection class is set when the `SecAccessControlCreateWithFlags` method is called to ensure that the device is at least protected with a passcode and that the keychain entries can therefore be secured.
 
@@ -233,7 +233,7 @@ If vulnerable, the module will automatically bypass the login form.
 
 ### Note regarding temporariness of keys in the Keychain
 
-Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an entry's accessibility in the Keychain: when there is no additional security check when entering the Keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
+Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an item's accessibility in the keychain: when there is no additional security check when entering the keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
 ### References
 
