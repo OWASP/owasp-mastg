@@ -825,9 +825,9 @@ The other method (which also works for non-rooted devices) consists of embedding
 ```bash
 bullhead:/ # cat /proc/18370/maps | grep -i frida
 
-71b865a000-71b97f1000 r-xp  /data/app/sg.vp.owasp_mobile.omtg_android-qNm.../lib/arm64/libfrida-gadget.so
-71b9802000-71b988a000 r--p  /data/app/sg.vp.owasp_mobile.omtg_android-qNm.../lib/arm64/libfrida-gadget.so
-71b988a000-71b98ac000 rw-p  /data/app/sg.vp.owasp_mobile.omtg_android-qNm.../lib/arm64/libfrida-gadget.so
+71b865a000-71b97f1000 r-xp  /data/app/sg.vp.owasp_mobile.omtg_android-.../lib/arm64/libfrida-gadget.so
+71b9802000-71b988a000 r--p  /data/app/sg.vp.owasp_mobile.omtg_android-.../lib/arm64/libfrida-gadget.so
+71b988a000-71b98ac000 rw-p  /data/app/sg.vp.owasp_mobile.omtg_android-.../lib/arm64/libfrida-gadget.so
 ```
 
 Looking at these two _traces_ that Frida _lefts behind_, you might already imagine that detecting those would be a trivial task. And actually, so trivial will be bypassing that detection. But things can get much more complicated. The following table shortly presents a set of some typical Frida detection methods and a short discussion on their effectiveness.
