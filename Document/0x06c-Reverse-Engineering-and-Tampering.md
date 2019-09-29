@@ -164,14 +164,7 @@ The following command is listing shared libraries:
 ```shell
 $ otool -L <binary>
 ```
-
-#### Automated Static Analysis
-
-Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
-
-Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
-
-### Manual (Reversed) Code Review
+#### Manual (Reversed) Code Review
 ##### Reviewing Disassembled Objective-C and Swift Code
 iOS application, it is native code, need a disassembler to review the code. 
 iOS applications are written in Obj-C and Swift, and since now swift is stable, in future more applications will be written in swift. 
@@ -189,6 +182,12 @@ iOS applications are written in Obj-C and Swift, and since now swift is stable, 
 ###### Ghidra
 ###### IDA Pro
 ###### radare2
+
+#### Automated Static Analysis
+
+Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
+
+Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
 ### Dynamic Analysis
 
