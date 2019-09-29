@@ -811,6 +811,27 @@ Reverse engineers use a lot of tools, frameworks, and apps, many of which you've
 
 You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through run time integrity checks, which are discussed below.
 
+For instance, in its default configuration on a rooted device, Frida runs on the device as frida-server. When you explicitly attach to a target app (e.g. via frida-trace or the Frida REPL), Frida injects a frida-agent into the memory of the app. Therefore, you may expect to find it there after attaching to the app (and not before). If you check `/proc/<pid>/maps` you'll find the frida-agent as frida-agent-64.so:
+
+```bash
+bullhead:/ # cat /proc/18370/maps | grep -i frida
+71b6bd6000-71b7d62000 r-xp  /data/local/tmp/re.frida.server/frida-agent-64.so
+71b7d7f000-71b7e06000 r--p  /data/local/tmp/re.frida.server/frida-agent-64.so
+71b7e06000-71b7e28000 rw-p  /data/local/tmp/re.frida.server/frida-agent-64.so
+```
+
+The other method (which also works for non-rooted devices) consists of embedding a [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") and _forcing_ the app to load it as one of its native libraries. If you inspect the app memory maps after starting the app (no need to attach explicitly to it) you'll find the embedded frida-gadget as libfrida-gadget.so.
+
+```bash
+bullhead:/ # cat /proc/18370/maps | grep -i frida
+
+71b865a000-71b97f1000 r-xp  /data/app/sg.vp.owasp_mobile.omtg_android-qNm54Z49bZteuuwDot4hRw==/lib/arm64/libfrida-gadget.so
+71b9802000-71b988a000 r--p  /data/app/sg.vp.owasp_mobile.omtg_android-qNm54Z49bZteuuwDot4hRw==/lib/arm64/libfrida-gadget.so
+71b988a000-71b98ac000 rw-p  /data/app/sg.vp.owasp_mobile.omtg_android-qNm54Z49bZteuuwDot4hRw==/lib/arm64/libfrida-gadget.so
+```
+
+Looking at this two _traces_ that Frida _lefts behind_, you might already imagine that detecting those would be a trivial task. And actually, so trivial will be bypassing that detection. But things can get much more complicated. The following table shortly presents a set of some typical Frida detection methods and a short discussion on their effectiveness.
+
 > Some of the following detection methods are presented in the article ["The Jiu-Jitsu of Detecting Frida" by Berdhard Mueller](http://www.vantagepoint.sg/blog/90-the-jiu-jitsu-of-detecting-frida "The Jiu-Jitsu of Detecting Frida"). Please refer to it for more details and for example code snippets.
 
 The following table shortly presents a set of some typical Frida detection methods.
