@@ -55,7 +55,7 @@ Apps that target modern API levels, went through the following changes:
   - You need to have large enough arrays as input bytes for generating a key otherwise, an InvalidKeySpecException is thrown.
   - If a Socket read is interrupted, you get an `SocketException`.
 - For Android 9 (API level 28) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P") shows even more aggressive changes:
-  - You get a warning if you still specify a provider using the `getInstance` method and you target any API below P. If you target P or above, you get an error.
+  - You get a warning if you still specify a provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
@@ -79,7 +79,7 @@ keyGenerator.init(keyGenParameterSpec);
 SecretKey secretKey = keyGenerator.generateKey();
 ```
 
-The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default.) `"AndroidKeyStore"` is the name of the cryptographic service provider used in this example. This will automatically ensure that the keys are stored in the `AndroidKeyStore` which is beneficiary for the protection of the key.
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). `"AndroidKeyStore"` is the name of the cryptographic service provider used in this example. This will automatically ensure that the keys are stored in the `AndroidKeyStore` which is beneficiary for the protection of the key.
 
 GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter). Note that GCM is the only mode of AES that [does not support paddings](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in AndroidKeyStore").
 
@@ -122,7 +122,7 @@ byte[] result = cipher.doFinal(input);
 
 Since the IV is randomly generated each time, it should be saved along with the cipher text (`encryptedBytes`) in order to decrypt it later.
 
-Prior to Android 6.0, AES key generation was not supported. As a result, many implementations chose to use RSA and generated a public-private key pair for asymmetric encryption using `KeyPairGeneratorSpec` or used `SecureRandom` to generate AES keys.
+Prior to Android 6.0 (API level 23), AES key generation was not supported. As a result, many implementations chose to use RSA and generated a public-private key pair for asymmetric encryption using `KeyPairGeneratorSpec` or used `SecureRandom` to generate AES keys.
 
 Here's an example of `KeyPairGenerator` and `KeyPairGeneratorSpec` used to create the RSA key pair:
 
@@ -149,7 +149,7 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size).
 
-Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanisms is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 (see section "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")" of the "Reverse Engineering and Tampering" chapter for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
+Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanisms is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: r2frida (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
 
 #### Static Analysis
 
@@ -253,12 +253,15 @@ public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 ```
 
 The above method requires a character array containing the password and the needed key length in bits, for instance a 128 or 256-bit AES key. We define an iteration count of 10000 rounds which will be used by the PBKDF2 algorithm. This significantly increases the workload for a brute-force attack. We define the salt size equal to the key length, we divide by 8 to take care of the bit to byte conversion. We use the `SecureRandom` class to randomly generate a salt. Obviously, the salt is something you want to keep constant to ensure the same encryption key is generated time after time for the same supplied password. Note that you can store the salt privately in `SharedPreferences`. It is recommended to exclude the salt from the Android backup mechanism to prevent synchronization in case of higher risk data. See the "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" chapter for more details.
-Note that if you take a rooted device, or unpatched device, or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key in the `AndroidKeystore`. Afterwards the Password-based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm till Android 8.0 (API level 26). From there on it is best to use `PBKDF2withHmacSHA256`, which will end up with a different key size.
+Note that if you take a rooted device, or unpatched device, or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key in the `AndroidKeystore`. Afterwards the Password-based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm till Android 8.0 (API level 26). From there on, it is best to use `PBKDF2withHmacSHA256`, which will end up with a different key size.
 
-Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 it is also enforced that the AndroidKeyStore is hardware-backed in case a fingerprint sensor is present. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
+Now, it is clear that regularly prompting the user for its passphrase is not something that works for every application. In that case make sure you use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API"). This API has been specifically developed to provide a secure storage for key material. Only your application has access to the keys that it generates. Starting from Android 6.0 (API level 23) it is also enforced that the AndroidKeyStore is hardware-backed in case a fingerprint sensor is present. This means a dedicated cryptography chip or trusted platform module (TPM) is being used to secure the key material.
 
-However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since Android 6.0 (API level 23). As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels. In order to securely store symmetric keys, on devices running on Android 5.1 (API level 22) or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the `AndroidKeyStore`. The encrypted symmetric key can now be safely stored in the `SharedPreferences`. Whenever we need the symmetric key, the application retrieves the private key from the `AndroidKeyStore` and decrypts the symmetric key.
-When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.isinsideSecureHardware` returns true, then we know that you cannot just dump the keys nor monitor its cryptographic operations. It becomes debatable what will be eventually more safe: using `PBKDF2withHmacSHA256` to generate a key that is still in reachable dumpable memory, or using the `AndroidKeyStore` for which the keys might never get into memory. With Android 9 (API level 28) we see that additional security enhancements have been implemented in order to separate the TEE from the `AndroidKeyStore` which make it favorable over using `PBKDF2withHmacSHA256`. However, more testing & investigating will take place on that subject in the near future.
+However, be aware that the `AndroidKeyStore` API has been changed significantly throughout various versions of Android. In earlier versions, the `AndroidKeyStore` API only supported storing public/private key pairs (e.g., RSA). Symmetric key support has only been added since Android 6.0 (API level 23). As a result, a developer needs to take care when he wants to securely store symmetric keys on different Android API levels.
+
+In order to securely store symmetric keys on devices running on Android 5.1 (API level 22) or lower, we need to generate a public/private key pair. We encrypt the symmetric key using the public key and store the private key in the `AndroidKeyStore`. The encrypted symmetric key can now be safely stored in the `SharedPreferences`. Whenever we need the symmetric key, the application retrieves the private key from the `AndroidKeyStore` and decrypts the symmetric key.
+
+When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.isinsideSecureHardware` returns `true`, then we know that we cannot just dump the keys nor monitor its cryptographic operations. It becomes debatable what will be eventually more safe: using `PBKDF2withHmacSHA256` to generate a key that is still in reachable dumpable memory, or using the `AndroidKeyStore` for which the keys might never get into memory. With Android 9 (API level 28) we see that additional security enhancements have been implemented in order to separate the TEE from the `AndroidKeyStore` which make it favorable over using `PBKDF2withHmacSHA256`. However, more testing and investigating will take place on that subject in the near future.
 
 #### Secure Key Import into Keystore
 
@@ -299,23 +302,14 @@ During key attestation, we can specify the alias of a key pair and in return, ge
 Although the key attestation process can be implemented within the application directly but it is recommended that it should be implemented at the server-side for security reasons. The following are the high-level guidelines for the secure implementation of Key Attestation:
 
 - The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge.
-
 - The client should call the `setAttestationChallenge` API with the challenge received from the server and should then retrieve the attestation certificate chain using the `KeyStore.getCertificateChain` method.
-
 - The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
-
   - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness.
-
   - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
-
   - Extract the attestation certificate extension data, which appears within the first element of the certificate chain and perform the following checks:
-
     - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
-
     - Verify the signature in the key attestation response.
-
     - Now check the security level of the Keymaster to determine if the device has secure key storage mechanism. Keymaster is a piece of software that runs in the security context and provides all the secure keystore operations. The security level will be one of `Software`, `TrustedEnvironment` or `StrongBox`.
-
     - Additionally, you can check the attestation security level which will be one of Software, TrustedEnvironment or StrongBox to check how the attestation certificate was generated. Also, some other checks pertaining to keys can be made such as purpose, access time, authentication requirement, etc. to verify the key attributes.
 
 The typical example of Android Keystore attestation response looks like this:
@@ -323,14 +317,14 @@ The typical example of Android Keystore attestation response looks like this:
 ```json
 {
     "fmt": "android-key",
-    "authData": "9569088f1ecee3232954035dbd10d7cae391305a2751b559bb8fd7cbb229bdd4450000000028f37d2b92b841c4b02a860cef7cc034004101552f0265f6e35bcc29877b64176690d59a61c3588684990898c544699139be88e32810515987ea4f4833071b646780438bf858c36984e46e7708dee61eedcbd0a50102032620012158203849a20fde26c34b0088391a5827783dff93880b1654088aadfaf57a259549a1225820743c4b5245cf2685cf91054367cd4fafb9484e70593651011fc0dcce7621c68f",
+    "authData": "9569088f1ecee3232954035dbd10d7cae391305a2751b559bb8fd7cbb229bd...",
     "attStmt": {
         "alg": -7,
-        "sig": "304402202ca7a8cfb6299c4a073e7e022c57082a46c657e9e53b28a6e454659ad024499602201f9cae7ff95a3f2372e0f952e9ef191e3b39ee2cedc46893a8eec6f75b1d9560",
+        "sig": "304402202ca7a8cfb6299c4a073e7e022c57082a46c657e9e53...",
         "x5c": [
-            "308202ca30820270a003020102020101300a06082a8648ce3d040302308188310b30090603550406130255533113301106035504080c0a43616c69666f726e696131153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f6964313b303906035504030c32416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20496e7465726d656469617465301e170d3138313230323039313032355a170d3238313230323039313032355a301f311d301b06035504030c14416e64726f6964204b657973746f7265204b65793059301306072a8648ce3d020106082a8648ce3d030107034200043849a20fde26c34b0088391a5827783dff93880b1654088aadfaf57a259549a1743c4b5245cf2685cf91054367cd4fafb9484e70593651011fc0dcce7621c68fa38201313082012d300b0603551d0f0404030207803081fc060a2b06010401d6790201110481ed3081ea0201020a01000201010a010104202a4382d7bbd89d8b5bdf1772cfecca14392487b9fd571f2eb72bdf97de06d4b60400308182bf831008020601676e2ee170bf831108020601b0ea8dad70bf831208020601b0ea8dad70bf853d08020601676e2edfe8bf85454e044c304a31243022041d636f6d2e676f6f676c652e6174746573746174696f6e6578616d706c65020101312204205ad05ec221c8f83a226127dec557500c3e574bc60125a9dc21cb0be4a00660953033a1053103020102a203020103a30402020100a5053103020104aa03020101bf837803020117bf83790302011ebf853e03020100301f0603551d230418301680143ffcacd61ab13a9e8120b8d5251cc565bb1e91a9300a06082a8648ce3d0403020348003045022067773908938055fd634ee413eaafc21d8ac7a9441bdf97af63914f9b3b00affe022100b9c0c89458c2528e2b25fa88c4d63ddc75e1bc80fb94dcc6228952d04f812418",
-            "308202783082021ea00302010202021001300a06082a8648ce3d040302308198310b30090603550406130255533113301106035504080c0a43616c69666f726e69613116301406035504070c0d4d6f756e7461696e205669657731153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f69643133303106035504030c2a416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20526f6f74301e170d3136303131313030343630395a170d3236303130383030343630395a308188310b30090603550406130255533113301106035504080c0a43616c69666f726e696131153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f6964313b303906035504030c32416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20496e7465726d6564696174653059301306072a8648ce3d020106082a8648ce3d03010703420004eb9e79f8426359accb2a914c8986cc70ad90669382a9732613feaccbf821274c2174974a2afea5b94d7f66d4e065106635bc53b7a0a3a671583edb3e11ae1014a3663064301d0603551d0e041604143ffcacd61ab13a9e8120b8d5251cc565bb1e91a9301f0603551d23041830168014c8ade9774c45c3a3cf0d1610e479433a215a30cf30120603551d130101ff040830060101ff020100300e0603551d0f0101ff040403020284300a06082a8648ce3d040302034800304502204b8a9b7bee82bcc03387ae2fc08998b4ddc38dab272a459f690cc7c392d40f8e022100eeda015db6f432e9d4843b624c9404ef3a7cccbd5efb22bbe7feb9773f593ffb",
-            "3082028b30820232a003020102020900a2059ed10e435b57300a06082a8648ce3d040302308198310b30090603550406130255533113301106035504080c0a43616c69666f726e69613116301406035504070c0d4d6f756e7461696e205669657731153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f69643133303106035504030c2a416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20526f6f74301e170d3136303131313030343335305a170d3336303130363030343335305a308198310b30090603550406130255533113301106035504080c0a43616c69666f726e69613116301406035504070c0d4d6f756e7461696e205669657731153013060355040a0c0c476f6f676c652c20496e632e3110300e060355040b0c07416e64726f69643133303106035504030c2a416e64726f6964204b657973746f726520536f667477617265204174746573746174696f6e20526f6f743059301306072a8648ce3d020106082a8648ce3d03010703420004ee5d5ec7e1c0db6d03a67ee6b61bec4d6a5d6a682e0fff7f490e7d771f44226dbdb1affa16cbc7adc577d2569caab7b02d54015d3e432b2a8ed74eec487541a4a3633061301d0603551d0e04160414c8ade9774c45c3a3cf0d1610e479433a215a30cf301f0603551d23041830168014c8ade9774c45c3a3cf0d1610e479433a215a30cf300f0603551d130101ff040530030101ff300e0603551d0f0101ff040403020284300a06082a8648ce3d040302034700304402203521a3ef8b34461e9cd560f31d5889206adca36541f60d9ece8a198c6648607b02204d0bf351d9307c7d5bda35341da8471b63a585653cad4f24a7e74daf417df1bf"
+            "308202ca30820270a003020102020101300a06082a8648ce3d040302308188310b30090603550406130...",
+            "308202783082021ea00302010202021001300a06082a8648ce3d040302308198310b300906035504061...",
+            "3082028b30820232a003020102020900a2059ed10e435b57300a06082a8648ce3d040302308198310b3..."
         ]
     }
 }
@@ -343,18 +337,15 @@ In the above JSON snippet, the keys have the following meaning:
         `sig`: Signature
         `x5c`: Attestation certificate chain
 
-Note: The `sig` is generated by concatenating _authData_ and `clientDataHash`(challenge sent by the server) and signing through the credential private key using the alg signing algorithm and the same is verified at the server-side by using the public key in the first certificate
+Note: The `sig` is generated by concatenating `authData` and `clientDataHash` (challenge sent by the server) and signing through the credential private key using the `alg` signing algorithm and the same is verified at the server-side by using the public key in the first certificate.
 
 For more understanding on the implementation guidelines, [Google Sample Code](https://github.com/googlesamples/android-key-attestation/blob/master/server/src/main/java/com/android/example/KeyAttestationExample.java "Google Sample Code For Android Key Attestation") can be referred.
 
 For the security analysis perspective the analysts may perform the following checks for the secure implementation of Key Attestation:
 
 - Check if the key attestation is totally implemented at the client-side. In such scenario, the same can be easily bypassed by tampering the application, method hooking, etc.
-
 - Check if the server uses random challenge while initiating the key attestation. As failing to do that would lead to insecure implementation thus making it vulnerable to replay attacks. Also, checks pertaining to the randomness of the challenge should be performed.
-
-- Check if the server verifies the integrity of key attestation response
-
+- Check if the server verifies the integrity of key attestation response.
 - Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
 
 #### Decryption only on Unlocked Devices
@@ -423,40 +414,40 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 #### Cryptography references
 
-- Android Developer blog: Crypto provider deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
-- Android Developer blog: cryptography changes in android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
-- Ida Pro - <https://www.hex-rays.com/products/ida/>
-- Android Developer blog: changes for NDK developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
-- security providers -  <https://developer.android.com/reference/java/security/Provider.html>
-- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
-- Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
+- Android Developer blog: Changes for NDK Developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
+- Android Developer blog: Crypto Provider Deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
+- Android Developer blog: Cryptography Changes in Android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
 - Android Developer documentation - <https://developer.android.com/guide>
-- NIST keylength recommendations - <https://www.keylength.com/en/4/>
-- BSI recommendations - 2017 - <https://www.keylength.com/en/8/>
+- BSI Recommendations - 2017 - <https://www.keylength.com/en/8/>
+- Ida Pro - <https://www.hex-rays.com/products/ida/>
+- Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
+- NIST Key Length Recommendations - <https://www.keylength.com/en/4/>
+- Security Providers -  <https://developer.android.com/reference/java/security/Provider.html>
+- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
 
 #### SecureRandom references
 
-- Proper seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
 - Burpproxy its Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
+- Proper Seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
 
 #### Testing Key Management references
 
-- Android KeyStore API - <https://developer.android.com/reference/java/security/KeyStore.html>
 - Android Keychain API - <https://developer.android.com/reference/android/security/KeyChain>
-- SharedPreferences - <https://developer.android.com/reference/android/content/SharedPreferences.html>
-- KeyInfo documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
-- Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
+- Android KeyStore API - <https://developer.android.com/reference/java/security/KeyStore.html>
 - Android Keystore system - <https://developer.android.com/training/articles/keystore#java>
+- Android Pie features and APIs - <https://developer.android.com/about/versions/pie/android-9.0#secure-key-import>
+- KeyInfo Documentation - <https://developer.android.com/reference/android/security/keystore/KeyInfo>
+- SharedPreferences - <https://developer.android.com/reference/android/content/SharedPreferences.html>
 
 #### Key Attestation References
 
 - Android Key Attestation - <https://developer.android.com/training/articles/security-key-attestation>
-- W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
-- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
 - Attestation and Assertion - <https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API/Attestation_and_Assertion>
-- Google Sample Codes - <https://github.com/googlesamples/android-key-attestation/tree/master/server>
-- FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
 - FIDO Alliance TechNotes - <https://fidoalliance.org/fido-technotes-the-truth-about-attestation/>
+- FIDO Alliance Whitepaper - <https://fidoalliance.org/wp-content/uploads/Hardware-backed_Keystore_White_Paper_June2018.pdf>
+- Google Sample Codes - <https://github.com/googlesamples/android-key-attestation/tree/master/server>
+- Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
+- W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
 
 ##### OWASP Mobile Top 10 2016
 
