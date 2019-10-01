@@ -34,6 +34,8 @@ Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
 
+There are various ways to distribute your app as described at [the Apple documentation](https://developer.apple.com/business/distribute/ "Apple Business") using the App Store, Custom or In-house distribution methodologies. In case of an In-house distribution scheme, make sure that no Ad-Hoc certificates are used when the app is signed for distribution.
+
 ### Determining Whether the App is Debuggable (MSTG-CODE-2)
 
 #### Overview

@@ -67,6 +67,8 @@ v3SigningEnabled true
 
 Several best practices for [configuring the app for release](https://developer.android.com/tools/publishing/preparing.html#publishing-configure "Best Practices for configuring an Android App for Release") are available in the official Android developer documentation.
 
+Last, but not least: make sure that the application is never deployed with your internal testing certificates.
+
 #### Dynamic Analysis
 
 Static analysis should be used to verify the APK signature.
