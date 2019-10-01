@@ -1045,6 +1045,8 @@ EditText.setEditableFactory(new Editable.Factory() {
 
 Refer to the `SecureSecretKey` example above for an example `Editable` implementation. Note that you will be able to securely handle all copies made by `editText.getText` if you provide your factory. You can also try to overwrite the internal `EditText` buffer by calling `editText.setText`, but there is no guarantee that the buffer will not have been copied already. If you choose to rely on the default input method and `EditText`, you will have no control over the keyboard or other components that are used. Therefore, you should use this approach for semi-confidential information only.
 
+In all cases, make sure that sensitive data in memory is cleared when a user signs out of the application. Last, make sure that highly sensitive information is cleared out the moment an Activity or Fragment hits `onPause`.
+
 #### Dynamic Analysis
 
 Static analysis will help you identify potential problems, but it can't provide statistics about how long data has been exposed in memory, nor can it help you identify problems in closed-source dependencies. This is where dynamic analysis comes into play.
