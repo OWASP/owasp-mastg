@@ -129,6 +129,8 @@ Once the permission `START_MAIN_ACTIVITY` has been created, apps can request it 
 </manifest>
 ```
 
+We recommend using a the reverse-domain annotation when registering a permission, like in the example above (e.g. `com.domain.application.permission`) in order to avoid collisions with other applications.
+
 #### Static Analysis
 
 ##### Android Permissions
