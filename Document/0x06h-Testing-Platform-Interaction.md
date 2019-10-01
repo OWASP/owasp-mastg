@@ -2288,6 +2288,7 @@ For the static analysis we will focus mostly on the following points having `UIW
 - Identifying WebView usage
 - Testing JavaScript configuration
 - Testing for mixed content
+- Testing for webview URI manipulation
 
 ##### Identifying WebView Usage
 
@@ -2522,6 +2523,10 @@ onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1
 
 hasOnlySecureContent:  false
 ```
+
+##### Testing for WebView URI Manipulation
+
+Make sure that the webview its URI cannot be manipulated by the user in order to load other types of resources than necessary for the functioning of the webview. This can be specifically dangerous the momen the webview resources come from the local file system, allowing the user to navigate to other resources within the application.
 
 ### Testing WebView Protocol Handlers (MSTG-PLATFORM-6)
 

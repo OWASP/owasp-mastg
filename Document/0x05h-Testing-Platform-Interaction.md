@@ -994,6 +994,7 @@ This allows the WebView to interpret JavaScript. It should be enabled only if ne
 
 - the communication to the endpoints consistently relies on HTTPS (or other protocols that allow encryption) to protect HTML and JavaScript from tampering during transmission
 - JavaScript and HTML are loaded locally, from within the app data directory or from trusted web servers only.
+- The user cannot define which sources to load by means of loading different resources based on a user provided input.
 
 To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache`](https://goo.gl/7dnhdi "clearCache in WebViews") when the app closes.
 
