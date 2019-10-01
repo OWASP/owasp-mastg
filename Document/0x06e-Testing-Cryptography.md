@@ -8,6 +8,57 @@ In the "Cryptography for Mobile Apps" chapter, we introduced general cryptograph
 
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
+##### CryptoKit
+
+Apple CryptoKit was released with iOS 13 and is built on top of Apple's native cryptographic library `corecrypto`. The Swift framework provides a strongly typed API interface, has effective memory management, conforms to equatable, and supports generics. CryptoKit contains secure algorithms for hashing, symmetric-key cryptography, and public-key cryptography. The framework can also utilize the hardware based key manager the Secure Enclave.
+
+Apple CryptoKit contains the following algorithms:
+
+*Hashes*
+    - MD5 (Insecure Module)
+        - SHA1 (Insecure Module)
+        - SHA-2 256-bit digest
+        - SHA-2 384-bit digest
+        - SHA-2 512-bit digest
+
+*Symmetric-Key*
+    - Message Authentication Codes (HMAC)
+    - Authenticated Encryption
+        - AES-GCM
+        - ChaCha20-Poly1305
+
+*Public-Key*
+    - Key Agreement
+        - Curve25519
+        - NIST P-256
+        - NIST P-384
+        - NIST P-512
+
+Examples:
+
+Generating and releasing a symmetric key:
+
+```swift
+let encryptionKey = SymmetricKey(size: .bits256)
+```
+
+Calculating a SHA-2 512-bit digest:
+
+```swift
+let rawString = "OWASP MTSG"
+let rawData = Data(rawString.utf8)
+let hash = SHA512.hash(data: rawData) // Compute the digest
+let textHash = String(describing: hash)
+print(textHash) // Print hash text
+```
+
+For more information about Apple CryptoKit, please visit the following resources:
+
+- [Apple CryptoKit | Apple Developer Documentation](https://developer.apple.com/documentation/cryptokit)
+- [Performing Common Cryptographic Operations | Apple Developer Documentation](https://developer.apple.com/documentation/cryptokit/performing_common_cryptographic_operations)
+- [WWDC 2019 session 709: Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/)
+- [How to calculate the SHA hash of a String or Data instance - Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance)
+
 ##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
 
 The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
