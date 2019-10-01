@@ -166,6 +166,7 @@ iOS applications often make use of third party libraries. These third party libr
 These libraries can have the following two classes of unwanted side-effects:
 
 - A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to execute man-in-the-middle attacks against apps that are using the library to connect to their APIs.
+- A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
 Note: there are two widely used package management tools: Carthage and CocoaPods.
@@ -226,7 +227,9 @@ In case frameworks are added manually as linked libraries:
 
 In the case of copy-pasted sources: search the header files (in case of using Objective-C) and otherwise the Swift files for known method names for known libraries.
 
-Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
+Next, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
+
+Last, If the application is a high risk application, you will end up vetting the library manually. In that case there are a wild amount of review requirements, which are similar to the requirements established by the MASVS for the applicaiton as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
 
 ##### Detecting the licenses used by the libraries of the application
 

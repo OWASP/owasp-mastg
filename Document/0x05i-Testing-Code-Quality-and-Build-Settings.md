@@ -282,6 +282,7 @@ Android apps often make use of third party libraries. These third party librarie
 These libraries can have the following two classes of unwanted side-effects:
 
 - A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain pollution was possible to bypass SSL pinning.
+- A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its sourcecode. This can endanger the intellectual property (IP) of the application.
 
 Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
@@ -328,6 +329,8 @@ When a library is found to contain vulnerabilities, then the following reasoning
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build-process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
 When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or Proguard are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
+
+If the application is a high risk application, you will end up vetting the library manually. In that case there are a wild amount of review requirements, which are similar to the requirements established by the MASVS for the applicaiton as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
 
 ##### Detecting the licenses used by the libraries of the application
 
