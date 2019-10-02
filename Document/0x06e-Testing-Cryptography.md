@@ -54,10 +54,10 @@ print(textHash) // Print hash text
 
 For more information about Apple CryptoKit, please visit the following resources:
 
-- [Apple CryptoKit | Apple Developer Documentation](https://developer.apple.com/documentation/cryptokit)
-- [Performing Common Cryptographic Operations | Apple Developer Documentation](https://developer.apple.com/documentation/cryptokit/performing_common_cryptographic_operations)
-- [WWDC 2019 session 709: Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/)
-- [How to calculate the SHA hash of a String or Data instance - Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance)
+- [Apple CryptoKit | Apple Developer Documentation](https://developer.apple.com/documentation/cryptokit "Apple CryptoKit from Apple Developer Documentation")
+- [Performing Common Cryptographic Operations | Apple Developer Documentation](https://developer.apple.com/documentation/cryptokit/performing_common_cryptographic_operations "Performing Common Cryptographic Operations from Apple Developer Documentation")
+- [WWDC 2019 session 709 | Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/ "Cryptography and Your Apps from WWDC 2019 session 709")
+- [How to calculate the SHA hash of a String or Data instance | Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance "How to calculate the SHA hash of a String or Data instance from Hacking with Swift")
 
 ##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
 
