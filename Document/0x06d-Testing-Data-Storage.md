@@ -332,6 +332,14 @@ To use Needle to read the Keychain, execute the following command:
 [needle][keychain_dump] > run
 ```  
 
+###### Validate the Data Protection Classes
+You can use FileDP module in order to verify Data protection class of the file or directory:
+
+``` shell
+[needle] > use storage/data/FileDP
+[needle][FileDP] > run
+```
+
 ###### Searching for Binary Cookies
 
 iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Needle to convert these files to a readable format and inspect the data. Use the following Needle module, which searches for binary cookie files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
