@@ -333,6 +333,7 @@ To use Needle to read the Keychain, execute the following command:
 ```  
 
 ###### Validate the Data Protection Classes
+
 You can use FileDP module in order to verify Data protection class of the file or directory:
 
 ``` shell
