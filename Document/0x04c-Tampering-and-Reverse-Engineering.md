@@ -54,7 +54,7 @@ We'll include examples of all three frameworks. We recommend starting with Frida
 
 ##### Frida
 
-[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written in C by Ole André Vadla Ravnås that works by injecting a JavaScript engine ([Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
+[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written in Vala by Ole André Vadla Ravnås that works by injecting a JavaScript engine ([Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
 
 Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
 In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app:
