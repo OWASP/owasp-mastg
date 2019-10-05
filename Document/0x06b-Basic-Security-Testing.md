@@ -186,7 +186,7 @@ Here are some tasks that Frida APIs offers and are relevant or exclusive on iOS:
 
 Remember that on iOS, you can also benefit from the built-in tools provided when installing Frida, which include the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name a few.
 
-There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in its name and belonging to any class whose name starts with "NSURL" is as easy as running:
+There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in their name and belonging to any class whose name starts with "NSURL" is as easy as running:
 
 ```bash
 $ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
