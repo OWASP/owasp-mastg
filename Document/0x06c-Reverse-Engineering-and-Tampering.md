@@ -186,11 +186,11 @@ In this section we will use the techniques learned in "[Disassembling and Decomp
 
 The app we are using, UnCrackable Level 01 app, has a simple objective of to find a 'secret string' hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting in the text field. 
 
-<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of UnCrackable Level 01 application" height="300" width="500">
+<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of UnCrackable Level 01 application" height="600" width="500">
 
 On giving a wrong input the application shows a pop-up with "Verification Failed" message. 
 
-<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Giving wrong input" height="300" width="500">
+<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Giving wrong input" height="600" width="500">
 
 We can keep note of the strings displayed in the pop-up, this might be helpful in finding the code where input is processed and a decision is being made. Luckily, the complexity and interaction with application is straightforward, which bodes well for our reversing endeavours.  
 
