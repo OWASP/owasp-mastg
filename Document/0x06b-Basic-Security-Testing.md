@@ -33,7 +33,7 @@ The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS
 
 It is also possible to get the UDID via various command line tools while the device is attached via USB:
 
--  By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
+- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
 
     ```sh
     $ ioreg -p IOUSB -l | grep "USB Serial"
