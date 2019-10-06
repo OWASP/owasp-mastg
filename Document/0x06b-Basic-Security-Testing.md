@@ -31,21 +31,21 @@ $ xcode-select --install
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
 
-It is also possible to get the UDID via various commindline tools while the device is attached via USB:
+It is also possible to get the UDID via various command line tools while the device is attached via USB:
 
-- By using `ioreg`:
+-  By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
 
     ```sh
-        $ ioreg -p IOUSB -l | grep "USB Serial"
-        |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
+    $ ioreg -p IOUSB -l | grep "USB Serial"
+    |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
     ```
 
-- From a tool called ideviceinstaller:
+- From a tool called [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
 
     ```sh
-        $ brew install ideviceinstaller
-        $ idevice_id -l
-        316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+    $ brew install ideviceinstaller
+    $ idevice_id -l
+    316f01bd160932d2bf2f95f1f142bc29b1c62dbc
     ```
 
 - Using the systemprofiler:
@@ -56,10 +56,10 @@ It is also possible to get the UDID via various commindline tools while the devi
                 Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
     ```
 
-- Using instruments:
+- Using instruments (macOS only):
 
     ```sh
-        $ nstruments -s devices
+    $ instruments -s devices
     ```
 
 ##### Testing on a real device (Jailbroken)
