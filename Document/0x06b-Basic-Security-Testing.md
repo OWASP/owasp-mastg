@@ -40,7 +40,7 @@ It is also possible to get the UDID via various command line tools while the dev
     |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
     ```
 
-- From a tool called [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
+- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
 
     ```sh
     $ brew install ideviceinstaller
@@ -48,7 +48,7 @@ It is also possible to get the UDID via various command line tools while the dev
     316f01bd160932d2bf2f95f1f142bc29b1c62dbc
     ```
 
-- Using the systemprofiler:
+- By using the system_profiler (macOS only):
 
     ```sh
     $ system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p;/iPhone/,/Serial/p;/iPod/,/Serial/p' | grep "Serial Number:"
@@ -56,7 +56,7 @@ It is also possible to get the UDID via various command line tools while the dev
                 Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
     ```
 
-- Using instruments (macOS only):
+- By using instruments (macOS only):
 
     ```sh
     $ instruments -s devices
