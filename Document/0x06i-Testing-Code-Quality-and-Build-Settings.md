@@ -231,7 +231,7 @@ In the case of copy-pasted sources: search the header files (in case of using Ob
 
 Next, note that for hybrid applications, you will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, you will have to check the C# dependencies.
 
-Last, if the application is a high risk application, you will end up vetting the library manually. In that case there are specific requirements for native code, which are similar to the requirements established by the MASVS for the application as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
+Last, if the application is a high-risk application, you will end up vetting the library manually. In that case there are specific requirements for native code, which are similar to the requirements established by the MASVS for the application as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
 
 ##### Detecting the licenses used by the libraries of the application
 

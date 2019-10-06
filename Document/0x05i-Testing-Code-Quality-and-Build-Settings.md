@@ -332,7 +332,7 @@ When a library is found to contain vulnerabilities, then the following reasoning
 
 When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or Proguard are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
 
-If the application is a high risk application, you will end up vetting the library manually. In that case, there are specific requirements for native code, which you can find in the chapter ["Testing Code Quality"](0x04h-Testing-Code-Quality.md). Next to that, it is good to vet whether all best practices for software engineering are applied.
+If the application is a high-risk application, you will end up vetting the library manually. In that case, there are specific requirements for native code, which you can find in the chapter "[Testing Code Quality](0x04h-Testing-Code-Quality.md)". Next to that, it is good to vet whether all best practices for software engineering are applied.
 
 ##### Detecting the licenses used by the libraries of the application
 
