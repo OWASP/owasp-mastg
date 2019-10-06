@@ -166,19 +166,66 @@ $ otool -L <binary>
 ```
 #### Manual (Reversed) Code Review
 ##### Reviewing Disassembled Objective-C and Swift Code
+In this section we will be exploring iOS applications manually and perform static analysis on them 
+
+TODO:
+- change basic information gathering app to uncrackable1 as well.
+- analyze the app and just point out the important places in the code. Follow around the flow, why you exploring that function and how you reach to a certain point. 
+
+
 iOS application, it is native code, need a disassembler to review the code. 
 iOS applications are written in Obj-C and Swift, and since now swift is stable, in future more applications will be written in swift. 
 
 ###### Objective-C
-- there are many calls to the obj-c runtime , like obj_msgsend, retain object etc , talk breifly about them and point out to the resources to deal with them. 
-- language calls functions via message passing, thus there are certain quirks in the decompiled or disassembled objc code, inspite being a C code.  
+In this section we will use the techniques learned in "[Disassembling and Decompiling](#Disassembling-and-Decompiling "Disassembling and Decompiling")" section. We will be using the  [UnCrackable_Level1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level1 iOS App"). 
 
-- use of decompiler, and sometimes its inconsistency.
+There are no hardwritten rules for performing static analysis, but there are few rules of thumb which can be handy. 
+- Understand the working of the application under evaluation - the objective of the application and how it behaves in case of wrong input. 
+- Explore the various strings present in the application binary, this can be very helpful, for example in spotting interesting functionalities and possible error handling logic in the application. 
+- Lastly, find the various entry points into the application and follow along from there to explore the application.
 
-###### Swift
+The app we are using, UnCrackable Level 01 app, has a simple objective of to find a 'secret string' hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting in the text field. 
+
+![Home screen of UnCrackable Level 01](Images/Chapters/0x06c/manual_reversing_app_home_screen.png)
+
+On giving a wrong input the application gives a pop-up, "Verification Failed". 
+
+![Giving wrong input](Images/Chapters/0x06c/manual_reversing_app_wrong_input.png)
+
+We can keep note of the strings displayed in the pop-up, this might be helpful in finding the code where input is processed and a decision is made. Luckily, the interaction with application is straightforward as well, which bodes well for our reversing endeavours.  
+
+> For static analysis in this section, we will be using Ghidra 9.0.4. Ghidra 9.1_beta auto-analysis has a bug and does not show the Objective-C classes. 
+
+In Ghidra we can start with checking the strings present in the binary. There are many strings present in the binary and on deeper analysis, and some experience in reversing Objective-C code, you will find most of the strings are not useful for us. Most of the strings are symbols (function names, class names etc) which are generated for the Objective-C runtime. Few of them are shown in the screenshot below.
+
+![Objective-C runtime strings](Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png)
+
+On further careful analysis, we can spot the string which is used in the pop-up when a wrong input is given. If you follow the **Xrefs** for this string, you will reach *buttonClick()* function in *ViewController* class. We will look into the *buttonClick()* function later in this section. On continuing checking the other strings in the application, few look a likely candidate for a 'hidden flag'. You can try them and verify as well. 
+
+![Interesting strings in UnCrackable application](Images/Chapters/0x06c/manual_reversing_ghidra_strings.png)
+
+Moving forward, we have two paths to take. Either we can start analysing the *buttonClick()* function identified from the above step, or start analysing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path. 
+
+An iOS application can have multiple entry points depending on at which particular state of the application lifecycle it is ([Managing Your App's Life Cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App's Life Cycle"). For example, when the application is started *[AppDelegate application:didFinishLaunchingWithOptions:]* is called, while *[AppDelegate applicationDidBecomeActive:]* is called when the application is moving from inactive to active state. Many applications execute critical code in these sections and is always a good starting point in order to follow code systematically. 
+
+In the current application, on analysing all the functions in the *AppDelegate* class we can find that there is no relevant code present. The lack of any code in the above functions raises the question - from where is the application initialisation code being called from? 
+
+Luckily the current application has a small code base, and we can see presence of another *ViewController* class in the **Symbol Tree** view. In this class, function *viewDidLoad()* function looks interesting. If we check the documentation of [viewDidLoad()](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621495-viewdidload "viewDidLoad()"), *viewDidLoad()* can also be used for initialisation of views. 
+
+![Decompilation of viewDidLoad function](Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png)
+
+If we check the decompilation of this function, there are few interesting things going on. There is a call to a native function at line 31 and initialisation of a label with *setHidden* flag set. We will keep a note of the observations from the current function and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers. Some understanding of [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime") will be very helpful in understanding the significance of functions like *_objc_msgSend()* or *_objc_release()*. 
+
+From our first step, we observed that the application checks for the flag only when the UI button is pressed. Thus, analysing the *buttonClick()* function is an obvious target. As earlier mentioned, this function contains the string we see in the pop-ups. We can also see there is a decision being made, based on the result of *isEqualString* (output saved in *uVar1*). The input for the comparison is coming from the text input field and the **label**!. The 'hidden flag' is stored in a label.  
+
+![Decompilation of buttonClick function](Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png)
+
+Now we have followed the complete flow and have all the information about the application flow. We can also conclude that the 'hidden flag' is present in a label and in order to determine the value of the label, we need to revisit *viewDidLoad()* function, and understand what is happening in the native function identified. Analysis of the native function is discussed in [Reviewing Disassembled Native Code](#Reviewing-Disassembled-Native-Code "Reviewing Disassembled Native Code").
 
 ##### Reviewing Disassembled Native Code
 - understanding of arm assembly language
+- use of decompiler, and sometimes its inconsistency.
+
 ###### Ghidra
 ###### IDA Pro
 ###### radare2
