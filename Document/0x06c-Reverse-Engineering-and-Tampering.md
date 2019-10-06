@@ -166,23 +166,18 @@ $ otool -L <binary>
 ```
 #### Manual (Reversed) Code Review
 ##### Reviewing Disassembled Objective-C and Swift Code
-In this section we will be exploring iOS applications manually and perform static analysis on them 
+In this section we will be exploring iOS applications binary code manually and perform static analysis on it. Manual analysis can be a slow process and requires immense patience. A good manual analysis can make the dynamic analysis more successful. 
 
-TODO:
-- change basic information gathering app to uncrackable1 as well.
-- analyze the app and just point out the important places in the code. Follow around the flow, why you exploring that function and how you reach to a certain point. 
+There are no hard written rules for performing static analysis, but there are few rules of thumb which can be used to have a systematic approach to manual analysis: 
 
-
-iOS application, it is native code, need a disassembler to review the code. 
-iOS applications are written in Obj-C and Swift, and since now swift is stable, in future more applications will be written in swift. 
-
-###### Objective-C
-In this section we will use the techniques learned in "[Disassembling and Decompiling](#Disassembling-and-Decompiling "Disassembling and Decompiling")" section. We will be using the  [UnCrackable_Level1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level1 iOS App"). 
-
-There are no hardwritten rules for performing static analysis, but there are few rules of thumb which can be handy. 
 - Understand the working of the application under evaluation - the objective of the application and how it behaves in case of wrong input. 
 - Explore the various strings present in the application binary, this can be very helpful, for example in spotting interesting functionalities and possible error handling logic in the application. 
 - Lastly, find the various entry points into the application and follow along from there to explore the application.
+
+> Techniques discussed in this section are generic and applicable irrespective of the tools used for analysis. 
+
+###### Objective-C
+In this section we will use the techniques learned in "[Disassembling and Decompiling](#Disassembling-and-Decompiling "Disassembling and Decompiling")" section. We will be using the  [UnCrackable_Level1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level1 iOS App"). 
 
 The app we are using, UnCrackable Level 01 app, has a simple objective of to find a 'secret string' hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting in the text field. 
 
@@ -222,13 +217,41 @@ From our first step, we observed that the application checks for the flag only w
 
 Now we have followed the complete flow and have all the information about the application flow. We can also conclude that the 'hidden flag' is present in a label and in order to determine the value of the label, we need to revisit *viewDidLoad()* function, and understand what is happening in the native function identified. Analysis of the native function is discussed in [Reviewing Disassembled Native Code](#Reviewing-Disassembled-Native-Code "Reviewing Disassembled Native Code").
 
-##### Reviewing Disassembled Native Code
-- understanding of arm assembly language
-- use of decompiler, and sometimes its inconsistency.
 
-###### Ghidra
-###### IDA Pro
-###### radare2
+##### Reviewing Disassembled Native Code
+Analysing disassembled native code requires a good understanding of the calling conventions and instructions used by the underlying platform. In this section we are looking in ARM64 disassembly of the native code. A good starting point to learn about ARM architecture is available at [Introduction to ARM Assembly Basics](https://azeria-labs.com/writing-arm-assembly-part-1/ "Introduction to ARM Assembly Basics") by Azeria Labs Tutorials. A quick summary of things that we will be using in this section:
+
+- In ARM64, a register is of 64 bit in size and referred to as **Xn**, where n is a number from 0 to 31. If lower (LSB) 32bits of the register is used then referred as **Wn**.
+- In ARM64, the input parameters to a function are passed in **X0-X7** registers
+- The return value of the function is passed via **X0** register
+- Load (LDR) and store (STR) instructions are used to read or write to memory from/to a register
+- B, BL, BLX are branch instructions used for calling a function
+
+As mentioned above as well, Objective-C code is also compiled to native binary code, but analysing C/C++ native can be more challenging. In case of Objective-C there are various symbols (especially function names) present, which makes understanding of the code easy. From above section, presence of function names like *setText*, *isEqualStrings* helped in quickly understanding the semantics of the code. In case of C/C++ native code, if all the debug symbols are stripped, there can be very few or no symbols present to assist in analyzing the binary. 
+
+Decompilers can help us in analyzing native code as well, but they should be used with caution. Modern decompilers are very sophisticated and also use many heuristics based decompilation techniques. These techniques might not always give correct result, one such case being, determining the number of input parameters for a given native function. Having knowledge of analysing disassembled, assisted with decompilers can make analyzing native code less error prone.  
+
+We will be analyzing the native function identified in *viewDidLoad()* function in previous section. The function is at offset *0x1000080d4*. As also identified in previous section, this function is responsible for setting text to the label which is used for comparing to the input text. Thus, we can be sure that this function will be returning a string or equivalent. 
+
+![Disassembly of the native function](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png)
+
+First thing we can see in the disassembly is there is no input to the function. The registers X0-X7 are not read through out the function. Also, there are multiple calls to other functions like *0x100008158*, *0x10000dbf0* etc. 
+
+Instructions to one such call are below. Branch instruction *bl* is used to call the function *0x100008158*. 
+
+```
+1000080f0 1a 00 00 94     bl         FUN_100008158                
+1000080f4 60 02 00 39     strb       w0,[x19]=>DAT_10000dbf0
+```
+
+Above, the return value from the function (return value in W0), is written to the address in register X19 (*strb* stores a byte to the address in register). We can see the same pattern for other function calls, the returned value is stored in X19 register and each time the offset is incremented. This behavior can be associated with populating each index of a string array at a time. Each return value is been written to an index of this string array. There are 11 such calls, and from the current evidence we can make an intelligent guess that length of the 'hidden flag' is 11. The function returns with the address to this string array, written to the W0 register. 
+
+To determine the value of the 'hidden flag' we need to know the return value of each of these subsequent function calls. On analysing the function *0x100006fb4*, we can observe this function is bigger and more complex than previous one we analysed. For analysing complex functions, function graphs can be very helpful, as it helps in understanding the control flow of the function. 
+
+![Function graph from 0x100006fb4](Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png)
+
+Manually analysing this function completely will be cumbersome, and there are 11 such functions to analyze. In such a scenario using dynamic analysis approach is recommended. By using the techniques like hooking or simply debugging the application, we can easily determine the returned values. In case dynamic analysis approach fails, then we can fallback and start manually analysing the functions.  
+
 
 #### Automated Static Analysis
 
