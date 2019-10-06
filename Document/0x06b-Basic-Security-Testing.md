@@ -31,12 +31,11 @@ $ xcode-select --install
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
 
-It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id -l`:
+It is also possible to get the UDID via the command line, from a device attached via USB using `ioreg`:
 
 ```shell
-$ brew install ideviceinstaller
-$ idevice_id -l
-316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+$ ioreg -p IOUSB -l | grep "USB Serial"
+  |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
 ```
 
 Alternatively you can also use the Xcode command `instruments -s devices`.
@@ -172,7 +171,27 @@ In order to analyze iOS apps, you should install the following tools on your hos
 
 ##### Frida
 
-[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. The [installation instructions for Frida](https://www.frida.re/docs/installation/ "Installation of Frida") can be found on the official website. Frida is used in several of the following sections and chapters. For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
+[Frida](https://www.frida.re "Frida") is a free and open-source dynamic code instrumentation toolkit that lets you execute snippets of JavaScript into your native apps. It was already introduced in the chapter "[Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md#frida "Frida")" of the general testing guide. Frida is used in several of the following sections and chapters.
+
+Frida supports interaction with the Objective-C runtime through the [ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API"). You'll be able to hook and call both Objective-C and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
+
+Here are some tasks that Frida APIs offers and are relevant or exclusive on iOS:
+
+- Instantiate Objective-C objects and call static and non-static class methods ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
+- Trace Objective-C method calls and/or replace their implementations ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
+- Enumerate live instances of specific classes by scanning the heap ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
+- Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
+- Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
+
+Remember that on iOS, you can also benefit from the built-in tools provided when installing Frida, which include the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name a few.
+
+There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in their name and belonging to any class whose name starts with "NSURL" is as easy as running:
+
+```bash
+$ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
+```
+
+For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
 
 ##### Frida-ios-dump
 
