@@ -44,7 +44,7 @@
  - Androguard: python ベースのツールで、Android アプリの逆アセンブルや逆コンパイルに使用できます。 - https://github.com/androguard/androguard
  - Android Backup Extractor: adb backup (ICS 以降) で作成された Android バックアップを抽出および再パックするユーティリティです。主に AOSP の BackupManagerService.java をベースとしています。 - https://github.com/nelenkov/android-backup-extractor
  - Android Debug Bridge (adb): エミュレータインスタンスや接続された Android デバイスと通信するために使用される多目的コマンドラインツールです。 - https://developer.android.com/studio/command-line/adb.html
- - ApkTool: サードパーティ製でクローズなバイナリ Android アプリをリバースエンジニアリングするためのツールです。リソースをほぼ元の形にデコードし、改変後に再構築することができます。 - https://ibotpeaches.github.io/Apktool/
+ - ApkTool: サードパーティ製でクローズなバイナリ Android アプリをリバースエンジニアリングするためのツールです。リソースをほぼ元の形にデコードし、改変後に再構築することができます。 - https://github.com/iBotPeaches/Apktool
  - android-classyshark: Android 開発者向けのスタンドアロンのバイナリインスペクションツールです。 - https://github.com/google/android-classyshark
  - ByteCodeViewer: Java 8 Jar および Android APK のリバースエンジニアリングスイート (デコンパイラ、エディタ、デバッガなど) です。 - https://bytecodeviewer.com/
  - ClassNameDeobfuscator: apktool により生成される .smali ファイルを解析して .source アノテーション行を抽出するシンプルなスクリプトです。 - https://github.com/HamiltonianCycle/ClassNameDeobfuscator
@@ -156,8 +156,8 @@
  - DIVA Android: 意図的にセキュアではないように設計されたアプリで、2016年に更新されており、13のさまざまな課題を含んでいます。 - https://github.com/payatu/diva-android
  - DodoVulnerableBank: 2015年からのセキュアではない Android アプリです。 - https://github.com/CSPF-Founder/DodoVulnerableBank
  - InsecureBankv2: セキュリティ愛好家や開発者が脆弱なアプリケーションをテストすることにより Android の危険性を知ることができる脆弱な Android アプリです。2018年に更新され、多くの脆弱性を含んでいます。 - https://github.com/dineshshetty/Android-InsecureBankv2
- - MSTG Android app: Java - このドキュメントで説明されているテストケースと同様の脆弱性を持つ脆弱な Android アプリです。 - https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/OMTG-Android-App
- - MSTG Android app: Kotlin - このドキュメントで説明されているテストケースと同様の脆弱性を持つ脆弱な Android アプリです。 - https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Kotlin-App
+ - MSTG Android app: Java - このドキュメントで説明されているテストケースと同様の脆弱性を持つ脆弱な Android アプリです。 - https://github.com/OWASP/MSTG-Hacking-Playground/releases
+ - MSTG Android app: Kotlin - このドキュメントで説明されているテストケースと同様の脆弱性を持つ脆弱な Android アプリです。 - https://github.com/OWASP/MSTG-Hacking-Playground/releases
 
 #### iOS
 
