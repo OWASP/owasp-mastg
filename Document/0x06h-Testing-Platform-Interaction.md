@@ -2288,7 +2288,7 @@ For the static analysis we will focus mostly on the following points having `UIW
 - Identifying WebView usage
 - Testing JavaScript configuration
 - Testing for mixed content
-- Testing for webview URI manipulation
+- Testing for WebView URI manipulation
 
 ##### Identifying WebView Usage
 
@@ -2526,7 +2526,7 @@ hasOnlySecureContent:  false
 
 ##### Testing for WebView URI Manipulation
 
-Make sure that the webview its URI cannot be manipulated by the user in order to load other types of resources than necessary for the functioning of the webview. This can be specifically dangerous the momen the webview resources come from the local file system, allowing the user to navigate to other resources within the application.
+Make sure that the WebView's URI cannot be manipulated by the user in order to load other types of resources than necessary for the functioning of the WebView. This can be specifically dangerous when the WebView's content is loaded from the local file system, allowing the user to navigate to other resources within the application.
 
 ### Testing WebView Protocol Handlers (MSTG-PLATFORM-6)
 

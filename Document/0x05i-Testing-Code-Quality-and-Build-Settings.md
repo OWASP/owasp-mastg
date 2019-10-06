@@ -67,7 +67,7 @@ v3SigningEnabled true
 
 Several best practices for [configuring the app for release](https://developer.android.com/tools/publishing/preparing.html#publishing-configure "Best Practices for configuring an Android App for Release") are available in the official Android developer documentation.
 
-Last, but not least: make sure that the application is never deployed with your internal testing certificates.
+Last but not least: make sure that the application is never deployed with your internal testing certificates.
 
 #### Dynamic Analysis
 
@@ -281,7 +281,7 @@ Android apps often make use of third party libraries. These third party librarie
 - Libraries that are not (or should not) be packed within the actual production application, such as `Mockito` used for testing and libraries like `JavaAssist` used to compile certain other libraries.
 - Libraries that are packed within the actual production application, such as `Okhttp3`.
 
-These libraries can have the following two classes of unwanted side-effects:
+These libraries can lead to unwanted side-effects:
 
 - A library can contain a vulnerability, which will make the application vulnerable. A good example are the versions of `OKHTTP` prior to 2.7.5 in which TLS chain pollution was possible to bypass SSL pinning.
 - A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.

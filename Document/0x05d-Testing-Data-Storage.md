@@ -1045,7 +1045,7 @@ EditText.setEditableFactory(new Editable.Factory() {
 
 Refer to the `SecureSecretKey` example above for an example `Editable` implementation. Note that you will be able to securely handle all copies made by `editText.getText` if you provide your factory. You can also try to overwrite the internal `EditText` buffer by calling `editText.setText`, but there is no guarantee that the buffer will not have been copied already. If you choose to rely on the default input method and `EditText`, you will have no control over the keyboard or other components that are used. Therefore, you should use this approach for semi-confidential information only.
 
-In all cases, make sure that sensitive data in memory is cleared when a user signs out of the application. Last, make sure that highly sensitive information is cleared out the moment an Activity or Fragment hits `onPause`.
+In all cases, make sure that sensitive data in memory is cleared when a user signs out of the application. Finally, make sure that highly sensitive information is cleared out the moment an Activity or Fragment's `onPause` event is triggered.
 Note: that this might mean that a user has to re-authenticate on every time he/she resumes the application.
 
 #### Dynamic Analysis
