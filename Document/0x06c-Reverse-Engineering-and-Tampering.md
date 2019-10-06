@@ -165,92 +165,102 @@ The following command is listing shared libraries:
 $ otool -L <binary>
 ```
 #### Manual (Reversed) Code Review
+
 ##### Reviewing Disassembled Objective-C and Swift Code
-In this section we will be exploring iOS applications binary code manually and perform static analysis on it. Manual analysis can be a slow process and requires immense patience. A good manual analysis can make the dynamic analysis more successful. 
+
+In this section we will be exploring iOS application's binary code manually and perform static analysis on it. Manual analysis can be a slow process and requires immense patience. A good manual analysis can make the dynamic analysis more successful. 
 
 There are no hard written rules for performing static analysis, but there are few rules of thumb which can be used to have a systematic approach to manual analysis: 
 
 - Understand the working of the application under evaluation - the objective of the application and how it behaves in case of wrong input. 
 - Explore the various strings present in the application binary, this can be very helpful, for example in spotting interesting functionalities and possible error handling logic in the application. 
+- Look for functions and classes having names relevant to our objective 
 - Lastly, find the various entry points into the application and follow along from there to explore the application.
 
 > Techniques discussed in this section are generic and applicable irrespective of the tools used for analysis. 
 
 ###### Objective-C
-In this section we will use the techniques learned in "[Disassembling and Decompiling](#Disassembling-and-Decompiling "Disassembling and Decompiling")" section. We will be using the  [UnCrackable_Level1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level1 iOS App"). 
+
+In this section we will use the techniques learned in "[Disassembling and Decompiling](#Disassembling-and-Decompiling "Disassembling and Decompiling")" section. We will be using the  [UnCrackable Level01 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level01 iOS App"). Also, for analysing the Objective-C code some understanding of [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime") will be very helpful, specially significance of functions like *_objc_msgSend()* or *_objc_release()* in the working of Objective-C runtime. 
+
 
 The app we are using, UnCrackable Level 01 app, has a simple objective of to find a 'secret string' hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting in the text field. 
 
-![Home screen of UnCrackable Level 01](Images/Chapters/0x06c/manual_reversing_app_home_screen.png)
+<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of UnCrackable Level 01 application" height="300" width="500">
 
-On giving a wrong input the application gives a pop-up, "Verification Failed". 
+On giving a wrong input the application shows a pop-up with "Verification Failed" message. 
 
-![Giving wrong input](Images/Chapters/0x06c/manual_reversing_app_wrong_input.png)
+<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Giving wrong input" height="300" width="500">
 
-We can keep note of the strings displayed in the pop-up, this might be helpful in finding the code where input is processed and a decision is made. Luckily, the interaction with application is straightforward as well, which bodes well for our reversing endeavours.  
+We can keep note of the strings displayed in the pop-up, this might be helpful in finding the code where input is processed and a decision is being made. Luckily, the complexity and interaction with application is straightforward, which bodes well for our reversing endeavours.  
 
 > For static analysis in this section, we will be using Ghidra 9.0.4. Ghidra 9.1_beta auto-analysis has a bug and does not show the Objective-C classes. 
 
 In Ghidra we can start with checking the strings present in the binary. There are many strings present in the binary and on deeper analysis, and some experience in reversing Objective-C code, you will find most of the strings are not useful for us. Most of the strings are symbols (function names, class names etc) which are generated for the Objective-C runtime. Few of them are shown in the screenshot below.
 
-![Objective-C runtime strings](Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png)
+![Objective-C runtime strings](Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png "Objective-C runtime related strings")
 
-On further careful analysis, we can spot the string which is used in the pop-up when a wrong input is given. If you follow the **Xrefs** for this string, you will reach *buttonClick()* function in *ViewController* class. We will look into the *buttonClick()* function later in this section. On continuing checking the other strings in the application, few look a likely candidate for a 'hidden flag'. You can try them and verify as well. 
+On further careful analysis, we can spot the string, "Verification Failed", which is used in the pop-up when a wrong input is given. If you follow the **Xrefs** for this string, you will reach *buttonClick()* function in *ViewController* class. We will look into the *buttonClick()* function later in this section. On continuing checking the other strings in the application, only a few look a likely candidate for a 'hidden flag'. You can try them and verify as well. 
 
-![Interesting strings in UnCrackable application](Images/Chapters/0x06c/manual_reversing_ghidra_strings.png)
+![Interesting strings in UnCrackable application](Images/Chapters/0x06c/manual_reversing_ghidra_strings.png "Interesting strings in UnCrackable application")
 
 Moving forward, we have two paths to take. Either we can start analysing the *buttonClick()* function identified from the above step, or start analysing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path. 
 
-An iOS application can have multiple entry points depending on at which particular state of the application lifecycle it is ([Managing Your App's Life Cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App's Life Cycle"). For example, when the application is started *[AppDelegate application:didFinishLaunchingWithOptions:]* is called, while *[AppDelegate applicationDidBecomeActive:]* is called when the application is moving from inactive to active state. Many applications execute critical code in these sections and is always a good starting point in order to follow code systematically. 
+An iOS application can have multiple entry points depending on at which particular state of the application lifecycle it is (documentation available at [Managing Your App's Life Cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle)). For example, when the application is started *[AppDelegate application:didFinishLaunchingWithOptions:]* is called, while *[AppDelegate applicationDidBecomeActive:]* is called when the application is moving from inactive to active state. Many applications execute critical code in these sections and is always a good starting point in order to follow the code systematically. 
 
-In the current application, on analysing all the functions in the *AppDelegate* class we can find that there is no relevant code present. The lack of any code in the above functions raises the question - from where is the application initialisation code being called from? 
+In the current application, on analysing all the functions in the *AppDelegate* class we can see that there is no relevant code present. The lack of any code in the above functions raises the question - from where is the application's initialisation code being called from? 
 
-Luckily the current application has a small code base, and we can see presence of another *ViewController* class in the **Symbol Tree** view. In this class, function *viewDidLoad()* function looks interesting. If we check the documentation of [viewDidLoad()](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621495-viewdidload "viewDidLoad()"), *viewDidLoad()* can also be used for initialisation of views. 
+Luckily the current application has a small code base, and we can see presence of another *ViewController* class in the **Symbol Tree** view. In this class, function *viewDidLoad()* function looks interesting. If we check the documentation of [viewDidLoad()](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621495-viewdidload "viewDidLoad()"), it can also be used for initialisation of views.  
 
-![Decompilation of viewDidLoad function](Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png)
+![Decompilation of viewDidLoad function](Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png "Decompilation of viewDidLoad function")
 
-If we check the decompilation of this function, there are few interesting things going on. There is a call to a native function at line 31 and initialisation of a label with *setHidden* flag set. We will keep a note of the observations from the current function and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers. Some understanding of [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime") will be very helpful in understanding the significance of functions like *_objc_msgSend()* or *_objc_release()*. 
+If we check the decompilation of this function, there are few interesting things going on. There is a call to a native function at line 31 and initialisation of a label with *setHidden* flag set to 1. We will keep a note of the observations from the current function and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers. 
 
-From our first step, we observed that the application checks for the flag only when the UI button is pressed. Thus, analysing the *buttonClick()* function is an obvious target. As earlier mentioned, this function contains the string we see in the pop-ups. We can also see there is a decision being made, based on the result of *isEqualString* (output saved in *uVar1*). The input for the comparison is coming from the text input field and the **label**!. The 'hidden flag' is stored in a label.  
+In our first step, we observed that the application checks for the input string only when the UI button is pressed. Thus, analysing the *buttonClick()* function is an obvious target. As earlier mentioned, this function also contains the string we see in the pop-ups. At line 29 a decision is being made, which is based on the result of *isEqualString* (output saved in *uVar1* at line 23). The input for the comparison is coming from the text input field (from the user) and the value of the **label**!. The 'hidden flag' is stored in a label.  
 
-![Decompilation of buttonClick function](Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png)
+![Decompilation of buttonClick function](Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png "Decompilation of buttonClick function")
 
-Now we have followed the complete flow and have all the information about the application flow. We can also conclude that the 'hidden flag' is present in a label and in order to determine the value of the label, we need to revisit *viewDidLoad()* function, and understand what is happening in the native function identified. Analysis of the native function is discussed in [Reviewing Disassembled Native Code](#Reviewing-Disassembled-Native-Code "Reviewing Disassembled Native Code").
+Now we have followed the complete flow and have all the information about the application flow. We also concluded that the 'hidden flag' is present in a label text and in order to determine the value of the label, we need to revisit *viewDidLoad()* function, and understand what is happening in the native function identified. Analysis of the native function is discussed in [Reviewing Disassembled Native Code](#Reviewing-Disassembled-Native-Code "Reviewing Disassembled Native Code").
 
 
 ##### Reviewing Disassembled Native Code
+
 Analysing disassembled native code requires a good understanding of the calling conventions and instructions used by the underlying platform. In this section we are looking in ARM64 disassembly of the native code. A good starting point to learn about ARM architecture is available at [Introduction to ARM Assembly Basics](https://azeria-labs.com/writing-arm-assembly-part-1/ "Introduction to ARM Assembly Basics") by Azeria Labs Tutorials. A quick summary of things that we will be using in this section:
 
 - In ARM64, a register is of 64 bit in size and referred to as **Xn**, where n is a number from 0 to 31. If lower (LSB) 32bits of the register is used then referred as **Wn**.
-- In ARM64, the input parameters to a function are passed in **X0-X7** registers
-- The return value of the function is passed via **X0** register
-- Load (LDR) and store (STR) instructions are used to read or write to memory from/to a register
-- B, BL, BLX are branch instructions used for calling a function
+- The input parameters to a function are passed in **X0-X7** registers.
+- The return value of the function is passed via **X0** register.
+- Load (LDR) and store (STR) instructions are used to read or write to memory from/to a register.
+- B, BL, BLX are branch instructions used for calling a function.
 
-As mentioned above as well, Objective-C code is also compiled to native binary code, but analysing C/C++ native can be more challenging. In case of Objective-C there are various symbols (especially function names) present, which makes understanding of the code easy. From above section, presence of function names like *setText*, *isEqualStrings* helped in quickly understanding the semantics of the code. In case of C/C++ native code, if all the debug symbols are stripped, there can be very few or no symbols present to assist in analyzing the binary. 
+As mentioned above as well, Objective-C code is also compiled to native binary code, but analysing C/C++ native can be more challenging. In case of Objective-C there are various symbols (especially function names) present, which makes understanding of the code easy. From above section, presence of function names like *setText*, *isEqualStrings* helped us in quickly understanding the semantics of the code. In case of C/C++ native code, if all the debug symbols are stripped, there can be very few or no symbols present to assist in analyzing the binary. 
 
-Decompilers can help us in analyzing native code as well, but they should be used with caution. Modern decompilers are very sophisticated and also use many heuristics based decompilation techniques. These techniques might not always give correct result, one such case being, determining the number of input parameters for a given native function. Having knowledge of analysing disassembled, assisted with decompilers can make analyzing native code less error prone.  
+Decompilers can help us in analyzing native code, but they should be used with caution. Modern decompilers are very sophisticated and among many techniques used by them to decompile code, few are heuristics based. Heuristics based techniques might not always give correct results, one such case being, determining the number of input parameters for a given native function. Having knowledge of analysing disassembled code, assisted with decompilers can make analyzing native code less error prone.  
 
-We will be analyzing the native function identified in *viewDidLoad()* function in previous section. The function is at offset *0x1000080d4*. As also identified in previous section, this function is responsible for setting text to the label which is used for comparing to the input text. Thus, we can be sure that this function will be returning a string or equivalent. 
+We will be analyzing the native function identified in *viewDidLoad()* function in the previous section. The function is at offset *0x1000080d4*. The return value of this function used in *setText* function call for the label. This text is used to compare against the user input. Thus, we can be sure that this function will be returning a string or equivalent. 
 
-![Disassembly of the native function](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png)
+![Disassembly of the native function](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png "Disassembly of the native function")
 
-First thing we can see in the disassembly is there is no input to the function. The registers X0-X7 are not read through out the function. Also, there are multiple calls to other functions like *0x100008158*, *0x10000dbf0* etc. 
+First thing we can see in the disassembly of the function is there is no input to the function. The registers X0-X7 are not read through out the function. Also, there are multiple calls to other functions like *0x100008158*, *0x10000dbf0* etc. 
 
-Instructions to one such call are below. Branch instruction *bl* is used to call the function *0x100008158*. 
+Instructions to one such function call are below. Branch instruction *bl* is used to call the function *0x100008158*. 
 
 ```
 1000080f0 1a 00 00 94     bl         FUN_100008158                
 1000080f4 60 02 00 39     strb       w0,[x19]=>DAT_10000dbf0
 ```
 
-Above, the return value from the function (return value in W0), is written to the address in register X19 (*strb* stores a byte to the address in register). We can see the same pattern for other function calls, the returned value is stored in X19 register and each time the offset is incremented. This behavior can be associated with populating each index of a string array at a time. Each return value is been written to an index of this string array. There are 11 such calls, and from the current evidence we can make an intelligent guess that length of the 'hidden flag' is 11. The function returns with the address to this string array, written to the W0 register. 
+The return value from the function (return value in W0), is stored to the address in register X19 (*strb* stores a byte to the address in register). We can see the same pattern for other function calls, the returned value is stored in X19 register and each time the offset is one more than the previous function call. This behavior can be associated with populating each index of a string array at a time. Each return value is been written to an index of this string array. There are 11 such calls, and from the current evidence we can make an intelligent guess that length of the 'hidden flag' is 11. Towards the end of the disassembly, the function returns with the address to this string array. 
 
-To determine the value of the 'hidden flag' we need to know the return value of each of these subsequent function calls. On analysing the function *0x100006fb4*, we can observe this function is bigger and more complex than previous one we analysed. For analysing complex functions, function graphs can be very helpful, as it helps in understanding the control flow of the function. 
+```
+100008148 e0 03 13 aa     mov        x0=>DAT_10000dbf0,x19
+```
+
+To determine the value of the 'hidden flag' we need to know the return value of each of the subsequent function calls identified above. On analysing the function *0x100006fb4*, we can observe this function is much bigger and more complex than previous one we analysed. For analysing complex functions, function graphs can be very helpful, as it helps in understanding the control flow of the function. In Ghidra function graphs can be obtained by clicking **Display function graph** icon in the sub-menu.
 
 ![Function graph from 0x100006fb4](Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png)
 
-Manually analysing this function completely will be cumbersome, and there are 11 such functions to analyze. In such a scenario using dynamic analysis approach is recommended. By using the techniques like hooking or simply debugging the application, we can easily determine the returned values. In case dynamic analysis approach fails, then we can fallback and start manually analysing the functions.  
+Manually analysing all the native functions completely will be time consuming and might not be the wisest approach. In such a scenario using dynamic analysis approach is recommended. By using the techniques like hooking or simply debugging the application, we can easily determine the returned values. In case dynamic analysis approach fails, then we can fallback and start manually analysing the functions. Dynamic analysis techniques are discussed in [Dynamic Analysis](#dynamic-analysis "Dynamic Analysis") section.  
 
 
 #### Automated Static Analysis
