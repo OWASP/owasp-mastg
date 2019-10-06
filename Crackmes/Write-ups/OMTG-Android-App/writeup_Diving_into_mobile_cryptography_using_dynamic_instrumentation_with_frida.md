@@ -28,7 +28,7 @@ We will work with the [OMTG app][OMTGApp]. For this to work we will use Android 
 - Create a virtual device with the following parameters:
   `Nexus 5 API 22        1080 × 1920: xxhdpi    22    Android 5.1    x86_64    4 GB`
 - Download the Android 5 APK:
-  `https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug-Android5.apk`
+  `https://github.com/OWASP/MSTG-Hacking-Playground/blob/e2dedbab55ed51daada42fd3176d8d017e280cb1/Android/OMTG-Android-App/app/app-x86-debug-Android5.apk`
 - and install it:
 
   ```shell
@@ -57,7 +57,7 @@ I was working with Sven to fix this and he updated the code so if you get the la
 
 You can get both APKs here, both for the emulator and for real devices:
 
-<https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/OMTG-Android-App/app>
+<https://github.com/OWASP/MSTG-Hacking-Playground/tree/e2dedbab55ed51daada42fd3176d8d017e280cb1/Android/OMTG-Android-App/app>
 
 ### Android 7/8
 
@@ -65,7 +65,7 @@ You can get both APKs here, both for the emulator and for real devices:
   `Nexus 5 API 24        1080 × 1920: xxhdpi    24    Android 7.0    x86_64    2 GB`
 
 - Download the Android 7 APK:
-  <https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/app-x86-debug.apk>
+  <https://github.com/OWASP/MSTG-Hacking-Playground/blob/e2dedbab55ed51daada42fd3176d8d017e280cb1/Android/OMTG-Android-App/app/app-x86-debug.apk>
 - and install it:
   
   ```shell
@@ -601,9 +601,9 @@ We could get the public keys but _unfortunately_ not the private key. That is ac
 Now that you have these scripts I invite you to use them as skeleton and inspiration to write more scripts and hook and bypass other stuff in all kind of apps. Start playing around with frida! For example you can disable certificate pinning, remove checks for a rooted device/emulator, read traffic sent to the internet or via bluetooth... Your imagination is the limit ;)
 ___
 
-[OMTGApp]: https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/
+[OMTGApp]: https://github.com/OWASP/MSTG-Hacking-Playground/releases
 [OMTG_DATAST_001_KeyStore_f412226f1b]: https://github.com/OWASP/MSTG-Hacking-Playground/blob/f412226f1bac1958d3f71b0d19eca0dc0905a267/Android/OMTG-Android-App/app/src/main/java/sg/vp/owasp_mobile/OMTG_Android/OMTG_DATAST_001_KeyStore.java#LC173
-[OMTG_DATAST_001_KeyStore]: https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/OMTG-Android-App/app/src/main/java/sg/vp/owasp_mobile/OMTG_Android/OMTG_DATAST_001_KeyStore.java
+[OMTG_DATAST_001_KeyStore]: https://github.com/OWASP/MSTG-Hacking-Playground/blob/master/Android/MSTG-Android-Java-App/app/src/main/java/sg/vp/owasp_mobile/OMTG_Android/OMTG_DATAST_001_KeyStore.java
 [x86fridaserver]:  https://github.com/frida/frida/releases/download/11.0.3/frida-server-11.0.3-android-x86.xz
 [x8664fridaserver]: https://github.com/frida/frida/releases/download/11.0.3/frida-server-11.0.3-android-x86_64.xz
 [RSAPublicKey]: https://developer.android.com/reference/java/security/interfaces/RSAPublicKey]

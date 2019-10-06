@@ -33,7 +33,7 @@ For navigating the decompiled sources, we recommend [IntelliJ](https://www.jetbr
 
 If you don't mind looking at Smali instead of Java, you can use the [smalidea plugin for IntelliJ](https://github.com/JesusFreke/smali/wiki/smalidea "Smalidea") for debugging. Smalidea supports single-stepping through the bytecode and identifier renaming, and it watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
 
-[apktool](https://ibotpeaches.github.io/Apktool/ "apktool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). apktool allows you to reassemble the package, which is useful for patching and applying changes to the Android Manifest.
+[apktool](https://github.com/iBotPeaches/Apktool "apktool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). apktool allows you to reassemble the package, which is useful for patching and applying changes to the Android Manifest.
 
 You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2") and [Angr](https://angr.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
 
@@ -2257,7 +2257,7 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 #### Tools
 
 - Angr - <https://angr.io/>
-- apktool - <https://ibotpeaches.github.io/apktool/>
+- apktool - <https://github.com/iBotPeaches/Apktool>
 - apkx - <https://github.com/b-mueller/apkx>
 - CFR Decompiler - <https://www.benf.org/other/cfr/>
 - IDA Pro - <https://www.hex-rays.com/products/ida/>

@@ -6,7 +6,7 @@
 
 Подпись кода для приложений используется для заверения пользователей, что оно поступило из известного источниа и приложение не было изменено с момента последней подписи. До того момента как приложение может интегрироваться с сервисами(app services), быть установленным на устройство или же отправлено в Apple Store, оно должно быть подписано сертификатом, выданым Apple. Для более детальной информации о получении сертификатов обращайтесь к [руководству App Distribution](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html).
 
-Возможно получить информацию о сертификате, использовав на файле приложения .app [codesign](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/codesign.1.html). Codesign используется для создания, проверки и отображения подписей кода, а также для запроса динамического статуса подписанного кода в системе.
+Возможно получить информацию о сертификате, использовав на файле приложения .app [codesign](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html). Codesign используется для создания, проверки и отображения подписей кода, а также для запроса динамического статуса подписанного кода в системе.
 
 После получения файла .ipa приложения, переименуйте его в формат zip и разархивируйте его. Перейдите в папку `Payload` и увидите файл .app.
 
