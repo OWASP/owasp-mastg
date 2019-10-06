@@ -233,7 +233,7 @@ Next, note that for hybrid applications, you will have to check the JavaScript d
 
 Last, if the application is a high-risk application, you will end up vetting the library manually. In that case there are specific requirements for native code, which are similar to the requirements established by the MASVS for the application as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
 
-##### Detecting the licenses used by the libraries of the application
+##### Detecting the Licenses Used by the Libraries of the Application
 
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by CocoaPods or Carthage.
 
