@@ -52,7 +52,7 @@ As a mobile security tester, you should be familiar with both types of authentic
 
 #### Supplementary Authentication
 
-Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for 
+Authentication schemes are sometimes supplemented by [passive contextual authentication](https://pdfs.semanticscholar.org/13aa/7bf53070ac8e209a84f6389bab58a1e2c888.pdf "Best Practices for
 Multi-factor Authentication"), which can incorporate:
 
 - Geolocation

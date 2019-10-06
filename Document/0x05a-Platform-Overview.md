@@ -402,7 +402,7 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 </receiver>
 ```
 
-Please note that in this example, the Broadcast Receiver does not include the [`android:exported`](https://developer.android.com/guide/topics/manifest/receiver-element "<receiver> element") attribute. As at least one filter was defined, the default value will be set to "true". In absence of any filters, it will be set to "false".
+Please note that in this example, the Broadcast Receiver does not include the [`android:exported`](https://developer.android.com/guide/topics/manifest/receiver-element "receiver element") attribute. As at least one filter was defined, the default value will be set to "true". In absence of any filters, it will be set to "false".
 
 The other way is to create the receiver dynamically in code and register it with the [`Context.registerReceiver`](https://developer.android.com/reference/android/content/Context.html#registerReceiver(android.content.BroadcastReceiver,%2520android.content.IntentFilter) "Context.registerReceiver") method.
 
