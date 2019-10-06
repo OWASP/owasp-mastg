@@ -334,7 +334,7 @@ When the sources are not available, one can decompile the app and check the JAR 
 
 If the application is a high risk application, you will end up vetting the library manually. In that case, there are specific requirements for native code, which you can find in the chapter ["Testing Code Quality"](0x04h-Testing-Code-Quality.md). Next to that, it is good to vet whether all best practices for software engineering are applied.
 
-##### Detecting the licenses used by the libraries of the application
+##### Detecting the Licenses Used by the Libraries of the Application
 
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies by using a plugin which can iterate over the different libraries, such as `License Gradle Plugin`. This plugin can be used by taking the following steps.
 
