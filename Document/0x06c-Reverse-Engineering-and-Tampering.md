@@ -265,7 +265,7 @@ To determine the value of the hidden flag we need to know the return value of ea
 
 ![Function graph from 0x100006fb4](Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png)
 
-Manually analysing all the native functions completely will be time consuming and might not be the wisest approach. In such a scenario using dynamic analysis approach is recommended. By using the techniques like hooking or simply debugging the application, we can easily determine the returned values. In case dynamic analysis approach fails, then we can fallback and start manually analysing the functions. Dynamic analysis techniques are discussed in [Dynamic Analysis](#dynamic-analysis "Dynamic Analysis") section.  
+Manually analysing all the native functions completely will be time consuming and might not be the wisest approach. In such a scenario using a dynamic analysis approach is highly recommended. For instance, by using the techniques like hooking or simply debugging the application, we can easily determine the returned values. Normally it's a good idea to use a dynamic analysis approach and then fallback to manually analysing the functions in a feedback loop. This way you can benefit from both approaches at the same time while saving time and reducing effort. Dynamic analysis techniques are discussed in "[Dynamic Analysis](#dynamic-analysis "Dynamic Analysis")" section.  
 
 
 #### Automated Static Analysis
