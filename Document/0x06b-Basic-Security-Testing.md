@@ -31,14 +31,36 @@ $ xcode-select --install
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
 
-It is also possible to get the UDID via the command line, from a device attached via USB using `ioreg`:
+It is also possible to get the UDID via various command line tools while the device is attached via USB:
 
-```shell
-$ ioreg -p IOUSB -l | grep "USB Serial"
-  |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
-```
+- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
 
-Alternatively you can also use the Xcode command `instruments -s devices`.
+    ```sh
+    $ ioreg -p IOUSB -l | grep "USB Serial"
+    |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
+    ```
+
+- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
+
+    ```sh
+    $ brew install ideviceinstaller
+    $ idevice_id -l
+    316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+    ```
+
+- By using the system_profiler (macOS only):
+
+    ```sh
+    $ system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p;/iPhone/,/Serial/p;/iPod/,/Serial/p' | grep "Serial Number:"
+    2019-09-08 10:18:03.920 system_profiler[13251:1050356] SPUSBDevice: IOCreatePlugInInterfaceForService failed 0xe00002be
+                Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
+    ```
+
+- By using instruments (macOS only):
+
+    ```sh
+    $ instruments -s devices
+    ```
 
 ##### Testing on a real device (Jailbroken)
 
