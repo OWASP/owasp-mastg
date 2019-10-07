@@ -192,7 +192,7 @@ When the user inputs the wrong string, the application shows a pop-up with the "
 
 <img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Verification Failed Pop-Up"  height="650" width="400">
 
-We can keep note of the strings displayed in the pop-up, this might be helpful in finding the code where input is processed and a decision is being made. Luckily, the complexity and interaction with application is straightforward, which bodes well for our reversing endeavours.  
+You can keep note of the strings displayed in the pop-up, as this might be helpful when searching for the code where the input is processed and a decision is being made. Luckily, the complexity and interaction with this application is straightforward, which bodes well for our reversing endeavours.  
 
 > For static analysis in this section, we will be using Ghidra 9.0.4. Ghidra 9.1_beta auto-analysis has a bug and does not show the Objective-C classes. 
 
