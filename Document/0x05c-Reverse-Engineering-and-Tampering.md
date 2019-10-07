@@ -286,7 +286,7 @@ In your new **Active Project** you can import an app binary by going to **File**
 
 If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
 
-<img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra Elf file import"  width="300">
+<img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="300">
 
 To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
 
