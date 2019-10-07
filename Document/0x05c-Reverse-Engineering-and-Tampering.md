@@ -344,7 +344,7 @@ Following the example from "Disassembling Native Code" we will use different dis
 
 ###### radare2
 
-Once you've opened your file in radare2 you should first get the address of the function you're looking for. You can do this by listing or getting information `i` about the symbols `s` (`is`) and grepping (`~` radare2's built-in grep) for some keyword, in our case we're looking for JNI relates symbols so we enter "Java":
+Once you've opened your file in radare2 you should first get the address of the function you're looking for. You can do this by listing or getting information `i` about the symbols `s` (`is`) and grepping (`~` radare2's built-in grep) for some keyword, in our case we're looking for JNI related symbols so we enter "Java":
 
 ```shell
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
