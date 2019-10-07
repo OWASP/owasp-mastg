@@ -188,7 +188,7 @@ We will be using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/
 
 <img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of the UnCrackable Level 1 application" height="650" width="400">
 
-On giving a wrong input the application shows a pop-up with "Verification Failed" message. 
+When the user inputs the wrong string, the application shows a pop-up with the "Verification Failed" message. 
 
 <img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Giving wrong input" height="650" width="400">
 
