@@ -186,7 +186,7 @@ In addition to the techniques learned in the "[Disassembling and Decompiling](#d
 
 We will be using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App"), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field. 
 
-<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of UnCrackable Level 01 application" height="650" width="400">
+<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of the UnCrackable Level 1 application" height="650" width="400">
 
 On giving a wrong input the application shows a pop-up with "Verification Failed" message. 
 
