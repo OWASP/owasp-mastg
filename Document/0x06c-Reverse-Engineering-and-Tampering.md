@@ -242,7 +242,7 @@ As mentioned above as well, Objective-C code is also compiled to native binary c
 
 Decompilers can help us in analyzing native code, but they should be used with caution. Modern decompilers are very sophisticated and among many techniques used by them to decompile code, few are heuristics based. Heuristics based techniques might not always give correct results, one such case being, determining the number of input parameters for a given native function. Having knowledge of analysing disassembled code, assisted with decompilers can make analyzing native code less error prone.  
 
-We will be analyzing the native function identified in *viewDidLoad()* function in the previous section. The function is at offset *0x1000080d4*. The return value of this function used in *setText* function call for the label. This text is used to compare against the user input. Thus, we can be sure that this function will be returning a string or equivalent. 
+We will be analyzing the native function identified in `viewDidLoad` function in the previous section. The function is located at offset 0x1000080d4. The return value of this function used in the `setText` function call for the label. This text is used to compare against the user input. Thus, we can be sure that this function will be returning a string or equivalent. 
 
 ![Disassembly of the native function](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png "Disassembly of the native function")
 
