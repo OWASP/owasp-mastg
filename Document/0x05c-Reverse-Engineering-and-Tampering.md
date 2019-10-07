@@ -274,7 +274,7 @@ This said, please see section "[Reviewing Disassembled Native Code](#reviewing-d
 
 ###### Ghidra
 
-As mentioned in "[Tooling](#tooling "Tooling")" section, Ghidra is an open source software reverse engineering tool. Ghidra is a versatile tool which apart from disassembling binaries, it has a inbuilt decompiler and also provides a scripting interface for advance usage. 
+As mentioned in "[Tooling](#tooling "Tooling")" section, Ghidra is an open source software reverse engineering tool. Ghidra is a versatile tool which apart from disassembling binaries, it has an inbuilt decompiler and also provides a scripting interface for advance usage. 
 
 Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
 
@@ -286,7 +286,7 @@ In your new **Active Project** you can import an app binary by going to **File**
 
 If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
 
-![Ghidra Mach-O file import](Images/Chapters/0x05c/Ghidra_elf_import.png)
+<img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra Elf file import"  width="300">
 
 To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
 
