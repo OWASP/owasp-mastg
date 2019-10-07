@@ -213,7 +213,7 @@ An iOS application calls different predefined functions provided by the iOS runt
 
 Many applications execute critical code in these sections and therefore they're normally a good starting point in order to follow the code systematically.
 
-In the current application, on analysing all the functions in the *AppDelegate* class we can see that there is no relevant code present. The lack of any code in the above functions raises the question - from where is the application's initialisation code being called from? 
+Once we're done with the analysis of all the functions in the `AppDelegate` class, we can conclude that there is no relevant code present. The lack of any code in the above functions raises the question - from where is the application's initialisation code being called? 
 
 Luckily the current application has a small code base, and we can see presence of another *ViewController* class in the **Symbol Tree** view. In this class, function *viewDidLoad()* function looks interesting. If we check the documentation of [viewDidLoad()](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621495-viewdidload "viewDidLoad()"), it can also be used for initialisation of views.  
 
