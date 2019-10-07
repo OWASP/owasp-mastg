@@ -34,6 +34,8 @@ Sealed Resources version=2 rules=12 files=1410
 Internal requirements count=1 size=176
 ```
 
+There are various ways to distribute your app as described at [the Apple documentation](https://developer.apple.com/business/distribute/ "Apple Business"), which include using the App Store or via Apple Business Manager for custom or in-house distribution. In case of an in-house distribution scheme, make sure that no ad hoc certificates are used when the app is signed for distribution.
+
 ### Determining Whether the App is Debuggable (MSTG-CODE-2)
 
 #### Overview
@@ -163,9 +165,10 @@ iOS applications often make use of third party libraries. These third party libr
 - Libraries that are not (or should not) be packed within the actual production application, such as `OHHTTPStubs` used for testing.
 - Libraries that are packed within the actual production application, such as `Alamofire`.
 
-These libraries can have the following two classes of unwanted side-effects:
+These libraries can lead to unwanted side-effects:
 
 - A library can contain a vulnerability, which will make the application vulnerable. A good example is `AFNetworking` version 2.5.1, which contained a bug that disabled certificate validation. This vulnerability would allow attackers to execute man-in-the-middle attacks against apps that are using the library to connect to their APIs.
+- A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
 Note: there are two widely used package management tools: Carthage and CocoaPods.
@@ -226,9 +229,11 @@ In case frameworks are added manually as linked libraries:
 
 In the case of copy-pasted sources: search the header files (in case of using Objective-C) and otherwise the Swift files for known method names for known libraries.
 
-Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
+Next, note that for hybrid applications, you will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, you will have to check the C# dependencies.
 
-##### Detecting the licenses used by the libraries of the application
+Last, if the application is a high-risk application, you will end up vetting the library manually. In that case there are specific requirements for native code, which are similar to the requirements established by the MASVS for the application as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
+
+##### Detecting the Licenses Used by the Libraries of the Application
 
 In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by CocoaPods or Carthage.
 
