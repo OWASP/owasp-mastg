@@ -234,7 +234,7 @@ Analysing disassembled native code requires a good understanding of the calling 
 
 - In ARM64, a register is of 64 bit in size and referred to as Xn, where n is a number from 0 to 31. If the lower (LSB) 32 bits of the register are used then it's referred to as Wn.
 - The input parameters to a function are passed in the X0-X7 registers.
-- The return value of the function is passed via **X0** register.
+- The return value of the function is passed via the X0 register.
 - Load (LDR) and store (STR) instructions are used to read or write to memory from/to a register.
 - B, BL, BLX are branch instructions used for calling a function.
 
