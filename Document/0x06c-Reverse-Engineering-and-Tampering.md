@@ -246,7 +246,7 @@ We will be analyzing the native function identified in `viewDidLoad` function in
 
 ![Disassembly of the native function](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png "Disassembly of the native function")
 
-First thing we can see in the disassembly of the function is there is no input to the function. The registers X0-X7 are not read through out the function. Also, there are multiple calls to other functions like *0x100008158*, *0x10000dbf0* etc. 
+The first thing we can see in the disassembly of the function is that there is no input to the function. The registers X0-X7 are not read throughout the function. Also, there are multiple calls to other functions like the ones at 0x100008158, 0x10000dbf0 etc. 
 
 Instructions to one such function call are below. Branch instruction *bl* is used to call the function *0x100008158*. 
 
