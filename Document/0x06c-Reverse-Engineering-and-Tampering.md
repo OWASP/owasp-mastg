@@ -190,7 +190,7 @@ We will be using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/
 
 When the user inputs the wrong string, the application shows a pop-up with the "Verification Failed" message. 
 
-<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Giving wrong input" height="650" width="400">
+<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Verification Failed Pop-Up"  height="650" width="400">
 
 We can keep note of the strings displayed in the pop-up, this might be helpful in finding the code where input is processed and a decision is being made. Luckily, the complexity and interaction with application is straightforward, which bodes well for our reversing endeavours.  
 
