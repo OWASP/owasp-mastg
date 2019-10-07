@@ -206,7 +206,12 @@ On further careful analysis, we can spot the string, "Verification Failed", whic
 
 Moving forward, we have two paths to take. Either we can start analysing the `buttonClick` function identified in the above step, or start analysing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path. 
 
-An iOS application can have multiple entry points depending on at which particular state of the application lifecycle it is (documentation available at [Managing Your App's Life Cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle)). For example, when the application is started *[AppDelegate application:didFinishLaunchingWithOptions:]* is called, while *[AppDelegate applicationDidBecomeActive:]* is called when the application is moving from inactive to active state. Many applications execute critical code in these sections and is always a good starting point in order to follow the code systematically. 
+An iOS application calls different predefined functions provided by the iOS runtime depending on its the state within the [application life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App's Life Cycle"). These functions are known as the entry points of the app. For example:
+
+- `[AppDelegate application:didFinishLaunchingWithOptions:]` is called when the application is started for the first time.
+- `[AppDelegate applicationDidBecomeActive:]` is called when the application is moving from inactive to active state.
+
+Many applications execute critical code in these sections and therefore they're normally a good starting point in order to follow the code systematically.
 
 In the current application, on analysing all the functions in the *AppDelegate* class we can see that there is no relevant code present. The lack of any code in the above functions raises the question - from where is the application's initialisation code being called from? 
 
