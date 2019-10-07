@@ -204,7 +204,7 @@ On further careful analysis, we can spot the string, "Verification Failed", whic
 
 ![Interesting strings in UnCrackable application](Images/Chapters/0x06c/manual_reversing_ghidra_strings.png "Interesting strings in UnCrackable application")
 
-Moving forward, we have two paths to take. Either we can start analysing the *buttonClick()* function identified from the above step, or start analysing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path. 
+Moving forward, we have two paths to take. Either we can start analysing the `buttonClick` function identified in the above step, or start analysing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path. 
 
 An iOS application can have multiple entry points depending on at which particular state of the application lifecycle it is (documentation available at [Managing Your App's Life Cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle)). For example, when the application is started *[AppDelegate application:didFinishLaunchingWithOptions:]* is called, while *[AppDelegate applicationDidBecomeActive:]* is called when the application is moving from inactive to active state. Many applications execute critical code in these sections and is always a good starting point in order to follow the code systematically. 
 
