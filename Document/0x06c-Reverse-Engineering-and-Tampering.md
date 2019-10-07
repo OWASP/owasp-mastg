@@ -261,7 +261,7 @@ The return value from the function (found in W0), is stored to the address in re
 100008148 e0 03 13 aa     mov        x0=>DAT_10000dbf0,x19
 ```
 
-To determine the value of the 'hidden flag' we need to know the return value of each of the subsequent function calls identified above. On analysing the function *0x100006fb4*, we can observe this function is much bigger and more complex than previous one we analysed. For analysing complex functions, function graphs can be very helpful, as it helps in understanding the control flow of the function. In Ghidra function graphs can be obtained by clicking **Display function graph** icon in the sub-menu.
+To determine the value of the hidden flag we need to know the return value of each of the subsequent function calls identified above. When analysing the function 0x100006fb4, we can observe that this function is much bigger and more complex than the previous one we analyzed. Function graphs can be very helpful when analyzing complex functions, as it helps into better understanding the control flow of the function. Function graphs can be obtained in Ghidra by clicking the **Display function graph** icon in the sub-menu.
 
 ![Function graph from 0x100006fb4](Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png)
 
