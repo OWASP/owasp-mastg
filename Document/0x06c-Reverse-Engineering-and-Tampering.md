@@ -219,7 +219,7 @@ Luckily the current application has a small code base, and we can find another `
 
 ![Decompilation of viewDidLoad function](Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png "Decompilation of viewDidLoad function")
 
-If we check the decompilation of this function, there are few interesting things going on. There is a call to a native function at line 31 and initialisation of a label with *setHidden* flag set to 1. We will keep a note of the observations from the current function and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers. 
+If we check the decompilation of this function, there are a few interesting things going on. For instance, there is a call to a native function at line 31 and a label is initialized with a `setHidden` flag set to 1 in lines 27-29. You can keep a note of these observations and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers. 
 
 In our first step, we observed that the application checks for the input string only when the UI button is pressed. Thus, analysing the *buttonClick()* function is an obvious target. As earlier mentioned, this function also contains the string we see in the pop-ups. At line 29 a decision is being made, which is based on the result of *isEqualString* (output saved in *uVar1* at line 23). The input for the comparison is coming from the text input field (from the user) and the value of the **label**!. The 'hidden flag' is stored in a label.  
 
