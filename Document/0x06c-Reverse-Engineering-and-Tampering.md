@@ -248,7 +248,7 @@ We will be analyzing the native function identified in `viewDidLoad` function in
 
 The first thing we can see in the disassembly of the function is that there is no input to the function. The registers X0-X7 are not read throughout the function. Also, there are multiple calls to other functions like the ones at 0x100008158, 0x10000dbf0 etc. 
 
-Instructions to one such function call are below. Branch instruction *bl* is used to call the function *0x100008158*. 
+The instructions corresponding to one such function calls can be seen below. The branch instruction `bl` is used to call the function at 0x100008158. 
 
 ```
 1000080f0 1a 00 00 94     bl         FUN_100008158                
