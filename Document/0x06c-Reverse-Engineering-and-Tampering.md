@@ -255,7 +255,7 @@ The instructions corresponding to one such function calls can be seen below. The
 1000080f4 60 02 00 39     strb       w0,[x19]=>DAT_10000dbf0
 ```
 
-The return value from the function (return value in W0), is stored to the address in register X19 (*strb* stores a byte to the address in register). We can see the same pattern for other function calls, the returned value is stored in X19 register and each time the offset is one more than the previous function call. This behavior can be associated with populating each index of a string array at a time. Each return value is been written to an index of this string array. There are 11 such calls, and from the current evidence we can make an intelligent guess that length of the 'hidden flag' is 11. Towards the end of the disassembly, the function returns with the address to this string array. 
+The return value from the function (found in W0), is stored to the address in register X19 (`strb` stores a byte to the address in register). We can see the same pattern for other function calls, the returned value is stored in X19 register and each time the offset is one more than the previous function call. This behavior can be associated with populating each index of a string array at a time. Each return value is been written to an index of this string array. There are 11 such calls, and from the current evidence we can make an intelligent guess that length of the hidden flag is 11. Towards the end of the disassembly, the function returns with the address to this string array. 
 
 ```
 100008148 e0 03 13 aa     mov        x0=>DAT_10000dbf0,x19
