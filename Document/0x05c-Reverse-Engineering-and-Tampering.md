@@ -213,7 +213,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ###### radare2
 
-To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "Android Basic Security Testing" already introduces radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to _analyze all referenced code_.
+To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md/#android-basic-security-testing "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to _analyze all referenced code_.
 
 ```shell
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -278,6 +278,11 @@ If you own an IDA Pro license, open the file and once in the "Load new file" dia
 ![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
 
 > The freeware version of IDA Pro unfortunately does not support the ARM processor type.
+
+###### Ghidra
+
+
+
 
 ### Static Analysis
 
@@ -510,7 +515,7 @@ In the following section, we'll show how to solve the UnCrackable App for Androi
 
 ##### Debugging with jdb
 
-The `adb` command line tool was introduced in the "Android Basic Security Testing" chapter. You can use its `adb jdwp` command to list the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host machine and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
+The `adb` command line tool was introduced in the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md/#android-basic-security-testing "android Basic Security Testing")" chapter. You can use its `adb jdwp` command to list the process ids of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host machine and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
 
 ```shell
 $ adb jdwp
