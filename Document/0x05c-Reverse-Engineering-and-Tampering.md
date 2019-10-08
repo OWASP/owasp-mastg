@@ -427,7 +427,7 @@ $ r2 -qc 'e emu.str=true; s 0x00000e78; af; pdf' HelloWord-JNI/lib/armeabi-v7a/l
 
 Notice that in this case we're not starting with the `-A` flag not running `aaa`. Instead, we just tell radare2 to analyze that one function by using the _analyze function_ `af` command. This is one of those cases where we can speed up our workflow because you're focusing on some specific part of an app.
 
-The workflow can further be improved by using [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec "r2ghidra-dec"), a deep Ghidra decompiler integration for radare2, and generate corresponding decompiled C code. The decompiled C code can aid in quick analysis of the binary.    
+The workflow can be further improved by using [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec "r2ghidra-dec"), a deep integration of Ghidra decompiler for radare2. r2ghidra-dec generates decompiled C code, which can aid in quickly analyzing the binary.    
 
 ###### IDA Pro
 
