@@ -272,35 +272,6 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
 
 
-###### Ghidra
-
-As mentioned in "[Tooling](#tooling "Tooling")" section, Ghidra is an open source software reverse engineering tool. Ghidra is a versatile tool which apart from disassembling binaries, it has an inbuilt decompiler and also provides a scripting interface for advance usage. 
-
-Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
-
-![Ghidra New Project Window](Images/Chapters/0x05c/Ghidra_new_project.png)
-
-In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
-
-![Ghidra import file](Images/Chapters/0x05c/Ghidra_import_binary.png)
-
-If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
-
-<img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="400">
-
-To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
-
-![Ghidra code browser window](Images/Chapters/0x05c/Ghidra_main_window.png)
-
-The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function. 
-
-> It is important to note that decompilation is not always accurate, but nevertheless very helpful in getting a quick understanding of the function being analyzed. It is always a good idea to keep cross-checking decompiled code against disassembled code for maximum accuracy.
-
-There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option.  
-
-![Ghidra strings window](Images/Chapters/0x05c/Ghidra_string_window.png)
-
-
 ###### IDA Pro
 
 If you own an IDA Pro license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
