@@ -24,7 +24,7 @@ Make sure that the following is installed on your system:
 
 - [Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
 
-- [Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts.
+- [Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. This tool has been discussed in "[Ghidra](0x04c-tampering-and-reverse-engineering.md#ghidra "Ghidra")" section. 
 
 ##### Building a Reverse Engineering Environment for Free
 
@@ -55,36 +55,6 @@ On iOS, all the application code (both Swift and Objective-C) is compiled to mac
 If you want to disassemble an application from the App Store, remove the Fairplay DRM first. Section "[Acquiring the App Binary](0x06b-basic-security-testing.md#acquiring-the-app-binary "Acquiring the App Binary")" in the chapter "iOS Basic Security Testing" explains how.
 
 In this section the term "app binary" refers to the Macho-O file in the application bundle which contains the compiled code, and should not be confused with the application bundle - the IPA file. See section "[Exploring the App Package](0x06b-basic-security-testing.md#exploring-the-app-package "Exploring the App Package")" in chapter "Basic iOS Security Testing" for more details on the composition of IPA files.
-
-##### Disassembling With Ghidra
-
-As mentioned in "[Tooling](#tooling "Tooling")" section, Ghidra is an open source software reverse engineering tool. Among multiple functionalities offered by Ghidra, it can also be used to analyze iOS application binaries.
-
-Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
-
-![Ghidra New Project Window](Images/Chapters/0x06c/Ghidra_new_project.png)
-
-In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
-
-![Ghidra import file](Images/Chapters/0x06c/Ghidra_import_binary.png)
-
-If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
-
-![Ghidra Mach-O file import](Images/Chapters/0x06c/Ghidra_macho_import.png)
-
-To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
-
-![Ghidra code browser window](Images/Chapters/0x06c/Ghidra_main_window.png)
-
-The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly.
-
-> It is important to note that decompilation is not always accurate, but nevertheless very helpful in getting a quick understanding of the function being analyzed. It is always a good idea to keep cross-checking decompiled code against disassembled code for maximum accuracy.
-
-There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option.  
-
-![Ghidra strings window](Images/Chapters/0x06c/Ghidra_string_window.png)
-
-It often happens that the core logic of the application is implemented in a framework and the app binary is just a wrapper around that framework. In such cases, the above approach can be used to analyze *framework* binaries as well.
 
 ##### Disassembling With IDA Pro
 
