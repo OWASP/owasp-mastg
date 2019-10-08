@@ -599,7 +599,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
-Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
+Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentially leak through the backup. Another concern, though less obvious, is whether sensitive configuration settings used to protect data or restrict app functionality could be tampered to change app behavior after restoring a modified backup. Both concerns are valid and these vulnerabilities have proven to exist in a vast number of apps today.
 
 ##### How the Keychain Is Backed Up
 
@@ -607,7 +607,9 @@ When users back up their iOS device, the Keychain data is backed up as well, but
 
 Keychain items for which the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute is set can be decrypted only if the backup is restored to the backed up device. Someone trying to extract this Keychain data from the backup couldn't decrypt it without access to the crypto hardware inside the originating device.
 
-The takeaway: If sensitive data is handled as recommended earlier in this chapter (stored in the Keychain or encrypted with a key that's locked inside the Keychain), backups aren't a security issue.
+One caveat to using the keychain, however, is that it was only designed to store small bits of user data or short notes according to Apple's documenation. This means apps with larger secure storage needs should encrypt the data within the app container, but use the keychain to store key material. In cases where sensitive configuration settings (e.g., data loss prevention policies, password policies, compliance policies, etc) must remain unencrypted within the app container, you can consider storing a hash of the policies in the keychain for integrity checking. Without an integrity check, these settings could be modified within a backup and then restored back to the device to modify app behavior by disabling app restrictions or various security controls (e.g., jailbreak detection, certificate pinning, max UI login attempts, etc.).
+
+The takeaway: If sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, Keychain backed integrity checks, or encrypted with a key that's locked inside the Keychain, or ), backups aren't a security issue.
 
 ##### Static Analysis
 
