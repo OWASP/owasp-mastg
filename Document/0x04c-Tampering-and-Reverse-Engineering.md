@@ -154,7 +154,7 @@ To get the disassembled code for the binary file chosen above, double click the 
 
 The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function. 
 
-![Ghidra code browser window](Images/Chapters/0x04c/Ghidra_function_graph.png)
+![Ghidra function graph view](Images/Chapters/0x04c/Ghidra_function_graph.png)
 
 
 There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. Other advance functionalities we will discuss while analyzing various binaries for Android and iOS platforms in the coming chapters. 
