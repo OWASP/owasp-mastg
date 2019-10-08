@@ -116,9 +116,52 @@ Reverse engineering is the process of reconstructing the semantics of a compiled
 
 #### Using Disassemblers and Decompilers
 
-Disassemblers and decompilers allow you to translate an app's binary code or bytecode back into a more or less understandable format. By using these tools on native binaries, you can obtain assembler code that matches the architecture the app was compiled for. Android Java apps can be disassembled to smali, which is an assembly language for the DEX format used by Dalvik, Android's Java VM. smali assembly is also quite easily decompiled back to Java code.
+Disassemblers and decompilers allow you to translate an app's binary code or bytecode back into a more or less understandable format. By using these tools on native binaries, you can obtain assembler code that matches the architecture the app was compiled for. Disassemblers convert machine code to assembly code which in turn is used by decompilers to generate equivalent high-level language code. Android Java apps can be disassembled to smali, which is an assembly language for the DEX format used by Dalvik, Android's Java VM. Smali assembly can also be quite easily decompiled back to equivalent Java code. 
 
-A wide range of tools and frameworks is available: expensive but convenient GUI tools, open source disassembling engines, reverse engineering frameworks, etc. Advanced usage instructions for any of these tools often easily fill a book of their own. The best way to get started is to simply pick a tool that fits your needs and budget and buy a well-reviewed user guide. We'll list some of the most popular tools in the OS-specific "Reverse Engineering and Tampering" chapters.
+In theory mapping between assembly and machine code should be one-to-one, and which may give an impression that disassembling is a simple task of traversing a given input in a single linear pass and converting it into disassembled output. But the in practice there are multiple pitfalls. Some of the main impediments to accurate disassembly are: 
+
+- Reliably distinguish between code and data 
+- Variable instruction size,
+- Indirect branch instructions,
+- Functions without explicit CALL sites within the executable's code segment,
+- Position independent code (PIC) sequences, and
+- Hand crafted assembly code.
+
+In similar vain, decompilation is a very complicated process, involving many deterministic and heuristics based approaches. As a consequence, decompilation is not always accurate, but nevertheless very helpful in getting a quick understanding of the function being analyzed. Accuracy of decompilation depends on the amount of information available in the code being decompiled and the sophistication of the decompiler. It is always a good idea to keep cross-checking decompiled code against disassembled code for maximum accuracy. Many compilation and post-compilation tools introduce additional complexity to the compiled code in order to increase the difficulty of decompilation. Such codes are called as *obfuscated code*. 
+
+Over the past decades many tools have perfected the process of disassembly and decompilation, producing output with high fidelity.  There are a wide range of tools and frameworks available for disassembling and decompiling binaries: commercial tools, open source tools, reverse engineering frameworks, etc. Advanced usage instructions for any of these tools can often easily fill a book of their own. The best way to get started is to simply pick a tool that fits your needs and budget and buy a well-reviewed user guide. In this section we will provide an introduction to one such tools and in the subsequent "Reverse Engineering and Tampering" chapter we'll list and introduce some of the other more popular tools for each operating system.
+
+
+##### Ghidra
+
+Ghidra is an open source software reverse engineering (SRE) suite of tools developed by United State of America's National Security Agency's (NSA) Research Directorate. Ghidra is a versatile tool which comprises of a disassembler, decompiler and an inbuilt scripting engine for advance usage. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and also look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts. In this section we will have walk-through on how to create a project, view disassembly and decompiled code for a binary.
+
+Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
+
+![Ghidra New Project Window](Images/Chapters/0x04c/Ghidra_new_project.png)
+
+In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
+
+![Ghidra import file](Images/Chapters/0x04c/Ghidra_import_binary.png)
+
+If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
+
+<img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="400">
+
+To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
+
+![Ghidra code browser window](Images/Chapters/0x04c/Ghidra_main_window.png)
+
+The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function. 
+
+![Ghidra code browser window](Images/Chapters/0x04c/Ghidra_function_graph.png)
+
+
+There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. Other advance functionalities we will discuss while analyzing various binaries for Android and iOS platforms in the coming chapters. 
+
+![Ghidra strings window](Images/Chapters/0x04c/Ghidra_string_window.png)
+
+
 
 #### Debugging and Tracing
 
