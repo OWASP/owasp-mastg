@@ -121,7 +121,7 @@ Disassemblers and decompilers allow you to translate an app's binary code or byt
 In theory, the mapping between assembly and machine code should be one-to-one, and therefore it may give the impression that disassembling is a simple task. But in practice, there are multiple pitfalls such as: 
 
 - Reliable distinction between code and data.
-- Variable instruction size,
+- Variable instruction size.
 - Indirect branch instructions,
 - Functions without explicit CALL sites within the executable's code segment,
 - Position independent code (PIC) sequences, and
