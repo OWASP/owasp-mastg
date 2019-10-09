@@ -122,7 +122,7 @@ In theory, the mapping between assembly and machine code should be one-to-one, a
 
 - Reliable distinction between code and data.
 - Variable instruction size.
-- Indirect branch instructions,
+- Indirect branch instructions.
 - Functions without explicit CALL sites within the executable's code segment,
 - Position independent code (PIC) sequences, and
 - Hand crafted assembly code.
