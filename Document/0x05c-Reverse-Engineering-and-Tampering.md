@@ -133,9 +133,11 @@ See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-cod
 
 Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged (compiled) into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method. However, instead of relying on widely used C libraries (such as glibc), Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
 
-When reversing Android apps containing native code you'll have to consider this especial layer between Java and native code (JNI). It worths also noticing that when reversing the native code you'll need a disassembler. Once your binary is loaded, you'll be looking at disassembly, which is not _easy_ to look at as Java code.
+For reversing an Android applicaiton containing native code, we need to understand couple of data structures related to JNI bridge between Java and native code. From reversing perspective, we need to be aware of two key data structures, `JavaVM` and `JNIEnv`. Both of these data structures are pointers to pointers to function tables. `JavaVM` provides an interface to invoke functions to create and destroy a JavaVM. Android allows only one `JavaVM` per process, thus this data structure is not relevant for us. While the other data structure `JNIEnv` provides access to most the JNI functions (by pointing to pointers of these functions). These functions are accessible at a fixed offset through the `JNIEnv` pointer. This `JNIEnv` pointer is the first parameter passed to every JNI function. This concept is discussed again with an example in subsequent chapters.
 
-In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it on your emulator or Android device is optional.
+It is worth highlighting that for reversing the native code in an Android applicaiton we will need a disassembler. And later in the chapter while analyzing the application we will observe that analyzing disassembled native code is more challenging than disassembled Java code.
+
+In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```shell
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
@@ -181,7 +183,7 @@ Note the declaration of `public native String stringFromJNI` at the bottom. The 
 JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject)
 ```
 
-So where is the native implementation of this function? If you look into the `lib` directory of the APK archive, you'll see eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library `libnative-lib.so` that has been compiled for the processor architecture in question. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on.
+So where is the native implementation of this function? If you look into the `lib` directory of the APK archive, you'll see eight subdirectories named after different processor architectures. Each of these directories contains a version of the native library `libnative-lib.so` that has been compiled for the processor architecture in question. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on. Before moving ahead, take a special note of the first parameter passed to the current JNI function. It is the same `JNIEnv` data structure which was discussed earlier in the chapter.
 
 <img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200">
 
