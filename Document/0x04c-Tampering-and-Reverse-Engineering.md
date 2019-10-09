@@ -118,7 +118,7 @@ Reverse engineering is the process of reconstructing the semantics of a compiled
 
 Disassemblers and decompilers allow you to translate an app's binary code or bytecode back into a more or less understandable format. By using these tools on native binaries, you can obtain assembler code that matches the architecture the app was compiled for. Disassemblers convert machine code to assembly code which in turn is used by decompilers to generate equivalent high-level language code. Android Java apps can be disassembled to smali, which is an assembly language for the DEX format used by Dalvik, Android's Java VM. Smali assembly can also be quite easily decompiled back to equivalent Java code. 
 
-In theory mapping between assembly and machine code should be one-to-one, and which may give an impression that disassembling is a simple task of traversing a given input in a single linear pass and converting it into disassembled output. But the in practice there are multiple pitfalls. Some of the main impediments to accurate disassembly are: 
+In theory, the mapping between assembly and machine code should be one-to-one, and therefore it may give the impression that disassembling is a simple task. But in practice, there are multiple pitfalls such as: 
 
 - Reliably distinguish between code and data 
 - Variable instruction size,
