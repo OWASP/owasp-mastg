@@ -124,7 +124,7 @@ In theory, the mapping between assembly and machine code should be one-to-one, a
 - Variable instruction size.
 - Indirect branch instructions.
 - Functions without explicit CALL instructions within the executable's code segment.
-- Position independent code (PIC) sequences, and
+- Position independent code (PIC) sequences.
 - Hand crafted assembly code.
 
 In similar vain, decompilation is a very complicated process, involving many deterministic and heuristics based approaches. As a consequence, decompilation is not always accurate, but nevertheless very helpful in getting a quick understanding of the function being analyzed. Accuracy of decompilation depends on the amount of information available in the code being decompiled and the sophistication of the decompiler. It is always a good idea to keep cross-checking decompiled code against disassembled code for maximum accuracy. Many compilation and post-compilation tools introduce additional complexity to the compiled code in order to increase the difficulty of decompilation. Such codes are called as *obfuscated code*. 
