@@ -137,7 +137,7 @@ When reversing an Android application containing native code, we need to underst
 - `JavaVM` provides an interface to invoke functions for creating and destroying a JavaVM. Android allows only one `JavaVM` per process and is not really relevant for our reversing purposes.
 - `JNIEnv` provides access to most of the JNI functions which are accessible at a fixed offset through the `JNIEnv` pointer. This `JNIEnv` pointer is the first parameter passed to every JNI function. We will discuss this concept again with the help of an example later in this chapter.
 
-It is worth highlighting that for reversing the native code in an Android applicaiton we will need a disassembler. And later in the chapter while analyzing the application we will observe that analyzing disassembled native code is more challenging than disassembled Java code.
+It is worth highlighting that analyzing disassembled native code is much more challenging than disassembled Java code. When reversing the native code in an Android application we will need a disassembler.
 
 In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
 
