@@ -157,7 +157,7 @@ The most important windows to explore a binary in Ghidra are the **Listing** (Di
 ![Ghidra function graph view](Images/Chapters/0x04c/Ghidra_function_graph.png)
 
 
-There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. Other advance functionalities we will discuss while analyzing various binaries for Android and iOS platforms in the coming chapters. 
+There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters. 
 
 ![Ghidra strings window](Images/Chapters/0x04c/Ghidra_string_window.png)
 
