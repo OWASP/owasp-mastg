@@ -723,6 +723,21 @@ As discussed earlier, sensitive data is not limited to just user data and PII. S
   </td></tr>
 </table>
 
+After you enable the pin, use iMazing to perform a device backup:
+1. Select your device from the list under the Available menu
+2. Click the top menu option ‘Back Up’
+3. Follow prompts to complete the backup using defaults
+
+Next you can open the backup to view app container files within your target app
+1. Select your device and click Backups on the top right menu
+2. Click the backup you created and select 'View'
+3. Navigate to the Bither app from the Apps directory
+
+At this point you can view all the backed up content for Bither. 
+
+<img src="Images/Chapters/0x06d/bither_demo_imazing_1.PNG" alt="iMazing" width="550">
+
+This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the net.bither.plist file which contains the pin_code attribute. To remove the UI lock restriction, simply delete the pin_code attribute and save the changes. It's now possible to restore this modified version of net.bither.plist back onto the device.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
