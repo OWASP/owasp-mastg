@@ -717,13 +717,10 @@ As discussed earlier, sensitive data is not limited to just user data and PII. S
 
 <div class="row">
   <div class="column">
-    <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="" style="width:270">
+    <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270">
   </div>
   <div class="column">
-    <div style="width:10"></div>
-  </div>
-  <div class="column">
-    <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="" style="width:270">
+    <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270">
   </div>
 </div>
 
