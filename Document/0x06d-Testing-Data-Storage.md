@@ -735,7 +735,7 @@ Next you can open the backup to view app container files within your target app
 
 At this point you can view all the backed up content for Bither. 
 
-<img src="Images/Chapters/0x06d/bither_demo_imazing_1.PNG" alt="iMazing" width="550">
+<img src="Images/Chapters/0x06d/bither_demo_imazing_1.png" alt="iMazing" width="550">
 
 This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the net.bither.plist file which contains the pin_code attribute. To remove the UI lock restriction, simply delete the pin_code attribute and save the changes. It's now possible to restore this modified version of net.bither.plist back onto the device.
 
