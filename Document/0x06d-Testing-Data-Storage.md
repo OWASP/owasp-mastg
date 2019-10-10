@@ -715,14 +715,13 @@ In case you need to work with an encrypted backup, the [following Python scripts
 
 As discussed earlier, sensitive data is not limited to just user data and PII. Sensitive data can also be configuration settings that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, Bither, you'll see that it's possible to configure a pin to lock the UI. 
 
-<div class="row">
-  <div class="column">
+<table>
+  <tr><td>
     <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270">
-  </div>
-  <div class="column">
+  </td><td>
     <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270">
-  </div>
-</div>
+  </td></tr>
+</table>
 
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
