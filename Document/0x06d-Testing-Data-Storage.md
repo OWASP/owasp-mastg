@@ -700,16 +700,18 @@ $ ls | head -n 3
 000200a644d7d2c56eec5b89c1921dacbec83c3e
 ```
 
-Therefore it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. What you can do is use a simple grep to search for sensitive data that you have keyed in while using the app before you made the backup, for example the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
+Therefore it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. You can consider using the iMazing shareware utility to assist here. Perform a device backup with iMazing and use their backup explorer to easily analyze app container contents with their original paths and filenames. Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but try searching for sensitive data that you have keyed in while using the app before you made the backup, for example the username, password, credit card data, PII or any data that is considered sensitive in the context of the app. 
 
 ```bash
 $ ~/Library/Application Support/MobileSync/Backup/<UDID>
 $ grep -iRn "password" .
 ```
 
-If you can find such data it should be excluded from the backup as described in the Static Analysis chapter, or encrypted properly by using the Keychain or not stored on the device in the first place.
+If you can find sensitive data it should be excluded from the backup as described in the Static Analysis chapter, or encrypted properly by using the Keychain or not stored on the device in the first place. 
 
 In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
+
+##### Proof of Concept: Removing UI lock with Tampered Backup
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
