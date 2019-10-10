@@ -711,7 +711,12 @@ If you can find sensitive data it should be excluded from the backup as describe
 
 In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
 
-##### Proof of Concept: Removing UI lock with Tampered Backup
+##### Proof of Concept: Removing UI Lock with Tampered Backup
+
+As discussed earlier, sensitive data is not limited to just user data and PII. Sensitive data can also be configuration settings that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, Bither, you'll see that it's possible to configure a pin to lock the UI. 
+
+<img src="Document/Images/Chapters/0x06d/bither_demo_enable_pin.PNG" width="275">
+<img src="Document/Images/Chapters/0x06d/bither_demo_pin_screen.PNG" width="275">
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
