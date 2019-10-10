@@ -715,7 +715,7 @@ In case you need to work with an encrypted backup, the [following Python scripts
 
 As discussed earlier, sensitive data is not limited to just user data and PII. Sensitive data can also be configuration settings that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, Bither, you'll see that it's possible to configure a pin to lock the UI. You will later be able to bypass the lockscreen by restoring a tampered backup to the device. All without jailbreak. 
 
-<table style="border: 1px solid transparent">
+<table border="0">
   <tr><td>
     <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270">
   </td><td>
