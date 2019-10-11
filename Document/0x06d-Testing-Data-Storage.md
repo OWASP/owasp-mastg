@@ -700,7 +700,7 @@ $ ls | head -n 3
 000200a644d7d2c56eec5b89c1921dacbec83c3e
 ```
 
-Therefore it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. You can consider using the [iMazing](https://imazing.com "iMazing") shareware utility to assist here. Perform a device backup with iMazing and use their backup explorer to easily analyze app container contents with their original paths and filenames. Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but try searching for sensitive data that you have keyed in while using the app before you made the backup, for example the username, password, credit card data, PII or any data that is considered sensitive in the context of the app. 
+Therefore, it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. You can consider using the [iMazing](https://imazing.com "iMazing") shareware utility to assist here. Perform a device backup with iMazing and use its built-in backup explorer to easily analyze app container contents including original paths and file names. Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but you can try searching for sensitive data that you have keyed in while using the app before you made the backup. For example: the username, password, credit card data, PII or any data that is considered sensitive in the context of the app. 
 
 ```bash
 $ ~/Library/Application Support/MobileSync/Backup/<UDID>
