@@ -707,7 +707,7 @@ $ ~/Library/Application Support/MobileSync/Backup/<UDID>
 $ grep -iRn "password" .
 ```
 
-If you can find sensitive data it should be excluded from the backup as described in the Static Analysis chapter, or encrypted properly by using the Keychain or not stored on the device in the first place. 
+As described in the Static Analysis section, any sensitive data that you're able to find should be excluded from the backup, encrypted properly by using the Keychain or not stored on the device in the first place. 
 
 In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
 
