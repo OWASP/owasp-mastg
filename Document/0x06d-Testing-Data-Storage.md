@@ -58,11 +58,11 @@ Data stored in the Keychain is protected via a class structure that is similar t
 `AccessControlFlags` define the mechanisms with which users can authenticate the key (`SecAccessControlCreateFlags`):
 
 - `kSecAccessControlDevicePasscode`: Access the item via a passcode.
-- `kSecAccessControlTouch IDAny`: Access the item via one of the fingerprints registered to Touch ID. Adding or removing a fingerprint won't invalidate the item.
-- `kSecAccessControlTouch IDCurrentSet`: Access the item via one of the fingerprints registered to Touch ID. Adding or removing a fingerprint _will_ invalidate the item.
+- `kSecAccessControlBiometryAny`: Access the item via one of the fingerprints registered to Touch ID. Adding or removing a fingerprint won't invalidate the item.
+- `kSecAccessControlBiometryCurrentSet`: Access the item via one of the fingerprints registered to Touch ID. Adding or removing a fingerprint _will_ invalidate the item.
 - `kSecAccessControlUserPresence`: Access the item via either one of the registered fingerprints (using Touch ID) or default to the passcode.
 
-Please note that keys secured by Touch ID (via `kSecAccessControlTouch IDCurrentSet` or `kSecAccessControlTouch IDAny`) are protected by the Secure Enclave: The Keychain holds a token only, not the actual key. The key resides in the Secure Enclave.
+Please note that keys secured by Touch ID (via `kSecAccessControlBiometryAny` or `kSecAccessControlBiometryCurrentSet`) are protected by the Secure Enclave: The Keychain holds a token only, not the actual key. The key resides in the Secure Enclave.
 
 Starting with iOS 9, you can do ECC-based signing operations in the Secure Enclave. In that scenario, the private key and the cryptographic operations reside within the Secure Enclave. See the static analysis section for more info on creating the ECC keys.
 iOS 9 supports only 256-bit ECC. Furthermore, you need to store the public key in the Keychain because it can't be stored in the Secure Enclave. After the key is created, you can use the `kSecAttrKeyType` to indicate the type of algorithm you want to use the key with.
