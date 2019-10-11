@@ -609,7 +609,7 @@ Keychain items for which the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` a
 
 One caveat to using the Keychain, however, is that it was only designed to store small bits of user data or short notes (according to Apple's documenation on [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services")). This means that apps with larger local secure storage needs (e.g., messaging apps, etc.) should encrypt the data within the app container, but use the Keychain to store key material. In cases where sensitive configuration settings (e.g., data loss prevention policies, password policies, compliance policies, etc) must remain unencrypted within the app container, you can consider storing a hash of the policies in the keychain for integrity checking. Without an integrity check, these settings could be modified within a backup and then restored back to the device to modify app behavior (e.g., change configured remote endpoints) or security settings (e.g., jailbreak detection, certificate pinning, maximum UI login attempts, etc.).
 
-The takeaway: If sensitive data is handled as recommended earlier in this chapter (stored in the Keychain, with Keychain backed integrity checks, or encrypted with a key that's locked inside the Keychain, or ), backups aren't a security issue.
+The takeaway: If sensitive data is handled as recommended earlier in this chapter (e.g., stored in the Keychain, with Keychain backed integrity checks, or encrypted with a key that's locked inside the Keychain), backups shouldn't be security issue.
 
 ##### Static Analysis
 
