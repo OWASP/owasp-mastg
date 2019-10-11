@@ -713,7 +713,7 @@ In case you need to work with an encrypted backup, the [following Python scripts
 
 ##### Proof of Concept: Removing UI Lock with Tampered Backup
 
-As discussed earlier, sensitive data is not limited to just user data and PII. Sensitive data can also be configuration settings that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, Bither, you'll see that it's possible to configure a pin to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
+As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, Bither, you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
 <table bordercolor="#FFFFFF">
   <tr><td>
