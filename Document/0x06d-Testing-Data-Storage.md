@@ -599,7 +599,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
-Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentially leak through the backup. Another concern, though less obvious, is whether sensitive configuration settings used to protect data or restrict app functionality could be tampered to change app behavior after restoring a modified backup. Both concerns are valid and these vulnerabilities have proven to exist in a vast number of apps today.
+Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. Another concern, though less obvious, is whether sensitive configuration settings used to protect data or restrict app functionality could be tampered to change app behavior after restoring a modified backup. Both concerns are valid and these vulnerabilities have proven to exist in a vast number of apps today.
 
 ##### How the Keychain Is Backed Up
 
