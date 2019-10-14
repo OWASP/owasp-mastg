@@ -729,7 +729,7 @@ After you enable the pin, use iMazing to perform a device backup:
 3. Follow prompts to complete the backup using defaults
 
 Next you can open the backup to view app container files within your target app
-1. Select your device and click Backups on the top right menu
+1. Select your device and click **Backups** on the top right menu.
 2. Click the backup you created and select 'View'
 3. Navigate to the Bither app from the Apps directory
 
