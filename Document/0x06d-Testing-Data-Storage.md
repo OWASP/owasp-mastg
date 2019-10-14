@@ -751,7 +751,7 @@ You'll see there was a match on a binary file with an obfuscated name. This is y
 
 <img src="Images/Chapters/0x06d/bither_demo_plist.png" alt="iMazing" width="550">
 
-Again, remove the pin_code attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extenstion) and perform your backup restore from iTunes. When the restore is complete you'll see that Bither no longer prompts you for the pin code when launched.
+Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore from iTunes. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
