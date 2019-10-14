@@ -724,7 +724,7 @@ As discussed earlier, sensitive data is not limited to just user data and PII. I
 </table>
 
 After you enable the pin, use iMazing to perform a device backup:
-1. Select your device from the list under the Available menu
+1. Select your device from the list under the **AVAILABLE** menu.
 2. Click the top menu option ‘Back Up’
 3. Follow prompts to complete the backup using defaults
 
