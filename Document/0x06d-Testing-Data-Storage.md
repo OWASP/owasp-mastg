@@ -599,7 +599,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
-Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might accidentally leak through the backup. The answer to this question is "yes" - but only if the app insecurely stores sensitive data in the first place.
+Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. Another concern, though less obvious, is whether sensitive configuration settings used to protect data or restrict app functionality could be tampered to change app behavior after restoring a modified backup. Both concerns are valid and these vulnerabilities have proven to exist in a vast number of apps today.
 
 ##### How the Keychain Is Backed Up
 
@@ -607,7 +607,9 @@ When users back up their iOS device, the Keychain data is backed up as well, but
 
 Keychain items for which the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute is set can be decrypted only if the backup is restored to the backed up device. Someone trying to extract this Keychain data from the backup couldn't decrypt it without access to the crypto hardware inside the originating device.
 
-The takeaway: If sensitive data is handled as recommended earlier in this chapter (stored in the Keychain or encrypted with a key that's locked inside the Keychain), backups aren't a security issue.
+One caveat to using the Keychain, however, is that it was only designed to store small bits of user data or short notes (according to Apple's documenation on [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services")). This means that apps with larger local secure storage needs (e.g., messaging apps, etc.) should encrypt the data within the app container, but use the Keychain to store key material. In cases where sensitive configuration settings (e.g., data loss prevention policies, password policies, compliance policies, etc) must remain unencrypted within the app container, you can consider storing a hash of the policies in the keychain for integrity checking. Without an integrity check, these settings could be modified within a backup and then restored back to the device to modify app behavior (e.g., change configured remote endpoints) or security settings (e.g., jailbreak detection, certificate pinning, maximum UI login attempts, etc.).
+
+The takeaway: If sensitive data is handled as recommended earlier in this chapter (e.g., stored in the Keychain, with Keychain backed integrity checks, or encrypted with a key that's locked inside the Keychain), backups shouldn't be security issue.
 
 ##### Static Analysis
 
@@ -698,16 +700,58 @@ $ ls | head -n 3
 000200a644d7d2c56eec5b89c1921dacbec83c3e
 ```
 
-Therefore it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. What you can do is use a simple grep to search for sensitive data that you have keyed in while using the app before you made the backup, for example the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
+Therefore, it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. You can consider using the [iMazing](https://imazing.com "iMazing") shareware utility to assist here. Perform a device backup with iMazing and use its built-in backup explorer to easily analyze app container contents including original paths and file names. Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but you can try searching for sensitive data that you have keyed in while using the app before you made the backup. For example: the username, password, credit card data, PII or any data that is considered sensitive in the context of the app. 
 
 ```bash
 $ ~/Library/Application Support/MobileSync/Backup/<UDID>
 $ grep -iRn "password" .
 ```
 
-If you can find such data it should be excluded from the backup as described in the Static Analysis chapter, or encrypted properly by using the Keychain or not stored on the device in the first place.
+As described in the Static Analysis section, any sensitive data that you're able to find should be excluded from the backup, encrypted properly by using the Keychain or not stored on the device in the first place. 
 
-In case you need to work with an encrypted backup, the [following Python scripts (backup_tool.py and backup_passwd.py)](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection") will be a good starting point. They might not work with the latest iTunes versions and might need to be tweaked.
+In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes versions and might need to be tweaked.
+
+##### Proof of Concept: Removing UI Lock with Tampered Backup
+
+As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
+
+<table bordercolor="#FFFFFF">
+  <tr><td>
+    <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270">
+  </td><td>
+    <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270">
+  </td></tr>
+</table>
+
+After you enable the pin, use iMazing to perform a device backup:
+1. Select your device from the list under the **AVAILABLE** menu.
+2. Click the top menu option **Back Up**.
+3. Follow prompts to complete the backup using defaults.
+
+Next you can open the backup to view app container files within your target app
+1. Select your device and click **Backups** on the top right menu.
+2. Click the backup you created and select **View**.
+3. Navigate to the Bither app from the **Apps** directory.
+
+At this point you can view all the backed up content for Bither. 
+
+<img src="Images/Chapters/0x06d/bither_demo_imazing_1.png" alt="iMazing" width="550">
+
+This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the net.bither.plist file which contains the `pin_code` attribute. To remove the UI lock restriction, simply delete the `pin_code` attribute and save the changes. 
+
+From there it's possible to easily restore the modified version of net.bither.plist back onto the device using the licensed version of iMazing. The free workaround, however, is to find the plist file in the obfuscated backup generated by iTunes. So create your iTunes backup of the device with Bither's PIN code configured. Then, using the steps described earlier, find the backup directory and grep for "pin_code" as shown below.
+
+```bash
+$ ~/Library/Application Support/MobileSync/Backup/<UDID>
+$ grep -iRn "pin_code" .
+Binary file ./13/135416dd5f251f9251e0f07206277586b7eac6f6 matches
+```
+
+You'll see there was a match on a binary file with an obfuscated name. This is your net.bither.plist file. Go ahead and rename the file giving it a plist extension so Xcode can easily open it up for you. 
+
+<img src="Images/Chapters/0x06d/bither_demo_plist.png" alt="iMazing" width="550">
+
+Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore from iTunes. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
