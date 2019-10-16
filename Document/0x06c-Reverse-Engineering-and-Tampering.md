@@ -440,11 +440,13 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 An introduction to binary analysis using binary analysis framework has already been discussed in [Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis") section for Android. It is recommended before moving forward, to revisit and refresh the concepts. 
 
-For Android, we used Angr binary analysis framework's symbolic execution engine to solve the challenge. In this section, we will revisit the Angr binary analysis framework to analyze the UnCrackable Level 01 challenge, but instead of symbolic execution we will use its concrete execution (or dynamic execution) features. 
+For Android, we used Angr's symbolic execution engine to solve the challenge. In this section, we will revisit the Angr binary analysis framework to analyze the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") but instead of symbolic execution we will use its concrete execution (or dynamic execution) features. 
 
 #### Angr
 
-Angr is a versatile tool, and provides multiple techniques to facilitate binary analysis. These techniques can be used in isolation as well as in combination with each other. For example, using Angr, a part of a program (called program slice) can be identified and executed to perform analysis. 
+Angr is a very versatile tool. It provides multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets. 
+
+> The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case. 
 
 While manual analyzing the code in  [reviewing disassembled native code](#reviewing-disassembled-native-code "reviewing disassembled native code") section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string. 
 
@@ -456,7 +458,6 @@ On revisiting the function we can see it involves multiple sub-function calls an
 - Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`. 
 - Access the memory and extract the string from the pointer returned by the function from above. 
 
-> The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case. 
 
 ```python
 import angr
@@ -474,7 +475,7 @@ def solve():
     print("Address of the pointer to the secret string: " + hex(ptr_secret_string))
 
     # Extract the value from the pointer to the secret string
-    secret_string = func.result_state.mem[getch].string.concrete
+    secret_string = func.result_state.mem[ptr_secret_string].string.concrete
     print("Secret String: " +  secret_string)
 
 solve()

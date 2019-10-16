@@ -197,7 +197,7 @@ Even though most professional GUI-based disassemblers feature scripting faciliti
 
 In the late 2000s, testing based on symbolic execution has become a popular way to identify security vulnerabilities. Symbolic "execution" actually refers to the process of representing possible paths through a program as formulas in first-order logic. Satisfiability Modulo Theories (SMT) solvers are used to check the satisfiability of these formulas and provide solutions, including concrete values of the variables needed to reach a certain point of execution on the path corresponding to the solved formula.
 
-In simple words, symbolic execution is mathematically analyzing a program without executing it. During analysis, each unknown input is represented as a mathematical variable (a symbolic value), and all the operations hence performed on these unknowns is recorded in a form of mathematical equations. These mathematical equations are called `constraints`. In the end of this analysis, a mathematical equation is obtained, in which the variables are the inputs whose values are not known. SMT solvers are special programs which solve these equations to give possible values for these variables. To visualise this, lets use a function which takes one input and multiplies it by 279 and then subtracts the output by 30. The  mathematical equation for this operation on input will be `x*279 - 30`, where `x` is the variable representing the input to the function. If the value to be multiplied is another input to this function, the equation will become `x*y - 30`, where `y` being the another input introduced. We can see the equation is more complex than before. Moving forward, instead of subtracting a constant 30, a value from a global variable is used. This adds another variable to the equation, and makes it `x * y - z`. As is the case for global variables, their value can be changed from outside this function, which may lead to different outputs whenever this function is executed. 
+In simple words, symbolic execution is mathematically analyzing a program without executing it. During analysis, each unknown input is represented as a mathematical variable (a symbolic value), and all the operations hence performed on these unknowns is recorded in a form of mathematical equations. These mathematical equations are called `constraints`. In the end of this analysis, a final mathematical equation is obtained, in which the variables are the inputs whose values are not known. SMT solvers are special programs which solve these equations to give possible values for these variables. To visualise this, lets use a function which takes one input and multiplies it by 279 and then subtracts the output by 30. The  mathematical equation for this operation on input will be `(x * 279 - 30)`, where `x` is the variable representing the input to the function. If the value to be multiplied is another input to this function, the equation will become `(x * y - 30)`, where `y` being the another input introduced. We can see the equation is more complex than before. Moving forward, instead of subtracting a constant 30, a value from a global variable is used. This adds another variable to the equation, and makes it `(x * y - z)`. As is the case for global variables, their value can be changed from outside this function, which may lead to different outputs whenever this function is executed. This adds to additional complexity in determining correct solution.
 
 In a real world situation, the functions are much more complex than the above example. The increased complexity of the functions can pose significant challenges for symbolic execution. Some of the challenges are summarised below: 
 
@@ -212,25 +212,25 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 ### References
 
-- [#vadla] Ole André Vadla Ravnås, Anatomy of a code tracer - <https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8>
+- [#vadla] Ole André Vadla Ravnås, [Anatomy of a code tracer](https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8 "Anatomy of a code tracer")
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
+- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
 
 #### Tools
 
-- Angr - <https://github.com/angr/angr>
-- Cycript - <http://www.cycript.org/>
-- Frida - <https://www.frida.re/>
-- Frida CLI - <https://www.frida.re/docs/frida-cli/>
-- frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
-- frida-ps - <https://www.frida.re/docs/frida-ps/>
-- frida-trace - <https://www.frida.re/docs/frida-trace/>
-- Fridump - <https://github.com/Nightbringer21/fridump>
-- Objection - <https://github.com/sensepost/objection>
-- Passionfruit - <https://github.com/chaitin/passionfruit>
-- r2frida - <https://github.com/nowsecure/r2frida>
-- Radare2 - <https://github.com/radare/radare2>
-- Substrate - <http://www.cydiasubstrate.com/>
-- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
+- [Angr](https://github.com/angr/angr "Angr")
+- [Cycript](http://www.cycript.org/ "Cycript")
+- [Frida](https://www.frida.re/ "Frida")
+- [Frida CLI](https://www.frida.re/docs/frida-cli/ "Frida CLI")
+- [frida-ls-devices](https://www.frida.re/docs/frida-ls-devices/ "frida-ls-devices")
+- [frida-ps](https://www.frida.re/docs/frida-ps/ "frida-ps")
+- [frida-trace](https://www.frida.re/docs/frida-trace/ "frida-trace")
+- [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
+- [Objection](https://github.com/sensepost/objection "Objection")
+- [Passionfruit](https://github.com/chaitin/passionfruit "Passionfruit")
+- [r2frida](https://github.com/nowsecure/r2frida "r2frida")
+- [Radare2](https://github.com/radare/radare2 "Radare2")
+- [Substrate](http://www.cydiasubstrate.com/ "Substrate")
+- [Xposed](https://www.xda-developers.com/xposed-framework-hub/ "Xposed")
