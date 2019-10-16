@@ -436,6 +436,53 @@ Next, navigate to a new website in Safari. You should see traced function calls 
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
 
+### Binary Analysis
+
+An introduction to binary analysis using binary analysis framework has already been discussed in [Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis") section for Android. It is recommended before moving forward, to revisit and refresh the concepts. 
+
+For Android, we used Angr binary analysis framework's symbolic execution engine to solve the challenge. In this section, we will revisit the Angr binary analysis framework to analyze the UnCrackable Level 01 challenge, but instead of symbolic execution we will use its concrete execution (or dynamic execution) features. 
+
+#### Angr
+
+Angr is a versatile tool, and provides multiple techniques to facilitate binary analysis. These techniques can be used in isolation as well as in combination with each other. For example, using Angr, a part of a program (called program slice) can be identified and executed to perform analysis. 
+
+While manual analyzing the code in  [reviewing disassembled native code](#reviewing-disassembled-native-code "reviewing disassembled native code") section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string. 
+
+On revisiting the function we can see it involves multiple sub-function calls and interestingly none of these functions have dependency on other library calls or system calls. In a nutshell these functions are self contained and can be executed without needing any other platform specific libraries. This is a perfect case to use Angr's concrete execution engine. Following steps are involved to solve this challenge using Angr: 
+
+- Get the ARM64 version of the binary using `lipo` tool (ARMv7 can be used as well)
+- Create an Angr `project` by loading the above binary
+- Get a `callable` by passing the address of the function to be executed. From Angr documentation, "A Callable is a representation of a function in the binary that can be interacted with like a native python function."
+- Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`. 
+- Access the memory and extract the string from the pointer returned by the function from above. 
+
+> The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case. 
+
+```python
+import angr
+import claripy
+
+def solve():
+
+    # Load the binary by creating angr project.
+    project = angr.Project('uncrackable.arm64')
+
+    # Pass the address of the function to the callable
+    func = project.factory.callable(0x1000080d4)
+
+    ptr_secret_string = claripy.backends.concrete.convert(func()).value     # get the return value of the function
+    print("Address of the pointer to the secret string: " + hex(ptr_secret_string))
+
+    # Extract the value from the pointer to the secret string
+    secret_string = func.result_state.mem[getch].string.concrete
+    print("Secret String: " +  secret_string)
+
+solve()
+```
+
+Above, Angr executed an ARM64 code in a controlled execution environment provided by one of its concrete execution engines. Eventually the result is easily accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks empower us to perform a comprehensive analysis of the binary, even in the absence of a specialized device needed to run that binary.  
+
+
 ### Tampering and Runtime Instrumentation
 
 #### Patching, Repackaging, and Re-Signing
