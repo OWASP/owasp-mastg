@@ -1039,7 +1039,7 @@ The loop is more clearly visible in the graph view below.
 
 ![XOR instruction inside a loop](Images/Chapters/0x05c/loop_1784.png)
 
-A note on XOR encryption, XOR is a very commonly used technique to encrypt information where obfuscation is the goal rather than security. XOR should not be used for any serious encryption, as it can be cracked using frequency analysis. Presence of XOR in such validation logic always require special attention and analysis.
+A note on XOR encryption: XOR is a very commonly used technique to encrypt information where obfuscation is the goal rather than security. XOR should not be used for any serious encryption, as it can be cracked using frequency analysis. Presence of XOR in such validation logic always requires special attention and analysis.
 
 Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against returned value from a sub-function call, at `0x000017e8`.
 
