@@ -1053,7 +1053,7 @@ The constraints obtained from the above steps are passed to a solver engine, whi
 
 To initialize Angr's symbolic execution engine, a few setup steps need to be performed:
 
-- Load the binary into a `Project`. `Project` is the starting point for any kind of analyses in Angr.
+- Load the binary into a `Project`. `Project` is the starting point for any kind of analysis in Angr.
 
 - Pass the address from which the analysis should start. In this case, we will initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
 
