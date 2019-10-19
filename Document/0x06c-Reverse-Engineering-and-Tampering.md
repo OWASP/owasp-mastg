@@ -438,7 +438,7 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 ### Binary Analysis
 
-An introduction to binary analysis using binary analysis framework has already been discussed in [Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis") section for Android. It is recommended before moving forward, to revisit and refresh the concepts.
+An introduction to binary analysis using binary analysis framework has already been discussed in [Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis") section for Android. We recommend you to revisit this section and refresh the concepts on this subject.
 
 For Android, we used Angr's symbolic execution engine to solve the challenge. In this section, we will revisit the Angr binary analysis framework to analyze the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
 
