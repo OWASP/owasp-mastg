@@ -911,9 +911,9 @@ Binary analysis frameworks give you powerful ways to automate tasks that would b
 
 ##### Symbolic Execution
 
-Symbolic execution is a very useful technique to have in your toolbox, specially while dealing with problems where one need to find a correct input for reaching a certain block of code. In this section we will use an [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") crackme. We will solve this crackme using symbolic execution. For symbolic execution engine, we will use Angr binary analysis framework. An overview of Angr and its installation instruction has been covered previously in "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing") chapter. 
+Symbolic execution is a very useful technique to have in your toolbox, specially while dealing with problems where one need to find a correct input for reaching a certain block of code. In this section we will use an [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") crackme. We will solve this crackme using symbolic execution. For symbolic execution engine, we will use Angr binary analysis framework. An overview of Angr and its installation instruction has been covered previously in "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" chapter. 
 
-The target crackme is a simple license key validation Android executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code. The current sample application may not represent a real world problem, but nevertheless it provides us enough opportunities to learn the basics of symbolic execution to use them in a real situation. The techniques learned in this section will come handy while dealing with obfuscated native code.
+The target crackme is a simple license key validation Android executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code, and hence, often business critical logic is written in native. The current sample application may not represent a real world problem, but nevertheless it provides us enough opportunities to learn the basics of symbolic execution to use them in a real situation. The techniques learned in this section will come handy while dealing with obfuscated native code.
 
 The crackme consists of a single ELF executable file, which can be executed on any Android device. To execute the binary file follow the instructions below: 
 
@@ -1051,7 +1051,7 @@ Clearly this function is not complex, and can be analyzed manually, but still re
 
 ![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
 
-The constraints obtained from above step is passed to the solver engine, which solves the constraints to finds an input that satisfies them - a valid license key.
+The constraints obtained from above step is passed to the solver engine, which solves the constraints to find an input that satisfies them - a valid license key.
 
 To initialize Angr's symbolic execution engine, few setup steps need to be performed: 
 
@@ -1094,8 +1094,8 @@ state = b.factory.blank_state(addr=0x401760)
 initial_path = b.factory.path(state)
 path_group = b.factory.path_group(state)
 
-# 0x401840 = Product activation passed
-# 0x401854 = Incorrect serial
+# 0x401840 -> Product activation passed
+# 0x401854 -> Incorrect serial
 
 path_group.explore(find=0x401840, avoid=0x401854)
 found = path_group.found[0]
@@ -1109,7 +1109,7 @@ solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 print base64.b32encode(solution)
 ```
 
-Note, in the latter part of the script, where the final input string is retrieved, it gives an illusion of simply reading the solution from the memory. However, we are reading from symbolic memory, where neither the string nor the pointer to the string actually exist. Actually it is the concrete value computed by the solver, and we can find in that program state if observed the actual program execution run up to that point.
+Note, in the latter part of the script, where the final input string is retrieved, it gives an illusion of simply reading the solution string from the memory. However, we are reading from the symbolic memory, where neither the string nor the pointer to the string actually exist. Actually it is the concrete value computed by the solver, and it is the same to what we can if we the program is executed to that point.
 
 Running this script should return the following:
 
@@ -1119,7 +1119,8 @@ WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-i
 JQAE6ACMABNAAIIA
 ```
 
-Symoblic execution and other hybrid techniques involving symbolic execution are very useful tools to have in the armoury. One more example on using Angr is discussed in chapter on iOS as well.  
+Symoblic execution and other hybrid techniques involving symbolic execution are very useful techniques for analysis. Learning them requires understanding of them and practice. Another example using Angr is presented in iOS chapter as well.  
+
 
 ### Tampering and Runtime Instrumentation
 
