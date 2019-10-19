@@ -931,7 +931,7 @@ Incorrect serial (wrong format).
 
 ```
 
-So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler, like Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter choose to load the binary at `0x0` as image base address.
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler, like Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
 ![Disassembly of main function](Images/Chapters/0x05c/disass_main_1874.png)
 
