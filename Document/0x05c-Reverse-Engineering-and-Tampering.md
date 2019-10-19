@@ -1037,7 +1037,7 @@ Discussing all the instructions in the function is beyond the scope of this chap
 
 The loop is more clearly visible in the graph view below.
 
-![Loop](Images/Chapters/0x05c/loop_1784.png)
+![XOR instruction inside a loop](Images/Chapters/0x05c/loop_1784.png)
 
 A note on XOR encryption, XOR is a very commonly used technique to encrypt information where obfuscation is the goal rather than security. XOR should not be used for any serious encryption, as it can be cracked using frequency analysis. Presence of XOR in such validation logic always require special attention and analysis.
 
