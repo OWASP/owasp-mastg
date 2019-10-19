@@ -1061,7 +1061,7 @@ To initialize Angr's symbolic execution engine, few setup steps need to be perfo
 
 - Also, specify the addresses we don't want to reach. In this case, we are not interested in the code block that prints the "Incorrect serial" message at `0x00001854`.
 
-> Note that the Angr loader will load the PIE executable with a base address of `0x400000`, add the above identified offsets while passing it to Angr.
+> Note that the Angr loader will load the PIE executable with a base address of `0x400000`, which needs to be added to the offsets from Cutter before passing it to Angr.
 
 The final solution script is presented below:
 
