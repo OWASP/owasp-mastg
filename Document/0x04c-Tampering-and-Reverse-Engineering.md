@@ -220,17 +220,18 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 #### Tools
 
-- [Angr](https://github.com/angr/angr "Angr")
-- [Cycript](http://www.cycript.org/ "Cycript")
-- [Frida](https://www.frida.re/ "Frida")
-- [Frida CLI](https://www.frida.re/docs/frida-cli/ "Frida CLI")
-- [frida-ls-devices](https://www.frida.re/docs/frida-ls-devices/ "frida-ls-devices")
-- [frida-ps](https://www.frida.re/docs/frida-ps/ "frida-ps")
-- [frida-trace](https://www.frida.re/docs/frida-trace/ "frida-trace")
-- [Fridump](https://github.com/Nightbringer21/fridump "Fridump")
-- [Objection](https://github.com/sensepost/objection "Objection")
-- [Passionfruit](https://github.com/chaitin/passionfruit "Passionfruit")
-- [r2frida](https://github.com/nowsecure/r2frida "r2frida")
-- [Radare2](https://github.com/radare/radare2 "Radare2")
-- [Substrate](http://www.cydiasubstrate.com/ "Substrate")
-- [Xposed](https://www.xda-developers.com/xposed-framework-hub/ "Xposed")
+- Angr - <https://github.com/angr/angr>
+- Cycript - <http://www.cycript.org/> 
+- Frida - <https://www.frida.re/>
+- Frida CLI - <https://www.frida.re/docs/frida-cli/>
+- frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
+- frida-ps - <https://www.frida.re/docs/frida-ps/>
+- frida-trace - <https://www.frida.re/docs/frida-trace/>
+- Fridump - <https://github.com/Nightbringer21/fridump>
+- Objection - <https://github.com/sensepost/objection>
+- Passionfruit - <https://github.com/chaitin/passionfruit>
+- Ghidra - <https://github.com/NationalSecurityAgency/ghidra>
+- Radare2 - <https://github.com/radare/radare2>
+- r2frida - <https://github.com/nowsecure/r2frida>
+- Substrate - <http://www.cydiasubstrate.com/>
+- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
