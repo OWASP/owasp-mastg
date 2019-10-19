@@ -911,35 +911,37 @@ Binary analysis frameworks give you powerful ways to automate tasks that would b
 
 ##### Symbolic Execution
 
-Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. Refer to the "Android Basic Security Testing" chapter for installation instructions and basics.
+Symbolic execution is a very useful technique to have in your toolbox, specially while dealing with problems where one need to find a correct input for reaching a certain block of code. In this section we will use an [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") crackme. We will solve this crackme using symbolic execution. For symbolic execution engine, we will use Angr binary analysis framework. An overview of Angr and its installation instruction has been covered previously in "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing") chapter. 
 
-The target crackme is a simple license key validation Android app. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
+The target crackme is a simple license key validation Android executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code. The current sample application may not represent a real world problem, but nevertheless it provides us enough opportunities to learn the basics of symbolic execution to use them in a real situation. The techniques learned in this section will come handy while dealing with obfuscated native code.
 
-The crackme takes the form of a native ELF binary that you can download here:
-
-<https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation>
-
-Running the executable on any Android device should give you the following output:
+The crackme consists of a single ELF executable file, which can be executed on any Android device. To execute the binary file follow the instructions below: 
 
 ```shell
 $ adb push validate /data/local/tmp
 [100%] /data/local/tmp/validate
+
 $ adb shell chmod 755 /data/local/tmp/validate
+
 $ adb shell /data/local/tmp/validate
 Usage: ./validate <serial>
+
 $ adb shell /data/local/tmp/validate 12345
 Incorrect serial (wrong format).
+
 ```
 
-So far so good, but you know nothing about what a valid license key looks like. Where do we start? Fire up Cutter to get a good look at what is happening. The main function is located at address 0x00001874 in the disassembly (note that this is a PIE-enabled binary, and Cutter chooses 0x0 as the image base address).
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler, like Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter choose to load the binary at `0x0` as image base address. 
 
 ![Disassembly of main function](Images/Chapters/0x05c/disass_main_1874.png)
 
-Function names have been stripped, but you can see some references to debugging strings. The input string appears to be Base32-decoded (call to fcn.00001340). At the beginning of `main`, there's a length check at 0x00001898. It makes sure that the length of the input string is exactly 16 characters. So you're looking for a Base32-encoded 16-character string! The decoded input is then passed to the function fcn.00001760, which validates the license key.
+Function names have been stripped, but luckily there are enough debugging strings to provide a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution. 
 
 ![Graph of main function](Images/Chapters/0x05c/graph_1874.png)
 
-The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x00001760:
+At offset `0x000018a8` `strlen` is called, and the returned value is compared to 0x10 at offset `0x000018b0`. Thereupon, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string! The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below. 
+
+The validation function expects a 10-byte binary string, as Base32 encoded 16-character input string totals 10 bytes in raw. With the information about input, now we will look into the validation function at `0x00001760`:
 
 ```assembly_x86
 ╭ (fcn) fcn.00001760 268
@@ -1029,29 +1031,41 @@ The decoded 16-character input string totals 10 bytes, so you know that the vali
 ╰           0x00001868      pop {r4, fp, pc}                           ; entry.preinit0 ; entry.preinit0 ;
 ```
 
-If you look in the graph view you can see a loop with some XOR-magic happening at 0x00001784, which supposedly decodes the input string.
+Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points need for the analysis.  
+
+There is a loop present at `0x00001784`, and inside the loop there is XOR operation being performed. 
+
+> 0x00001798      eor r3, r2, r3
+
+The loop is more clearly visible in graph view below.  
 
 ![Loop](Images/Chapters/0x05c/loop_1784.png)
 
-Starting from 0x000017dc, you can see a series of decoded values compared with values from further subfunction calls.
+XOR is a very commonly used technique to encrypt information where obfuscation is the goal rather than security. XOR should not be used for any serious encryption, as it can be cracked using frequency analysis. Presence of XOR in such validation logic always require special attention and analysis. 
+
+Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against returned value from a sub-function call, at `0x000017e8`.
 
 ![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
 
-Even though this doesn't look highly sophisticated, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x00001760) and the code that prints the "Product activation passed" message (0x00001840) to determine the constraints on each byte of the input string.
+Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Specially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution provides us exactly with that functionality. The symbolic execution engine maps a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`) to determine the constraints on each byte of the input string.  
 
 ![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
 
-The solver engine then finds an input that satisfies those constraints: the valid license key.
+The constraints obtained from above step is passed to the solver engine, which solves the constraints to finds an input that satisfies them - a valid license key.
 
-You need to provide several inputs to the symbolic execution engine:
+To initialize Angr's symbolic execution engine, few setup steps need to be performed: 
 
-- An address from which execution will start. Initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
+- Load the binary into a `Project`. `Project` is the starting point for any kind of analyses in Angr. 
 
-- The address of the code block you want execution to reach. You need to find a path to the code responsible for printing the "Product activation passed" message. This code block starts at 0x1840.
+- Pass the address from which analysis should start. In current case, we will initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
 
-- Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x00001854).
+- Pass address of the code block we want the analysis to reach. In current case it being at offset `0x00001840`, where message "Product activation passed" is displayed.
 
-Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is:
+- Also specify the addresses we don't want to reach. In current case, we are not interested in  the code block that prints the "Incorrect serial" message at `0x00001854`.
+
+> Note that the Angr loader will load the PIE executable with a base address of `0x400000`, add the above identified offsets while passing it to Angr. 
+
+The final solution script is presented below:
 
 ```python
 #!/usr/bin/python
@@ -1095,7 +1109,7 @@ solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 print base64.b32encode(solution)
 ```
 
-Note the last part of the program, where the final input string is retrieved—it appears as if you were simply reading the solution from memory. You are, however, reading from symbolic memory—neither the string nor the pointer to it actually exist! Actually, the solver is computing concrete values that you could find in that program state if you observed the actual program run up to that point.
+Note, in the latter part of the script, where the final input string is retrieved, it gives an illusion of simply reading the solution from the memory. However, we are reading from symbolic memory, where neither the string nor the pointer to the string actually exist. Actually it is the concrete value computed by the solver, and we can find in that program state if observed the actual program execution run up to that point.
 
 Running this script should return the following:
 
@@ -1104,6 +1118,8 @@ Running this script should return the following:
 WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
 JQAE6ACMABNAAIIA
 ```
+
+Symoblic execution and other hybrid techniques involving symbolic execution are very useful tools to have in the armoury. One more example on using Angr is discussed in chapter on iOS as well.  
 
 ### Tampering and Runtime Instrumentation
 
