@@ -116,9 +116,9 @@ Reverse engineering is the process of reconstructing the semantics of a compiled
 
 #### Using Disassemblers and Decompilers
 
-Disassemblers and decompilers allow you to translate an app's binary code or bytecode back into a more or less understandable format. By using these tools on native binaries, you can obtain assembler code that matches the architecture the app was compiled for. Disassemblers convert machine code to assembly code which in turn is used by decompilers to generate equivalent high-level language code. Android Java apps can be disassembled to smali, which is an assembly language for the DEX format used by Dalvik, Android's Java VM. Smali assembly can also be quite easily decompiled back to equivalent Java code. 
+Disassemblers and decompilers allow you to translate an app's binary code or bytecode back into a more or less understandable format. By using these tools on native binaries, you can obtain assembler code that matches the architecture the app was compiled for. Disassemblers convert machine code to assembly code which in turn is used by decompilers to generate equivalent high-level language code. Android Java apps can be disassembled to smali, which is an assembly language for the DEX format used by Dalvik, Android's Java VM. Smali assembly can also be quite easily decompiled back to equivalent Java code.
 
-In theory, the mapping between assembly and machine code should be one-to-one, and therefore it may give the impression that disassembling is a simple task. But in practice, there are multiple pitfalls such as: 
+In theory, the mapping between assembly and machine code should be one-to-one, and therefore it may give the impression that disassembling is a simple task. But in practice, there are multiple pitfalls such as:
 
 - Reliable distinction between code and data.
 - Variable instruction size.
@@ -136,7 +136,7 @@ Over the past decades many tools have perfected the process of disassembly and d
 
 Ghidra is an open source software reverse engineering (SRE) suite of tools developed by the United State of America's National Security Agency's (NSA) Research Directorate. Ghidra is a versatile tool which comprises of a disassembler, decompiler and a built-in scripting engine for advanced usage. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and also look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts. In this section, we will have walk-through on how to create a project, view disassembly and decompiled code for a binary.
 
-Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:  
+Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:
 
 ![Ghidra New Project Window](Images/Chapters/0x04c/Ghidra_new_project.png)
 
@@ -148,16 +148,16 @@ If the file can be properly processed, Ghidra will show meta-information about t
 
 <img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="400">
 
-To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.  
+To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.
 
 ![Ghidra code browser window](Images/Chapters/0x04c/Ghidra_main_window.png)
 
-The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function. 
+The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function.
 
 ![Ghidra function graph view](Images/Chapters/0x04c/Ghidra_function_graph.png)
 
 
-There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters. 
+There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters.
 
 ![Ghidra strings window](Images/Chapters/0x04c/Ghidra_string_window.png)
 
@@ -199,21 +199,21 @@ In the late 2000s, testing based on symbolic execution has become a popular way 
 
 In simple words, symbolic execution is mathematically analyzing a program without executing it. During analysis, each unknown input is represented as a mathematical variable (a symbolic value), and all the operations hence performed on these unknowns is recorded in a form of mathematical equations. These mathematical equations are called `constraints`. In the end of this analysis, a final mathematical equation is obtained, in which the variables are the inputs whose values are not known. SMT solvers are special programs which solve these equations to give possible values for these variables. To visualise this, lets use a function which takes one input and multiplies it by 279 and then subtracts the output by 30. The  mathematical equation for this operation on input will be `(x * 279 - 30)`, where `x` is the variable representing the input to the function. If the value to be multiplied is another input to this function, the equation will become `(x * y - 30)`, where `y` being the another input introduced. We can see the equation is more complex than before. Moving forward, instead of subtracting a constant 30, a value from a global variable is used. This adds another variable to the equation, and makes it `(x * y - z)`. As is the case for global variables, their value can be changed from outside this function, which may lead to different outputs whenever this function is executed. This adds to additional complexity in determining correct solution.
 
-In a real world situation, the functions are much more complex than the above example. The increased complexity of the functions can pose significant challenges for symbolic execution. Some of the challenges are summarised below: 
+In a real world situation, the functions are much more complex than the above example. The increased complexity of the functions can pose significant challenges for symbolic execution. Some of the challenges are summarised below:
 
 - Loops and recursions in a program may lead to *infinite execution tree*
 - Multiple conditional branches or nested conditions may lead to *path explosion*
 - Complex equations generated post symbolic execution may not be solvable by SMT solvers because of their limitations
 - Program is using system calls, library calls or network events which cannot be handled by symbolic execution
 
-To overcome these challenges, typically, symbolic execution is combined with other techniques such as dynamic execution (also called concrete execution) to mitigate the path explosion problem specific to classical symbolic execution. This combination of concrete (actual) and symbolic execution is referred to as *concolic execution* (the name concolic stems from *conc*rete and symb*olic*), sometimes also called as *dynamic symbolic execution*. To visualize this, in the above example, we can obtain the value of the global variable by dynamically executing the program and feeding this information into our symbolic execution analysis. This extra information will reduce the complexity of our equations and may produce more accurate analysis results. Together with improved SMT solvers and current hardware speeds, concolic execution allows to explore paths in medium-size software modules (i.e., on the order of 10s KLOC). However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have [shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution](https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf "Jonathan Salwan and Romain Thomas: How Triton can help to reverse virtual machine based software protections") (i.e., using a mix of actual execution traces, simulation, and symbolic execution).
+To overcome these challenges, typically, symbolic execution is combined with other techniques such as dynamic execution (also called concrete execution) to mitigate the path explosion problem specific to classical symbolic execution. This combination of concrete (actual) and symbolic execution is referred to as *concolic execution* (the name concolic stems from *conc*rete and symb*olic*), sometimes also called as *dynamic symbolic execution*. To visualize this, in the above example, we can obtain the value of the global variable by dynamically executing the program and feeding this information into our symbolic execution analysis. This extra information will reduce the complexity of our equations and may produce more accurate analysis results. Together with improved SMT solvers and current hardware speeds, concolic execution allows to explore paths in medium-size software modules (i.e., on the order of 10s KLOC). However, it also comes in handy for supporting de-obfuscation tasks, such as simplifying control flow graphs. For example, Jonathan Salwan and Romain Thomas have [shown how to reverse engineer VM-based software protections using Dynamic Symbolic Execution](https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf "Jonathan Salwan and Romain Thomas: How Triton can help to reverse virtual machine based software protections")[#JSalwan] (i.e., using a mix of actual execution traces, simulation, and symbolic execution).
 
 In the Android section, you'll find a walkthrough for cracking a simple license check in an Android application using symbolic execution.
 
 ### References
 
 - [#vadla] Ole André Vadla Ravnås, [Anatomy of a code tracer](https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8 "Anatomy of a code tracer")
-
+- [#JSalwan] Jonathan Salwan and Romain Thomas, [How Triton can help to reverse virtual machine based software protections](https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf "How Triton can help to reverse virtual machine based software protections")
 #### OWASP Mobile Top 10 2016
 
 - [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
