@@ -939,7 +939,7 @@ The function names have been stripped from the binary, but luckily there are eno
 
 ![Graph of main function](Images/Chapters/0x05c/graph_1874.png)
 
-At offset `0x000018a8` `strlen` is called, and the returned value is compared to 0x10 at offset `0x000018b0`. Thereupon, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string! The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
+At offset `0x000018a8` `strlen` is called, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string. The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
 The validation function expects a 10-byte binary string, as Base32 encoded 16-character input string totals 10 bytes in raw. With the information about input, now we will look into the validation function at `0x00001760`.
 
