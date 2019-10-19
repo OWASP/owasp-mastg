@@ -1031,7 +1031,7 @@ The validation function expects a 10-byte binary string, as a Base32 encoded 16-
 ╰           0x00001868      pop {r4, fp, pc}                           ; entry.preinit0 ; entry.preinit0 ;
 ```
 
-Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points need for the analysis. In the validation function, there is a loop present at `0x00001784`, and inside the loop there is XOR operation being performed.
+Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784`, and inside the loop a XOR operation is being performed.
 
 > 0x00001798      eor r3, r2, r3
 
