@@ -184,11 +184,11 @@ Throughout the guide, you may want to address the reader in order to tell him wh
 
 ### Web Links
 
-For web links, use the normal markdown in-line link format: `[TEXT](URL "NAME")`.
+For web links, use the normal markdown in-line link format: `[TEXT](URL "NAME")`. For example:
 
-For example:
-
+```markdown
 The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
+```
 
 These links will be converted to numbered references in the print version.
 
