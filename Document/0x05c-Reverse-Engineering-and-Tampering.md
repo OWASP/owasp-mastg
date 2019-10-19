@@ -1051,7 +1051,7 @@ Clearly this function is not complex, and can be analyzed manually, but still re
 
 The constraints obtained from the above steps are passed to a solver engine, which solves the constraints to find an input which satisfies them - a valid license key.
 
-To initialize Angr's symbolic execution engine, few setup steps need to be performed:
+To initialize Angr's symbolic execution engine, a few setup steps need to be performed:
 
 - Load the binary into a `Project`. `Project` is the starting point for any kind of analyses in Angr.
 
