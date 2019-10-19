@@ -6,9 +6,9 @@ The following rules are meant to ensure consistency of the MSTG:
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person.
 
-## 1. How to write Content
+## 1. How to Write Content
 
-### Amount of content
+### Amount of Content
 
 The primary measure for amount of content on a page should be based on the purpose it serves.
 
@@ -20,13 +20,13 @@ Those containing one or two screens of text at most. Users are scanning for link
 
 Consider creating a supporting document and linking to it from the page rather than displaying all the information directly on the page.
 
-### Timeliness of content
+### Timeliness of Content
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
 
 When using statistical data on your page, ensure that the information is current and up-to-date and is accompanied by the source from which it was derived, along with the date the data was compiled.
 
-### Content for the digital platform versus for print
+### Content for the Digital Platform Versus for Print
 
 Write concise content that the user can read quickly and efficiently.
 For digital content - create shorter pages that are cross-linked. If your content is likely to be printed, create one long page.
@@ -35,7 +35,7 @@ For digital content - create shorter pages that are cross-linked. If your conten
 
 Write for an international audience with a *basic* level of technical understanding i.e. they have a mobile phone and know how to install an app. Avoid hard-to-translate slang words/phrases to ensure content is accessible to readers who aren't native English speakers.
 
-### Context and orientation
+### Context and Orientation
 
 Let the user know where he or she is on every page. Establish the topic by using a unique page heading.
 
@@ -43,7 +43,7 @@ Include a clear and concise introduction where possible.
 
 Link to background information where necessary.
 
-### Write so people will read with joy
+### Write so People Will Read with Joy
 
 Use the following methods to increase scannability:
 
@@ -66,7 +66,7 @@ For longer pages, use the following tools to make the page easily scannable:
 - Meaningful graphics, or pull quotes, to break up larger blocks of text
 - End links
 
-### Effective use of lists
+### Effective Use of Lists
 
 When presenting your content in a list format:
 
@@ -79,7 +79,7 @@ When presenting your content in a list format:
   - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
   - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
 
-### Numbering conventions
+### Numbering Conventions
 
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
 
@@ -87,9 +87,10 @@ When using any number higher than ten, use the numeric version (e.g., "12" or �
 
 ## 2. Language
 
-### American spelling and terminology
+### American Spelling and Terminology
 
 Use American spelling and terminology.
+
 Change all British spelling and terminology to the American equivalents where applicable. This includes "toward" (US) vs. "towards" (UK), "among" (US) vs. "amongst" (UK), "analyze" (US) vs. "analyse" (UK), "behavior" (US) vs "behaviour" (UK), etc.
 
 ### Plurals
@@ -119,26 +120,26 @@ This is a list of words/abbreviations that are used inconsistently at the moment
 
 Use the following common contractions:
 
-are not -> aren't  
-cannot -> can't  
-could not -> couldn't  
-did not -> didn't  
-do not -> don't  
-does not -> doesn't  
-has not -> hasn't  
-had not -> hadn't  
-have not -> haven't
-is not -> isn't
-it is -> it's
-that is -> that's  
-there is -> there's  
-was not -> wasn't  
-were not -> weren't  
-will not -> wont  
-would not -> wouldn't  
-you are -> you're  
-you have + *verb* -> you've + *verb*
-you will -> you'll  
+- are not -> aren't  
+- cannot -> can't  
+- could not -> couldn't  
+- did not -> didn't  
+- do not -> don't  
+- does not -> doesn't  
+- has not -> hasn't  
+- had not -> hadn't  
+- have not -> haven't
+- is not -> isn't
+- it is -> it's
+- that is -> that's  
+- there is -> there's  
+- was not -> wasn't  
+- were not -> weren't  
+- will not -> wont  
+- would not -> wouldn't  
+- you are -> you're  
+- you have + *verb* -> you've + *verb*
+- you will -> you'll  
 
 ### Abbreviations
 
@@ -169,21 +170,21 @@ Use the following format when referring to an Android version: Android X (API le
 
 Ex: Android 9 (API level 28)
 
-### Addressing the reader in test cases
+### Addressing the Reader in Test Cases
 
 Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
 
-**Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: ...
+**Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: [...].
 
-**Wrong:** The AndroidManifest.xml file contains an Application tag, with the following attributes: atr1, atr2 and atr3. The command below shows that atr1 is dangerous: ...
+**Wrong:** The AndroidManifest.xml file contains an Application tag, with the following attributes: atr1, atr2 and atr3. The command below shows that atr1 is dangerous: [...].
 
-**Wrong:** If we open the AndroidManifest.xml file, we will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If we run the following command, we will see that atr1 is actually dangerous: ...
+**Wrong:** If we open the AndroidManifest.xml file, we will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If we run the following command, we will see that atr1 is actually dangerous: [...].
 
 ## 3. External References
 
-For web links, use the normal markdown in-line link format:
+### Web Links
 
-\[TEXT](URL "NAME")
+For web links, use the normal markdown in-line link format: `[TEXT](URL "NAME")`.
 
 For example:
 
@@ -191,41 +192,59 @@ The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.ph
 
 These links will be converted to numbered references in the print version.
 
-For books and papers, use the following format.
+When adding them to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
 
-\[#NAME]
+```markdown
+- adb - <https://developer.android.com/studio/command-line/adb>
+```
 
-And include the full reference in the "references" section at the end of the markdown file manually. Example:
+### Books and Papers
 
-An obfuscated encryption algorithm can generate its key (or part of the key) using data collected from the environment [#riordan].
+For books and papers, use the following format: `[#NAME]`.
 
-And under "references" at the end of the document:
+And include the full reference in the **"References"** section at the end of the markdown file manually. Example:
 
+```markdown
+An obfuscated encryption algorithm can generate its key (or part of the key)
+using data collected from the environment [#riordan].
+```
+
+And under the **"References"** section at the end of the chapters:
+
+```markdown
 - [#riordan] -  James Riordan, Bruce Schneier. Environmental Key Generation towards Clueless Agents. Mobile Agents and Security, Springer Verlag, 1998
+```
 
-__Papers:__
+**Papers:**
+
 The general form for citing technical reports is to place the name and location of the company or institution after the author and title and to give the report number and date at the end of the reference.
 
 Basic Format:
 
+```markdown
 - [shortname] J. K. Author, “Title of report,” Abbrev. Name of Co., City of Co., Abbrev. State, Rep. xxx, year
 
 - [shortname] \[Author(s)\], \[Title\] - Link
+```
 
-__Books:__
+**Books:**
 
+```markdown
 - [shortname] \[Author(s)\], \[Title\], \[Published\], \[Year\]
 
 - [examplebook] J. K. Author, “Title of chapter in the book,” in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx–xxx.
+```
 
 NOTE: Use et al. when three or more names are given
 
 e.g.
 
+```markdown
 - [klaus] B. Klaus and P. Horn, Robot Vision. Cambridge, MA: MIT Press, 1986.
 - [stein] L. Stein, “Random patterns,” in Computers and You, J. S. Brake, Ed. New York: Wiley, 1994, pp. 55-70.
 - [myer] R. L. Myer, “Parametric oscillators and nonlinear materials,” in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160.
 - [abramowitz] M. Abramowitz and I. A. Stegun, Eds., Handbook of Mathematical Functions (Applied Mathematics Series 55). Washington, DC: NBS, 1964, pp. 32-33.
+```
 
 ## 4. References Within The Guide
 
@@ -237,22 +256,22 @@ See the section "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" in the c
 
 Note that in such a case the anchor (everything after the `#`) should be lowercase, and spaces should be replaced with hyphens.
 
-## 5. Insert pictures
+## 5. Insert Pictures
 
 Pictures should be uploaded to the Images/Chapters directory. Afterwards they should be embedded by using the image tag, a width of 500px should be specified. For example:
 
-```HTML
+```markdown
 <img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" width="500px"/>
 - *iOS Data Protection Key Hierarchy*
 ```
 
-## 6. Punctuation conventions
+## 6. Punctuation Conventions
 
-### Lowercase or capital letter after a colon
+### Lowercase or Capital Letter after a Colon
 
 Chicago Manual of Style (6.61: Lowercase or capital letter after a colon) says: lowercase the first word unless it is a proper noun or the start of at least two complete sentences or a direct question.
 
-### Serial comma use
+### Serial Comma Use
 
 Use a serial comma before "and" for the last item in a run-in list of three or more items. For example:
 
@@ -303,13 +322,15 @@ In order of preference, spell/punctuate **generic** technical terms according to
 
 Markdown blockquotes can be used for comments in the documents by using `>`
 
+```markdown
 > This is a blockquote
+```
 
 ## 8. Code and Shell Commands
 
-Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks. GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
+Use code blocks when including sample code, shell commands, and paths. In Markdown, code blocks are denoted by triple backticks (` ``` `). GitHub also supports syntax highlighting for a variety of languages. For example, a Java code block should be annotated as follows:
 
-```text
+```markdown
     ```java
     public static void main(String[] args) { System.out.println(" Hello World!"); } } ;
     ```
@@ -321,11 +342,13 @@ This produces the following result:
 public static void main(String[] args) { System.out.println(" Hello World!"); } }
 ```
 
-When including shell commands, make sure to remove any host names and usernames from the command prompt, e.g.:
+When including shell commands, make sure to the language for correct syntax highlighting (e.g. `shell` or `bash`) and remove any host names and usernames from the command prompt, e.g.:
 
-```shell
-$ echo 'Hello World'
-Hello World
+```markdown
+    ```shell
+    $ echo 'Hello World'
+    Hello World
+    ```
 ```
 
 When a command requires parameters that need to be modified by the reader, surround them with angle brackets:
@@ -334,9 +357,9 @@ When a command requires parameters that need to be modified by the reader, surro
 $ adb pull <remote_file> <target_destination>
 ```
 
-### In-text keywords
+### In-text Keywords
 
-When they do not occur in a code block, place the following code-related keywords in backticks (``), double straight quote marks (""), or leave unpunctuated according to the table:
+When they do not occur in a code block, place the following code-related keywords in backticks (` `` `), double straight quote marks (`""`), or leave unpunctuated according to the table:
 
 |    Backticks    | Quotation Marks | No Punctuation |
 | --- | --- | --- |
