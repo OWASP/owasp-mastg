@@ -1057,7 +1057,7 @@ You need to perform several steps to initialize Angr's symbolic execution engine
 
 - Pass the address of the code block that the analysis should reach. In this case, that's the offset `0x00001840`, where the code responsible for printing the "Product activation passed" message is located.
 
-- Also, specify the addresses we don't want to reach. In this case, we are not interested in the code block that prints the "Incorrect serial" message at `0x00001854`.
+- Also, specify the addresses that the analysis should not reach. In this case, the code block that prints the "Incorrect serial" message at `0x00001854` is not interesting.
 
 > Note that the Angr loader will load the PIE executable with a base address of `0x400000`, which needs to be added to the offsets from Cutter before passing it to Angr.
 
