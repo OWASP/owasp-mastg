@@ -225,7 +225,7 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 #### Tools
 
 - Angr - <https://github.com/angr/angr>
-- Cycript - <http://www.cycript.org/> 
+- Cycript - <http://www.cycript.org/>
 - Frida - <https://www.frida.re/>
 - Frida CLI - <https://www.frida.re/docs/frida-cli/>
 - frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
