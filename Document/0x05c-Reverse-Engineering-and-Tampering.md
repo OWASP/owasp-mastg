@@ -1115,7 +1115,7 @@ WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-i
 JQAE6ACMABNAAIIA
 ```
 
-Symbolic execution and other hybrid techniques involving symbolic execution are very useful techniques for analysis. Learning them requires understanding and extensive practice. Another example of using Angr is presented in the iOS chapter as well.
+Symbolic execution and other hybrid techniques involving symbolic execution are very useful techniques for binary analysis. Learning them requires understanding and extensive practice. Another example of using Angr is presented in the iOS chapter as well.
 
 
 ### Tampering and Runtime Instrumentation
