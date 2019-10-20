@@ -201,7 +201,7 @@ In simple words, symbolic execution is mathematically analyzing a program withou
 
 In a real world situation, the functions are much more complex than the above example. The increased complexity of the functions can pose significant challenges for classical symbolic execution. Some of the challenges are summarised below:
 
-- Loops and recursions in a program may lead to *infinite execution tree*
+- Loops and recursions in a program may lead to *infinite execution tree*.
 - Multiple conditional branches or nested conditions may lead to *path explosion*
 - Complex equations generated post symbolic execution may not be solvable by SMT solvers because of their limitations
 - Program is using system calls, library calls or network events which cannot be handled by symbolic execution
