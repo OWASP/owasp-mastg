@@ -1055,7 +1055,7 @@ You need to perform several steps to initialize Angr's symbolic execution engine
 
 - Pass the address from which the analysis should start. In this case, we will initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
 
-- Pass the address of the code block we want the analysis to reach. In this case that's offset `0x00001840`, where the message "Product activation passed" is displayed.
+- Pass the address of the code block that the analysis should reach. In this case, that's the offset `0x00001840`, where the code responsible for printing the "Product activation passed" message is located.
 
 - Also, specify the addresses we don't want to reach. In this case, we are not interested in the code block that prints the "Incorrect serial" message at `0x00001854`.
 
