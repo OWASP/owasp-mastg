@@ -220,7 +220,7 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 - [#JSalwan] Jonathan Salwan and Romain Thomas - How Triton can help to reverse virtual machine based software protections - <https://triton.quarkslab.com/files/csaw2016-sos-rthomas-jsalwan.pdf>
 #### OWASP Mobile Top 10 2016
 
-- [M9 - Reverse Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering "M9 - Reverse Engineering")
+- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### Tools
 
