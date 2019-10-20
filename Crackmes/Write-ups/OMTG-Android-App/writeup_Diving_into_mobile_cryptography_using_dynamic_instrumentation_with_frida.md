@@ -23,6 +23,12 @@ We have learnt:
 
 We will work with the [OMTG app][OMTGApp]. For this to work we will use Android 5 and Android 7 because they use different Java classes to handle the private keys.
 
+>Note: frida CLI and frida-server versions must match
+
+The specific version of frida tooling that you've installed on your workstation must match the version of frida-server that you download and push to your test device. 
+  
+This guide is written to expect alignment at `11.0.3`. Substitute `11.0.3` with your specific version as needed.
+
 ### Android 5
 
 - Create a virtual device with the following parameters:
@@ -143,6 +149,7 @@ With the terminal pointing to the directory where this files is we will run the 
 `frida -U sg.vp.owasp_mobile.OMTG_Android -l hook_decryptString.js`
 
 The Frida CLI will open, connect to the device (`-U`) and will load the script (`-l`).
+The Frida CLI will open, connect to the test device over USB (`-U`), target a specific application under test (`sg.vp.owasp_mobile.OMTG_Android`) & load load the hooking script (`-l`).
 
 From now on, every time we click on **decrypt** it will print a log as indicated in our script.
 
