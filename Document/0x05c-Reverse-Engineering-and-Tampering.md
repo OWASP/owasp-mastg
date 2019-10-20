@@ -1047,7 +1047,7 @@ Clearly this function is not complex, and can be analyzed manually, but still re
 
 ![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
 
-The constraints obtained from the above steps are passed to a solver engine, which solves the constraints to find an input which satisfies them - a valid license key.
+The constraints obtained from the above steps are passed to a solver engine, which finds an input that satisfies them - a valid license key.
 
 To initialize Angr's symbolic execution engine, a few setup steps need to be performed:
 
