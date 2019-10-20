@@ -915,7 +915,7 @@ Symbolic execution is a very useful technique to have in your toolbox, especiall
 
 The target crackme is a simple [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code, and hence, critical business logic is often written in native. The current sample application may not represent a real world problem, but nevertheless it helps getting some basic notions about symbolic execution that you can use in a real situation. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
-The crackme consists of a single ELF executable file, which can be executed on any Android device. To execute the binary file follow the instructions below:
+The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
 ```shell
 $ adb push validate /data/local/tmp
