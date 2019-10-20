@@ -1033,7 +1033,6 @@ We can now use this information about the expected input to further look into th
 
 Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
-> 0x00001798      eor r3, r2, r3
 
 The loop is more clearly visible in the graph view below.
 
