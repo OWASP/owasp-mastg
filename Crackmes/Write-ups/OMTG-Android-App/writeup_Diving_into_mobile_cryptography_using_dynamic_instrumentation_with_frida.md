@@ -148,8 +148,7 @@ With the terminal pointing to the directory where this files is we will run the 
 
 `frida -U sg.vp.owasp_mobile.OMTG_Android -l hook_decryptString.js`
 
-The Frida CLI will open, connect to the device (`-U`) and will load the script (`-l`).
-The Frida CLI will open, connect to the test device over USB (`-U`), target a specific application under test (`sg.vp.owasp_mobile.OMTG_Android`) & load load the hooking script (`-l`).
+The Frida CLI will open, connect to the test device over USB (`-U`), target a specific application under test (`sg.vp.owasp_mobile.OMTG_Android`) and load the hooking script (`-l`).
 
 From now on, every time we click on **decrypt** it will print a log as indicated in our script.
 
