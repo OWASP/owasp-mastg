@@ -454,7 +454,7 @@ If we revisit that function, we can see it involves multiple sub-function calls 
 
 - Get the ARM64 version of the binary using `lipo` tool (ARMv7 can be used as well).
 - Create an Angr `project` by loading the above binary
-- Get a `callable` by passing the address of the function to be executed. From Angr documentation, "A Callable is a representation of a function in the binary that can be interacted with like a native python function."
+- Get a `callable` object by passing the address of the function to be executed. From the Angr documentation: "A Callable is a representation of a function in the binary that can be interacted with like a native python function.".
 - Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`.
 - Access the memory and extract the string from the pointer returned by the function from above.
 
