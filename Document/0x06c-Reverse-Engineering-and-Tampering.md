@@ -452,7 +452,7 @@ While manual analyzing the code in the [Reviewing Disassembled Native Code](#rev
 
 If we revisit that function, we can see it involves multiple sub-function calls and interestingly none of these functions have dependency on other library calls or system calls. In a nutshell, these functions are self contained and can be executed without needing any other platform specific libraries. This is a perfect case to use Angr's concrete execution engine. Follow the steps below to solve this challenge using Angr:
 
-- Get the ARM64 version of the binary using `lipo` tool (ARMv7 can be used as well)
+- Get the ARM64 version of the binary using `lipo` tool (ARMv7 can be used as well).
 - Create an Angr `project` by loading the above binary
 - Get a `callable` by passing the address of the function to be executed. From Angr documentation, "A Callable is a representation of a function in the binary that can be interacted with like a native python function."
 - Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`.
