@@ -1043,7 +1043,7 @@ Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from abov
 
 ![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
 
-Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. The symbolic execution engine maps a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`) to determine the constraints on each byte of the input string.
+Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. In the above crackme, the symbolic execution engine can determine the constraints on each byte of the input string by mapping a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`).
 
 ![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
 
