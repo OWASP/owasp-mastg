@@ -1031,7 +1031,7 @@ We can now use this information about the expected input to further look into th
 ╰           0x00001868      pop {r4, fp, pc}                           ; entry.preinit0 ; entry.preinit0 ;
 ```
 
-Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784`, and inside the loop a XOR operation is being performed.
+Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
 > 0x00001798      eor r3, r2, r3
 
