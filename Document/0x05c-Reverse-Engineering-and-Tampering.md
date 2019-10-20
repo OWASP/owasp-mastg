@@ -941,7 +941,7 @@ The function names have been stripped from the binary, but luckily there are eno
 
 `strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
-The validation function expects a 10-byte binary string, as a Base32 encoded 16-character input string totals 10 bytes in raw. With the information we now have about the expected input, now we will look into the validation function at `0x00001760`.
+We can now use this information about the expected input to further look into the validation function at `0x00001760`.
 
 ```assembly_x86
 ╭ (fcn) fcn.00001760 268
