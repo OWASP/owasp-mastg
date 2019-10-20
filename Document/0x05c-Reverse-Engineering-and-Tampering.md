@@ -1039,7 +1039,7 @@ Discussing all the instructions in the function is beyond the scope of this chap
 
 XOR is a very commonly used technique to _encrypt_ information where obfuscation is the goal rather than security. **XOR should not be used for any serious encryption**, as it can be cracked using frequency analysis. Therefore, the mere presence of XOR encryption in such a validation logic always requires special attention and analysis.
 
-Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call, at `0x000017e8`.
+Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call at `0x000017e8`.
 
 ![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
 
