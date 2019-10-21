@@ -942,97 +942,97 @@ The function names have been stripped from the binary, but luckily there are eno
 `strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
 We can now use this information about the expected input to further look into the validation function at `0x00001760`.
+```
+undefined FUN_00011760()
 
-```assembly_x86
-╭ (fcn) fcn.00001760 268
-│   fcn.00001760 (int32_t arg1);
-│           ; var int32_t var_20h @ fp-0x20
-│           ; var int32_t var_14h @ fp-0x14
-│           ; var int32_t var_10h @ fp-0x10
-│           ; arg int32_t arg1 @ r0
-│           ; CALL XREF from fcn.00001760 (+0x1c4)
-│           0x00001760      push {r4, fp, lr}
-│           0x00001764      add fp, sp, 8
-│           0x00001768      sub sp, sp, 0x1c
-│           0x0000176c      str r0, [var_20h]                          ; 0x20 ; "$!" ; arg1
-│           0x00001770      ldr r3, [var_20h]                          ; 0x20 ; "$!" ; entry.preinit0
-│           0x00001774      str r3, [var_10h]                          ; str.
-│                                                                      ; 0x10
-│           0x00001778      mov r3, 0
-│           0x0000177c      str r3, [var_14h]                          ; 0x14
-│       ╭─< 0x00001780      b 0x17d0
-│       │   ; CODE XREF from fcn.00001760 (0x17d8)
-│      ╭──> 0x00001784      ldr r3, [var_10h]                          ; str.
-│       │                                                              ; 0x10 ; entry.preinit0
-│      ╎│   0x00001788      ldrb r2, [r3]
-│      ╎│   0x0000178c      ldr r3, [var_10h]                          ; str.
-│      ╎│                                                              ; 0x10 ; entry.preinit0
-│      ╎│   0x00001790      add r3, r3, 1
-│      ╎│   0x00001794      ldrb r3, [r3]
-│      ╎│   0x00001798      eor r3, r2, r3
-│      ╎│   0x0000179c      and r2, r3, 0xff
-│      ╎│   0x000017a0      mvn r3, 0xf
-│      ╎│   0x000017a4      ldr r1, [var_14h]                          ; 0x14 ; entry.preinit0
-│      ╎│   0x000017a8      sub r0, fp, 0xc
-│      ╎│   0x000017ac      add r1, r0, r1
-│      ╎│   0x000017b0      add r3, r1, r3
-│      ╎│   0x000017b4      strb r2, [r3]
-│      ╎│   0x000017b8      ldr r3, [var_10h]                          ; str.
-│      ╎│                                                              ; 0x10 ; entry.preinit0
-│      ╎│   0x000017bc      add r3, r3, 2                              ; "ELF\x01\x01\x01" ; aav.0x00000001
-│      ╎│   0x000017c0      str r3, [var_10h]                          ; str.
-│      ╎│                                                              ; 0x10
-│      ╎│   0x000017c4      ldr r3, [var_14h]                          ; 0x14 ; entry.preinit0
-│      ╎│   0x000017c8      add r3, r3, 1
-│      ╎│   0x000017cc      str r3, [var_14h]                          ; 0x14
-│      ╎│   ; CODE XREF from fcn.00001760 (0x1780)
-│      ╎╰─> 0x000017d0      ldr r3, [var_14h]                          ; 0x14 ; entry.preinit0
-│      ╎    0x000017d4      cmp r3, 4                                  ; aav.0x00000004 ; aav.0x00000001 ; aav.0x00000001
-│      ╰──< 0x000017d8      ble 0x1784                                 ; likely
-│           0x000017dc      ldrb r4, [fp, -0x1c]                       ; "4"
-│           0x000017e0      bl fcn.000016f0
-│           0x000017e4      mov r3, r0
-│           0x000017e8      cmp r4, r3
-│       ╭─< 0x000017ec      bne 0x1854                                 ; likely
-│       │   0x000017f0      ldrb r4, [fp, -0x1b]
-│       │   0x000017f4      bl fcn.0000170c
-│       │   0x000017f8      mov r3, r0
-│       │   0x000017fc      cmp r4, r3
-│      ╭──< 0x00001800      bne 0x1854                                 ; likely
-│      ││   0x00001804      ldrb r4, [fp, -0x1a]
-│      ││   0x00001808      bl fcn.000016f0
-│      ││   0x0000180c      mov r3, r0
-│      ││   0x00001810      cmp r4, r3
-│     ╭───< 0x00001814      bne 0x1854                                 ; likely
-│     │││   0x00001818      ldrb r4, [fp, -0x19]
-│     │││   0x0000181c      bl fcn.00001728
-│     │││   0x00001820      mov r3, r0
-│     │││   0x00001824      cmp r4, r3
-│    ╭────< 0x00001828      bne 0x1854                                 ; likely
-│    ││││   0x0000182c      ldrb r4, [fp, -0x18]
-│    ││││   0x00001830      bl fcn.00001744
-│    ││││   0x00001834      mov r3, r0
-│    ││││   0x00001838      cmp r4, r3
-│   ╭─────< 0x0000183c      bne 0x1854                                 ; likely
-│   │││││   0x00001840      ldr r3, [0x0000186c]                       ; [0x186c:4]=0x270 section..hash ; section..hash
-│   │││││   0x00001844      add r3, pc, r3                             ; 0x1abc ; "Product activation passed. Congratulations!"
-│   │││││   0x00001848      mov r0, r3                                 ; 0x1abc ; "Product activation passed. Congratulations!" ;
-│   │││││   0x0000184c      bl sym.imp.puts                            ; int puts(const char *s)
-│   │││││                                                              ; int puts("Product activation passed. Congratulations!")
-│  ╭──────< 0x00001850      b 0x1864
-│  ││││││   ; CODE XREFS from fcn.00001760 (0x17ec, 0x1800, 0x1814, 0x1828, 0x183c)
-│  │╰╰╰╰╰─> 0x00001854      ldr r3, aav.0x00000288                     ; [0x1870:4]=0x288 aav.0x00000288
-│  │        0x00001858      add r3, pc, r3                             ; 0x1ae8 ; "Incorrect serial." ;
-│  │        0x0000185c      mov r0, r3                                 ; 0x1ae8 ; "Incorrect serial." ;
-│  │        0x00001860      bl sym.imp.puts                            ; int puts(const char *s)
-│  │                                                                   ; int puts("Incorrect serial.")
-│  │        ; CODE XREF from fcn.00001760 (0x1850)
-│  ╰──────> 0x00001864      sub sp, fp, 8
-╰           0x00001868      pop {r4, fp, pc}                           ; entry.preinit0 ; entry.preinit0 ;
+undefined         r0:1           <RETURN>
+undefined4        Stack[-0x14]:4 local_14
+undefined4        Stack[-0x18]:4 local_18
+undefined1        Stack[-0x1c]:1 local_1c
+undefined1        Stack[-0x1d]:1 local_1d
+undefined1        Stack[-0x1e]:1 local_1e
+undefined1        Stack[-0x1f]:1 local_1f
+undefined1        Stack[-0x20]:1 local_20
+undefined4        Stack[-0x24]:4 local_24
+
+    FUN_00001760
+
+00001760      stmdb      sp!,{ r4 r11 lr }
+00001764      add        r11,sp,#0x8
+00001768      sub        sp,sp,#0x1c
+0000176c      str        r0,[r11,#local_24]
+00001770      ldr        r3,[r11,#local_24]
+00001774      str        r3,[r11,#local_14]
+00001778      mov        r3,#0x0
+0000177c      str        r3,[r11,#local_18]
+00001780      b          LAB_000117d0
+         LAB_00011784
+00001784      ldr        r3,[r11,#local_14]
+00001788      ldrb       r2,[r3,#0x0]
+0000178c      ldr        r3,[r11,#local_14]
+00001790      add        r3,r3,#0x1
+00001794      ldrb       r3,[r3,#0x0]
+00001798      eor        r3,r2,r3
+0000179c      and        r2,r3,#0xff
+000017a0      mvn        r3,#0xf
+000017a4      ldr        r1,[r11,#local_18]
+000017a8      sub        r0,r11,#0xc
+000017ac      add        r1,r0,r1
+000017b0      add        r3,r1,r3
+000017b4      strb       r2,[r3,#0x0]
+000017b8      ldr        r3,[r11,#local_14]
+000017bc      add        r3,r3,#0x2
+000017c0      str        r3,[r11,#local_14]
+000017c4      ldr        r3,[r11,#local_18]
+000017c8      add        r3,r3,#0x1
+000017cc      str        r3,[r11,#local_18]
+          LAB_000117d0
+000017d0      ldr        r3,[r11,#local_18]
+000017d4      cmp        r3,#0x4
+000017d8      ble        LAB_00011784
+000017dc      ldrb       r4,[r11,#local_20]
+000017e0      bl         FUN_000116f0
+000017e4      cpy        r3,r0
+000017e8      cmp        r4,r3
+000017ec      bne        LAB_00011854
+000017f0      ldrb       r4,[r11,#local_1f]
+000017f4      bl         FUN_0001170c
+000017f8      cpy        r3,r0
+000017fc      cmp        r4,r3
+00001800      bne        LAB_00011854
+00001804      ldrb       r4,[r11,#local_1e]
+00001808      bl         FUN_000116f0
+0000180c      cpy        r3,r0
+00001810      cmp        r4,r3
+00001814      bne        LAB_00011854
+00001818      ldrb       r4,[r11,#local_1d]
+0000181c      bl         FUN_00011728
+00001820      cpy        r3,r0
+00001824      cmp        r4,r3
+00001828      bne        LAB_00011854
+0000182c      ldrb       r4,[r11,#local_1c]
+00001830      bl         FUN_00011744
+00001834      cpy        r3,r0
+00001838      cmp        r4,r3
+0000183c      bne        LAB_00011854
+00001840      ldr        r3,[DAT_0001186c]                                = 00000270h
+00001844      add        r3=>s_Product_activation_passed._Congr_00011ab   = "Product activation passed. Co
+00001848      cpy        r0=>s_Product_activation_passed._Congr_00011ab   = "Product activation passed. Co
+0000184c      bl         puts                                             int puts(char * __s)
+00001850      b          LAB_00011864
+          LAB_00011854
+
+
+00001854      ldr        r3,[DAT_00011870]                                = 00000288h
+00001858      add        r3=>s_Incorrect_serial._00011ae8,pc,r3           = "Incorrect serial."
+0000185c      cpy        r0=>s_Incorrect_serial._00011ae8,r3              = "Incorrect serial."
+00001860      bl         puts                                             int puts(char * __s)
+          LAB_00011864
+00001864      sub        sp,r11,#0x8
+00001868      ldmia      sp!,{ r4 r11 pc }
 ```
 
 Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
-
 
 
 ![XOR instruction inside a loop](Images/Chapters/0x05c/loop_1784.png)
@@ -1105,7 +1105,11 @@ solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
 print base64.b32encode(solution)
 ```
 
-Take a closer look at the latter part of the script where the final input string is retrieved to the `solution` variable. It appears as if the script would simply read the solution string from the memory of the script. However, it's reading it from the symbolic memory. Neither the string nor the pointer to the string actually exist. The solver ensures that the solution it provides is the same as if the program would be executed to that point.
+The symbolic execution engine constructs a binary tree of the operations for the program input given, as discussed previously in "[Dynamic Binary Instrumentation](0x04c-tampering-and-reverse-engineering#dynamic-binary-instrumentation "Dynamic Binary Instrumentation")" section.  The engine will generate a mathematical equation for each possible path which is taken. Internally, Angr explores all the paths between the two points specified by us, and passes the corresponding mathematical equations to the solver to return meaningful concrete results. We can access these solutions via `path_group.found` list, which contains all the possible paths explored by Angr which satisfies our specified search criteria.
+
+In the script, take a closer look at the latter part of the script where the final solution string is being retrieved. The address of the string is obtained from address _r11 - 0x24_. This may appear magical at first, but a careful analysis of the function at 0x00001760 holds the clue. From the disassembly analysis of the function at 0x00001760, we know that the input string is checked for if it is a valid license key or not. The input string to the function (in register R0) is stored into a local stack variable, which is at address _(R11 - 0x24)_ (at 0x0000176c), and hence the value passed to retrieve the final solution in the script. The `endness` parameter in the script specifies that the data is stored in "little-endian" fashion, which is the case for almost all of the Android devices.
+
+Also, it may appear as if the script is simply reading the solution string from the memory of the script. However, it's reading it from the symbolic memory. Neither the string nor the pointer to the string actually exist. The solver ensures that the solution it provides is the same as if the program would be executed to that point.
 
 Running this script should return the following output:
 
@@ -1115,7 +1119,7 @@ WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-i
 JQAE6ACMABNAAIIA
 ```
 
-Symbolic execution and other hybrid techniques involving symbolic execution are very useful techniques for binary analysis. Learning them requires understanding and extensive practice. Another example of using Angr is presented in the iOS chapter as well.
+In the above example we utilised our analysis of the disassembled code to provide the correct criteria for symbolic execution engine for solving the problem. This is saved us valuable time required for analysing the disassembled instructions manually. To conclude, Symbolic execution and other hybrid techniques involving symbolic execution are very useful techniques for binary analysis. Learning them requires understanding and extensive practice. Another example of using Angr is presented in the iOS chapter.
 
 
 ### Tampering and Runtime Instrumentation
