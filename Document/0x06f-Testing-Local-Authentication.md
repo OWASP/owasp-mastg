@@ -251,4 +251,4 @@ Unlike macOS and Android, iOS currently (at iOS 12) does not support temporarine
 
 #### CWE
 
-- CWE-287 - Improper Authentication
+- CWE-287 - Improper Authentication - <https://cwe.mitre.org/data/definitions/287.html>

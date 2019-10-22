@@ -92,7 +92,7 @@ To prevent tampering cryptographic signatures are added to client-side tokens. O
 
 ### Testing Best Practices for Passwords (MSTG-AUTH-5 and MSTG-AUTH-6)
 
-Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The followig sections will cover various areas regarding password best practices. For further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls").
+Password strength is a key concern when passwords are used for authentication. The password policy defines requirements to which end users should adhere. A password policy typically specifies password length, password complexity, and password topologies. A "strong" password policy makes manual or automated password cracking difficult or impossible. The following sections will cover various areas regarding password best practices. For further information please consult the [OWASP Authentication Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md#implement-proper-password-strength-controls "Implement Proper Password Strength Controls").
 
 #### Static Analysis
 
@@ -156,25 +156,25 @@ Additional brute force mitigation techniques are described on the OWASP page [Bl
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
-> Please keep in mind that when using Burp Suite Community Edition, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or OWASP ZAP.
+> Please keep in mind that the Burp Suite Community Edition has significant limitations apart from not being able to save projects. For example, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or OWASP ZAP.
 
 Execute the following steps for a wordlist based brute force attack with Burp Intruder:
 
 - Start Burp Suite Professional.
 - Create a new project (or open an existing one).
 - Set up your mobile device to use Burp as the HTTP/HTTPS proxy. Log into the mobile app and intercept the authentication request sent to the backend service.
-- Right-click this request on the 'Proxy/HTTP History' tab and select 'Send to Intruder' in the context menu.
-- Select the 'Intruder' tab in Burp Suite. For further information on how to use [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using "Using Burp Intruder") read the official documentation on Portswigger.
-- Make sure all parameters in the 'Target', 'Positions', and 'Options' tabs are appropriately set and select the 'Payload' tab.
+- Right-click this request on the **Proxy/HTTP History** tab and select **Send to Intruder** in the context menu.
+- Select the **Intruder** tab. For further information on how to use [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using "Using Burp Intruder") read the official documentation on Portswigger.
+- Make sure all parameters in the **Target**, **Positions**, and **Options** tabs are appropriately set and select the **Payload** tab.
 - Load or paste the list of passwords you want to try. There are several resources available that offer password lists, like [FuzzDB](https://github.com/fuzzdb-project/fuzzdb/ "FuzzDB"), the built-in lists in Burp Intruder or the files available in `/usr/share/wordlists` on Kali Linux.
 
 Once everything is configured and you have a word-list selected, you're ready to start the attack!
 
 <img src="Images/Chapters/0x04e/BurpIntruderInputList.png" alt="List of passwords in Burp Suite" width="450">
 
-- Click the 'Start attack' button to attack the authentication.
+- Click the **Start attack** button to attack the authentication.
 
-A new window will open. Site requests are sent sequentially, each request corresponding to a password from the list. Information about the response (length, status code etc.) is provided for each request, allowing you to distinguish successful and unsuccessful attempts:
+A new window will open. Site requests are sent sequentially, each request corresponding to a password from the list. Information about the response (length, status code, etc.) is provided for each request, allowing you to distinguish successful and unsuccessful attempts:
 
 <img src="Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.png" alt="A successful attack in Burp Suite" width="450">
 
@@ -537,14 +537,14 @@ The developer can make use of specific meta-information and associate it to each
 
 - Device: The user can clearly identify all devices where the app is being used.
 - Date and Time: The user can clearly see the latest date and time when the app was used.
-- Location: The user can clearly identify the lastest locations where the app was used.
+- Location: The user can clearly identify the latest locations where the app was used.
 
-The application can provide a list of activities history which will be updated after each sensitive activity within the application. The choice of which activities to audit needs to be done for each application based on the data it handles and the level of security risk the team is willing to have. Below is a list of common sensitive activies that are usually audited:
+The application can provide a list of activities history which will be updated after each sensitive activity within the application. The choice of which activities to audit needs to be done for each application based on the data it handles and the level of security risk the team is willing to have. Below is a list of common sensitive activities that are usually audited:
 
 - Login attempts
 - Password changes
 - Personal Identifiable Information changes (name, email address, telephone number, etc.)
-- Sensitive activities (purchase, accessing important ressources, etc.)
+- Sensitive activities (purchase, accessing important resources, etc.)
 - Consent to Terms and Conditions clauses
 
 Paid content requires special care, and additional meta-information (e.g., operation cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
@@ -597,12 +597,11 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - Konoth, Radhesh Krishnan, Victor van der Veen, and Herbert Bos. "How anywhere computing just killed your phone-based two-factor authentication." International Conference on Financial Cryptography and Data Security. Springer, Berlin, Heidelberg, 2016.
 - Mulliner, Collin, et al. "SMS-based one-time passwords: attacks and defense." International Conference on Detection of Intrusions and Malware, and Vulnerability Assessment. Springer, Berlin, Heidelberg, 2013.
 - Siadati, Hossein, et al. "Mind your SMSes: Mitigating social engineering in second factor authentication." Computers & Security 65 (2017): 14-28.
--Siadati, Hossein, Toan Nguyen, and Nasir Memon. "Verification code forwarding attack (short paper)." International Conference on Passwords. Springer, Cham, 2015.
+- Siadati, Hossein, Toan Nguyen, and Nasir Memon. "Verification code forwarding attack (short paper)." International Conference on Passwords. Springer, Cham, 2015.
 
 ##### Tools
 
-- Free and Professional Burp Suite editions - <https://portswigger.net/burp/>
-Important precision: The free Burp Suite edition has significant limitations . In the Intruder module, for example, the tool automatically slows down after a few requests, password dictionaries aren't included, and you can't save projects.
+- Burp Suite - <https://portswigger.net/burp/>
 - Using Burp Intruder - <https://portswigger.net/burp/documentation/desktop/tools/intruder/using>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - jwtbrute - <https://github.com/jmaxxz/jwtbrute>
