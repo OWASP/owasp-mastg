@@ -2,9 +2,19 @@
 
 > Author: Jon-Anthoney de Boer
 
+## What is the frida gadget
+
+At a high-level, [frida][Frida] is a dynamic binary instrumentation toolset that enables security testers to `hook` into applications and inspect or alter their behaviour at runtime. 
+
+The frida CLI; itself installed on the test workstation, can be used in communication with the [frida server][FridaServer]. The frida server is a component that can be loaded onto a test device when the test device is rooted, as it requires elevated permissions to function as intended. This component enables the instrumentation of the target application running on the test device. 
+
+The frida CLI can also be used in comunication with the [frida gadget][FridaGadget]. The frida gadget is a component that achieves similar functionality as the frida server, but does so where the test device is not rooted. 
+
+The use of the frida gadget, to enable dynamic binary instrumentation of a target application on a non-rooted test device, is the focus of this write-up. 
+
 ## Why use the frida gadget?
 
-It can be useful to be able to make use of a non-rooted test device when carrying out security testing of an android application. This can be achieved by injecting the frida gadget into a target application to provide support for dynamic binary instrumentation. The steps required to instrument the target application are a little more involved when making use of the frida gadget on a non-rooted device than they are where the tester has recourse to a rooted test device and so can make use of the frida-server component.
+It can be useful to be able to utilise a non-rooted test device when carrying out security testing of an android application for a variety of reasons. This can be achieved by injecting the frida gadget into a target application to provide support for dynamic binary instrumentation. The steps required to instrument the target application are a little more involved when making use of the frida gadget on a non-rooted device than they are where the tester has recourse to a rooted test device and so can make use of the frida server component.
 
 This write-up is crafted with reference to the [OWASP Crackme Level 1 app][OWASPCrackMeLevel1] as a convenient target application, and is based upon the excellent information found in various resources that are available online. Some references are listed at the end of this write-up.
 
@@ -20,9 +30,9 @@ Broadly, through following this write-up the reader will learn:
 
 We will work with the [OMTG Crackme Level 1 app][OWASPCrackMeLevel1]. For convenience, this write-up will reuse either of the android emulators that may have been configured as a part of the [Diving into mobile cryptography using dynamic instrumentation][OWASPDivingIntoCryptoWithDynamicInstrumentation] write-up.
 
->Note: frida CLI and frida-server versions must match
+>Note: frida CLI and frida gadget versions must match
 
-The specific version of frida tooling that you've installed on your workstation must match the version of frida-server that you download and push to your test device. 
+The specific version of frida tooling that you've installed on your workstation must match the version of frida gadget that you download and inject into your target application. 
   
 This guide is written to expect alignment at `12.11.7`. Substitute `12.11.7` with your specific version as needed.
 
@@ -31,7 +41,7 @@ This guide is written to expect alignment at `12.11.7`. Substitute `12.11.7` wit
 The goal is for the reader to be able to decompose a target application from APK to source and resources. Then, inject the frida gadget into the application and initialise it early in the target application's initialisation sequence. Next, repackage the target application back into an APK for deployment to a test device. Finally, confirm that communication is establised between frida on the tester's workstation and the frida gadget as injected within the target application. 
 
 ## Let's get started
-There are four broad stages involved in preparing for testing a target application on a non-rooted device via dynamic binary injection using the frida gadget. These are:
+There are four broad stages involved in preparing for testing of a target application on a non-rooted device via dynamic binary injection using the frida gadget. These are:
 - Initial setup and decomposition
 - Injection and initialision
 - Repackaging and deployment 
@@ -80,7 +90,7 @@ $ xz -d frida-gadget-12.7.11-android-x86_64.so.xz
 ```
 >Note: it can be convenient to make use of MacOS' Unarchiver utility if a `File format` error is encountered when attempting to decompress the frida gadget archive.
 
-Decompose the target app into which the frida gadget will be injected
+Decompose the target application into which the frida gadget will be injected
 ```
 $ apktool d UnCrackable-Level1.apk -o uncrackableLevel1Gadget
 ```
@@ -203,13 +213,21 @@ $
 
 It is possible to make use of frida for dynamic binary instrumentation of a target android application - even without recourse to a rooted test device - using the frida gadget. Happy days =)
 
+## Next steps
+
+At this point, you have worked through a set of specific steps required to inject the frida gadget into a target application and understand the process involved. Conveniently, there are resources available that can automate this process - such as with [objection][patchingwithobjection]. Try it out. 
+
 ## References
 - [FRIDA Gadget](https://www.frida.re/docs/gadget/)
 - [Diving into mobile cryptography using dynamic instrumentation with frida](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Write-ups/OMTG-Android-App/writeup_Diving_into_mobile_cryptography_using_dynamic_instrumentation_with_frida.md)
 - [How to use frida on a non-rooted device](https://lief.quarkslab.com/doc/latest/tutorials/09_frida_lief.html)
 - [Using Frida on Android without root](https://koz.io/using-frida-on-android-without-root/)
+- [objection - patching android applications](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk)
 ___
 
+[patchingwithobjection]: https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk
 [OWASPCrackMeLevel1]: https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 [OWASPDivingIntoCryptoWithDynamicInstrumentation]: https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Write-ups/OMTG-Android-App/writeup_Diving_into_mobile_cryptography_using_dynamic_instrumentation_with_frida.md
 [Frida]: https://frida.re
+[FridaGadget]: https://www.frida.re/docs/gadget/
+[FridaServer]: https://www.frida.re/docs/modes/#injected
