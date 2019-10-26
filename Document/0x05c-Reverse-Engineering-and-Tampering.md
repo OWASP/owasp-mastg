@@ -1107,7 +1107,9 @@ Running this script should return the following output:
 
 ```shell
 (angr) $ python solve.py
-WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
+WARNING | cle.loader | The main binary is a position-independent executable.
+It is being loaded with a base address of 0x400000.
+
 JQAE6ACMABNAAIIA
 ```
 
