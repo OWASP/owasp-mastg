@@ -1110,7 +1110,7 @@ Running this script should return the following output:
 WARNING | cle.loader | The main binary is a position-independent executable.
 It is being loaded with a base address of 0x400000.
 
-JQAE6ACMABNAAIIA
+b'ABGAATYAJQAFUABB'
 ```
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.  
