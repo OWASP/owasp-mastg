@@ -31,15 +31,36 @@ $ xcode-select --install
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
 
-It is also possible to get the UDID via the command line, from a device attached via USB. Install `ideviceinstaller` via brew and use the command `idevice_id -l`:
+It is also possible to get the UDID via various command line tools while the device is attached via USB:
 
-```shell
-$ brew install ideviceinstaller
-$ idevice_id -l
-316f01bd160932d2bf2f95f1f142bc29b1c62dbc
-```
+- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
 
-Alternatively you can also use the Xcode command `instruments -s devices`.
+    ```sh
+    $ ioreg -p IOUSB -l | grep "USB Serial"
+    |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
+    ```
+
+- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
+
+    ```sh
+    $ brew install ideviceinstaller
+    $ idevice_id -l
+    316f01bd160932d2bf2f95f1f142bc29b1c62dbc
+    ```
+
+- By using the system_profiler (macOS only):
+
+    ```sh
+    $ system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p;/iPhone/,/Serial/p;/iPod/,/Serial/p' | grep "Serial Number:"
+    2019-09-08 10:18:03.920 system_profiler[13251:1050356] SPUSBDevice: IOCreatePlugInInterfaceForService failed 0xe00002be
+                Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
+    ```
+
+- By using instruments (macOS only):
+
+    ```sh
+    $ instruments -s devices
+    ```
 
 ##### Testing on a real device (Jailbroken)
 
@@ -62,11 +83,11 @@ The purpose of jailbreaking is to disable iOS protections (Apple's code signing 
 
 Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
 
-Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
+Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
 
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
-Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS."
+Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS".
 
 ###### Benefits of Jailbreaking
 
@@ -95,7 +116,7 @@ Jailbreaking an iOS device is becoming more and more complicated because Apple k
 
 If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
 
-iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window," and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
+iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
 ###### Which Jailbreaking Tool to Use
 
@@ -114,7 +135,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 
 #### Recommended Tools - iOS Device
 
-Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to Sources -> Edit, then clicking "Add" in the top left:
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
 
 - <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
 - <http://repo.hackyouriphone.org>: Add the HackYouriPhone repository to get the AppSync package.
@@ -143,7 +164,7 @@ After adding all the suggested repositories above you can install the following 
 - IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
 - Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
 - Grep: Handy tool to filter lines.
-- Gzip: A well known zip utility.
+- Gzip: A well known ZIP utility.
 - Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
 - Open for iOS 11: Tool required to make Needle Agent function.
 - PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
@@ -158,31 +179,51 @@ $ apt-get update
 $ apt-get install adv-cmds
 ```
 
-#### Recommended Tools - macOS Device
+##### Small note on USB of an iDevice
 
-In order to analyze iOS apps, you should use a macOS device and install the following tools we'll be referring throughout the guide:
+On an iOS device you cannot make data connections anymore after 1 hour of being in a locked state, unless you unlock it again due to the USB Restricted Mode, which was introduced with iOS 11.4.1
+
+#### Recommended Tools - Host Computer
+
+In order to analyze iOS apps, you should install the following tools on your host computer. We'll be referring to them throughout the guide. Please note that a great number of them will require macOS in order to run and therefore using a macOS computer is normally the recommendation when dealing with iOS apps.
 
 ##### Burp Suite
 
-[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "Setting up an Interception Proxy" for detailed instructions on how to set it up in an iOS environment.
+[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "[Setting up an Interception Proxy](#setting-up-an-interception-proxy "Setting up an Interception Proxy")" for detailed instructions on how to set it up in an iOS environment.
 
 ##### Frida
 
-[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. The [installation instructions for Frida](https://www.frida.re/docs/installation/ "Installation of Frida") can be found on the official website. Frida is used in several of the following sections and chapters. For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
+[Frida](https://www.frida.re "Frida") is a free and open-source dynamic code instrumentation toolkit that lets you execute snippets of JavaScript into your native apps. It was already introduced in the chapter "[Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md#frida "Frida")" of the general testing guide. Frida is used in several of the following sections and chapters.
+
+Frida supports interaction with the Objective-C runtime through the [ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API"). You'll be able to hook and call both Objective-C and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
+
+Here are some tasks that Frida APIs offers and are relevant or exclusive on iOS:
+
+- Instantiate Objective-C objects and call static and non-static class methods ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
+- Trace Objective-C method calls and/or replace their implementations ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
+- Enumerate live instances of specific classes by scanning the heap ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
+- Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
+- Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
+
+Remember that on iOS, you can also benefit from the built-in tools provided when installing Frida, which include the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name a few.
+
+There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in their name and belonging to any class whose name starts with "NSURL" is as easy as running:
+
+```bash
+$ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
+```
+
+For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
 
 ##### Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from a jailbroken device. Please refer to the section "Using Frida-ios-dump" for detailed instructions on how to use it.
-
-##### Ghidra
-
-[Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
 ##### IDB
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
 
-Once you click on the button "Connect to USB/SSH device" in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on "Select App...", select the app you want to analyze and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
+Once you click on the button **Connect to USB/SSH device** in IDB and key in the SSH password in the terminal where you started IDB is ready to go. You can now click on **Select App...**, select the app you want to analyze and get initial meta information of the app. Now you are able to do binary analysis, look at the local storage and investigate IPC.
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
@@ -194,7 +235,7 @@ With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you ca
 $ brew install ios-deploy
 ```
 
-For the usage please refer to the section "ios-deploy" below which is part of "Installing Apps".
+For the usage please refer to the section "ios-deploy" below which is part of "[Installing Apps](#installing-apps "Installing Apps")".
 
 ##### iFunBox
 
@@ -204,7 +245,7 @@ It has several features, like app installation, access the app sandbox without j
 
 ##### Keychain-Dumper
 
-[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "Keychain-dumper (Jailbroken)" for detailed instructions on how to use it.
+[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
 
 ##### Mobile-Security-Framework - MobSF
 
@@ -260,6 +301,8 @@ Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framewor
 Please also ensure that you install the Darwin CC Tools from the Coolstar repository, to get Needle to work on iOS 12.
 
 In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
+
+> There are known issues with Needle when running on iOS devices that are [jailbroken with Chimera](https://github.com/mwrlabs/needle/issues/273 "Many modules dont work with chimera jail break"). Instead, the unc0ver jailbreak should be used.
 
 ##### Objection
 
@@ -418,13 +461,13 @@ If you forget your password and want to reset it to the default `alpine`:
 
 1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
 2. Find the lines:
-  
-  ```shell
-  root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
-  mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
-  ```
-  
-3. Change `xxxxxxxxx` to `/smx7MYTQIi2M`
+
+   ```shell
+    root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
+    mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
+   ```
+
+3. Change `xxxxxxxxx` to `/smx7MYTQIi2M` (which is the hashed password `alpine`)
 4. Save and exit
 
 ###### Connect to a Device via SSH over USB
@@ -453,7 +496,7 @@ You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecur
 
 ##### On-device Shell App
 
-While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/) via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
+While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/ "NewTerm 2") via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
 
 In addition, there are a few jailbreaks that explicitly disable incoming SSH *for security reasons*. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
 
@@ -491,7 +534,7 @@ After starting Passionfruit you can select the app that is in scope for testing.
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory">
 
-When navigating through the directories and selecting a file, a TextViewer pop-up will show up that illustrates the data either as hex or text. When closing this pop-up you have various options available for the file, including:
+When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
 - Text viewer
 - SQLite viewer
@@ -527,7 +570,7 @@ Writing bytes to destination...
 Successfully downloaded /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 ```
 
-You can also upload files with `file upload <local_file_path>` to the iOS device, but this implementation is not fully stable at the moment and might produce an error. If that's the case file an issue in the [objection GitHub repo](https://github.com/sensepost/objection/issues "Objection Issues").
+You can also upload files to the iOS device with `file upload <local_file_path>`.
 
 #### Obtaining and Extracting Apps
 
@@ -539,7 +582,7 @@ During development, apps are sometimes provided to testers via over-the-air (OTA
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
-You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPS from an OTA distribution URL. Install it via npm:
+You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPA from an OTA distribution URL. Install it via npm:
 
 ```shell
 $ npm install -g itms-services
@@ -555,7 +598,7 @@ Save the IPA file locally with the following command:
 
 1. From an IPA:
 
-   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. "Payload/Telegram X.app/Telegram X". See the following subsection for details on the extraction of the property lists.
+   If you have the IPA (probably including an already decrypted app binary), unzip it and you are ready to go. The app binary is located in the main bundle directory (.app), e.g. `Payload/Telegram X.app/Telegram X`. See the following subsection for details on the extraction of the property lists.
 
     > On macOS's Finder, .app directories are opened by right-clicking them and selecting "Show Package Content". On the terminal you can just `cd` into them.
 
@@ -593,11 +636,11 @@ $ class-dump Telegram
 //
 ```
 
-In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-iOS-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways for extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or modify Clutch as discussed later.
+In order to retrieve the unencrypted version, we can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") or [Clutch](https://github.com/KJCracks/Clutch "Clutch"). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and Frida can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary. In general, all iOS versions lower than 12 should work with Clutch, while iOS 12+ should work with frida-ios-dump or a modified version of Clutch as discussed later.
 
 ###### Using Clutch
 
-After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through scp. Run Cluch with the -i flag to list all installed applications:
+After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
 
 ```shell
 root# ./Clutch -i
@@ -658,12 +701,14 @@ Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](http
 
 ###### Using Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") requires Frida server running on your jailbroken device. It is basically using Frida scripts to dump the decrypted binary from memory onto a file.
-Note: before we get started, please note that the Frida-ios-dump tool is not always compatible with the latest version of Frida. Therefore: it might well be that you have to install an older version of Frida on your jailbroken device.
-First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the username and password to the ones you use. Now you can safely use the tool to enumerate the apps installed:
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") is a Python script that helps you retrieve the decrypted version of an iOS app from an iOS device. It supports both Python 2 and Python 3 and requires Frida running on your iOS device (jailbroken or not). This tool uses Frida's [Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida Memory API") to dump the memory of the running app and recreate an IPA file. Because the code is extracted from memory, it is automatically decrypted.
+
+First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
+
+Now you can safely use the tool to enumerate the apps installed:
 
 ```shell
-$ ./dump.py -l
+$ python dump.py -l
  PID  Name             Identifier
 ----  ---------------  -------------------------------------
  860  Cydia            com.saurik.Cydia
@@ -678,12 +723,7 @@ and you can dump one of the listed binaries:
 
 ```shell
 $ python dump.py ph.telegra.Telegraph
-/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:39: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
-  m.add_string(self.Q_C.public_numbers().encode_point())
-/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:96: CryptographyDeprecationWarning: Support for unsafe construction of public numbers from encoded data will be removed in a future version. Please use EllipticCurvePublicKey.from_encoded_point
-  self.curve, Q_S_bytes
-/Users/jbeckers/Security/iOS/frida-ipa-dump/env/lib/python2.7/site-packages/paramiko/kex_ecdh_nist.py:111: CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.
-  hm.add_string(self.Q_C.public_numbers().encode_point())
+
 Start the target app ph.telegra.Telegraph
 Dumping Telegram to /var/folders/qw/gz47_8_n6xx1c_lwq7pq5k040000gn/T
 [frida-ios-dump]: HockeySDK.framework has been loaded.
@@ -698,7 +738,7 @@ libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00
 0.00B [00:00, ?B/s]Generating "Telegram.ipa"
 ```
 
-After this, the Telegram.ipa file will be created in your current directory. You can validate the successfulness of the dump by removing the application and reinstalling it through io-deploy using `ios-deploy -b Telegram.ipa`. Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
+After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 #### Installing Apps
 
@@ -784,8 +824,8 @@ $ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
 It is also possible to use the Xcode IDE to install iOS apps by doing the following steps:
 
 1. Start Xcode
-2. Select "Window/Devices and Simulators"
-3. Select the connected iOS device and click on the "+" sign in "Installed Apps".
+2. Select **Window/Devices and Simulators**
+3. Select the connected iOS device and click on the **+** sign in **Installed Apps**.
 
 ##### Allow Application Installation on a Non-iPad Device
 
@@ -850,7 +890,7 @@ You can also directly open passionfruit and after selecting your iOS device you'
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
 
-You can unzip the IPA using the standard `unzip` or any other zip utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```shell
 $ ls -1 Payload/iGoat-Swift.app
@@ -1000,7 +1040,7 @@ Application: /private/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-
 Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 ```
 
-Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "Recommended Tools - Objection".
+Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "[Recommended Tools - Objection](#using-objection "Recommended Tools - Objection")".
 
 ```shell
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env
@@ -1099,7 +1139,7 @@ Regular           420  None                ...  Info.plist
 Regular           493  None                ...  iGoat-Swift
 ```
 
-You can also visualize the Bundle directory from Passionfruit by clicking on "Files" -> "App Bundle":
+You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
 <img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View">
 
@@ -1107,7 +1147,7 @@ Including the `Info.plist` file:
 
 <img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View">
 
-As well as the Data directory in "Files" -> "Data":
+As well as the Data directory in **Files** -> **Data**:
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View">
 
@@ -1115,18 +1155,18 @@ Refer to the "Testing Data Storage" chapter for more information and best practi
 
 ##### Monitoring System Logs
 
-Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode "Devices" window as follows:
+Many apps log informative (and potentially sensitive) messages to the console log. The log also contains crash reports and other useful information. You can collect console logs through the Xcode **Devices** window as follows:
 
 1. Launch Xcode.
 2. Connect your device to your host computer.
-3. Choose "Window" -> "Devices and Simulators".
+3. Choose **Window** -> **Devices and Simulators**.
 4. Click on your connected iOS device in the left section of the Devices window.
 5. Reproduce the problem.
-6. Click on the "Open Console" button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
+6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
 ![Opening the Device Console in Xcode](Images/Chapters/0x06b/open_device_console.png)
 
-To save the console output to a text file, go to the top right side of the Console window and click on the "Save" button.
+To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
 ![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
 
@@ -1147,7 +1187,7 @@ Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch
 ...
 ```
 
-Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the "Console" -> "Output" tab:
+Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the **Console** -> **Output** tab:
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View">
 
@@ -1238,13 +1278,13 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 ###### Passionfruit (Jailbroken / non-Jailbroken)
 
-With Passionfruit it's possible to access the keychain data of the app you have selected. Click on "Storage" and "Keychain" and you can see a listing of the stored Keychain information.
+With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250">
 
 ###### Keychain-dumper (Jailbroken)
 
-[Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/) lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
+[Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain-dumper") lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
 ```shell
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
@@ -1277,25 +1317,38 @@ Keychain Data: WOg1DfuH
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
 Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
-#### Static Analysis
+### Setting Up a Network Testing Environment
 
-##### Manual Static Analysis
+#### Basic Network Monitoring/Sniffing
 
-The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
+You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
 
-Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code. We won't go into too much detail of assembly code in this chapter, but we will revisit the topic in the chapter "Reverse Engineering and Tampering on iOS".
+1. Connect your iOS device to your macOS machine via USB.
+2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
 
-The static analysis instructions in the following chapters are based on the assumption that the source code is available.
+```shell
+$ rvictl -s <UDID>
+Starting device <UDID> [SUCCEEDED] with interface rvi0
+```
 
-##### Automated Static Analysis Tools
+1. Launch Wireshark and select "rvi0" as the capture interface.
+1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
-Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
+```text
+ip.addr == 192.168.1.1 && http
+```
 
-Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
+![Capture Filters in Wireshark](Images/Chapters/0x06b/wireshark_filters.png)
 
-#### Dynamic Analysis
+The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
-Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
+#### Setting up an Interception Proxy
+
+Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+
+Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
+
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 ##### Using Burp via USB on a Jailbroken Device
 
@@ -1318,159 +1371,14 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 
 The last step would be to set the proxy globally on your iOS device:
 
-1. Go to Settings
-2. Wi-Fi
-3. Connect to **any** Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
-4. Once connected click on the small blue icon on the right side of the connect Wi-Fi
-5. Configure your Proxy by selecting Manual
-6. Type in 127.0.0.1 as Server
-7. Type in 8080 as Port
+1. Go to **Settings** -> **Wi-Fi**
+2. Connect to *any* Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+3. Once connected click on the small blue icon on the right side of the connect Wi-Fi
+4. Configure your Proxy by selecting **Manual**
+5. Type in 127.0.0.1 as **Server**
+6. Type in 8080 as **Port**
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
-
-##### Using Frida
-
-When you've already read the Android section of this guide, you should be quite familiar with Frida by now.
-
-To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
-
-Start Cydia and add Frida's repository by navigating to Manage -> Sources -> Edit -> Add and entering <https://build.frida.re.> You should then be able to find and install the Frida package.
-
-Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
-
-```shell
-$ frida-ps -U
-PID  Name
----  ----------------
-963  Mail
-952  Safari
-416  BTServer
-422  BlueTool
-791  CalendarWidget
-451  CloudKeychainPro
-239  CommCenter
-764  ContactsCoreSpot
-(...)
-```
-
-We will demonstrate a few more uses for Frida below.
-
-##### Method Tracing with Frida
-
-Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
-
-In the following examples, we'll assume that you are working on a jailbroken device. If that's not the case, you first need to follow the steps outlined in the previous section to repackage the Safari app.
-
-Frida comes with `frida-trace`, a ready-made function tracing tool. `frida-trace` accepts Objective-C methods via the "-m" flag. You can pass it wildcards as well-given `-[NSURL *]`, for example, `frida-trace` will automatically install hooks on all `NSURL` class selectors. We'll use this to get a rough idea about which library functions Safari calls when the user opens a URL.
-
-Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace` as follows:
-
-```shell
-$ frida-trace -U -m "-[NSURL *]" Safari
-Instrumenting functions...
--[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
--[NSURL isAppStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isAppStoreURL_.js"
-(...)
-Started tracing 248 functions. Press Ctrl+C to stop.
-```
-
-Next, navigate to a new website in Safari. You should see traced function calls on the `frida-trace` console. Note that the `initWithURL:` method is called to initialize a new URL request object.
-
-```shell
-           /* TID 0xc07 */
-  20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
- 20313 ms  -[NSURLRequest URL]
-(...)
- 21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
- 21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
-```
-
-We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
-
-```objc
-- (instancetype)initWithURL:(NSURL *)url;
-```
-
-The method is called with a single argument of type `NSURL`. According to the [Apple Developer documentation](https://developer.apple.com/documentation/foundation/nsurl?language=objc "Apple Developer Website - NSURL class"), the `NSRURL` class has a property called `absoluteString`, whose value should be the absolute URL represented by the `NSURL` object.
-
-We now have all the information we need to write a Frida script that intercepts the `initWithURL:` method and prints the URL passed to the method. The full script is below. Make sure you read the code and inline comments to understand what's going on.
-
-```python
-import sys
-import frida
-
-// JavaScript to be injected
-frida_code = """
-
-    // Obtain a reference to the initWithURL: method of the NSURLRequest class
-    var URL = ObjC.classes.NSURLRequest["- initWithURL"];
-
-    // Intercept the method
-    Interceptor.attach(URL.implementation, {
-      onEnter: function(args) {
-
-        // We should always initialize an autorelease pool before interacting with Objective-C APIs
-
-        var pool = ObjC.classes.NSAutoreleasePool.alloc().init();
-
-        var NSString = ObjC.classes.NSString;
-
-        // Obtain a reference to the NSLog function, and use it to print the URL value
-        // args[2] refers to the first method argument (NSURL *url)
-
-        var NSLog = new NativeFunction(Module.findExportByName('Foundation', 'NSLog'), 'void', ['pointer', '...']);
-
-        NSLog(args[2].absoluteString_());
-
-        pool.release();
-      }
-    });
-"""
-
-process = frida.get_usb_device().attach("Safari")
-script = process.create_script(frida_code)
-script.on('message', message_callback)
-script.load()
-
-sys.stdin.read()
-```
-
-Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (we'll explain how to open device logs in the following section). Try opening a new URL in Safari; you should see Frida's output in the logs.
-
-![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
-
-Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
-
-### Setting Up a Network Testing Environment
-
-#### Basic Network Monitoring/Sniffing
-
-You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS machine.
-
-1. Connect your iOS device to your macOS machine via USB.
-2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
-
-```shell
-$ rvictl -s <UDID>
-Starting device <UDID> [SUCCEEDED] with interface rvi0
-```
-
-1. Launch Wireshark and select "rvi0" as the capture interface.
-1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
-
-```shell
-ip.addr == 192.168.1.1 && http
-```
-
-The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
-
-#### Setting up an Interception Proxy
-
-Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
-
-Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
-
-PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
 
 #### Certificate Pinning
 
@@ -1480,26 +1388,46 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 ### References
 
+- Jailbreak Exploits - <https://www.theiphonewiki.com/wiki/Jailbreak_Exploits>
+- limera1n exploit - <https://www.theiphonewiki.com/wiki/Limera1n>
+- IPSW Downloads website - <https://ipsw.me>
+- Can I Jailbreak? - <https://canijailbreak.com/>
+- The iPhone Wiki - <https://www.theiphonewiki.com/>
+- Redmond Pie - <https://www.redmondpie.com/>
+- Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
+- Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
 - UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
 
 #### Tools
 
+- Apple iOS SDK - <https://developer.apple.com/download/more/>
+- AppSync - <http://repo.hackyouriphone.org/appsyncunified>
 - Burp Suite - <https://portswigger.net/burp/communitydownload>
+- Chimera - <https://chimera.sh/>
 - Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
 - Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
 - Clutch - <https://github.com/KJCracks/Clutch>
+- Cydia Impactor - <http://www.cydiaimpactor.com/>
 - Frida - <https://www.frida.re>
 - Frida-ios-dump - <https://github.com/AloneMonkey/frida-ios-dump>
 - IDB - <https://www.idbtool.com>
+- iFunBox - <http://www.i-funbox.com/>
 - Introspy - <https://github.com/iSECPartners/Introspy-iOS>
+- ios-deploy - <https://github.com/ios-control/ios-deploy>
+- IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa>
 - ipainstaller - <https://github.com/autopear/ipainstaller>
 - iProxy - <https://iphonedevwiki.net/index.php/SSH_Over_USB>
+- ITMS services asset downloader - <https://www.npmjs.com/package/itms-services>
 - Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
+- libimobiledevice - <https://www.libimobiledevice.org/>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Needle - <https://github.com/mwrlabs/needle>
 - Objection - <https://github.com/sensepost/objection>
-- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
+- Passionfruit - <https://github.com/chaitin/passionfruit/>
+- Radare2 - <https://github.com/radare/radare2>
+- Sileo - <https://cydia-app.com/sileo/>
 - SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
+- TablePlus - <https://tableplus.io/>
 - Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
 - Wireshark - <https://www.wireshark.org/download.html>
 - Xcode - <https://developer.apple.com/xcode/>

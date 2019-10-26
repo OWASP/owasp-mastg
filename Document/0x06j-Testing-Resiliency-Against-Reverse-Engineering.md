@@ -1,6 +1,6 @@
 ## iOS Anti-Reversing Defenses
 
-### Jailbreak Detection
+### Jailbreak Detection (MSTG-RESILIENCE-1)
 
 #### Overview
 
@@ -75,7 +75,7 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 ##### Calling System APIs
 
-Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1." This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
+Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1". This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
 
 #### Bypassing Jailbreak Detection
 
@@ -100,7 +100,7 @@ cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
 ```
 
-As you can see, our class method was called directly, and it returned "true." Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
+As you can see, our class method was called directly, and it returned "true". Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
 
 ```shell
 cy# a=choose(JailbreakDetectionVC)
@@ -266,7 +266,7 @@ script.load()
 sys.stdin.read()
 ```
 
-### Anti-Debugging Checks
+### Anti-Debugging Checks (MSTG-RESILIENCE-2)
 
 #### Overview
 
@@ -371,14 +371,14 @@ After the instruction at offset *0xC13C*, MOVNE R0, #1 is patched and changed to
 
 You can bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
-Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns false when the device is jailbroken. Use the following command to execute this module:
+Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns "false" when the device is jailbroken. Use the following command to execute this module:
 
 ```shell
 [needle] > use dynamic/detection/script_jailbreak-detection-bypass
 [needle][script_jailbreak-detection-bypass] > run
 ```
 
-### File Integrity Checks
+### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
 #### Overview
 
@@ -450,7 +450,7 @@ int xyz(char *dst) {
 
 ##### Sample Implementation - Storage
 
-When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device.  The CommonCrypto implementation is best for creating an HMAC.
+When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device. The CommonCrypto implementation is best for creating an HMAC.
 If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 When you generate an HMAC with CC:
@@ -498,13 +498,13 @@ When verifying the HMAC with CC, follow these steps:
 
 ###### When you're trying to bypass the storage integrity checks
 
-1. Retrieve the data from the device, as described in the section on device binding.
+1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
 2. Alter the retrieved data and return it to storage.
 
 #### Effectiveness Assessment
 
 *For the application source code integrity checks*
-Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter "Basic Security Testing," and run it.
+Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter "Basic Security Testing", and run it.
 The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
 
 - Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
@@ -520,13 +520,13 @@ A similar approach works. Answer the following questions:
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms??
 
-### Device Binding
+### Device Binding (MSTG-RESILIENCE-10)
 
 #### Overview
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "Remediation" section for more details.
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "[Remediation](#remediation "Remediation")" section for more details.
 
 #### Static Analysis
 
@@ -575,30 +575,30 @@ Take the following steps when you want to verify app-binding with two jailbroken
 
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods for device binding in iOS:
 
-- You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). These may not be available after you reinstall the application if no other applications from the same vendor are installed.
-- You can store something in the Keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or touch-id requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
+- You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). The value of `identifierForVendor` may not be the same if you reinstall the app after other apps from the same vendor are installed and it may change when you update your app bundle's name. Therefore it is best to combine it with something in the Keychain.
+- You can store something in the Keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or Touch ID requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
 - You can use Google and its Instance ID for [iOS](https://developers.google.com/instance-id/guides/ios-implementation "iOS implementation Google Instance ID").
 
-Any scheme based on these methods will be more secure the moment a passcode and/or touch-id is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode or Touch ID), `kSecAccessControlTouchIDAny` (Touch ID) or `kSecAccessControlTouchIDCurrentSet` (Touch ID: but current fingerprints only).
+Any scheme based on these methods will be more secure the moment a passcode and/or Touch ID is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode, Face ID or Touch ID), `kSecAccessControlBiometryAny` (Face ID or Touch ID) or `kSecAccessControlBiometryCurrentSet` (Face ID / Touch ID: but current enrolled biometrics only).
 
 ### References
 
-- Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - [http://delaat.net/rp/2015-2016/p51/report.pdf](http://delaat.net/rp/2015-2016/p51/report.pdf)
+- Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
 
 #### OWASP Mobile Top 10 2016
 
-- M9 - Reverse Engineering - [https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering](https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering)
+- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### OWASP MASVS
 
-- V8.1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
-- V8.9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
-- V8.10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
-- V8.11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-- V8.12: "If the goal of obfuscation is to protect sensitive computations, an obfuscation scheme is used that is both appropriate for the particular task and robust against manual and automated de-obfuscation methods, considering currently published research. The effectiveness of the obfuscation scheme must be verified through manual testing. Note that hardware-based isolation features are preferred over obfuscation whenever possible."
+- MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
+- MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
+- MSTG-RESILIENCE-3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
+- MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
+- MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
 
 #### Tools
 
-- Frida - [http://frida.re/](http://frida.re/)
-- Keychain Dumper - [https://github.com/ptoomey3/Keychain-Dumper](https://github.com/ptoomey3/Keychain-Dumper)
-- Appsync Unified - [https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified](https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified)
+- Appsync Unified - <https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified>
+- Frida - <http://frida.re/>
+- Keychain Dumper - <https://github.com/ptoomey3/Keychain-Dumper>

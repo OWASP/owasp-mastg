@@ -2,7 +2,7 @@
 # Script taken from https://github.com/OWASP/CheatSheetSeries/blob/master/scripts/Apply_Linter_Check.sh
 # Script in charge of auditing the released MD files with the linter policy defined at project level
 
-cd ..
+cd ../
 if test -f "linter-result.out"; then
         rm linter-result.out
 fi

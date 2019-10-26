@@ -1,25 +1,25 @@
 ## Android Network APIs
 
-### Testing Endpoint Identify Verification
+### Testing Endpoint Identify Verification (MSTG-NETWORK-3)
 
 Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://www.owasp.org/images/7/77/Hunting_Down_Broken_SSL_in_Android_Apps_-_Sascha_Fahl%2BMarian_Harbach%2BMathew_Smith.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
 
 Two key issues should be addressed:
 
-- Verify that a certificate comes from a trusted source (CA).
+- Verify that a certificate comes from a trusted source, i.e. a trusted CA (Certificate Authority).
 - Determine whether the endpoint server presents the right certificate.
 
 Make sure that the hostname and the certificate itself are verified correctly. Examples and common pitfalls are available in the [official Android documentation](https://developer.android.com/training/articles/security-ssl.html "Android Documentation - SSL"). Search the code for examples of `TrustManager` and `HostnameVerifier` usage. In the sections below, you can find examples of the kind of insecure usage that you should look for.
 
-> Note that from Android 8 onward, there is no support for SSLv3 and HttpsURLConnection will no longer perform a fallback to an insecure TLS/SSL protocol.
+> Note that from Android 8.0 (API level 26) onward, there is no support for SSLv3 and `HttpsURLConnection` will no longer perform a fallback to an insecure TLS/SSL protocol.
 
 #### Static Analysis
 
 ##### Verifying the Server Certificate
 
-"TrustManager" is a means of verifying conditions necessary for establishing a trusted connection in Android. The following conditions should be checked at this point:
+`TrustManager` is a means of verifying conditions necessary for establishing a trusted connection in Android. The following conditions should be checked at this point:
 
-- Has the certificate been signed by a "trusted" CA?
+- Has the certificate been signed by a trusted CA?
 - Has the certificate expired?
 - Is the certificate self-signed?
 
@@ -68,7 +68,7 @@ myWebView.setWebViewClient(new WebViewClient(){
 
 ##### Apache Cordova Certificate Verification
 
-Implementation of the Apache Cordova framework's internal WebView usage will ignore [TLS errors](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in the method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest. Therefore, make sure that the app is not debuggable. See the test case "Testing If the App is Debuggable."
+Implementation of the Apache Cordova framework's internal WebView usage will ignore [TLS errors](https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/engine/SystemWebViewClient.java "TLS errors ignoring by Apache Cordova in WebView") in the method `onReceivedSslError` if the flag `android:debuggable` is enabled in the application manifest. Therefore, make sure that the app is not debuggable. See the test case "Testing If the App is Debuggable".
 
 ##### Hostname Verification
 
@@ -97,25 +97,40 @@ Dynamic analysis requires an interception proxy. To test improper certificate ve
 
 - Self-signed certificate
 
-In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Use a self-signed certificate`, and click `Ok`. Now, run your application. If you're able to see HTTPS traffic, your application is accepting self-signed certificates.
+In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Use a self-signed certificate**, and click **Ok**. Now, run your application. If you're able to see HTTPS traffic, your application is accepting self-signed certificates.
 
-- Accepting invalid certificates
+- Accepting certificates with an untrusted CA
 
-In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname`, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all certificates.
+In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting certificates with an untrusted CA.
 
 - Accepting incorrect hostnames
 
-In Burp, go to the `Proxy -> Options` tab, then go to the `Proxy Listeners` section, highlight your listener, and click `Edit`. Then go to the `Certificate` tab, check `Generate a CA-signed certificate with a specific hostname`, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
+In Burp,go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
 
 If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
 
-### Testing Custom Certificate Stores and Certificate Pinning
+### Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
 
 #### Overview
 
-Certificate pinning is the process of associating the backend server with a particular X509 certificate or public key instead of accepting any certificate signed by a trusted certificate authority. After storing ("pinning") the server certificate or public key, the mobile app will subsequently connect to the known server only. Withdrawing trust from external certificate authorities reduces the attack surface (after all, there are many cases of certificate authorities that have been compromised or tricked into issuing certificates to impostors).
+Certificate pinning is the process of associating the backend server with a particular X.509 certificate or public key instead of accepting any certificate signed by a trusted certificate authority. After storing ("pinning") the server certificate or public key, the mobile app will subsequently connect to the known server only. Withdrawing trust from external certificate authorities reduces the attack surface (after all, there are many cases of certificate authorities that have been compromised or tricked into issuing certificates to impostors).
 
 The certificate can be pinned and hardcoded into the app or retrieved at the time the app first connects to the backend. In the latter case, the certificate is associated with ("pinned" to) the host when the host is seen for the first time. This alternative is less secure because attackers intercepting the initial connection can inject their own certificates.
+
+##### When the Pin Fails
+
+Note that there are various options when dealing with a failing pin:
+
+- Inform the user about not being able to connect to the backend and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available. The app allows no longer for any form of interaction with the user until it is updated or the pin works again.
+- Do a call to a crash-reporting service including information about the failed pin. The responsible developers should get notified about a potential security misconfiguration.
+- The app calls the backend using a TLS enabled call with no pinning to inform the backend of a pinning failure. The call can either differ in user-agent, JWT token-contents, or have other headers with a flag enabled as an indication of pinning failure.
+- After calling the backend or crash-reporting service to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
+
+Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application.
+
+When a large amount of pinfailures are reported to the backend or crash-reporting service, the developer should understand that there is probably a misconfiguration. There is a large chance that the key materials used at the TLS terminating endpoint (e.g. server/loadbalancer) is different than what the app is expecting. In that case, an update of either that key material or an update of the app should be pushed through.
+
+When only very few pin failures are reported, then the network should be ok, and so should be the configuration of the TLS terminating endpoint. Instead, it might well be that there is a man-in-the-middle attack ongoing at the app instance of which the pin is failing.
 
 #### Static Analysis
 
@@ -125,7 +140,7 @@ To customize their network security settings in a safe, declarative configuratio
 
 The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. If an application uses this feature, two things should be checked to identify the defined configuration:
 
-First, find the Network Security Configuration file in the Android application manifest via the "android:networkSecurityConfig" attribute on the application tag:
+First, find the Network Security Configuration file in the Android application manifest via the `android:networkSecurityConfig` attribute on the application tag:
 
   ```xml
   <?xml version="1.0" encoding="utf-8"?>
@@ -283,11 +298,7 @@ After decompressing the APK file, use a .NET decompiler like dotPeak,ILSpy or dn
 
 ##### Cordova Applications
 
-Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is PhoneGap SSL Certificate Checker.
-
-###### PhoneGap SSL Certificate Checker
-
-The check() method is used to confirm the fingerprint and callbacks will determine the next steps.
+Hybrid applications based on Cordova do not support Certificate Pinning natively, so plugins are used to achieve this. The most common one is PhoneGap SSL Certificate Checker. The `check` method is used to confirm the fingerprint and callbacks will determine the next steps.
 
 ```javascript
   // Endpoint to verify against certificate pinning.
@@ -361,17 +372,17 @@ This command will search for all methods that take a string and a variable list 
 
 Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
 
-### Testing the Network Security Configuration settings
+### Testing the Network Security Configuration Settings (MSTG-NETWORK-4)
 
 #### Overview
 
-Network Security Configuration was introduced on Android 7 and lets apps customize their network security settings such as custom trust anchors and Certificate pinning.
+Network Security Configuration was introduced on Android 7.0 (API level 24) and lets apps customize their network security settings such as custom trust anchors and certificate pinning.
 
 ##### Trust Anchors
 
-When apps target API Levels 24+ and are running on an Android device with versions 7+, they use a default Network Security Configuration that doest not trust user supplied CA's, reducing the possibility of MiTM attacks by luring users to install malicious CA's.
+When running on Android 7.0 (API level 24) or higher, apps targeting those API levels will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CA's.
+This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
 
 #### Static Analysis
 
@@ -379,7 +390,7 @@ Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After
 
 The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
 
-If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CA's for those particular domains or for all domains. Example:
+If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CAs for those particular domains or for all domains. Example:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -443,14 +454,14 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 #### Dynamic Analysis
 
-For dynamic analysis by using an interception proxy as Burp you can patch the Network Security Configuration file, as described in the "Setting up a Testing Environment for Android Apps" chapter, section "Bypassing the Network Security Configuration".
+You can test the Network Security Configuration settings of a target app by using a dynamic approach, typically using an interception proxy such as Burp. However, it might be possible that you're not able to see the traffic at first, e.g. when testing an app targeting Android 7.0 (API level 24) or higher and effectively applying the Network Security Configuration. In that situation, you should patch the Network Security Configuration file. You'll find the necessary steps in section "[Bypassing the Network Security Configuration](0x05b-Basic-Security_Testing.md#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" in the "Android Basic Security Testing" chapter.
 
-There might still be scenarios where this is not needed and you can still do MiTM attacks without patching:
+There might still be scenarios where this is not needed and you can still do MITM attacks without patching:
 
-- If the app is running on a Android device with Android version 7.0 onwards, but the app targets API levels below 24, it will not use the network security configuration, therefore the app will still trusting user supplied CA's.
-- If the app is running on a Android device with Android version 7.0 onwards and there is no custom Network Security Configuration implemented in the app.
+- When the app is running on an Android device with Android 7.0 (API level 24) onwards, but the app targets API levels below 24, it will not use the Network Security Configuration file. Instead, the app will still trust any user supplied CAs.
+- When the app is running on an Android device with Android 7.0 (API level 24) onwards and there is no custom Network Security Configuration implemented in the app.
 
-### Testing the Security Provider
+### Testing the Security Provider (MSTG-NETWORK-6)
 
 #### Overview
 
@@ -621,13 +632,14 @@ When you do not have the source code:
 
 ##### OWASP MASVS
 
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
-- V5.4: "The app either uses its own certificate store or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
-- V5.6: "The app only depends on up-to-date connectivity and security libraries."
+- MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
+- MSTG-NETWORK-4: "The app either uses its own certificate store or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+- MSTG-NETWORK-6: "The app only depends on up-to-date connectivity and security libraries."
 
 ##### CWE
 
-- CWE-295 - Improper Certificate Validation
+- CWE-295 - Improper Certificate Validation - <https://cwe.mitre.org/data/definitions/295.html>
 - CWE-296 - Improper Following of a Certificate's Chain of Trust - <https://cwe.mitre.org/data/definitions/296.html>
 - CWE-297 - Improper Validation of Certificate with Host Mismatch - <https://cwe.mitre.org/data/definitions/297.html>
 - CWE-298 - Improper Validation of Certificate Expiration - <https://cwe.mitre.org/data/definitions/298.html>
@@ -644,4 +656,4 @@ When you do not have the source code:
 
 ##### Cordova Certificate Pinning
 
-PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>
+- PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>

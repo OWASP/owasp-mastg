@@ -115,7 +115,7 @@ $ unzip app-name.ipa
 
 Файл `Info.plist` может быть найден в папке `Payload/BundleName.app/`. Это файл бинарного представления и его необходимо конвертировать в читаемый формат для дальнейшего анализа.
 
-[`plutil`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html "OS X Man Pages - Plutil") - это инструмент, предназначенный для этой цели. Он поставляется вместе с версией Mac OS 10.2 и выше.
+[`plutil`](https://www.theiphonewiki.com/wiki/Plutil "OS X Plutil") - это инструмент, предназначенный для этой цели. Он поставляется вместе с версией Mac OS 10.2 и выше.
 
 Следующая команда показывает как конвертировать файл Info.plist в файл XML формата.
 

@@ -608,7 +608,7 @@ sys.stdin.read()
 
 Запустите Safari на устройстве iOS. Запустите вышеуказанный скрипт Python на подключенном хосте и откройте лог устройства (мы объясним, как открыть лог устройства в следующем разделе). Попробуйте открыть новый URL-адрес в Safari; вы должны увидеть вывод Frida в логах.
 
-![Frida Xcode Log](Images/Chapters/0x06b/frida-xcode-log.jpg)
+![Frida Xcode Log](Images/Chapters/0x06c/frida-xcode-log.png)
 
 Конечно, этот пример иллюстрирует только одну из вещей, которые вы можете сделать с Frida. Чтобы осмыслить весь потенциал инструмента, вы должны научиться использовать его [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). На сайте Frida, в разделе документации есть [руководство](https://www.frida.re/docs/ios/ "Frida Tutorial") и [примеры](https://www.frida.re/docs/examples/ios/ "Frida examples") для использования Frida в iOS.
 

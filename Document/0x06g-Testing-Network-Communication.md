@@ -4,7 +4,7 @@ Almost every iOS app acts as a client to one or more remote services. As this ne
 
 Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the `NSURLConnection` class provides methods to load URL requests asynchronously and synchronously.
 
-### App Transport Security
+### App Transport Security (MSTG-NETWORK-2)
 
 #### Overview
 
@@ -184,7 +184,7 @@ In general it can be summarized:
 - If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and if they can be deactivated.
 - If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views
 
-### Testing Custom Certificate Stores and Certificate Pinning
+### Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-3 and MSTG-NETWORK-4)
 
 #### Overview
 
@@ -197,6 +197,10 @@ In order to address this risk you can use certificate pinning. Certificate pinni
 The certificate can be pinned during development, or at the time the app first connects to the backend.
 In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
+##### When the Pin Fails
+
+Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or load balancer, or there might be a man-in-the-middle attack going on. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network APIs".
+
 #### Static Analysis
 
 Verify that the server certificate is pinned. Pinning can be implemented on various levels in terms of the certificate tree presented by the server:
@@ -205,9 +209,9 @@ Verify that the server certificate is pinned. Pinning can be implemented on vari
 2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
 3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
-The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored  in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
+The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
 
-The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.  
+The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.
 
 ```objc
 
@@ -241,9 +245,9 @@ Note that the certificate pinning example above has a major drawback when you us
 
 Our test approach is to gradually relax security of the SSL handshake negotiation and check which security mechanisms are enabled.
 
-1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (Settings -> General -> Profiles) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
+1. Having Burp set up as a proxy, make sure that there is no certificate added to the trust store (**Settings** -> **General** -> **Profiles**) and that tools like SSL Kill Switch are deactivated. Launch your application and check if you can see the traffic in Burp. Any failures will be reported under 'Alerts' tab. If you can see the traffic, it means that there is no certificate validation performed at all. If however, you can't see any traffic and you have an information about SSL handshake failure, follow the next point.
 2. Now, install the Burp certificate, as explained in [Burp's user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that the certificate is validated against the device's trust store, but no pinning is performed.
-3. If executing the instructions from the previous step doesn't lead to traffic being proxied through burp, it may mean that the certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section below titled "Bypassing Certificate Pinning" for more information on this.
+3. If executing the instructions from the previous step doesn't lead to traffic being proxied through burp, it may mean that the certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section "[Bypassing Certificate Pinning](#bypassing-certificate-pinning "Bypassing Certificate Pinning")" below for more information on this.
 
 ##### Client certificate validation
 
@@ -275,7 +279,7 @@ If you have a jailbroken device you can try one of the following tools that can 
 In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
 
 - the API calls `NSURLSession`, `CFStream`, and `AFNetworking`
-- methods/strings containing words like "pinning," "X.509," "Certificate," etc.
+- methods/strings containing words like "pinning", "X.509", "Certificate", etc.
 
 If you don't have access to the source, you can try binary patching:
 
@@ -304,10 +308,9 @@ If you want to get more details about white box testing and typical code pattern
 
 ##### OWASP MASVS
 
-- V5.1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
-- V5.2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
-- V5.3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
-- V5.4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
+- MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
+- MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
+- MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
 ##### CWE
 
