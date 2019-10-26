@@ -482,7 +482,7 @@ def solve():
 solve()
 ```
 
-Above, Angr executed an ARM64 code in a controlled execution environment provided by one of its concrete execution engines. Eventually the result is easily accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks empower us to perform a comprehensive analysis of the binary, even in the absence of a specialized device needed to run that binary.
+Above, Angr executed an ARM64 code in an execution environment provided by one of its concrete execution engines. The result is accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks enable us to perform a comprehensive analysis of a binary, even in the absence of specialized devices needed to run it.
 
 
 ### Tampering and Runtime Instrumentation
