@@ -448,7 +448,7 @@ Angr is a very versatile tool, providing multiple techniques to facilitate binar
 
 > The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case.
 
-While manual analyzing the code in the [Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "reviewing disassembled native code")" section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
+While manual analyzing the code in the [Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
 
 If we revisit that function, we can see it involves multiple sub-function calls and interestingly none of these functions have dependency on other library calls or system calls. In a nutshell, these functions are self contained and can be executed without needing any other platform specific libraries. This is a perfect case to use Angr's concrete execution engine. Follow the steps below to solve this challenge using Angr:
 
