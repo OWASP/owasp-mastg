@@ -450,7 +450,7 @@ Angr is a very versatile tool, providing multiple techniques to facilitate binar
 
 While manual analyzing the code in the [Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we reached a point where performing further manual analysis was cumbersome. The function at offset `0x1000080d4` was identified as the final target which contains the secret string.
 
-If we revisit that function, we can see it involves multiple sub-function calls and interestingly none of these functions have dependency on other library calls or system calls. In a nutshell, these functions are self contained and can be executed without needing any other platform specific libraries. This is a perfect case to use Angr's concrete execution engine. Follow the steps below to solve this challenge using Angr:
+If we revisit that function, we can see that it involves multiple sub-function calls and interestingly none of these functions have any dependencies on other library calls or system calls. This is a perfect case to use Angr's concrete execution engine. Follow the steps below to solve this challenge:
 
 - Get the ARM64 version of the binary using `lipo` tool (ARMv7 can be used as well).
 - Create an Angr `project` by loading the above binary.
