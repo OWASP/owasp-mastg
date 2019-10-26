@@ -1113,7 +1113,7 @@ JQAE6ACMABNAAIIA
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.  
 
-In the above example we utilised our analysis of the disassembled code to provide the correct criteria for symbolic execution engine for solving the problem. This is saved us valuable time required for analysing the disassembled instructions manually. To conclude, Symbolic execution and other hybrid techniques involving symbolic execution are very useful techniques for binary analysis. Learning them requires understanding and extensive practice. Another example of using Angr is presented in the iOS chapter.
+To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please to the iOS chapter for more examples on Angr usage.
 
 
 ### Tampering and Runtime Instrumentation
