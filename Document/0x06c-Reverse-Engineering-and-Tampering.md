@@ -477,7 +477,7 @@ def solve():
 
     # Extract the value from the pointer to the secret string
     secret_string = func.result_state.mem[ptr_secret_string].string.concrete
-    print("Secret String: " +  secret_string)
+    print(f"Secret String: {secret_string}")
 
 solve()
 ```
