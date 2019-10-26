@@ -1068,9 +1068,6 @@ import base64
 
 load_options = {}
 
-# Android NDK library path:
-load_options['ld_path'] = ['/Users/mac/Library/Android/sdk/ndk-bundle/platforms/android-21/arch-arm/usr/lib']
-
 b = angr.Project("./validate", load_options = load_options)
 
 # The key validation function starts at 0x401760, so that's where we create the initial state.
