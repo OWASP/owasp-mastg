@@ -471,7 +471,8 @@ def solve():
     # Pass the address of the function to the callable
     func = project.factory.callable(0x1000080d4)
 
-    ptr_secret_string = claripy.backends.concrete.convert(func()).value     # get the return value of the function
+    # Get the return value of the function
+    ptr_secret_string = claripy.backends.concrete.convert(func()).value
     print("Address of the pointer to the secret string: " + hex(ptr_secret_string))
 
     # Extract the value from the pointer to the secret string
