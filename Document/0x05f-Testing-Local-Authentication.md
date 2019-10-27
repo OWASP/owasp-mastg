@@ -8,7 +8,7 @@ In Android, there are two mechanisms supported by the Android Runtime for local 
 
 #### Overview
 
-The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to his device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked his device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise he has to unlock his device again.
+The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to their device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked their device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise they have to unlock their device again.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
@@ -23,7 +23,7 @@ Reassure that the lock screen is set:
    }
 ```
 
-- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked his device in the last X seconds, or he will have to unlock the device again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
+- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked their device in the last X seconds, or they will have to unlock the device again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
 
 ```java
   try {

@@ -1038,7 +1038,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
 
-- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would then extract the data from a device, he would not have access to the key to decrypt the encrypted data. Implementing this, takes the following steps:
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would then extract the data from a device, they would not have access to the key to decrypt the encrypted data. Implementing this, takes the following steps:
 
   - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
 
