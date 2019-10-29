@@ -69,19 +69,19 @@ We're looking for a secret string stored somewhere inside the app, so the next s
 ```shell
 $ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
 Archive:  UnCrackable-Level1.apk
-  inflating: UnCrackable-Level1/AndroidManifest.xml  
-  inflating: UnCrackable-Level1/res/layout/activity_main.xml  
-  inflating: UnCrackable-Level1/res/menu/menu_main.xml  
- extracting: UnCrackable-Level1/res/mipmap-hdpi-v4/ic_launcher.png  
- extracting: UnCrackable-Level1/res/mipmap-mdpi-v4/ic_launcher.png  
- extracting: UnCrackable-Level1/res/mipmap-xhdpi-v4/ic_launcher.png  
- extracting: UnCrackable-Level1/res/mipmap-xxhdpi-v4/ic_launcher.png  
- extracting: UnCrackable-Level1/res/mipmap-xxxhdpi-v4/ic_launcher.png  
- extracting: UnCrackable-Level1/resources.arsc  
-  inflating: UnCrackable-Level1/classes.dex  
-  inflating: UnCrackable-Level1/META-INF/MANIFEST.MF  
-  inflating: UnCrackable-Level1/META-INF/CERT.SF  
-  inflating: UnCrackable-Level1/META-INF/CERT.RSA  
+  inflating: UnCrackable-Level1/AndroidManifest.xml
+  inflating: UnCrackable-Level1/res/layout/activity_main.xml
+  inflating: UnCrackable-Level1/res/menu/menu_main.xml
+ extracting: UnCrackable-Level1/res/mipmap-hdpi-v4/ic_launcher.png
+ extracting: UnCrackable-Level1/res/mipmap-mdpi-v4/ic_launcher.png
+ extracting: UnCrackable-Level1/res/mipmap-xhdpi-v4/ic_launcher.png
+ extracting: UnCrackable-Level1/res/mipmap-xxhdpi-v4/ic_launcher.png
+ extracting: UnCrackable-Level1/res/mipmap-xxxhdpi-v4/ic_launcher.png
+ extracting: UnCrackable-Level1/resources.arsc
+  inflating: UnCrackable-Level1/classes.dex
+  inflating: UnCrackable-Level1/META-INF/MANIFEST.MF
+  inflating: UnCrackable-Level1/META-INF/CERT.SF
+  inflating: UnCrackable-Level1/META-INF/CERT.RSA
 
 ```
 
@@ -402,7 +402,7 @@ $ r2 -qc 'e emu.str=true; s 0x00000e78; af; pdf' HelloWord-JNI/lib/armeabi-v7a/l
 
 Notice that in this case we're not starting with the `-A` flag not running `aaa`. Instead, we just tell radare2 to analyze that one function by using the _analyze function_ `af` command. This is one of those cases where we can speed up our workflow because you're focusing on some specific part of an app.
 
-The workflow can be further improved by using [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec "r2ghidra-dec"), a deep integration of Ghidra decompiler for radare2. r2ghidra-dec generates decompiled C code, which can aid in quickly analyzing the binary.    
+The workflow can be further improved by using [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec "r2ghidra-dec"), a deep integration of Ghidra decompiler for radare2. r2ghidra-dec generates decompiled C code, which can aid in quickly analyzing the binary.
 
 ###### IDA Pro
 
@@ -455,7 +455,7 @@ When this function returns, R0 contains a pointer to the newly constructed UTF s
 
 ###### Ghidra
 
-After opening the library in Ghidra we can see all the functions defined in the **Symbol Tree** panel under **Functions**. The native library for the current application is relatively very small. There are three user defined functions: `FUN_001004d0`, `FUN_0010051c`, and `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI`. The other symbols are not user defined and are generated for proper functioning of the shared library. The instructions in the function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` are already discussed in detail in previous sections. In this section we can look into the decompilation of the function. 
+After opening the library in Ghidra we can see all the functions defined in the **Symbol Tree** panel under **Functions**. The native library for the current application is relatively very small. There are three user defined functions: `FUN_001004d0`, `FUN_0010051c`, and `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI`. The other symbols are not user defined and are generated for proper functioning of the shared library. The instructions in the function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` are already discussed in detail in previous sections. In this section we can look into the decompilation of the function.
 
 Inside the current function there is a call to another function, whose address is obtained by accessing an offset in the `JNIEnv` pointer (found as `plParm1`). This logic has been diagrammatically demonstrated above as well. The corresponding C code for the disassembled function is shown in the **Decompiler** window. This decompiled C code makes it much easier to understand the function call being made. Since this function is small and extremely simple, the decompilation output is very accurate, this can change drastically when dealing with complex functions.
 
@@ -911,35 +911,37 @@ Binary analysis frameworks give you powerful ways to automate tasks that would b
 
 ##### Symbolic Execution
 
-Symbolic execution is useful when you need to find the right input for reaching a certain block of code. In the following example, you'll use Angr to solve a simple Android crackme in an automated fashion. Refer to the "Android Basic Security Testing" chapter for installation instructions and basics.
+Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the Angr binary analysis framework as our symbolic execution engine. An overview of Angr and its installation instructions has been covered previously in "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" chapter.
 
-The target crackme is a simple license key validation Android app. Granted, you won't usually find license key validators like this, but the example should demonstrate the basics of static/symbolic analysis of native code. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
+The target crackme is a simple [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code, and hence, critical business logic is often written in native. The current sample application may not represent a real world problem, but nevertheless it helps getting some basic notions about symbolic execution that you can use in a real situation. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
-The crackme takes the form of a native ELF binary that you can download here:
-
-<https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation>
-
-Running the executable on any Android device should give you the following output:
+The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
 ```shell
 $ adb push validate /data/local/tmp
 [100%] /data/local/tmp/validate
+
 $ adb shell chmod 755 /data/local/tmp/validate
+
 $ adb shell /data/local/tmp/validate
 Usage: ./validate <serial>
+
 $ adb shell /data/local/tmp/validate 12345
 Incorrect serial (wrong format).
+
 ```
 
-So far so good, but you know nothing about what a valid license key looks like. Where do we start? Fire up Cutter to get a good look at what is happening. The main function is located at address 0x00001874 in the disassembly (note that this is a PIE-enabled binary, and Cutter chooses 0x0 as the image base address).
+So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
 ![Disassembly of main function](Images/Chapters/0x05c/disass_main_1874.png)
 
-Function names have been stripped, but you can see some references to debugging strings. The input string appears to be Base32-decoded (call to fcn.00001340). At the beginning of `main`, there's a length check at 0x00001898. It makes sure that the length of the input string is exactly 16 characters. So you're looking for a Base32-encoded 16-character string! The decoded input is then passed to the function fcn.00001760, which validates the license key.
+The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
 ![Graph of main function](Images/Chapters/0x05c/graph_1874.png)
 
-The decoded 16-character input string totals 10 bytes, so you know that the validation function expects a 10-byte binary string. Next, look at the core validation function at 0x00001760:
+`strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
+
+We can now use this information about the expected input to further look into the validation function at `0x00001760`.
 
 ```assembly_x86
 ╭ (fcn) fcn.00001760 268
@@ -1029,46 +1031,42 @@ The decoded 16-character input string totals 10 bytes, so you know that the vali
 ╰           0x00001868      pop {r4, fp, pc}                           ; entry.preinit0 ; entry.preinit0 ;
 ```
 
-If you look in the graph view you can see a loop with some XOR-magic happening at 0x00001784, which supposedly decodes the input string.
+Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
-![Loop](Images/Chapters/0x05c/loop_1784.png)
+![XOR instruction inside a loop](Images/Chapters/0x05c/loop_1784.png)
 
-Starting from 0x000017dc, you can see a series of decoded values compared with values from further subfunction calls.
+XOR is a very commonly used technique to _encrypt_ information where obfuscation is the goal rather than security. **XOR should not be used for any serious encryption**, as it can be cracked using frequency analysis. Therefore, the mere presence of XOR encryption in such a validation logic always requires special attention and analysis.
+
+Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call at `0x000017e8`.
 
 ![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
 
-Even though this doesn't look highly sophisticated, you'd still need to analyze more to completely reverse this check and generate a license key that passes it. Now comes the twist: dynamic symbolic execution enables you to construct a valid key automatically! The symbolic execution engine maps a path between the first instruction of the license check (0x00001760) and the code that prints the "Product activation passed" message (0x00001840) to determine the constraints on each byte of the input string.
+Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. In the above crackme, the symbolic execution engine can determine the constraints on each byte of the input string by mapping a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`).
 
 ![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
 
-The solver engine then finds an input that satisfies those constraints: the valid license key.
+The constraints obtained from the above steps are passed to a solver engine, which finds an input that satisfies them - a valid license key.
 
-You need to provide several inputs to the symbolic execution engine:
+You need to perform several steps to initialize Angr's symbolic execution engine:
 
-- An address from which execution will start. Initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
+- Load the binary into a `Project`, which is the starting point for any kind of analysis in Angr.
 
-- The address of the code block you want execution to reach. You need to find a path to the code responsible for printing the "Product activation passed" message. This code block starts at 0x1840.
+- Pass the address from which the analysis should start. In this case, we will initialize the state with the first instruction of the serial validation function. This makes the problem significantly easier to solve because you avoid symbolically executing the Base32 implementation.
 
-- Addresses you don't want to reach. You're not interested in any path that ends with the block of code that prints the "Incorrect serial" message (0x00001854).
+- Pass the address of the code block that the analysis should reach. In this case, that's the offset `0x00001840`, where the code responsible for printing the "Product activation passed" message is located.
 
-Note that the Angr loader will load the PIE executable with a base address of 0x400000, so you must add this to the addresses above. The solution is:
+- Also, specify the addresses that the analysis should not reach. In this case, the code block that prints the "Incorrect serial" message at `0x00001854` is not interesting.
+
+> Note that the Angr loader will load the PIE executable with a base address of `0x400000`, which needs to be added to the offsets from Cutter before passing it to Angr.
+
+The final solution script is presented below:
 
 ```python
-#!/usr/bin/python
-
-# This is how we defeat the Android license check using Angr!
-# The binary is available for download on GitHub:
-# https://github.com/b-mueller/obfuscation-metrics/tree/master/crackmes/android/01_license_check_1
-# Written by Bernhard -- bernhard [dot] mueller [at] owasp [dot] org
-
 import angr
 import claripy
 import base64
 
 load_options = {}
-
-# Android NDK library path:
-load_options['custom_ld_path'] = ['/Users/berndt/Tools/android-ndk-r10e/platforms/android-21/arch-arm/usr/lib']
 
 b = angr.Project("./validate", load_options = load_options)
 
@@ -1077,33 +1075,45 @@ b = angr.Project("./validate", load_options = load_options)
 
 state = b.factory.blank_state(addr=0x401760)
 
-initial_path = b.factory.path(state)
-path_group = b.factory.path_group(state)
+simgr = b.factory.simulation_manager(state)
+simgr.explore(find=0x401840, avoid=0x401854)
 
 # 0x401840 = Product activation passed
 # 0x401854 = Incorrect serial
+found = simgr.found[0]
 
-path_group.explore(find=0x401840, avoid=0x401854)
-found = path_group.found[0]
+# Get the solution string from *(R11 - 0x20).
 
-# Get the solution string from *(R11 - 0x24).
-
-addr = found.state.memory.load(found.state.regs.r11 - 0x24, endness='Iend_LE')
-concrete_addr = found.state.se.any_int(addr)
-solution = found.state.se.any_str(found.state.memory.load(concrete_addr,10))
-
-print base64.b32encode(solution)
+addr = found.memory.load(found.regs.r11 - 0x20, endness='Iend_LE')
+concrete_addr = found.solver.eval(addr)
+solution = found.solver.eval(found.memory.load(concrete_addr,10), cast_to=bytes)
+print(base64.b32encode(solution))
 ```
 
-Note the last part of the program, where the final input string is retrieved—it appears as if you were simply reading the solution from memory. You are, however, reading from symbolic memory—neither the string nor the pointer to it actually exist! Actually, the solver is computing concrete values that you could find in that program state if you observed the actual program run up to that point.
+As discussed previously in the section "[Dynamic Binary Instrumentation](0x04c-tampering-and-reverse-engineering#dynamic-binary-instrumentation "Dynamic Binary Instrumentation")", the symbolic execution engine constructs a binary tree of the operations for the program input given and generates a mathematical equation for each possible path that might be taken. Internally, Angr explores all the paths between the two points specified by us, and passes the corresponding mathematical equations to the solver to return meaningful concrete results. We can access these solutions via `simulation_manager.found` list, which contains all the possible paths explored by Angr which satisfies our specified search criteria.
 
-Running this script should return the following:
+Take a closer look at the latter part of the script where the final solution string is being retrieved. The address of the string is obtained from address `r11 - 0x20`. This may appear magical at first, but a careful analysis of the function at `0x00001760` holds the clue, as it determines if the given input string is a valid license key or not. In the disassembly above, you can see how the input string to the function (in register R0) is stored into a local stack variable `0x0000176c      str r0, [var_20h]`. Hence, we decided to use this value to retrieve the final solution in the script. Using `found.solver.eval` you can ask the solver questions like "given the output of this sequence of operations (the current state in `found`), what must the input (at `addr`) have been?").
+
+> In ARMv7, R11 is called fp (_function pointer_), therefore `R11 - 0x20` is equivalent to `fp-0x20`: `var int32_t var_20h @ fp-0x20`
+
+Next, the `endness` parameter in the script specifies that the data is stored in "little-endian" fashion, which is the case for almost all of the Android devices. 
+
+Also, it may appear as if the script is simply reading the solution string from the memory of the script. However, it's reading it from the symbolic memory. Neither the string nor the pointer to the string actually exist. The solver ensures that the solution it provides is the same as if the program would be executed to that point.
+
+Running this script should return the following output:
 
 ```shell
 (angr) $ python solve.py
-WARNING | 2017-01-09 17:17:03,664 | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
-JQAE6ACMABNAAIIA
+WARNING | cle.loader | The main binary is a position-independent executable.
+It is being loaded with a base address of 0x400000.
+
+b'ABGAATYAJQAFUABB'
 ```
+
+> You may obtain different solutions using the script, as there are multiple valid license keys possible.  
+
+To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please to the iOS chapter for more examples on Angr usage.
+
 
 ### Tampering and Runtime Instrumentation
 
@@ -1230,7 +1240,7 @@ Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show 
 
 ##### Patching React Native applications
 
-If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.  
+If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for developing then the main application code is located in the file `assets/index.android.bundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. By using the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery") a human readable version of the file can be retried, allowing code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") or the local server should be preferred instead of using the online version as otherwise source code is sent and disclosed to a 3rd party.
 
 The following approach can be used in order to patch the JavaScript file:
 
