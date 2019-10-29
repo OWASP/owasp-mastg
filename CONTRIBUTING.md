@@ -68,7 +68,7 @@ Our current goal is to publish one minor release every 6 months. Next, we will o
 
 > Note we use semantic versioning: major.minor.patch
 
-## What not to do
+## What not to do....!
 
 Although we greatly appreciate any and all contributions to the project, there are a few things that you should take into consideration:
 
