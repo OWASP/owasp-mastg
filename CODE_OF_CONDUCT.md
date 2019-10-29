@@ -23,7 +23,7 @@ Examples of unacceptable behavior by participants include:
 * Misusing the context of the Mobile Security Testing Guide project for commercial goals (e.g. adding sales pitches to the guide or to communication channels used by the project, such as Slack).
 * Other conduct which could reasonably be considered inappropriate in a professional setting
 
-## Our Responsibilities
+## Our Responsibilities is
 
 Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
 
