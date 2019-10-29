@@ -11,7 +11,7 @@ Contributing to the MSTG can be done in many different ways:
 - **Proofread and fix errors**. If you are studying the MSTG, write down any error, no matter how small, and submit them in an issue or fix them yourself through a PR.
 - **Contribute to the MSTG Apps**. Extend and maintain our existing mobile applications, which are the [Crackmes](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "MSTG Crackmes") and the applications on our [Hacking playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG Hacking Playground").
 
-## Making sure your PR is accepted
+## Making sure your PR is accepted!!
 
 In order to increase the chances of your PR being accepted, please make sure that:
 
