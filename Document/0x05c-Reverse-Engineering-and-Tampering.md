@@ -133,7 +133,8 @@ See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-cod
 
 Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged (compiled) into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method. However, instead of relying on widely used C libraries (such as glibc), Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
 
-When reversing an Android application containing native code, we need to understand a couple of data structures related to the JNI bridge between Java and native code. From the reversing perspective, we need to be aware of two key data structures: `JavaVM` and `JNIEnv`. Both of them are pointers to pointers to function tables.
+When reversing an Android application containing native code, we need to understand a couple of data structures related to the JNI bridge between Java and native code. From the reversing perspective, we need to be aware of two key data structures: `JavaVM` and `JNIEnv`. Both of them are pointers to pointers to function tables:
+
 - `JavaVM` provides an interface to invoke functions for creating and destroying a JavaVM. Android allows only one `JavaVM` per process and is not really relevant for our reversing purposes.
 - `JNIEnv` provides access to most of the JNI functions which are accessible at a fixed offset through the `JNIEnv` pointer. This `JNIEnv` pointer is the first parameter passed to every JNI function. We will discuss this concept again with the help of an example later in this chapter.
 
@@ -275,7 +276,6 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 
 This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
 
-
 ###### IDA Pro
 
 If you own an IDA Pro license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
@@ -283,7 +283,6 @@ If you own an IDA Pro license, open the file and once in the "Load new file" dia
 ![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
 
 > The freeware version of IDA Pro unfortunately does not support the ARM processor type.
-
 
 ### Static Analysis
 
@@ -452,7 +451,6 @@ BX   R2
 
 When this function returns, R0 contains a pointer to the newly constructed UTF string. This is the final return value, so R0 is left unchanged and the function returns.
 
-
 ###### Ghidra
 
 After opening the library in Ghidra we can see all the functions defined in the **Symbol Tree** panel under **Functions**. The native library for the current application is relatively very small. There are three user defined functions: `FUN_001004d0`, `FUN_0010051c`, and `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI`. The other symbols are not user defined and are generated for proper functioning of the shared library. The instructions in the function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` are already discussed in detail in previous sections. In this section we can look into the decompilation of the function.
@@ -460,7 +458,6 @@ After opening the library in Ghidra we can see all the functions defined in the 
 Inside the current function there is a call to another function, whose address is obtained by accessing an offset in the `JNIEnv` pointer (found as `plParm1`). This logic has been diagrammatically demonstrated above as well. The corresponding C code for the disassembled function is shown in the **Decompiler** window. This decompiled C code makes it much easier to understand the function call being made. Since this function is small and extremely simple, the decompilation output is very accurate, this can change drastically when dealing with complex functions.
 
 ![Ghidra function disassembly and decompilation](Images/Chapters/0x05c/Ghidra_decompiled_function.png)
-
 
 #### Automated Static Analysis
 
@@ -1096,7 +1093,7 @@ Take a closer look at the latter part of the script where the final solution str
 
 > In ARMv7, R11 is called fp (_function pointer_), therefore `R11 - 0x20` is equivalent to `fp-0x20`: `var int32_t var_20h @ fp-0x20`
 
-Next, the `endness` parameter in the script specifies that the data is stored in "little-endian" fashion, which is the case for almost all of the Android devices. 
+Next, the `endness` parameter in the script specifies that the data is stored in "little-endian" fashion, which is the case for almost all of the Android devices.
 
 Also, it may appear as if the script is simply reading the solution string from the memory of the script. However, it's reading it from the symbolic memory. Neither the string nor the pointer to the string actually exist. The solver ensures that the solution it provides is the same as if the program would be executed to that point.
 
@@ -1113,7 +1110,6 @@ b'ABGAATYAJQAFUABB'
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.  
 
 To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please to the iOS chapter for more examples on Angr usage.
-
 
 ### Tampering and Runtime Instrumentation
 

@@ -55,6 +55,7 @@ Jeroen is the mobile security lead at NVISO where he is responsible for quality 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
 - Pawel Rzepa
+- Vikas Gupta
 - Francesco Stillavato
 - Henry Hoggard
 - Andreas Happe
