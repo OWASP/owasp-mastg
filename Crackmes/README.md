@@ -17,6 +17,7 @@ This app holds a secret inside. Can you find it?
 ### Installation
 
 This app is compatible with Android 4.4 and up.
+
 ```shell
   $ adb install UnCrackable-Level1.apk
 ```
