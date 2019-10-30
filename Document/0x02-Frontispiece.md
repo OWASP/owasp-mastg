@@ -106,6 +106,10 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 [![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
 
+#### Dontators
+
+The following people and/or companies have donated more than $25,- using Leanpub or other ways: RandoriSec.
+
 <br/>
 <br/>
 
