@@ -392,7 +392,7 @@ Copy the modified binary to any directory on the test device. The following exam
 
 ```shell
 $ ./tcprelay.py -t 22:2222
-$ scp -P2222 debugserver root@localhost:/tmp/
+$ scp -P 2222 debugserver root@localhost:/tmp/
 ```
 
 You can now attach debugserver to any process running on the device.
@@ -403,6 +403,32 @@ debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
 for armv7.
 Attaching to process 2670...
 ```
+
+##### Debugging Release Apps
+
+TODO 
+- task_for_pid - check from above as well. 
+- Discuss about the presence of obj-c symbols while debugging release app
+- find the aslr shift. 
+- Debug without the symbols, using combination of ghidra/r2/ida and aslr shifting
+
+###### Launching an application via debugserver
+
+```shell
+debugserver -x backboard *:1234 /Applications/MobileSMS.app/MobileSMS
+```
+
+Attach to an already running application
+```shell
+debugserver *:1234 -a "MobileSMS"
+```
+
+```shell
+(lldb) process connect connect://iOSIP:1234
+```
+
+- `image list` gives a list of main executable and all dependent libraries. 
+
 
 #### Tracing
 
