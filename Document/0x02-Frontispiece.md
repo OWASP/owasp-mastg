@@ -108,7 +108,7 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 #### Donators
 
-The following people and/or companies have donated more than $25,- using Leanpub or other ways: RandoriSec.
+The following people and/or companies have donated more than $25,- using Leanpub or other ways: RandoriSec, eShard.
 
 <br/>
 <br/>
