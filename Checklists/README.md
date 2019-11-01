@@ -24,6 +24,7 @@ You should ensure that the generated hash is similar to the one in the table bel
 | Mobile_App_Security_Checklist-English_1.1.2.xlsx | 97c749e9c47672320b89683cb1ac60555e3ed53cfc296deb2108131910766ad8 |
 | Mobile_App_Security_Checklist-French_1.1.2.xlsx | 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5 |
 | Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx | a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542 |
+| Mobile_App_Security_Checklist-Korean_1.1.2.xlsx | c41f30e966fca66b03fda58e413bdd1c30fdd25a0f1295eecdd2c9f775899077 |
 | Mobile_App_Security_Checklist-Spanish_1.1.xlsx | f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc |
 
 ### Generate on Linux
@@ -33,6 +34,7 @@ $ sha256sum Mobile_App_Security_Checklist-*
 97c749e9c47672320b89683cb1ac60555e3ed53cfc296deb2108131910766ad8 *Mobile_App_Security_Checklist-English_1.1.2.xlsx
 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5 *Mobile_App_Security_Checklist-French_1.1.2.xlsx
 a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542 *Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
+c41f30e966fca66b03fda58e413bdd1c30fdd25a0f1295eecdd2c9f775899077 *Mobile_App_Security_Checklist-Korean_1.1.2.xlsx
 f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc *Mobile_App_Security_Checklist-Spanish_1.1.xlsx
 ```
 
@@ -55,6 +57,10 @@ Hash      : A5C636FBA4119305197BFA7BC38DBB15B704F3437312F9481896984B16160542
 Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
 
 Algorithm : SHA256
+Hash      : C41F30E966FCA66B03FDA58E413BDD1C30FDD25A0F1295EECDD2C9F775899077
+Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Korean_1.1.2.xlsx
+
+Algorithm : SHA256
 Hash      : F561377A9E45E235AF0DB9BCF483577E55C4CFD5A40A42EA6A9335681ADD9CCC
 Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Spanish_1.1.xlsx
 ```
@@ -66,5 +72,6 @@ owasp-mstg/Checklists> shasum -a 256 Mobile_App_Security_Checklist-*
 97c749e9c47672320b89683cb1ac60555e3ed53cfc296deb2108131910766ad8  Mobile_App_Security_Checklist-English_1.1.2.xlsx
 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5  Mobile_App_Security_Checklist-French_1.1.2.xlsx
 a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542  Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
+c41f30e966fca66b03fda58e413bdd1c30fdd25a0f1295eecdd2c9f775899077  Mobile_App_Security_Checklist-Korean_1.1.2.xlsx
 f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc  Mobile_App_Security_Checklist-Spanish_1.1.xlsx
 ```
