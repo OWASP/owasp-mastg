@@ -106,9 +106,14 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 [![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
 
+[OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
+
 #### Donators
 
-The following people and/or companies have donated more than $25,- using Leanpub or other ways: RandoriSec, eShard.
+The following people and/or companies have donated more than $25 using Leanpub or other ways:
+
+- [RandoriSec](https://www.randorisec.fr/ "RandoriSec")
+- eShard
 
 <br/>
 <br/>
