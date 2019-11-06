@@ -425,7 +425,7 @@ debugserver *:1234 -a "MobileSMS"
 
 In the previous section we learned about how to setup a debugging environment on an iOS device using `lldb`. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
 
-What differentiates a debug build of an application from a release build? In a release build the compiled code is optimized to achieve maximum performance and minimum binary build size. As a general practice, in a release build all the debug symbols are usually stripped to reduce binary size and also to prevent reverse engineering of the binaries. Due to absence of these debug symbols, setting of breakpoints in a debugger by simply using function names is not possible and also symbol names are missing from a backtrace output. This absence of debug symbols adds a layer of complexity to the debugging process. Fortunately, debuggers also support setting of breakpoints by using only memory addresses. Further in this section we will learn how to do so and eventually solve the crackme challenge.
+What differentiates a debug build of an application from a release build? In a release build, the compiled code is optimized to achieve maximum performance and minimum binary build size. As a general practice, in a release build all the debug symbols are usually stripped to reduce binary size and also to prevent reverse engineering of the binaries. Due to absence of these debug symbols, setting of breakpoints in a debugger by simply using function names is not possible and also symbol names are missing from a backtrace output. This absence of debug symbols adds a layer of complexity to the debugging process. Fortunately, debuggers also support setting of breakpoints by using only memory addresses. Further in this section we will learn how to do so and eventually solve the crackme challenge.
 
 Some groundwork is needed before setting a breakpoint using memory addresses. It requires determining two addresses:
 1. Breakpoint offset: The _address offset_ of the code where we want to set a breakpoint. This address is obtained by performing static analysis of the code in a disassembler like Ghidra.
@@ -435,23 +435,27 @@ The final breakpoint address to be used in the debugger is the sum of the above 
 
 When a binary is opened in a tool like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is 0x100000000.
 
-![Obtain image base address using Ghidra](Images/Chapters/0x06b/debugging_ghidra_image_base_address.png "Obtain image base address using Ghidra")
+![Obtain image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtain image base address using Ghidra")
 
-In the UnCrackable Level 1 application, from our previous analysis in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with *hidden* flag set. In the disassembly, the value of this label is `mov` to register `X21` from `X0` at offset `0x100004520`. This is our first address, _breakpoint offset_.
+From our previous analysis in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, in the UnCrackable Level 1 application, the value of the hidden string is stored in a label with *hidden* flag set. In the disassembly, the text value of this label is stored in register `X21`, `mov`d from `X0`, at offset `0x100004520`. This is our first address, _breakpoint offset_.
 
-For the second address, we need to determine the ASLR shift offset for a given process. As mentioned before, iOS is a modern operating system with multiple techniques implemented to mitigate code execution attacks, one such technique being Address Space Randomization Layout (ASLR). On every new execution of an application, a random ASLR shift offset is generated, and various process' data structures are shifted by this offset. In order to set a breakpoint at the correct address we need to determine this shift offset. The ASLR offset can be determined by using `lldb` command `image list -o -f`. The output is shown in the screenshot below.
+![Breakpoint address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_breakpoint.png "Breakpoint address using Ghidra")
 
-![Process image list](Images/Chapters/0x06b/debugging_lldb_image_list.png "Process image list")
+For the second address, we need to determine the ASLR shift offset for a given process. As mentioned before, iOS is a modern operating system with multiple techniques implemented to mitigate code execution attacks, one such technique being Address Space Randomization Layout (ASLR). On every new execution of an application, a random ASLR shift offset is generated, and various process' data structures are shifted by this offset. In order to set a breakpoint at the correct address we need to determine this shift offset each time. The ASLR offset can be determined by using `lldb` command `image list -o -f`. The output is shown in the screenshot below.
+
+![Process image list](Images/Chapters/0x06c/debugging_lldb_image_list.png "Process image list")
 
 In the output, the first column contains the sequence number of the image ([X]), the second column contains the randomly generated ASLR offset, while 3rd column contains the full path of the image and towards the end, content in the bracket shows the image base address after adding ASLR offset to the original image base address (`0x100000000` + `0x40000` = `0x100040000`). You will notice the image base address of `0x100000000` is same as in Ghidra. Now, to obtain the effective memory address for a code location we only need to add ASLR offset to the address identified in Ghidra. The effective address to set the breakpoint will be `0x100004520` + `0x40000` = `0x100044520`. The breakpoint can be set using command `b 0x100044520`.
 
-In the output above, you may also notice that many of the full paths of the images do not point to a path on the iOS device, instead it points to a location on the machine on which `lldb` is running. These are system libraries for which debug symbols are available on the machine (part of Xcode iOS development toolkit) to aid in application development and debugging. For these libraries we can use the function names directly to set breakpoints.
+In the above output, you may also notice that many of the full paths of the images do not point to a path on the iOS device, instead it points to a location on the machine on which `lldb` is running. These are system libraries for which debug symbols are available on the machine (part of Xcode iOS development toolkit) to aid in application development and debugging. For these libraries we can use the function names directly to set breakpoints.
 
 Once the breakpoint is hit, the execution is halted, and we can access and explore the current state of the process. In this case we know from our static analysis that register `X0` contains the hidden string, thus lets explore it. In `lldb` we can print the Obj-C object using `po` command.
 
-![Setting breakpoint in lldb](Images/Chapters/0x06b/debugging_lldb_breakpoint_solution.png "Setting breakpoint in lldb")
+![Setting breakpoint in lldb](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in lldb")
 
-Voila, aided with static analysis and debugger the crackme can be easily solved. There are plethora of features implemented in `lldb`, including changing value of registers, changing value in the process memory and even automating tasks using Python scripts.
+Voila, aided with static analysis and debugger the crackme can be easily solved. There are plethora of features implemented in `lldb`, including changing value of the registers, changing value in the process memory and even automating tasks using Python scripts.
+
+Officially Apple recommends use of `lldb` for debugging purposes, but `gdb` can also be used on iOS. The techniques discussed above is applicable while debugging using `gdb` as well, provided the `lldb` specific commands are changed to `gdb` commands.
 
 
 #### Tracing
