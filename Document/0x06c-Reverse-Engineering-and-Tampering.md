@@ -436,6 +436,27 @@ Next, navigate to a new website in Safari. You should see traced function calls 
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
 
+#### Emulation-based Analysis
+
+Emulation is imitation of a certain computer platform or program on another platform or program. The software or hardware performing this imitation is called an _emulator_. Emulator provides a much cheaper alternatives to an actual device, where a user can manipulate it without worrying about damaging the device. As discussed in "[Emulation-based analysis](0x05c-reverse-engineering-and-tampering#emulation-based-analysis "Emulation-based analysis")" section, there are multiple emulators available for Android, but unlike Android, for iOS practically there are practically no viable emulators available.
+
+##### iOS Simulator
+
+Apple provides a simulator app within Xcode which provides an user interface for iPhone, iPad or Apple Watch. As per Apple documentation, "simulator allows you to rapidly prototype and test builds of your app during the development process." Although the iOS simulator provides a similar look and feel as a real iOS device and also allows to run a debug application, but actually it is not an emulator. Difference between a simulator and an emulator often causes confusion and leads to use of the two terms interchangeably, but in reality they are different, specially for our current use case.
+
+An emulator mimics both the software and hardware environment of a targeted platform. On the other hand, a simulator only mimics the software environment. QEMU based emulators for Android take into consideration the RAM, CPU, battery performance etc (hardware components) while running an application, but in an iOS simulator these hardware component behaviour is not taken into consideration at all. In simple words, emulator is a much closer imitation of the targeted platform, while simulator mimics only a part of it. The iOS simulator even lacks the implementation of the iOS kernel, as a result if an application is using syscalls it cannot be executed in this simulator.
+
+iOS simulator only runs on an x86 platform, and as a consequence applications having code compiled in x86 instruction set only can be executed on it. While developing and debugging an application, Xcode toolchain do generate x86 code, but for a release build the code is compiled into ARM instruction set only, i.e no x86 code is generated. Due to the absence of x86 code in the release build, an application downloaded from Apple App Store cannot be executed on an iOS simulator and thus cannot be used for any kind of application analysis.
+
+In summary, iOS simulator is not an emulator and an application from Apple App Store cannot be executed as it does not have the x86 compiled code.
+
+##### Corellium
+
+Corellium is a commercial tool which offers virtual iOS devices - a virtual iPhone running actual iOS firmware. The product is very expensive (IDA-Pro license will feel very cheap) and there are no trial licenses available. This product is discussed here as it is the only publicly available iOS emulator ever.
+
+Since it is a proprietary product, not much information is available about the implementation, but it is safe to assume that some kind of emulation is used behind the scenes. For an end user it is an emulator, with which multiple instances of a device can be launched, and the ability to take a snapshot of the device state and restore it, if needed. The product is quite straightforward to use and the virtual device can be accessed as a local device with some VPN configurations, thus making it available for application development as well.
+
+
 ### Binary Analysis
 
 An introduction to binary analysis using binary analysis frameworks has already been discussed in the "[Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis")" section for Android. We recommend you to revisit this section and refresh the concepts on this subject.
