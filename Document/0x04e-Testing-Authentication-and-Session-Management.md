@@ -333,7 +333,13 @@ Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Se
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined in [RFC7519](https://tools.ietf.org/html/rfc7519 "RFC7519"). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
-JWT tokens consist of three Base64-encoded parts separated by dots. The following example shows a [Base64-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
+JWT tokens consist of three Base64Url-encoded parts separated by dots. Token structure example:
+
+```plain
+[base64UrlEncode(header)].[base64UrlEncode(payload)].[base64UrlEncode(signature)]
+```
+
+The following example shows a [Base64Url-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
 
 ```base64
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
