@@ -336,7 +336,7 @@ Token-based authentication is implemented by sending a signed token (verified by
 JWT tokens consist of three Base64Url-encoded parts separated by dots. Token structure example:
 
 ```plain
-[base64UrlEncode(header)].[base64UrlEncode(payload)].[base64UrlEncode(signature)]
+<base64UrlEncode(header)>.<base64UrlEncode(payload)>.<base64UrlEncode(signature)>
 ```
 
 The following example shows a [Base64Url-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
