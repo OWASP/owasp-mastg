@@ -684,6 +684,14 @@ public void android.view.View.setTooltipText(java.lang.CharSequence)
 
 In the end, it is up to you to decide where would you like to work with the data. Sometimes it will be more convenient to do it from JavaScript and in other cases Python will be the best choice. Of course you can also send messages from Python to JavaScript by using `script.post`. Refer to the Frida docs for more information about [sending](https://www.frida.re/docs/messages/#sending-messages-from-a-target-process "Sending messages from a target process") and [receiving](https://www.frida.re/docs/messages/#receiving-messages-in-a-target-process "Receiving messages in a target process") messages.
 
+##### House
+
+[House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android Apps, developed and maintained by NCC Group and is written in Python.
+
+It's leveraging on a running Frida Server on a rooted device or the Frida Gadget in a repackaged Android App. The intention of House is to allow an easy way for prototyping of Frida scripts by offering a Web GUI.
+
+The installation instructions and "how-to guide" of House can be found in the [Readme of the Github repo](https://github.com/nccgroup/house "Github Repo of House").
+
 ##### Magisk
 
 `Magisk` ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
@@ -2123,6 +2131,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - frida-ps - <https://www.frida.re/docs/frida-ps/>
 - frida-trace - <https://www.frida.re/docs/frida-trace/>
 - gplaycli - <https://github.com/matlink/gplaycli>
+- House - <https://github.com/nccgroup/house>
 - InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
 - Inspeckage - <https://github.com/ac-pm/Inspeckage>
 - JAADAS - <https://github.com/flankerhqd/JAADAS>
