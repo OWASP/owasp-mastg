@@ -365,7 +365,7 @@ When they do not occur in a code block, place the following code-related keyword
 | --- | --- | --- |
 | function names  |  section titles | application name |
 |   method names  |  chapter titles | folder names  |
-|    commands     |    book titles  | |
+|    commands     |    book titles  | memory addresses (e.g. 0x100044520) |
 |   class names   | flags values (e.g., "true", lowercase) ||
 |   block names   | command options (e.g., "help" option)||
 |   flag names    | single menu item (e.g., "Home" menu)||
