@@ -688,7 +688,7 @@ In the end, it is up to you to decide where would you like to work with the data
 
 [House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android Apps, developed and maintained by NCC Group and is written in Python.
 
-It's leveraging on a running Frida Server on a rooted device or the Frida Gadget in a repackaged Android App. The intention of House is to allow an easy way for prototyping of Frida scripts by offering a Web GUI.
+It's leveraging a running Frida server on a rooted device or the Frida gadget in a repackaged Android app. The intention of House is to allow an easy way of prototyping Frida scripts via its convenient web GUI.
 
 The installation instructions and "how-to guide" of House can be found in the [Readme of the Github repo](https://github.com/nccgroup/house "Github Repo of House").
 
