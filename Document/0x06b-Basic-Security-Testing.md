@@ -138,7 +138,7 @@ The iOS jailbreak scene evolves so rapidly that providing up-to-date instruction
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
 
 - <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
-- <http://repo.hackyouriphone.org>: Add the HackYouriPhone repository to get the AppSync package.
+- <https://cydia.akemi.ai/>: Add "Karen's Repo" to get the AppSync package.
 - <https://build.frida.re>: Install Frida by adding the repository to Cydia.
 - <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added.
 - <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
