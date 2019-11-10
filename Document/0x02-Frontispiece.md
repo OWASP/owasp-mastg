@@ -50,6 +50,10 @@ Romuald is a passionate cyber security & privacy professional with over 15 years
 
 Jeroen is the mobile security lead at NVISO where he is responsible for quality assurance on mobile security projects and for R&D on all things mobile. He worked as a Flash developer during high school and college, but switched to a career in cybersecurity once he graduated and now has more than 5 years of experience in mobile security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
 
+#### Maxim Gal
+
+Maxim has a Bachelor in Software Engineering and was working as an iOS Engineer since 2011. His working experience covers startup companies to the financial industry. In the last two years he shifted to the role of a Mobile Application Security Engineer and was contributing to both projects, the MSTG and MASVS. Maxim works currently at Sberbank and is always looking for the next challenge.
+
 ### Top Contributors
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
