@@ -184,7 +184,7 @@ Throughout the guide, you may want to address the reader in order to tell him wh
 
 ### Web Links
 
-Special characters such as single quote (`) need to be escaped when using them in link descriptions, as otherwise the link is broken in Gitbook.
+Special characters such as single quote (\`) need to be escaped when using them in link descriptions, as otherwise the link is broken in Gitbook.
 
 Wrong usage, see "iPhone's":
 
