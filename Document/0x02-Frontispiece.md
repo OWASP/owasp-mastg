@@ -52,7 +52,7 @@ Jeroen is the mobile security lead at NVISO where he is responsible for quality 
 
 #### Maxim Gal
 
-Maxim has a Bachelor in Software Engineering and was working as an iOS Engineer since 2011. His working experience covers startup companies to the financial industry. In the last two years he shifted to the role of a Mobile Application Security Engineer and was contributing to both projects, the MSTG and MASVS. Maxim works currently at Sberbank and is always looking for the next challenge.
+Maxim has a bachelor in software engineering and was working as an iOS engineer since 2011. His working experience covers from startup companies to the financial industry. In the last two years he shifted to the role of a mobile application security engineer and was contributing to the MSTG and the MASVS. Maxim works currently at Sberbank and is always looking for the next challenge.
 
 ### Top Contributors
 
