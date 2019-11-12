@@ -128,6 +128,17 @@ A library called [Biometric](https://developer.android.com/jetpack/androidx/rele
 
 In the Android developer documentation, a reference implementation can be found on how to [Show a biometric authentication dialog](https://developer.android.com/training/sign-in/biometric-auth "Show a biometric authentication dialog").
 
+There are two `authenticate` methods available in the `BiometricPrompt` class. The difference is that one method is expecting a [CryptoObject](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt.CryptoObject.html "CryptoObject"), which adds an additional layer of security for the biometric authentication.
+
+The authentication flow would be as follows when using CryptoObject:
+
+- The app creates a key in the KeyStore with `setUserAuthenticationRequired` set to true and `setInvalidatedByBiometricEnrollment` set to -1.
+- This key is used to encrypt information that is authenticating the user (e.g. session information or authentication token).
+- A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the authenticate method and the CryptoObject.
+- This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
+
+If CryptoObject is not used as part of the authenticate method, it can be bypassed by using Frida. See the Dynamic Instrumentation section for more details.
+
 Developers can use several [validation classes](https://source.android.com/security/biometric#validation "Validation of Biometric Auth") offered by Android to test the implementation of biometric authentication in their app.
 
 ##### FingerprintManager
