@@ -140,7 +140,7 @@ Many tools on a jailbroken device can be installed by using Cydia, which is the 
 - <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
 - <https://cydia.akemi.ai/>: Add "Karen's Repo" to get the AppSync package.
 - <https://build.frida.re>: Install Frida by adding the repository to Cydia.
-- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added.
+- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added. The agent can also be build from the following repository <https://github.com/fsecurelabs/needle-agent>.
 - <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
 - <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
 - <https://coolstar.org/publicrepo/>: For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools.
