@@ -402,7 +402,7 @@ $ dz> run scanner.provider.injection -a (package name)
 
 Other resources where you might find useful information are:
 
-- [Official Drozer User Guide](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [Official drozer User Guide](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
 - [drozer GitHub page](https://github.com/FSecureLABS/drozer "GitHub repo")
 - [drozer Wiki](https://github.com/FSecureLABS/drozer/wiki "drozer Wiki")
 
