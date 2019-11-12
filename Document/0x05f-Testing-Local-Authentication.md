@@ -120,7 +120,7 @@ An even more secure option is using asymmetric cryptography. Here, the mobile ap
 
 Note that there are quite some SDKs provided by vendors, which should provide biometric support, but which have their own insecurities. Be very cautious when using third party SDKs to handle sensitive authentication logic.
 
-The following sections make a deep dive into the different biometric authentication classes.
+The following sections explain the different biometric authentication classes.
 
 ##### Biometric Library
 
