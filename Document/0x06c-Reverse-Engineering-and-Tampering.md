@@ -444,7 +444,11 @@ Emulation is imitation of a certain computer platform or program on another plat
 
 Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**.
 
-An emulator mimics both the software and hardware environment of a targeted platform. On the other hand, a simulator only mimics the software environment. QEMU based emulators for Android take into consideration the RAM, CPU, battery performance etc (hardware components) while running an application, but in an iOS simulator these hardware component behaviour is not taken into consideration at all. In simple words, emulator is a much closer imitation of the targeted platform, while simulator mimics only a part of it. The iOS simulator even lacks the implementation of the iOS kernel, as a result if an application is using syscalls it cannot be executed in this simulator.
+The difference between a simulator and an emulator often causes confusion and leads to use of the two terms interchangeably, but in reality they are different, specially for the iOS use case. An emulator mimics both the software and hardware environment of a targeted platform. On the other hand, a simulator only mimics the software environment.
+
+QEMU based emulators for Android take into consideration the RAM, CPU, battery performance etc (hardware components) while running an application, but in an iOS simulator this hardware component behaviour is not taken into consideration at all. The iOS simulator even lacks the implementation of the iOS kernel, as a result if an application is using syscalls it cannot be executed in this simulator.
+
+In simple words, an emulator is a much closer imitation of the targeted platform, while a simulator mimics only a part of it. 
 
 iOS simulator only runs on an x86 platform, and as a consequence applications having code compiled in x86 instruction set only can be executed on it. While developing and debugging an application, Xcode toolchain do generate x86 code, but for a release build the code is compiled into ARM instruction set only, i.e no x86 code is generated. Due to the absence of x86 code in the release build, an application downloaded from Apple App Store cannot be executed on an iOS simulator and thus cannot be used for any kind of application analysis.
 
