@@ -450,7 +450,7 @@ QEMU based emulators for Android take into consideration the RAM, CPU, battery p
 
 In simple words, an emulator is a much closer imitation of the targeted platform, while a simulator mimics only a part of it. 
 
-iOS simulator only runs on an x86 platform, and as a consequence applications having code compiled in x86 instruction set only can be executed on it. While developing and debugging an application, Xcode toolchain do generate x86 code, but for a release build the code is compiled into ARM instruction set only, i.e no x86 code is generated. Due to the absence of x86 code in the release build, an application downloaded from Apple App Store cannot be executed on an iOS simulator and thus cannot be used for any kind of application analysis.
+While developing and debugging an application, the Xcode toolchain generates x86 code, which can be executed in the iOS simulator. However, for a release build, only ARM code is generated (incompatible with the iOS simulator). That's why applications downloaded from the Apple App Store cannot be used for any kind of application analysis on the iOS simulator.
 
 
 ##### Corellium
