@@ -442,7 +442,7 @@ Emulation is imitation of a certain computer platform or program on another plat
 
 ##### iOS Simulator
 
-Apple provides a simulator app within Xcode which provides an user interface for iPhone, iPad or Apple Watch. As per Apple documentation, "simulator allows you to rapidly prototype and test builds of your app during the development process." Although the iOS simulator provides a similar look and feel as a real iOS device and also allows to run a debug application, but actually it is not an emulator. Difference between a simulator and an emulator often causes confusion and leads to use of the two terms interchangeably, but in reality they are different, specially for our current use case.
+Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**.
 
 An emulator mimics both the software and hardware environment of a targeted platform. On the other hand, a simulator only mimics the software environment. QEMU based emulators for Android take into consideration the RAM, CPU, battery performance etc (hardware components) while running an application, but in an iOS simulator these hardware component behaviour is not taken into consideration at all. In simple words, emulator is a much closer imitation of the targeted platform, while simulator mimics only a part of it. The iOS simulator even lacks the implementation of the iOS kernel, as a result if an application is using syscalls it cannot be executed in this simulator.
 
