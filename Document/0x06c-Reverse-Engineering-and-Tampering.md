@@ -444,7 +444,7 @@ When a binary is opened in a disassembler like Ghidra, it loads a binary by emul
 
 ![Obtaining image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtaining image base address using Ghidra")
 
-From our previous analysis in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, in the UnCrackable Level 1 application, the value of the hidden string is stored in a label with *hidden* flag set. In the disassembly, the text value of this label is stored in register `X21`, `mov`d from `X0`, at offset `0x100004520`. This is our first address, _breakpoint offset_.
+From our previous analysis of the UnCrackable Level 1 application in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset `0x100004520`. This is our _breakpoint offset_.
 
 ![Breakpoint address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_breakpoint.png "Breakpoint address using Ghidra")
 
