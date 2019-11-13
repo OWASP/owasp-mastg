@@ -448,7 +448,7 @@ From our previous analysis of the UnCrackable Level 1 application in "[Manual (R
 
 ![Breakpoint address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_breakpoint.png "Breakpoint address using Ghidra")
 
-For the second address, we need to determine the ASLR shift offset for a given process. As mentioned before, iOS is a modern operating system with multiple techniques implemented to mitigate code execution attacks, one such technique being Address Space Randomization Layout (ASLR). On every new execution of an application, a random ASLR shift offset is generated, and various process' data structures are shifted by this offset. In order to set a breakpoint at the correct address we need to determine this shift offset each time. The ASLR offset can be determined by using `lldb` command `image list -o -f`. The output is shown in the screenshot below.
+For the second address, we need to determine the _ASLR shift offset_ for a given process. The ASLR offset can be determined by using the lldb command `image list -o -f`. The output is shown in the screenshot below.
 
 ![Process image list](Images/Chapters/0x06c/debugging_lldb_image_list.png "Process image list")
 
