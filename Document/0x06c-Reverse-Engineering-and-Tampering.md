@@ -415,6 +415,8 @@ Attach to an already running application
 debugserver *:1234 -a "MobileSMS"
 ```
 
+You may connect now to the iOS device from your host computer:
+
 ```shell
 (lldb) process connect connect://iOSIP:1234
 ```
