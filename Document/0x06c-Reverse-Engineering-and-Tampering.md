@@ -410,7 +410,7 @@ With the following command you can launch an application via debugserver running
 debugserver -x backboard *:1234 /Applications/MobileSMS.app/MobileSMS
 ```
 
-Attach to an already running application
+Attach to an already running application:
 ```shell
 debugserver *:1234 -a "MobileSMS"
 ```
