@@ -438,8 +438,6 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 #### Emulation-based Analysis
 
-Emulation is imitation of a certain computer platform or program on another platform or program. The software or hardware performing this imitation is called an _emulator_. Emulator provides a much cheaper alternatives to an actual device, where a user can manipulate it without worrying about damaging the device. As discussed in "[Emulation-based analysis](0x05c-reverse-engineering-and-tampering#emulation-based-analysis "Emulation-based analysis")" section, there are multiple emulators available for Android, but unlike Android, for iOS practically there are practically no viable emulators available.
-
 ##### iOS Simulator
 
 Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**.

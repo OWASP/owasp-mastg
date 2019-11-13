@@ -184,7 +184,10 @@ The [Valgrind README](http://valgrind.org/docs/manual/dist.readme-android.html "
 
 #### Emulation-based Dynamic Analysis
 
-Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). We'll provide an overview of popular emulation-based analysis frameworks for Android in the "Tampering and Reverse Engineering on Android" chapter.
+Emulation is an imitation of a certain computer platform or program on another platform or program. The software or hardware performing this imitation is called an _emulator_. Emulator provides a much cheaper alternatives to an actual device, where an user can manipulate it without worrying about damaging the device. There are multiple emulators available for Android, but unlike Android, for iOS there are practically no viable emulators available.
+
+Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no free or open source emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). The only iOS emulator available is an expensive commercial SaaS solution - Corellium. We'll provide an overview of popular emulation-based analysis frameworks for Android in the "Tampering and Reverse Engineering on Android" chapter.
+
 
 <br/>
 <br/>
