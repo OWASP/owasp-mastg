@@ -1,5 +1,5 @@
 
-![OWASP LOGO](Images/OWASP_logo.png)
+<img src="Images/OWASP_logo.png" alt="OWASP Logo">
 
 # Mobile Application Security Testing Guide
 

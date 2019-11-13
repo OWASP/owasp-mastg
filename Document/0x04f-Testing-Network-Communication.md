@@ -14,7 +14,7 @@ Several free and commercial proxy tools are available. Here are some of the most
 
 To use the interception proxy, you'll need run it on your machine and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
-![Intercepting HTTP requests with BURP Suite Pro](Images/Chapters/0x04f/BURP.png)
+<img src="Images/Chapters/0x04f/BURP.png" width="550px"/>
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
