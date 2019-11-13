@@ -452,7 +452,6 @@ In simple words, an emulator is a much closer imitation of the targeted platform
 
 iOS simulator only runs on an x86 platform, and as a consequence applications having code compiled in x86 instruction set only can be executed on it. While developing and debugging an application, Xcode toolchain do generate x86 code, but for a release build the code is compiled into ARM instruction set only, i.e no x86 code is generated. Due to the absence of x86 code in the release build, an application downloaded from Apple App Store cannot be executed on an iOS simulator and thus cannot be used for any kind of application analysis.
 
-In summary, iOS simulator is not an emulator and an application from Apple App Store cannot be executed as it does not have the x86 compiled code.
 
 ##### Corellium
 
