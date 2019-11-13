@@ -431,7 +431,8 @@ In contrast to a debug build, the code compiled for a release build is optimized
 
 Due to the absence of the debug symbols, symbol names are missing from the backtrace outputs and setting breakpoints by simply using function names is not possible. Fortunately, debuggers also support setting breakpoints directly on memory addresses. Further in this section we will learn how to do so and eventually solve the crackme challenge.
 
-Some groundwork is needed before setting a breakpoint using memory addresses. It requires determining two addresses:
+Some groundwork is needed before setting a breakpoint using memory addresses. It requires determining two offsets:
+
 1. Breakpoint offset: The _address offset_ of the code where we want to set a breakpoint. This address is obtained by performing static analysis of the code in a disassembler like Ghidra.
 2. ASLR shift offset: The _ASLR shift offset_ for the current process. Since ASLR offset is randomly generated on every new instance of an application, this has to be obtained for every debugging session individually. This is determined using the debugger itself.
 
