@@ -404,7 +404,7 @@ for armv7.
 Attaching to process 2670...
 ```
 
-###### Launching an application via debugserver
+With the following command you can launch an application via debugserver running on the target device:
 
 ```shell
 debugserver -x backboard *:1234 /Applications/MobileSMS.app/MobileSMS
