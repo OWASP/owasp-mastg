@@ -418,7 +418,7 @@ debugserver *:1234 -a "MobileSMS"
 You may connect now to the iOS device from your host computer:
 
 ```shell
-(lldb) process connect connect://iOSIP:1234
+(lldb) process connect connect://<ip-of-ios-device>:1234
 ```
 
 - `image list` gives a list of main executable and all dependent libraries.
