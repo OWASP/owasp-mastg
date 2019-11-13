@@ -48,12 +48,12 @@ The [Keychain API](https://developer.apple.com/library/content/documentation/Sec
 Data stored in the Keychain is protected via a class structure that is similar to the class structure used for file encryption. Items added to the Keychain are encoded as a binary plist and encrypted with a 128-bit AES per-item key in Galois/Counter Mode (GCM). Note that larger blobs of data aren't meant to be saved directly in the Keychain-that's what the Data Protection API is for. You can configure data protection for Keychain items by setting the `kSecAttrAccessible` key in the call to `SecItemAdd` or `SecItemUpdate`. The following configurable [accessibility values for kSecAttrAccessible](https://developer.apple.com/documentation/security/keychain_services/keychain_items/item_attribute_keys_and_values#1679100 "Accessibility Values for kSecAttrAccessible") are the Keychain Data Protection classes:
 
 - `kSecAttrAccessibleAlways`: The data in the Keychain item can always be accessed, regardless of whether the device is locked.
-- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the Keychain item can always be accessed, regardless of whether the device is locked. The data won't be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleAlwaysThisDeviceOnly`: The data in the Keychain item can always be accessed, regardless of whether the device is locked. The data won't be included in an iCloud or local backup.
 - `kSecAttrAccessibleAfterFirstUnlock`: The data in the Keychain item can't be accessed after a restart until the device has been unlocked once by the user.
 - `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`: The data in the Keychain item can't be accessed after a restart until the device has been unlocked once by the user. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
 - `kSecAttrAccessibleWhenUnlocked`: The data in the Keychain item can be accessed only while the device is unlocked by the user.
-- `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the Keychain item can be accessed only while the device is unlocked by the user. The data won't be included in an iCloud or iTunes backup.
-- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the Keychain can be accessed only when the device is unlocked. This protection class is only available if a passcode is set on the device. The data won't be included in an iCloud or iTunes backup.
+- `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`: The data in the Keychain item can be accessed only while the device is unlocked by the user. The data won't be included in an iCloud or local backup.
+- `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`: The data in the Keychain can be accessed only when the device is unlocked. This protection class is only available if a passcode is set on the device. The data won't be included in an iCloud or local backup.
 
 `AccessControlFlags` define the mechanisms with which users can authenticate the key (`SecAccessControlCreateFlags`):
 
@@ -597,7 +597,7 @@ If the information is masked by, for example, asterisks or dots, the app isn't l
 
 #### Overview
 
-iOS includes auto-backup features that create copies of the data stored on the device. On iOS, backups can be made through iTunes or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the device except highly sensitive data such as Apple Pay information and Touch ID settings.
+iOS includes auto-backup features that create copies of the data stored on the device. Backups of iOS can be made locally to the device it's connected to through iTunes (till macOS Catalina) or Finder (macOS Catalina onwards), or the cloud (via the iCloud backup feature). In both cases, the backup includes nearly all data stored on the iOS device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
 Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. Another concern, though less obvious, is whether sensitive configuration settings used to protect data or restrict app functionality could be tampered to change app behavior after restoring a modified backup. Both concerns are valid and these vulnerabilities have proven to exist in a vast number of apps today.
 
@@ -613,7 +613,7 @@ The takeaway: If sensitive data is handled as recommended earlier in this chapte
 
 ##### Static Analysis
 
-An iTunes backup of a device on which a mobile application has been installed will include all subdirectories (except for `Library/Caches/`) and files in the [app's private directory](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App").
+A backup of a device on which a mobile application has been installed will include all subdirectories (except for `Library/Caches/`) and files in the [app's private directory](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App").
 
 Therefore, avoid storing sensitive data in plaintext within any of the files or folders that are in the app's private directory or subdirectories.
 
@@ -670,11 +670,13 @@ func excludeFileFromBackup(filePath: URL) -> Result<Bool, ExcludeFileError> {
 
 #### Dynamic Analysis
 
-In order to test the backup, you obviously need to create one first. The most common way to create a backup of an iOS device is by using iTunes, which is available for Windows, Linux and of course macOS. When creating a backup via iTunes you can always only backup the whole device and not select just a single app. Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your hard drive.
+In order to test the backup, you obviously need to create one first. The most common way to create a backup of an iOS device is by using iTunes, which is available for Windows, Linux and of course macOS (till macOS Mojave). When creating a backup via iTunes you can always only backup the whole device and not select just a single app. Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your hard drive.
 
-After the iOS device has been backed up through iTunes you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch").
+On macOS Catalina onwards, iTunes is not available anymore. Managing of an iOS device, including updates, backup and restore has been moved to the Finder app. The approach remains the same, as described above.
 
-When you want to navigate to the iTunes backup folder up to High Sierra you can easily do so. Starting with macOS Mojave you will get the following error (even as root):
+After the iOS device has been backed up, you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch").
+
+When you want to navigate to the backup folder up to High Sierra you can easily do so. Starting with macOS Mojave you will get the following error (even as root):
 
 ```bash
 $ pwd
@@ -683,7 +685,7 @@ $ ls -alh MobileSync
 ls: MobileSync: Operation not permitted
 ```
 
-This is not a permission issue of the backup folder, but a new feature in macOS Mojave. Solve this problem by granting full disk access to your terminal application by following the explanation on [OSXDaily](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave").
+This is not a permission issue of the backup folder, but a new feature in macOS Mojave. You can solve this problem by granting full disk access to your terminal application by following the explanation on [OSXDaily](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave").
 
 Before you can access the directory you need to select the folder with the UDID of your device. Check the section "Getting the UDID of an iOS device" in the "iOS Basic Security Testing" chapter on how to retrieve the UDID.
 
@@ -700,7 +702,9 @@ $ ls | head -n 3
 000200a644d7d2c56eec5b89c1921dacbec83c3e
 ```
 
-Therefore, it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. You can consider using the [iMazing](https://imazing.com "iMazing") shareware utility to assist here. Perform a device backup with iMazing and use its built-in backup explorer to easily analyze app container contents including original paths and file names. Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but you can try searching for sensitive data that you have keyed in while using the app before you made the backup. For example: the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
+Therefore, it's not straightforward to navigate through it and you will not find any hints of the app you want to analyze in the directory or file name. You can consider using the [iMazing](https://imazing.com "iMazing") shareware utility to assist here. Perform a device backup with iMazing and use its built-in backup explorer to easily analyze app container contents including original paths and file names.
+
+Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but you can try searching for sensitive data that you have keyed in while using the app before you made the backup. For example: the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
 
 ```bash
 $ ~/Library/Application Support/MobileSync/Backup/<UDID>
@@ -709,7 +713,7 @@ $ grep -iRn "password" .
 
 As described in the Static Analysis section, any sensitive data that you're able to find should be excluded from the backup, encrypted properly by using the Keychain or not stored on the device in the first place.
 
-In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes versions and might need to be tweaked.
+In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes / Finder versions and might need to be tweaked.
 
 ##### Proof of Concept: Removing UI Lock with Tampered Backup
 
@@ -739,9 +743,11 @@ At this point you can view all the backed up content for Bither.
 
 <img src="Images/Chapters/0x06d/bither_demo_imazing_1.png" alt="iMazing" width="550">
 
-This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the net.bither.plist file which contains the `pin_code` attribute. To remove the UI lock restriction, simply delete the `pin_code` attribute and save the changes.
+This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the `net.bither.plist` file which contains the `pin_code` attribute. To remove the UI lock restriction, simply delete the `pin_code` attribute and save the changes.
 
-From there it's possible to easily restore the modified version of net.bither.plist back onto the device using the licensed version of iMazing. The free workaround, however, is to find the plist file in the obfuscated backup generated by iTunes. So create your iTunes backup of the device with Bither's PIN code configured. Then, using the steps described earlier, find the backup directory and grep for "pin_code" as shown below.
+From there it's possible to easily restore the modified version of `net.bither.plist` back onto the device using the licensed version of iMazing.
+
+The free workaround, however, is to find the plist file in the obfuscated backup generated by iTunes/Finder. So create your backup of the device with Bither's PIN code configured. Then, using the steps described earlier, find the backup directory and grep for "pin_code" as shown below.
 
 ```bash
 $ ~/Library/Application Support/MobileSync/Backup/<UDID>
@@ -749,11 +755,11 @@ $ grep -iRn "pin_code" .
 Binary file ./13/135416dd5f251f9251e0f07206277586b7eac6f6 matches
 ```
 
-You'll see there was a match on a binary file with an obfuscated name. This is your net.bither.plist file. Go ahead and rename the file giving it a plist extension so Xcode can easily open it up for you.
+You'll see there was a match on a binary file with an obfuscated name. This is your `net.bither.plist` file. Go ahead and rename the file giving it a plist extension so Xcode can easily open it up for you.
 
 <img src="Images/Chapters/0x06d/bither_demo_plist.png" alt="iMazing" width="550">
 
-Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore from iTunes. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
+Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
 
 ### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
