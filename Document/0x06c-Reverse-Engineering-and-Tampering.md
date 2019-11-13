@@ -456,7 +456,7 @@ In the output, the first column contains the sequence number of the image ([X]),
 
 > In the above output, you may also notice that many of the paths listed as images do not point to the file system on the iOS device. Instead, they point to a certain location on the machine on which lldb is running. These images are system libraries for which debug symbols are available on the machine to aid in application development and debugging (as part of the Xcode iOS SDK). Therefore, you may set breakpoints to these libraries directly by using function names.
 
-Once the breakpoint is hit, the execution is halted, and we can access and explore the current state of the process. In this case we know from our static analysis that register `X0` contains the hidden string, thus lets explore it. In `lldb` we can print the Obj-C object using `po` command.
+After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In lldb you can print Objective-C objects using the `po` (_print object_) command.
 
 ![Setting breakpoint in lldb](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in lldb")
 
