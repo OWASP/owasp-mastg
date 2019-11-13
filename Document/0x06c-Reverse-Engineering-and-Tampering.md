@@ -421,7 +421,7 @@ You may connect now to the iOS device from your host computer:
 (lldb) process connect connect://<ip-of-ios-device>:1234
 ```
 
-- `image list` gives a list of main executable and all dependent libraries.
+Typing `image list` gives a list of main executable and all dependent libraries.
 
 ##### Debugging Release Apps
 
