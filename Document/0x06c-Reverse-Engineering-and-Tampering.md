@@ -442,7 +442,7 @@ The final breakpoint address to be used in the debugger is the sum of the above 
 
 When a binary is opened in a disassembler like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is 0x100000000.
 
-![Obtain image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtain image base address using Ghidra")
+![Obtaining image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtaining image base address using Ghidra")
 
 From our previous analysis in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, in the UnCrackable Level 1 application, the value of the hidden string is stored in a label with *hidden* flag set. In the disassembly, the text value of this label is stored in register `X21`, `mov`d from `X0`, at offset `0x100004520`. This is our first address, _breakpoint offset_.
 
