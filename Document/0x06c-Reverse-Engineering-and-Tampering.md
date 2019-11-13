@@ -460,7 +460,7 @@ Once the breakpoint is hit, the execution is halted, and we can access and explo
 
 ![Setting breakpoint in lldb](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in lldb")
 
-Voila, aided with static analysis and debugger the crackme can be easily solved. There are plethora of features implemented in `lldb`, including changing value of the registers, changing value in the process memory and even automating tasks using Python scripts.
+Voila, the crackme can be easily solved aided by static analysis and a debugger. There are plethora of features implemented in lldb, including changing the value of the registers, changing values in the process memory and even [automating tasks using Python scripts](https://lldb.llvm.org/use/python.html "lldb - Python Scripting").
 
 Officially Apple recommends use of `lldb` for debugging purposes, but `gdb` can also be used on iOS. The techniques discussed above is applicable while debugging using `gdb` as well, provided the `lldb` specific commands are changed to `gdb` commands.
 
