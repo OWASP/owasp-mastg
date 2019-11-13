@@ -351,11 +351,11 @@ bash: # . ~/.bashrc
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
-The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as `lldb` and `gdb`. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
+The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
 
-##### Debugging with lldb
+##### Debugging with LLDB
 
-iOS ships with the console app debugserver, which allows remote debugging via gdb or lldb. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+iOS ships with the console app debugserver, which allows remote debugging via GDB or LLDB. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
@@ -425,7 +425,7 @@ Typing `image list` gives a list of main executable and all dependent libraries.
 
 ##### Debugging Release Apps
 
-In the previous section we learned about how to setup a debugging environment on an iOS device using lldb. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
+In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
 
 In contrast to a debug build, the code compiled for a release build is optimized to achieve maximum performance and minimum binary build size. As a general best practice, most of the debug symbols are stripped for a release build, adding a layer of complexity when reverse engineering and debugging the binaries.
 
@@ -440,7 +440,7 @@ Some groundwork is needed before setting a breakpoint using memory addresses. It
 
 The final breakpoint address to be used in the debugger is the sum of the above two addresses (Breakpoint offset + ASLR shift offset). This approach assumes that the image base address (discussed shortly) used by the disassembler and iOS is the same, which is true most of the time.
 
-When a binary is opened in a disassembler like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is 0x100000000.
+When a binary is opened in a disassembler like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is `0x100000000`.
 
 ![Obtaining image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtaining image base address using Ghidra")
 
@@ -448,21 +448,21 @@ From our previous analysis of the UnCrackable Level 1 application in "[Manual (R
 
 ![Breakpoint address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_breakpoint.png "Breakpoint address using Ghidra")
 
-For the second address, we need to determine the _ASLR shift offset_ for a given process. The ASLR offset can be determined by using the lldb command `image list -o -f`. The output is shown in the screenshot below.
+For the second address, we need to determine the _ASLR shift offset_ for a given process. The ASLR offset can be determined by using the LLDB command `image list -o -f`. The output is shown in the screenshot below.
 
 ![Process image list](Images/Chapters/0x06c/debugging_lldb_image_list.png "Process image list")
 
 In the output, the first column contains the sequence number of the image ([X]), the second column contains the randomly generated ASLR offset, while 3rd column contains the full path of the image and towards the end, content in the bracket shows the image base address after adding ASLR offset to the original image base address (`0x100000000` + `0x40000` = `0x100040000`). You will notice the image base address of `0x100000000` is same as in Ghidra. Now, to obtain the effective memory address for a code location we only need to add ASLR offset to the address identified in Ghidra. The effective address to set the breakpoint will be `0x100004520` + `0x40000` = `0x100044520`. The breakpoint can be set using command `b 0x100044520`.
 
-> In the above output, you may also notice that many of the paths listed as images do not point to the file system on the iOS device. Instead, they point to a certain location on the machine on which lldb is running. These images are system libraries for which debug symbols are available on the machine to aid in application development and debugging (as part of the Xcode iOS SDK). Therefore, you may set breakpoints to these libraries directly by using function names.
+> In the above output, you may also notice that many of the paths listed as images do not point to the file system on the iOS device. Instead, they point to a certain location on the machine on which LLDB is running. These images are system libraries for which debug symbols are available on the machine to aid in application development and debugging (as part of the Xcode iOS SDK). Therefore, you may set breakpoints to these libraries directly by using function names.
 
-After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In lldb you can print Objective-C objects using the `po` (_print object_) command.
+After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In LLDB you can print Objective-C objects using the `po` (_print object_) command.
 
-![Setting breakpoint in lldb](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in lldb")
+![Setting breakpoint in LLDB](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in LLDB")
 
-Voila, the crackme can be easily solved aided by static analysis and a debugger. There are plethora of features implemented in lldb, including changing the value of the registers, changing values in the process memory and even [automating tasks using Python scripts](https://lldb.llvm.org/use/python.html "lldb - Python Scripting").
+Voila, the crackme can be easily solved aided by static analysis and a debugger. There are plethora of features implemented in LLDB, including changing the value of the registers, changing values in the process memory and even [automating tasks using Python scripts](https://lldb.llvm.org/use/python.html "LLDB - Python Scripting").
 
-Officially Apple recommends use of lldb for debugging purposes, but gdb can be also used on iOS. The techniques discussed above are applicable while debugging using gdb as well, provided the lldb specific commands are [changed to gdb commands](https://lldb.llvm.org/use/map.html "GDB to LLDB command map").
+Officially Apple recommends use of LLDB for debugging purposes, but GDB can be also used on iOS. The techniques discussed above are applicable while debugging using GDB as well, provided the LLDB specific commands are [changed to GDB commands](https://lldb.llvm.org/use/map.html "GDB to LLDB command map").
 
 
 #### Tracing
@@ -617,7 +617,7 @@ Now you should be ready to run the modified app. Deploy and run the app on the d
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ```
 
-If everything went well, the app should start in debugging mode with lldb attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
+If everything went well, the app should start in debugging mode with LLDB attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
 
 ```shell
 $ frida-ps -U
