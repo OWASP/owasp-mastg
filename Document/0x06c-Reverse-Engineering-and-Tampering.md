@@ -425,7 +425,7 @@ Typing `image list` gives a list of main executable and all dependent libraries.
 
 ##### Debugging Release Apps
 
-In the previous section we learned about how to setup a debugging environment on an iOS device using `lldb`. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
+In the previous section we learned about how to setup a debugging environment on an iOS device using lldb. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
 
 What differentiates a debug build of an application from a release build? In a release build, the compiled code is optimized to achieve maximum performance and minimum binary build size. As a general practice, in a release build all the debug symbols are usually stripped to reduce binary size and also to prevent reverse engineering of the binaries. Due to absence of these debug symbols, setting of breakpoints in a debugger by simply using function names is not possible and also symbol names are missing from a backtrace output. This absence of debug symbols adds a layer of complexity to the debugging process. Fortunately, debuggers also support setting of breakpoints by using only memory addresses. Further in this section we will learn how to do so and eventually solve the crackme challenge.
 
