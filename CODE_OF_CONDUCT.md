@@ -37,7 +37,7 @@ Refrain from violating the laws in your country by carefully consulting them bef
 
 The MSTG project is also NOT supporting in any way of unethical activities and if you come across such requests please reach out to the project leaders and raise this to them.
 
-Neither OWASP, the MSTG project leaders, authors or anyone else involved in this project is going to accept responsibility for your actions.
+Neither OWASP, the MSTG project leaders, authors or anyone else involved in this project is going to take responsibility for your actions.
 
 The intention of the MSTG is not to encourage hacking or malicious activities! Instead, the goal of the project is to document different attacks against mobile apps and its risk and offer ways to reduce or mitigate that risk.
 
