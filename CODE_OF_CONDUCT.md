@@ -29,6 +29,18 @@ Project maintainers are responsible for clarifying the standards of acceptable b
 
 Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
 
+## Disclaimer
+
+The MSTG and it's materials are for educational and research purposes only, or if you are a professional security tester that is analysing mobile apps with approval of the app owner (e.g. Penetration Test or Bug Bounty Program).
+
+Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG.
+
+The MSTG project is also NOT supporting in any way of unethical activities and if you come across such requests please reach out to the project leaders and raise this to us.
+
+Neither OWASP, project leaders, authors or anyone else involved in this project is going to accept responsibility for your actions.
+
+The intention of the MSTG is not to encourage hacking or malicious activities! Instead, the goal of the project is to document different attacks against mobile apps and it's risk and offer ways to reduce or mitigate it's risk.
+
 ## Scope
 
 This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community includes using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
