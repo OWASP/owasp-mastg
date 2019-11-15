@@ -284,7 +284,7 @@ Two-factor authentication (2FA) is standard for apps that allow users to access 
 - Hardware or software token
 - Push notifications in combination with PKI and local authentication
 
-Whatever option is used as 2nd factor, it always must be enforced and verified on the server-side and never on client-side. Otherwise the 2nd factor can easily be bypassed within the app.
+Whatever option is used as 2nd factor, it always must be enforced and verified on the server-side and never on client-side. Otherwise the 2nd factor can be easily bypassed within the app.
 
 The secondary authentication can be performed at login or later in the user's session. For example, after logging in to a banking app with a username and PIN, the user is authorized to perform non-sensitive tasks. Once the user attempts to execute a bank transfer, the second factor ("step-up authentication") must be presented.
 
