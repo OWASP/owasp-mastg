@@ -31,7 +31,7 @@ Project maintainers have the right and responsibility to remove, edit, or reject
 
 ## Disclaimer
 
-The MSTG and it's materials are for educational and research purposes only, or if you are a professional security tester that is analysing mobile apps with approval of the app owner (e.g. Penetration Test or Bug Bounty Program).
+The MSTG and its materials are conceived for educational and research purposes only, or if you are a professional security tester that is analyzing mobile apps with approval of the app owner (e.g. as part of a penetration test or a bug bounty program).
 
 Refrain from violating the laws in your country by carefully consulting them before executing any tests against mobile apps by utilizing the MSTG materials.
 
