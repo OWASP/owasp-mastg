@@ -672,7 +672,7 @@ func excludeFileFromBackup(filePath: URL) -> Result<Bool, ExcludeFileError> {
 
 In order to test the backup, you obviously need to create one first. The most common way to create a backup of an iOS device is by using iTunes, which is available for Windows, Linux and of course macOS (till macOS Mojave). When creating a backup via iTunes you can always only backup the whole device and not select just a single app. Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your hard drive.
 
-On macOS Catalina onwards, iTunes is not available anymore. Managing of an iOS device, including updates, backup and restore has been moved to the Finder app. The approach remains the same, as described above.
+> iTunes is not available anymore from macOS Catalina onwards. Managing of an iOS device, including updates, backup and restore has been moved to the Finder app. The approach remains the same, as described above.
 
 After the iOS device has been backed up, you need to retrieve the file path of the backup, which are different locations on each OS. The official Apple documentation will help you to [locate backups of your iPhone, iPad, and iPod touch](https://support.apple.com/en-us/HT204215 "Locate backups of your iPhone, iPad, and iPod touch").
 
