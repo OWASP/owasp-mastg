@@ -1016,7 +1016,7 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550">
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550px">
 
 ##### Accessing App Data Directories
 
