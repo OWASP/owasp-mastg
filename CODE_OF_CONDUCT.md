@@ -35,7 +35,7 @@ The MSTG and its materials are conceived for educational and research purposes o
 
 Refrain from violating the laws in your country by carefully consulting them before executing any tests against mobile apps when utilizing the MSTG materials.
 
-The MSTG project is also NOT supporting in any way of unethical activities and if you come across such requests please reach out to the project leaders and raise this to them.
+The MSTG project is also NOT supporting unethical activities in any way. If you come across such requests, please reach out to the project leaders and raise this to them.
 
 Neither OWASP, the MSTG project leaders, authors or anyone else involved in this project is going to take responsibility for your actions.
 
