@@ -1170,7 +1170,7 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
-<img src="Images/Chapters/0x06b/device_console.png"  width="550">
+<img src="Images/Chapters/0x06b/device_console.png"  width="550px">
 
 You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
 
