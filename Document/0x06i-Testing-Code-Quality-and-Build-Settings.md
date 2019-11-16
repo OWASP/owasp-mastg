@@ -632,7 +632,7 @@ $ otool -Iv DamnVulnerableIOSApp | grep release
 
 IDB automates the processes of checking for stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
-<img src="Images/Chapters/0x06i/idb.png" alt="IDB Analyze Binary" width="350">
+<img src="Images/Chapters/0x06i/idb.png" alt="IDB Analyze Binary" width="350px">
 
 #### Dynamic Analysis
 
