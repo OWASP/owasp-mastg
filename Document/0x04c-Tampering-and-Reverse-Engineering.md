@@ -64,9 +64,9 @@ In contrast, Frida implements code injection by writing code directly into proce
 - The agent establishes a bi-directional communication channel back to the tool (e.g. the Frida REPL or your custom Python script).
 - The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
 
-![Frida](Images/Chapters/0x04/frida.png)
+<img src="Images/Chapters/0x04/frida.png" alt="Frida Architecture"  width="500">
 
-*Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")*
+- *Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")*
 
 Frida offers three modes of operation:
 
@@ -137,27 +137,27 @@ Ghidra is an open source software reverse engineering (SRE) suite of tools devel
 
 Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:
 
-![Ghidra New Project Window](Images/Chapters/0x04c/Ghidra_new_project.png)
+<img src="Images/Chapters/0x04c/Ghidra_new_project.png" alt="Ghidra New Project"  width="500">
 
 In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
 
-![Ghidra import file](Images/Chapters/0x04c/Ghidra_import_binary.png)
+<img src="Images/Chapters/0x04c/Ghidra_import_binary.png" alt="Ghidra import binary"  width="500">
 
 If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
 
-<img src="Images/Chapters/0x05c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="400">
+<img src="Images/Chapters/0x04c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="350">
 
 To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.
 
-![Ghidra code browser window](Images/Chapters/0x04c/Ghidra_main_window.png)
+<img src="Images/Chapters/0x04c/Ghidra_main_window.png" alt="Ghidra Main Window">
 
 The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function.
 
-![Ghidra function graph view](Images/Chapters/0x04c/Ghidra_function_graph.png)
+<img src="Images/Chapters/0x04c/Ghidra_function_graph.png" alt="Ghidra Function Graph View">
 
 There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters.
 
-![Ghidra strings window](Images/Chapters/0x04c/Ghidra_string_window.png)
+<img src="Images/Chapters/0x04c/Ghidra_string_window.png" alt="Ghidra strings window">
 
 #### Debugging and Tracing
 

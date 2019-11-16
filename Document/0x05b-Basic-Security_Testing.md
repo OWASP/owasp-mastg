@@ -1015,19 +1015,19 @@ And of course you can also use the disassembler capabilities of r2 and print the
 
 r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
 
-![radare2 r2 shell - pd 10](Images/Chapters/0x05b/r2_pd_10.png)
+<img src="Images/Chapters/0x05b/r2_pd_10.png" width="550px"/>
 
 Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
 
-![radare2 Visual Mode - V](Images/Chapters/0x05b/r2_visualmode_hex.png)
+<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="550px"/>
 
 By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
 
-![radare2 Visual Mode - Vp](Images/Chapters/0x05b/r2_visualmode_disass.png)
+<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="550px"/>
 
 Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
 
-![radare2 Graph Mode - VV](Images/Chapters/0x05b/r2_graphmode.png)
+<img src="Images/Chapters/0x05b/r2_graphmode.png" width="550px"/>
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
@@ -1225,7 +1225,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-![Android Studio Device File Explorer](Images/Chapters/0x05b/android-studio-file-device-explorer.png)
+<img src="Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="500px"/>
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
@@ -1295,7 +1295,7 @@ sg.vp.owasp_mobile.omtg_android
 
 Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-![SFTP Access](Images/Chapters/0x05b/sftp-with-filezilla.png)
+<img src="Images/Chapters/0x05b/sftp-with-filezilla.png" width="500px"/>
 
 Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
@@ -1605,7 +1605,7 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-![Log output in Android Studio](Images/Chapters/0x05b/log_output_Android_Studio.png)
+<img src="Images/Chapters/0x05b/log_output_Android_Studio.png" width="500px"/>
 
 - You can execute Logcat with adb to store the log output permanently:
 
@@ -1688,11 +1688,11 @@ $ nc localhost 11111 | wireshark -k -S -i -
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-![Wireshark](Images/Chapters/0x05b/Android_Wireshark.png)
+<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="500px"/>
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="500">
+<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="450px">
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -1700,7 +1700,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.png)
+<img src="Images/Chapters/0x05b/FCM-notifications-overview.png" width="500px"/>
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -1747,7 +1747,8 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
+<img src="Images/Chapters/0x05b/FCM_Intercept.png" width="500px"/>
+![Intercepted Messages]()
 
 ###### End-to-End Encryption for Push Notifications
 
@@ -1938,7 +1939,7 @@ In order to avoid the obligation of configuring the Network Security Configurati
 
 There is a [Magisk module](https://github.com/NVISO-BE/MagiskTrustUserCerts "Magisk Trust User Certs") that will automatically add all user-installed CA certificates to the list of system trusted CAs.
 
-Download the latest version of the module [here](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases "Magisk Trust User Certs - Releases"), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect.
+Download the latest version of the module at the [Github Release page](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases "Magisk Trust User Certs - Releases"), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect.
 
 From now on, any CA certificate that is installed by the user via "Settings", "Security & location", "Encryption & credentials", "Install from storage" (location may differ) is automatically pushed into the system's trust store by this Magisk module. Reboot and verify that the CA certificate is listed in "Settings", "Security & location", "Encryption & credentials", "Trusted credentials" (location may differ).
 

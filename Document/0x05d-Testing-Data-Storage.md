@@ -864,7 +864,7 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
-| ![OMTG_DATAST_010_1_FLAG_SECURE](Images/Chapters/0x05d/1.png)   |  ![OMTG_DATAST_010_2_FLAG_SECURE](Images/Chapters/0x05d/2.png) |
+| <img src="Images/Chapters/0x05d/1.png" width="500px"/> | <img src="Images/Chapters/0x05d/2.png" width="500px"/> |
 
 ### Checking Memory for Sensitive Data (MSTG-STORAGE-10)
 
@@ -1101,11 +1101,11 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 For rudimentary analysis, you can use Android Studio's built-in tools. They are on the _Android Monitor_ tab. To dump memory, select the device and app you want to analyze and click _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory, which is on the app's project path.
 
-![Create Heap Dump](Images/Chapters/0x05d/Dump_Java_Heap.png)
+<img src="Images/Chapters/0x05d/Dump_Java_Heap.png" width="550px"/>
 
 To navigate through class instances that were saved in the memory dump, select the Package Tree View in the tab showing the _.hprof_ file.
 
-![Create Heap Dump](Images/Chapters/0x05d/Package_Tree_View.png)
+<img src="Images/Chapters/0x05d/Package_Tree_View.png" width="550px"/>
 
 For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer Tool (MAT). It is available as an Eclipse plugin and as a standalone application.
 

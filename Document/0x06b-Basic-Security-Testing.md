@@ -546,7 +546,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passiofruit File Options">
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passionfruit File Options" width="500px">
 
 ##### Objection
 
@@ -754,7 +754,7 @@ Different methods exist for installing an IPA package onto an iOS device, which 
 
 ##### Cydia Impactor
 
-One tool that is available for Windows, macOS and Linux is [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading. The tool can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+[Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor") was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading (and even APK files to Android devices). Cydia Impactor is available for Windows, macOS and Linux . A [step by step guide and troubleshooting steps are available on yalujailbreak.net](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
 
 ##### libimobiledevice
 
@@ -1018,7 +1018,7 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View">
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550px">
 
 ##### Accessing App Data Directories
 
@@ -1145,15 +1145,15 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
-<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View">
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550px">
 
 Including the `Info.plist` file:
 
-<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View">
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550px">
 
 As well as the Data directory in **Files** -> **Data**:
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View">
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px">
 
 Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
@@ -1168,11 +1168,11 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 5. Reproduce the problem.
 6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-![Opening the Device Console in Xcode](Images/Chapters/0x06b/open_device_console.png)
+<img src="Images/Chapters/0x06b/open_device_console.png"  width="550px">
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
-![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
+<img src="Images/Chapters/0x06b/device_console.png"  width="550px">
 
 You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
 
@@ -1342,7 +1342,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 ip.addr == 192.168.1.1 && http
 ```
 
-![Capture Filters in Wireshark](Images/Chapters/0x06b/wireshark_filters.png)
+<img src="Images/Chapters/0x06b/wireshark_filters.png" width="550px">
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 

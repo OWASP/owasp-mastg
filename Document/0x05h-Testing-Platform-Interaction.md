@@ -90,7 +90,9 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
 #### Documentation for URI Permissions
 
-[grantUriPermission](https://developer.android.com/reference/android/content/Context.html#grantUriPermission(java.lang.String,%2520android.net.Uri,%2520int) "grantUriPermission"), [revokeUriPermission](https://developer.android.com/reference/android/content/Context#revokeUriPermission(android.net.Uri,%20int) "revokeUriPermission"), and [checkUriPermission](https://developer.android.com/reference/android/content/Context#checkUriPermission(android.net.Uri,%20int,%20int,%20int) "checkUriPermission").
+- [grantUriPermission](http://bit.ly/2Ke2AQU "grantUriPermission")
+- [revokeUriPermission](http://bit.ly/33ICaP7 "revokeUriPermission")
+- [checkUriPermission](http://bit.ly/2q7YGlO "checkUriPermission")
 
 ##### Custom Permissions
 

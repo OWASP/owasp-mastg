@@ -111,7 +111,7 @@ You should now find the decompiled sources in the directory `Uncrackable-Level1/
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because Intellij uses the package name to identify the correct process.
 
-![IntelliJ](Images/Chapters/0x05c/intellij_new_project.jpg)
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px"/>
 
 In the next dialog, pick any API number; you don't actually want to compile the project, so the number doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
@@ -121,7 +121,7 @@ Once you have created the project, expand the "1: Project" view on the left and 
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
-![Drag source code](Images/Chapters/0x05c/drag_code.jpg)
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="500px"/>
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
@@ -280,7 +280,7 @@ This said, please see section "[Reviewing Disassembled Native Code](#reviewing-d
 
 If you own an IDA Pro license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
-![Open New File in IDA](Images/Chapters/0x05c/IDA_open_file.jpg)
+<img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="500px"/>
 
 > The freeware version of IDA Pro unfortunately does not support the ARM processor type.
 
@@ -298,11 +298,11 @@ Following the example from "Decompiling Java Code", we assume that you've succes
 
 When analyzing obfuscated code, annotating class names, method names, and other identifiers as you go along is a good practice. Open the `MainActivity` class in the package `sg.vantagepoint.uncrackable1`. The method `verify` is called when you tap the "verify" button. This method passes user input to a static method called `a.a`, which returns a boolean value. It seems plausible that `a.a` verifies user input, so we'll refactor the code to reflect this.
 
-![User Input Check](Images/Chapters/0x05c/check_input.jpg)
+<img src="Images/Chapters/0x05c/check_input.jpg" width="500px"/>
 
 Right-click the class name (the first `a` in `a.a`) and select Refactor -> Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later). `a.a` now becomes `Validator.a`. Follow the same procedure to rename the static method `a` to `check_input`.
 
-![Refactored class and method names](Images/Chapters/0x05c/refactored.jpg)
+<img src="Images/Chapters/0x05c/refactored.jpg" width="500px"/>
 
 Congratulations, you just learned the fundamentals of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program until you understand it completely or, at least, well enough for whatever you want to achieve.
 
@@ -407,11 +407,11 @@ The workflow can be further improved by using [r2ghidra-dec](https://github.com/
 
 We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
-![Hello World Disassembly](Images/Chapters/0x05c/helloworld_stringfromjni.jpg)
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="500px"/>
 
 Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI function is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table: an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
 
-![JNI Interface](Images/Chapters/0x05c/JNI_interface.png)
+<img src="Images/Chapters/0x05c/JNI_interface.png" width="550px"/>
 
 With that in mind, let's have a look at each line of assembly code.
 
@@ -457,7 +457,7 @@ After opening the library in Ghidra we can see all the functions defined in the 
 
 Inside the current function there is a call to another function, whose address is obtained by accessing an offset in the `JNIEnv` pointer (found as `plParm1`). This logic has been diagrammatically demonstrated above as well. The corresponding C code for the disassembled function is shown in the **Decompiler** window. This decompiled C code makes it much easier to understand the function call being made. Since this function is small and extremely simple, the decompilation output is very accurate, this can change drastically when dealing with complex functions.
 
-![Ghidra function disassembly and decompilation](Images/Chapters/0x05c/Ghidra_decompiled_function.png)
+<img src="Images/Chapters/0x05c/Ghidra_decompiled_function.png" width="500px"/>
 
 #### Automated Static Analysis
 
@@ -644,7 +644,7 @@ Once you tap the Uncrackable app icon from the launcher, it will be suspended in
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
-![Set breakpoint and attach debugger](Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png)
+<img src="Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="550px"/>
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
@@ -654,19 +654,19 @@ After you choose the Uncrackable1 application from the list, the debugger will a
 
 Next, single-step through the `onCreate` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
 
-![Force Step Into](Images/Chapters/0x05c/Force_Step_Into.png)
+<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="500px"/>
 
 Once you "Force Step Into", the debugger will stop at the beginning of the next method, which is the `a` method of the class `sg.vantagepoint.a.c`.
 
-![Function a](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png)
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="500px"/>
 
 This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
 
-![Function a](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png)
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="500px"/>
 
 You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a` method.
 
-![Step Over](Images/Chapters/0x05c/step_over.png)
+<img src="Images/Chapters/0x05c/step_over.png" width="500px"/>
 
 Step into the `System.getenv` method with the "Force Step Into" feature.
 
@@ -674,31 +674,31 @@ After you get the colon-separated directory names, the debugger cursor will retu
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
-![Step Out](Images/Chapters/0x05c/step_out.png)
+<img src="Images/Chapters/0x05c/step_out.png" width="500px"/>
 
 After the `a` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
-![Set Value](Images/Chapters/0x05c/set_value.png)
+<img src="Images/Chapters/0x05c/set_value.png" width="500px"/>
 
-![Modified Binary Name](Images/Chapters/0x05c/modified_binary_name.png)
+<img src="Images/Chapters/0x05c/modified_binary_name.png" width="500px"/>
 
 Once you modify the binary name or the directory name, `File.exists` should return `false`.
 
-![File Exists False](Images/Chapters/0x05c/file_exists_false.png)
+<img src="Images/Chapters/0x05c/file_exists_false.png" width="500px"/>
 
 This defeats the first root detection control of UnCrackable App for Android Level 1 . The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
 <img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300">
 
-![MainActivity Verify](Images/Chapters/0x05c/MainActivity_verify.png)
+<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="550px"/>
 
 The secret code is verified by the method `a` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
 
-![Set Breakpoint](Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png)
+<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="550px"/>
 
 You can see the secret string in the "Variables" view when you reach the `String.equals` method call.
 
-![Secret String](Images/Chapters/0x05c/secret_code.png)
+<img src="Images/Chapters/0x05c/secret_code.png" width="550px"/>
 
 <img src="Images/Chapters/0x05c/success.png" alt="Success" width="300">
 
@@ -750,9 +750,9 @@ Remote debugging using :1234
 
 You have successfully attached to the process! The only problem is that you're already too late to debug the JNI function `StringFromJNI`; it only runs once, at startup. You can solve this problem by activating the "Wait for Debugger" option. Go to **Developer Options** -> **Select debug app** and pick HelloWorldJNI, then activate the **Wait for debugger** switch. Then terminate and re-launch the app. It should be suspended automatically.
 
-Our objective is to set a breakpoint at the first instruction of the native function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` before resuming the app. Unfortunately, this isn't possible at this point in the execution because `libnative-lib.so` isn't yet mapped into process memory—it is loaded dynamically during run time. To get this working, you'll first use JDB to gently change the process into the desired state.
+Our objective is to set a breakpoint at the first instruction of the native function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` before resuming the app. Unfortunately, this isn't possible at this point in the execution because `libnative-lib.so` isn't yet mapped into process memory—it is loaded dynamically during run time. To get this working, you'll first use jdb to gently change the process into the desired state.
 
-First, resume execution of the Java VM by attaching JDB. You don't want the process to resume immediately though, so pipe the `suspend` command into JDB:
+First, resume execution of the Java VM by attaching jdb. You don't want the process to resume immediately though, so pipe the `suspend` command into jdb:
 
 ```shell
 $ adb jdwp
@@ -761,7 +761,7 @@ $ adb forward tcp:7777 jdwp:14342
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 ```
 
-Next, suspend the process where the Java runtime loads `libnative-lib.so`. In JDB, set a breakpoint at the `java.lang.System.loadLibrary` method and resume the process. After the breakpoint has been reached, execute the `step up` command, which will resume the process until `loadLibrary`returns. At this point, `libnative-lib.so` has been loaded.
+Next, suspend the process where the Java runtime loads `libnative-lib.so`. In jdb, set a breakpoint at the `java.lang.System.loadLibrary` method and resume the process. After the breakpoint has been reached, execute the `step up` command, which will resume the process until `loadLibrary`returns. At this point, `libnative-lib.so` has been loaded.
 
 ```shell
 > stop in java.lang.System.loadLibrary
@@ -793,7 +793,7 @@ Remote debugging using :1234
 
 ##### Execution Tracing
 
-Besides being useful for debugging, the JDB command line tool offers basic execution tracing functionality. To trace an app right from the start, you can pause the app with the Android "Wait for Debugger" feature or a `kill –STOP` command and attach JDB to set a deferred method breakpoint on any initialization method. Once the breakpoint is reached, activate method tracing with the `trace go methods` command and resume execution. JDB will dump all method entries and exits from that point onwards.
+Besides being useful for debugging, the jdb command line tool offers basic execution tracing functionality. To trace an app right from the start, you can pause the app with the Android "Wait for Debugger" feature or a `kill –STOP` command and attach jdb to set a deferred method breakpoint on any initialization method. Once the breakpoint is reached, activate method tracing with the `trace go methods` command and resume execution. jdb will dump all method entries and exits from that point onwards.
 
 ```shell
 $ adb forward tcp:7777 jdwp:7288
@@ -930,11 +930,12 @@ Incorrect serial (wrong format).
 
 So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
-![Disassembly of main function](Images/Chapters/0x05c/disass_main_1874.png)
+<img src="Images/Chapters/0x05c/disass_main_1874.png" width="550px"/>
+![Disassembly of main function]()
 
 The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
-![Graph of main function](Images/Chapters/0x05c/graph_1874.png)
+<img src="Images/Chapters/0x05c/graph_1874.png" width="550px"/>
 
 `strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
@@ -1030,17 +1031,17 @@ We can now use this information about the expected input to further look into th
 
 Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
-![XOR instruction inside a loop](Images/Chapters/0x05c/loop_1784.png)
+<img src="Images/Chapters/0x05c/loop_1784.png" width="550px"/>
 
 XOR is a very commonly used technique to _encrypt_ information where obfuscation is the goal rather than security. **XOR should not be used for any serious encryption**, as it can be cracked using frequency analysis. Therefore, the mere presence of XOR encryption in such a validation logic always requires special attention and analysis.
 
 Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call at `0x000017e8`.
 
-![Decoded values being compared](Images/Chapters/0x05c/values_compare_17dc.png)
+<img src="Images/Chapters/0x05c/values_compare_17dc.png" width="550px"/>
 
 Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. In the above crackme, the symbolic execution engine can determine the constraints on each byte of the input string by mapping a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`).
 
-![If else Graph](Images/Chapters/0x05c/graph_ifelse_1760.png)
+<img src="Images/Chapters/0x05c/graph_ifelse_1760.png" width="550px"/>
 
 The constraints obtained from the above steps are passed to a solver engine, which finds an input that satisfies them - a valid license key.
 
@@ -2071,7 +2072,7 @@ The system should now boot normally. To quickly verify that the correct kernel i
 
 System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality . With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You [1].
 
-![Syscall Hooking](Images/Chapters/0x05c/syscall_hooking.jpg)
+<img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="400px"/>
 
 You first need the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers aren't so lucky). You can look up the address in the /proc/kallsyms file:
 

@@ -107,7 +107,7 @@ Confirm the existence of a password policy and verify the implemented password c
 
 After adding the zxcvbn JavaScript library to the HTML page, you can execute the command `zxcvbn` in the browser console, to get back detailed information about how likely it is to crack the password including a score.
 
-<img src="Images/Chapters/0x04e/zxcvbn.png" alt="An example of a zxcvbn score">
+<img src="Images/Chapters/0x04e/zxcvbn.png" alt="An example of a zxcvbn score" width="500">
 
 The score is defined as follows and can be used for a password strength bar for example:
 
