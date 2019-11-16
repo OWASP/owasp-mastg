@@ -542,7 +542,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passiofruit File Options" width="500">
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passionfruit File Options" width="500px">
 
 ##### Objection
 
