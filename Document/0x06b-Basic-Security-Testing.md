@@ -1143,7 +1143,7 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
-<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550">
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550px">
 
 Including the `Info.plist` file:
 
