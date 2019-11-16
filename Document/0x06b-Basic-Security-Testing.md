@@ -29,18 +29,22 @@ $ xcode-select --install
 
 ##### Getting the UDID of an iOS device
 
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Just select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
-It is also possible to get the UDID via various command line tools while the device is attached via USB:
+<img src="Images/Chapters/0x06b/UDID-Finder.png" alt="UDID in Finder" width="500">
 
-- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
+If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
+
+It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
+
+- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg`:
 
     ```sh
     $ ioreg -p IOUSB -l | grep "USB Serial"
     |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
     ```
 
-- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
+- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (also available on Linux):
 
     ```sh
     $ brew install ideviceinstaller
@@ -48,7 +52,7 @@ It is also possible to get the UDID via various command line tools while the dev
     316f01bd160932d2bf2f95f1f142bc29b1c62dbc
     ```
 
-- By using the system_profiler (macOS only):
+- By using the system_profiler:
 
     ```sh
     $ system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p;/iPhone/,/Serial/p;/iPod/,/Serial/p' | grep "Serial Number:"
@@ -56,7 +60,7 @@ It is also possible to get the UDID via various command line tools while the dev
                 Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
     ```
 
-- By using instruments (macOS only):
+- By using instruments:
 
     ```sh
     $ instruments -s devices
@@ -116,13 +120,13 @@ Jailbreaking an iOS device is becoming more and more complicated because Apple k
 
 If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
 
-iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
+iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
 ###### Which Jailbreaking Tool to Use
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
-The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If you have a device that's running an iOS version for which no jailbreak is available, you can still jailbreak the device if you downgrade or upgrade to the target _jailbreakable_ iOS version (via IPSW download and iTunes). However, this may not be possible if the required iOS version is no longer signed by Apple.
+The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If you have a device that's running an iOS version for which no jailbreak is available, you can still jailbreak the device if you downgrade or upgrade to the target _jailbreakable_ iOS version (via IPSW download or the iOS update mechanism). However, this may not be possible if the required iOS version is no longer signed by Apple.
 
 The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
 
@@ -746,7 +750,7 @@ When you install an application without using Apple's App Store, this is called 
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
-> Please note that since iTunes 12.7 it is not longer possible to install apps using iTunes.
+> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not longer possible to install apps.
 
 ##### Cydia Impactor
 
