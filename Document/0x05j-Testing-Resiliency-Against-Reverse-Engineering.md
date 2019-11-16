@@ -195,7 +195,7 @@ Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: 
 
 ##### Bypassing Root Detection
 
-Run execution traces with JDB, DDMS, `strace`, and/or kernel modules to find out what the app is doing. You'll usually see all kinds of suspect interactions with the operating system, such as opening `su` for reading and obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms, one at a time. If you're performing a black box resilience assessment, disabling the root detection mechanisms is your first step.
+Run execution traces with jdb, DDMS, `strace`, and/or kernel modules to find out what the app is doing. You'll usually see all kinds of suspect interactions with the operating system, such as opening `su` for reading and obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms, one at a time. If you're performing a black box resilience assessment, disabling the root detection mechanisms is your first step.
 
 To bypass these checks, you can use several techniques, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
 
@@ -611,7 +611,7 @@ Please see [different proposed solutions for the Android Crackme Level 2](https:
 
 Check for anti-debugging mechanisms, including the following criteria:
 
-- Attaching JDB and ptrace-based debuggers fails or causes the app to terminate or malfunction.
+- Attaching jdb and ptrace-based debuggers fails or causes the app to terminate or malfunction.
 - Multiple detection methods are scattered throughout the app's source code (as opposed to their all being in a single method or function).
 - The anti-debugging defenses operate on multiple API layers (Java, native library functions, assembler/system calls).
 - The mechanisms are somehow original (as opposed to being copied and pasted from StackOverflow or other sources).
