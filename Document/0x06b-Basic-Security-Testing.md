@@ -1166,7 +1166,7 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 5. Reproduce the problem.
 6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-<img src="Images/Chapters/0x06b/open_device_console.png"  width="550">
+<img src="Images/Chapters/0x06b/open_device_console.png"  width="550px">
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
