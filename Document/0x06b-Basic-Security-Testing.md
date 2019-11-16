@@ -1147,7 +1147,7 @@ You can also visualize the Bundle directory from Passionfruit by clicking on **F
 
 Including the `Info.plist` file:
 
-<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550">
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550px">
 
 As well as the Data directory in **Files** -> **Data**:
 
