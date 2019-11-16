@@ -37,7 +37,7 @@ Write for an international audience with a *basic* level of technical understand
 
 ### Context and Orientation
 
-Let the user know where he or she is on every page. Establish the topic by using a unique page heading.
+Let the users know where they are on every page. Establish the topic by using a unique page heading.
 
 Include a clear and concise introduction where possible.
 
