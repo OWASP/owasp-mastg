@@ -92,7 +92,6 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
 - [grantUriPermission](http://bit.ly/2Ke2AQU "grantUriPermission")
 - [revokeUriPermission](http://bit.ly/33ICaP7 "revokeUriPermission")
-
 - [checkUriPermission](http://bit.ly/2q7YGlO "checkUriPermission")
 
 ##### Custom Permissions
