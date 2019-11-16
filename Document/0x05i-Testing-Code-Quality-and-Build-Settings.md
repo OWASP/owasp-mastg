@@ -159,7 +159,7 @@ The following procedure can be used to start a debug session with `jdb`:
 A few notes about debugging:
 
 - The tool [`JADX`](https://github.com/skylot/jadx "JADX") can be used to identify interesting locations for breakpoint insertion.
-- Usage of basic commands for `jdb` can be found at [Tutorialspoint](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "JDB basic commands").
+- Usage of basic commands for jdb can be found at [Tutorialspoint](https://www.tutorialspoint.com/jdb/jdb_basic_commands.htm "jdb basic commands").
 - If you get an error telling that "the connection to the debugger has been closed" while `jdb` is being bound to the local communication channel port, kill all adb sessions and start a single new session.
 
 ### Testing for Debugging Symbols (MSTG-CODE-3)
