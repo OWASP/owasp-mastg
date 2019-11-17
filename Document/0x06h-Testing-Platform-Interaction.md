@@ -86,7 +86,7 @@ The [Apple Developer Documentation](https://developer.apple.com/library/archive/
 - The provisioning profile is embedded into the app bundle during the build (`embedded.mobileprovision`).
 - Entitlements from the "Code Signing Entitlements" section in Xcode's "Build Settings" tab are transferred to the app's signature.
 
-For example, if a developer wants to set the "Default Data Protection" capability, he would go to the **Capabilities** tab in Xcode and enable **Data Protection**. This is directly written by Xcode to the `<appname>.entitlements` file as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
+For example, if a you want to set the "Default Data Protection" capability, you would need to go to the **Capabilities** tab in Xcode and enable **Data Protection**. This is directly written by Xcode to the `<appname>.entitlements` file as the `com.apple.developer.default-data-protection` entitlement with default value `NSFileProtectionComplete`. In the IPA we might find this in the `embedded.mobileprovision` as:
 
 ```xml
 <key>Entitlements</key>
@@ -388,7 +388,7 @@ Please refer to the section "[Testing Custom URL Schemes](#testing-custom-url-sc
 
 ##### Overview
 
-Universal links are the iOS equivalent to Android App Links (aka. Digital Asset Links) and are used for deep linking. When a user taps a universal link (to the app's website) he will get seamlessly redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
+Universal links are the iOS equivalent to Android App Links (aka. Digital Asset Links) and are used for deep linking. When tapping a universal link (to the app's website), the user will seamlessly be redirected to the corresponding installed app without going through Safari. If the app isn’t installed, the link will open in Safari.
 
 Universal links are standard web links (HTTP/HTTPS) and are not to be confused with custom URL schemes, which originally were also used for deep linking.
 

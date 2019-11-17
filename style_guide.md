@@ -172,7 +172,7 @@ Ex: Android 9 (API level 28)
 
 ### Addressing the Reader in Test Cases
 
-Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
+Throughout the guide, you may want to address the readers in order to tell them what to do, or what they should notice. For any such case, use an active approach and simply address the reader using "you".
 
 **Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: [...].
 

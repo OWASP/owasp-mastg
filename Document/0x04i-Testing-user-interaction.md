@@ -4,7 +4,7 @@
 
 A lot has happened lately in terms of responsibilities that developers have to educate users on what they need to know.
 This has shifted especially with the introduction of the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe. Ever since then, it is best to educate users on what is happening with their private data and why.
-Additionally, it is a good practice to inform the user about how he can best use the application to ensure a secure processing of his information.
+Additionally, it is a good practice to inform the user about how to use the application properly. This should ensure a secure handling and processing of the user's information.
 Next, a user should be informed on what type of device data the app will access, whether that is PII or not.
 Last, you need to share OSS related information with the user.
 All four items will be covered here.
@@ -15,9 +15,9 @@ All four items will be covered here.
 
 When you need personal information from a user for your business process, the user needs to be informed on what you do with the data and why you need it. If there is a third party doing the actual processing of the data, you should inform the user about that too. Lastly, there are three processes you need to support:
 
-- **The right to be forgotten**: A user needs to be able to request the deletion of his data, and be explained how to do so.
-- **The right to correct data**: The user should be able to correct his personal information at any time, and be explained how to do so.
-- **The right to access user data**: The user should be able to request all information that the application has on him, and the user should be explained how to request this information.
+- **The right to be forgotten**: Users needs to be able to request the deletion of their data, and be explained how to do so.
+- **The right to correct data**: Users should be able to correct their personal information at any time, and be explained how to do so.
+- **The right to access user data**: Users should be able to request all information that the application has on them, and the user should be explained how to request this information.
 
 Most of this can be covered in a privacy policy, but make sure that it is understandable by the user.
 

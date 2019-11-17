@@ -538,7 +538,7 @@ For applications which require L2 protection, the MASVS states that they should 
 1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification.
 2. The application provides an overview of the last session after login. If the previous session was with a different configuration (e.g. location, device, app-version) compared to the current configuration, then the user should have the option to report suspicious activities and block devices used in the previous session.
 3. The application provides an overview of the last session after login at all times.
-4. The application has a self-service portal in which the user can see an audit-log and manage the different devices with which he can login.
+4. The application has a self-service portal in which the user can see an audit-log. This allows the user to manage the different devices that are logged in.
 
 The developer can make use of specific meta-information and associate it to each different activity or event within the application. This will make it easier for the user to spot suspicious behavior and block the corresponding device. The meta-information may include:
 
