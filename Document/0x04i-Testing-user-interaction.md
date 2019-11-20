@@ -17,7 +17,7 @@ When you need personal information from a user for your business process, the us
 
 - **The right to be forgotten**: Users need to be able to request the deletion of their data, and be explained how to do so.
 - **The right to correct data**: Users should be able to correct their personal information at any time, and be explained how to do so.
-- **The right to access user data**: Users should be able to request all information that the application has on them, and the user should be explained how to request this information.
+- **The right to access user data**: Users should be able to request all information that the application has on them, and be explained how to request this information.
 
 Most of this can be covered in a privacy policy, but make sure that it is understandable by the user.
 
