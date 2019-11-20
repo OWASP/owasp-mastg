@@ -15,7 +15,7 @@ All four items will be covered here.
 
 When you need personal information from a user for your business process, the user needs to be informed on what you do with the data and why you need it. If there is a third party doing the actual processing of the data, you should inform the user about that too. Lastly, there are three processes you need to support:
 
-- **The right to be forgotten**: Users needs to be able to request the deletion of their data, and be explained how to do so.
+- **The right to be forgotten**: Users need to be able to request the deletion of their data, and be explained how to do so.
 - **The right to correct data**: Users should be able to correct their personal information at any time, and be explained how to do so.
 - **The right to access user data**: Users should be able to request all information that the application has on them, and the user should be explained how to request this information.
 
