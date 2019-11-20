@@ -440,13 +440,7 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 ##### iOS Simulator
 
-Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**.
-
-The difference between a simulator and an emulator often causes confusion and leads to use of the two terms interchangeably, but in reality they are different, specially for the iOS use case. An emulator mimics both the software and hardware environment of a targeted platform. On the other hand, a simulator only mimics the software environment.
-
-QEMU based emulators for Android take into consideration the RAM, CPU, battery performance etc (hardware components) while running an application, but in an iOS simulator this hardware component behaviour is not taken into consideration at all. The iOS simulator even lacks the implementation of the iOS kernel, as a result if an application is using syscalls it cannot be executed in this simulator.
-
-In simple words, an emulator is a much closer imitation of the targeted platform, while a simulator mimics only a part of it. 
+Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**. Difference between a simulator and an emulator is previously discussed in "[Emulation-based Dynamic Analysis](0x04c-tampering-and-reverse-engineering#emulation-based-dynamic-analysis "Emulation-based Dynamic Analysis)" section.
 
 While developing and debugging an application, the Xcode toolchain generates x86 code, which can be executed in the iOS simulator. However, for a release build, only ARM code is generated (incompatible with the iOS simulator). That's why applications downloaded from the Apple App Store cannot be used for any kind of application analysis on the iOS simulator.
 
