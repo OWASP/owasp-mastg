@@ -20,6 +20,24 @@ Those containing one or two screens of text at most. Users are scanning for link
 
 Consider creating a supporting document and linking to it from the page rather than displaying all the information directly on the page.
 
+### Write Gender Neutral
+
+We are writing gender neutral in the MSTG and will refrain from "he/she" as we do not want to exclude non-binary. This means don't use the following words throughout the book:
+
+- she / her
+- he / him / his
+
+Instead, write in the following different styles to be inclusive:
+
+- only a noun: “a user should…”
+- the plural: “When users should…”
+- the second person: “When you are pentesting, you should…”
+- an imperative: “Never use event bound methods like LaContext!”
+
+We are not writing in singular "they", as this can become confusing and shall therefore not be used.
+
+There is one exception: We are still using "man in the middle", as it is simply a common term in the industry and there is no common replacement for it.
+
 ### Timeliness of Content
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
@@ -37,7 +55,7 @@ Write for an international audience with a *basic* level of technical understand
 
 ### Context and Orientation
 
-Let the user know where he or she is on every page. Establish the topic by using a unique page heading.
+Let the users know where they are on every page. Establish the topic by using a unique page heading.
 
 Include a clear and concise introduction where possible.
 
@@ -172,7 +190,7 @@ Ex: Android 9 (API level 28)
 
 ### Addressing the Reader in Test Cases
 
-Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
+Throughout the guide, you may want to address the readers in order to tell them what to do, or what they should notice. For any such case, use an active approach and simply address the reader using "you".
 
 **Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: [...].
 
