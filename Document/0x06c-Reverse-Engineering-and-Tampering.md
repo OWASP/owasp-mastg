@@ -411,6 +411,7 @@ debugserver -x backboard *:1234 /Applications/MobileSMS.app/MobileSMS
 ```
 
 Attach to an already running application:
+
 ```shell
 debugserver *:1234 -a "MobileSMS"
 ```
