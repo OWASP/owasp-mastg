@@ -23,7 +23,7 @@ Reassure that the lock screen is set:
    }
 ```
 
-- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device need to be unlocked again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
+- Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device needs to be unlocked again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
 
 ```java
   try {
