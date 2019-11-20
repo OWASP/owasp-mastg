@@ -20,6 +20,24 @@ Those containing one or two screens of text at most. Users are scanning for link
 
 Consider creating a supporting document and linking to it from the page rather than displaying all the information directly on the page.
 
+### Write Gender Neutral
+
+We are writing gender neutral in the MSTG and will refrain from "he/she" as we do not want to exclude non-binary. This means don't use the following words throughout the book:
+
+- she / her
+- he / him / his
+
+Instead, write in the following different styles to be inclusive:
+
+- only a noun: “a user should…”
+- the plural: “When users should…”
+- the second person: “When you are pentesting, you should…”
+- an imperative: “Never use event bound methods like LaContext!”
+
+We are not writing in singular "they", as this can become confusing and shall therefore not be used.
+
+There is one exception: We are still using "man in the middle", as it is simply a common term in the industry and there is no common replacement for it.
+
 ### Timeliness of Content
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
