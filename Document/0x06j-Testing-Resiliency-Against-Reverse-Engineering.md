@@ -523,6 +523,94 @@ A similar approach works. Answer the following questions:
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms??
 
+### Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
+
+#### Overview
+
+Reverse engineers use a lot of tools, frameworks, and apps, many of which you've encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is attempting to reverse engineer the app.
+
+Some reverse engineering tools can only run on a jailbroken device, force the app into debugging mode or start a service on the mobile phone. Different ways would need to be implemented in the mobile app to detect a reverse engineering attack and react to it, like terminating the app.
+
+#### Detection Methods
+
+You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as Cydia Substrate / Cycript, can be detected similarly. Note that injection/hooking/DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through run time integrity checks, which are discussed below.
+
+For instance, in its default configuration on a jailbroken  device, Frida runs as frida-server. When you explicitly attach to a target app (e.g. via frida-trace or the Frida REPL), Frida injects a frida-agent into the memory of the app. Therefore, you may expect to find it there after attaching to the app (and not before). On Android you can verify this, by grepping for the string "frida" in the memory (`maps`) of the process ID in the `proc` directory.
+On iOS the `proc` directory is not available, but you can list the dynamic libraries in an app with the function `_dyld_image_count`.
+
+The other method (which also works for non-jailbroken devices) consists of embedding a [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") into the IPA and _forcing_ the app to load it as one of its native libraries.
+
+In the application.app data directory the app stores the static content, as well as the application's ARM-compiled binary including the apps's libaries. If you inspect the app's directory in `/var/containers/Bundle/Application/[UUID]/[Application].app` you'll find the embedded frida-gadget as FridaGadget.dylib.
+
+```bash
+Svens-iPhone:/var/containers/Bundle/Application/AC5DC1FD-3420-42F3-8CB5-E9D77C4B287A/SwiftSecurity.app/Frameworks root# ls -alh
+total 87M
+drwxr-xr-x 10 _installd _installd  320 Nov 19 06:08 ./
+drwxr-xr-x 11 _installd _installd  352 Nov 19 06:08 ../
+-rw-r--r--  1 _installd _installd  70M Nov 16 06:37 FridaGadget.dylib
+-rw-r--r--  1 _installd _installd 3.8M Nov 16 06:37 libswiftCore.dylib
+-rw-r--r--  1 _installd _installd  71K Nov 16 06:37 libswiftCoreFoundation.dylib
+-rw-r--r--  1 _installd _installd 136K Nov 16 06:38 libswiftCoreGraphics.dylib
+-rw-r--r--  1 _installd _installd  99K Nov 16 06:37 libswiftDarwin.dylib
+-rw-r--r--  1 _installd _installd 189K Nov 16 06:37 libswiftDispatch.dylib
+-rw-r--r--  1 _installd _installd 1.9M Nov 16 06:38 libswiftFoundation.dylib
+-rw-r--r--  1 _installd _installd  76K Nov 16 06:37 libswiftObjectiveC.dylib
+```
+
+Looking at these _traces_ that Frida _lefts behind_, you might already imagine that detecting those would be a trivial task. And actually, so trivial will be bypassing that detection. But things can get much more complicated. The following table shortly presents a set of some typical Frida detection methods and a short discussion on their effectiveness.
+
+> Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security").
+
+| Method | Description | Discussion |
+| --- | --- | --- |
+| **Check The Environment For Related Artifacts**  |  Artifacts can be packaged files, binaries, libraries, processes, and temporary files. For Frida, this could be the frida-server running in the target (jailbroken) system (the daemon responsible for exposing Frida over TCP) or the frida libraries loaded by the app. | Inspecting running services is not possible for an iOS app on a non-jailbroken device. The Swift method [CommandLine](https://developer.apple.com/documentation/swift/commandline "CommandLine") is not available on iOS to query for information about running processes, but there are inofficial ways, like using [NSTask](https://stackoverflow.com/a/56619466 "How can I run Command Line commands or tasks with Swift in iOS?"). Nevertheless when using this method, the app will be rejected during the App Store review process. There is no other public API available to query for running processes or execute system commands within an iOS App. Even if it would be possible, bypassing this would be as easy as just renaming the corresponding Frida artifact (frida-server/frida-gadget/frida-agent). Another way to detect Frida, would be to walk through the list of loaded libraries and check for suspicious ones (e.g. those including "frida" in their names), which can be done by using `_dyld_get_image_name`.
+| **Checking For Open TCP Ports** | The frida-server process binds to TCP port 27042 by default. Check whether this port is open is another method of detecting the daemon. | This method detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial. |
+| **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
+
+Please remember that this table is far from exhaustive. We could also start talking about:
+
+- [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), or
+- detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (see "[Prevent bypassing of SSL certificate pinning in iOS applications](https://www.guardsquare.com/en/blog/iOS-SSL-certificate-pinning-bypassing "Prevent bypassing of SSL certificate pinning in iOS applications")" for further explanation and sample code for detection of trampolines in an iOS app)
+
+Both would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a jailbroken device, the specific version of the jailbreak and method and/or the version of the tool itself. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
+
+Another detection mechanism would be to verify the signature of the app. In order to embed the frida-gadget within the IPA, it would need to be repackaged and resigned. In Android this can be done by using [GET_SIGNING_CERTIFICATES](https://developer.android.com/reference/android/content/pm/PackageManager#GET_SIGNING_CERTIFICATES "GET_SIGNING_CERTIFICATES"), on macOS you can use [SecCodeCheckValidity](https://developer.apple.com/documentation/security/1396726-seccodecheckvalidity?language=objc "SecCodeCheckValidity"), but there is no equivalent method available on iOS. There are code samples available on [Github](https://gist.github.com/mike3k/2956278 "Check for encrypted iOS binary") and [StackOverflow](https://stackoverflow.com/a/41157852 "Checking code integrity in iOS") that check if the app is encrypted or not, by verifying `cryptid`. If this value is 0, the app was dumped (e.g. "clutched") and the Fairplay DRM encryption is not present anymore. This indicates that someone is and trying to tamper and reverse engineer an app. There are limitations in such an implementation, as you cannot easily test if the check for `cryptid` is properly working. The app will only be encrypted by Apple after you submitted it to the App Store and the code will only work for non-fat binaries.
+
+> It is important to note that these methods are just increasing the complexity for the reverse engineer. If being used, the best approach is to combine them cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, remember that the reverse engineer always wins! You also have to consider that integrating some of them into your app might increase the complexity of your app as well as considerably mine its performance.
+
+#### Effectiveness Assessment
+
+Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Cydia Substrate, Cycript, SSL KillSwitch and the Needle Agent.
+
+The app should respond in some way to the presence of those tools. For example by:
+
+- Alerting the user and asking for accepting liability.
+- Preventing execution by gracefully terminating.
+- Securely wiping any sensitive data stored on the device.
+- Reporting to a backend server, e.g, for fraud detection.
+
+Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
+
+- Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
+- How difficult is identifying the anti reverse engineering code via static and dynamic analysis?
+- Did you need to write custom code to disable the defenses? How much time did you need?
+- What is your assessment of the difficulty of bypassing the mechanisms?
+
+The following steps should guide you when bypassing detection of reverse engineering tools:
+
+1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of Hooper or Ghidra.
+2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C /  Swift or native layers. Return a handle to the original file, not the modified file.
+
+Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)" for examples of patching and code injection.
+
+### Testing Emulator Detection (MSTG-RESILIENCE-5)
+
+#### Overview
+
+In the context of anti-reversing, the goal of emulator detection is to increase the difficulty of running the app on an emulated device, which impedes some tools and techniques reverse engineers like to use. This increased difficulty forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
+
+To make a long story short, this is not applicable for iOS apps. The only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator. This makes the simulator useless for black box analysis and reverse engineering. See also the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter for further information.
+
 ### Device Binding (MSTG-RESILIENCE-10)
 
 #### Overview

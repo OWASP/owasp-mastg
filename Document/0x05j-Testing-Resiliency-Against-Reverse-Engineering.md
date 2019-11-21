@@ -805,7 +805,9 @@ An approach similar to that for application-source integrity checks applies. Ans
 
 #### Overview
 
-Reverse engineers use a lot of tools, frameworks, and apps, many of which you've encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is attempting to reverse engineer the app. Users increase their risk by installing such tools.
+Reverse engineers use a lot of tools, frameworks, and apps, many of which you've encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is attempting to reverse engineer the app.
+
+Some reverse engineering tools can only run on a rooted device, force the app into debugging mode or start a service on the mobile phone. Different ways would need to be implemented in the mobile app to detect a reverse engineering attack and react to it, like terminating the app.
 
 #### Detection Methods
 
@@ -844,7 +846,7 @@ Looking at these two _traces_ that Frida _lefts behind_, you might already imagi
 
 Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
-**It is important to note that these methods are just increasing the complexity of the reverse engineer. If being used, the best approach is to combine them cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, remember that the reverse engineer always wins! You also have to consider that integrating some of them into your app might increase the complexity of your app as well as considerably mine its performance.**
+> It is important to note that these methods are just increasing the complexity of the reverse engineer. If being used, the best approach is to combine them cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, remember that the reverse engineer always wins! You also have to consider that integrating some of them into your app might increase the complexity of your app as well as considerably mine its performance.
 
 #### Effectiveness Assessment
 
@@ -860,13 +862,13 @@ The app should respond in some way to the presence of those tools. For example b
 Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
 
 - Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the anti-debugging code via static and dynamic analysis?
+- How difficult is identifying the anti reverse engineering code via static and dynamic analysis?
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
 The following steps should guide you when bypassing detection of reverse engineering tools:
 
-1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
+1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
 3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
