@@ -559,7 +559,7 @@ drwxr-xr-x 11 _installd _installd  352 Nov 19 06:08 ../
 
 Looking at these _traces_ that Frida _lefts behind_, you might already imagine that detecting those would be a trivial task. And actually, so trivial will be bypassing that detection. But things can get much more complicated. The following table shortly presents a set of some typical Frida detection methods and a short discussion on their effectiveness.
 
-> Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security").
+> Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security Suite").
 
 | Method | Description | Discussion |
 | --- | --- | --- |
@@ -684,6 +684,8 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 - MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
 - MSTG-RESILIENCE-3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
+- MSTG‑RESILIENCE‑4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
+- MSTG‑RESILIENCE‑5: "The app detects, and responds to, being run in an emulator."
 - MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 - MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
 
