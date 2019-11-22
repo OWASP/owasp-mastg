@@ -502,10 +502,23 @@ We will use the vulnerable password manager app [Sieve](https://github.com/mwrla
 Identify all defined `<provider>` elements:
 
 ```xml
-<provider android:authorities="com.mwr.example.sieve.DBContentProvider" android:exported="true" android:multiprocess="true" android:name=".DBContentProvider">
-    <path-permission android:path="/Keys" android:readPermission="com.mwr.example.sieve.READ_KEYS" android:writePermission="com.mwr.example.sieve.WRITE_KEYS"/>
+<provider 
+      android:authorities="com.mwr.example.sieve.DBContentProvider" 
+      android:exported="true" 
+      android:multiprocess="true" 
+      android:name=".DBContentProvider">
+    <path-permission 
+          android:path="/Keys" 
+          android:readPermission="com.mwr.example.sieve.READ_KEYS"
+          android:writePermission="com.mwr.example.sieve.WRITE_KEYS"
+     />
 </provider>
-<provider android:authorities="com.mwr.example.sieve.FileBackupProvider" android:exported="true" android:multiprocess="true" android:name=".FileBackupProvider"/>
+<provider 
+      android:authorities="com.mwr.example.sieve.FileBackupProvider" 
+      android:exported="true" 
+      android:multiprocess="true" 
+      android:name=".FileBackupProvider"
+/>
 ```
 
 As shown in the `AndroidManifest.xml` above, the application exports two content providers. Note that one path ("/Keys") is protected by read and write permissions.
