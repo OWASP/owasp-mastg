@@ -527,9 +527,7 @@ A similar approach works. Answer the following questions:
 
 #### Overview
 
-Reverse engineers use a lot of tools, frameworks and apps, many of which you've encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is attempting to reverse engineer the app.
-
-Some reverse engineering tools can only run on a jailbroken device, force the app into debugging mode or start a service on the mobile phone. Different ways would need to be implemented in the mobile app to detect a reverse engineering attack and react to it, like terminating the app.
+The presence of reverse engineering tools on the device may indicate that the user is attempting to reverse engineer the app. Some reverse engineering tools can only run on a jailbroken device, force the app into debugging mode or start a service on the mobile phone. Different ways would need to be implemented in the mobile app to detect a reverse engineering attack and react to it, like terminating the app.
 
 #### Detection Methods
 
@@ -543,7 +541,7 @@ The other method, which also works for non-jailbroken devices, consists of embed
 The application's static content, including its ARM-compiled binary and its external libraries, are stored inside the [Application].app directory. If you inspect the content of the `/var/containers/Bundle/Application/[UUID]/[Application].app` directory, you'll find the embedded frida-gadget as FridaGadget.dylib.
 
 ```bash
-Svens-iPhone:/var/containers/Bundle/Application/AC5DC1FD-3420-42F3-8CB5-E9D77C4B287A/SwiftSecurity.app/Frameworks root# ls -alh
+iPhone:/var/containers/Bundle/Application/AC5DC1FD-3420-42F3-8CB5-E9D77C4B287A/SwiftSecurity.app/Frameworks root# ls -alh
 total 87M
 drwxr-xr-x 10 _installd _installd  320 Nov 19 06:08 ./
 drwxr-xr-x 11 _installd _installd  352 Nov 19 06:08 ../
@@ -563,7 +561,6 @@ Looking at these _traces_ that Frida _leaves behind_, you might already imagine 
 
 | Method | Description | Discussion |
 | --- | --- | --- |
-| **Check Signature of an App** | One detection mechanism would be to verify the signature of the app. In order to embed the frida-gadget within the IPA, it would need to be repackaged and resigned. There is a library available in Objective-C called [iOS-App-Security-Class](https://github.com/karek314/iOS-App-Security-Class "iOS-App-Security-Class") that checks if the app is encrypted or not, by verifying `cryptid`. If this value is 0, the app was dumped (e.g. "clutched") and the Fairplay DRM encryption is not present anymore.  | This indicates that someone is trying to tamper and reverse engineer an app. There are limitations in such an implementation, as you cannot easily test if the check for `cryptid` is properly working. The app will only be encrypted by Apple after you submitted it to the App Store. |
 | **Check The Environment For Related Artifacts**  | Artifacts can be packaged files, binaries, libraries, processes, and temporary files. For Frida, this could be the frida-server running in the target (jailbroken) system (the daemon responsible for exposing Frida over TCP) or the frida libraries loaded by the app. | Inspecting running services is not possible for an iOS app on a non-jailbroken device. The Swift method [CommandLine](https://developer.apple.com/documentation/swift/commandline "CommandLine") is not available on iOS to query for information about running processes, but there are unofficial ways, such as by using [NSTask](https://stackoverflow.com/a/56619466 "How can I run Command Line commands or tasks with Swift in iOS?"). Nevertheless when using this method, the app will be rejected during the App Store review process. There is no other public API available to query for running processes or execute system commands within an iOS App. Even if it would be possible, bypassing this would be as easy as just renaming the corresponding Frida artifact (frida-server/frida-gadget/frida-agent). Another way to detect Frida, would be to walk through the list of loaded libraries and check for suspicious ones (e.g. those including "frida" in their names), which can be done by using `_dyld_get_image_name`.
 | **Checking For Open TCP Ports** | The frida-server process binds to TCP port 27042 by default. Testing whether this port is open is another method of detecting the daemon. | This method detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is very trivial. |
 | **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
