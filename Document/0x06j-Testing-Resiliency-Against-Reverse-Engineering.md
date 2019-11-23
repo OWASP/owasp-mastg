@@ -536,7 +536,7 @@ Some reverse engineering tools can only run on a jailbroken device, force the ap
 You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as Cydia Substrate / Cycript, can be detected similarly. Note that injection/hooking/DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through run time integrity checks, which are discussed below.
 
 For instance, in its default configuration on a jailbroken device, Frida runs as frida-server. When you explicitly attach to a target app (e.g. via frida-trace or the Frida REPL), Frida injects a frida-agent into the memory of the app. Therefore, you may expect to find it there after attaching to the app (and not before). On Android you can verify this, by grepping for the string "frida" in the memory (`maps`) of the process ID in the `proc` directory.
-On iOS the `proc` directory is not available, but you can list the dynamic libraries in an app with the function `_dyld_image_count`.
+On iOS the `proc` directory is not available, but you can list the loaded dynamic libraries in an app with the function `_dyld_image_count`.
 
 The other method, which also works for non-jailbroken devices, consists of embedding a [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") into the IPA and _forcing_ the app to load it as one of its native libraries.
 
