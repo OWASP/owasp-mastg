@@ -540,7 +540,7 @@ On iOS the `proc` directory is not available, but you can list the loaded dynami
 
 The other method, which also works for non-jailbroken devices, consists of embedding a [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") into the IPA and _forcing_ the app to load it as one of its native libraries.
 
-In the application.app data directory the app stores the static content, as well as the application's ARM-compiled binary including the apps's libaries. If you inspect the app's directory in `/var/containers/Bundle/Application/[UUID]/[Application].app` you'll find the embedded frida-gadget as FridaGadget.dylib.
+The application's static content, including its ARM-compiled binary and its external libraries, are stored inside the [Application].app directory. If you inspect the content of the `/var/containers/Bundle/Application/[UUID]/[Application].app` directory, you'll find the embedded frida-gadget as FridaGadget.dylib.
 
 ```bash
 Svens-iPhone:/var/containers/Bundle/Application/AC5DC1FD-3420-42F3-8CB5-E9D77C4B287A/SwiftSecurity.app/Frameworks root# ls -alh
