@@ -575,7 +575,7 @@ Please remember that this table is far from exhaustive. For example, two other p
 
 Both would _help_ to detect Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker. Each of these detection methods will depend on whether you're using a jailbroken device, the specific version of the jailbreak and method and/or the version of the tool itself. At the end, this is part of the cat and mouse game of protecting data being processed on an uncontrolled environment (the end user's device).
 
-> It is important to note that these methods are just increasing the complexity for the reverse engineer. If being used, the best approach is to combine them cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, remember that the reverse engineer always wins! You also have to consider that integrating some of them into your app might increase the complexity of your app as well as considerably mine its performance.
+> It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
 #### Effectiveness Assessment
 
