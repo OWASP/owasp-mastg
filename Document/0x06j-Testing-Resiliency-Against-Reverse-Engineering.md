@@ -538,7 +538,7 @@ You can detect popular reverse engineering tools that have been installed in an 
 For instance, in its default configuration on a jailbroken  device, Frida runs as frida-server. When you explicitly attach to a target app (e.g. via frida-trace or the Frida REPL), Frida injects a frida-agent into the memory of the app. Therefore, you may expect to find it there after attaching to the app (and not before). On Android you can verify this, by grepping for the string "frida" in the memory (`maps`) of the process ID in the `proc` directory.
 On iOS the `proc` directory is not available, but you can list the dynamic libraries in an app with the function `_dyld_image_count`.
 
-The other method (which also works for non-jailbroken devices) consists of embedding a [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") into the IPA and _forcing_ the app to load it as one of its native libraries.
+The other method, which also works for non-jailbroken devices, consists of embedding a [frida-gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") into the IPA and _forcing_ the app to load it as one of its native libraries.
 
 In the application.app data directory the app stores the static content, as well as the application's ARM-compiled binary including the apps's libaries. If you inspect the app's directory in `/var/containers/Bundle/Application/[UUID]/[Application].app` you'll find the embedded frida-gadget as FridaGadget.dylib.
 
