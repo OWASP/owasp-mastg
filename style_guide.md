@@ -20,21 +20,19 @@ Those containing one or two screens of text at most. Users are scanning for link
 
 Consider creating a supporting document and linking to it from the page rather than displaying all the information directly on the page.
 
-### Write Gender Neutral
+### Gender Neutrality
 
-We are writing gender neutral in the MSTG and will refrain from "he/she" as we do not want to exclude non-binary. This means don't use the following words throughout the book:
+The MSTG reaches all kind of people all over the world. To ensure inclusiveness and diversity, please refrain from using the following throughout the book:
 
-- she / her
+- she / her / hers
 - he / him / his
 
-Instead, write in the following different styles to be inclusive:
+Or any other constructions like "he/she", "s/he", "his or her". Instead, use the following gender-neutral alternatives:
 
-- only a noun: “a user should…”
-- the plural: “When users should…”
-- the second person: “When you are pentesting, you should…”
-- an imperative: “Never use event bound methods like LaContext!”
-
-We are not writing in singular "they", as this can become confusing and shall therefore not be used.
+- Replace pronouns with "the or "a": "When the user enters his password ..." -> "When the user enters the password ..."
+- Use plural nouns and pronouns: "An attacker will use his jailbroken device ..." -> "Attackers will use their jailbroken devices ..."
+- Use the second person: "If the attacker runs this code, he can bypass ..." -> "If you run this code, you can bypass ..."
+- Use the imperative: "A developer should never use ... in his code" -> "Never use ... in your code!"
 
 There is one exception: We are still using "man in the middle", as it is simply a common term in the industry and there is no common replacement for it.
 
