@@ -807,7 +807,6 @@ An approach similar to that for application-source integrity checks applies. Ans
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-Some reverse engineering tools can only run on a rooted device, force the app into debugging mode or start a service on the mobile phone. Different ways would need to be implemented in the mobile app to detect a reverse engineering attack and react to it, like terminating the app.
 
 #### Detection Methods
 
