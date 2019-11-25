@@ -576,7 +576,7 @@ Both would _help_ to detect Substrate or Frida's Interceptor but, for example, w
 
 #### Effectiveness Assessment
 
-Launch the app with various reverse engineering tools and frameworks installed on your test device. Include at least the following: Frida, Cydia Substrate, Cycript, SSL KillSwitch and the Needle Agent.
+Launch the app with various reverse engineering tools and frameworks installed on your test device. Include at least the following: Frida, Cydia Substrate, Cycript, SSL Kill Switch and the Needle Agent.
 
 The app should respond in some way to the presence of those tools. For example by:
 
