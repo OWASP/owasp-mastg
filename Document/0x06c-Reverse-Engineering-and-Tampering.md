@@ -1150,6 +1150,13 @@ Reading 2.390625MB ...
 
 To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
 
+##### Information Gathering
+TODO: below topics should be paragraph instead of such deep hierarchy
+###### Getting Loaded Libraries
+###### Getting Loaded Classes and their Methods
+###### Getting Runtime Dependencies
+
+
 ### References
 
 - Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
