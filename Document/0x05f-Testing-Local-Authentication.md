@@ -247,7 +247,7 @@ public void authenticationSucceeded(FingerprintManager.AuthenticationResult resu
 }
 ```
 
-The following section describes how to do fingerprint authentication using an asymmetric key pair.
+The following describes how to do fingerprint authentication using an asymmetric key pair.
 
 To implement fingerprint authentication using asymmetric cryptography, first create a signing key using the `KeyPairGenerator` class, and enroll the public key with the server. You can then authenticate pieces of data by signing them on the client and verifying the signature on the server. A detailed example for authenticating to remote servers using the fingerprint API can be found in the [Android Developers Blog](https://android-developers.googleblog.com/2015/10/new-in-android-samples-authenticating.html "Authenticating to remote servers using the Fingerprint API").
 
