@@ -92,7 +92,7 @@ Validate the duration of time (seconds) for which the key is authorized to be us
 
 Biometric authentication is a convenient mechanism for authentication, but also introduces an additional attack surface when using it. The Android developer documentation gives an interesting overview and indicators for [measuring biometric unlock security](https://source.android.com/security/biometric/measure#strong-weak-unlocks "Measuring Biometric Unlock Security").
 
-On the Android platform there are three different classes available for biometric authentication:
+The Android platform offers three different classes for biometric authentication:
 
 - Android Q / 10 (API level 29) and higher: `BiometricManager`
 - Android P / 9 (API level 28) and higher: `BiometricPrompt`
