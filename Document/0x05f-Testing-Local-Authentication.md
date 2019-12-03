@@ -126,7 +126,7 @@ The following sections explain the different biometric authentication classes.
 
 Android provides a library called [Biometric](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") which offers a compatibility version of the `BiometricPrompt` and `BiometricManager` APIs, as implemented in Android 10, with full feature support back to Android 6.0 (API 23).
 
-In the Android developer documentation, a reference implementation can be found on how to [Show a biometric authentication dialog](https://developer.android.com/training/sign-in/biometric-auth "Show a biometric authentication dialog").
+You can find a reference implementation and instructions on how to [show a biometric authentication dialog](https://developer.android.com/training/sign-in/biometric-auth "Show a biometric authentication dialog") in the Android developer documentation.
 
 There are two `authenticate` methods available in the `BiometricPrompt` class. The difference is that one method is expecting a [CryptoObject](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt.CryptoObject.html "CryptoObject"), which adds an additional layer of security for the biometric authentication.
 
