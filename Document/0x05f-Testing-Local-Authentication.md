@@ -104,7 +104,7 @@ The class [`BiometricManager`](https://developer.android.com/reference/kotlin/an
 
 The `BiometricPrompt` class is a significant improvement, as it allows to have a consistent UI for biometric authentication on Android and also supports more sensors than just fingerprint.
 
-This is different to the `FingerprintManager` class that provided no UI and developers needed to build their own fingerprint UI and only fingerprint sensors are supported.
+This is different to the `FingerprintManager` class which only supports fingerprint sensors and provides no UI, forcing developers to build their own fingerprint UI.
 
 A very detailed overview and explanation of the Biometric API on Android was published on the [Android Developer Blog](https://android-developers.googleblog.com/2019/10/one-biometric-api-over-all-android.html "One Biometric API Over all Android").
 
