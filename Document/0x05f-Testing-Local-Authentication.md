@@ -128,7 +128,7 @@ Android provides a library called [Biometric](https://developer.android.com/jetp
 
 You can find a reference implementation and instructions on how to [show a biometric authentication dialog](https://developer.android.com/training/sign-in/biometric-auth "Show a biometric authentication dialog") in the Android developer documentation.
 
-There are two `authenticate` methods available in the `BiometricPrompt` class. The difference is that one method is expecting a [CryptoObject](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt.CryptoObject.html "CryptoObject"), which adds an additional layer of security for the biometric authentication.
+There are two `authenticate` methods available in the `BiometricPrompt` class. One of them expects a [`CryptoObject`](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt.CryptoObject.html "CryptoObject"), which adds an additional layer of security for the biometric authentication.
 
 The authentication flow would be as follows when using CryptoObject:
 
