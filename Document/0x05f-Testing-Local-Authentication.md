@@ -203,7 +203,7 @@ On certain systems, it is possible to enforce the policy for biometric authentic
     keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
 ```
 
-The following section describes how to do fingerprint authentication using a symmetric key pair.
+The following describes how to do fingerprint authentication using a symmetric key pair.
 
 Fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
 
