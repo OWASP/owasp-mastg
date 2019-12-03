@@ -96,7 +96,7 @@ The Android platform offers three different classes for biometric authentication
 
 - Android Q / 10 (API level 29) and higher: `BiometricManager`
 - Android P / 9 (API level 28) and higher: `BiometricPrompt`
-- Android 6.0 (API level 23) and higher: `FingerprintManager` (deprecated in Android P)
+- Android 6.0 (API level 23) and higher: `FingerprintManager` (deprecated in Android 9)
 
 <img src="Images/Chapters/0x05f/biometricprompt-architecture.png" width="500" alt="Biometric Auth in Android">
 
