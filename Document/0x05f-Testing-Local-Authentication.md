@@ -137,7 +137,7 @@ The authentication flow would be as follows when using CryptoObject:
 - A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the `authenticate` method and the `CryptoObject`.
 - This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
 
-If CryptoObject is not used as part of the authenticate method, it can be bypassed by using Frida. See the Dynamic Instrumentation section for more details.
+If `CryptoObject` is not used as part of the authenticate method, it can be bypassed by using Frida. See the "Dynamic Instrumentation" section for more details.
 
 Developers can use several [validation classes](https://source.android.com/security/biometric#validation "Validation of Biometric Auth") offered by Android to test the implementation of biometric authentication in their app.
 
