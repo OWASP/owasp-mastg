@@ -90,7 +90,7 @@ Validate the duration of time (seconds) for which the key is authorized to be us
 
 #### Overview
 
-Biometric authentication allows a convenient mechanism for authentication, but also introduces additional attack surface when using it. The Android developer documentation gives an interesting overview and indicators for [measuring biometric unlock security](https://source.android.com/security/biometric/measure#strong-weak-unlocks "Measuring Biometric Unlock Security").
+Biometric authentication is a convenient mechanism for authentication, but also introduces an additional attack surface when using it. The Android developer documentation gives an interesting overview and indicators for [measuring biometric unlock security](https://source.android.com/security/biometric/measure#strong-weak-unlocks "Measuring Biometric Unlock Security").
 
 On the Android platform there are three different classes available for biometric authentication:
 
