@@ -100,7 +100,7 @@ The Android platform offers three different classes for biometric authentication
 
 <img src="Images/Chapters/0x05f/biometricprompt-architecture.png" width="500" alt="Biometric Auth in Android">
 
-The class [BiometricManager](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricManager "BiometricManager") can be used to verify if biometric hardware is available on the device and configured by the user. If that's the case, the class [BiometricPrompt] can be used to show a system-provided biometric dialog.
+The class [`BiometricManager`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricManager "BiometricManager") can be used to verify if biometric hardware is available on the device and if it's configured by the user. If that's the case, the class [`BiometricPrompt`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricPrompt "BiometricPrompt") can be used to show a system-provided biometric dialog.
 
 The `BiometricPrompt` class is a significant improvement, as it allows to have a consistent UI for biometric authentication on Android and also supports more sensors than just fingerprint.
 
