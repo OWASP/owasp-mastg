@@ -124,7 +124,7 @@ The following sections explain the different biometric authentication classes.
 
 ##### Biometric Library
 
-A library called [Biometric](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") is available for Android that offers a compatibility version of the `BiometricPrompt` and `BiometricManager` APIs, as implemented in Android 10, with full feature support back to Android 6.0 (API 23).
+Android provides a library called [Biometric](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") which offers a compatibility version of the `BiometricPrompt` and `BiometricManager` APIs, as implemented in Android 10, with full feature support back to Android 6.0 (API 23).
 
 In the Android developer documentation, a reference implementation can be found on how to [Show a biometric authentication dialog](https://developer.android.com/training/sign-in/biometric-auth "Show a biometric authentication dialog").
 
