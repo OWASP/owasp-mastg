@@ -134,7 +134,7 @@ The authentication flow would be as follows when using CryptoObject:
 
 - The app creates a key in the KeyStore with `setUserAuthenticationRequired` set to true and `setInvalidatedByBiometricEnrollment` set to -1.
 - This key is used to encrypt information that is authenticating the user (e.g. session information or authentication token).
-- A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the authenticate method and the CryptoObject.
+- A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the `authenticate` method and the `CryptoObject`.
 - This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
 
 If CryptoObject is not used as part of the authenticate method, it can be bypassed by using Frida. See the Dynamic Instrumentation section for more details.
