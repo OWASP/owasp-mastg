@@ -602,6 +602,7 @@ If you haven't already done so, install the Frida Python package on your host ma
 
 ```shell
 $ pip install frida
+$ pip install frida-tools
 ```
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
@@ -1151,11 +1152,134 @@ Reading 2.390625MB ...
 To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
 
 ##### Information Gathering
-TODO: below topics should be paragraph instead of such deep hierarchy
-###### Getting Loaded Libraries
-###### Getting Loaded Classes and their Methods
-###### Getting Runtime Dependencies
 
+In previous section we learned about using radare2 to collect runtime information of a running process. Radare2 is internally using Frida (r2frida) to obtain process information. In this section we will learn how to use Frida directly to gather process related information.
+
+##### Getting Loaded Classes and their Methods
+
+In Frida REPL Objective-C runtime related information can be accessed using `ObjC` command. Within `ObjC` command, `enumerateLoadedClasses` function lists the loaded classes for a given application.
+
+```
+$ frida -U -f com.iOweAss
+
+[iPhone::com.iOweAss]-> ObjC.enumerateLoadedClasses()
+{
+    "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation": [
+        "__NSBlockVariable__",
+        "__NSGlobalBlock__",
+        "__NSFinalizingBlock__",
+        "__NSAutoBlock__",
+        "__NSMallocBlock__",
+        "__NSStackBlock__"
+    ],
+    "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss": [
+        "JailbreakDetection",
+        "CriticalLogic",
+        "ViewController",
+        "AppDelegate"
+    ]
+}
+
+```
+
+Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
+
+```
+[iPhone::com.iOweAss]-> ObjC.classes.JailbreakDetection.$ownMethods
+[
+    "+ isJailbroken"
+]
+
+[iPhone::com.iOweAss]-> ObjC.classes.CriticalLogic.$ownMethods
+[
+    "+ doSha256:",
+    "- a:",
+    "- AES128Operation:data:key:iv:",
+    "- coreLogic",
+    "- bat",
+    "- b:",
+    "- hexString:"
+]
+```
+
+##### Getting Loaded Libraries
+
+In Frida REPL process related information ca be obtained using `Process` command. Within `Process` command, `enumerateModules` function lists the libraries loaded into process memory.
+
+```
+[iPhone::com.iOweAss]-> Process.enumerateModules()
+[
+    {
+        "base": "0x10008c000",
+        "name": "iOweAss",
+        "path": "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss",
+        "size": 49152
+    },
+    {
+        "base": "0x1a1c82000",
+        "name": "Foundation",
+        "path": "/System/Library/Frameworks/Foundation.framework/Foundation",
+        "size": 2859008
+    },
+    {
+        "base": "0x1a16f4000",
+        "name": "libobjc.A.dylib",
+        "path": "/usr/lib/libobjc.A.dylib",
+        "size": 200704
+    },
+
+    ...
+```
+
+Similarly, information related to various threads can be obtained.
+
+```
+Process.enumerateThreads()
+[
+    {
+        "context": {
+            "fp": "0x16fd72b90",
+            "lr": "0x1a17a7aa0",
+            "pc": "0x1a17a8634",
+            "sp": "0x16fd72b40",
+            "x0": "0x16fd72ca0",
+            "x1": "0x7000806",
+            "x10": "0xcdcefcf335a90034",
+            "x11": "0xb2f482679a",
+            "x12": "0x16e3600",
+            "x13": "0x963688",
+            "x14": "0x0",
+            "x15": "0x0",
+            "x16": "0xffffffffffffffe1",
+            "x17": "0x0",
+            "x18": "0x0",
+            "x19": "0x0",
+            "x2": "0x0",
+            "x20": "0xffffffff",
+            "x21": "0x2a03",
+            "x22": "0xc00",
+            "x23": "0x16fd72ca0",
+            "x24": "0x7000806",
+            "x25": "0x0",
+            "x26": "0x7000806",
+            "x27": "0xc00",
+            "x28": "0x1",
+            "x3": "0xc00",
+            "x4": "0x2a03",
+            "x5": "0xffffffff",
+            "x6": "0x0",
+            "x7": "0x0",
+            "x8": "0xfffffbbf",
+            "x9": "0x7000906"
+        },
+        "id": 1287,
+        "state": "waiting"
+    },
+
+    ...
+```
+
+`Process` command exposes multiple functions which can be explored as per needs, some useful functions being `findModuleByAddress`, `findModuleByName`, `enumerateRanges` etc.
 
 ### References
 
