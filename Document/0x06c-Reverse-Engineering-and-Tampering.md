@@ -347,6 +347,76 @@ zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
+#### Basic Information Gathering
+
+On iOS collecting basic information about a running process or application can be slightly more challenging than compared to Android. On Android (or a Linux-based OS), OS itself exposes process information as a readable text file via **procfs**. Thus any information about a process can be obtained by parsing these text files. In contrast, on iOS there is no such procfs equivalent present, and also many command lines tools for exploring process information, which are present on MacOS, are removed to reduce firmware size. Fortunately on a Jailbroken device these command line tools can be installed using Cydia or by custom compiling and installing the executables on iOS.
+
+In this section we will look into how to collect basic information using command line tools `lsof` and `vmmap`. `lsof` can be installed using Cydia, the exectuable is not from the latest source but nevertheless solves our purpose. `vmmap` is not availble on Cydia, but an pre-compiled executable by Jonathan Levin is available at [newosxbook.com/files/vmmap.iOS](newosxbook.com/files/vmmap.iOS "newosxbook.com/files/vmmap.iOS"). This executable should be signed with entitlement `task-for-pid` (TODO fix the entitlement name) before using it on iOS. 
+
+##### Opened Files
+
+`lsof` command is a powerful tool, and provides plethora of information about a running process. On simply running `lsof` command (without any options), it provides the list of all the files open on the device. Open files for a process can be obtained using either option `-c <process name>` or `-p <pid>`. Other functionalities of `lsof` can be explored by reading the commands' man page. 
+
+List of open files for a simple iOS application using `lsof` is shown below.
+
+```
+iPhone:~ root# lsof -p 2828
+COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
+iOweAss 2828 mobile  cwd    DIR    1,2      864      2 /
+iOweAss 2828 mobile  txt    REG    1,3   206144 189774 /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss
+iOweAss 2828 mobile  txt    REG    1,3     5492 213230 /private/var/mobile/Containers/Data/Application/5AB3E437-9E2D-4F04-BD2B-972F6055699E/tmp/com.apple.dyld/iOweAss-6346DC276FE6865055F1194368EC73CC72E4C5224537F7F23DF19314CF6FD8AA.closure
+iOweAss 2828 mobile  txt    REG    1,3    30628 212198 /private/var/preferences/Logging/.plist-cache.vqXhr1EE
+iOweAss 2828 mobile  txt    REG    1,2    50080 234433 /usr/lib/libobjc-trampolines.dylib
+iOweAss 2828 mobile  txt    REG    1,2   344204  74185 /System/Library/Fonts/AppFonts/ChalkboardSE.ttc
+iOweAss 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
+iOweAss 2828 mobile  txt    REG    1,2 30183936 235695 /usr/share/icu/icudt64l.dat
+iOweAss 2828 mobile  txt    REG    1,2 92936040  74056 /System/Library/CoreServices/CoreGlyphs.bundle/Assets.car
+iOweAss 2828 mobile  txt    REG    1,2  2169192  75023 /System/Library/Fonts/CoreUI/SFUI.ttf
+iOweAss 2828 mobile  txt    REG    1,2  1202584  75408 /System/Library/Fonts/Core/Helvetica.ttc
+iOweAss 2828 mobile    0r   CHR    3,2      0t0    197 /dev/null
+iOweAss 2828 mobile    1u   CHR    3,2      0t0    197 /dev/null
+iOweAss 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
+```
+
+##### Opened Connections
+
+`lsof` command also provides the list of open network ports for the whole system or a given process. `lsof -i` will give list of all the open connections for a given device. The output can be filtered using `-a` (AND) option. Below, the output is filtered by specifying the process-id. 
+
+```
+iPhone:~ root# lsof -i -a -p 1
+COMMAND PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+launchd   1 root    2u  IPv6 0x69c2ce210efdba03      0t0  TCP localhost:mpm-flags (LISTEN)
+launchd   1 root    3u  IPv4 0x69c2ce21125bc873      0t0  TCP localhost:mpm-flags (LISTEN)
+launchd   1 root    8u  IPv6 0x69c2ce210efdcc63      0t0  TCP localhost:intu-ec-client (LISTEN)
+launchd   1 root    9u  IPv4 0x69c2ce210eeac873      0t0  TCP localhost:intu-ec-client (LISTEN)
+launchd   1 root   12u  IPv4 0x69c2ce210eeabebb      0t0  TCP localhost:socks (LISTEN)
+launchd   1 root   13u  IPv4 0x69c2ce210eeadbe3      0t0  TCP localhost:ansoft-lm-1 (LISTEN)
+launchd   1 root   14u  IPv6 0x69c2ce210efdc643      0t0  TCP *:62078 (LISTEN)
+launchd   1 root   15u  IPv4 0x69c2ce210eeae59b      0t0  TCP *:62078 (LISTEN)
+launchd   1 root   18u  IPv6 0x69c2ce210efdcc63      0t0  TCP localhost:intu-ec-client (LISTEN)
+launchd   1 root   19u  IPv4 0x69c2ce210eeac873      0t0  TCP localhost:intu-ec-client (LISTEN)
+launchd   1 root   20u  IPv6 0x69c2ce210efdba03      0t0  TCP localhost:mpm-flags (LISTEN)
+launchd   1 root   22u  IPv4 0x69c2ce210eeabebb      0t0  TCP localhost:socks (LISTEN)
+launchd   1 root   23u  IPv4 0x69c2ce210eeadbe3      0t0  TCP localhost:ansoft-lm-1 (LISTEN)
+launchd   1 root   24u  IPv4 0x69c2ce21125bc873      0t0  TCP localhost:mpm-flags (LISTEN)
+launchd   1 root   27u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   28u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   29u  IPv4 0x69c2ce210eeaef53      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   30u  IPv4 0x69c2ce210eeaef53      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   31u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->192.168.1.8:62684 (ESTABLISHED)
+launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->192.168.1.8:62684 (ESTABLISHED)
+```
+
+- one can see ssh connection is open.
+
+##### Loaded Native Libraries
+
+- vmmap
+- DYLD_PRINT_LIBRARIES=yes and launch application with this set.  
+
+##### Sandbox Inspection
+
+
 #### Debugging
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
