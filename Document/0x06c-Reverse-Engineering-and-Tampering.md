@@ -1157,7 +1157,7 @@ In previous section we learned about using radare2 to collect runtime informatio
 
 ##### Getting Loaded Classes and their Methods
 
-In Frida REPL Objective-C runtime related information can be accessed using `ObjC` command. Within `ObjC` command, `enumerateLoadedClasses` function lists the loaded classes for a given application.
+In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
 
 ```
 $ frida -U -f com.iOweAss
