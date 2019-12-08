@@ -724,9 +724,9 @@ In this section we will learn how to use Frida to obtain information about a run
 In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
 
 ```
-$ frida -U -f com.iOweAss
+$ frida -U -f com.iOweApp
 
-[iPhone::com.iOweAss]-> ObjC.enumerateLoadedClasses()
+[iPhone::com.iOweApp]-> ObjC.enumerateLoadedClasses()
 {
     "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation": [
         "__NSBlockVariable__",
@@ -736,7 +736,7 @@ $ frida -U -f com.iOweAss
         "__NSMallocBlock__",
         "__NSStackBlock__"
     ],
-    "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss": [
+    "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp": [
         "JailbreakDetection",
         "CriticalLogic",
         "ViewController",
@@ -749,12 +749,12 @@ $ frida -U -f com.iOweAss
 Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
 
 ```
-[iPhone::com.iOweAss]-> ObjC.classes.JailbreakDetection.$ownMethods
+[iPhone::com.iOweApp]-> ObjC.classes.JailbreakDetection.$ownMethods
 [
     "+ isJailbroken"
 ]
 
-[iPhone::com.iOweAss]-> ObjC.classes.CriticalLogic.$ownMethods
+[iPhone::com.iOweApp]-> ObjC.classes.CriticalLogic.$ownMethods
 [
     "+ doSha256:",
     "- a:",
@@ -771,12 +771,12 @@ Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class 
 In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
 ```
-[iPhone::com.iOweAss]-> Process.enumerateModules()
+[iPhone::com.iOweApp]-> Process.enumerateModules()
 [
     {
         "base": "0x10008c000",
-        "name": "iOweAss",
-        "path": "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss",
+        "name": "iOweApp",
+        "path": "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp",
         "size": 49152
     },
     {
