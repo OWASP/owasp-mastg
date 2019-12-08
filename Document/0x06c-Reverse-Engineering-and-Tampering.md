@@ -1279,7 +1279,7 @@ Process.enumerateThreads()
     ...
 ```
 
-`Process` command exposes multiple functions which can be explored as per needs, some useful functions being `findModuleByAddress`, `findModuleByName`, `enumerateRanges` etc.
+The `Process` command exposes multiple functions which can be explored as per needs. Some useful functions are `findModuleByAddress`, `findModuleByName` and `enumerateRanges` besides others.
 
 ### References
 
