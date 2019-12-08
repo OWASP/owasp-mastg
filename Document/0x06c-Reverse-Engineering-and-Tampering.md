@@ -1204,7 +1204,7 @@ Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class 
 
 ##### Getting Loaded Libraries
 
-In Frida REPL process related information ca be obtained using `Process` command. Within `Process` command, `enumerateModules` function lists the libraries loaded into process memory.
+In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
 ```
 [iPhone::com.iOweAss]-> Process.enumerateModules()
