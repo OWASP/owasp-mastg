@@ -127,7 +127,7 @@ As an example, we will now redirect all requests from a Xamarin app to an interc
 
 Xamarin is a mobile application development platform that is capable of producing [native Android](https://developer.xamarin.com/guides/android/getting_started/ "Getting Started with Android") and [iOS apps](https://developer.xamarin.com/guides/ios/ "Getting Started with iOS") by using Visual Studio and C# as programming language.
 
-When testing a Xamarin app and when you are trying to set the system proxy in the WiFi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are two ways to resolve this:
+When testing a Xamarin app and when you are trying to set the system proxy in the WiFi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are three ways to resolve this:
 
 - Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
 
@@ -135,7 +135,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
-- Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to our interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+- Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
     ```shell
     $ echo "
@@ -143,8 +143,30 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     " | sudo pfctl -ef -
     ```
 
+For Linux systems you can use `iptables`:
+
+    ```shell
+    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080 
+    ```
+
+- Add entry in `/etc/hosts` for target location and point it to your intercepting proxy address. This creates similar situation to being MiTM and you need to redirect port 443 to port, which is used by your interception proxy. Redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to original location and port.
+
+> When redirecting a traffic you should create narrow rules to minimize noise and out-of-scope traffic.
+
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
+When a Xamarin app originally configured to use proxy, after redirecting traffic to your intercepting proxy you need to specify where traffic should go next. You need to redirect traffic to original location. The following procedure is for setting up redirection to original location on Burp:
+
+1. Go to **Proxy** tab and click on **Options**
+2. Select your listener from list of proxy listener and edit that listener.
+3. Go to **Request handling** tab and set:
+
+    - Redirect to host: provide original traffic location
+    - Redirect to port: provide original port location
+    - Set 'Force use of SSL' and set 'Support invisible proxy'.
+
+<img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location"/>
+ 
 <br/>
 <br/>
 
