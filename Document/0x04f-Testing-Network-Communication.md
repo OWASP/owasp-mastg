@@ -151,7 +151,7 @@ For Linux systems you can use `iptables`:
 
 - Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MiTM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
 
-> When redirecting a traffic you should create narrow rules to minimize noise and out-of-scope traffic.
+> When redirecting traffic you should create narrow rules to the domains and IPs in scope, to minimize noise and out-of-scope traffic.
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
