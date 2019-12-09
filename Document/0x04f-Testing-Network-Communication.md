@@ -149,7 +149,7 @@ For Linux systems you can use `iptables`:
     $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080 
     ```
 
-- Add entry in `/etc/hosts` for target location and point it to your intercepting proxy address. This creates similar situation to being MiTM and you need to redirect port 443 to port, which is used by your interception proxy. Redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to original location and port.
+- Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MiTM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
 
 > When redirecting a traffic you should create narrow rules to minimize noise and out-of-scope traffic.
 
