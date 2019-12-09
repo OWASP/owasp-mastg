@@ -135,7 +135,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
-- Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM we only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+- Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
     ```shell
     $ echo "
