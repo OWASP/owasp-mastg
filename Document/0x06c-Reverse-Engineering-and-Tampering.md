@@ -369,13 +369,7 @@ iOweApp 2828 mobile  txt    REG    1,3    30628 212198 /private/var/preferences/
 iOweApp 2828 mobile  txt    REG    1,2    50080 234433 /usr/lib/libobjc-trampolines.dylib
 iOweApp 2828 mobile  txt    REG    1,2   344204  74185 /System/Library/Fonts/AppFonts/ChalkboardSE.ttc
 iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
-iOweApp 2828 mobile  txt    REG    1,2 30183936 235695 /usr/share/icu/icudt64l.dat
-iOweApp 2828 mobile  txt    REG    1,2 92936040  74056 /System/Library/CoreServices/CoreGlyphs.bundle/Assets.car
-iOweApp 2828 mobile  txt    REG    1,2  2169192  75023 /System/Library/Fonts/CoreUI/SFUI.ttf
-iOweApp 2828 mobile  txt    REG    1,2  1202584  75408 /System/Library/Fonts/Core/Helvetica.ttc
-iOweApp 2828 mobile    0r   CHR    3,2      0t0    197 /dev/null
-iOweApp 2828 mobile    1u   CHR    3,2      0t0    197 /dev/null
-iOweApp 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
+...
 ```
 
 ##### Open Connections
@@ -385,20 +379,6 @@ iOweApp 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
 ```
 iPhone:~ root# lsof -i -a -p 1
 COMMAND PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-launchd   1 root    2u  IPv6 0x69c2ce210efdba03      0t0  TCP localhost:mpm-flags (LISTEN)
-launchd   1 root    3u  IPv4 0x69c2ce21125bc873      0t0  TCP localhost:mpm-flags (LISTEN)
-launchd   1 root    8u  IPv6 0x69c2ce210efdcc63      0t0  TCP localhost:intu-ec-client (LISTEN)
-launchd   1 root    9u  IPv4 0x69c2ce210eeac873      0t0  TCP localhost:intu-ec-client (LISTEN)
-launchd   1 root   12u  IPv4 0x69c2ce210eeabebb      0t0  TCP localhost:socks (LISTEN)
-launchd   1 root   13u  IPv4 0x69c2ce210eeadbe3      0t0  TCP localhost:ansoft-lm-1 (LISTEN)
-launchd   1 root   14u  IPv6 0x69c2ce210efdc643      0t0  TCP *:62078 (LISTEN)
-launchd   1 root   15u  IPv4 0x69c2ce210eeae59b      0t0  TCP *:62078 (LISTEN)
-launchd   1 root   18u  IPv6 0x69c2ce210efdcc63      0t0  TCP localhost:intu-ec-client (LISTEN)
-launchd   1 root   19u  IPv4 0x69c2ce210eeac873      0t0  TCP localhost:intu-ec-client (LISTEN)
-launchd   1 root   20u  IPv6 0x69c2ce210efdba03      0t0  TCP localhost:mpm-flags (LISTEN)
-launchd   1 root   22u  IPv4 0x69c2ce210eeabebb      0t0  TCP localhost:socks (LISTEN)
-launchd   1 root   23u  IPv4 0x69c2ce210eeadbe3      0t0  TCP localhost:ansoft-lm-1 (LISTEN)
-launchd   1 root   24u  IPv4 0x69c2ce21125bc873      0t0  TCP localhost:mpm-flags (LISTEN)
 launchd   1 root   27u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
 launchd   1 root   28u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
 launchd   1 root   29u  IPv4 0x69c2ce210eeaef53      0t0  TCP *:ssh (LISTEN)
@@ -409,57 +389,9 @@ launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 
 ##### Sandbox Inspection
 
-On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In earlier versions of iOS there were applications available which can be used to browse the device's filesystem, but in the recent version of iOS the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
+On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
 
-If you want to only access the sandboxed data of an app, this can also be done on a non-jailbroken device by using objection and Frida. How this can be done is described in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter also gives an overview of the folder structure and which directories you should analyse. 
-
-In the recent version of iOS, the application sandbox data is present in `/var/mobile/Containers/Data/Application/` directory, where each application gets a unique folder named with a UUID.
-
-```
-iPhone:/var/mobile/Containers/Data/Application root# ls
-00F39DB7-9D0D-4DBC-A156-D8366300FC11
-420D8ADA-8E4A-4BA4-9580-6CB8479A7160
-7916E405-CC5E-468B-8C02-8F598837BE4B
-...
-
-```
-
-A typical listing of directories in an application sandbox is shown below:
-
-```
-iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al
-drwxr-xr-x  7 mobile mobile  224 Jan  1  2019 .
-drwxr-xr-x 58 mobile mobile 1856 Nov 29 14:24 ..
--rw-r--r--  1 root   mobile  216 Jan  1  2019 .com.apple.mobile_container_manager.metadata.plist
-drwxr-xr-x  6 mobile mobile  192 Nov 28 15:28 Documents
-drwxr-xr-x  6 mobile mobile  192 Aug  1 14:16 Library
-drwxr-xr-x  3 mobile mobile   96 Oct  5 11:56 StoreKit
-drwxr-xr-x  2 mobile mobile   64 Aug 21 14:46 tmp
-```
-
-In the application folder, `Library` folder contains preferences files (storing various configurations and user preferences), cached files generated by the OS and other OS generated files.
-
-```
-iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al Library
-drwxr-xr-x 6 mobile mobile 192 Aug  1 14:16 .
-drwxr-xr-x 7 mobile mobile 224 Jan  1  2019 ..
-drwxr-xr-x 4 mobile mobile 128 Oct 31 00:43 Application Support
-drwxr-xr-x 6 mobile mobile 192 Oct 31 00:43 Caches
-drwxr-xr-x 3 mobile mobile  96 Aug 14 11:07 Preferences
-drwxr-xr-x 2 mobile mobile  64 Aug  1 14:16 app_compactdisk
-```
-
-`Document` folder may contain custom generated files by an application and stored here for persistence.
-
-```
-iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al Documents
-drwxr-xr-x 6 mobile mobile  192 Nov 28 15:28 .
-drwxr-xr-x 7 mobile mobile  224 Jan  1  2019 ..
--rw-r--r-- 1 mobile mobile 1664 Nov 28 15:28 PersistedFunnels.json
-drwxr-xr-x 2 mobile mobile   64 Aug  1 14:16 analyticscore
-drwxr-xr-x 5 mobile mobile  160 Nov 28 15:23 application_status.sessionless.1
-drwxr-xr-x 3 mobile mobile   96 Oct 31 00:43 locales
-```
+The contents of an application's sandboxed folder has been already discussed in "[Information Gathering](0x06b-basic-security-testing#information-gathering "Information Gathering")" section.
 
 #### Debugging
 
