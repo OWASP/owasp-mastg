@@ -349,38 +349,38 @@ bash: # . ~/.bashrc
 
 #### Basic Information Gathering
 
-On iOS collecting basic information about a running process or application can be slightly more challenging than compared to Android. On Android (or a Linux-based OS), OS exposes process information as readable text files via **procfs**. Thus any information about a desired process can be obtained by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also on iOS many standard UNIX command lines tools for exploring process information, for instance `lsof` and `vmmap`, are removed to reduce firmware size.
+On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), OS exposes process information as readable text files via *procfs*. Thus, any information about a desired process can be obtained by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command lines tools for exploring process information, for instance `lsof` and `vmmap`, are removed to reduce the firmware size.
 
-In this section we will learn how to collect process information on iOS using command line tools `lsof` and `vmmap`. `lsof` can be installed using Cydia, the exectuable is not from the latest source but nevertheless solves our purpose. `vmmap` is not availble on Cydia, but an pre-compiled executable by Jonathan Levin is available at [newosxbook.com/files/vmmap.iOS](newosxbook.com/files/vmmap.iOS "newosxbook.com/files/vmmap.iOS"). This executable should be signed with entitlement `task-for-pid` (TODO fix the entitlement name) before using it on iOS.
+In this section we will learn how to collect process information on iOS using command line tools like `lsof`. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, `lsof` can be installed using Cydia (the exectuable is not from the latest version, but nevertheless solves our purpose). `
 
 ##### Opened Files
 
-`lsof` command is a powerful tool, and provides plethora of information about a running process. `lsof` provides list of all open files, including a stream, a network file or a regular file. `lsof` command invoked without any option lists all open files belonging to all active processes, while invoking with options `-c <process name>` or `-p <pid>` returns the list of open files for the specified process.
+`lsof` command is a powerful tool, and provides plethora of information about a running process. It can provide list of all open files, including a stream, a network file or a regular file. `lsof` command when invoked without any option lists all open files belonging to all active processes on the system, while when invoking with options `-c <process name>` or `-p <pid>`, it returns the list of open files for the specified process. Command's man page discuss various other options in detail.
 
-List of open files for an iOS application using `lsof` command is shown below.
+Using `lsof` list of various open files for an iOS application running with PID 28282 is shown below.
 
 ```
 iPhone:~ root# lsof -p 2828
 COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
-iOweAss 2828 mobile  cwd    DIR    1,2      864      2 /
-iOweAss 2828 mobile  txt    REG    1,3   206144 189774 /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss
-iOweAss 2828 mobile  txt    REG    1,3     5492 213230 /private/var/mobile/Containers/Data/Application/5AB3E437-9E2D-4F04-BD2B-972F6055699E/tmp/com.apple.dyld/iOweAss-6346DC276FE6865055F1194368EC73CC72E4C5224537F7F23DF19314CF6FD8AA.closure
-iOweAss 2828 mobile  txt    REG    1,3    30628 212198 /private/var/preferences/Logging/.plist-cache.vqXhr1EE
-iOweAss 2828 mobile  txt    REG    1,2    50080 234433 /usr/lib/libobjc-trampolines.dylib
-iOweAss 2828 mobile  txt    REG    1,2   344204  74185 /System/Library/Fonts/AppFonts/ChalkboardSE.ttc
-iOweAss 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
-iOweAss 2828 mobile  txt    REG    1,2 30183936 235695 /usr/share/icu/icudt64l.dat
-iOweAss 2828 mobile  txt    REG    1,2 92936040  74056 /System/Library/CoreServices/CoreGlyphs.bundle/Assets.car
-iOweAss 2828 mobile  txt    REG    1,2  2169192  75023 /System/Library/Fonts/CoreUI/SFUI.ttf
-iOweAss 2828 mobile  txt    REG    1,2  1202584  75408 /System/Library/Fonts/Core/Helvetica.ttc
-iOweAss 2828 mobile    0r   CHR    3,2      0t0    197 /dev/null
-iOweAss 2828 mobile    1u   CHR    3,2      0t0    197 /dev/null
-iOweAss 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
+iOweApp 2828 mobile  cwd    DIR    1,2      864      2 /
+iOweApp 2828 mobile  txt    REG    1,3   206144 189774 /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp
+iOweApp 2828 mobile  txt    REG    1,3     5492 213230 /private/var/mobile/Containers/Data/Application/5AB3E437-9E2D-4F04-BD2B-972F6055699E/tmp/com.apple.dyld/iOweApp-6346DC276FE6865055F1194368EC73CC72E4C5224537F7F23DF19314CF6FD8AA.closure
+iOweApp 2828 mobile  txt    REG    1,3    30628 212198 /private/var/preferences/Logging/.plist-cache.vqXhr1EE
+iOweApp 2828 mobile  txt    REG    1,2    50080 234433 /usr/lib/libobjc-trampolines.dylib
+iOweApp 2828 mobile  txt    REG    1,2   344204  74185 /System/Library/Fonts/AppFonts/ChalkboardSE.ttc
+iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
+iOweApp 2828 mobile  txt    REG    1,2 30183936 235695 /usr/share/icu/icudt64l.dat
+iOweApp 2828 mobile  txt    REG    1,2 92936040  74056 /System/Library/CoreServices/CoreGlyphs.bundle/Assets.car
+iOweApp 2828 mobile  txt    REG    1,2  2169192  75023 /System/Library/Fonts/CoreUI/SFUI.ttf
+iOweApp 2828 mobile  txt    REG    1,2  1202584  75408 /System/Library/Fonts/Core/Helvetica.ttc
+iOweApp 2828 mobile    0r   CHR    3,2      0t0    197 /dev/null
+iOweApp 2828 mobile    1u   CHR    3,2      0t0    197 /dev/null
+iOweApp 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
 ```
 
 ##### Opened Connections
 
-`lsof` command with option `-i` gives the list of open network ports for all active processes on the device. To get list of open network ports for a specific process, the `lsof -i` command output can be filtered using `-a` (AND) option and providing the process-id using `-p` option. Below a filtered output for process-id=1 is shown.
+`lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
 ```
 iPhone:~ root# lsof -i -a -p 1
