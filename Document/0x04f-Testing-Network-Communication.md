@@ -155,7 +155,7 @@ For Linux systems you can use `iptables`:
 
 The interception proxy need to listen to the port specified in the port forwarding rule above, which is 8080.
 
-When a Xamarin app originally configured to use proxy, after redirecting traffic to your intercepting proxy you need to specify where traffic should go next. You need to redirect traffic to original location. The following procedure is for setting up redirection to original location on Burp:
+When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in Burp to the original location:
 
 1. Go to **Proxy** tab and click on **Options**
 2. Select your listener from list of proxy listener and edit that listener.
