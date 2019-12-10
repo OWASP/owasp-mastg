@@ -378,7 +378,7 @@ iOweApp 2828 mobile    1u   CHR    3,2      0t0    197 /dev/null
 iOweApp 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
 ```
 
-##### Opened Connections
+##### Open Connections
 
 `lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
