@@ -143,7 +143,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
     " | sudo pfctl -ef -
     ```
 
-For Linux systems you can use `iptables`:
+  For Linux systems you can use `iptables`:
 
     ```shell
     $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080 
