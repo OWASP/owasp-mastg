@@ -163,7 +163,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 
     - Redirect to host: provide original traffic location
     - Redirect to port: provide original port location
-    - Set 'Force use of SSL' and set 'Support invisible proxy'.
+    - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
 <img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location"/>
  
