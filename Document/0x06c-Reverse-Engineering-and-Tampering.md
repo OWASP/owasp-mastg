@@ -351,7 +351,7 @@ bash: # . ~/.bashrc
 
 On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via *procfs*. Thus, any information about a desired process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command lines tools for exploring process information, for instance `lsof` and `vmmap`, are removed to reduce the firmware size.
 
-In this section we will learn how to collect process information on iOS using command line tools like `lsof`. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, `lsof` can be installed using Cydia (the exectuable is not from the latest version, but nevertheless solves our purpose). `
+In this section we will learn how to collect process information on iOS using command line tools like `lsof`. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, `lsof` can be installed using Cydia (the executable is not the latest version available, but nevertheless addresses our purpose). `
 
 ##### Opened Files
 
