@@ -380,7 +380,7 @@ iOweAss 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
 
 ##### Opened Connections
 
-`lsof` command with option `-i` gives the list of open network ports for all active processes on the device. To get list of open network ports for a specific process, the `lsof -i` command output can be filtered using `-a` (AND) option and providing the process-id using `-p` option. Below a filtered output for process-id 1 is shown. 
+`lsof` command with option `-i` gives the list of open network ports for all active processes on the device. To get list of open network ports for a specific process, the `lsof -i` command output can be filtered using `-a` (AND) option and providing the process-id using `-p` option. Below a filtered output for process-id=1 is shown. 
 
 ```
 iPhone:~ root# lsof -i -a -p 1
@@ -407,188 +407,57 @@ launchd   1 root   31u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->192.168.1.8:62684 (ESTABLISHED)
 ```
 
-##### Loaded Native Libraries
+##### Sandbox Inspection
 
-The command `vmmap` is available on MacOS to view the virtual memory regions allocated to a process, but this command is not shipped with iOS. `vmmap` command can still be used on iOS by self-compiling and installing on iOS, but compiling it is cumbersome as Apple hides many of the symbols used for compiling. A good alternative for `vmmap` is `procexp` (Process Explorer) utility by Jonathan Levin. `procexp` provides very detailed information about a process, including the list of loaded native libraries in a process. 
+On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In the earlier versions of iOS there were certain application available which can be used to browse the device's filesystem, but in the recent version of iOS the sandboxing rules are more stringent and these applications do not work anymore. As a result, sandboxed data on recent iOS versions, sandboxed data can only be accessed on a jailbroken device. As part of jailbreaking process, the application sandbox protection is disabled/weakened and thus enabling the an easy access to sandboxed folders.
+
+In the recent version of iOS, the application sandbox data is present in `/var/mobile/Containers/Data/Application/` directory, where each application gets a unique folder named with a UUID. 
 
 ```
-./procexp.universal  2828
------------------
-Process: 2828	Name: iOweAss         	Parent:     1	Status: runnable
-Container: /private/var/mobile/Containers/Data/Application/5AB3E437-9E2D-4F04-BD2B-972F6055699E
-Flags:   64-bit,called exec,session leader,App,Donor
-
-Extmods: Task shows no signs of external modification or tampering
-Code signing: valid,adhoc,get-task-allow,installer,require enforcement
-
-UID:      501	RUID:   501	SVUID:   501
-GID:      501	RGID:   501	SVGID:   501
-
-Virtual size:      	4760M (4991320064)	Resident size:        8608K (8814592)
-Time:     00.01   =    00.01 (User)    +    00.00 (System)
-Syscalls:        3795	Mach Traps:    6780
-Disk I/O:        128K Read	          4K Written
-No Network I/O detected for this process
-
-#Threads:   3     Workqueues:1 threads (0 running, 0 blocked) State: 0
-Thread Info:
-
-(0)                    0x13562ba3 0000000104828000-0000000104834000 [  48K]r-x/r-x COW /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss
-(0)                    0x13562ba3 0000000104834000-0000000104838000 [  16K]rw-/rw- PRV /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss
-(0)                    0x13562ba3 0000000104838000-0000000104854000 [ 112K]rw-/rw- COW /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss
-(0)                    0x13562ba3 0000000104854000-000000010485c000 [  32K]r--/r-- COW /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweAss.app/iOweAss
-(0)                    0x0ea3c0a3 000000010485c000-0000000104860000 [  16K]r--/rw- COW /private/var/mobile/Containers/Data/Application/5AB3E437-9E2D-4F04-BD2B-972F6055699E/tmp/com.apple.dyld/iOweAss-6346DC276FE6865055F1194368EC73CC72E4C5224537F7F23DF19314CF6FD8AA.closure
-Kernel Alloc Once      0x0f5ebca3 0000000104860000-0000000104868000 [  32K]rw-/rwx PRV
-MALLOC metadata        0x0f5ec7a3 0000000104868000-000000010486c000 [  16K]r--/rwx ALI
-MALLOC metadata        0x0f5ec7a3 000000010486c000-0000000104870000 [  16K]rw-/rwx ALI
-MALLOC guard page      0x0ea0f0a3 0000000104870000-0000000104874000 [  16K]---/rwx ALI
-MALLOC metadata        0x0ea0f0a3 0000000104874000-0000000104878000 [  16K]rw-/rwx ALI
-MALLOC guard page      0x0ea0f0a3 0000000104878000-000000010487c000 [  16K]---/rwx ALI
-MALLOC guard page      0x0ea0eea3 000000010487c000-0000000104880000 [  16K]---/rwx ALI
-MALLOC metadata        0x0ea0eea3 0000000104880000-0000000104884000 [  16K]rw-/rwx ALI
-MALLOC guard page      0x0ea0eea3 0000000104884000-0000000104888000 [  16K]---/rwx ALI
-MALLOC metadata        0x0ea0e7a3 0000000104888000-000000010488c000 [  16K]r--/rwx ALI
-MALLOC metadata        0x0ea0e7a3 000000010488c000-0000000104890000 [  16K]rw-/rwx ALI
-MALLOC metadata        0x0e98bfa3 0000000104890000-0000000104894000 [  16K]r--/rwx PRV
-Activity Tracing       0x0ea9b3a3 0000000104894000-00000001048d4000 [ 256K]rw-/rwx SHM
-(0)                    0x0f1ad2a3 00000001048d4000-00000001048d8000 [  16K]r--/r-- TRU
-(0)                    0x1094afa3 00000001048d8000-00000001048e0000 [  32K]r--/r-- COW /private/var/preferences/Logging/.plist-cache.vqXhr1EE
-(0)                    0x0e645ba3 00000001048e0000-00000001048e4000 [  16K]r--/r-- TRU
-MALLOC_LARGE metadata  0x0ea9aea3 00000001048e4000-00000001048ec000 [  32K]rw-/rwx PRV
-MALLOC_LARGE metadata  0x112683a3 00000001048ec000-00000001048f0000 [  16K]rw-/rwx PRV
-MALLOC metadata        0x13f31da3 00000001048f0000-00000001048f4000 [  16K]r--/rwx ALI
-MALLOC metadata        0x13f31da3 00000001048f4000-00000001048f8000 [  16K]rw-/rwx ALI
-(0)                    0x0fb4bca3 00000001048f8000-00000001048fc000 [  16K]r--/r-- TRU
-CoreAnimation          0x0e644fa3 00000001048fc000-0000000104900000 [  16K]r--/r-- PRV
-MALLOC_TINY            0x0e98dfa3 0000000104900000-0000000104a00000 [1024K]rw-/rwx PRV
-MALLOC_TINY            0x0ea9dea3 0000000104a00000-0000000104b00000 [1024K]rw-/rwx PRV
-MALLOC guard page      0x13f2f8a3 0000000104b00000-0000000104b04000 [  16K]---/rwx ALI
-MALLOC metadata        0x13f2f8a3 0000000104b04000-0000000104b08000 [  16K]rw-/rwx ALI
-MALLOC guard page      0x13f2f8a3 0000000104b08000-0000000104b0c000 [  16K]---/rwx ALI
-MALLOC guard page      0x13f306a3 0000000104b0c000-0000000104b10000 [  16K]---/rwx ALI
-MALLOC metadata        0x13f306a3 0000000104b10000-0000000104b14000 [  16K]rw-/rwx ALI
-MALLOC guard page      0x13f306a3 0000000104b14000-0000000104b18000 [  16K]---/rwx ALI
-MALLOC_LARGE metadata  0x13f302a3 0000000104b18000-0000000104b20000 [  32K]rw-/rwx PRV
-(0)                    0x0fa763a3 0000000104b20000-0000000104b28000 [  32K]rw-/rw- TRU
-(0)                    0x10217fa3 0000000104b28000-0000000104b34000 [  48K]r-x/rwx COW /usr/lib/libobjc-trampolines.dylib
-(0)                    0x10217fa3 0000000104b34000-0000000104b38000 [  16K]r--/rw- COW /usr/lib/libobjc-trampolines.dylib
-Foundation             0x10b46da3 0000000104b38000-0000000104b3c000 [  16K]rw-/rwx PRV
-(0)                    0x10217fa3 0000000104b3c000-0000000104b48000 [  48K]r-x/rwx COW /usr/lib/libobjc-trampolines.dylib
-MALLOC_LARGE metadata  0x0e9191a3 0000000104b48000-0000000104b58000 [  64K]rw-/rwx PRV
-(0)                    0x102dc6a3 0000000104b58000-0000000104bb0000 [ 352K]r--/rw- COW /System/Library/Fonts/AppFonts/ChalkboardSE.ttc
-CoreAnimation          0x13ed11a3 0000000104bb0000-0000000104bb4000 [  16K]rw-/rwx TRU
-CoreAnimation          0x13ed16a3 0000000104bb4000-0000000104bc4000 [  64K]rw-/rwx TRU
-CoreAnimation          0x13ece7a3 0000000104bc4000-0000000104bc8000 [  16K]rw-/rwx TRU
-(0)                    0x0e434ba3 0000000104c58000-0000000104cbc000 [ 400K]r-x/r-x COW /usr/lib/dyld
-(0)                    0x0e434ba3 0000000104cbc000-0000000104cc0000 [  16K]r--/rw- PRV /usr/lib/dyld
-(0)                    0x0e434ba3 0000000104cc0000-0000000104cc4000 [  16K]rw-/rw- PRV /usr/lib/dyld
-(0)                    0x0faecda3 0000000104cc4000-0000000104cf8000 [ 208K]rw-/rw- PRV
-(0)                    0x0e434ba3 0000000104cf8000-0000000104d30000 [ 224K]r--/r-- COW /usr/lib/dyld
-(0)                    0x00000000 0000000104d30000-0000000104d34000 [  16K]r--/r-- NUL
-MALLOC_TINY            0x13f312a3 0000000104e00000-0000000104f00000 [1024K]rw-/rwx PRV
-MALLOC_TINY            0x13f31ca3 0000000104f00000-0000000105000000 [1024K]rw-/rwx PRV
-MALLOC_SMALL           0x0e98c1a3 0000000105000000-0000000105800000 [   8M]rw-/rwx PRV
-MALLOC_SMALL           0x0ea9dca3 0000000105800000-0000000106000000 [   8M]rw-/rwx PRV
-MALLOC_SMALL           0x13f319a3 0000000106000000-0000000106800000 [   8M]rw-/rwx PRV
-(0)                    0x0e6460a3 0000000106800000-00000001084cc000 [  28M]r--/r-- SHM /usr/share/icu/icudt64l.dat
-(0)                    0x11bf8da3 00000001084cc000-000000010dd70000 [  88M]r--/rw- COW /System/Library/CoreServices/CoreGlyphs.bundle/Assets.car
-(0)                    0x11adb3a3 000000010dd70000-000000010df84000 [   2M]r--/rw- COW /System/Library/Fonts/CoreUI/SFUI.ttf
-STACK_GUARD            0x00000000 000000016b4d8000-000000016b4dc000 [  16K]---/rwx NUL
-Stack                  0x0faed6a3 000000016b4dc000-000000016b5d8000 [1008K]rw-/rwx PRV
-STACK_GUARD            0x00000000 000000016b5d8000-000000016b5dc000 [  16K]---/rwx NUL
-Stack                  0x13c025a3 000000016b5dc000-000000016b664000 [ 544K]rw-/rwx PRV
-STACK_GUARD            0x00000000 000000016b77c000-000000016b780000 [  16K]---/rwx NUL
-Stack                  0x13f301a3 000000016b780000-000000016b808000 [ 544K]rw-/rwx PRV
-Shared PMAP            0x00000000 0000000180000000-0000000190000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000190000000-00000001a0000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001a0000000-00000001b0000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001b0000000-00000001c0000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001c0000000-00000001d0000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001d0000000-00000001e0000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001e0000000-00000001e6000000 [  96M]r--/r-- NUL
-Unshared PMAP          0x0e434ea3 00000001e6000000-00000001e8000000 [  32M]rw-/rw- COW
-Unshared PMAP          0x0e434ea3 00000001e8000000-00000001ea000000 [  32M]rw-/rw- COW
-Unshared PMAP          0x0e434ea3 00000001ea000000-00000001ea2b4000 [   2M]rw-/rw- COW
-Unshared PMAP          0x00000000 00000001ea2b4000-00000001ec000000 [  29M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001ec000000-00000001f0000000 [  64M]r--/r-- NUL
-Shared PMAP            0x00000000 00000001f0000000-0000000200000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000200000000-0000000210000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000210000000-0000000220000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000220000000-0000000230000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000230000000-0000000240000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000240000000-0000000250000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000250000000-0000000260000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000260000000-0000000270000000 [ 256M]r--/r-- NUL
-Shared PMAP            0x00000000 0000000270000000-0000000280000000 [ 256M]r--/r-- NUL
-MALLOC_NANO            0x0e98b2a3 0000000280000000-00000002a0000000 [ 512M]rw-/rwx PRV
-
-Process Hierarchy:
- 2828  iOweAss  has no children
-
-3 File descriptors: iOweAss           2828 FD  0r  /dev/null @0x0
-iOweAss           2828 FD  1u  /dev/null @0x0
-iOweAss           2828 FD  2u  /dev/null @0x41d
-Jetsam Level: 0
-Thread policy version
-	PID : 2828 (2828), comm: iOweAss Flags: Foreground, Live Donor, Donor, WQ Flags avail
-	Size: 5M Max Res: 10M
-	IOStats: Disk Reads: 15 reads (131072 bytes), 1 writes (4096 bytes)
-
-
-		TID: 51488 State: Waiting  PRI: 47/47 Flags: 0x2001
-		Continuation: 0xfffffff0071189e8 (no kernel stack)
-		CPU Times: User: 0.291082 secs, System: 0.000000 secs
-		Backtrace:
-		Frame 0: 0x1a17a8634
-		Frame 1: 0x1a17a7aa0
-		Frame 2: 0x1a194f04c
-		Frame 3: 0x1a194a16c
-		Frame 4: 0x1a19498a0
-		Frame 5: 0x1ab8a1328
-		Frame 6: 0x1a5a3a740
-		Frame 7: 0x104831148
-		Frame 8: 0x1a17d4360
-		Frame 9: 0x0
-
-		IOStats: Disk Reads: 15 reads (131072 bytes), 0 writes (0 bytes)
-
-
-
-		TID: 51493 State: Waiting  PRI: 47/47 Flags: 0x1
-		Continuation: 0xfffffff0071189e8 (no kernel stack)
-		Thread Name: com.apple.uikit.eventfetch-thread
-		CPU Times: User: 0.002789 secs, System: 0.000000 secs
-		Backtrace:
-		Frame 0: 0x1a17a8634
-		Frame 1: 0x1a17a7aa0
-		Frame 2: 0x1a194f04c
-		Frame 3: 0x1a194a16c
-		Frame 4: 0x1a19498a0
-		Frame 5: 0x1a1c89824
-		Frame 6: 0x1a1c89704
-		Frame 7: 0x1a5ad3158
-		Frame 8: 0x1a1dba0c4
-		Frame 9: 0x1a16ee1d0
-		Frame 10: 0x1a16f1ae0
-
-
-
-		TID: 71855 State: Waiting  PRI: 31/31 Flags: Idle Worker
-		Continuation: 0xfffffff0074c782c (no kernel stack)
-		CPU Times: User: 0.010101 secs, System: 0.000000 secs
-		Backtrace:
-		Frame 0: 0x1a17caa7c
-		Frame 1: 0x1a16eefd4
-		Frame 2: 0x1a16f1ad4
-
+iPhone:/var/mobile/Containers/Data/Application root# ls
+00F39DB7-9D0D-4DBC-A156-D8366300FC11  
+420D8ADA-8E4A-4BA4-9580-6CB8479A7160  
+7916E405-CC5E-468B-8C02-8F598837BE4B  
 ...
 
 ```
-- vmmap
-- DYLD_PRINT_LIBRARIES=yes and launch application with this set.  
 
-##### Sandbox Inspection
+A typical listing of directories in an application sandbox is shown below:
 
+```
+iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al
+drwxr-xr-x  7 mobile mobile  224 Jan  1  2019 .
+drwxr-xr-x 58 mobile mobile 1856 Nov 29 14:24 ..
+-rw-r--r--  1 root   mobile  216 Jan  1  2019 .com.apple.mobile_container_manager.metadata.plist
+drwxr-xr-x  6 mobile mobile  192 Nov 28 15:28 Documents
+drwxr-xr-x  6 mobile mobile  192 Aug  1 14:16 Library
+drwxr-xr-x  3 mobile mobile   96 Oct  5 11:56 StoreKit
+drwxr-xr-x  2 mobile mobile   64 Aug 21 14:46 tmp
+```
+
+In the application folder, `Library` folder contains preferences files (storing various configurations and user preferences), cached files generated by the OS and other OS generated files.  
+
+```
+iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al Library
+drwxr-xr-x 6 mobile mobile 192 Aug  1 14:16 .
+drwxr-xr-x 7 mobile mobile 224 Jan  1  2019 ..
+drwxr-xr-x 4 mobile mobile 128 Oct 31 00:43 Application Support
+drwxr-xr-x 6 mobile mobile 192 Oct 31 00:43 Caches
+drwxr-xr-x 3 mobile mobile  96 Aug 14 11:07 Preferences
+drwxr-xr-x 2 mobile mobile  64 Aug  1 14:16 app_compactdisk
+```
+
+`Document` folder may contain custom generated files by an application and stored here for persistence. 
+
+```
+iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al Documents
+drwxr-xr-x 6 mobile mobile  192 Nov 28 15:28 .
+drwxr-xr-x 7 mobile mobile  224 Jan  1  2019 ..
+-rw-r--r-- 1 mobile mobile 1664 Nov 28 15:28 PersistedFunnels.json
+drwxr-xr-x 2 mobile mobile   64 Aug  1 14:16 analyticscore
+drwxr-xr-x 5 mobile mobile  160 Nov 28 15:23 application_status.sessionless.1
+drwxr-xr-x 3 mobile mobile   96 Oct 31 00:43 locales
+```
 
 #### Debugging
 
