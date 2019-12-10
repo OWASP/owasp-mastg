@@ -678,6 +678,7 @@ If you haven't already done so, install the Frida Python package on your host ma
 
 ```shell
 $ pip install frida
+$ pip install frida-tools
 ```
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
@@ -789,6 +790,104 @@ cy# choose(SBIconModel)
 ```
 
 Learn more in the [Cycript Manual](http://www.cycript.org/manual/ "Cycript Manual").
+
+##### Information Gathering
+
+In this section we will learn how to use Frida to obtain information about a running application.
+
+##### Getting Loaded Classes and their Methods
+
+In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
+
+```
+$ frida -U -f com.iOweApp
+
+[iPhone::com.iOweApp]-> ObjC.enumerateLoadedClasses()
+{
+    "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation": [
+        "__NSBlockVariable__",
+        "__NSGlobalBlock__",
+        "__NSFinalizingBlock__",
+        "__NSAutoBlock__",
+        "__NSMallocBlock__",
+        "__NSStackBlock__"
+    ],
+    "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp": [
+        "JailbreakDetection",
+        "CriticalLogic",
+        "ViewController",
+        "AppDelegate"
+    ]
+}
+
+```
+
+Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
+
+```
+[iPhone::com.iOweApp]-> ObjC.classes.JailbreakDetection.$ownMethods
+[
+    "+ isJailbroken"
+]
+
+[iPhone::com.iOweApp]-> ObjC.classes.CriticalLogic.$ownMethods
+[
+    "+ doSha256:",
+    "- a:",
+    "- AES128Operation:data:key:iv:",
+    "- coreLogic",
+    "- bat",
+    "- b:",
+    "- hexString:"
+]
+```
+
+##### Getting Loaded Libraries
+
+In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
+
+```
+[iPhone::com.iOweApp]-> Process.enumerateModules()
+[
+    {
+        "base": "0x10008c000",
+        "name": "iOweApp",
+        "path": "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp",
+        "size": 49152
+    },
+    {
+        "base": "0x1a1c82000",
+        "name": "Foundation",
+        "path": "/System/Library/Frameworks/Foundation.framework/Foundation",
+        "size": 2859008
+    },
+    {
+        "base": "0x1a16f4000",
+        "name": "libobjc.A.dylib",
+        "path": "/usr/lib/libobjc.A.dylib",
+        "size": 200704
+    },
+
+    ...
+```
+
+Similarly, information related to various threads can be obtained.
+
+```
+Process.enumerateThreads()
+[
+    {
+        "context": {
+            ...
+       },
+        "id": 1287,
+        "state": "waiting"
+    },
+
+    ...
+```
+
+The `Process` command exposes multiple functions which can be explored as per needs. Some useful functions are `findModuleByAddress`, `findModuleByName` and `enumerateRanges` besides others.
 
 ##### Method Hooking
 
@@ -1225,6 +1324,8 @@ Reading 2.390625MB ...
 ```
 
 To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
+
+
 
 ### References
 
