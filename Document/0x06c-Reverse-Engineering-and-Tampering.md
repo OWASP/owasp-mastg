@@ -349,13 +349,13 @@ bash: # . ~/.bashrc
 
 #### Basic Information Gathering
 
-On iOS collecting basic information about a running process or application can be slightly more challenging than compared to Android. On Android (or a Linux-based OS), OS exposes process information as readable text files via **procfs**. Thus any information about a desired process can be obtained by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also on iOS many standard UNIX command lines tools for exploring process information, for instance `lsof` and `vmmap`, are removed to reduce firmware size. 
+On iOS collecting basic information about a running process or application can be slightly more challenging than compared to Android. On Android (or a Linux-based OS), OS exposes process information as readable text files via **procfs**. Thus any information about a desired process can be obtained by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also on iOS many standard UNIX command lines tools for exploring process information, for instance `lsof` and `vmmap`, are removed to reduce firmware size.
 
-In this section we will learn how to collect process information on iOS using command line tools `lsof` and `vmmap`. `lsof` can be installed using Cydia, the exectuable is not from the latest source but nevertheless solves our purpose. `vmmap` is not availble on Cydia, but an pre-compiled executable by Jonathan Levin is available at [newosxbook.com/files/vmmap.iOS](newosxbook.com/files/vmmap.iOS "newosxbook.com/files/vmmap.iOS"). This executable should be signed with entitlement `task-for-pid` (TODO fix the entitlement name) before using it on iOS. 
+In this section we will learn how to collect process information on iOS using command line tools `lsof` and `vmmap`. `lsof` can be installed using Cydia, the exectuable is not from the latest source but nevertheless solves our purpose. `vmmap` is not availble on Cydia, but an pre-compiled executable by Jonathan Levin is available at [newosxbook.com/files/vmmap.iOS](newosxbook.com/files/vmmap.iOS "newosxbook.com/files/vmmap.iOS"). This executable should be signed with entitlement `task-for-pid` (TODO fix the entitlement name) before using it on iOS.
 
 ##### Opened Files
 
-`lsof` command is a powerful tool, and provides plethora of information about a running process. `lsof` provides list of all open files, including a stream, a network file or a regular file. `lsof` command invoked without any option lists all open files belonging to all active processes, while invoking with options `-c <process name>` or `-p <pid>` returns the list of open files for the specified process. 
+`lsof` command is a powerful tool, and provides plethora of information about a running process. `lsof` provides list of all open files, including a stream, a network file or a regular file. `lsof` command invoked without any option lists all open files belonging to all active processes, while invoking with options `-c <process name>` or `-p <pid>` returns the list of open files for the specified process.
 
 List of open files for an iOS application using `lsof` command is shown below.
 
@@ -380,7 +380,7 @@ iOweAss 2828 mobile    2u   CHR    3,2    0t141    197 /dev/null
 
 ##### Opened Connections
 
-`lsof` command with option `-i` gives the list of open network ports for all active processes on the device. To get list of open network ports for a specific process, the `lsof -i` command output can be filtered using `-a` (AND) option and providing the process-id using `-p` option. Below a filtered output for process-id=1 is shown. 
+`lsof` command with option `-i` gives the list of open network ports for all active processes on the device. To get list of open network ports for a specific process, the `lsof -i` command output can be filtered using `-a` (AND) option and providing the process-id using `-p` option. Below a filtered output for process-id=1 is shown.
 
 ```
 iPhone:~ root# lsof -i -a -p 1
@@ -411,13 +411,13 @@ launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 
 On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In the earlier versions of iOS there were certain application available which can be used to browse the device's filesystem, but in the recent version of iOS the sandboxing rules are more stringent and these applications do not work anymore. As a result, sandboxed data on recent iOS versions, sandboxed data can only be accessed on a jailbroken device. As part of jailbreaking process, the application sandbox protection is disabled/weakened and thus enabling the an easy access to sandboxed folders.
 
-In the recent version of iOS, the application sandbox data is present in `/var/mobile/Containers/Data/Application/` directory, where each application gets a unique folder named with a UUID. 
+In the recent version of iOS, the application sandbox data is present in `/var/mobile/Containers/Data/Application/` directory, where each application gets a unique folder named with a UUID.
 
 ```
 iPhone:/var/mobile/Containers/Data/Application root# ls
-00F39DB7-9D0D-4DBC-A156-D8366300FC11  
-420D8ADA-8E4A-4BA4-9580-6CB8479A7160  
-7916E405-CC5E-468B-8C02-8F598837BE4B  
+00F39DB7-9D0D-4DBC-A156-D8366300FC11
+420D8ADA-8E4A-4BA4-9580-6CB8479A7160
+7916E405-CC5E-468B-8C02-8F598837BE4B
 ...
 
 ```
@@ -435,7 +435,7 @@ drwxr-xr-x  3 mobile mobile   96 Oct  5 11:56 StoreKit
 drwxr-xr-x  2 mobile mobile   64 Aug 21 14:46 tmp
 ```
 
-In the application folder, `Library` folder contains preferences files (storing various configurations and user preferences), cached files generated by the OS and other OS generated files.  
+In the application folder, `Library` folder contains preferences files (storing various configurations and user preferences), cached files generated by the OS and other OS generated files.
 
 ```
 iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al Library
@@ -447,7 +447,7 @@ drwxr-xr-x 3 mobile mobile  96 Aug 14 11:07 Preferences
 drwxr-xr-x 2 mobile mobile  64 Aug  1 14:16 app_compactdisk
 ```
 
-`Document` folder may contain custom generated files by an application and stored here for persistence. 
+`Document` folder may contain custom generated files by an application and stored here for persistence.
 
 ```
 iPhone:/var/mobile/Containers/Data/Application/C287DD21-BF8E-41AE-80F8-8C347150E2DB root# ls -al Documents
