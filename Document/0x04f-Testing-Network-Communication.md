@@ -158,7 +158,7 @@ The interception proxy need to listen to the port specified in the port forwardi
 When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.DefaultWebProxy`) you need to specify where traffic should go next, after redirecting the traffic to your intercepting proxy. You need to redirect the traffic to the original location. The following procedure is setting up a redirection in Burp to the original location:
 
 1. Go to **Proxy** tab and click on **Options**
-2. Select your listener from list of proxy listener and edit that listener.
+2. Select and edit your listener from the list of proxy listeners.
 3. Go to **Request handling** tab and set:
 
     - Redirect to host: provide original traffic location
