@@ -355,7 +355,7 @@ In this section we will learn how to collect process information on iOS using co
 
 ##### Opened Files
 
-`lsof` command is a powerful tool, and provides plethora of information about a running process. It can provide list of all open files, including a stream, a network file or a regular file. `lsof` command when invoked without any option lists all open files belonging to all active processes on the system, while when invoking with options `-c <process name>` or `-p <pid>`, it returns the list of open files for the specified process. Command's man page discuss various other options in detail.
+`lsof` is a powerful command, and provides a plethora of information about a running process. It can provide a list of all open files, including a stream, a network file or a regular file. When invoking the `lsof` command without any option it will list all open files belonging to all active processes on the system, while when invoking with the flags `-c <process name>` or `-p <pid>`, it returns the list of open files for the specified process. The [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") shows various other options in detail.
 
 Using `lsof` list of various open files for an iOS application running with PID 28282 is shown below.
 
