@@ -133,7 +133,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 
 ##### Installation
 
-The following procedure is setting up a man-in-the-middle position using an Access Point and additional network interface:
+The following procedure is setting up a man-in-the-middle position using an Access Point and an additional network interface:
 1.  Create an Access Point and its network.
 2.  Route traffic to additional network interface where traffic can reach the target network. Additional network interface can be wired connection or other Wifi card.
 
