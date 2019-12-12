@@ -170,7 +170,7 @@ We focus on configuration files for Kali Linux. Following values were defined:
 - wlan0 - id of the target network interface (this can be wired interface or other Wifi card)
 - 10.0.0.0/24 - IP addresses and mask of AP network
 
-You need following configuration files:
+The following configuration files need to be changed and adjusted accordingly:
 
 - hostapd.conf
 
