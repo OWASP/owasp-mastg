@@ -127,7 +127,7 @@ The scenario with a separate Access Point requires access to the configuration o
 
 In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or Wifi) and you need to have connection to the target network (can be by the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
 
-> If external Access Point belongs to customer, all changes and configurations should be clarified prior to the engagement.
+> If the external Access Point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an Access Point">
 
