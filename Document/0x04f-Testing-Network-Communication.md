@@ -131,7 +131,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 ##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
-1.  Create a WiFi network either through a separate Access Point or through an external USB Card or through the built-in card of your machine.
+1. Create a WiFi network either through a separate Access Point or through an external USB Card or through the built-in card of your machine.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
@@ -150,7 +150,7 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 ```
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-2.  In case of a separate Access Point, route the traffic to your machine. In case of an external USB Card or build-in WiFi card the traffic is already available on your machine.
+2. In case of a separate Access Point, route the traffic to your machine. In case of an external USB Card or build-in WiFi card the traffic is already available on your machine.
 3. Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other Wifi card, depending on your setup.
 
 ##### Configuration
