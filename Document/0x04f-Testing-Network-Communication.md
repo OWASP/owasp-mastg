@@ -112,7 +112,7 @@ If that's the case, you are now able to see the complete network traffic that is
 
 ##### Network Setup
 
-Simple way to simulate a man-in-the-middle (MITM) attack is to configure network where all packets between devices and the target network are going through your machine. In mobile world, this is achieved by placing Access Point between mobile devices and your machine. Your machine is a router and an Access Point.
+A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your machine. In a mobile penetration test, this can be achieved by using an Access Point the mobile devices and your machine are connected to. Your machine is then becoming a router and an Access Point.
 
 Following scenarios are possible:
 - use your machine built-in WiFi card as an Access Point and use your wired connection to connect to the target network,
