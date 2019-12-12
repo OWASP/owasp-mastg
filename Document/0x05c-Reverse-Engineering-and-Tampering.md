@@ -1108,7 +1108,7 @@ It is being loaded with a base address of 0x400000.
 b'ABGAATYAJQAFUABB'
 ```
 
-> You may obtain different solutions using the script, as there are multiple valid license keys possible.  
+> You may obtain different solutions using the script, as there are multiple valid license keys possible.
 
 To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please to the iOS chapter for more examples on Angr usage.
 
@@ -1246,6 +1246,107 @@ The following approach can be used in order to patch the JavaScript file:
 6. Repack the APK archive using `apktool` tool and sign it before to install it on the target device/emulator.
 
 #### Dynamic Instrumentation
+
+##### Information Gathering
+
+In this section we will learn about how to use Frida to obtain information about a running application.
+
+###### Getting Loaded Classes and their Methods
+
+In the Frida REPL to access Java runtime, `Java` command can be used to access information within the running app. Unlike `ObjC` command for iOS, for Java, the code need to be called via `Java.perform()` function. Thus, the best way to get list of loaded Java classes and their corresponding methods and field is to use Frida scripts. One such script is listed below.
+
+```
+// Get list of loaded Java classes and methods
+
+Java.perform(function() {
+    Java.enumerateLoadedClasses({
+        onMatch: function(className) {
+            console.log(className);
+            describeJavaClass(className);
+        },
+        onComplete: function() {}
+    });
+});
+
+// Get the methods and fields
+function describeJavaClass(className) {
+  var jClass = Java.use(className);
+  console.log(JSON.stringify({
+    _name: className,
+    _methods: Object.getOwnPropertyNames(jClass.__proto__).filter(function(m) {
+      return !m.startsWith('$') // filter out Frida related special properties
+        || m == 'class' || m == 'constructor' // optional
+    }),
+    _fields: jClass.class.getFields().map(function(f) {
+      console.log( f.toString());
+    })
+  }, null, 2));
+}
+
+
+// Output
+
+[Huawei Nexus 6P::sg.vantagepoint.helloworldjni]->
+...
+
+android.bluetooth.BluetoothProfile$ServiceListener
+{
+  "_name": "android.bluetooth.BluetoothProfile$ServiceListener",
+  "_methods": [
+    "constructor",
+    "class",
+    "onServiceConnected",
+    "onServiceDisconnected"
+  ],
+  "_fields": []
+}
+...
+
+android.net.NetworkSpecifier
+{
+  "_name": "android.net.NetworkSpecifier",
+  "_methods": [
+    "constructor",
+    "class",
+    "satisfiedBy"
+  ],
+  "_fields": []
+}
+...
+
+```
+
+Given the verbosity of the output, the system classes can be filtered out programmatically to make output more readable and relevant to the use case.
+
+###### Getting Loaded Libraries
+
+In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
+
+```
+[Huawei Nexus 6P::sg.vantagepoint.helloworldjni]-> Process.enumerateModules()
+[
+    {
+        "base": "0x558a442000",
+        "name": "app_process64",
+        "path": "/system/bin/app_process64",
+        "size": 32768
+    },
+    {
+        "base": "0x78bc984000",
+        "name": "libandroid_runtime.so",
+        "path": "/system/lib64/libandroid_runtime.so",
+        "size": 2011136
+    },
+    {
+        "base": "0x78bdbca000",
+        "name": "libbinder.so",
+        "path": "/system/lib64/libbinder.so",
+        "size": 598016
+    },
+
+...
+
+```
 
 ##### Method Hooking
 
