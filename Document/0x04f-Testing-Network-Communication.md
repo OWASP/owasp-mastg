@@ -122,7 +122,7 @@ The scenario with a separate access point requires access to the configuration o
 - port forwarding or
 - has a span or mirror port.
 
-In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be by the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
+In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
 
 > If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
