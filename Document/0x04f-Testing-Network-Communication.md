@@ -116,7 +116,7 @@ A simple way to simulate a man-in-the-middle (MITM) attack is to configure a net
 
 Following scenarios are possible:
 - use your machine built-in WiFi card as an Access Point and use your wired connection to connect to the target network,
-- use external USB WiFi card as an Access Point and user your machine built-in WiFi to connect to the target network (can be vice-versa) or
+- Use an external USB WiFi card as an Access Point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
 - use external Access Point and redirect traffic to your machine.
 
 Scenarios with WiFi card Access Point require that WiFi card has AP (Access Point) capabilities. Additionally, you need to install tools and/or configure network to reflect man-in-the-middle position (see below).
