@@ -120,7 +120,7 @@ Following scenarios are possible:
 - Use a separate Access Point and redirect the traffic to your machine.
 
 The scenario with an external USB card require that the WiFi card has the capability to create an Access Point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below).
-Scenario with external Access Point requires access to the configuration of the AP and you should check first if the AP supports either:
+The scenario with a separate Access Point requires access to the configuration of the AP and you should check first if the AP supports either:
 
 - port forwarding or
 - has a span or mirror port.
