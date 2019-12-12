@@ -119,7 +119,7 @@ Following scenarios are possible:
 - Use an external USB WiFi card as an Access Point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate Access Point and redirect the traffic to your machine.
 
-Scenarios with WiFi card Access Point require that WiFi card has AP (Access Point) capabilities. Additionally, you need to install tools and/or configure network to reflect man-in-the-middle position (see below).
+The scenario with an external USB card require that the WiFi card has the capability to create an Access Point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below).
 Scenario with external Access Point requires access to the configuration of the AP and you should check first if the AP supports either:
 
 - port forwarding or
