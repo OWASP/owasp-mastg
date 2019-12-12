@@ -115,6 +115,7 @@ If that's the case, you are now able to see the complete network traffic that is
 A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your machine. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your machine are connected to. Your machine is then becoming a router and an access point.
 
 Following scenarios are possible:
+
 - use your machine built-in WiFi card as an access point and use your wired connection to connect to the target network,
 - Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your machine.
@@ -134,7 +135,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 ##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
-1.  Create an access point and its network.
+1.  Create a WiFi network either through a separate Access Point or through an external USB Card or through the built-in card of your machine.
 2.  Route traffic to additional network interface where traffic can reach the target network. Additional network interface can be wired connection or other WiFi card.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
