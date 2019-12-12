@@ -220,7 +220,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 ##### MITM Attack
 
-To be able to get a man-in-the-middle position you need to run above configuration. This can be done by using following commands on Kali Linux:
+To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
     ```shell
     # check if other process is not using Wifi interfaces
