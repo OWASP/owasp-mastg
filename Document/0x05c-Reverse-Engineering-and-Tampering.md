@@ -1289,26 +1289,31 @@ function describeJavaClass(className) {
 [Huawei Nexus 6P::sg.vantagepoint.helloworldjni]->
 ...
 
-android.bluetooth.BluetoothProfile$ServiceListener
+com.scottyab.rootbeer.sample.MainActivity
 {
-  "_name": "android.bluetooth.BluetoothProfile$ServiceListener",
+  "_name": "com.scottyab.rootbeer.sample.MainActivity",
   "_methods": [
-    "constructor",
-    "class",
-    "onServiceConnected",
-    "onServiceDisconnected"
+  ...
+    "beerView",
+    "checkRootImageViewList",
+    "floatingActionButton",
+    "infoDialog",
+    "isRootedText",
+    "isRootedTextDisclaimer",
+    "mActivity",
+    "GITHUB_LINK"
   ],
-  "_fields": []
-}
+  "_fields": [
+    "public static final int android.app.Activity.DEFAULT_KEYS_DIALER",
 ...
 
-android.net.NetworkSpecifier
+com.scottyab.rootbeer.sample.CheckRootTask$OnCheckRootFinishedListener
 {
-  "_name": "android.net.NetworkSpecifier",
+  "_name": "com.scottyab.rootbeer.sample.CheckRootTask$OnCheckRootFinishedListener",
   "_methods": [
     "constructor",
     "class",
-    "satisfiedBy"
+    "onCheckRootFinished"
   ],
   "_fields": []
 }
