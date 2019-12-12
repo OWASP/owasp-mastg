@@ -1748,7 +1748,6 @@ The interception proxy must listen to the port specified in the port forwarding 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
 <img src="Images/Chapters/0x05b/FCM_Intercept.png" width="500px"/>
-![Intercepted Messages]()
 
 ###### End-to-End Encryption for Push Notifications
 
