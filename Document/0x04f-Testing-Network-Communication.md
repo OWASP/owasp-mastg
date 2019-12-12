@@ -42,7 +42,7 @@ In these cases you need to monitor and analyze the network traffic first in orde
 
 - Route the traffic through the host machine. You can set up your machine as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org "Wireshark") to sniff any traffic from the mobile device;
 
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") or use your own Access Point to redirect network traffic from the mobile device to your host machine (see below);
+- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") or use your own access point to redirect network traffic from the mobile device to your host machine (see below);
 
 > bettercap is a powerful tool to execute MITM attacks and should be preferred nowadays, instead of ettercap. See also [Why another MITM tool?](https://www.bettercap.org/legacy/#why-another-mitm-tool "Why another MITM tool?") on the bettercap site.
 
@@ -108,34 +108,34 @@ If that's the case, you are now able to see the complete network traffic that is
 
 > Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
-#### Simulating a Man-in-the-Middle Attack with an Access Point
+#### Simulating a Man-in-the-Middle Attack with an access point
 
 ##### Network Setup
 
-A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your machine. In a mobile penetration test, this can be achieved by using an Access Point the mobile devices and your machine are connected to. Your machine is then becoming a router and an Access Point.
+A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your machine. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your machine are connected to. Your machine is then becoming a router and an access point.
 
 Following scenarios are possible:
-- use your machine built-in WiFi card as an Access Point and use your wired connection to connect to the target network,
-- Use an external USB WiFi card as an Access Point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
-- Use a separate Access Point and redirect the traffic to your machine.
+- use your machine built-in WiFi card as an access point and use your wired connection to connect to the target network,
+- Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
+- Use a separate access point and redirect the traffic to your machine.
 
-The scenario with an external USB card require that the WiFi card has the capability to create an Access Point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below).
-The scenario with a separate Access Point requires access to the configuration of the AP and you should check first if the AP supports either:
+The scenario with an external USB card require that the WiFi card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below).
+The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
 
 - port forwarding or
 - has a span or mirror port.
 
-In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or Wifi) and you need to have connection to the target network (can be by the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
+In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be by the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
 
-> If the external Access Point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
+> If the external access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
-<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an Access Point">
+<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point">
 
 ##### Installation
 
-The following procedure is setting up a man-in-the-middle position using an Access Point and an additional network interface:
-1.  Create an Access Point and its network.
-2.  Route traffic to additional network interface where traffic can reach the target network. Additional network interface can be wired connection or other Wifi card.
+The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
+1.  Create an access point and its network.
+2.  Route traffic to additional network interface where traffic can reach the target network. Additional network interface can be wired connection or other WiFi card.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
@@ -155,19 +155,19 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 ```
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-You should check if your one of your Wifi card has AP capabilities. This can be done by using the command `iwconfig` on Kali Linux:
+You should check if your one of your WiFi card has AP capabilities. This can be done by using the command `iwconfig` on Kali Linux:
 
     ```shell
     $ iw list | grep AP 
     ```
 
-If your Wifi card has AP capabilities, you can use it to create Access Point.
+If your WiFi card has AP capabilities, you can use it to create access point.
 
 ##### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
 - wlan1 - id of the AP network interface (with AP capabilities),
-- wlan0 - id of the target network interface (this can be wired interface or other Wifi card)
+- wlan0 - id of the target network interface (this can be wired interface or other WiFi card)
 - 10.0.0.0/24 - IP addresses and mask of AP network
 
 The following configuration files need to be changed and adjusted accordingly:
@@ -223,7 +223,7 @@ The following configuration files need to be changed and adjusted accordingly:
 To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
     ```shell
-    # check if other process is not using Wifi interfaces
+    # check if other process is not using WiFi interfaces
     $ airmon-ng check kill
     # configure IP address of the AP network interface
     $ ifconfig wlan1 10.0.0.1 up
@@ -242,7 +242,7 @@ To be able to get a man-in-the-middle position you need to run the above configu
     $ iptables -t nat -A POSTROUTING -j MASQUERADE
     ```
 
-Now you can connect your mobile devices to the Access Point.
+Now you can connect your mobile devices to the access point.
 
 ##### Network Analyzer Tool
 
