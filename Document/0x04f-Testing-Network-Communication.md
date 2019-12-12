@@ -120,7 +120,12 @@ Following scenarios are possible:
 - Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your machine.
 
-The scenario with an external USB card require that the WiFi card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below).
+The scenario with an external USB card require that the WiFi card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
+
+    ```shell
+    $ iw list | grep AP 
+    ```
+
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
 
 - port forwarding or
@@ -136,9 +141,6 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
 1.  Create a WiFi network either through a separate Access Point or through an external USB Card or through the built-in card of your machine.
-2.  Route traffic to additional network interface where traffic can reach the target network. Additional network interface can be wired connection or other WiFi card.
-
-This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
 For all major Linux and Unix operating systems you need:
 - hostapd,
@@ -156,13 +158,9 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 ```
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-You should check if your one of your WiFi card has AP capabilities. This can be done by using the command `iwconfig` on Kali Linux:
+2.  Route traffic to additional network interface where traffic can reach the target network. Additional network interface can be wired connection or other WiFi card.
 
-    ```shell
-    $ iw list | grep AP 
-    ```
-
-If your WiFi card has AP capabilities, you can use it to create access point.
+This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
 ##### Configuration
 
@@ -216,8 +214,6 @@ The following configuration files need to be changed and adjusted accordingly:
     log-dhcp
     listen-address=127.0.0.1
     ```
-
-> These are example configs. Some adjustments may be required.
 
 ##### MITM Attack
 
