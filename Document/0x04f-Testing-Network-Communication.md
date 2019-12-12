@@ -242,7 +242,7 @@ To be able to get a man-in-the-middle position you need to run above configurati
     $ iptables -t nat -A POSTROUTING -j MASQUERADE
     ```
 
-Now you can connect mobile devices to the Access Point.
+Now you can connect your mobile devices to the Access Point.
 
 ##### Network Analyzer Tool
 
