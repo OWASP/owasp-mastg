@@ -133,13 +133,12 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
 1.  Create a WiFi network either through a separate Access Point or through an external USB Card or through the built-in card of your machine.
 
-For all major Linux and Unix operating systems you need:
+For all major Linux and Unix operating systems you need tools such as:
 - hostapd,
 - dnsmasq,
 - iptables,
 - wpa_supplicant,
-- airmon-ng or
-- its equivalents.
+- airmon-ng.
 
 For Kali Linux you can install these tools with `apt-get`:
 
