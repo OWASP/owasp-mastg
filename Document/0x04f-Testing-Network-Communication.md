@@ -107,7 +107,7 @@ A simple way to simulate a man-in-the-middle (MITM) attack is to configure a net
 
 Following scenarios are possible:
 
-- use your machine built-in WiFi card as an access point and use your wired connection to connect to the target network,
+- Use your machine's built-in WiFi card as an access point and use your wired connection to connect to the target network.
 - Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your machine.
 
@@ -124,7 +124,7 @@ The scenario with a separate access point requires access to the configuration o
 
 In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be by the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
 
-> If the external access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
+> If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point">
 
