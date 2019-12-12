@@ -1278,7 +1278,7 @@ function describeJavaClass(className) {
         || m == 'class' || m == 'constructor' // optional
     }),
     _fields: jClass.class.getFields().map(function(f) {
-      console.log( f.toString());
+      return( f.toString());
     })
   }, null, 2));
 }
