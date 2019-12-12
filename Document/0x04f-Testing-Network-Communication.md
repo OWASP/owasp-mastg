@@ -165,7 +165,7 @@ If your Wifi card has AP capabilities, you can use it to create Access Point.
 
 ##### Configuration
 
-We focus on configuration files for Kali Linux. Following values were defined:
+We focus on the configuration files for Kali Linux. Following values need to be defined:
 - wlan1 - id of the AP network interface (with AP capabilities),
 - wlan0 - id of the target network interface (this can be wired interface or other Wifi card)
 - 10.0.0.0/24 - IP addresses and mask of AP network
