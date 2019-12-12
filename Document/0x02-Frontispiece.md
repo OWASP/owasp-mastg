@@ -118,11 +118,14 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 [OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
 
+#### Good Samaritan Benefactor
+
+[![RandoriSec](Images/Sponsors/Randorisec_logo.png)](https://www.randorisec.fr/ "RandoriSec")
+
 #### Donators
 
 The following people and/or companies have donated more than $25 using Leanpub or other ways:
 
-- [RandoriSec](https://www.randorisec.fr/ "RandoriSec")
 - eShard
 
 <br/>
