@@ -509,6 +509,89 @@ $ adb install UnCrackable-Level1.objection.apk
 $ objection explore
 ```
 
+#### Basic Information Gathering
+
+As mentioned previously, Android runs on top of a modified Linux kernel. Android retains the [*procfs*](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") from Linux, and this filesystem is mounted at */proc*.  The *procfs* filesystem provides a directory-based view of process running on the system, providing information about the processes, threads, and other system-wide diagnostics. *procfs* is arguably one of the most important filesystem on Android. Many Android tools depend on *procfs* as the source of information.
+
+Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using BusyBox. We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the *procfs* information.
+
+In this section we will be using information from *procfs* directly or indirectly to gather information about a running process.
+
+##### Open Files
+
+`lsof` can provide a list of all open files, including a stream, a network file or a regular file. When invoking the `lsof` command without any option it will list all open files belonging to all active processes on the system, while when invoking with the flags `-c <process name>` or `-p <pid>`, it returns the list of open files for the specified process. The [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") shows various other options in detail.
+
+```
+angler:/ # lsof -p 6233
+COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NODE NAME
+.foobar.c  6233     u0_a97  cwd       DIR                0,1         0          1 /
+.foobar.c  6233     u0_a97  rtd       DIR                0,1         0          1 /
+.foobar.c  6233     u0_a97  txt       REG             259,11     23968        399 /system/bin/app_process64
+.foobar.c  6233     u0_a97  mem   unknown                                         /dev/ashmem/dalvik-main space (region space) (deleted)
+.foobar.c  6233     u0_a97  mem       REG              253,0   2797568    1146914 /data/dalvik-cache/arm64/system@framework@boot.art
+.foobar.c  6233     u0_a97  mem       REG              253,0   1081344    1146915 /data/dalvik-cache/arm64/system@framework@boot-core-libart.art
+.foobar.c  6233     u0_a97  mem       REG              253,0    307200    1146916 /data/dalvik-cache/arm64/system@framework@boot-conscrypt.art
+.foobar.c  6233     u0_a97  mem       REG              253,0    225280    1146917 /data/dalvik-cache/arm64/system@framework@boot-okhttp.art
+....
+```
+
+##### Open Connections
+
+Directory `/proc/pid/net` provides networking information, but the information in this file is not process specific. Instead, it is the same as information as `/proc/net`. There are multiple files present in this directory, of which `tcp`, `tcp6` and `udp` can be considered important from our perspective.
+
+```
+angler:/proc/7254/net # cat tcp
+sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+...
+69: 1101A8C0:BB2F 9A447D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75412 1 0000000000000000 20 3 19 10 -1
+70: 1101A8C0:917C E3CB3AD8:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75553 1 0000000000000000 20 3 23 10 -1
+71: 1101A8C0:C1E3 9C187D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75458 1 0000000000000000 20 3 19 10 -1
+72: 1101A8C0:B4C3 8A827D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 77221 1 0000000000000000 20 3 27 10 -1
+73: 1101A8C0:B4C2 8A827D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 77216 1 0000000000000000 20 3 31 10 -1
+74: 1101A8C0:9B8E 93187D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 74656 1 0000000000000000 20 3 19 10 -1
+75: 1101A8C0:B4C1 8A827D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 74262 1 0000000000000000 20 3 31 10 -1
+...
+```
+
+Another alternative is to use `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements, for instance for a given pid.
+
+```
+angler:/ # netstat
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program Name
+tcp        0      1 192.168.1.17:48887      sin10s11-in-f14.1:https SYN_SENT    -
+tcp        0      0 192.168.1.17:39428      220.255.5.15:https      TIME_WAIT   -
+tcp        0      0 192.168.1.17:41515      sa-in-f95.1e100.n:https TIME_WAIT   -
+tcp        0      0 192.168.1.17:38222      proxy-220-255-2-1:https TIME_WAIT   -
+tcp       57      0 192.168.1.17:45829      74.125.24.139:https     CLOSE_WAIT  8248/com.android.vending
+tcp6       0      0 ::ffff:192.168.1.:41527 sa-in-f95.1e100.n:https ESTABLISHED 9378/com.google.android.gms.persistent
+tcp6       0      0 ::ffff:192.168.1.:40212 ::ffff:74.125.24.:https TIME_WAIT   -
+...
+```
+
+##### Loaded Native Libraries
+
+File `/proc/pid/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
+
+```
+127|angler:/proc/9568 # cat maps | more
+12c00000-52c00000 rw-p 00000000 00:04 20927                              /dev/ashmem/dalvik-main space (region space) (deleted)
+6f019000-6f2c0000 rw-p 00000000 fd:00 1146914                            /data/dalvik-cache/arm64/system@framework@boot.art
+6f2c0000-6f3c6000 rw-p 00000000 fd:00 1146915                            /data/dalvik-cache/arm64/system@framework@boot-core-libart.art
+...
+78bd50a000-78bd51e000 r-xp 00000000 103:0b 2144                          /system/lib64/libz.so
+78bd51e000-78bd51f000 ---p 00000000 00:00 0
+78bd51f000-78bd520000 r--p 00014000 103:0b 2144                          /system/lib64/libz.so
+78bd520000-78bd521000 rw-p 00015000 103:0b 2144                          /system/lib64/libz.so
+
+8bd567000-78bd56a000 r-xp 00000000 103:0b 2023                          /system/lib64/libnativebridge.so
+...
+```
+
+##### Sandbox Inspection
+
+The application data is stored in a sandboxed directory present at `/data/data/<app name>`. The contents of this directory has already been discussed in detail in "[Accessing App Data Directories](0x05b-basic-security_testing#accessing-app-data-directories "Accessing App Data Directories")" section.
+
 #### Debugging
 
 So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
@@ -1108,7 +1191,7 @@ It is being loaded with a base address of 0x400000.
 b'ABGAATYAJQAFUABB'
 ```
 
-> You may obtain different solutions using the script, as there are multiple valid license keys possible.  
+> You may obtain different solutions using the script, as there are multiple valid license keys possible.
 
 To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please to the iOS chapter for more examples on Angr usage.
 
