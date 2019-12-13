@@ -123,7 +123,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 
 ### Tools for Network Interception and Monitoring
 
-- bettercap: A powerful framework which aims to offer to security researchers and reverse engineers an easy to use, all-in-one solution for WiFi, Bluetooth Low Energy, wireless HID hijacking and Ethernet networks reconnaissance and MITM attacks - <https://www.bettercap.org/>
+- bettercap: A powerful framework which aims to offer to security researchers and reverse engineers an easy to use, all-in-one solution for Wi-Fi, Bluetooth Low Energy, wireless HID hijacking and Ethernet networks reconnaissance and MITM attacks - <https://www.bettercap.org/>
 - Canape: A network testing tool for arbitrary protocols - <https://github.com/ctxis/canape>
 - Mallory: A Man in The Middle Tool (MiTM) that is used to monitor and manipulate traffic on mobile devices and applications - <https://github.com/intrepidusgroup/mallory>
 - MITM Relay: A script to intercept and modify non-HTTP protocols through Burp and others with support for SSL and STARTTLS interception - <https://github.com/jrmdev/mitm_relay>
