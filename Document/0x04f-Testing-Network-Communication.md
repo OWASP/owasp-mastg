@@ -150,7 +150,7 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 ```
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-2. In case of a separate Access Point, route the traffic to your machine. In case of an external USB Card or built-in WiFi card the traffic is already available on your machine.
+2. In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
 3. Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
 ##### Configuration
