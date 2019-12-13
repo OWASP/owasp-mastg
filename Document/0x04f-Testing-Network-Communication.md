@@ -131,7 +131,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 ##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
-1. Create a WiFi network either through a separate Access Point or through an external USB Card or through the built-in card of your machine.
+1. Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
