@@ -111,7 +111,7 @@ Following scenarios are possible:
 - Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your machine.
 
-The scenario with an external USB card require that the WiFi card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
+The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
     ```shell
     $ iw list | grep AP 
