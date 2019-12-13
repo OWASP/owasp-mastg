@@ -1820,7 +1820,7 @@ A few other differences: from Android 8.0 (API level 26) onward, the network beh
 
 As mentioned before, starting with Android 7.0 (API level 24), the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security control.
 
-###### Bypassing the Network Security Configuration
+##### Bypassing the Network Security Configuration
 
 From Android 7.0 (API level 24) onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
@@ -1840,7 +1840,7 @@ After the creation, the apps must also include an entry in the manifest file to 
 
 The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
 
-####### Adding the User Certificates to the Network Security Configuration
+###### Adding the User Certificates to the Network Security Configuration
 
 There are different configurations available for the Network Security Configuration to [add non-system Certificate Authorities](https://developer.android.com/training/articles/security-config#CustomTrust "Custom Trust") via the src attribute:
 
@@ -1932,7 +1932,7 @@ Would you like to install the APK on your device(y/N): y
 Finished
 ```
 
-####### Adding the Proxy's certificate among system trusted CAs using Magisk
+###### Adding the Proxy's certificate among system trusted CAs using Magisk
 
 In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems trusted certificates.
 
@@ -1942,7 +1942,7 @@ Download the latest version of the module at the [Github Release page](https://g
 
 From now on, any CA certificate that is installed by the user via "Settings", "Security & location", "Encryption & credentials", "Install from storage" (location may differ) is automatically pushed into the system's trust store by this Magisk module. Reboot and verify that the CA certificate is listed in "Settings", "Security & location", "Encryption & credentials", "Trusted credentials" (location may differ).
 
-####### Manually adding the Proxy's certificate among system trusted CAs
+###### Manually adding the Proxy's certificate among system trusted CAs
 
 Alternatively, you can follow the following steps manually in order to achieve the same result:
 
