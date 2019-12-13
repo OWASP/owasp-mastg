@@ -346,6 +346,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 | server side|   server-side   |
 |snapshot length|    NA        |
 | use case   |    *same*       |
+| Wi-Fi      |    *same*       |
 | white box  |    *same*       |
 
 ## 7. Comments
