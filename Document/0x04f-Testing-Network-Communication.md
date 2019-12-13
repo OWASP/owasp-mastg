@@ -42,7 +42,7 @@ In these cases you need to monitor and analyze the network traffic first in orde
 
 - Route the traffic through the host machine. You can set up your machine as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org "Wireshark") to sniff any traffic from the mobile device;
 
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") to redirect network traffic from the mobile device to your host machine (see below);
+- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") or use your own access point to redirect network traffic from the mobile device to your host machine (see below);
 
 > bettercap is a powerful tool to execute MITM attacks and should be preferred nowadays, instead of ettercap. See also [Why another MITM tool?](https://www.bettercap.org/legacy/#why-another-mitm-tool "Why another MITM tool?") on the bettercap site.
 
@@ -50,7 +50,11 @@ In these cases you need to monitor and analyze the network traffic first in orde
 
 - On macOS, you can create a "Remote Virtual Interface" for sniffing all traffic on an iOS device. We'll describe this method in the chapter "Basic Security Testing on iOS".
 
-#### Simulating a Man-in-the-Middle Attack
+#### Simulating a Man-in-the-Middle Attack with bettercap
+
+##### Network Setup
+
+To be able to get a man-in-the-middle position your machine should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of your mobile phone.
 
 [bettercap](https://github.com/bettercap/bettercap "bettercap") can be used during network penetration tests in order to simulate a man-in-the-middle (MITM) attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target machines. When such an attack is successful, all packets between two machines are redirected to a third machine that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
 
@@ -72,19 +76,6 @@ $ apt-get install bettercap
 ```
 
 There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
-
-##### Network Analyzer Tool
-
-Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your machine. The two most common network monitoring (or capturing) tools are:
-
-- [Wireshark](https://www.wireshark.org "Wireshark") (CLI pendant: [tshark](https://www.wireshark.org/docs/man-pages/tshark.html "TShark")) and
-- [tcpdump](https://www.tcpdump.org/tcpdump_man.html "tcpdump")
-
-Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
-
-##### Network Setup
-
-To be able to get a man-in-the-middle position your machine should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of mobile phone.
 
 #### ARP Poisoning with bettercap
 
@@ -108,14 +99,147 @@ If that's the case, you are now able to see the complete network traffic that is
 
 > Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
-#### Span Port / Port Forwarding
+#### Simulating a Man-in-the-Middle Attack with an access point
 
-As an alternative to a MITM attack with bettercap, a Wifi Access Point (AP) or router can also be used instead. The setup requires access to the configuration of the AP and this should be clarified prior to the engagement. If it's possible to reconfigure you should check first if the AP supports either:
+##### Network Setup
+
+A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your machine. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your machine are connected to. Your machine is then becoming a router and an access point.
+
+Following scenarios are possible:
+
+- Use your machine's built-in WiFi card as an access point and use your wired connection to connect to the target network.
+- Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
+- Use a separate access point and redirect the traffic to your machine.
+
+The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
+
+    ```shell
+    $ iw list | grep AP 
+    ```
+
+The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
 
 - port forwarding or
 - has a span or mirror port.
 
-In both scenarios the AP needs to be configured to point to your machines IP. Tools like Wireshark can then again be used to monitor and record the traffic for further investigation.
+In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
+
+> If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
+
+<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point">
+
+##### Installation
+
+The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
+1. Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
+
+This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
+
+For all major Linux and Unix operating systems you need tools such as:
+- hostapd,
+- dnsmasq,
+- iptables,
+- wpa_supplicant,
+- airmon-ng.
+
+For Kali Linux you can install these tools with `apt-get`:
+
+```shell
+$ apt-get update
+$ apt-get install hostapd dnsmasq aircrack-ng
+```
+> iptables and wpa_supplicant are installed by default on Kali Linux.
+
+2. In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
+3. Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
+
+##### Configuration
+
+We focus on the configuration files for Kali Linux. Following values need to be defined:
+- wlan1 - id of the AP network interface (with AP capabilities),
+- wlan0 - id of the target network interface (this can be wired interface or other WiFi card)
+- 10.0.0.0/24 - IP addresses and mask of AP network
+
+The following configuration files need to be changed and adjusted accordingly:
+
+- hostapd.conf
+
+    ```
+    # Name of the WiFi interface we use 
+    interface=wlan1
+    # Use the nl80211 driver
+    driver=nl80211
+    hw_mode=g
+    channel=6
+    wmm_enabled=1
+    macaddr_acl=0
+    auth_algs=1
+    ignore_broadcast_ssid=0
+    wpa=2
+    wpa_key_mgmt=WPA-PSK
+    rsn_pairwise=CCMP
+    # Name of the AP network
+    ssid=STM-AP
+    # Password of the AP network
+    wpa_passphrase=password
+    ```
+
+- wpa_supplicant.conf
+
+    ```
+    network={
+        ssid="NAME_OF_THE_TARGET_NETWORK"
+        psk="PASSWORD_OF_THE_TARGET_NETWORK"
+    }
+    ```
+
+- dnsmasq.conf
+
+    ```
+    interface=wlan1
+    dhcp-range=10.0.0.10,10.0.0.250,12h
+    dhcp-option=3,10.0.0.1
+    dhcp-option=6,10.0.0.1
+    server=8.8.8.8
+    log-queries
+    log-dhcp
+    listen-address=127.0.0.1
+    ```
+
+##### MITM Attack
+
+To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
+
+    ```shell
+    # check if other process is not using WiFi interfaces
+    $ airmon-ng check kill
+    # configure IP address of the AP network interface
+    $ ifconfig wlan1 10.0.0.1 up
+    # start access point
+    $ hostapd hostapd.conf
+    # connect the target network interface
+    $ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
+    # run DNS server
+    $ dnsmasq -C dnsmasq.conf -d
+    # enable routing 
+    $ echo 1 > /proc/sys/net/ipv4/ip_forward
+    # iptables will NAT connections from AP network interface to the target network interface
+    $ iptables --flush
+    $ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
+    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT 
+    $ iptables -t nat -A POSTROUTING -j MASQUERADE
+    ```
+
+Now you can connect your mobile devices to the access point.
+
+#### Network Analyzer Tool
+
+Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your machine. The two most common network monitoring (or capturing) tools are:
+
+- [Wireshark](https://www.wireshark.org "Wireshark") (CLI pendant: [TShark](https://www.wireshark.org/docs/man-pages/tshark.html "TShark"))
+- [tcpdump](https://www.tcpdump.org/tcpdump_man.html "tcpdump")
+
+Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
 
 #### Setting a Proxy Through Runtime Instrumentation
 
