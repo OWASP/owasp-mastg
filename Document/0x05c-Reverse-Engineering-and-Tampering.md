@@ -546,26 +546,20 @@ sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid 
 69: 1101A8C0:BB2F 9A447D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75412 1 0000000000000000 20 3 19 10 -1
 70: 1101A8C0:917C E3CB3AD8:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75553 1 0000000000000000 20 3 23 10 -1
 71: 1101A8C0:C1E3 9C187D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75458 1 0000000000000000 20 3 19 10 -1
-72: 1101A8C0:B4C3 8A827D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 77221 1 0000000000000000 20 3 27 10 -1
-73: 1101A8C0:B4C2 8A827D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 77216 1 0000000000000000 20 3 31 10 -1
-74: 1101A8C0:9B8E 93187D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 74656 1 0000000000000000 20 3 19 10 -1
-75: 1101A8C0:B4C1 8A827D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 74262 1 0000000000000000 20 3 31 10 -1
 ...
 ```
 
-Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements, for instance for a given pid.
+Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements, for instance for a given pid (below output filtered for pid 24685).
 
 ```
-angler:/ # netstat
+angler:/ # netstat -p | grep 24685
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program Name
-tcp        0      1 192.168.1.17:48887      sin10s11-in-f14.1:https SYN_SENT    -
-tcp        0      0 192.168.1.17:39428      220.255.5.15:https      TIME_WAIT   -
-tcp        0      0 192.168.1.17:41515      sa-in-f95.1e100.n:https TIME_WAIT   -
-tcp        0      0 192.168.1.17:38222      proxy-220-255-2-1:https TIME_WAIT   -
-tcp       57      0 192.168.1.17:45829      74.125.24.139:https     CLOSE_WAIT  8248/com.android.vending
-tcp6       0      0 ::ffff:192.168.1.:41527 sa-in-f95.1e100.n:https ESTABLISHED 9378/com.google.android.gms.persistent
-tcp6       0      0 ::ffff:192.168.1.:40212 ::ffff:74.125.24.:https TIME_WAIT   -
+tcp        0      0 192.168.1.17:47368      172.217.194.103:https   CLOSE_WAIT  24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:47233      172.217.194.94:https    CLOSE_WAIT  24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:38480      sc-in-f100.1e100.:https ESTABLISHED 24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:44833      74.125.24.91:https      ESTABLISHED 24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 24685/com.google.android.youtube
 ...
 ```
 
