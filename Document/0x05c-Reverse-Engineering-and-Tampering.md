@@ -590,7 +590,7 @@ File `/proc/pid/maps` contains the currently mapped memory regions and their acc
 
 ##### Sandbox Inspection
 
-The application data is stored in a sandboxed directory present at `/data/data/<app name>`. The contents of this directory has already been discussed in detail in "[Accessing App Data Directories](0x05b-basic-security_testing#accessing-app-data-directories "Accessing App Data Directories")" section.
+The application data is stored in a sandboxed directory present at `/data/data/<package name>`. The content of this directory has already been discussed in detail in the "[Accessing App Data Directories](0x05b-basic-security_testing#accessing-app-data-directories "Accessing App Data Directories")" section.
 
 #### Debugging
 
