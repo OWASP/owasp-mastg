@@ -553,7 +553,7 @@ sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid 
 ...
 ```
 
-Another alternative is to use `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements, for instance for a given pid.
+Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements, for instance for a given pid.
 
 ```
 angler:/ # netstat
