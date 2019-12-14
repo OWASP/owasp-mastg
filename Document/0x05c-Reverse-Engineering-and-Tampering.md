@@ -511,7 +511,7 @@ $ objection explore
 
 #### Basic Information Gathering
 
-As mentioned previously, Android runs on top of a modified Linux kernel. Android retains the [*procfs*](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") from Linux, and this filesystem is mounted at */proc*.  The *procfs* filesystem provides a directory-based view of process running on the system, providing information about the processes, threads, and other system-wide diagnostics. *procfs* is arguably one of the most important filesystem on Android. Many Android tools depend on *procfs* as the source of information.
+As mentioned previously, Android runs on top of a modified Linux kernel. Android retains the [proc filesystem](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") from Linux, and this filesystem is mounted at /proc.  The proc filesystem (procfs) provides a directory-based view of process running on the system, providing information about the processes, threads, and other system-wide diagnostics. Procfs is arguably one of the most important filesystems on Android. Many Android tools depend on procfs as the source of information.
 
 Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using BusyBox. We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the *procfs* information.
 
