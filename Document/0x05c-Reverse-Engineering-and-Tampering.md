@@ -1253,10 +1253,12 @@ In this section we will learn about how to use Frida to obtain information about
 
 ###### Getting Loaded Classes and their Methods
 
-In the Frida REPL to access Java runtime, `Java` command can be used to access information within the running app. Unlike `ObjC` command for iOS, for Java, the code need to be called via `Java.perform()` function. Thus, the best way to get list of loaded Java classes and their corresponding methods and field is to use Frida scripts. One such script is listed below.
+In the Frida REPL to access Java runtime, `Java` command can be used to access information within the running app. Unlike `ObjC` command for iOS, for Java, the code need to be called via `Java.perform()` function. Thus, the best way to get list of loaded Java classes and their corresponding methods and field is to use Frida scripts. One such script is listed below. The script to list class's methods used below is available on [Github](https://github.com/frida/frida-java-bridge/issues/44 "Github").
 
 ```
 // Get list of loaded Java classes and methods
+
+//Filename: java_class_listing.js
 
 Java.perform(function() {
     Java.enumerateLoadedClasses({
@@ -1283,9 +1285,10 @@ function describeJavaClass(className) {
   }, null, 2));
 }
 
+//command
+frida -U -l java_class_listing.js -p <pid>
 
 // Output
-
 [Huawei Nexus 6P::sg.vantagepoint.helloworldjni]->
 ...
 
@@ -1306,19 +1309,6 @@ com.scottyab.rootbeer.sample.MainActivity
   "_fields": [
     "public static final int android.app.Activity.DEFAULT_KEYS_DIALER",
 ...
-
-com.scottyab.rootbeer.sample.CheckRootTask$OnCheckRootFinishedListener
-{
-  "_name": "com.scottyab.rootbeer.sample.CheckRootTask$OnCheckRootFinishedListener",
-  "_methods": [
-    "constructor",
-    "class",
-    "onCheckRootFinished"
-  ],
-  "_fields": []
-}
-...
-
 ```
 
 Given the verbosity of the output, the system classes can be filtered out programmatically to make output more readable and relevant to the use case.
@@ -1342,13 +1332,6 @@ In Frida REPL process related information can be obtained using the `Process` co
         "path": "/system/lib64/libandroid_runtime.so",
         "size": 2011136
     },
-    {
-        "base": "0x78bdbca000",
-        "name": "libbinder.so",
-        "path": "/system/lib64/libbinder.so",
-        "size": 598016
-    },
-
 ...
 
 ```
