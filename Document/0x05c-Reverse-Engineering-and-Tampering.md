@@ -537,7 +537,7 @@ COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NOD
 
 ##### Open Connections
 
-Directory `/proc/pid/net` provides networking information, but the information in this file is not process specific. Instead, it is the same as information as `/proc/net`. There are multiple files present in this directory, of which `tcp`, `tcp6` and `udp` can be considered important from our perspective.
+The directory `/proc/<PID>/net` provides networking information, but the information in this file is not process specific. Instead, it is the same as information as `/proc/net`. There are multiple files present in this directory, of which `tcp`, `tcp6` and `udp` can be considered important from our perspective.
 
 ```
 angler:/proc/7254/net # cat tcp
