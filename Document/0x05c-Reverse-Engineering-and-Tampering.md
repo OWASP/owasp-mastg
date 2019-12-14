@@ -515,7 +515,7 @@ As mentioned previously, Android runs on top of a modified Linux kernel. Android
 
 Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using BusyBox. We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
 
-In this section we will be using information from *procfs* directly or indirectly to gather information about a running process.
+In this section we will be using information from the proc filesystem directly or indirectly to gather information about a running process.
 
 ##### Open Files
 
