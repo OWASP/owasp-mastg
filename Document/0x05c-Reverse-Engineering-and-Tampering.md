@@ -1253,7 +1253,8 @@ In this section we will learn about how to use Frida to obtain information about
 
 ###### Getting Loaded Classes and their Methods
 
-In the Frida REPL to access Java runtime, `Java` command can be used to access information within the running app. Unlike `ObjC` command for iOS, for Java, the code need to be called via `Java.perform()` function. Thus, the best way to get list of loaded Java classes and their corresponding methods and field is to use Frida scripts. One such script is listed below. The script to list class's methods used below is available on [Github](https://github.com/frida/frida-java-bridge/issues/44 "Github").
+You can use the command `Java` in the Frida CLI to access the Java runtime and retrieve information from the running app. Remember that, unlike Frida for iOS, in Android you need to wrap your code inside a `Java.perform` function. Thus, it's more convenient to use Frida scripts to e.g. get a list of loaded Java classes and their corresponding methods and fields or for more complex information gathering or instrumentation. One such scripts is listed below.
+>>>>>>> 7227d20a7f7c4d1d3d135c4f0beb6974c130114a
 
 ```
 // Get list of loaded Java classes and methods
@@ -1315,7 +1316,7 @@ Given the verbosity of the output, the system classes can be filtered out progra
 
 ###### Getting Loaded Libraries
 
-In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
+You can retrieve process related information straight from.the Frida CLI by using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
 ```
 [Huawei Nexus 6P::sg.vantagepoint.helloworldjni]-> Process.enumerateModules()
