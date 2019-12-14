@@ -8,7 +8,7 @@ OWASP thanks the many authors, reviewers, and editors for their hard work in dev
 
 ## Disclaimer
 
-Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG. 
+Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG.
 
 Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") has further details.
 
@@ -64,8 +64,8 @@ Maxim has a bachelor in software engineering and was working as an iOS engineer 
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
-- Pawel Rzepa
 - Vikas Gupta
+- Pawel Rzepa
 - Francesco Stillavato
 - Henry Hoggard
 - Andreas Happe
@@ -86,7 +86,7 @@ Top contributors have consistently contributed quality content and have at least
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Koki Takeyama, Jin Kung Ong, Sjoerd Langkemper, Caleb Kinney, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, José Carlos Andreu, Dharshin De Silva, Anatoly Rosencrantz, Caitlin Andrews, Abhinav Sejpal, Anita Diamond, Raul Siles, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Anna Szkudlarek, Elie Saad, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Akanksha Bana, Dario Incalza, Jason Doyle, Oguzhan Topgul, Ender IBL, Imani Sherman, magicansk, Sijo Abraham, Dominique RIGHETTO, Pishu Mahtani, Jay Mbolda, Anuruddha E., Emil Tostrup.
+Koki Takeyama, Jin Kung Ong, Sjoerd Langkemper, Caleb Kinney, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, José Carlos Andreu, Lukasz Wierzbicki, Dharshin De Silva, Anatoly Rosencrantz, Caitlin Andrews, Abhinav Sejpal, Anita Diamond, Raul Siles, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Anna Szkudlarek, Elie Saad, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Akanksha Bana, Dario Incalza, Jason Doyle, Oguzhan Topgul, Ender IBL, Imani Sherman, magicansk, Sijo Abraham, Dominique RIGHETTO, Pishu Mahtani, Jay Mbolda, Anuruddha E., Emil Tostrup
 
 ### Reviewers
 
