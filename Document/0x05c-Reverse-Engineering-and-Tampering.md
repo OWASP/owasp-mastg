@@ -568,7 +568,7 @@ tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 
 The file `/proc/<pid>/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
 
 ```
-127|angler:/proc/9568 # cat maps | more
+# cat /proc/9568/maps
 12c00000-52c00000 rw-p 00000000 00:04 20927                              /dev/ashmem/dalvik-main space (region space) (deleted)
 6f019000-6f2c0000 rw-p 00000000 fd:00 1146914                            /data/dalvik-cache/arm64/system@framework@boot.art
 6f2c0000-6f3c6000 rw-p 00000000 fd:00 1146915                            /data/dalvik-cache/arm64/system@framework@boot-core-libart.art
