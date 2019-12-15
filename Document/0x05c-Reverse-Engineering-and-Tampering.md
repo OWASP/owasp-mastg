@@ -540,7 +540,7 @@ COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NOD
 The directory `/proc/<PID>/net` provides networking information, but the information in this file is not process specific. Instead, it is the same as information as `/proc/net`. There are multiple files present in this directory, of which `tcp`, `tcp6` and `udp` can be considered important from our perspective.
 
 ```
-angler:/proc/7254/net # cat tcp
+# cat /proc/7254/net/tcp
 sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
 ...
 69: 1101A8C0:BB2F 9A447D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75412 1 0000000000000000 20 3 19 10 -1
