@@ -565,7 +565,7 @@ tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 
 
 ##### Loaded Native Libraries
 
-File `/proc/pid/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
+The file `/proc/<pid>/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
 
 ```
 127|angler:/proc/9568 # cat maps | more
