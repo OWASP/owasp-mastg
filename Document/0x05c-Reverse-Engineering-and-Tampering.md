@@ -530,10 +530,14 @@ COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NOD
 .foobar.c  6233     u0_a97  mem   unknown                                         /dev/ashmem/dalvik-main space (region space) (deleted)
 .foobar.c  6233     u0_a97  mem       REG              253,0   2797568    1146914 /data/dalvik-cache/arm64/system@framework@boot.art
 .foobar.c  6233     u0_a97  mem       REG              253,0   1081344    1146915 /data/dalvik-cache/arm64/system@framework@boot-core-libart.art
-.foobar.c  6233     u0_a97  mem       REG              253,0    307200    1146916 /data/dalvik-cache/arm64/system@framework@boot-conscrypt.art
-.foobar.c  6233     u0_a97  mem       REG              253,0    225280    1146917 /data/dalvik-cache/arm64/system@framework@boot-okhttp.art
-....
+...
 ```
+
+In the above output, the most relevant fields for us are:
+- `NAME`: path of the file
+- `TYPE`: type of the file, example, file is a directory or a regular file
+
+This can be extremely useful in getting list of uncommon files used while dealing with applications using obfuscation, or other anti-reverse engineering techniques. For instance, an application performing encryption-decryption of data and storing it in a file temporarily.
 
 ##### Open Connections
 
@@ -549,6 +553,11 @@ sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid 
 ...
 ```
 
+In the output above, the most relevant fields for us are:
+- `rem_address`: remote address and port number pair (in hexadecimal representation).
+- `tx_queue` and `rx_queue`: the outgoing and incoming data queue in terms of kernel memory usage. These fields give an indication how actively the connection is being used.
+- `uid`: containing the effective UID of the creator of the socket.
+
 Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements, for instance for a given pid (below output filtered for pid 24685).
 
 ```
@@ -562,6 +571,11 @@ tcp        0      0 192.168.1.17:44833      74.125.24.91:https      ESTABLISHED 
 tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 24685/com.google.android.youtube
 ...
 ```
+
+`netstat` output is clearly more user friendly than reading `/proc/<pid>/net`. The most relevant fields for us, similar to the previous output, are following:
+- `Foreign Address`: remote address and port number pair (port number can be replaced with the well-known name of a protocol associated with the port).
+- `Recv-Q` and `Send-Q`: Statistics related to receive and send queue. Gives an indication on how actively the connection is being used.
+- `State`: the state of a socket, example, if the socket is in active use (`ESTABLISHED`) or closed (`CLOSED`).
 
 ##### Loaded Native Libraries
 
