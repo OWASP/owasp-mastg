@@ -1258,7 +1258,7 @@ You can use the command `Java` in the Frida CLI to access the Java runtime and r
 ```
 // Get list of loaded Java classes and methods
 
-//Filename: java_class_listing.js
+// Filename: java_class_listing.js
 
 Java.perform(function() {
     Java.enumerateLoadedClasses({
