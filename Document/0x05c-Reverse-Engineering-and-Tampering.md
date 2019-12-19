@@ -1286,7 +1286,7 @@ function describeJavaClass(className) {
 }
 ```
 
-Below the script is saved in the file java_class_listing.js and called with the flag `-l` and injected into the process ID specified.
+After saving the script to a file called java_class_listing.js, you can tell Frida CLI to load it by using the flag `-l` and inject it to the process ID specified by `-p`.
 
 ```
 frida -U -l java_class_listing.js -p <pid>
