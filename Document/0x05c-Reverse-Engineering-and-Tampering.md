@@ -509,6 +509,93 @@ $ adb install UnCrackable-Level1.objection.apk
 $ objection explore
 ```
 
+#### Basic Information Gathering
+
+As mentioned previously, Android runs on top of a modified Linux kernel and retains the [proc filesystem](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") (procfs) from Linux, which is mounted at `/proc`. Procfs provides a directory-based view of a process running on the system, providing detailed information about the process itself, its threads, and other system-wide diagnostics. Procfs is arguably one of the most important filesystems on Android, where many OS native tools depend on it as their source of information.
+
+Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using BusyBox. We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
+
+In this section, we will be using information from procfs directly or indirectly to gather information about a running process.
+
+##### Open Files
+
+You can use `lsof` with the flag `-p <pid>` to return the list of open files for the specified process. See the [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") for more options.
+
+```
+# lsof -p 6233
+COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NODE NAME
+.foobar.c  6233     u0_a97  cwd       DIR                0,1         0          1 /
+.foobar.c  6233     u0_a97  rtd       DIR                0,1         0          1 /
+.foobar.c  6233     u0_a97  txt       REG             259,11     23968        399 /system/bin/app_process64
+.foobar.c  6233     u0_a97  mem   unknown                                         /dev/ashmem/dalvik-main space (region space) (deleted)
+.foobar.c  6233     u0_a97  mem       REG              253,0   2797568    1146914 /data/dalvik-cache/arm64/system@framework@boot.art
+.foobar.c  6233     u0_a97  mem       REG              253,0   1081344    1146915 /data/dalvik-cache/arm64/system@framework@boot-core-libart.art
+...
+```
+
+In the above output, the most relevant fields for us are:
+- `NAME`: path of the file.
+- `TYPE`: type of the file, for example, file is a directory or a regular file.
+
+This can be extremely useful to spot unusual files when monitoring applications using obfuscation or other anti-reverse engineering techniques, without having to reverse the code. For instance, an application might be performing encryption-decryption of data and storing it in a file temporarily.
+
+##### Open Connections
+
+You can find system-wide networking information in `/proc/net` or just by inspecting the `/proc/<pid>/net` directories (for some reason not process specific). There are multiple files present in these directories, of which `tcp`, `tcp6` and `udp` might be considered relevant from the tester's perspective.
+
+```
+# cat /proc/7254/net/tcp
+sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+...
+69: 1101A8C0:BB2F 9A447D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75412 1 0000000000000000 20 3 19 10 -1
+70: 1101A8C0:917C E3CB3AD8:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75553 1 0000000000000000 20 3 23 10 -1
+71: 1101A8C0:C1E3 9C187D4A:01BB 01 00000000:00000000 00:00000000 00000000 10093        0 75458 1 0000000000000000 20 3 19 10 -1
+...
+```
+
+In the output above, the most relevant fields for us are:
+- `rem_address`: remote address and port number pair (in hexadecimal representation).
+- `tx_queue` and `rx_queue`: the outgoing and incoming data queue in terms of kernel memory usage. These fields give an indication how actively the connection is being used.
+- `uid`: containing the effective UID of the creator of the socket.
+
+Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements. For instance, we can easily filter it by PID:
+
+```
+angler:/ # netstat -p | grep 24685
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program Name
+tcp        0      0 192.168.1.17:47368      172.217.194.103:https   CLOSE_WAIT  24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:47233      172.217.194.94:https    CLOSE_WAIT  24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:38480      sc-in-f100.1e100.:https ESTABLISHED 24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:44833      74.125.24.91:https      ESTABLISHED 24685/com.google.android.youtube
+tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 24685/com.google.android.youtube
+...
+```
+
+`netstat` output is clearly more user friendly than reading `/proc/<pid>/net`. The most relevant fields for us, similar to the previous output, are following:
+- `Foreign Address`: remote address and port number pair (port number can be replaced with the well-known name of a protocol associated with the port).
+- `Recv-Q` and `Send-Q`: Statistics related to receive and send queue. Gives an indication on how actively the connection is being used.
+- `State`: the state of a socket, for example, if the socket is in active use (`ESTABLISHED`) or closed (`CLOSED`).
+
+##### Loaded Native Libraries
+
+The file `/proc/<pid>/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
+
+```
+# cat /proc/9568/maps
+12c00000-52c00000 rw-p 00000000 00:04 14917                              /dev/ashmem/dalvik-main space (region space) (deleted)
+6f019000-6f2c0000 rw-p 00000000 fd:00 1146914                            /data/dalvik-cache/arm64/system@framework@boot.art
+...
+7327670000-7329747000 r--p 00000000 fd:00 1884627                        /data/app/com.google.android.gms-4FJbDh-oZv-5bCw39jkIMQ==/oat/arm64/base.odex
+..
+733494d000-7334cfb000 r-xp 00000000 fd:00 1884542                        /data/app/com.google.android.youtube-Rl_hl9LptFQf3Vf-JJReGw==/lib/arm64/libcronet.80.0.3970.3.so
+...
+```
+
+##### Sandbox Inspection
+
+The application data is stored in a sandboxed directory present at `/data/data/<app_package_name>`. The content of this directory has already been discussed in detail in the "[Accessing App Data Directories](0x05b-basic-security_testing#accessing-app-data-directories "Accessing App Data Directories")" section.
+
 #### Debugging
 
 So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
