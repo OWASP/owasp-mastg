@@ -1108,7 +1108,7 @@ It is being loaded with a base address of 0x400000.
 b'ABGAATYAJQAFUABB'
 ```
 
-> You may obtain different solutions using the script, as there are multiple valid license keys possible.  
+> You may obtain different solutions using the script, as there are multiple valid license keys possible.
 
 To conclude, learning symbolic execution might look a bit intimidating at first, as it requires deep understanding and extensive practice. However, the effort is justified considering the valuable time it can save in contrast to analyzing complex disassembled instructions manually. Typically you'd use hybrid techniques, as in the above example, where we performed manual analysis of the disassembled code to provide the correct criteria to the symbolic execution engine. Please to the iOS chapter for more examples on Angr usage.
 
@@ -1246,6 +1246,98 @@ The following approach can be used in order to patch the JavaScript file:
 6. Repack the APK archive using `apktool` tool and sign it before to install it on the target device/emulator.
 
 #### Dynamic Instrumentation
+
+##### Information Gathering
+
+In this section we will learn about how to use Frida to obtain information about a running application.
+
+###### Getting Loaded Classes and their Methods
+
+You can use the command `Java` in the Frida CLI to access the Java runtime and retrieve information from the running app. Remember that, unlike Frida for iOS, in Android you need to wrap your code inside a `Java.perform` function. Thus, it's more convenient to use Frida scripts to e.g. get a list of loaded Java classes and their corresponding methods and fields or for more complex information gathering or instrumentation. One such scripts is listed below. The script to list class's methods used below is available on [Github](https://github.com/frida/frida-java-bridge/issues/44 "Github").
+
+```
+// Get list of loaded Java classes and methods
+
+// Filename: java_class_listing.js
+
+Java.perform(function() {
+    Java.enumerateLoadedClasses({
+        onMatch: function(className) {
+            console.log(className);
+            describeJavaClass(className);
+        },
+        onComplete: function() {}
+    });
+});
+
+// Get the methods and fields
+function describeJavaClass(className) {
+  var jClass = Java.use(className);
+  console.log(JSON.stringify({
+    _name: className,
+    _methods: Object.getOwnPropertyNames(jClass.__proto__).filter(function(m) {
+      return !m.startsWith('$') // filter out Frida related special properties
+        || m == 'class' || m == 'constructor' // optional
+    }),
+    _fields: jClass.class.getFields().map(function(f) {
+      return( f.toString());
+    })
+  }, null, 2));
+}
+```
+
+After saving the script to a file called java_class_listing.js, you can tell Frida CLI to load it by using the flag `-l` and inject it to the process ID specified by `-p`.
+
+```
+frida -U -l java_class_listing.js -p <pid>
+
+// Output
+[Huawei Nexus 6P::sg.vantagepoint.helloworldjni]->
+...
+
+com.scottyab.rootbeer.sample.MainActivity
+{
+  "_name": "com.scottyab.rootbeer.sample.MainActivity",
+  "_methods": [
+  ...
+    "beerView",
+    "checkRootImageViewList",
+    "floatingActionButton",
+    "infoDialog",
+    "isRootedText",
+    "isRootedTextDisclaimer",
+    "mActivity",
+    "GITHUB_LINK"
+  ],
+  "_fields": [
+    "public static final int android.app.Activity.DEFAULT_KEYS_DIALER",
+...
+```
+
+Given the verbosity of the output, the system classes can be filtered out programmatically to make output more readable and relevant to the use case.
+
+###### Getting Loaded Libraries
+
+You can retrieve process related information straight from the Frida CLI by using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
+
+```
+[Huawei Nexus 6P::sg.vantagepoint.helloworldjni]-> Process.enumerateModules()
+[
+    {
+        "base": "0x558a442000",
+        "name": "app_process64",
+        "path": "/system/bin/app_process64",
+        "size": 32768
+    },
+    {
+        "base": "0x78bc984000",
+        "name": "libandroid_runtime.so",
+        "path": "/system/lib64/libandroid_runtime.so",
+        "size": 2011136
+    },
+...
+
+```
 
 ##### Method Hooking
 
