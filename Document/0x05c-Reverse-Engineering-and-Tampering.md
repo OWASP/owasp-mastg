@@ -575,7 +575,7 @@ tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 
 `netstat` output is clearly more user friendly than reading `/proc/<pid>/net`. The most relevant fields for us, similar to the previous output, are following:
 - `Foreign Address`: remote address and port number pair (port number can be replaced with the well-known name of a protocol associated with the port).
 - `Recv-Q` and `Send-Q`: Statistics related to receive and send queue. Gives an indication on how actively the connection is being used.
-- `State`: the state of a socket, example, if the socket is in active use (`ESTABLISHED`) or closed (`CLOSED`).
+- `State`: the state of a socket, for example, if the socket is in active use (`ESTABLISHED`) or closed (`CLOSED`).
 
 ##### Loaded Native Libraries
 
