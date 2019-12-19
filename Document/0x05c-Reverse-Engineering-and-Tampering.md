@@ -535,7 +535,7 @@ COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NOD
 
 In the above output, the most relevant fields for us are:
 - `NAME`: path of the file.
-- `TYPE`: type of the file, example, file is a directory or a regular file
+- `TYPE`: type of the file, for example, file is a directory or a regular file.
 
 This can be extremely useful in getting list of uncommon files used while dealing with applications using obfuscation, or other anti-reverse engineering techniques. For instance, an application performing encryption-decryption of data and storing it in a file temporarily.
 
