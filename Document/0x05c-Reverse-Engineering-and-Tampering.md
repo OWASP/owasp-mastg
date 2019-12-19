@@ -1318,7 +1318,7 @@ Given the verbosity of the output, the system classes can be filtered out progra
 
 ###### Getting Loaded Libraries
 
-You can retrieve process related information straight from.the Frida CLI by using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
+You can retrieve process related information straight from the Frida CLI by using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
 ```
 [Huawei Nexus 6P::sg.vantagepoint.helloworldjni]-> Process.enumerateModules()
