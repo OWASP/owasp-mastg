@@ -583,16 +583,12 @@ The file `/proc/<pid>/maps` contains the currently mapped memory regions and the
 
 ```
 # cat /proc/9568/maps
-12c00000-52c00000 rw-p 00000000 00:04 20927                              /dev/ashmem/dalvik-main space (region space) (deleted)
+12c00000-52c00000 rw-p 00000000 00:04 14917                              /dev/ashmem/dalvik-main space (region space) (deleted)
 6f019000-6f2c0000 rw-p 00000000 fd:00 1146914                            /data/dalvik-cache/arm64/system@framework@boot.art
-6f2c0000-6f3c6000 rw-p 00000000 fd:00 1146915                            /data/dalvik-cache/arm64/system@framework@boot-core-libart.art
 ...
-78bd50a000-78bd51e000 r-xp 00000000 103:0b 2144                          /system/lib64/libz.so
-78bd51e000-78bd51f000 ---p 00000000 00:00 0
-78bd51f000-78bd520000 r--p 00014000 103:0b 2144                          /system/lib64/libz.so
-78bd520000-78bd521000 rw-p 00015000 103:0b 2144                          /system/lib64/libz.so
-
-8bd567000-78bd56a000 r-xp 00000000 103:0b 2023                          /system/lib64/libnativebridge.so
+7327670000-7329747000 r--p 00000000 fd:00 1884627                        /data/app/com.google.android.gms-4FJbDh-oZv-5bCw39jkIMQ==/oat/arm64/base.odex
+..
+733494d000-7334cfb000 r-xp 00000000 fd:00 1884542                        /data/app/com.google.android.youtube-Rl_hl9LptFQf3Vf-JJReGw==/lib/arm64/libcronet.80.0.3970.3.so
 ...
 ```
 
