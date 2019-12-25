@@ -176,7 +176,7 @@ There are many tools and frameworks used throughout this guide to assess the sec
 - APK Extractor: App to extract APKs without root.
 - Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#frida "Frida section") section below for more information.
 - Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#drozer "Drozer section") section below for more information.
-- BusyBox:  BusyBox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. BusyBox can be installed on a device by downloading the binary from [BusyBox website](https://busybox.net "BusyBox Website") or via Google Play Store on a rooted device.
+- BusyBox:  BusyBox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. BusyBox can be installed on a rooted device by downloading the BusyBox application from Google Play Store.
 
 ##### Xposed
 
