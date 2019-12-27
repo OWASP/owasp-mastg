@@ -338,6 +338,7 @@ Dynamic analysis can be performed by launching a MITM attack with your preferred
 
 There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
 
+- Frida: Use the [Universal Android SSL Pinning Bypass with Frida](https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/ "Universal Android SSL Pinning Bypass with Frida") script.
 - Objection: Use the `android sslpinning disable` command.
 - Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
 - Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
@@ -350,10 +351,31 @@ Somewhere in the application, both the endpoint and the certificate (or its hash
 
 - Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
 - Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
+- Truststore files: `find ./ -type f \( -iname \*.jks -o -iname \*.bks \)`. Add your proxy's certificates to trustore, making sure they are in the correct format.
 
-If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.wordpress.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
+> Consider situation when app contains files without extension. Most common files location are `assets` and `res` directories.
+
+As an example, let's say that you find an application which uses a BKS (BouncyCastle) truststore and it's stored in file `res/raw/truststore.bks`. To bypass SSL Pinning you need to add your proxy's certificate. Following values need to be defined:
+- password - password to keystore, you can find it in app code, where keystore is open
+- providerpath - BouncyCastle Provider jar location, you can download it from [The Legion of the Bouncy Castle](https://www.bouncycastle.org/latest_releases.html "https://www.bouncycastle.org/latest_releases.html")
+- proxy.cer - your proxy's certificate
+- aliascert - unique value which will be used as alias for your proxy's certificate
+
+To add your proxy's certificate use the following command:
+
+```shell
+keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
+```
+
+To list certificates in BKS truststore use the following command:
+
+```shell
+keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
+```
 
 After making these modifications, repackage the application using apktool and install it on your device.
+
+If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.wordpress.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
 
 ###### Bypass Custom Certificate Pinning Dynamically
 
