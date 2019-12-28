@@ -356,7 +356,7 @@ Somewhere in the application, both the endpoint and the certificate (or its hash
 > Consider situation when app contains files without extension. Most common files location are `assets` and `res` directories.
 
 As an example, let's say that you find an application which uses a BKS (BouncyCastle) truststore and it's stored in file `res/raw/truststore.bks`. To bypass SSL Pinning you need to add your proxy's certificate. Following values need to be defined:
-- password - password to keystore, you can find it in app code, where keystore is open
+- password - Password for the keystore. Look in the decompiled app code for the hardcoded password.
 - providerpath - Location of the BouncyCastle Provider jar file. You can download it from [The Legion of the Bouncy Castle](https://www.bouncycastle.org/latest_releases.html "https://www.bouncycastle.org/latest_releases.html").
 - proxy.cer - Your proxy's certificate.
 - aliascert - Unique value which will be used as alias for your proxy's certificate.
