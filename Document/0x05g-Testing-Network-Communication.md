@@ -359,7 +359,7 @@ As an example, let's say that you find an application which uses a BKS (BouncyCa
 - password - password to keystore, you can find it in app code, where keystore is open
 - providerpath - BouncyCastle Provider jar location, you can download it from [The Legion of the Bouncy Castle](https://www.bouncycastle.org/latest_releases.html "https://www.bouncycastle.org/latest_releases.html")
 - proxy.cer - your proxy's certificate
-- aliascert - unique value which will be used as alias for your proxy's certificate
+- aliascert - Unique value which will be used as alias for your proxy's certificate.
 
 To add your proxy's certificate use the following command:
 
