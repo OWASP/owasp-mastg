@@ -367,7 +367,7 @@ To add your proxy's certificate use the following command:
 keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
 ```
 
-To list certificates in BKS truststore use the following command:
+To list certificates in the BKS truststore use the following command:
 
 ```shell
 $ keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
