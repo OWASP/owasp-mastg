@@ -955,4 +955,4 @@ For more information, options and approaches, please refer to section "[In-Memor
 #### Others
 
 - Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>
-- Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>
+- [mandt] Tarjei Mandt, Mathew Solnik  and  David Wang, Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>
