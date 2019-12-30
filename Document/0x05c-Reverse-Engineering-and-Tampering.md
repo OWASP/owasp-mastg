@@ -2450,7 +2450,7 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 - Bionic - <https://github.com/android/platform_bionic>
 - Attacking Android Applications with Debuggers - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
-- [josse] Sébastien Josse, Dynamic Malware Recompilation - <http://ieeexplore.ieee.org/document/6759227/>
+- [#josse] Sébastien Josse, Dynamic Malware Recompilation - <http://ieeexplore.ieee.org/document/6759227/>
 - Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
 - Android Platform based Linux kernel rootkit - <http://phrack.org/issues/68/6.html>
 - [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>

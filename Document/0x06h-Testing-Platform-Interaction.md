@@ -1603,7 +1603,7 @@ Note from the [App Programming Guide for iOS](https://developer.apple.com/librar
 
 > If more than one third-party app registers to handle the same URL scheme, there is currently no process for determining which app will be given that scheme.
 
-This could lead to a URL scheme hijacking attack (see page 136 in [#THIEL]).
+This could lead to a URL scheme hijacking attack (see page 136 in [#thiel2]).
 
 ##### Testing Application Query Schemes Registration
 
@@ -2252,7 +2252,7 @@ WebViews are in-app browser components for displaying interactive web content. T
 
 ##### WKWebView
 
-[`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView") was introduced with iOS 8 and is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing. `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#THIEL].
+[`WKWebView`](https://developer.apple.com/reference/webkit/wkwebview "WKWebView") was introduced with iOS 8 and is the appropriate choice for extending app functionality, controlling displayed content (i.e., prevent the user from navigating to arbitrary URLs) and customizing. `WKWebView` also increases the performance of apps that are using WebViews significantly, through the Nitro JavaScript engine [#thiel2].
 
 `WKWebView` comes with several security advantages over `UIWebView`:
 
@@ -2358,7 +2358,7 @@ If user scripts were defined, they will continue running as the `javaScriptEnabl
 
 ##### Testing for Mixed Content
 
-In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#THIEL] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
+In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#thiel2] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
 
 In the compiled binary:
 
@@ -2880,7 +2880,7 @@ Of course, you may also use the Exploitation Helper it provides:
 
 <img src="Images/Chapters/0x06h/exploit_javascript_bridge.png" width="250px"/>
 
-See another example for a vulnerable iOS app and function that is exposed to a WebView in [#THIEL] page 156.
+See another example for a vulnerable iOS app and function that is exposed to a WebView in [#thiel2] page 156.
 
 ### Testing Object Persistence (MSTG-PLATFORM-8)
 
@@ -3125,7 +3125,7 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 
 ### References
 
-- [#THIEL] David Thiel, iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399), No Starch Press, Kindle Edition.
+- [#thiel2] David Thiel, iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399), No Starch Press, Kindle Edition.
 - Security Flaw with UIWebView - <https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c>
 - Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - <https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html>
 
