@@ -154,7 +154,7 @@ drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
 
-Developers who want their apps to share a common sandbox can sidestep sandboxing . When two apps are signed with the same certificate and explicitly share the same user ID (having the _sharedUserId_ in their _AndroidManifest.xml_ files), each can access the other's data directory. See the following example to achieve this in the NFC app:
+Developers who want their apps to share a common sandbox can sidestep sandboxing. When two apps are signed with the same certificate and explicitly share the same user ID (having the _sharedUserId_ in their _AndroidManifest.xml_ files), each can access the other's data directory. See the following example to achieve this in the NFC app:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"

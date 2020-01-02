@@ -773,7 +773,7 @@ Once you modify the binary name or the directory name, `File.exists` should retu
 
 <img src="Images/Chapters/0x05c/file_exists_false.png" width="500px"/>
 
-This defeats the first root detection control of UnCrackable App for Android Level 1 . The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
+This defeats the first root detection control of UnCrackable App for Android Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
 <img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300">
 
@@ -987,7 +987,7 @@ As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anyth
 
 ##### VxStripper
 
-Another very useful tool built on QEMU is [VxStripper by Sébastien Josse](http://vxstripper.pagesperso-orange.fr "VxStripper"). VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation and recompiles the simplified binary with LLVM. This is a very powerful way of normalizing obfuscated programs. See [Sébastien's paper](http://ieeexplore.ieee.org/document/6759227/ "Dynamic Malware Recompilation") for more information.
+Another very useful tool built on QEMU is [VxStripper by Sébastien Josse](http://vxstripper.pagesperso-orange.fr "VxStripper"). VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation and recompiles the simplified binary with LLVM. This is a very powerful way of normalizing obfuscated programs. See [Sébastien's paper](http://ieeexplore.ieee.org/document/6759227/ "Dynamic Malware Recompilation") for more information [#josse].
 
 #### Binary Analysis
 
@@ -2246,7 +2246,7 @@ The system should now boot normally. To quickly verify that the correct kernel i
 
 #### System Call Hooking with Kernel Modules
 
-System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality . With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You [1].
+System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality. With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You [1].
 
 <img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="400px"/>
 
@@ -2450,10 +2450,10 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 - Bionic - <https://github.com/android/platform_bionic>
 - Attacking Android Applications with Debuggers - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
-- Dynamic Malware Recompilation - <http://ieeexplore.ieee.org/document/6759227/>
+- [#josse] Sébastien Josse, Dynamic Malware Recompilation - <http://ieeexplore.ieee.org/document/6759227/>
 - Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
 - Android Platform based Linux kernel rootkit - <http://phrack.org/issues/68/6.html>
-- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android. - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
+- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
 
 #### Tools
 
