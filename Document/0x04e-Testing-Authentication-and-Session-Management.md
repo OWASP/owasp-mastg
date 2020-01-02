@@ -523,7 +523,7 @@ On the negative side, there is no way to control the behavior of the browser (e.
 
 For apps that operate within a closed ecosystem, *embedded authentication* is the better choice. For example, consider a banking app that uses OAuth2 to retrieve an access token from the bank's authentication server, which is then used to access a number of micro services. In that case, credential phishing is not a viable scenario. It is likely preferable to keep the authentication process in the (hopefully) carefully secured banking app, instead of placing trust on external components.
 
-#### Other OAuth2 Best Best Practices
+#### Other OAuth2 Best Practices
 
 For additional best practices and detailed information please refer to the following source documents:
 
