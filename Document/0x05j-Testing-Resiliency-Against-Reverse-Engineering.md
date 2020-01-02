@@ -1017,7 +1017,7 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
-In this test case, we describe a few basic obfuscation techniques that are commonly used on Android.
+In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE-9)" in chapter "Code Quality and Build Settings of Android Apps", we describe a few basic obfuscation techniques that are commonly used on Android with R8 and Pro-Guard.
 
 #### Effectiveness Assessment
 

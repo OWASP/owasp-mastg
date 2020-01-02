@@ -534,6 +534,7 @@ COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NOD
 ```
 
 In the above output, the most relevant fields for us are:
+
 - `NAME`: path of the file.
 - `TYPE`: type of the file, for example, file is a directory or a regular file.
 
