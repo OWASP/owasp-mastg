@@ -449,7 +449,7 @@ Android uses SQLite to store data permanently: as with Linux, data is stored in 
 SQLite is not run as a separate process; it is part of the app.
 By default, a database belonging to a given app is accessible to this app only. However, content providers offer a great mechanism for abstracting data sources (including databases and flat files); they also provide a standard and efficient mechanism to share data between apps, including native apps. To be accessible to other apps, a content provider needs to be explicitly declared in the manifest file of the app that will share it. As long as content providers aren't declared, they won't be exported and can only be called by the app that creates them.
 
-content providers are implemented through a URI addressing scheme: they all use the content:// model. Regardless of the type of sources (SQLite database, flat file, etc.), the addressing scheme is always the same, thereby abstracting the sources and offering the developer a unique scheme. Content Providers offer all regular database operations: create, read, update, delete. That means that any app with proper rights in its manifest file can manipulate the data from other apps.
+Content providers are implemented through a URI addressing scheme: they all use the content:// model. Regardless of the type of sources (SQLite database, flat file, etc.), the addressing scheme is always the same, thereby abstracting the sources and offering the developer a unique scheme. Content providers offer all regular database operations: create, read, update, delete. That means that any app with proper rights in its manifest file can manipulate the data from other apps.
 
 ##### Services
 
@@ -508,7 +508,7 @@ The above code defines a new permission named `com.permissions.sample.ACCESS_USE
 
 ###### Enforcing Permissions on Android Components
 
-Android components can be protected with permissions. Activities, Services, Content Providers, and Broadcast Receivers—all can use the permission mechanism to protect their interfaces.
+Android components can be protected with permissions. Activities, Services, content providers, and Broadcast Receivers—all can use the permission mechanism to protect their interfaces.
 Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receivers* by adding the attribute *android:permission* to the respective component tag in AndroidManifest.xml:
 
 ```xml
@@ -520,7 +520,7 @@ Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receiver
 </receiver>
 ```
 
-*Content Providers* are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
+*Content providers* are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
 
 - `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
 - `android:permission`: general permission that will control reading and writing to the content provider.
