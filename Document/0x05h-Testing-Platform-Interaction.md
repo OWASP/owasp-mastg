@@ -416,7 +416,7 @@ An alternative to validation functions is type conversion, with, for example, `I
 
 The tester should manually test the input fields with strings like `OR 1=1--` if, for example, a local SQL injection vulnerability has been identified.
 
-On a rooted device, the command content can be used to query the data from a Content Provider. The following command queries the vulnerable function described above.
+On a rooted device, the command content can be used to query the data from a content provider. The following command queries the vulnerable function described above.
 
 ```shell
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students

@@ -834,7 +834,7 @@ For example, you can use `rafind2` to read strings directly from an encoded Andr
 $ rafind2 -ZS permission AndroidManifest.xml
 # Activities
 $ rafind2 -ZS activity AndroidManifest.xml
-# Content Providers
+# Content providers
 $ rafind2 -ZS provider AndroidManifest.xml
 # Services
 $ rafind2 -ZS service AndroidManifest.xml
