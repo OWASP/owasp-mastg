@@ -320,7 +320,9 @@ The vast majority of apps rely on HTTP for communication with the backend. HTTPS
 
 ##### Recommended TLS Settings
 
-Ensuring proper TLS configuration on the server side is also important. SSL is deprecated and should no longer be used. TLS v1.2 and v1.3 are considered secure, but many services still allow TLS v1.0 and v1.1 for compatibility with older clients.
+Ensuring proper TLS configuration on the server side is also important. The SSL protocol is deprecated and should no longer be used.
+Also TLS v1.0 and TLS v1.1 have some [known vulnerabilities](https://www.keycdn.com/blog/deprecating-tls-1-0-and-1-1) and are no longer reliable. but many services still allow them for compatibility with older clients. While TLS v1.2 and TLS v1.3 are considered the most secure cryptography protocols.
+Starting at Android 10 TLS v1.3 will enable by default for faster and secure communication. The major change with TLS v1.3 is that customizing cipher suites is no longer possible and that all of them are enabled when TLS v1.3 is enabled whereas 0-RTT mode isn't supported.
 
 When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
@@ -404,6 +406,14 @@ In the following, we’ll present the updated recommended cipher suites list to 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
 
+Note that in Android 10 the following SHA-2 CBC cipher suites have been removed:
+- `TLS_RSA_WITH_AES_128_CBC_SHA256`
+- `TLS_RSA_WITH_AES_256_CBC_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`
+- `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
+- `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384`
+
 Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
 
 #### Static Analysis
@@ -484,6 +494,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 #### Android
 
 - Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>
+- Android documentation: Android 10 Changes - <https://developer.android.com/about/versions/10/behavior-changes-all>
 
 #### iOS
 
