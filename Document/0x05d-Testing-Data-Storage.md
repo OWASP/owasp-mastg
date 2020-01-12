@@ -363,7 +363,7 @@ You should check the apps' source code for logging mechanisms by searching for t
 
 While preparing the production release, you can use tools like `ProGuard` (included in Android Studio). [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
 
-To determine whether all the `android.util.Log` class' logging functions have been removed, check the ProGuard configuration file (_proguard-project.txt_) for the following options:
+To determine whether all the `android.util.Log` class' logging functions have been removed, check the ProGuard configuration file (_proguard-rules.pro_) for the following options (according to [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s exmaple of removing logging code") and [enabling ProGuard in Android Studio project ](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
 ```java
 -assumenosideeffects class android.util.Log
@@ -381,13 +381,13 @@ To determine whether all the `android.util.Log` class' logging functions have be
 Note that the example above only ensures that calls to the Log class' methods will be removed. If the string that will be logged is dynamically constructed, the code that constructs the string may remain in the bytecode. For example, the following code issues an implicit `StringBuilder` to construct the log statement:
 
 ```java
-Log.v("Private key [byte format]: " + key);
+Log.v("Private key tag","Private key [byte format]: " + key);
 ```
 
 The compiled bytecode, however, is equivalent to the bytecode of the following log statement, which constructs the string explicitly:
 
 ```java
-Log.v(new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
+Log.v("Private key tag",new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
 
 ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation "Removing unused strings during ProGuard optimization ").
