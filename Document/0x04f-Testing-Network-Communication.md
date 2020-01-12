@@ -321,7 +321,7 @@ The vast majority of apps rely on HTTP for communication with the backend. HTTPS
 ##### Recommended TLS Settings
 
 Ensuring proper TLS configuration on the server side is also important. The SSL protocol is deprecated and should no longer be used.
-Also TLS v1.0 and TLS v1.1 have some [known vulnerabilities](https://www.keycdn.com/blog/deprecating-tls-1-0-and-1-1) and are no longer reliable. but many services still allow them for compatibility with older clients. While TLS v1.2 and TLS v1.3 are considered the most secure cryptography protocols.
+Also TLS v1.0 and TLS v1.1 have [known vulnerabilities](https://portswigger.net/daily-swig/the-end-is-nigh-browser-makers-ditch-support-for-aging-tls-1-0-1-1-protocols "Browser-makers ditch support for aging TLS 1.0, 1.1 protocols") and their usage is deprecated in all major browsers by 2020.
 Starting at Android 10 TLS v1.3 will enable by default for faster and secure communication. The major change with TLS v1.3 is that customizing cipher suites is no longer possible and that all of them are enabled when TLS v1.3 is enabled whereas 0-RTT mode isn't supported.
 
 When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
