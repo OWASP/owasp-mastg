@@ -406,7 +406,8 @@ In the following, we’ll present the updated recommended cipher suites list to 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
 
-Note that in Android 10 the following SHA-2 CBC cipher suites have been removed:
+Note that in Android 10 the following [SHA-2 CBC cipher suites have been removed](https://developer.android.com/about/versions/10/behavior-changes-all#sha2-cbc-cipher-suites "SHA-2 CBC cipher suites removed"):
+
 - `TLS_RSA_WITH_AES_128_CBC_SHA256`
 - `TLS_RSA_WITH_AES_256_CBC_SHA256`
 - `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256`
