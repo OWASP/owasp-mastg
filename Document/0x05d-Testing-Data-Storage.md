@@ -387,7 +387,7 @@ Log.v("Private key tag","Private key [byte format]: " + key);
 The compiled bytecode, however, is equivalent to the bytecode of the following log statement, which constructs the string explicitly:
 
 ```java
-Log.v("Private key tag",new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
+Log.v(new StringBuilder("Private key tag"),new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
 
 ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation "Removing unused strings during ProGuard optimization ").
