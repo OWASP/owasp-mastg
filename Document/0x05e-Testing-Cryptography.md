@@ -57,7 +57,7 @@ Apps that target modern API levels, went through the following changes:
 - For Android 9 (API level 28) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P") shows even more aggressive changes:
   - You get a warning if you still specify a provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
-- For Android 10 (API level 29) and the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") shows that:
+- For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") list all network security changes.
   - The Conscrypt security provider includes a public API for TLS functionality.The collection of classes under android.net.ssl contain static methods to access functionality that isn't available from the generic javax.net.ssl APIs.
   - The AES/GCM/NoPadding and ChaCha20/Poly1305/NoPadding ciphers return more accurate buffer sizes from getOutputSize().
   - The TLS_FALLBACK_SCSV cipher suite is omitted from connection attempts with a max protocol of TLS 1.2 or above.
