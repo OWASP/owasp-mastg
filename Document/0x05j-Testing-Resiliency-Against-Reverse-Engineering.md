@@ -1325,10 +1325,6 @@ See section "[Dynamic Analysis with an Emulator](#dynamic-analysis-with-an-emula
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
-
 #### OWASP MASVS
 
 - MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."

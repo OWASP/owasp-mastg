@@ -3129,11 +3129,6 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 - Security Flaw with UIWebView - <https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c>
 - Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - <https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html>
 
-#### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage>
-- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
-
 #### OWASP MASVS
 
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
@@ -3144,12 +3139,6 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
-
-#### CWE
-
-- CWE-79 - Improper Neutralization of Input During Web Page Generation - <https://cwe.mitre.org/data/definitions/79.html>
-- CWE-200 - Information Leak / Disclosure - <https://cwe.mitre.org/data/definitions/200.html>
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme - <https://cwe.mitre.org/data/definitions/939.html>
 
 #### Tools
 

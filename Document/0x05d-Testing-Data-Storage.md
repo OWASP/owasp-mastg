@@ -1202,11 +1202,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage>
-- M2 - Insecure Data Storage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage>
-
 #### OWASP MASVS
 
 - MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
@@ -1221,22 +1216,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-#### CWE
-
-- CWE-117 - Improper Output Neutralization for Logs
-- CWE-200 - Information Exposure
-- CWE-316 - Cleartext Storage of Sensitive Information in Memory
-- CWE-359 - Exposure of Private Information ('Privacy Violation')
-- CWE-524 - Information Exposure Through Caching
-- CWE-532 - Information Exposure Through Log Files
-- CWE-534 - Information Exposure Through Debug Log Files
-- CWE-311 - Missing Encryption of Sensitive Data
-- CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-522 - Insufficiently Protected Credentials
-- CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
-- CWE-634 - Weaknesses that Affect System Processes
-- CWE-922 - Insecure Storage of Sensitive Information
 
 #### Tools
 

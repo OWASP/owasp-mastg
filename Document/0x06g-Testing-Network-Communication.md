@@ -302,21 +302,11 @@ If you want to get more details about white box testing and typical code pattern
 
 - [#thiel] - David Thiel. iOS Application Security, No Starch Press, 2015
 
-##### OWASP Mobile Top 10 2016
-
-- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
-
 ##### OWASP MASVS
 
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
-
-##### CWE
-
-- CWE-319 - Cleartext Transmission of Sensitive Information
-- CWE-326 - Inadequate Encryption Strength
-- CWE-295 - Improper Certificate Validation
 
 ##### Nscurl
 

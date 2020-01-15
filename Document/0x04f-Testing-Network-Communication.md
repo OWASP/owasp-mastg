@@ -461,20 +461,11 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
-
 #### OWASP MASVS
 
 - MSTG-NETWORK-1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
-
-#### CWE
-
-- CWE-308 - Use of Single-factor Authentication
-- CWE-319 - Cleartext Transmission of Sensitive Information
 
 #### Tools
 

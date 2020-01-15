@@ -551,10 +551,6 @@ class a$b
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
-
 #### OWASP MASVS
 
 - MSTG-CODE-1: "The app is signed and provisioned with valid certificate."
@@ -566,15 +562,6 @@ class a$b
 - MSTG-CODE-7: "Error handling logic in security controls denies access by default."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 - MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### CWE
-
-- CWE-20 - Improper Input Validation
-- CWE-215 - Information Exposure through Debug Information
-- CWE-388 - Error Handling
-- CWE-489 - Leftover Debug Code
-- CWE-656 - Reliance on Security through Obscurity
-- CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 #### Tools
 
