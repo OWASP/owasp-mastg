@@ -113,9 +113,9 @@ Following scenarios are possible:
 
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
-    ```shell
-    $ iw list | grep AP 
-    ```
+```shell
+    $ iw list | grep AP  
+```
 
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
 
@@ -131,11 +131,13 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 ##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
+
 1. Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
 For all major Linux and Unix operating systems you need tools such as:
+
 - hostapd,
 - dnsmasq,
 - iptables,
@@ -148,6 +150,7 @@ For Kali Linux you can install these tools with `apt-get`:
 $ apt-get update
 $ apt-get install hostapd dnsmasq aircrack-ng
 ```
+
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
 2. In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
@@ -156,6 +159,7 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 ##### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
+
 - wlan1 - id of the AP network interface (with AP capabilities),
 - wlan0 - id of the target network interface (this can be wired interface or other WiFi card)
 - 10.0.0.0/24 - IP addresses and mask of AP network
@@ -165,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 - hostapd.conf
 
     ```
-    # Name of the WiFi interface we use 
+    # Name of the WiFi interface we use  
     interface=wlan1
     # Use the nl80211 driver
     driver=nl80211
@@ -210,7 +214,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
-    ```shell
+```shell
     # check if other process is not using WiFi interfaces
     $ airmon-ng check kill
     # configure IP address of the AP network interface
@@ -221,14 +225,14 @@ To be able to get a man-in-the-middle position you need to run the above configu
     $ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
     # run DNS server
     $ dnsmasq -C dnsmasq.conf -d
-    # enable routing 
+    # enable routing  
     $ echo 1 > /proc/sys/net/ipv4/ip_forward
     # iptables will NAT connections from AP network interface to the target network interface
     $ iptables --flush
     $ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
-    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT 
+    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT  
     $ iptables -t nat -A POSTROUTING -j MASQUERADE
-    ```
+```
 
 Now you can connect your mobile devices to the access point.
 
@@ -261,17 +265,17 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 - Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
-    ```shell
+```shell
     $ echo "
     rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
     " | sudo pfctl -ef -
-    ```
+```
 
   For Linux systems you can use `iptables`:
 
-    ```shell
-    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080 
-    ```
+```shell
+    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
+```
 
   As last step, you need to set the option 'Support invisible proxy' in the listener settings of Burp Suite.
 
@@ -292,7 +296,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
 <img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location"/>
- 
+
 <br/>
 <br/>
 
