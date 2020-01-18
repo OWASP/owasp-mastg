@@ -363,7 +363,7 @@ You should check the apps' source code for logging mechanisms by searching for t
 
 While preparing the production release, you can use tools like `ProGuard` (included in Android Studio). [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
 
-To determine whether all the `android.util.Log` class' logging functions have been removed, check the ProGuard configuration file (_proguard-rules.pro_) for the following options (according to [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s exmaple of removing logging code") and [enabling ProGuard in Android Studio project ](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
+To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s exmaple of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
 ```java
 -assumenosideeffects class android.util.Log
