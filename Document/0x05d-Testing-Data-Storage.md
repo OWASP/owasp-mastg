@@ -513,7 +513,7 @@ Identify all defined `<provider>` elements:
           android:writePermission="com.mwr.example.sieve.WRITE_KEYS"
      />
 </provider>
-<provider  
+<provider
       android:authorities="com.mwr.example.sieve.FileBackupProvider"
       android:exported="true"
       android:multiprocess="true"
