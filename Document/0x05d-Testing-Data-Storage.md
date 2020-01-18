@@ -508,7 +508,7 @@ Identify all defined `<provider>` elements:
       android:multiprocess="true"
       android:name=".DBContentProvider">
     <path-permission
-          android:path="/Keys"  
+          android:path="/Keys"
           android:readPermission="com.mwr.example.sieve.READ_KEYS"
           android:writePermission="com.mwr.example.sieve.WRITE_KEYS"
      />
