@@ -240,7 +240,6 @@ Unlike macOS and Android, iOS currently (at iOS 12) does not support temporarine
 
 ### References
 
-
 #### OWASP MASVS
 
 - MSTG-AUTH-8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
