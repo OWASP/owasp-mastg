@@ -502,7 +502,7 @@ We will use the vulnerable password manager app [Sieve](https://github.com/mwrla
 Identify all defined `<provider>` elements:
 
 ```xml
-<provider  
+<provider
       android:authorities="com.mwr.example.sieve.DBContentProvider"  
       android:exported="true"  
       android:multiprocess="true"  
