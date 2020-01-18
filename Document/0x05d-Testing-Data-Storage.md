@@ -504,7 +504,7 @@ Identify all defined `<provider>` elements:
 ```xml
 <provider
       android:authorities="com.mwr.example.sieve.DBContentProvider"
-      android:exported="true"  
+      android:exported="true"
       android:multiprocess="true"  
       android:name=".DBContentProvider">
     <path-permission  
