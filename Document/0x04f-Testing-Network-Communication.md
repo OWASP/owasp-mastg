@@ -169,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 - hostapd.conf
 
     ```
-    # Name of the WiFi interface we use  
+    # Name of the WiFi interface we use
     interface=wlan1
     # Use the nl80211 driver
     driver=nl80211
