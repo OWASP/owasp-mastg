@@ -114,7 +114,7 @@ Following scenarios are possible:
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
 ```shell
-    $ iw list | grep AP  
+    $ iw list | grep AP
 ```
 
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
