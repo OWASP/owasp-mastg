@@ -516,7 +516,7 @@ Identify all defined `<provider>` elements:
 <provider  
       android:authorities="com.mwr.example.sieve.FileBackupProvider"  
       android:exported="true"  
-      android:multiprocess="true"  
+      android:multiprocess="true"
       android:name=".FileBackupProvider"
 />
 ```
