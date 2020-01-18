@@ -240,7 +240,6 @@ Unlike macOS and Android, iOS currently (at iOS 12) does not support temporarine
 
 ### References
 
-#### OWASP Mobile Top 10 2016
 
 #### OWASP MASVS
 
