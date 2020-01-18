@@ -240,15 +240,7 @@ Unlike macOS and Android, iOS currently (at iOS 12) does not support temporarine
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
-
 #### OWASP MASVS
 
 - MSTG-AUTH-8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
-
-#### CWE
-
-- CWE-287 - Improper Authentication - <https://cwe.mitre.org/data/definitions/287.html>

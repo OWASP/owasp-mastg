@@ -646,10 +646,6 @@ Dynamic analysis is not applicable for finding security features offered by the 
 - <https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html>
 - <https://medium.com/zendesk-engineering/ios-identifying-memory-leaks-using-the-xcode-memory-graph-debugger-e84f097b9d15>
 
-#### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
-
 #### OWASP MASVS
 
 - MSTG-CODE-1: "The app is signed and provisioned with a valid certificate."
@@ -660,10 +656,6 @@ Dynamic analysis is not applicable for finding security features offered by the 
 - MSTG-CODE-6: "The app catches and handles possible exceptions."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 - MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-##### CWE
-
-- CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 ##### Tools
 

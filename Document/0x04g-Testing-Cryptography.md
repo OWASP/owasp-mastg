@@ -126,7 +126,6 @@ Block-based encryption is performed upon discrete input blocks (for example, AES
 
 <img src="Images/Chapters/0x07c/EncryptionMode.png" width="550px"/>
 
-
 Verify that Cipher Block Chaining (CBC) mode is used instead of ECB. In CBC mode, plaintext blocks are XORed with the previous ciphertext block. This ensures that each encrypted block is unique and randomized even if blocks contain the same information. Please note that it is best to combine CBC with an HMAC and/or ensure that no errors are given such as "Padding error", "MAC error", "decryption failed" in order to be more resistant to a padding oracle attack.
 
 When storing encrypted data, we recommend using a block mode that also protects the integrity of the stored data, such as Galois/Counter Mode (GCM). The latter has the additional benefit that the algorithm is mandatory for each TLSv1.2 implementation, and thus is available on all modern platforms.
@@ -182,10 +181,6 @@ In larger organizations, or when high-risk applications are created, it can ofte
 - [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack "The Padding Oracle Attack")
 - [The CBC Padding Oracle Problem](https://eklitzke.org/the-cbc-padding-oracle-problem "The CBC Padding Oracle Problem")
 
-##### OWASP Mobile Top 10 2016
-
-- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
-
 ##### OWASP MASVS
 
 - MSTG-ARCH-8: "There is an explicit policy for how cryptographic keys (if any) are managed, and the lifecycle of cryptographic keys is enforced. Ideally, follow a key management standard such as NIST SP 800-57."
@@ -193,9 +188,3 @@ In larger organizations, or when high-risk applications are created, it can ofte
 - MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
 - MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 - MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
-
-##### CWE
-
-- CWE-326 - Inadequate Encryption Strength
-- CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
-- CWE-329 - Not Using a Random IV with CBC Mode

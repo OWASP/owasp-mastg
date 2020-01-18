@@ -570,10 +570,6 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
-
 #### OWASP MASVS
 
 - MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
@@ -587,14 +583,6 @@ Note: in case of an application which requires L2 protection, it can be a good i
 - MSTG-AUTH-9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
 - MSTG-AUTH-10: "Sensitive transactions require step-up authentication."
 - MSTG-AUTH-11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
-
-#### CWE
-
-- CWE-287 - Improper Authentication
-- CWE-307 - Improper Restriction of Excessive Authentication Attempts
-- CWE-308 - Use of Single-factor Authentication
-- CWE-521 - Weak Password Requirements
-- CWE-613 - Insufficient Session Expiration
 
 ##### SMS-OTP Research
 

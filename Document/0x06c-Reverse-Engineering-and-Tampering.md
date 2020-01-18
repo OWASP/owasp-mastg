@@ -359,7 +359,7 @@ In this section, we will learn how to collect process information on iOS using c
 
 Using `lsof` for an iOS application running with PID 2828, list various open files as shown below.
 
-```
+```shell
 iPhone:~ root# lsof -p 2828
 COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
 iOweApp 2828 mobile  cwd    DIR    1,2      864      2 /
@@ -376,7 +376,7 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 
 `lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
-```
+```shell
 iPhone:~ root# lsof -i -a -p 1
 COMMAND PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 launchd   1 root   27u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
@@ -391,7 +391,7 @@ launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 
 On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
 
-The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse. 
+The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse.
 
 #### Debugging
 
@@ -511,7 +511,6 @@ Voila, the crackme can be easily solved aided by static analysis and a debugger.
 
 Officially Apple recommends use of LLDB for debugging purposes, but GDB can be also used on iOS. The techniques discussed above are applicable while debugging using GDB as well, provided the LLDB specific commands are [changed to GDB commands](https://lldb.llvm.org/use/map.html "GDB to LLDB command map").
 
-
 #### Tracing
 
 ##### Execution Tracing
@@ -580,7 +579,6 @@ If we revisit that function, we can see that it involves multiple sub-function c
 - Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`.
 - Access the memory and extract the string from the pointer returned by the above function.
 
-
 ```python
 import angr
 import claripy
@@ -605,7 +603,6 @@ solve()
 ```
 
 Above, Angr executed an ARM64 code in an execution environment provided by one of its concrete execution engines. The result is accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks enable us to perform a comprehensive analysis of a binary, even in the absence of specialized devices needed to run it.
-
 
 ### Tampering and Runtime Instrumentation
 
@@ -845,7 +842,7 @@ In this section we will learn how to use Frida to obtain information about a run
 
 In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
 
-```
+```shell
 $ frida -U -f com.iOweApp
 
 [iPhone::com.iOweApp]-> ObjC.enumerateLoadedClasses()
@@ -870,7 +867,7 @@ $ frida -U -f com.iOweApp
 
 Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
 
-```
+```shell
 [iPhone::com.iOweApp]-> ObjC.classes.JailbreakDetection.$ownMethods
 [
     "+ isJailbroken"
@@ -892,7 +889,7 @@ Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class 
 
 In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
-```
+```shell
 [iPhone::com.iOweApp]-> Process.enumerateModules()
 [
     {
@@ -919,7 +916,7 @@ In Frida REPL process related information can be obtained using the `Process` co
 
 Similarly, information related to various threads can be obtained.
 
-```
+```shell
 Process.enumerateThreads()
 [
     {
@@ -1370,8 +1367,6 @@ Reading 2.390625MB ...
 ```
 
 To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
-
-
 
 ### References
 

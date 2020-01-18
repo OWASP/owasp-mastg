@@ -363,7 +363,7 @@ You should check the apps' source code for logging mechanisms by searching for t
 
 While preparing the production release, you can use tools like `ProGuard` (included in Android Studio). [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
 
-To determine whether all the `android.util.Log` class' logging functions have been removed, check the ProGuard configuration file (_proguard-project.txt_) for the following options:
+To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s exmaple of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
 ```java
 -assumenosideeffects class android.util.Log
@@ -381,13 +381,13 @@ To determine whether all the `android.util.Log` class' logging functions have be
 Note that the example above only ensures that calls to the Log class' methods will be removed. If the string that will be logged is dynamically constructed, the code that constructs the string may remain in the bytecode. For example, the following code issues an implicit `StringBuilder` to construct the log statement:
 
 ```java
-Log.v("Private key [byte format]: " + key);
+Log.v("Private key tag", "Private key [byte format]: " + key);
 ```
 
 The compiled bytecode, however, is equivalent to the bytecode of the following log statement, which constructs the string explicitly:
 
 ```java
-Log.v(new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
+Log.v("Private key tag", new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
 
 ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation "Removing unused strings during ProGuard optimization ").
@@ -502,21 +502,21 @@ We will use the vulnerable password manager app [Sieve](https://github.com/mwrla
 Identify all defined `<provider>` elements:
 
 ```xml
-<provider 
-      android:authorities="com.mwr.example.sieve.DBContentProvider" 
-      android:exported="true" 
-      android:multiprocess="true" 
+<provider
+      android:authorities="com.mwr.example.sieve.DBContentProvider"
+      android:exported="true"
+      android:multiprocess="true"
       android:name=".DBContentProvider">
-    <path-permission 
-          android:path="/Keys" 
+    <path-permission
+          android:path="/Keys"
           android:readPermission="com.mwr.example.sieve.READ_KEYS"
           android:writePermission="com.mwr.example.sieve.WRITE_KEYS"
      />
 </provider>
-<provider 
-      android:authorities="com.mwr.example.sieve.FileBackupProvider" 
-      android:exported="true" 
-      android:multiprocess="true" 
+<provider
+      android:authorities="com.mwr.example.sieve.FileBackupProvider"
+      android:exported="true"
+      android:multiprocess="true"
       android:name=".FileBackupProvider"
 />
 ```
@@ -1202,11 +1202,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M1 - Improper Platform Usage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage>
-- M2 - Insecure Data Storage - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage>
-
 #### OWASP MASVS
 
 - MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
@@ -1221,22 +1216,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-#### CWE
-
-- CWE-117 - Improper Output Neutralization for Logs
-- CWE-200 - Information Exposure
-- CWE-316 - Cleartext Storage of Sensitive Information in Memory
-- CWE-359 - Exposure of Private Information ('Privacy Violation')
-- CWE-524 - Information Exposure Through Caching
-- CWE-532 - Information Exposure Through Log Files
-- CWE-534 - Information Exposure Through Debug Log Files
-- CWE-311 - Missing Encryption of Sensitive Data
-- CWE-312 - Cleartext Storage of Sensitive Information
-- CWE-522 - Insufficiently Protected Credentials
-- CWE-530 - Exposure of Backup File to an Unauthorized Control Sphere
-- CWE-634 - Weaknesses that Affect System Processes
-- CWE-922 - Insecure Storage of Sensitive Information
 
 #### Tools
 

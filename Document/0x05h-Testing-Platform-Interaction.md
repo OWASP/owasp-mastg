@@ -1505,10 +1505,6 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
-#### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
-
 #### OWASP MASVS
 
 - MSTG-PLATFORM-1: "The app only requests the minimum set of permissions necessary."
@@ -1520,13 +1516,6 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
-
-#### CWE
-
-- CWE-79 - Improper Neutralization of Input During Web Page Generation
-- CWE-200 - Information Leak / Disclosure
-- CWE-749 - Exposed Dangerous Method or Function
-- CWE-939 - Improper Authorization in Handler for Custom URL Scheme
 
 #### Tools
 

@@ -521,7 +521,7 @@ In this section, we will be using information from procfs directly or indirectly
 
 You can use `lsof` with the flag `-p <pid>` to return the list of open files for the specified process. See the [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") for more options.
 
-```
+```shell
 # lsof -p 6233
 COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NODE NAME
 .foobar.c  6233     u0_a97  cwd       DIR                0,1         0          1 /
@@ -534,6 +534,7 @@ COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NOD
 ```
 
 In the above output, the most relevant fields for us are:
+
 - `NAME`: path of the file.
 - `TYPE`: type of the file, for example, file is a directory or a regular file.
 
@@ -543,7 +544,7 @@ This can be extremely useful to spot unusual files when monitoring applications 
 
 You can find system-wide networking information in `/proc/net` or just by inspecting the `/proc/<pid>/net` directories (for some reason not process specific). There are multiple files present in these directories, of which `tcp`, `tcp6` and `udp` might be considered relevant from the tester's perspective.
 
-```
+```shell
 # cat /proc/7254/net/tcp
 sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
 ...
@@ -554,13 +555,14 @@ sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid 
 ```
 
 In the output above, the most relevant fields for us are:
+
 - `rem_address`: remote address and port number pair (in hexadecimal representation).
 - `tx_queue` and `rx_queue`: the outgoing and incoming data queue in terms of kernel memory usage. These fields give an indication how actively the connection is being used.
 - `uid`: containing the effective UID of the creator of the socket.
 
 Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements. For instance, we can easily filter it by PID:
 
-```
+```shell
 angler:/ # netstat -p | grep 24685
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program Name
@@ -573,6 +575,7 @@ tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 
 ```
 
 `netstat` output is clearly more user friendly than reading `/proc/<pid>/net`. The most relevant fields for us, similar to the previous output, are following:
+
 - `Foreign Address`: remote address and port number pair (port number can be replaced with the well-known name of a protocol associated with the port).
 - `Recv-Q` and `Send-Q`: Statistics related to receive and send queue. Gives an indication on how actively the connection is being used.
 - `State`: the state of a socket, for example, if the socket is in active use (`ESTABLISHED`) or closed (`CLOSED`).
@@ -581,7 +584,7 @@ tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 
 
 The file `/proc/<pid>/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
 
-```
+```shell
 # cat /proc/9568/maps
 12c00000-52c00000 rw-p 00000000 00:04 14917                              /dev/ashmem/dalvik-main space (region space) (deleted)
 6f019000-6f2c0000 rw-p 00000000 fd:00 1146914                            /data/dalvik-cache/arm64/system@framework@boot.art
@@ -1262,6 +1265,7 @@ To _convert_ a release build into a debuggable build, you need to modify a flag 
 ```xml
 <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.xxx.xxx.xxx" android:theme="@style/AppTheme">
 ```
+
 Even if we haven't altered the source code, this modification also breaks the APK signature, so you'll also have to re-sign the altered APK archive.
 
 ##### Repackaging
@@ -1342,7 +1346,7 @@ In this section we will learn about how to use Frida to obtain information about
 
 You can use the command `Java` in the Frida CLI to access the Java runtime and retrieve information from the running app. Remember that, unlike Frida for iOS, in Android you need to wrap your code inside a `Java.perform` function. Thus, it's more convenient to use Frida scripts to e.g. get a list of loaded Java classes and their corresponding methods and fields or for more complex information gathering or instrumentation. One such scripts is listed below. The script to list class's methods used below is available on [Github](https://github.com/frida/frida-java-bridge/issues/44 "Github").
 
-```
+```java
 // Get list of loaded Java classes and methods
 
 // Filename: java_class_listing.js
@@ -1375,7 +1379,7 @@ function describeJavaClass(className) {
 
 After saving the script to a file called java_class_listing.js, you can tell Frida CLI to load it by using the flag `-l` and inject it to the process ID specified by `-p`.
 
-```
+```shell
 frida -U -l java_class_listing.js -p <pid>
 
 // Output
@@ -1407,7 +1411,7 @@ Given the verbosity of the output, the system classes can be filtered out progra
 
 You can retrieve process related information straight from the Frida CLI by using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
-```
+```shell
 [Huawei Nexus 6P::sg.vantagepoint.helloworldjni]-> Process.enumerateModules()
 [
     {

@@ -449,10 +449,6 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
 - W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
 
-##### OWASP Mobile Top 10 2016
-
-- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
-
 ##### OWASP MASVS
 
 - MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
@@ -462,9 +458,3 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
 - MSTG-CRYPTO-5: "The app doesn't reuse the same cryptographic key for multiple purposes."
 - MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
-
-##### CWE
-
-- CWE-321 - Use of Hard-coded Cryptographic Key
-- CWE-326 - Inadequate Encryption Strength
-- CWE-330 - Use of Insufficiently Random Values

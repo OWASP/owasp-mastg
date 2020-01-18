@@ -273,19 +273,11 @@ For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
-
 #### OWASP MASVS
 
 - MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
-
-#### CWE
-
-- CWE-20 - Improper Input Validation
 
 #### XSS via start ContentActivity
 
