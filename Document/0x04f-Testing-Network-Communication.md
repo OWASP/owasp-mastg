@@ -225,7 +225,7 @@ To be able to get a man-in-the-middle position you need to run the above configu
     $ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
     # run DNS server
     $ dnsmasq -C dnsmasq.conf -d
-    # enable routing  
+    # enable routing
     $ echo 1 > /proc/sys/net/ipv4/ip_forward
     # iptables will NAT connections from AP network interface to the target network interface
     $ iptables --flush
