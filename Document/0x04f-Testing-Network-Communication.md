@@ -230,7 +230,7 @@ To be able to get a man-in-the-middle position you need to run the above configu
     # iptables will NAT connections from AP network interface to the target network interface
     $ iptables --flush
     $ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
-    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT  
+    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT
     $ iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
 
