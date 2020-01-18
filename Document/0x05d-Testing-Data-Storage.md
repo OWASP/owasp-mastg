@@ -381,7 +381,7 @@ To determine whether all the `android.util.Log` class' logging functions have be
 Note that the example above only ensures that calls to the Log class' methods will be removed. If the string that will be logged is dynamically constructed, the code that constructs the string may remain in the bytecode. For example, the following code issues an implicit `StringBuilder` to construct the log statement:
 
 ```java
-Log.v("Private key tag","Private key [byte format]: " + key);
+Log.v("Private key tag", "Private key [byte format]: " + key);
 ```
 
 The compiled bytecode, however, is equivalent to the bytecode of the following log statement, which constructs the string explicitly:
