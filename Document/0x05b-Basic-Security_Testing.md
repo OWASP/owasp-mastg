@@ -176,6 +176,7 @@ There are many tools and frameworks used throughout this guide to assess the sec
 - APK Extractor: App to extract APKs without root.
 - Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#frida "Frida section") section below for more information.
 - Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#drozer "Drozer section") section below for more information.
+- Busybox:  Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
 
 ##### Xposed
 
@@ -496,7 +497,7 @@ $ frida-ps -Uai
 -----  ----------------------------------------  ---------------------------------------
   766  Android System                            android
 30692  Chrome                                    com.android.chrome
- 3520  Contacts Storage                          com.android.providers.contacts  
+ 3520  Contacts Storage                          com.android.providers.contacts
     -  Uncrackable1                              sg.vantagepoint.uncrackable1
     -  drozer Agent                              com.mwr.dz
 ```
@@ -1346,7 +1347,7 @@ $ gplaycli -p -v -d com.google.android.keep
 
 The `com.google.android.keep.apk` file will be in your current directory. As you might imagine, this approach is a very convenient way to download APKs, especially with regards to automation.
 
-> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").  
+> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").
 
 ##### Extracting the App Package from the Device
 
@@ -1950,8 +1951,8 @@ Alternatively, you can follow the following steps manually in order to achieve t
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 
     ```shell
-    $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
-    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
+    $ openssl x509 -inform DER -in cacert.der -out cacert.pem
+    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1
     mv cacert.pem <hash>.0
     ```
 
