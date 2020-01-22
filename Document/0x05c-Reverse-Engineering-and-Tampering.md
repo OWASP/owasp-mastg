@@ -1334,58 +1334,58 @@ The following approach can be used in order to patch the JavaScript file:
 
 ##### Library Injection
 
-In the previous section we learned about patching application code to assist in our analysis. Patching an application in theory can be used to perform any task, but in practice it has its own limitations. For example, we have a 3rd party application for which we don't have the source code; it only works locally, and we want to access it over the network as well. One way is to patch the application's APIs one at a time and introduce networking code, but it may not be practical for a large application and also the patching performed is not reusable for any other application. As an alternative, if we can somehow separately write and compile code which provides the networking logic and inject this into the application, not only this approach will be time efficient, but also the code can be reused. This approach of introducing a separately compiled code in a form of a library in a process memory is often referred to as library injection. In Windows world, this technique is referred as *DLL injection* and commonly used to modify and bypass anti-cheat mechanisms in games. In Android and iOS world, Frida under the hood is performing a library injection to provide the infrastructure for application instrumentation.
+In the previous section we learned about patching application code to assist in our analysis. Patching an application in theory can be used to perform any task, but in practice it has its own limitations. For example, we have a 3rd party application for which we don't have the source code and works only locally. We want to modify this application so that it is accessible over the network as well. One possible way is to patch the application's APIs and introduce networking code, but this approach may not be practical for a large application. Another shortcoming is, the patching performed is not reusable for any other executable, i.e patching performed is unique to each application. As an alternative approach, if we can separately develop and compile a library which provides the networking logic and inject this into the application, not only this will be time efficient, but also the library will be reusable. This paradigm of introducing a separately compiled code in a form of a library in a process memory is often referred to as library injection. In Windows world this technique has been in use for a long time, and is referred as *DLL injection*. It is commonly used to modify and bypass anti-cheat mechanisms in games. On Android and iOS, most common example is Frida, under-the-hood it is performing a library injection to provide all the functionalities.
 
-Library injection is desirable in many situations, for instance while working on a non-rooted device, for performing process introspection or to introduce new functionality in existing application. 
+Library injection is desirable in many situations - for performing process introspection, to introduce new functionality in existing application, debug weird runtime bugs, or while working on a non-rooted or non-jailbroken device.
 
-In this section we will learn about the techniques how we can inject a library in an Android application. The techniques introduced below can be broadly divided into two, one patching the application itself and second, using the OS features. In the first type, application's Java code can be patched, while if native code is present, then the native code can also be patched. The second type involves using LD_PRELOAD functionality of the loader.   
+In this section we will learn about the techniques for performing library injection in an Android application. The techniques introduced below can be broadly divided into two types:
+- Patching the application: Involves patching application's Java code and if native code is present, then patching native code as another alternative.
+- Using OS features: using LD_PRELOAD functionality of the loader.
 
 ###### Patching Application's Java Code
 
-An Android application's code can be easily patched to inject a library. Application's decompiled smali code can be patched to introduce code for loading an additional library. API to load a library in Java is `System.loadLibrary("inject")`, for a library named *libinject.so*. In smali, this code looks as following:
+An Android application's decompiled smali code can be patched to introduce code for loading an additional library. API to load a library in Java is `System.loadLibrary("inject")`, for a library named *libinject.so*. In smali, this code looks as following:
 
 ```
 const-string v0, "inject"
 invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 ```
 
-Ideally the above code should be inserted early in the application lifecycle, for instance in `onCreate` method of the application. The library libinject.so should be added in the respective architecture folder (armeabi-v7a, arm64-v8a, x86) of the lib folder in the apk. Once the application is patched, you need to re-sign the application before using it. Frequently this technique is used to load Frida gadget in an application specially while working on a non-rooted device.
-
+Ideally the above code should be inserted early in the application lifecycle, for instance in `onCreate` method of the application. It is important to remember to add the library libinject.so in the respective architecture folder (armeabi-v7a, arm64-v8a, x86) of the lib folder in the apk. Once the application is patched and library added to lib folder, you need to re-sign the application before using it. Frequently this technique is used to load Frida gadget in an application specially while working on a non-rooted device.
 
 ###### Patching Application's Native Library
 
-Many Android application use native code apart from Java or Kotlin code for various performance and security reasons. The native code is present in the form of ELF shared libraries. An ELF executable includes a list of libraries (dependencies) that are linked to the executable for it to function optimally. This list can be modified to insert an additional library which we want to inject into the process.
+Many Android application use native code apart from Java code for various performance and security reasons. The native code is present in the form of ELF shared libraries. An ELF executable includes a list of libraries (dependencies) that are linked to the executable for it to function optimally. This list can be modified to insert an additional library which we want to inject into the process.
 
-Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. This task can be performed with relative ease using LIEF. LIEF is a library to instrument executable formats including ELF. With LIEF it requires only few lines of Python code.
+Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. This task can be performed with relative ease using [LIEF](https://lief.quarkslab.com/ "LIEF"). LIEF is a library to instrument executable formats including ELF. Using it requires only a few lines of Python code as shown below.
 
 ```python
 import lief
 
 libnative = lief.parse("libnative.so")
-libnative.add_library("libgadget.so") # Injection!
+libnative.add_library("libinject.so") # Injection!
 libnative.write("libnative.so")
 ```
 
-In above example frida-gadget library is injected as a dependency of a native library, but this can be used for any other library injection. Frida gadget injection is explained in further detail in [LIEF's documentation](https://lief.quarkslab.com/doc/latest/tutorials/09_frida_lief.html "LIEF's documentation"). Once the application is patched, you need to re-sign the application before using it.
-
+In above example libinject.so library is injected as a dependency of a native library. Frida gadget can be injected into an application using this approach and is explained in detail in [LIEF's documentation](https://lief.quarkslab.com/doc/latest/tutorials/09_frida_lief.html "LIEF's documentation"). It is important to remember, once the application is patched and the library added to the respective architecture lib folder in the apk, you need to re-sign the application before using it.
 
 ###### LD_PRELOAD
 
-Above we looked into techniques which require some kind of modification of the application's code. A library can also be injected into a process using functionalities offered by the loader of the operating system. On Android, which is a Linux based OS, by setting LD_PRELOAD environment variable an additional library can be loaded. [LD.SO man page](http://man7.org/linux/man-pages/man8/ld.so.8.html "LD.SO man page") describe LD_PRELOAD as: 
+Above we looked into techniques which require some kind of modification of the application's code. A library can also be injected into a process using functionalities offered by the loader of the operating system. On Android, which is a Linux based OS, by setting LD_PRELOAD environment variable an additional library can be loaded. [LD.SO man page](http://man7.org/linux/man-pages/man8/ld.so.8.html "LD.SO man page") describes LD_PRELOAD as:
 
 > A list of additional, user-specified, ELF shared objects to be loaded before all others.  This feature can be used to selectively override functions in other shared objects
 
-The symbols loaded from the library passed using LD_PRELOAD gets precedence, i.e they are searched first by the loader while resolving the symbols. This feature is often used to modify behaviour of libc functions - fopen(), read(), write(), strcmp() etc, specially in case of obfuscated programs.
+The symbols loaded from the library passed using LD_PRELOAD always gets the precedence, i.e they are searched first by the loader while resolving the symbols. This feature is often used to modify behaviour of libc functions - fopen(), read(), write(), strcmp() etc, specially in case of obfuscated programs,where understanding the behavior of the program may be challenging.
 
-On Android, for setting LD_PRELOAD environment variable is slightly different than compared to other Linux distributions. For an application with package name *com.foo.bar*, LD_PRELOAD environment variable can be set using`setprop` command as demonstrated below:
+On Android, for setting LD_PRELOAD environment variable is slightly different than compared to other Linux distributions. For an application with package name *com.foo.bar*, LD_PRELOAD environment variable can be set using `setprop` command, as demonstrated below:
 
 ```bash
 $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
-In above command, note the additional *wrap.* prefixed to the package name and pass the path of the library to be loaded to LD_PRELOAD variable. 
+In above command, note the additional *wrap.* prefix to the package name. Pass the path of the library to be loaded to LD_PRELOAD variable.
 
-> In the latest Android versions, you need to disable the SELinux to make LD_PRELOAD work, as the library to be preloaded may not have SELinux context assigned.   
+> In the latest Android versions, you need to disable the SELinux to make LD_PRELOAD work, as the library to be preloaded may not have SELinux context assigned.
 
 
 #### Dynamic Instrumentation
