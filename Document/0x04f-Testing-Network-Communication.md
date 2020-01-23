@@ -324,7 +324,9 @@ The vast majority of apps rely on HTTP for communication with the backend. HTTPS
 
 ##### Recommended TLS Settings
 
-Ensuring proper TLS configuration on the server side is also important. SSL is deprecated and should no longer be used. TLS v1.2 and v1.3 are considered secure, but many services still allow TLS v1.0 and v1.1 for compatibility with older clients.
+Ensuring proper TLS configuration on the server side is also important. The SSL protocol is deprecated and should no longer be used.
+Also TLS v1.0 and TLS v1.1 have [known vulnerabilities](https://portswigger.net/daily-swig/the-end-is-nigh-browser-makers-ditch-support-for-aging-tls-1-0-1-1-protocols "Browser-makers ditch support for aging TLS 1.0, 1.1 protocols") and their usage is deprecated in all major browsers by 2020.
+TLS v1.2 and TLS v1.3 are considered best practice for secure transmission of data. Starting with Android 10 (API level 29) TLS v1.3 will be enabled by default for faster and secure communication. The [major change with TLS v1.3](https://developer.android.com/about/versions/10/behavior-changes-all#tls-1.3 "TLS 1.3 enabled by default") is that customizing cipher suites is no longer possible and that all of them are enabled when TLS v1.3 is enabled, whereas Zero Round Trip (0-RTT) mode isn't supported.
 
 When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
@@ -408,6 +410,15 @@ In the following, we’ll present the updated recommended cipher suites list to 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
 
+Note that in Android 10 the following [SHA-2 CBC cipher suites have been removed](https://developer.android.com/about/versions/10/behavior-changes-all#sha2-cbc-cipher-suites "SHA-2 CBC cipher suites removed"):
+
+- `TLS_RSA_WITH_AES_128_CBC_SHA256`
+- `TLS_RSA_WITH_AES_256_CBC_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`
+- `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
+- `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384`
+
 Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
 
 #### Static Analysis
@@ -479,6 +490,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 #### Android
 
 - Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>
+- Android documentation: Android 10 Changes - <https://developer.android.com/about/versions/10/behavior-changes-all>
 
 #### iOS
 

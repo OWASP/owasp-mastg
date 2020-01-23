@@ -57,6 +57,7 @@ Apps that target modern API levels, went through the following changes:
 - For Android 9 (API level 28) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P") shows even more aggressive changes:
   - You get a warning if you still specify a provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
+- For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") list all network security changes.
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
