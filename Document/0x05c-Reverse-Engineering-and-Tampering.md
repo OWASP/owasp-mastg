@@ -923,7 +923,7 @@ Moving down a level in the OS hierarchy, you arrive at privileged functions that
 
 Strace is a standard Linux utility that monitors interaction between processes and the kernel. The utility is not included with Android by default, but can easily be built from source via the Android NDK. Strace is a very convenient way to monitor a process' system calls. Strace depends, however on the `ptrace` system call to attach to the target process, so it only works up to the point at which anti-debugging measures start up.
 
-If the Android **stop application at startup** feature is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
+If the "Wait for debugger" feature in **Settings > Developer options** is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
 
 ```shell
 $ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e "!read" -ff -p "$pid"; break; fi; done
