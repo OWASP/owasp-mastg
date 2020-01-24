@@ -656,7 +656,7 @@ SwiftShield was now replacing all of them with encrypted values that leave no tr
 
 <img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" width="650px"/>
 
-After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a time stamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to it's original values.
+After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 
 ```bash
 $ cat conversionMap.txt
