@@ -972,7 +972,6 @@ $ frida-trace -i "open" -U com.android.chrome
 The output will show all the calls to `open` function. By default, only the arguments passed to the function are shown, but not the return values.
 
 <img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="550px"/>
-![frida-trace output for open]()
 
 The return values can also be obtained by editing the auto-generated scripts. Under the hood, `frida-trace` generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/). The script looks as following:
 
