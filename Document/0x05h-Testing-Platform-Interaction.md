@@ -1381,6 +1381,32 @@ There are several ways to perform dynamic analysis:
 1. For the actual persistence: Use the techniques described in the data storage chapter.
 2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
+### Testing WebViews Cleanup (MSTG-PLATFORM-10)
+
+#### Overview
+
+Clearing the WebView resources is a crucial step when having an app accessing any sensitive data within a WebView. This includes any files stored locally, the RAM cache and any loaded JavaScript.
+
+As an additional measure, you could use server-side headers such as `no-cache`, which prevent an application from caching particular content.
+
+> Starting on Android 10 (API level 29) apps are able to detect if a WebView has become [unresponsive](https://developer.android.com/about/versions/10/features?hl=en#webview-hung "WebView hung renderer detection"). If the this happens, the OS will automatically call the `onRenderProcessUnresponsive` method.
+
+Find more security best practices when using WebViews on [Android Developers](https://developer.android.com/training/articles/security-tips?hl=en#WebView "Security Tips - Use WebView").
+
+#### Static Analysis
+
+Android's WebView class offers the [`clearCache`](https://goo.gl/7dnhdi "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache.
+
+Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, the `clearCache` method might be also called in there.
+
+Additionally, an app might be initializing the WebView on a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "false".
+
+> Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
+
+#### Dynamic Analysis
+
+Open a WebView accessing some sensitive data and use a dynamic instrumentation framework such as Frida to hook `clearCache` in order to verify if it's being used whenever you terminate a WebView.
+
 ### Testing enforced updating (MSTG-ARCH-9)
 
 Starting from Android 5.0 (API level 21), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
@@ -1515,6 +1541,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-PLATFORM-10: "A WebView's cache, storage, and loaded resources (JavaScript, etc.) should be cleared before the WebView is destroyed."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
 #### Tools
