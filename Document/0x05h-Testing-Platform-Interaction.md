@@ -1086,15 +1086,11 @@ To identify the usage of protocol handlers, look for ways to trigger phone calls
 
 #### Overview
 
-Android offers a way for JavaScript executed in a WebView to call and use native functions of an Android app: [`addJavascriptInterface`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()").
+Android offers a way for JavaScript executed in a WebView to call and use native functions of an Android app (annotated with `@JavascriptInterface`) by using the [`addJavascriptInterface`](https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29 "Method addJavascriptInterface()") method. This is known as a _WebView JavaScript bridge_ or _native bridge_.
 
-The `addJavascriptInterface` method allows you to expose Java Objects to WebViews. When you use this method in an Android app, JavaScript in a WebView can invoke the Android app's native methods.
+Please note that **when you use `addJavascriptInterface`, you're explicitly granting access to the registered JavaScript Interface object to all pages loaded within that WebView**. This implies that, if the user navigates outside your app or domain, all other external pages will also have access to those JavaScript Interface objects which might present a potential security risk if any sensitive data is being exposed though those interfaces.
 
-Before Android 4.2 (API level 17), [a vulnerability was discovered](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView.
-
-This vulnerability was fixed by API level 17, and the access to Java Object methods granted to JavaScript was changed. When you use `addJavascriptInterface`, methods of Java Objects are only accessible to JavaScript when the annotation `@JavascriptInterface` is added. Before API level 17, all Java Object methods were accessible by default.
-
-An app that targets an Android version older than API level 17 is still vulnerable to the flaw in `addJavascriptInterface` and should be used only with extreme care. Several best practices should be used when this method is necessary.
+> Warning: take extreme care with apps targeting Android versions below Android 4.2 (API level 17) as they are [vulnerable to a flaw](https://labs.mwrinfosecurity.com/blog/webview-addjavascriptinterface-remote-code-execution/ "WebView addJavascriptInterface Remote Code Execution") in the implementation of `addJavascriptInterface`: a reflection that leads to remote code execution when malicious JavaScript is injected into a WebView. This was due to all Java Object methods being accessible by default (instead of only those annotated).
 
 #### Static Analysis
 
@@ -1114,7 +1110,7 @@ myWebView.loadURL("http://example.com/file.html");
 setContentView(myWebView);
 ```
 
-In Android 4.2 (API level 17) and above, an annotation called `JavascriptInterface` explicitly allows JavaScript to access a Java method.
+In Android 4.2 (API level 17) and above, an annotation `@JavascriptInterface` explicitly allows JavaScript to access a Java method.
 
 ```Java
 public class MSTG_ENV_008_JS_Interface {
@@ -1139,9 +1135,7 @@ public class MSTG_ENV_008_JS_Interface {
 }
 ```
 
-If the annotation `@JavascriptInterface` is defined for a method, it can be called by JavaScript. If the app targets API level lower than 17, all Java Object methods are exposed by default to JavaScript and can be called.
-
-The method `returnString` can then be called in JavaScript in order to retrieve the return value. The value is then stored in the parameter `result`.
+This is how you can call the method `returnString` from JavaScript, the string "Secret String" will be stored in the variable `result`:
 
 ```Javascript
 var result = window.Android.returnString();
@@ -1149,16 +1143,11 @@ var result = window.Android.returnString();
 
 With access to the JavaScript code, via, for example, stored XSS or a MITM attack, an attacker can directly call the exposed Java methods.
 
-If `addJavascriptInterface` is necessary, only JavaScript provided with the APK should be allowed to call it; no JavaScript should be loaded from remote endpoints.
+If `addJavascriptInterface` is necessary, take the following considerations:
 
-Another solution is limiting the API level to 17 and above in the manifest file of the app. Only public methods that are [annotated with `JavascriptInterface`](https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=129859614 "DRD13 addJavascriptInterface()") can be accessed via JavaScript at these API levels.
-
-```xml
-<uses-sdk android:minSdkVersion="17" />
-...
-
-</manifest>
-```
+- Only JavaScript provided with the APK should be allowed to use the bridges, e.g. by verifying the URL on each bridged Java method (via `WebView.getUrl`).
+- No JavaScript should be loaded from remote endpoints, e.g. by keeping page navigation within the app's domains and opening all other domains on the default browser (e.g. Chrome, Firefox).
+- If necessary for legacy reasons (e.g. having to support older devices), at least set the minimal API level to 17 in the manifest file of the app (`<uses-sdk android:minSdkVersion="17"/>`).
 
 #### Dynamic Analysis
 
