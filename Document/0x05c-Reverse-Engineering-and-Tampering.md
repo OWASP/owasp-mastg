@@ -563,7 +563,7 @@ In the output above, the most relevant fields for us are:
 Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements. For instance, we can easily filter it by PID:
 
 ```shell
-angler:/ # netstat -p | grep 24685
+# netstat -p | grep 24685
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program Name
 tcp        0      0 192.168.1.17:47368      172.217.194.103:https   CLOSE_WAIT  24685/com.google.android.youtube
