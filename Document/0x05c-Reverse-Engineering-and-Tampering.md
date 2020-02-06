@@ -957,7 +957,7 @@ The stock Android kernel comes without loadable module support, which is a probl
 
 Method profiling, introduced in the previous sections, can be used to obtain the sequence in which methods are being called. This can provide us hints about critical functions of an application. But profiling has it owns limitation, it does not provide us the information about the input arguments and return values of these critical functions. For determining the input and output values of a function, along with how frequently it is being called, technique of function tracing can be very useful. Tracing can also prove to be very useful while dealing with obfuscated application or applications with big codebase.
 
-In theory, Frida can be used to perform method tracing for Java code. Currently, Frida [does not](https://github.com/frida/frida-python/issues/70 "does not") have any out of the box tool for Java method tracing, unlike native code tracing for which `frida-trace` is available (which we will discuss shortly in next section). In order to perform Java method tracing, it requires manual scripting, which is nothing else but hooking the function.
+As we will discuss shortly in next section `frida-trace` offers out-of-the-box support for Android/iOS native code tracing and iOS high level method tracing. While it [doesn't support Java method tracing yet](https://github.com/frida/frida-python/issues/70 "Support for tracing high-level methods of Java Classes via patterns"), you can still use regular Frida scripting and hooking in order to perform Java method tracing.
 
 ##### Native Code Tracing
 
