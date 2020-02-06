@@ -1012,7 +1012,7 @@ Many binaries are stripped and don't have function name symbols available with t
 $ frida-trace -p 1372 -a "libjpeg.so!0x4793c"
 ```
 
-`frida-trace` is a very versatile tool and there are multiple configuration options available for advance usage. To learn more about them, check the [documentation](https://frida.re/docs/frida-trace/ "documentation").
+To learn more about all options for advanced usage, check the [documentation in the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
 
 #### Emulation-based Analysis
 
