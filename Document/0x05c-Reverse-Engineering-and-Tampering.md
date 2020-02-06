@@ -969,7 +969,6 @@ In order to use `frida-trace`, a frida server should be running on the device. A
 $ frida-trace -U -i "open" com.android.chrome
 ```
 
-The output will show all the calls to `open` function. By default, only the arguments passed to the function are shown, but not the return values.
 
 <img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="550px"/>
 
