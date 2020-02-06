@@ -953,7 +953,7 @@ Jprobes and Kretprobes are other KProbes-based probe types that allow hooking of
 
 The stock Android kernel comes without loadable module support, which is a problem because Kprobes are usually deployed as kernel modules. The strict memory protection the Android kernel is compiled with is another issue because it prevents the patching of some parts of Kernel memory. Elfmaster's system call hooking method causes a Kernel panic on stock Lollipop and Marshmallow because the sys_call_table is non-writable. You can, however, use KProbes in a sandbox by compiling your own, more lenient Kernel (more on this later).
 
-##### Java Method Tracing
+##### Method Tracing
 
 Method profiling, introduced in the previous sections, can be used to obtain the sequence in which methods are being called. This can provide us hints about critical functions of an application. But profiling has it owns limitation, it does not provide us the information about the input arguments and return values of these critical functions. For determining the input and output values of a function, along with how frequently it is being called, technique of function tracing can be very useful. Tracing can also prove to be very useful while dealing with obfuscated application or applications with big codebase.
 
