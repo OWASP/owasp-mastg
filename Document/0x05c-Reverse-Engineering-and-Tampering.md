@@ -966,7 +966,7 @@ Native methods tracing can be performed with relative ease than compared to Java
 In order to use `frida-trace`, a frida server should be running on the device. An example for tracing libc's `open` function using `frida-trace` is demonstrated below, where `-U` connects to the USB device and `-i` specifies the function to be included in the trace.
 
 ```bash
-$ frida-trace -i "open" -U com.android.chrome
+$ frida-trace -U -i "open" com.android.chrome
 ```
 
 The output will show all the calls to `open` function. By default, only the arguments passed to the function are shown, but not the return values.
