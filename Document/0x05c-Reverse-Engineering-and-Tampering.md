@@ -997,7 +997,10 @@ In the above script, `onEnter` takes care of logging the calls to this function 
 
 Another thing to notice in the output above is the colorized output. An application can have multiple threads running, and each thread can call `open` function independently. By using such a color scheme, the output can be easily visually segregated for each thread.
 
-`frida-trace` can also be used to trace JNI functions in an Android application:
+`frida-trace` is a very versatile tool and there are multiple configuration options available such as:
+- Including `-I` and excluding `-X` entire modules.
+- Tracing all JNI functions in an Android application using `-i "Java_*"` (note the use of a glob `*` to match all possible functions starting with "Java_").
+- Tracing functions by address when no function name symbols are available (stripped binaries), e.g. `-a "libjpeg.so!0x4793c"`.
 
 ```bash
 $ frida-trace -U -i "Java_*" com.android.chrome
