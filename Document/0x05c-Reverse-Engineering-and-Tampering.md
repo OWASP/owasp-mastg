@@ -995,7 +995,7 @@ In the above script, `onEnter` takes care of logging the calls to this function 
 
 > Note that libc is a well-known library, Frida is able to derive the input parameters of its `open` function and automatically log them correctly. But this won't be the case for other libraries or for Android Kotlin/Java code. In that case, you may want to obtain the signatures of the functions you're interested in by referring to Android Developers documentation or by reverse engineer the app first.
 
-Another thing to notice in the output above is the colorised output. An application can have multiple threads running, and each thread can call `open` function independently. By using such a color scheme, the output can be easily visually segregated for each thread.
+Another thing to notice in the output above is the colorized output. An application can have multiple threads running, and each thread can call `open` function independently. By using such a color scheme, the output can be easily visually segregated for each thread.
 
 `frida-trace` can also be used to trace JNI functions in an Android application:
 
