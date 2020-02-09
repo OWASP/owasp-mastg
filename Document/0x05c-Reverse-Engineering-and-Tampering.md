@@ -953,6 +953,67 @@ Jprobes and Kretprobes are other KProbes-based probe types that allow hooking of
 
 The stock Android kernel comes without loadable module support, which is a problem because Kprobes are usually deployed as kernel modules. The strict memory protection the Android kernel is compiled with is another issue because it prevents the patching of some parts of Kernel memory. Elfmaster's system call hooking method causes a Kernel panic on stock Lollipop and Marshmallow because the sys_call_table is non-writable. You can, however, use KProbes in a sandbox by compiling your own, more lenient Kernel (more on this later).
 
+##### Method Tracing
+
+In contrast to method profiling, which tells you how frequently a method is being called, method tracing helps you to also determine its input and output values. This technique can prove to be very useful when dealing with applications that have a big codebase and/or are obfuscated.
+
+As we will discuss shortly in the next section, `frida-trace` offers out-of-the-box support for Android/iOS native code tracing and iOS high level method tracing. While it [doesn't support Java method tracing yet](https://github.com/frida/frida-python/issues/70 "Support for tracing high-level methods of Java Classes via patterns"), you can still use regular Frida scripting and hooking in order to perform Java method tracing.
+
+##### Native Code Tracing
+
+Native methods tracing can be performed with relative ease than compared to Java method tracing. `frida-trace` is a CLI tool for dynamically tracing function calls. It makes tracing native functions trivial and can be very useful for collecting information about an application.
+
+In order to use `frida-trace`, a Frida server should be running on the device. An example for tracing libc's `open` function using `frida-trace` is demonstrated below, where `-U` connects to the USB device and `-i` specifies the function to be included in the trace.
+
+```bash
+$ frida-trace -U -i "open" com.android.chrome
+```
+
+<img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="550px"/>
+
+Note how, by default, only the arguments passed to the function are shown, but not the return values. Under the hood, `frida-trace` generates one little JavaScript handler file per matched function in the auto-generated `__handlers__` folder, which Frida then injects into the process. You can edit these files for more advanced usage such as obtaining the return value of the functions, their input parameters, accessing the memory, etc. Check Frida's [JavaScript API](https://www.frida.re/docs/javascript-api/ "JavaScript API") for more details.
+
+In this case, the generated script which traces all calls to the `open` function in `libc.so` is located in is `__handlers__/libc.so/open.js`, it looks as follows:
+
+```
+{
+  onEnter: function (log, args, state) {
+    log('open(' +
+      'path="' + args[0].readUtf8String() + '"' +
+      ', oflag=' + args[1] +
+    ')');
+  },
+
+
+  onLeave: function (log, retval, state) {
+      log('\t return: ' + retval);      \\ edited
+  }
+}
+```
+
+In the above script, `onEnter` takes care of logging the calls to this function and its two input parameters in the right format. You can edit the `onLeave` event to print the return values as shown above.
+
+> Note that libc is a well-known library, Frida is able to derive the input parameters of its `open` function and automatically log them correctly. But this won't be the case for other libraries or for Android Kotlin/Java code. In that case, you may want to obtain the signatures of the functions you're interested in by referring to Android Developers documentation or by reverse engineer the app first.
+
+Another thing to notice in the output above is that it's colorized. An application can have multiple threads running, and each thread can call the `open` function independently. By using such a color scheme, the output can be easily visually segregated for each thread.
+
+`frida-trace` is a very versatile tool and there are multiple configuration options available such as:
+- Including `-I` and excluding `-X` entire modules.
+- Tracing all JNI functions in an Android application using `-i "Java_*"` (note the use of a glob `*` to match all possible functions starting with "Java_").
+- Tracing functions by address when no function name symbols are available (stripped binaries), e.g. `-a "libjpeg.so!0x4793c"`.
+
+```bash
+$ frida-trace -U -i "Java_*" com.android.chrome
+```
+
+Many binaries are stripped and don't have function name symbols available with them. In such cases, a function can be traced using its address as well.
+
+```bash
+$ frida-trace -p 1372 -a "libjpeg.so!0x4793c"
+```
+
+To learn more about all options for advanced usage, check the [documentation in the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
+
 #### Emulation-based Analysis
 
 The Android emulator is based on QEMU, a generic and open source machine emulator. QEMU emulates a guest CPU by translating the guest instructions on-the-fly into instructions the host processor can understand. Each basic block of guest instructions is disassembled and translated into an intermediate representation called Tiny Code Generator (TCG). The TCG block is compiled into a block of host instructions, stored in a code cache, and executed. After execution of the basic block, QEMU repeats the process for the next block of guest instructions (or loads the already translated block from the cache). The whole process is called dynamic binary translation.
