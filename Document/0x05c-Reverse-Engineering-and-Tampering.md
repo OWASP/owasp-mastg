@@ -1346,7 +1346,7 @@ Library injection is desirable in many situations such as:
 
 In this section we will learn about techniques for performing library injection on Android, which basically consist of patching the application code (Smali or native) or alternatively using the `LD_PRELOAD` feature provided by the OS loader itself.
 
-###### Patching Application's Java Code
+###### Patching the Application's Smali Code
 
 An Android application's decompiled smali code can be patched to introduce code for loading an additional library. API to load a library in Java is `System.loadLibrary("inject")`, for a library named *libinject.so*. In smali, this code looks as following:
 
