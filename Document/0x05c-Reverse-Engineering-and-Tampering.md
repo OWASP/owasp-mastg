@@ -1345,7 +1345,6 @@ Library injection is desirable in many situations such as:
 - Enable dynamic testing on a non-rooted device (e.g. with Frida).
 
 In this section we will learn about techniques for performing library injection on Android, which basically consist of patching the application code (Smali or native) or alternatively using the `LD_PRELOAD` feature provided by the OS loader itself.
-- Using OS features: using LD_PRELOAD functionality of the loader.
 
 ###### Patching Application's Java Code
 
