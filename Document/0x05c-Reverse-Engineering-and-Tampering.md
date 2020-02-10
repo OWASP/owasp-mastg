@@ -1373,7 +1373,7 @@ libnative.add_library("libinject.so") # Injection!
 libnative.write("libnative.so")
 ```
 
-In above example libinject.so library is injected as a dependency of a native library. Frida gadget can be injected into an application using this approach and is explained in detail in [LIEF's documentation](https://lief.quarkslab.com/doc/latest/tutorials/09_frida_lief.html "LIEF's documentation"). It is important to remember, once the application is patched and the library added to the respective architecture `lib` folder in the APK, you need to re-sign the application before using it.
+In the above example, libinject.so library is injected as a dependency of a native library (libnative.so), which the application already loads by default. Frida gadget can be injected into an application using this approach as explained in detail in [LIEF's documentation](https://lief.quarkslab.com/doc/latest/tutorials/09_frida_lief.html "LIEF's documentation - How to use frida on a non-rooted device"). As in the previous section, it is important to remember adding the library to the respective architecture `lib` folder in the APK and finally re-signing the application.
 
 ###### LD_PRELOAD
 
