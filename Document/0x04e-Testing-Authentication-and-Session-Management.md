@@ -127,7 +127,7 @@ Note that zxcvbn can be implemented by the app-developer as well using the Java 
 
 #### Have I Been Pwned: PwnedPasswords
 
-In order to further reduce the likelihood of a successful dictionary attack against a single factor authentication scheme (e.g. password only), you can verify whether a password has been compromised in a data breach. This can be done using services based on the Pwned Passwords API by Troy Hunt (available at api.pwnedpasswords.com). For example, the "[Have I been pwned?](https://haveibeenpwned.com "';--have i been pwned?")" companion website.
+In order to further reduce the likelihood of a successful dictionary attack against a single factor authentication scheme (e.g. password only), you can verify whether a password has been compromised in a data breach. This can be done using services based on the Pwned Passwords API by Troy Hunt (available at api.pwnedpasswords.com). For example, the "[Have I been pwned?](https://haveibeenpwned.com "\';--have i been pwned?")" companion website.
 Based on the SHA-1 hash of a possible password candidate, the API returns the number of times the hash of the given password has been found in the various breaches collected by the service. The workflow takes the following steps:
 
 1. Encode the user input to UTF-8 (e.g.: the password `test`).

@@ -215,10 +215,9 @@ Always make sure that:
 
 Most of the recommendations for static analysis can already be found in chapter "Testing Data Storage for iOS". Next, you can read up on it at the following pages:
 
-- [Apple Developer Documentation: Certificates and keys]( https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
+- [Apple Developer Documentation: Certificates and keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
 - [Apple Developer Documentation: Generating new keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys "Generating new keys")
-- [Apple Developer Documentation: Key generation attributes](
-https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
+- [Apple Developer Documentation: Key generation attributes](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
 
 #### Dynamic Analysis
 
