@@ -1348,7 +1348,7 @@ In this section we will learn about techniques for performing library injection 
 
 ###### Patching the Application's Smali Code
 
-An Android application's decompiled smali code can be patched to introduce code for loading an additional library. API to load a library in Java is `System.loadLibrary("inject")`, for a library named *libinject.so*. In smali, this code looks as following:
+An Android application's decompiled smali code can be patched to introduce a call to `System.loadLibrary`. The following smali patch injects a library named *libinject.so*:
 
 ```
 const-string v0, "inject"
