@@ -1336,7 +1336,13 @@ The following approach can be used in order to patch the JavaScript file:
 
 In the previous section we learned about patching application code to assist in our analysis. Patching an application in theory can be used to perform any task, but in practice it has its own limitations. For example, we have a 3rd party application for which we don't have the source code and only works locally. We want to modify this application so that it is accessible over the network as well. One possible way is to patch the application's APIs and introduce networking code, but this approach may not be practical for a large application. Another shortcoming being the patching performed is not reusable for any other executable, i.e patching performed is unique to each application. As an alternative approach, if we can separately develop and compile a library which provides the networking logic and inject this into the application, not only this will be time efficient, but also the library will be reusable. This paradigm of introducing a separately compiled code in a form of a library in a process memory is often referred to as library injection. In Windows world this technique has been in use for a long time, and is referred as *DLL injection*. It is commonly used to modify and bypass anti-cheat mechanisms in games. On Android and iOS, most common example is Frida, under-the-hood it is performing a library injection to provide all the functionalities.
 
-Library injection is desirable in many situations - for performing process introspection, to introduce new functionality in existing application, debug weird runtime bugs, or while working on a non-rooted or non-jailbroken device.
+Library injection is desirable in many situations such as:
+
+- Performing process introspection (e.g. listing classes, tracing method calls, monitoring accessed files, monitoring network access, obtaining direct memory access).
+- Supporting or replacing existing code with your own implementations (e.g. replace a function that should give random numbers).
+- Introducing new features to an existing application.
+- Debugging and fixing elusive runtime bugs on code for which you don't have the original source.
+- Enable dynamic testing on a non-rooted device (e.g. with Frida).
 
 In this section we will learn about the techniques for performing library injection in an Android application. The techniques introduced below can be broadly divided into two types:
 - Patching the application: Involves patching application's Java code and if native code is present, then patching native code as another alternative.
