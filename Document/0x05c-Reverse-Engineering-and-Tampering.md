@@ -1355,7 +1355,9 @@ const-string v0, "inject"
 invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 ```
 
-Ideally the above code should be inserted early in the application lifecycle, for instance in `onCreate` method of the application. It is important to remember to add the library libinject.so in the respective architecture folder (armeabi-v7a, arm64-v8a, x86) of the `lib` folder in the APK. Once the application is patched and library added to APK, you need to re-sign the application before using it. Frequently this technique is used to load Frida gadget in an application specially while working on a non-rooted device.
+Ideally you should insert the above code early in the [application lifecycle](https://developer.android.com/guide/components/activities/activity-lifecycle "Understand the Activity Lifecycle"), for instance in the `onCreate` method. It is important to remember to add the library libinject.so in the respective architecture folder (armeabi-v7a, arm64-v8a, x86) of the `lib` folder in the APK. Finally, you need to re-sign the application before using it.
+
+A well-known use case of this technique is loading the Frida gadget to an application, specially while working on a non-rooted device (this is what [`objection patchapk`](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") basically does).
 
 ###### Patching Application's Native Library
 
