@@ -1388,7 +1388,6 @@ On Android, setting `LD_PRELOAD` is slightly different than compared to other Li
 $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
-
 > In the latest Android versions, you need to disable the SELinux to make LD_PRELOAD work, as the library to be preloaded may not have SELinux context assigned.
 
 
