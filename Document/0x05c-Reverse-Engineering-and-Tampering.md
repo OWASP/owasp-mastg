@@ -1382,7 +1382,7 @@ Above we looked into techniques which require some kind of modification of the a
 
 The symbols loaded from the library passed using LD_PRELOAD always gets the precedence, i.e they are searched first by the loader while resolving the symbols. This feature is often used to modify behaviour of libc functions - fopen(), read(), write(), strcmp() etc, specially in case of obfuscated programs,where understanding the behavior of the program may be challenging.
 
-On Android, for setting LD_PRELOAD environment variable is slightly different than compared to other Linux distributions. For an application with package name *com.foo.bar*, LD_PRELOAD environment variable can be set using `setprop` command, as demonstrated below:
+On Android, setting `LD_PRELOAD` is slightly different than compared to other Linux distributions: using the `setprop` command. Below you can see an example for an application with package name `com.foo.bar` (note the additional `wrap.` prefix):
 
 ```bash
 $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
