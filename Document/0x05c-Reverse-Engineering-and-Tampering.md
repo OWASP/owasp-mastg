@@ -1377,7 +1377,7 @@ In the above example, libinject.so library is injected as a dependency of a nati
 
 ###### LD_PRELOAD
 
-Above we looked into techniques which require some kind of modification of the application's code. A library can also be injected into a process using functionalities offered by the loader of the operating system. On Android, which is a Linux based OS, by setting LD_PRELOAD environment variable an additional library can be loaded. [LD.SO man page](http://man7.org/linux/man-pages/man8/ld.so.8.html "LD.SO man page") describes LD_PRELOAD as:
+Above we looked into techniques which require some kind of modification of the application's code. A library can also be injected into a process using functionalities offered by the loader of the operating system. On Android, which is a Linux based OS, you can load an additional library by setting the `LD_PRELOAD` environment variable.
 
 
 The symbols loaded from the library passed using LD_PRELOAD always gets the precedence, i.e they are searched first by the loader while resolving the symbols. This feature is often used to modify behaviour of libc functions - fopen(), read(), write(), strcmp() etc, specially in case of obfuscated programs,where understanding the behavior of the program may be challenging.
