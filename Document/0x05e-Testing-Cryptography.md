@@ -1,16 +1,29 @@
 ## Android Cryptographic APIs
 
+### Overview
+
 In the chapter "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)", we introduced general cryptography best practices and described typical flaws that can occur when cryptography is used incorrectly in mobile apps. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify uses of those APIs in the source code and how to interpret the configuration. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
-
-### Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
-
-#### Overview
 
 Android cryptography APIs are based on the Java Cryptography Architecture (JCA). JCA separates the interfaces and implementation, making it possible to include several [security providers](https://developer.android.com/reference/java/security/Provider.html "Android Security Providers") that can implement sets of cryptographic algorithms. Most of the JCA interfaces and classes are defined in the `java.security.*` and `javax.crypto.*` packages. In addition, there are Android specific packages `android.security.*` and `android.security.keystore.*`.
 
+#### Recommendation
+
+The following list of recommendations should be considered during app examination:
+
+- You should ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed.
+- You should ensure that provider has the latest updates - [Updating security provider](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
+- You should stop specifying a provider and use the default implementation (AndroidOpenSSL).
+- You should stop using Crypto provider as it is depracated.
+- You should specify a provider only with the Android Keystore system.
+- You should stop using Password-based encryption ciphers without IV.
+
+#### Provider
+
+Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionallities which depend on cryptography.  
+
 The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
 
-You can list the set of existing providers as follows:
+You can list the set of existing providers using following code:
 
 ```java
 StringBuilder builder = new StringBuilder();
@@ -39,6 +52,18 @@ provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
 provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
 ```
 
+Below you can find the output of a running Android 9 (API level 28) in an emulator with Google Play APIs:
+
+```text
+provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
+provider: AndroidOpenSSL 1.0(Android's OpenSSL-backed security provider)
+provider: CertPathProvider 1.0(Provider of CertPathBuilder and CertPathVerifier)
+provider: AndroidKeyStoreBCWorkaround 1.0(Android KeyStore security provider to work around Bouncy Castle)
+provider: BC 1.57(BouncyCastle Security Provider v1.57)
+provider: HarmonyJSSE 1.0(Harmony JSSE Provider)
+provider: AndroidKeyStore 1.0(Android KeyStore security provider)
+```
+
 For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
 
 Apps that target modern API levels, went through the following changes:
@@ -58,6 +83,18 @@ Apps that target modern API levels, went through the following changes:
   - You get a warning if you still specify a provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") list all network security changes.
+
+#### Key generation
+
+#### Keystore
+
+### Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
+
+#### Overview
+
+
+
+
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
