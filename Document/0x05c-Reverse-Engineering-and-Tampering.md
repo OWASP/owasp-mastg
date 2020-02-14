@@ -1381,8 +1381,7 @@ In the above example, libinject.so library is injected as a dependency of a nati
 
 Above we looked into techniques which require some kind of modification of the application's code. A library can also be injected into a process using functionalities offered by the loader of the operating system. On Android, which is a Linux based OS, you can load an additional library by setting the `LD_PRELOAD` environment variable.
 
-
-The symbols loaded from the library passed using LD_PRELOAD always gets the precedence, i.e they are searched first by the loader while resolving the symbols. This feature is often used to modify behaviour of libc functions - fopen(), read(), write(), strcmp() etc, specially in case of obfuscated programs,where understanding the behavior of the program may be challenging.
+The symbols loaded from the library passed using LD_PRELOAD always gets the precedence, i.e they are searched first by the loader while resolving the symbols. This feature is often used to modify behaviour of libc functions - fopen(), read(), write(), strcmp() etc, specially in case of obfuscated programs, where information is deliberately obfuscated to prevent static analysis, for instance, file path passed to fopen() or strings passed to strcmp().
 
 On Android, setting `LD_PRELOAD` is slightly different than compared to other Linux distributions: using the `setprop` command. Below you can see an example for an application with package name `com.foo.bar` (note the additional `wrap.` prefix):
 
@@ -1390,7 +1389,7 @@ On Android, setting `LD_PRELOAD` is slightly different than compared to other Li
 $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
-> In the latest Android versions, you need to disable the SELinux to make LD_PRELOAD work, as the library to be preloaded may not have SELinux context assigned.
+> In the latest Android versions, you need to disable the SELinux to make LD_PRELOAD work, which may require root, as the library to be preloaded may not have SELinux context assigned.
 
 
 #### Dynamic Instrumentation
