@@ -1004,6 +1004,33 @@ To remove all JavaScript source code and locally stored data, clear the WebView'
 
 Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
 
+For more secure web browsing, Android 8.1 introduces an implementation for [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4). SafeBrowsing allows your application to detect URLs that Google has classified as a known threat.
+By default the webview shows a warning to users about the security risk with the option to load the URL or return to the safe page. With the SafeBrowsing API you can customize your application behavior by either reporting the threat to SafeBrowsing or performing a particular action such as returning back to safety each time it encounter a known threat.
+
+```Java
+public class MyWebViewClient extends WebViewClientCompat {
+    // Automatically go "back to safety" when attempting to load a website that
+    // Google has identified as a known threat. An instance of WebView calls
+    // this method only after Safe Browsing is initialized, so there's no
+    // conditional logic needed here.
+    @Override
+    public void onSafeBrowsingHit(WebView view, WebResourceRequest request,
+            int threatType, SafeBrowsingResponseCompat callback) {
+        // The "true" argument indicates that your app reports incidents like
+        // this one to Safe Browsing.
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_RESPONSE_BACK_TO_SAFETY)) {
+            callback.backToSafety(true);
+            Toast.makeText(view.getContext(), "Unsafe web page blocked.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+}
+```
+
+[Virus Total API](https://support.virustotal.com/hc/en-us/articles/115002146469-API-Scripts) also can be used for analyzing and checking URLs and local files for known threats. various implementaions of scripts to communicate with the API has been publically shared by the community.
+
+##### When sending URLs or files to be checked for know threats make sure they don't contain sensitive data which could abuse users privacy, or expose your app for security breaches.
+
 #### Dynamic Analysis
 
 Dynamic Analysis depends on operating conditions. There are several ways to inject JavaScript into an app's WebView:
@@ -1493,6 +1520,11 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 #### Android permissions changes in Android 8
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
+
+### SafeBrowing
+
+- <https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing>
+- <https://support.virustotal.com/hc/en-us/articles/115002146549-Mobile-Apps>
 
 #### OWASP MASVS
 
