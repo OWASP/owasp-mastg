@@ -1523,7 +1523,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
-### SafeBrowing
+#### SafeBrowsing
 
 - <https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing>
 - <https://support.virustotal.com/hc/en-us/articles/115002146549-Mobile-Apps>
