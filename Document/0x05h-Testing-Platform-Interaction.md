@@ -1392,7 +1392,7 @@ Tapjacking is a vulnerability in which the malicious application abuses the scre
 Check the source code for implementation of any of the below techniques:
 
 - Override [`onFilterTouchEventForSecurity`](https://developer.android.com/reference/android/view/View#onFilterTouchEventForSecurity%28android.view.MotionEvent%29 "onFilterTouchEventForSecurity")
-- Set [android:filterTouchesWhenObscured](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29) to true
+- Set [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "android:filterTouchesWhenObscured") to true
 - [FLAG_WINDOW_IS_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_OBSCURED)
 
 Presence of any of this technique will safeguard the application from this vulnerability.
