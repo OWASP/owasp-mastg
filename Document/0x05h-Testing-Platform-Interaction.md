@@ -1387,6 +1387,8 @@ There are several ways to perform dynamic analysis:
 
 Tapjacking is a vulnerability in which the malicious application abuses the screen overlay feature of Android to capture user taps and keystrokes. This is possible because an active screen overlay can listen for taps and intercept any information being passed in the underlying activity.
 
+Over the years many known malwares like MazorBot, BankBot, MysteryBot have been abusing screen overlay feature to target business critical applications, namely in the banking sector. The [blog](https://www.infosecurity-magazine.com/opinions/overlay-attacks-safeguard-mobile/ "blog") discusses more about these type of malwares.
+
 #### Static Analysis
 
 Check the source code for implementation of any of the below techniques:
@@ -1395,13 +1397,19 @@ Check the source code for implementation of any of the below techniques:
 - Set [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "android:filterTouchesWhenObscured") to true
 - [FLAG_WINDOW_IS_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_OBSCURED "FLAG_WINDOW_IS_OBSCURED")
 
-When implementing any of these mechanisms, the application is not vulnerable anymore to Tapjacking.
+When either of the first two controls are implemented, the android framework will discard touches or taps that are received from any other visible window. This will safeguard users against this severe vulnerability.
+
+The third control, when applied, provides safeguard to the components and not to the whole application. This type of mitigation can be used when there is a business need to allow overlay feature by third party application. In this cases the developer must identify sensitive input fields from the application and should associate it with the third control. This would minimise the impact of Tapjacking vulnerability.
+
+Hence based upon the requirement any of these controls can be implemented.
+
+When any of the first two controls is implemented, the applications is not vulnerable anymore to Tapjacking.
 
 #### Dynamic Analysis
 
 To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
 
-Apart from this is an automated tool, called [QARK](https://github.com/linkedin/qark "Qark") that can also be used to test for this vulnerability.
+Apart from this there is an automated tool, called [QARK](https://github.com/linkedin/qark "Qark") that can also be used to test for this vulnerability. To understad usage of this tool and how to use it for detecting tapjacking, the [link](https://resources.infosecinstitute.com/android-penetration-tools-walkthrough-series-qark "link") from infosecinstitute can be referred. In this article FourGoats application is used to check for different vulnerabilties, including Tapjacking.
 
 ### Testing enforced updating (MSTG-ARCH-9)
 
