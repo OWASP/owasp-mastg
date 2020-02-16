@@ -1395,7 +1395,7 @@ Check the source code for implementation of any of the below techniques:
 - Set [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "android:filterTouchesWhenObscured") to true
 - [FLAG_WINDOW_IS_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_OBSCURED)
 
-Presence of any of this technique will safeguard the application from this vulnerability.
+When implementing any of these mechanisms, the application is not vulnerable anymore to Tapjacking.
 
 #### Dynamic Analysis
 
