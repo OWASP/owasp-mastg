@@ -1389,7 +1389,7 @@ Tapjacking is a vulnerability in which the malicious application abuses the scre
 
 #### Static Analysis
 
-Check the source code for either or implementation of below techniques:
+Check the source code for implementation of any of the below techniques:
 
 - Override [onFilterTouchEventForSecurity()](https://developer.android.com/reference/android/view/View#onFilterTouchEventForSecurity%28android.view.MotionEvent%29)
 - Set [android:filterTouchesWhenObscured](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29) to true
