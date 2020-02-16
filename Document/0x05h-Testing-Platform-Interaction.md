@@ -1004,7 +1004,7 @@ To remove all JavaScript source code and locally stored data, clear the WebView'
 
 Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
 
-For more secure web browsing, Android 8.1 introduces an implementation for [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4). SafeBrowsing allows your application to detect URLs that Google has classified as a known threat.
+For more secure web browsing, Android 8.1 introduces the [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4), which allows your application to detect URLs that Google has classified as a known threat.
 By default the webview shows a warning to users about the security risk with the option to load the URL or return to the safe page. With the SafeBrowsing API you can customize your application behavior by either reporting the threat to SafeBrowsing or performing a particular action such as returning back to safety each time it encounter a known threat.
 
 ```Java
