@@ -1387,7 +1387,7 @@ There are several ways to perform dynamic analysis:
 
 Tapjacking is a vulnerability in which the malicious application abuses the screen overlay feature of Android to capture user taps and keystrokes. This is possible because an active screen overlay can listen for taps and intercept any information being passed in the underlying activity.
 
-#### Static analysis
+#### Static Analysis
 
 Check the source code for either or implementation of below techniques:
 
