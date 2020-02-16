@@ -1401,7 +1401,7 @@ When implementing any of these mechanisms, the application is not vulnerable any
 
 To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
 
-Apart from this an automated tool, [QARK](https://github.com/linkedin/qark) can also be used to test this vulnerability.
+Apart from this is an automated tool, called [QARK](https://github.com/linkedin/qark "Qark") that can also be used to test for this vulnerability.
 
 ### Testing enforced updating (MSTG-ARCH-9)
 
