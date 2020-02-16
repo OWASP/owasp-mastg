@@ -1027,7 +1027,7 @@ public class MyWebViewClient extends WebViewClientCompat {
 }
 ```
 
-[Virus Total API](https://support.virustotal.com/hc/en-us/articles/115002146469-API-Scripts) also can be used for analyzing and checking URLs and local files for known threats. various implementaions of scripts to communicate with the API has been publically shared by the community.
+[Virus Total API](https://support.virustotal.com/hc/en-us/articles/115002146469-API-Scripts) also provides an API for analyzing URLs and local files for known threats. A Java implementation for the API is available on Virus Total's documentation page.
 
 ##### When sending URLs or files to be checked for know threats make sure they don't contain sensitive data which could abuse users privacy, or expose your app for security breaches.
 
