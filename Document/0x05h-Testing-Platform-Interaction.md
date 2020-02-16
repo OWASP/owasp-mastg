@@ -1399,7 +1399,7 @@ When implementing any of these mechanisms, the application is not vulnerable any
 
 #### Dynamic Analysis
 
-To identify the existence of this vulnerability, create a sample apk consiting of a single activity and toast dialog. Upon installing the sample apk on the device and post launching it if the toast dialog overlays on the application to test then it is vulnerable to tapjacking vulnerability.
+To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
 
 Apart from this an automated tool, [QARK](https://github.com/linkedin/qark) can also be used to test this vulnerability.
 
