@@ -93,7 +93,7 @@ Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system t
 
 Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
 
-##### KASLR, ASLR, DEP and PIE
+##### ASLR, KASLR, PIE and DEP
 
 Address Space Layout Randomization (ASLR), which has been part of Android since Android 4.1 (API level 15), is a standard protection against buffer-overflow attacks, which makes sure that both the application and the OS are loaded to random memory addresses making it difficult to get the correct address for a specific memory region or library. In Android 8.0 (API level 26), this protection was also implemented for the Kernel (KASLR). ASLR protection is only possible if the application can be loaded at a random place in memory, which is indicated by the Position Independent Executable (PIE) flag of the application. Since Android 5.0 (API level 21), support for non-PIE enabled applications was dropped. Finally, Data Execution Prevention (DEP) prevents code execution on the stack and heap, which is also used to combat buffer-overflow exploits.
 
