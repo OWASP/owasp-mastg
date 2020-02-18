@@ -89,7 +89,7 @@ Android contains may different features that attempt to make it more difficult f
 
 ##### SELinux
 
-Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, processes can work based on a least-privilege principle, so that vulnerable processes are more difficult to exploit for privilege escalation or lateral movement.
+Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, by working on a least-privilege principle, vulnerable processes are more difficult to exploit via privilege escalation or lateral movement.
 
 Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
 
