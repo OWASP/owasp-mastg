@@ -83,6 +83,28 @@ Adiantum is available for Android 9 (API level 28) and higher versions. It is na
 Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
 It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
 
+#### Android Security Hardening
+
+Android contains many different features that attempt to make it more difficult for a malicious application to break out of its sandbox. Since applications are effectively running code on your device, it is important that this can be done securely, even if the application itself can not be trusted. The following sections explain which mitigations are in place to prevent applications from abusing vulnerabilities. Note that an OS is never 100% secure and new vulnerabilities are still discovered on a regular basis, even with these mitigations in place.
+
+##### SELinux
+
+Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, by working on a least-privilege principle, vulnerable processes are more difficult to exploit via privilege escalation or lateral movement.
+
+Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
+
+##### ASLR, KASLR, PIE and DEP
+
+Address Space Layout Randomization (ASLR), which has been part of Android since Android 4.1 (API level 15), is a standard protection against buffer-overflow attacks, which makes sure that both the application and the OS are loaded to random memory addresses making it difficult to get the correct address for a specific memory region or library. In Android 8.0 (API level 26), this protection was also implemented for the kernel (KASLR). ASLR protection is only possible if the application can be loaded at a random place in memory, which is indicated by the Position Independent Executable (PIE) flag of the application. Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was dropped. Finally, Data Execution Prevention (DEP) prevents code execution on the stack and heap, which is also used to combat buffer-overflow exploits.
+
+Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2016/07/protecting-android-with-more-linux.html "Protecting Android with more Linux kernel defenses").
+
+##### SECCOMP
+
+Android applications can contain native code written in C or C++. These compiled binaries can communicate both with the Android Runtime through Java Native Interface (JNI) bindings, and with the OS through system calls. Some system calls are either not implemented, or are not supposed to be called by normal applications. As these system calls communicate directly with the kernel, they are a prime target for exploit developers. With Android 8 (API level 26), Android has introduced the support for Secure Computing (SECCOMP) filters for all Zygote based processes (i.e. user applications). These filters restrict the available syscalls to those exposed through bionic.
+
+Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2017/07/seccomp-filter-in-android-o.html "Seccomp filter in Android O").
+
 ### Apps on Android
 
 #### Communication with the Operating System
@@ -97,7 +119,7 @@ Android apps interact with system services via the Android Framework, an abstrac
 
 The framework also offers common security functions, such as cryptography.
 
-The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 7.0 (API level 24-25) and the current Android version is Android 9 (API level 28).
+The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 8.1 (API level 27) and the current Android version is Android 10 (API level 29).
 
 Noteworthy API versions:
 
@@ -107,8 +129,9 @@ Noteworthy API versions:
 - Android 5.0 (API level 21) in November 2014 (ART used by default and many other features added)
 - Android 6.0 (API level 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
 - Android 7.0 (API level 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 (API level 26-27) in August 2017 (A lot of security improvements)
-- Android 9 (API level 28) in August 2018.
+- Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
+- Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
+- Android 10 (API level 29) in September 2019 (notification bubbles, project Mainline)
 
 #### Linux UID/GID for Normal Applications
 
