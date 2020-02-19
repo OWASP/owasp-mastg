@@ -1028,7 +1028,7 @@ public class MyWebViewClient extends WebViewClientCompat {
 }
 ```
 
-You can use the SafeBrowsing API seperatly from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes againt multiple threat types.
+You can use the SafeBrowsing API independently from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes against multiple threat types.
 
 [Virus Total API](https://support.virustotal.com/hc/en-us/articles/115002146469-API-Scripts) also provides an API for analyzing URLs and local files for known threats. A Java implementation for the API is available on Virus Total's documentation page.
 
