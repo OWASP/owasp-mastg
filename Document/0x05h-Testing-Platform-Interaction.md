@@ -1017,9 +1017,9 @@ public class MyWebViewClient extends WebViewClientCompat {
     @Override
     public void onSafeBrowsingHit(WebView view, WebResourceRequest request,
             int threatType, SafeBrowsingResponseCompat callback) {
-        // The "true" argument indicates that your app reports incidents like
-        // this one to Safe Browsing.
         if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_RESPONSE_BACK_TO_SAFETY)) {
+            // The "true" argument indicates that your app reports incidents like
+           // this one to Safe Browsing.
             callback.backToSafety(true);
             Toast.makeText(view.getContext(), "Unsafe web page blocked.",
                     Toast.LENGTH_LONG).show();
