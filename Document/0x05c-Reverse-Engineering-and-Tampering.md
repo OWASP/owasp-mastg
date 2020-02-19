@@ -918,7 +918,7 @@ DDMS also offers a convenient heap dump button that will dump the Java heap of a
 
 Moving down a level in the OS hierarchy, you arrive at privileged functions that require the powers of the Linux kernel. These functions are available to normal processes via the system call interface. Instrumenting and intercepting calls into the kernel is an effective method for getting a rough idea of what a user process is doing, and often the most efficient way to deactivate low-level tampering defenses.
 
-Strace is a standard Linux utility that monitors the interaction between processes and the kernel. The utility is not included with Android by default, but can easily be built from source via the Android NDK. Strace is a very convenient way to monitor a process's system calls. Strace depends, however on the `ptrace` system call to attach to the target process, so it only works up to the point at which anti-debugging measures startup.
+Strace is a standard Linux utility that is not included with Android by default, but can be easily built from source via the Android NDK. It monitors the interaction between processes and the kernel, being a very convenient way to monitor system calls. However, there's a downside: as strace depends on the `ptrace` system call to attach to the target process, once anti-debugging measures become active it will stop working.
 
 If the Android **stop application at startup** feature is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
 
