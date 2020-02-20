@@ -1006,29 +1006,9 @@ Devices running platforms older than Android 4.4 (API level 19) use a version of
 
 For more secure web browsing, Android 8.1 (API level 27) introduces the [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4), which allows your application to detect URLs that Google has classified as a known threat.
 
-By default, WebViews show a warning to users about the security risk with the option to load the URL or stop the page from loading. With the SafeBrowsing API you can customize your application's behavior by either reporting the threat to SafeBrowsing or performing a particular action such as returning back to safety each time it encounters a known threat.
+By default, WebViews show a warning to users about the security risk with the option to load the URL or stop the page from loading. With the SafeBrowsing API you can customize your application's behavior by either reporting the threat to SafeBrowsing or performing a particular action such as returning back to safety each time it encounters a known threat. Please check the [Android Developers documentation](https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing) for usage examples.
 
-```Java
-public class MyWebViewClient extends WebViewClientCompat {
-    // Automatically go "back to safety" when attempting to load a website that
-    // Google has identified as a known threat. An instance of WebView calls
-    // this method only after Safe Browsing is initialized, so there's no
-    // conditional logic needed here.
-    @Override
-    public void onSafeBrowsingHit(WebView view, WebResourceRequest request,
-            int threatType, SafeBrowsingResponseCompat callback) {
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_RESPONSE_BACK_TO_SAFETY)) {
-            // The "true" argument indicates that your app reports incidents like
-           // this one to Safe Browsing.
-            callback.backToSafety(true);
-            Toast.makeText(view.getContext(), "Unsafe web page blocked.",
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-}
-```
-
-You can use the SafeBrowsing API independently from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes against multiple threat types.
+You can use the SafeBrowsing API independently from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes (e.g : http,file,etc) since SafeBrowsing is agnostic to URL schemes, and against `TYPE_POTENTIALLY_HARMFUL_APPLICATION` and `TYPE_SOCIAL_ENGINEERING` threat types.
 
 [Virus Total API](https://support.virustotal.com/hc/en-us/articles/115002146469-API-Scripts) also provides an API for analyzing URLs and local files for known threats. A Java implementation for the API is available on Virus Total's documentation page.
 
