@@ -57,7 +57,7 @@ int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ### Ссылки
 
 #### OWASP Mobile Top 10 2016
-- M5 - Недостаточная криптография - https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography
+- M5 - Недостаточная криптография - https://owasp.org/www-project-mobile-top-10/2016-risks/m5-insufficient-cryptography
 
 #### OWASP MASVS
 - V3.3: "Приложение использует криптографические примитивы, которые подходят для конкретного прецедента, с параметрами, которые соответствуют лучшим практикам отрасли."

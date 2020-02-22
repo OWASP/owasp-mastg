@@ -20,7 +20,7 @@
 ##### OWASP Mobile Top 10 2016
 
 - MX - Title - Link
-- M3 - Insufficient Transport Layer Protection - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+- M3 - Insufficient Transport Layer Protection - https://owasp.org/www-project-mobile-top-10/2014-risks/m3-insufficient-transport-layer-protection
 
 ##### OWASP MASVS
 

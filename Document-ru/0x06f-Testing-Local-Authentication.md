@@ -224,7 +224,7 @@ Needle также может использоваться, чтобы обойт
 
 #### OWASP Mobile Top 10 2016
 
-- M4 - Небезопасная аутентификация - https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication
+- M4 - Небезопасная аутентификация - https://owasp.org/www-project-mobile-top-10/2016-risks/m4-insecure-authentication
 
 #### OWASP MASVS
 

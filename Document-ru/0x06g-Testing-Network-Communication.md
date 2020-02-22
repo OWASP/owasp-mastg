@@ -226,7 +226,7 @@ else {
 
 ##### OWASP Mobile Top 10 2016
 
-- M3 - Недостаточная защита транспортного протокола - https://www.owasp.org/index.php/Mobile_Top_10_2014-M3
+- M3 - Недостаточная защита транспортного протокола - https://owasp.org/www-project-mobile-top-10/2014-risks/m3-insufficient-transport-layer-protection
 
 ##### OWASP MASVS
 

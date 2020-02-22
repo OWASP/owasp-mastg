@@ -604,7 +604,7 @@ int xyz(char *dst) {
 
 #### OWASP Mobile Top 10 2016
 
--	M9 - Обратное проектирование - https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering
+-	M9 - Обратное проектирование - https://owasp.org/www-project-mobile-top-10/2016-risks/m9-reverse-engineering
 
 #### OWASP MASVS
 

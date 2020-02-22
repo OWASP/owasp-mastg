@@ -366,7 +366,7 @@ IDB автоматизирует процесс проверки сразу дл
 
 #### OWASP Mobile Top 10 2016
 
-- M7 - Качество кода на стороне клиента - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
+- M7 - Качество кода на стороне клиента - <https://owasp.org/www-project-mobile-top-10/2016-risks/m7-client-code-quality>
 
 #### OWASP MASVS
 
