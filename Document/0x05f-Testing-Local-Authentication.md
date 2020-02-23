@@ -132,7 +132,7 @@ There are two `authenticate` methods available in the `BiometricPrompt` class. O
 
 The authentication flow would be as follows when using CryptoObject:
 
-- The app creates a key in the KeyStore with `setUserAuthenticationRequired` set to true and `setInvalidatedByBiometricEnrollment` set to -1.
+- The app creates a key in the KeyStore with `setUserAuthenticationRequired` and `setInvalidatedByBiometricEnrollment` set to true. Additionally, `setUserAuthenticationValidityDurationSeconds` should be set to -1.
 - This key is used to encrypt information that is authenticating the user (e.g. session information or authentication token).
 - A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the `authenticate` method and the `CryptoObject`.
 - This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
