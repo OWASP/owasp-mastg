@@ -31,23 +31,6 @@ You can go further and verify how good is a key by performing [key attestation](
 
 You can go to the conclusion that everything in cryptography is about a key (and you will not be far away from the truth). You went through functions how the key is created and it is a time to verify how good is a key. In th
 
-Features:
-
-##### Strongbox Keymaster
-
-Devices running Android 9 (API level 28) and higher can have a `StrongBox Keymaster`, an implementation of the Keymaster HAL that resides in a hardware security module which has its own CPU, Secure storage, a true random number generator and a mechanism to resist package tampering. To use this feature, `true` must be passed to the `setIsStrongBoxBacked` method in either the `KeyGenParameterSpec.Builder` class or the `KeyProtection.Builder` class when generating or importing keys using `AndroidKeystore`. To make sure that StrongBox is used during runtime check that `isInsideSecureHardware` returns `true` and that the system does not throw `StrongBoxUnavailableException` which get thrown if the StrongBox Keymaster isn't available for the given algorithm and key size associated with a key.
-
-#### Key Use Authorizations
-
-To mitigate unauthorized use of keys on the Android device, Android KeyStore lets apps specify authorized uses of their keys when generating or importing the keys. Once made, authorizations cannot be changed.
-
-Another API offered by Android is the `KeyChain`, which provides access to private keys and their corresponding certificate chains in credential storage, which is often not used due to the interaction necessary and the shared nature of the Keychain. See the [Developer Documentation](https://developer.android.com/reference/android/security/KeyChain "Keychain") for more details.
-
-A slightly less secure way of storing encryption keys, is in the SharedPreferences of Android. When [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences.html "Android SharedPreference API") are initialized in [MODE_PRIVATE](https://developer.android.com/reference/android/content/Context.html#MODE_PRIVATE "MODE_PRIVATE"), the file is only readable by the application that created it. However, on rooted devices any other application with root access can simply read the SharedPreference file of other apps, it does not matter whether `MODE_PRIVATE` has been used or not. This is not the case for the AndroidKeyStore. Since AndroidKeyStore access is managed on kernel level, which needs considerably more work and skill to bypass without the AndroidKeyStore clearing or destroying the keys.
-
-The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in public places like `/sdcard/`. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once, to extract the key from the source code - whether stored natively or in Java/Kotlin. Consequently, an attacker can decrypt any other data which was encrypted by the application.
-Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing encryption keys publicly also is highly discouraged as other applications can have permission to read the public partition and steal the keys.
-
 Apps that target modern API levels, went through the following changes:
 
 - For Android 7.0 (API level 24) and above [the Android Developer blog shows that](https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html "Security provider Crypto deprecated in Andorid N"):
@@ -72,7 +55,7 @@ The following list of recommendations should be considered during app examinatio
 
 - You should ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed.
 - You should ensure that provider has the latest updates - [Updating security provider](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
-- You should stop specifying a provider and use the default implementation (AndroidOpenSSL).
+- You should stop specifying a provider and use the default implementation (AndroidOpenSSL, Conscrypt).
 - You should stop using Crypto provider as it is depracated.
 - You should specify a provider only with the Android Keystore system.
 - You should stop using Password-based encryption ciphers without IV.
@@ -285,21 +268,44 @@ For the security analysis perspective the analysts may perform the following che
 - Check if the server verifies the integrity of key attestation response.
 - Check if the server performs basic checks such as integrity verification, trust verification, validity, etc. on the certificates in the chain.
 
+### Testing Symmetric Cryptography (MSTG-CRYPTO-1)
+
+#### Static Analysis
+
+Identify all the instances of symmetric key encryption in code and look for mechanism which loads or provides a symmetric key. You can look for:
+
+- symmetric algorithms (like `DES`, `AES`, etc.)
+- specifications for a key generator (like `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
+- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
+
+Verify that all identified instances do not use only symmmetric encryption in security-sensitive contexts and symmetric key is not easily obtained (from source code or from application files).
+
 ### Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
 
 #### Static Analysis
 
-Locate uses of the cryptographic primitives in code. Some of the most frequently used classes and interfaces:
+Identify all the instances of the cryptographic primitives in code. Identify all custom cryptography implementations. You can look for:
 
-- `Cipher`
-- `Mac`
-- `MessageDigest`
-- `Signature`
-- `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
-- And a few others in the `java.security.*` and `javax.crypto.*` packages.
+- classes `Cipher`, `Mac`, `MessageDigest`, `Signature`
+- interfaces `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
+- functions `getInstance`, `generateKey`
+- exceptions `KeyStoreException`, `CertificateException`, `NoSuchAlgorithmException`
+- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
+
+Identify that all calls to getInstance use default `provider` of security services by not specifing it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
 
 Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
+
+[!!! list of recommended algorithms/modes and not recommended - configuration of crypto (PCI DSS, NIST/BSI requirements)
+no ECB, DES, RC
+]
+
 Lastly, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
+
+### Testing the Purposes of Keys (MSTG-CRYPTO-5)
+
+[!!! key purpose - no reuse a key in business logic and functions like signing,encrypting
+additionally check how it was configured in keystore]
 
 ### Testing Key Management (MSTG-STORAGE-1, MSTG-CRYPTO-1 and MSTG-CRYPTO-5)
 
