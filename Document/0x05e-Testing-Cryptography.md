@@ -270,6 +270,16 @@ For the security analysis perspective the analysts may perform the following che
 
 ### Testing Symmetric Cryptography (MSTG-CRYPTO-1)
 
+#### Overview
+
+[//]: # (The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption.)
+
+This test case focuses on hardcoded symmetric cryptography as the only method of encryption. Following checks should be performed:
+
+- identify all instance of symmectric cryptography
+- verify if symmetric keys in all identified instances are not hardcoded
+- verify if hardcoded symmetric cryptography is not used as the only method of encryption
+
 #### Static Analysis
 
 Identify all the instances of symmetric key encryption in code and look for mechanism which loads or provides a symmetric key. You can look for:
@@ -278,9 +288,48 @@ Identify all the instances of symmetric key encryption in code and look for mech
 - specifications for a key generator (like `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
 - classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
 
-Verify that all identified instances do not use only symmmetric encryption in security-sensitive contexts and symmetric key is not easily obtained (from source code or from application files).
+Verify that symmetric keys in all identified instances are not hardcoded. Check if symmetric keys are not:
+
+- part of application resources
+- part of a static identifier (which might not be clearly within the definition)
+- hardcoded in code
+
+Verify that all identified instances of hardcoded symmetric cryptography is not used in security-sensitive contexts as the only method of encryption.
+
+As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
+
+```shell
+$ baksmali d file.apk -o smali_output/
+```
+
+Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
+
+```shell
+$ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
+```
+
+This will highlight all the classes that use the `SecretKeySpec` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
+
+<img src="Images/Chapters/0x5e/static_encryption_key.png" width="600px"/>
+
+#### Dynamic Analysis
+
+[//]: # (TODO: extend that section, we need to show how monitor filesystem for changes during app operation, we can show how to hook to crypto methods)
+Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
 ### Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
+
+#### Overview
+
+[//]: # (The app uses proven implementations of cryptographic primitives.)
+[//]: # (The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices.)
+[//]: # (The app does not use cryptographic protocols or algorithms that are widely considered deprecated for security purposes.)
+
+These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
+
+- identify all instance of cryptography primitives and their implementation (library or custom implementation)
+- verify how cryptography primitives are used and how they are configured
+- verify if cryptographic protocols and algorithms used are not deprecated for security purposes.
 
 #### Static Analysis
 
@@ -302,59 +351,45 @@ no ECB, DES, RC
 
 Lastly, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
 
-### Testing the Purposes of Keys (MSTG-CRYPTO-5)
-
-[!!! key purpose - no reuse a key in business logic and functions like signing,encrypting
-additionally check how it was configured in keystore]
-
-### Testing Key Management (MSTG-STORAGE-1, MSTG-CRYPTO-1 and MSTG-CRYPTO-5)
-
-#### Overview
-
-In this section we will discuss different ways to store cryptographic keys and how to test for them. We discuss the most secure way, down to the less secure way of generating and storing key material.
-
-#### Static Analysis
-
-Locate uses of the cryptographic primitives in the code. Some of the most frequently used classes and interfaces:
-
-- `Cipher`
-- `Mac`
-- `MessageDigest`
-- `Signature`
-- `AndroidKeyStore`
-- `Key`, `PrivateKey`, `PublicKey`, `SecretKeySpec`, `KeyInfo`
-- And a few others in the `java.security.*` and `javax.crypto.*` packages.
-
-As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
-
-```shell
-$ baksmali d file.apk -o smali_output/
-```
-
-Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
-
-```shell
-$ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
-```
-
-This will highlight all the classes that use the `SecretKeySpec` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
-
-<img src="Images/Chapters/0x5e/static_encryption_key.png" width="600px"/>
-
 When you have access to the source code, check at least for the following:
 
 - Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
 - Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
 - In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
-- Take special care on verifying the purposes of the keys, for instance:
-  - make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
-  - make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
+
+### Testing the Purposes of Keys (MSTG-CRYPTO-5)
+
+#### Overview
+
+[//]: # (The app doesn't re-use the same cryptographic key for multiple purposes.)
+[//]: # (key purpose - no reuse a key in business logic and functions like signing,encrypting additionally check how it was configured in keystore)
+This test case focuses on verification of purpose and reusage of the same cryptographic keys. Following checks should be performed:
+
+- identify all instanaces where cryptography is used
+- identify purpose why cryptography is used (to protect data in use, in transit or at rest)
+- identify type of cryptography
+- verify if cryptography is used according to its purpose
+
+Guides:
+
+- make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
+- make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
+
+#### Static Analysis
 
 #### Dynamic Analysis
 
-Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
-
 ### Testing Random Number Generation (MSTG-CRYPTO-6)
+
+#### Overview
+
+[//]: # (All random values are generated using a sufficiently secure random number generator.)
+This test case focuses on random values used by application. Following checks should be performed:
+
+- identify all instances where random values are used and all instances of random number generators
+- verify if random number generators are not consider as being cryptographically secure
+- verify how random number generators were used
+- verify randomness of random values generated by application
 
 #### Static Analysis
 
