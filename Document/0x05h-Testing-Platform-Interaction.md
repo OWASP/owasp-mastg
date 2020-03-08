@@ -528,7 +528,7 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 WebViews are Android's embedded components which allow your app to open web pages within your application. In addition to mobile apps realated threats, WebViews may expose your app to common web threats (e.g. XSS, Open Redirect, etc.).
 
-To give you control over the pages loaded by your WebView, Android provides `shouldOverrideUrlLoading` methods which allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView load the URL by returnig `false`.
+To give you control over the pages loaded by your WebView, Android provides `shouldOverrideUrlLoading` methods which allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`.
 
 To provide a safer web browsing experience, Android 8.1 (API level 27) introduces the [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4), which allows your application to detect URLs that Google has classified as a known threat.
 
