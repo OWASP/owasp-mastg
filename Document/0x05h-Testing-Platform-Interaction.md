@@ -542,7 +542,7 @@ You can use the SafeBrowsing API independently from WebViews using the [SafetyNe
 
 #### Static Analysis
 
-While the default value of `EnableSafeBrowsing` is true, some applications might opt to disable it. To verify that SafeBrowsing is enabled check AndroidManifest.xml file and make sure you don't see the configuration below :
+While the default value of `EnableSafeBrowsing` is `true`, some applications might opt to disable it. To verify that SafeBrowsing is enabled, inspect the AndroidManifest.xml file and make sure that the configuration below is not present:
 ```xml
 <manifest>
     <application>
