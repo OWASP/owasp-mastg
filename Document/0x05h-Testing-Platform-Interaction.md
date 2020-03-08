@@ -522,7 +522,7 @@ startActivity(i);
 
 The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [Exploit PoC App](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
 
-### Testing for Safe Browsing in WebViews (MSTG-PLATFORM-2)
+### Testing for Safe URL loading in WebViews (MSTG-PLATFORM-2)
 
 #### Overview
 
