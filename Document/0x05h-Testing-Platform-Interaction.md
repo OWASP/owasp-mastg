@@ -526,7 +526,7 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 #### Overview
 
-WebViews are Android's embedded components which allow you're app to open web pages within your application. In addition to mobile apps realated threats, WebViews expose your app to known web threats (e.g, XSS,OpenRedirct, etc).
+WebViews are Android's embedded components which allow your app to open web pages within your application. In addition to mobile apps realated threats, WebViews may expose your app to common web threats (e.g. XSS, Open Redirect, etc.).
 
 To give you control over the pages loaded by your WebView, Android provides `shouldOverrideUrlLoading` methods which allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView load the URL by returnig `false`.
 
