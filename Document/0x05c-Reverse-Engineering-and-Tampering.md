@@ -290,6 +290,26 @@ For white-box source code testing, you'll need a setup similar to the developer'
 
 During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's APK format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
 
+#### Basic Information Gathering
+
+##### Retrieving Strings
+Java
+    - use dextra or string dump in bytecode viewer?
+Native
+    - ghidra
+
+##### Call Diagrams and Cross References
+Java
+    - androguard?
+Native 
+    - ghidra
+
+##### API Usage
+- bluetooth, NFC, cryptography
+##### Checking Secure Connections
+- HTTPS, TLS, ssl pinning, network configurations
+
+
 #### Manual (Reversed) Code Review
 
 ##### Reviewing Decompiled Java Code
