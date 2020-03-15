@@ -1403,6 +1403,37 @@ Additionally, an app might be initializing the WebView on a way to avoid storing
 
 > Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
 
+This example in Kotlin from the [open source Firefox Focus](https://github.com/mozilla-mobile/focus-android/blob/master/app/src/main/java/org/mozilla/focus/webview/SystemWebView.kt#L220 "Firefox Focus for Android") app shows different cleanup steps:
+
+```Java
+override fun cleanup() {
+        clearFormData() // Removes the autocomplete popup from the currently focused form field, if present. Note this only affects the display of the autocomplete popup, it does not remove any saved form data from this WebView's store. To do that, use WebViewDatabase#clearFormData.
+        clearHistory()
+        clearMatches()
+        clearSslPreferences()
+        clearCache(true)
+
+        // We don't care about the callback - we just want to make sure cookies are gone
+        CookieManager.getInstance().removeAllCookies(null)
+
+        WebStorage.getInstance().deleteAllData() // Clears all storage currently being used by the JavaScript storage APIs. This includes the Application Cache, Web SQL Database and the HTML5 Web Storage APIs.
+
+        val webViewDatabase = WebViewDatabase.getInstance(context)
+        // It isn't entirely clear how this differs from WebView.clearFormData()
+        @Suppress("DEPRECATION")
+        webViewDatabase.clearFormData() // Clears any saved data for web forms.
+        webViewDatabase.clearHttpAuthUsernamePassword()
+
+        deleteContentFromKnownLocations(context) // calls FileUtils.deleteWebViewDirectory(context) which deletes all content in "app_webview".
+    }
+```
+
+https://github.com/mozilla-mobile/focus-android/blob/master/app/src/main/java/org/mozilla/focus/utils/FileUtils.kt
+
+You can use:
+
+- [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData "")
+
 #### Dynamic Analysis
 
 Open a WebView accessing some sensitive data and use a dynamic instrumentation framework such as Frida to hook `clearCache` in order to verify if it's being used whenever you terminate a WebView.
