@@ -1397,7 +1397,7 @@ Check the source code for implementation of any of the below techniques:
 - Set [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "android:filterTouchesWhenObscured") to true
 - [FLAG_WINDOW_IS_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_OBSCURED "FLAG_WINDOW_IS_OBSCURED")
 
-When either of the first two controls are implemented, the android framework will discard touches or taps that are received from any other visible window. This will safeguard users against this severe vulnerability.
+When either of the first two techniques are implemented, the Android framework will discard touches or taps that are received from any other visible window. This will safeguard users against this severe vulnerability.
 
 The third control, when applied, provides safeguard to the components and not to the whole application. This type of mitigation can be used when there is a business need to allow overlay feature by third party application. In this cases the developer must identify sensitive input fields from the application and should associate it with the third control. This would minimise the impact of Tapjacking vulnerability.
 #### Dynamic Analysis
