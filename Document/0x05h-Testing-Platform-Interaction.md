@@ -1409,7 +1409,7 @@ When any of the first two controls is implemented, the applications is not vulne
 
 To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
 
-Apart from this there is an automated tool, called [QARK](https://github.com/linkedin/qark "Qark") that can also be used to test for this vulnerability. To understad usage of this tool and how to use it for detecting tapjacking, the [link](https://resources.infosecinstitute.com/android-penetration-tools-walkthrough-series-qark "link") from infosecinstitute can be referred. In this article FourGoats application is used to check for different vulnerabilties, including Tapjacking.
+You can also test this vulnerability using an automated tool called [QARK](https://github.com/linkedin/qark "Qark"). [This article](https://resources.infosecinstitute.com/android-penetration-tools-walkthrough-series-qark "link") from Infosec institute explains this tool and how to use it for detecting tapjacking using OWASP's GoatDroid application.
 
 ### Testing enforced updating (MSTG-ARCH-9)
 
