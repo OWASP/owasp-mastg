@@ -391,7 +391,7 @@ $ codesign -s - --entitlements entitlements.plist -f debugserver
 Copy the modified binary to any directory on the test device. The following examples use usbmuxd to forward a local port through USB.
 
 ```shell
-$ ./tcprelay.py -t 22:2222
+$ iproxy 2222 22
 $ scp -P2222 debugserver root@localhost:/tmp/
 ```
 
