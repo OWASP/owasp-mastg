@@ -1400,11 +1400,6 @@ Check the source code for implementation of any of the below techniques:
 When either of the first two controls are implemented, the android framework will discard touches or taps that are received from any other visible window. This will safeguard users against this severe vulnerability.
 
 The third control, when applied, provides safeguard to the components and not to the whole application. This type of mitigation can be used when there is a business need to allow overlay feature by third party application. In this cases the developer must identify sensitive input fields from the application and should associate it with the third control. This would minimise the impact of Tapjacking vulnerability.
-
-Hence based upon the requirement any of these controls can be implemented.
-
-When any of the first two controls is implemented, the applications is not vulnerable anymore to Tapjacking.
-
 #### Dynamic Analysis
 
 To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
