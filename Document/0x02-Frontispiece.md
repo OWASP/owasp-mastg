@@ -64,7 +64,6 @@ Vikas is an experienced cyber security researcher, with expertise in mobile secu
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
-- Vikas Gupta
 - Pawel Rzepa
 - Francesco Stillavato
 - Henry Hoggard
