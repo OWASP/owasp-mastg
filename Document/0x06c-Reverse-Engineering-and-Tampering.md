@@ -392,7 +392,7 @@ Copy the modified binary to any directory on the test device. The following exam
 
 ```shell
 $ iproxy 2222 22
-$ scp -P2222 debugserver root@localhost:/tmp/
+$ scp -P 2222 debugserver root@localhost:/tmp/
 ```
 
 You can now attach debugserver to any process running on the device.
