@@ -176,7 +176,7 @@ If we continue our careful analysis, we can spot the string, "Verification Faile
 
 Moving forward, we have two paths to take. Either we can start analyzing the `buttonClick` function identified in the above step, or start analyzing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path.
 
-An iOS application calls different predefined functions provided by the iOS runtime depending on its the state within the [application life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App's Life Cycle"). These functions are known as the entry points of the app. For example:
+An iOS application calls different predefined functions provided by the iOS runtime depending on its the state within the [application life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App\'s Life Cycle"). These functions are known as the entry points of the app. For example:
 
 - `[AppDelegate application:didFinishLaunchingWithOptions:]` is called when the application is started for the first time.
 - `[AppDelegate applicationDidBecomeActive:]` is called when the application is moving from inactive to active state.
@@ -285,7 +285,7 @@ Log into the Apple Developer portal to issue a new App ID, then issue and downlo
 
 In the examples below, I use my signing identity, which is associated with my company's development team. I created the App ID "sg.vp.repackaged" and the provisioning profile "AwesomeRepackaging" for these examples. I ended up with the file `AwesomeRepackaging.mobileprovision`-replace this with your own filename in the shell commands below.
 
-**With a Regular iTunes Account:**
+**With a Regular Apple ID:**
 
 Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
 
@@ -347,15 +347,61 @@ zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
+#### Basic Information Gathering
+
+On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via *procfs*. Thus, any information about a target process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command line tools for exploring process information, for instance lsof and vmmap, are removed to reduce the firmware size.
+
+In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using Cydia (the executable is not the latest version available, but nevertheless addresses our purpose).
+
+##### Open Files
+
+`lsof` is a powerful command, and provides a plethora of information about a running process. It can provide a list of all open files, including a stream, a network file or a regular file. When invoking the `lsof` command without any option it will list all open files belonging to all active processes on the system, while when invoking with the flags `-c <process name>` or `-p <pid>`, it returns the list of open files for the specified process. The [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") shows various other options in detail.
+
+Using `lsof` for an iOS application running with PID 2828, list various open files as shown below.
+
+```shell
+iPhone:~ root# lsof -p 2828
+COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
+iOweApp 2828 mobile  cwd    DIR    1,2      864      2 /
+iOweApp 2828 mobile  txt    REG    1,3   206144 189774 /private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp
+iOweApp 2828 mobile  txt    REG    1,3     5492 213230 /private/var/mobile/Containers/Data/Application/5AB3E437-9E2D-4F04-BD2B-972F6055699E/tmp/com.apple.dyld/iOweApp-6346DC276FE6865055F1194368EC73CC72E4C5224537F7F23DF19314CF6FD8AA.closure
+iOweApp 2828 mobile  txt    REG    1,3    30628 212198 /private/var/preferences/Logging/.plist-cache.vqXhr1EE
+iOweApp 2828 mobile  txt    REG    1,2    50080 234433 /usr/lib/libobjc-trampolines.dylib
+iOweApp 2828 mobile  txt    REG    1,2   344204  74185 /System/Library/Fonts/AppFonts/ChalkboardSE.ttc
+iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
+...
+```
+
+##### Open Connections
+
+`lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
+
+```shell
+iPhone:~ root# lsof -i -a -p 1
+COMMAND PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+launchd   1 root   27u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   28u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   29u  IPv4 0x69c2ce210eeaef53      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   30u  IPv4 0x69c2ce210eeaef53      0t0  TCP *:ssh (LISTEN)
+launchd   1 root   31u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->192.168.1.8:62684 (ESTABLISHED)
+launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->192.168.1.8:62684 (ESTABLISHED)
+```
+
+##### Sandbox Inspection
+
+On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
+
+The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse.
+
 #### Debugging
 
 Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
 
-The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as `lldb` and `gdb`. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
+The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
 
-##### Debugging with lldb
+##### Debugging with LLDB
 
-iOS ships with the console app debugserver, which allows remote debugging via gdb or lldb. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+iOS ships with the console app debugserver, which allows remote debugging via GDB or LLDB. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
@@ -404,6 +450,67 @@ for armv7.
 Attaching to process 2670...
 ```
 
+With the following command you can launch an application via debugserver running on the target device:
+
+```shell
+debugserver -x backboard *:1234 /Applications/MobileSMS.app/MobileSMS
+```
+
+Attach to an already running application:
+
+```shell
+debugserver *:1234 -a "MobileSMS"
+```
+
+You may connect now to the iOS device from your host computer:
+
+```shell
+(lldb) process connect connect://<ip-of-ios-device>:1234
+```
+
+Typing `image list` gives a list of main executable and all dependent libraries.
+
+##### Debugging Release Apps
+
+In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
+
+In contrast to a debug build, the code compiled for a release build is optimized to achieve maximum performance and minimum binary build size. As a general best practice, most of the debug symbols are stripped for a release build, adding a layer of complexity when reverse engineering and debugging the binaries.
+
+Due to the absence of the debug symbols, symbol names are missing from the backtrace outputs and setting breakpoints by simply using function names is not possible. Fortunately, debuggers also support setting breakpoints directly on memory addresses. Further in this section we will learn how to do so and eventually solve the crackme challenge.
+
+Some groundwork is needed before setting a breakpoint using memory addresses. It requires determining two offsets:
+
+1. Breakpoint offset: The _address offset_ of the code where we want to set a breakpoint. This address is obtained by performing static analysis of the code in a disassembler like Ghidra.
+2. ASLR shift offset: The _ASLR shift offset_ for the current process. Since ASLR offset is randomly generated on every new instance of an application, this has to be obtained for every debugging session individually. This is determined using the debugger itself.
+
+> iOS is a modern operating system with multiple techniques implemented to mitigate code execution attacks, one such technique being Address Space Randomization Layout (ASLR). On every new execution of an application, a random ASLR shift offset is generated, and various process' data structures are shifted by this offset.
+
+The final breakpoint address to be used in the debugger is the sum of the above two addresses (Breakpoint offset + ASLR shift offset). This approach assumes that the image base address (discussed shortly) used by the disassembler and iOS is the same, which is true most of the time.
+
+When a binary is opened in a disassembler like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is 0x100000000.
+
+![Obtaining image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtaining image base address using Ghidra")
+
+From our previous analysis of the UnCrackable Level 1 application in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
+
+![Breakpoint address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_breakpoint.png "Breakpoint address using Ghidra")
+
+For the second address, we need to determine the _ASLR shift offset_ for a given process. The ASLR offset can be determined by using the LLDB command `image list -o -f`. The output is shown in the screenshot below.
+
+![Process image list](Images/Chapters/0x06c/debugging_lldb_image_list.png "Process image list")
+
+In the output, the first column contains the sequence number of the image ([X]), the second column contains the randomly generated ASLR offset, while 3rd column contains the full path of the image and towards the end, content in the bracket shows the image base address after adding ASLR offset to the original image base address (0x100000000 + 0x70000 = 0x100070000). You will notice the image base address of 0x100000000 is same as in Ghidra. Now, to obtain the effective memory address for a code location we only need to add ASLR offset to the address identified in Ghidra. The effective address to set the breakpoint will be 0x100004520 + 0x70000 = 0x100074520. The breakpoint can be set using command `b 0x100074520`.
+
+> In the above output, you may also notice that many of the paths listed as images do not point to the file system on the iOS device. Instead, they point to a certain location on the machine on which LLDB is running. These images are system libraries for which debug symbols are available on the machine to aid in application development and debugging (as part of the Xcode iOS SDK). Therefore, you may set breakpoints to these libraries directly by using function names.
+
+After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In LLDB you can print Objective-C objects using the `po` (_print object_) command.
+
+![Setting breakpoint in LLDB](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in LLDB")
+
+Voila, the crackme can be easily solved aided by static analysis and a debugger. There are plethora of features implemented in LLDB, including changing the value of the registers, changing values in the process memory and even [automating tasks using Python scripts](https://lldb.llvm.org/use/python.html "LLDB - Python Scripting").
+
+Officially Apple recommends use of LLDB for debugging purposes, but GDB can be also used on iOS. The techniques discussed above are applicable while debugging using GDB as well, provided the LLDB specific commands are [changed to GDB commands](https://lldb.llvm.org/use/map.html "GDB to LLDB command map").
+
 #### Tracing
 
 ##### Execution Tracing
@@ -436,6 +543,20 @@ Next, navigate to a new website in Safari. You should see traced function calls 
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
 
+#### Emulation-based Analysis
+
+##### iOS Simulator
+
+Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**. Difference between a simulator and an emulator is previously discussed in "[Emulation-based Dynamic Analysis](0x04c-tampering-and-reverse-engineering#emulation-based-dynamic-analysis "Emulation-based Dynamic Analysis")" section.
+
+While developing and debugging an application, the Xcode toolchain generates x86 code, which can be executed in the iOS simulator. However, for a release build, only ARM code is generated (incompatible with the iOS simulator). That's why applications downloaded from the Apple App Store cannot be used for any kind of application analysis on the iOS simulator.
+
+##### Corellium
+
+Corellium is a commercial tool which offers virtual iOS devices running actual iOS firmware, being the only publicly available iOS emulator ever. Since it is a proprietary product, not much information is available about the implementation. Corellium has no trial or community licenses available, therefore we won't go into much detail regarding its use.
+
+Corellium allows you to launch multiple instances of a device (jailbroken or not) which are accessible as local devices (with a simple VPN configuration). It has the ability to take and restore snapshots of the device state, and also offers a convenient web-based shell to the device. Finally and most importantly, due to its "emulator" nature, you can execute applications downloaded from the Apple App Store, enabling any kind of application analysis as you know it from real iOS (jailbroken) devices.
+
 ### Binary Analysis
 
 An introduction to binary analysis using binary analysis frameworks has already been discussed in the "[Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis")" section for Android. We recommend you to revisit this section and refresh the concepts on this subject.
@@ -457,7 +578,6 @@ If we revisit that function, we can see that it involves multiple sub-function c
 - Get a `callable` object by passing the address of the function to be executed. From the Angr documentation: "A Callable is a representation of a function in the binary that can be interacted with like a native python function.".
 - Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`.
 - Access the memory and extract the string from the pointer returned by the above function.
-
 
 ```python
 import angr
@@ -483,7 +603,6 @@ solve()
 ```
 
 Above, Angr executed an ARM64 code in an execution environment provided by one of its concrete execution engines. The result is accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks enable us to perform a comprehensive analysis of a binary, even in the absence of specialized devices needed to run it.
-
 
 ### Tampering and Runtime Instrumentation
 
@@ -556,7 +675,7 @@ Now you should be ready to run the modified app. Deploy and run the app on the d
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ```
 
-If everything went well, the app should start in debugging mode with lldb attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
+If everything went well, the app should start in debugging mode with LLDB attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
 
 ```shell
 $ frida-ps -U
@@ -602,6 +721,7 @@ If you haven't already done so, install the Frida Python package on your host ma
 
 ```shell
 $ pip install frida
+$ pip install frida-tools
 ```
 
 To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
@@ -713,6 +833,104 @@ cy# choose(SBIconModel)
 ```
 
 Learn more in the [Cycript Manual](http://www.cycript.org/manual/ "Cycript Manual").
+
+##### Information Gathering
+
+In this section we will learn how to use Frida to obtain information about a running application.
+
+##### Getting Loaded Classes and their Methods
+
+In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
+
+```shell
+$ frida -U -f com.iOweApp
+
+[iPhone::com.iOweApp]-> ObjC.enumerateLoadedClasses()
+{
+    "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation": [
+        "__NSBlockVariable__",
+        "__NSGlobalBlock__",
+        "__NSFinalizingBlock__",
+        "__NSAutoBlock__",
+        "__NSMallocBlock__",
+        "__NSStackBlock__"
+    ],
+    "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp": [
+        "JailbreakDetection",
+        "CriticalLogic",
+        "ViewController",
+        "AppDelegate"
+    ]
+}
+
+```
+
+Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
+
+```shell
+[iPhone::com.iOweApp]-> ObjC.classes.JailbreakDetection.$ownMethods
+[
+    "+ isJailbroken"
+]
+
+[iPhone::com.iOweApp]-> ObjC.classes.CriticalLogic.$ownMethods
+[
+    "+ doSha256:",
+    "- a:",
+    "- AES128Operation:data:key:iv:",
+    "- coreLogic",
+    "- bat",
+    "- b:",
+    "- hexString:"
+]
+```
+
+##### Getting Loaded Libraries
+
+In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
+
+```shell
+[iPhone::com.iOweApp]-> Process.enumerateModules()
+[
+    {
+        "base": "0x10008c000",
+        "name": "iOweApp",
+        "path": "/private/var/containers/Bundle/Application/F390A491-3524-40EA-B3F8-6C1FA105A23A/iOweApp.app/iOweApp",
+        "size": 49152
+    },
+    {
+        "base": "0x1a1c82000",
+        "name": "Foundation",
+        "path": "/System/Library/Frameworks/Foundation.framework/Foundation",
+        "size": 2859008
+    },
+    {
+        "base": "0x1a16f4000",
+        "name": "libobjc.A.dylib",
+        "path": "/usr/lib/libobjc.A.dylib",
+        "size": 200704
+    },
+
+    ...
+```
+
+Similarly, information related to various threads can be obtained.
+
+```shell
+Process.enumerateThreads()
+[
+    {
+        "context": {
+            ...
+       },
+        "id": 1287,
+        "state": "waiting"
+    },
+
+    ...
+```
+
+The `Process` command exposes multiple functions which can be explored as per needs. Some useful functions are `findModuleByAddress`, `findModuleByName` and `enumerateRanges` besides others.
 
 ##### Method Hooking
 

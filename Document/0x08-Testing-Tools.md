@@ -123,7 +123,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 
 ### Tools for Network Interception and Monitoring
 
-- bettercap: A powerful framework which aims to offer to security researchers and reverse engineers an easy to use, all-in-one solution for WiFi, Bluetooth Low Energy, wireless HID hijacking and Ethernet networks reconnaissance and MITM attacks - <https://www.bettercap.org/>
+- bettercap: A powerful framework which aims to offer to security researchers and reverse engineers an easy to use, all-in-one solution for Wi-Fi, Bluetooth Low Energy, wireless HID hijacking and Ethernet networks reconnaissance and MITM attacks - <https://www.bettercap.org/>
 - Canape: A network testing tool for arbitrary protocols - <https://github.com/ctxis/canape>
 - Mallory: A Man in The Middle Tool (MiTM) that is used to monitor and manipulate traffic on mobile devices and applications - <https://github.com/intrepidusgroup/mallory>
 - MITM Relay: A script to intercept and modify non-HTTP protocols through Burp and others with support for SSL and STARTTLS interception - <https://github.com/jrmdev/mitm_relay>
@@ -169,3 +169,4 @@ The applications listed below can be used as training materials. Note: only the 
 - DVIA-v2: A vulnerable iOS app, written in Swift with over 15 vulnerabilities - <https://github.com/prateek147/DVIA-v2>
 - iGoat: An iOS Objective-C app serving as a learning tool for iOS developers (iPhone, iPad, etc.) and mobile app pentesters. It was inspired by the WebGoat project, and has a similar conceptual flow to it - <https://github.com/owasp/igoat>
 - iGoat-Swift: A Swift version of original iGoat project - <https://github.com/owasp/igoat-swift>
+- UnSAFE Bank: UnSAFE Bank is a core virtual banking application designed with the aim to incorporate the cybersecurity risks and various test cases such that newbie, developers, and security analysts can learn, hack and improvise their vulnerability assessment and penetration testing skills. - <https://github.com/lucideus-repo/UnSAFE_Bank>

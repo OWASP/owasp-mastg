@@ -29,18 +29,22 @@ $ xcode-select --install
 
 ##### Getting the UDID of an iOS device
 
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different meta-data of the iOS device including its UDID.
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Just select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
-It is also possible to get the UDID via various command line tools while the device is attached via USB:
+<img src="Images/Chapters/0x06b/UDID-Finder.png" alt="UDID in Finder" width="500">
 
-- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg` (macOS only):
+If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
+
+It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
+
+- By using the [I/O Registry Explorer](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/IOKitFundamentals/TheRegistry/TheRegistry.html "I/O Registry Explorer") tool `ioreg`:
 
     ```sh
     $ ioreg -p IOUSB -l | grep "USB Serial"
     |         "USB Serial Number" = "9e8ada44246cee813e2f8c1407520bf2f84849ec"
     ```
 
-- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (macOS / Linux):
+- By using [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) (also available on Linux):
 
     ```sh
     $ brew install ideviceinstaller
@@ -48,7 +52,7 @@ It is also possible to get the UDID via various command line tools while the dev
     316f01bd160932d2bf2f95f1f142bc29b1c62dbc
     ```
 
-- By using the system_profiler (macOS only):
+- By using the system_profiler:
 
     ```sh
     $ system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p;/iPhone/,/Serial/p;/iPod/,/Serial/p' | grep "Serial Number:"
@@ -56,7 +60,7 @@ It is also possible to get the UDID via various command line tools while the dev
                 Serial Number: 64655621de6ef5e56a874d63f1e1bdd14f7103b1
     ```
 
-- By using instruments (macOS only):
+- By using instruments:
 
     ```sh
     $ instruments -s devices
@@ -69,6 +73,10 @@ You should have a jailbroken iPhone or iPad for running tests. These devices all
 ##### Testing on the iOS Simulator
 
 Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
+
+##### Testing on an Emulator
+
+Corellium is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer any trial license.
 
 ##### Getting Privileged Access
 
@@ -116,13 +124,13 @@ Jailbreaking an iOS device is becoming more and more complicated because Apple k
 
 If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
 
-iOS upgrades are based on a challenge-response process (generating as a result the named SHSH blobs). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded via iTunes and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
+iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
 ###### Which Jailbreaking Tool to Use
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
-The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If you have a device that's running an iOS version for which no jailbreak is available, you can still jailbreak the device if you downgrade or upgrade to the target _jailbreakable_ iOS version (via IPSW download and iTunes). However, this may not be possible if the required iOS version is no longer signed by Apple.
+The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If you have a device that's running an iOS version for which no jailbreak is available, you can still jailbreak the device if you downgrade or upgrade to the target _jailbreakable_ iOS version (via IPSW download or the iOS update mechanism). However, this may not be possible if the required iOS version is no longer signed by Apple.
 
 The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
 
@@ -140,7 +148,7 @@ Many tools on a jailbroken device can be installed by using Cydia, which is the 
 - <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
 - <https://cydia.akemi.ai/>: Add "Karen's Repo" to get the AppSync package.
 - <https://build.frida.re>: Install Frida by adding the repository to Cydia.
-- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added.
+- <http://mobiletools.mwrinfosecurity.com/cydia/>: The Needle agent, has its own repository as well and should be added. The agent can also be build from the following repository <https://github.com/fsecurelabs/needle-agent>.
 - <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
 - <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
 - <https://coolstar.org/publicrepo/>: For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools.
@@ -542,7 +550,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passiofruit File Options">
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passionfruit File Options" width="500px">
 
 ##### Objection
 
@@ -746,11 +754,11 @@ When you install an application without using Apple's App Store, this is called 
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
-> Please note that since iTunes 12.7 it is not longer possible to install apps using iTunes.
+> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not longer possible to install apps.
 
 ##### Cydia Impactor
 
-One tool that is available for Windows, macOS and Linux is [Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor"). This tool was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading. The tool can even be used to install APK files to Android devices. A [step by step guide and troubleshooting steps can be found here](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
+[Cydia Impactor](http://www.cydiaimpactor.com/ "Cydia Impactor") was originally created to jailbreak iPhones, but has been rewritten to sign and install IPA packages to iOS devices via sideloading (and even APK files to Android devices). Cydia Impactor is available for Windows, macOS and Linux. A [step by step guide and troubleshooting steps are available on yalujailbreak.net](https://yalujailbreak.net/how-to-use-cydia-impactor/ "How to use Cydia Impactor").
 
 ##### libimobiledevice
 
@@ -1014,7 +1022,7 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View">
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550px">
 
 ##### Accessing App Data Directories
 
@@ -1141,15 +1149,15 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
-<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View">
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550px">
 
 Including the `Info.plist` file:
 
-<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View">
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550px">
 
 As well as the Data directory in **Files** -> **Data**:
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View">
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px">
 
 Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
@@ -1164,11 +1172,11 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 5. Reproduce the problem.
 6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-![Opening the Device Console in Xcode](Images/Chapters/0x06b/open_device_console.png)
+<img src="Images/Chapters/0x06b/open_device_console.png"  width="550px">
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
-![Monitoring console logs through Xcode](Images/Chapters/0x06b/device_console.png)
+<img src="Images/Chapters/0x06b/device_console.png"  width="550px">
 
 You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
 
@@ -1338,7 +1346,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 ip.addr == 192.168.1.1 && http
 ```
 
-![Capture Filters in Wireshark](Images/Chapters/0x06b/wireshark_filters.png)
+<img src="Images/Chapters/0x06b/wireshark_filters.png" width="550px">
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
@@ -1348,7 +1356,7 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
-PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device").
 
 ##### Using Burp via USB on a Jailbroken Device
 
@@ -1367,7 +1375,7 @@ The next step is to make a remote port forwarding of port 8080 on the iOS device
 ssh -R 8080:localhost:8080 root@localhost -p 2222
 ```
 
-You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device") of Burp on your iOS device.
 
 The last step would be to set the proxy globally on your iOS device:
 

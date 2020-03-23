@@ -195,7 +195,7 @@ Missing Google Over-The-Air (OTA) certificates is another sign of a custom ROM: 
 
 ##### Bypassing Root Detection
 
-Run execution traces with JDB, DDMS, `strace`, and/or kernel modules to find out what the app is doing. You'll usually see all kinds of suspect interactions with the operating system, such as opening `su` for reading and obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms, one at a time. If you're performing a black box resilience assessment, disabling the root detection mechanisms is your first step.
+Run execution traces with jdb, DDMS, `strace`, and/or kernel modules to find out what the app is doing. You'll usually see all kinds of suspect interactions with the operating system, such as opening `su` for reading and obtaining a list of processes. These interactions are surefire signs of root detection. Identify and deactivate the root detection mechanisms, one at a time. If you're performing a black box resilience assessment, disabling the root detection mechanisms is your first step.
 
 To bypass these checks, you can use several techniques, most of which were introduced in the "Reverse Engineering and Tampering" chapter:
 
@@ -611,7 +611,7 @@ Please see [different proposed solutions for the Android Crackme Level 2](https:
 
 Check for anti-debugging mechanisms, including the following criteria:
 
-- Attaching JDB and ptrace-based debuggers fails or causes the app to terminate or malfunction.
+- Attaching jdb and ptrace-based debuggers fails or causes the app to terminate or malfunction.
 - Multiple detection methods are scattered throughout the app's source code (as opposed to their all being in a single method or function).
 - The anti-debugging defenses operate on multiple API layers (Java, native library functions, assembler/system calls).
 - The mechanisms are somehow original (as opposed to being copied and pasted from StackOverflow or other sources).
@@ -805,7 +805,7 @@ An approach similar to that for application-source integrity checks applies. Ans
 
 #### Overview
 
-Reverse engineers use a lot of tools, frameworks, and apps, many of which you've encountered in this guide. Consequently, the presence of such tools on the device may indicate that the user is attempting to reverse engineer the app. Users increase their risk by installing such tools.
+The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
 #### Detection Methods
 
@@ -844,7 +844,7 @@ Looking at these two _traces_ that Frida _lefts behind_, you might already imagi
 
 Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
-**It is important to note that these methods are just increasing the complexity of the reverse engineer. If being used, the best approach is to combine them cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, remember that the reverse engineer always wins! You also have to consider that integrating some of them into your app might increase the complexity of your app as well as considerably mine its performance.**
+> It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
 #### Effectiveness Assessment
 
@@ -860,13 +860,13 @@ The app should respond in some way to the presence of those tools. For example b
 Next, work on bypassing the detection of the reverse engineering tools and answer the following questions:
 
 - Can the mechanisms be bypassed trivially (e.g., by hooking a single API function)?
-- How difficult is identifying the anti-debugging code via static and dynamic analysis?
+- How difficult is identifying the anti reverse engineering code via static and dynamic analysis?
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
 The following steps should guide you when bypassing detection of reverse engineering tools:
 
-1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
+1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
 3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
@@ -1016,7 +1016,7 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
-In this test case, we describe a few basic obfuscation techniques that are commonly used on Android.
+In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE-9)" in chapter "Code Quality and Build Settings of Android Apps", we describe a few basic obfuscation techniques that are commonly used on Android with R8 and Pro-Guard.
 
 #### Effectiveness Assessment
 
@@ -1038,7 +1038,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 - Augmenting the credentials used for authentication with device identifiers. This make sense if the application needs to re-authenticate itself and/or the user frequently.
 
-- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would then extract the data from a device, he would not have access to the key to decrypt the encrypted data. Implementing this, takes the following steps:
+- Encrypting the data stored in the device with the key material which is strongly bound to the device can strengthen the device binding. The Android Keystore offers non-exportable private keys which we can use for this. When a malicious actor would extract such data from a device, it wouldn't be possible to decrypt the data, as the key is not accessible. Implementing this, takes the following steps:
 
   - Generate the key pair in the Android Keystore using `KeyGenParameterSpec` API.
 
@@ -1324,10 +1324,6 @@ See section "[Dynamic Analysis with an Emulator](#dynamic-analysis-with-an-emula
 6. Can you continue in an authenticated state? If so, binding may not be working properly.
 
 ### References
-
-#### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### OWASP MASVS
 

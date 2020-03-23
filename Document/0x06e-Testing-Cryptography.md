@@ -192,7 +192,7 @@ Even when the sync of Core Data or Realm is protected by using `NSFileProtection
 
 The KeyChain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Secure Enclave") for more details on its implementation.
 
-The last three options are to use hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Obviously, hardcoded encryption keys are not the way to go. This means every instance of the application uses the same encryption key. An attacker needs only to do the work once to extract the key from the source code, whether stored natively or in Objective-C/Swift. Consequently, he can decrypt any other data that he can obtain which was encrypted by the application.
+The last three options consist of using hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Using hardcoded encryption keys is obviously not the way to go, as this would mean that every instance of the application uses the same encryption key. An attacker needs only to do the work once in order to extract the key from the source code (whether stored natively or in Objective-C/Swift). Consequently, the attacker can decrypt any other data that was encrypted by the application.
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing symmetric encryption keys publicly also is highly discouraged.
 
 Two more notions you should never forget when it comes to cryptography:
@@ -215,10 +215,9 @@ Always make sure that:
 
 Most of the recommendations for static analysis can already be found in chapter "Testing Data Storage for iOS". Next, you can read up on it at the following pages:
 
-- [Apple Developer Documentation: Certificates and keys]( https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
+- [Apple Developer Documentation: Certificates and keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
 - [Apple Developer Documentation: Generating new keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys "Generating new keys")
-- [Apple Developer Documentation: Key generation attributes](
-https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
+- [Apple Developer Documentation: Key generation attributes](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
 
 #### Dynamic Analysis
 
@@ -262,10 +261,6 @@ If you want to test for randomness, you can try to capture a large set of number
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
-
 #### OWASP MASVS
 
 - MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
@@ -273,11 +268,6 @@ If you want to test for randomness, you can try to capture a large set of number
 - MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use case, configured with parameters that adhere to industry best practices."
 - MSTG-CRYPTO-5: "The app doesn't re-use the same cryptographic key for multiple purposes."
 - MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
-
-#### CWE
-
-- CWE-337 - Predictable Seed in PRNG
-- CWE-338 - Use of Cryptographically Weak Pseudo Random Number Generator (PRNG)
 
 #### General Security Documentation
 

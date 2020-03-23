@@ -122,6 +122,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 - [Multiple solutions by David Weinstein](https://www.nowsecure.com/blog/2017/04/27/owasp-ios-crackme-tutorial-frida/ "Solutions by David Weinstein")
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html "Solution by Ryan Teoh")
+- [Solution with Angr by Vikas Gupta](https://serializethoughts.com/2019/10/28/solving-mstg-crackme-angr "Solving iOS UnCrackable 1 Crackme Without Using an iOS Device")
 
 ## [UnCrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/ "iOS level2")
 

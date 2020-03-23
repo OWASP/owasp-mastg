@@ -122,7 +122,7 @@
 
 ### ネットワーク傍受および監視用ツール
 
- - bettercap: セキュリティ研究者やリバースエンジニアに、WiFi, Bluetooth Low Energy, ワイヤレス HID ハイジャック、イーサネットネットワークの偵察および MITM 攻撃のための使いやすいオールインワンソリューションを提供することを目的とした強力なフレームワークです。 - https://www.bettercap.org/
+ - bettercap: セキュリティ研究者やリバースエンジニアに、Wi-Fi, Bluetooth Low Energy, ワイヤレス HID ハイジャック、イーサネットネットワークの偵察および MITM 攻撃のための使いやすいオールインワンソリューションを提供することを目的とした強力なフレームワークです。 - https://www.bettercap.org/
  - Canape: 任意のプロトコル用のネットワークテストツールです。 - https://github.com/ctxis/canape
  - Mallory: モバイルデバイスやアプリケーションのトラフィックを監視および操作するために使用する中間者攻撃 (MiTM) ツールです。 - https://github.com/intrepidusgroup/mallory
  - MITM Relay: SSL および STARTTLS インターセプトをサポートする Burp などを介した非 HTTP プロトコルを傍受および改変するスクリプトです。 - https://github.com/jrmdev/mitm_relay

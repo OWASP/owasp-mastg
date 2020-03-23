@@ -84,7 +84,7 @@ For dynamic analysis, you'll need an Android device to run the target app on. In
 | Ease of rooting | Highly dependent on the device. | Typically rooted by default. |
 | Ease of emulator detection | It's not an emulator, so emulator checks are not applicable. | Many artefacts will exist, making it easy to detect that the app is running in an emulator. |
 | Ease of root detection | Easier to hide root, as many root detection algorithms check for emulator properties. With Magisk Systemless root it's nearly impossible to detect. | Emulators will almost always trigger root detection algorithms due to the fact that they are built for testing with many artefacts that can be found. |
-| Hardware interaction | Easy interaction through Bluetooth, NFC, 4G, WiFi, biometrics, camera, GPS, gyroscope, ... | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates) |
+| Hardware interaction | Easy interaction through Bluetooth, NFC, 4G, Wi-Fi, biometrics, camera, GPS, gyroscope, ... | Usually fairly limited, with emulated hardware input (e.g. random GPS coordinates) |
 | API level support | Depends on the device and the community. Active communities will keep distributing updated versions (e.g. LineageOS), while less popular devices may only receive a few updates. Switching between versions requires flashing the device, a tedious process. | Always supports the latest versions, including beta releases. Emulators containing specific API levels can easily be downloaded and launched. |
 | Native library support | Native libraries are usually built for ARM devices, so they will work on a physical device. | Some emulators run on x86 CPUs, so they may not be able to run packaged native libraries. |
 | Malware danger | Malware samples can infect a device, but if you can clear out the device storage and flash a clean firmware, thereby restoring it to factory settings, this should not be a problem. Be aware that there are malware samples that try to exploit the USB bridge. | Malware samples can infect an emulator, but the emulator can simply be removed and recreated. It is also possible to create snapshots and compare different snapshots to help in malware analysis. Be aware that there are malware proofs of concept which try to attack the hypervisor. |
@@ -176,6 +176,7 @@ There are many tools and frameworks used throughout this guide to assess the sec
 - APK Extractor: App to extract APKs without root.
 - Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#frida "Frida section") section below for more information.
 - Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#drozer "Drozer section") section below for more information.
+- Busybox:  Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
 
 ##### Xposed
 
@@ -223,7 +224,7 @@ In order to analyze Android apps, you should install the following tools on your
 
 ##### Adb
 
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or WiFi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or Wi-Fi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
 ```shell
 $ adb devices -l
@@ -329,25 +330,25 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic.
 
-PortSwigger provides a good [tutorial on setting up an Android device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
+PortSwigger provides a good [tutorial on setting up an Android device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device").
 
 ##### Drozer
 
-[Drozer](https://github.com/mwrlabs/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
+[Drozer](https://github.com/FSecureLABS/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
 
-The advantage of using Drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
+The advantage of using drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
 
 ###### Installing Drozer
 
-You can refer to [drozer GitHub page](https://github.com/mwrlabs/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.mwrinfosecurity.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
+You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.f-secure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/mwrlabs/drozer "drozer GitHub page"). For [macOS this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") will be demonstrating all installation instructions.
+The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/FSecureLABS/drozer "drozer GitHub page"). For macOS, [this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") demonstrates all installation instructions.
 
 ###### Using Drozer
 
-Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the releases page](https://github.com/mwrlabs/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
+Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the GitHub releases page](https://github.com/FSecureLABS/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
-Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions [here](https://mobiletools.mwrinfosecurity.com/Starting-a-session/ "Starting a Session").
+Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions in the [User Guide in section "Starting a Session"](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Starting a Session").
 
 Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
 
@@ -402,13 +403,9 @@ $ dz> run scanner.provider.injection -a (package name)
 
 Other resources where you might find useful information are:
 
-- [official Drozer User Guide](https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
-- [drozer GitHub page](https://github.com/mwrlabs/drozer "GitHub repo")
-- [drozer Wiki](https://github.com/mwrlabs/drozer/wiki "drozer Wiki")
-- [Command Reference](https://mobiletools.mwrinfosecurity.com/Command-Reference/ "drozer's Command Reference")
-- [Using drozer for application security assessments](https://mobiletools.mwrinfosecurity.com/Using-Drozer-for-application-security-assessments/ "Using drozer for application security assessments")
-- [Exploitation features in drozer](https://mobiletools.mwrinfosecurity.com/Exploitation-features-in-drozer/ "Exploitation features in drozer")
-- [Using modules](https://mobiletools.mwrinfosecurity.com/Installing-modules/)
+- [Official drozer User Guide](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [drozer GitHub page](https://github.com/FSecureLABS/drozer "GitHub repo")
+- [drozer Wiki](https://github.com/FSecureLABS/drozer/wiki "drozer Wiki")
 
 ##### Frida
 
@@ -500,7 +497,7 @@ $ frida-ps -Uai
 -----  ----------------------------------------  ---------------------------------------
   766  Android System                            android
 30692  Chrome                                    com.android.chrome
- 3520  Contacts Storage                          com.android.providers.contacts  
+ 3520  Contacts Storage                          com.android.providers.contacts
     -  Uncrackable1                              sg.vantagepoint.uncrackable1
     -  drozer Agent                              com.mwr.dz
 ```
@@ -838,7 +835,7 @@ For example, you can use `rafind2` to read strings directly from an encoded Andr
 $ rafind2 -ZS permission AndroidManifest.xml
 # Activities
 $ rafind2 -ZS activity AndroidManifest.xml
-# Content Providers
+# Content providers
 $ rafind2 -ZS provider AndroidManifest.xml
 # Services
 $ rafind2 -ZS service AndroidManifest.xml
@@ -1019,19 +1016,19 @@ And of course you can also use the disassembler capabilities of r2 and print the
 
 r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
 
-![radare2 r2 shell - pd 10](Images/Chapters/0x05b/r2_pd_10.png)
+<img src="Images/Chapters/0x05b/r2_pd_10.png" width="550px"/>
 
 Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
 
-![radare2 Visual Mode - V](Images/Chapters/0x05b/r2_visualmode_hex.png)
+<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="550px"/>
 
 By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
 
-![radare2 Visual Mode - Vp](Images/Chapters/0x05b/r2_visualmode_disass.png)
+<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="550px"/>
 
 Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
 
-![radare2 Graph Mode - VV](Images/Chapters/0x05b/r2_graphmode.png)
+<img src="Images/Chapters/0x05b/r2_graphmode.png" width="550px"/>
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
@@ -1229,7 +1226,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-![Android Studio Device File Explorer](Images/Chapters/0x05b/android-studio-file-device-explorer.png)
+<img src="Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="500px"/>
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
@@ -1299,7 +1296,7 @@ sg.vp.owasp_mobile.omtg_android
 
 Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-![SFTP Access](Images/Chapters/0x05b/sftp-with-filezilla.png)
+<img src="Images/Chapters/0x05b/sftp-with-filezilla.png" width="500px"/>
 
 Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
@@ -1350,7 +1347,7 @@ $ gplaycli -p -v -d com.google.android.keep
 
 The `com.google.android.keep.apk` file will be in your current directory. As you might imagine, this approach is a very convenient way to download APKs, especially with regards to automation.
 
-> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").  
+> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").
 
 ##### Extracting the App Package from the Device
 
@@ -1609,7 +1606,7 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-![Log output in Android Studio](Images/Chapters/0x05b/log_output_Android_Studio.png)
+<img src="Images/Chapters/0x05b/log_output_Android_Studio.png" width="500px"/>
 
 - You can execute Logcat with adb to store the log output permanently:
 
@@ -1692,11 +1689,11 @@ $ nc localhost 11111 | wireshark -k -S -i -
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-![Wireshark](Images/Chapters/0x05b/Android_Wireshark.png)
+<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="500px"/>
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="500">
+<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="450px">
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -1704,7 +1701,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-![Architectural Overview](Images/Chapters/0x05b/FCM-notifications-overview.png)
+<img src="Images/Chapters/0x05b/FCM-notifications-overview.png" width="500px"/>
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -1751,7 +1748,7 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-![Intercepted Messages](Images/Chapters/0x05b/FCM_Intercept.png)
+<img src="Images/Chapters/0x05b/FCM_Intercept.png" width="500px"/>
 
 ###### End-to-End Encryption for Push Notifications
 
@@ -1813,7 +1810,7 @@ The available network setup options must be evaluated first. The mobile device u
 Once you've configured the network and established a connection between the testing machine and the mobile device, several steps remain.
 
 - The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
+- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
 - Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in a [blog post on nviso.be](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
@@ -1824,7 +1821,7 @@ A few other differences: from Android 8.0 (API level 26) onward, the network beh
 
 As mentioned before, starting with Android 7.0 (API level 24), the Android OS will no longer trust user CA certificates by default, unless specified in the application. In the following section, we explain two methods to bypass this Android security control.
 
-###### Bypassing the Network Security Configuration
+##### Bypassing the Network Security Configuration
 
 From Android 7.0 (API level 24) onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
@@ -1844,7 +1841,7 @@ After the creation, the apps must also include an entry in the manifest file to 
 
 The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
 
-####### Adding the User Certificates to the Network Security Configuration
+###### Adding the User Certificates to the Network Security Configuration
 
 There are different configurations available for the Network Security Configuration to [add non-system Certificate Authorities](https://developer.android.com/training/articles/security-config#CustomTrust "Custom Trust") via the src attribute:
 
@@ -1936,17 +1933,17 @@ Would you like to install the APK on your device(y/N): y
 Finished
 ```
 
-####### Adding the Proxy's certificate among system trusted CAs using Magisk
+###### Adding the Proxy's certificate among system trusted CAs using Magisk
 
 In order to avoid the obligation of configuring the Network Security Configuration for each application, we must force the device to accept the proxy's certificate as one of the systems trusted certificates.
 
 There is a [Magisk module](https://github.com/NVISO-BE/MagiskTrustUserCerts "Magisk Trust User Certs") that will automatically add all user-installed CA certificates to the list of system trusted CAs.
 
-Download the latest version of the module [here](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases "Magisk Trust User Certs - Releases"), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect.
+Download the latest version of the module at the [Github Release page](https://github.com/NVISO-BE/MagiskTrustUserCerts/releases "Magisk Trust User Certs - Releases"), push the downloaded file over to the device and import it in the Magisk Manager's "Module" view by clicking on the `+` button. Finally, a restart is required by Magisk Manager to let changes take effect.
 
 From now on, any CA certificate that is installed by the user via "Settings", "Security & location", "Encryption & credentials", "Install from storage" (location may differ) is automatically pushed into the system's trust store by this Magisk module. Reboot and verify that the CA certificate is listed in "Settings", "Security & location", "Encryption & credentials", "Trusted credentials" (location may differ).
 
-####### Manually adding the Proxy's certificate among system trusted CAs
+###### Manually adding the Proxy's certificate among system trusted CAs
 
 Alternatively, you can follow the following steps manually in order to achieve the same result:
 
@@ -1954,8 +1951,8 @@ Alternatively, you can follow the following steps manually in order to achieve t
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 
     ```shell
-    $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
-    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
+    $ openssl x509 -inform DER -in cacert.der -out cacert.pem
+    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1
     mv cacert.pem <hash>.0
     ```
 
@@ -2123,7 +2120,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
 - Capillary - <https://github.com/google/capillary>
 - Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
-- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
+- Drozer - <https://labs.f-secure.com/tools/drozer/>
 - FileZilla - <https://filezilla-project.org/download.php>
 - Frida - <https://www.frida.re/docs/android/>
 - Frida CLI - <https://www.frida.re/docs/frida-cli/>

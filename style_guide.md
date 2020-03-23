@@ -20,6 +20,22 @@ Those containing one or two screens of text at most. Users are scanning for link
 
 Consider creating a supporting document and linking to it from the page rather than displaying all the information directly on the page.
 
+### Gender Neutrality
+
+The MSTG reaches all kind of people all over the world. To ensure inclusiveness and diversity, please refrain from using the following throughout the book:
+
+- she / her / hers
+- he / him / his
+
+Or any other constructions like "he/she", "s/he", "his or her". Instead, use the following gender-neutral alternatives:
+
+- Replace pronouns with "the or "a": "When the user enters his password ..." -> "When the user enters the password ..."
+- Use plural nouns and pronouns: "An attacker will use his jailbroken device ..." -> "Attackers will use their jailbroken devices ..."
+- Use the second person: "If the attacker runs this code, he can bypass ..." -> "If you run this code, you can bypass ..."
+- Use the imperative: "A developer should never use ... in his code" -> "Never use ... in your code!"
+
+There is one exception: We are still using "man in the middle", as it is simply a common term in the industry and there is no common replacement for it.
+
 ### Timeliness of Content
 
 Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
@@ -37,7 +53,7 @@ Write for an international audience with a *basic* level of technical understand
 
 ### Context and Orientation
 
-Let the user know where he or she is on every page. Establish the topic by using a unique page heading.
+Let the users know where they are on every page. Establish the topic by using a unique page heading.
 
 Include a clear and concise introduction where possible.
 
@@ -172,7 +188,7 @@ Ex: Android 9 (API level 28)
 
 ### Addressing the Reader in Test Cases
 
-Throughout the guide, you may want to address the reader in order to tell him what to do, or what he should notice. For any such case, use an active approach and simply address the reader using "you".
+Throughout the guide, you may want to address the readers in order to tell them what to do, or what they should notice. For any such case, use an active approach and simply address the reader using "you".
 
 **Correct:** If you open the AndroidManifest.xml file, you will see a main Application tag, with the following attributes: atr1, atr2 and atr3. If you run the following command, you will see that atr1 is actually dangerous: [...].
 
@@ -183,6 +199,20 @@ Throughout the guide, you may want to address the reader in order to tell him wh
 ## 3. External References
 
 ### Web Links
+
+Special characters such as apostrophe (\') or single quote (\`) need to be escaped when using them in link descriptions, as otherwise the link is broken in Gitbook.
+
+Wrong usage, see "iPhone's":
+
+```markdown
+[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID")
+```
+
+Right usage, see "iPhone\'s":
+
+```markdown
+[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID")
+```
 
 For web links, use the normal markdown in-line link format: `[TEXT](URL "NAME")`. For example:
 
@@ -316,6 +346,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 | server side|   server-side   |
 |snapshot length|    NA        |
 | use case   |    *same*       |
+| Wi-Fi      |    *same*       |
 | white box  |    *same*       |
 
 ## 7. Comments
