@@ -1017,7 +1017,7 @@ To learn more about all options for advanced usage, check the [documentation in 
 ##### JNI Tracing
 As detailed in the section on [Static Analysis](#static-analysis), the first argument passed to every JNI function is a JNI interface pointer. This pointer contains a table of functions that allows native code to access the Android Runtime. Spotting this pattern can help with understanding the type of functionality a library is performing, such as where it creates new strings or calls Java methods.
 
-[jnitrace](https://github.com/chame1eon/jnitrace) is a Frida based tool that traces usage of the methods in the JNI interface pointer by a library, including the arguments and return values. It is heavily influenced by `frida-trace` and aims to provide similar functionality and output.
+[jnitrace](https://github.com/chame1eon/jnitrace "jnitrace") is a Frida based tool that traces usage of the methods in the JNI interface pointer by a library, including the arguments and return values. It is heavily influenced by `frida-trace` and aims to provide similar functionality and output.
 
 Like `frida-trace`, `jnitrace` can be installed via pip. However, `jnitrace` is only available for python3.
 
@@ -1040,7 +1040,7 @@ At the top of the output is the thread ID, followed by the JNI method call, the 
 
 > The `-l` option can be provided multiple times to trace multiple libraries, or `*` can be provided to trace all libraries. This, however, may provide a lot of output.
 
-To learn more about all options for advanced usage, check the [documentation on the jnitrace GitHub page](https://github.com/chame1eon/jnitrace).
+To learn more about all options for advanced usage, check the [documentation on the jnitrace GitHub page](https://github.com/chame1eon/jnitrace "documentation").
 
 #### Emulation-based Analysis
 
