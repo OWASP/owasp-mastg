@@ -1644,6 +1644,10 @@ $ cd /system/xbin
 $ chmod 755 tcpdump
 ```
 
+In certain production builds, you might encounter an error `mount: '/system' not in /proc/mounts`.
+
+In that case, you can replace the above line `$ mount -o rw,remount /system;` with `$ mount -o rw,remount /`.
+
 > Remember: To use tcpdump, you need root privileges on the phone!
 
 Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
