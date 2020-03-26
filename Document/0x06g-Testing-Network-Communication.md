@@ -2,7 +2,93 @@
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
-Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the `NSURLConnection` class provides methods to load URL requests asynchronously and synchronously.
+Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS 12.0+ (older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html "Using Sockets and Socket Streams"), the [Network.framework](https://developer.apple.com/documentation/network "API Reference Network") framework and the [URLSession](https://developer.apple.com/documentation/foundation/urlsession "API Reference URLSession") class provide methods to load network and URL requests asynchronously and synchronously.
+
+### Network.framework
+
+`Network.framework` was introduced at [The Apple Worldwide Developers Conference (WWDC)](https://developer.apple.com/videos/play/wwdc2018/715 "Introducing Network.framework: A modern alternative to Sockets") and is a replacement to the `Sockets` API. The low-level networking framework provides classes to send and receive data with built in dynamic networking, security and performance support.
+
+Network.framework uses TLS 1.3 by default if the `using: .tls` argument is used, and should be used over the legacy [Secure Transport](https://developer.apple.com/documentation/security/secure_transport "API Reference Secure Transport") framework.
+
+### URLSession
+
+URLSession was developed from Network.framework and utilizes the framework's transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS. URLSession should be used instead of Network.framework for HTTP and URL connections.
+
+#### Network.framework TLS example
+
+```Swift
+import Foundation
+import Network
+
+/**
+ A simple example of utilizing Network.framework, for an HTTP connection utilizing HTTPS and TLS.
+ In practice prefer URLSession for HTTP and URL connections.
+ */
+func connect() {
+    // Create a NWConnection object
+    let connection = NWConnection(host: "owasp.org", port: .https, using: .tls)
+
+    // Switch on connection state
+    connection.stateUpdateHandler = { state in
+        switch state {
+        case .preparing:
+            // Smart Connection Establishment
+            print("Preparing...")
+        case .ready:
+            // Connection is ready to read and write data
+            print("Ready.")
+            sendRequest(on: connection)
+            receiveResponse(on: connection)
+        case let .waiting(error):
+            print("Waiting (\(error.localizedDescription))...")
+        case let .failed(error):
+            print("Failed (\(error.localizedDescription)).")
+        default:
+            break
+        }
+    }
+    connection.start(queue: .main)
+}
+
+func sendRequest(on connection: NWConnection) {
+    let request = """
+    GET / HTTP/1.1
+    User-Agent: NWConnection
+    Accept: */*
+    Content-Length: 0
+    Host: owasp.org
+    """
+
+    let requestData = request.appending("\n\n\n").replacingOccurrences(of: "\n", with: "\r\n").data(using: .utf8)
+
+    connection.send(content: requestData, completion: .contentProcessed { error in
+        if let error = error {
+            print("Send error: \(error)")
+        }
+    })
+}
+
+func receiveResponse(on connection: NWConnection) {
+    connection.receive(minimumIncompleteLength: 0, maximumLength: 1024) { data, _, complete, error in
+        if let data = data {
+            let response = String(decoding: data, as: UTF8.self)
+            print(response)
+
+            if !complete {
+                if let error = error {
+                    print(error)
+                } else {
+                    receiveResponse(on: connection)
+                }
+            } else {
+                connection.cancel()
+            }
+        }
+    }
+}
+
+connect()
+```
 
 ### App Transport Security (MSTG-NETWORK-2)
 
