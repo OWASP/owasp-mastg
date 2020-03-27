@@ -1025,7 +1025,7 @@ Like `frida-trace`, `jnitrace` can be installed via pip. However, `jnitrace` is 
 $ pip install jnitrace
 ```
 
-The simplest way to run `jnitrace` is as follows:
+You can easily install it by running `pip install jnitrace` and run it straightaway as follows:
 
 ```bash
 $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
