@@ -94,7 +94,7 @@ In addition, you'll also find several open source Frida-based tools, such as:
 - [Fridump](https://github.com/Nightbringer21/fridump "fridump"): a memory dumping tool for both Android and iOS.
 - [Objection](https://github.com/sensepost/objection "objection"): a runtime mobile security assessment framework.
 - [r2frida](https://github.com/nowsecure/r2frida "r2frida"): a project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida.
-- [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace"): a tool for tracing usage of the Android JNI runtime methods by a native library
+- [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace"): a tool for tracing usage of the Android JNI runtime methods by a native library.
 
 We will be using all of these tools throughout the guide.
 
