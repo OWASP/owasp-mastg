@@ -1016,7 +1016,7 @@ To learn more about all options for advanced usage, check the [documentation in 
 
 ##### JNI Tracing
 
-As detailed in section [Reviewing Disassembled Native Code](#reviewing-disassembled-native-code), the first argument passed to every JNI function is a JNI interface pointer. This pointer contains a table of functions that allows native code to access the Android Runtime. Spotting this pattern can help with understanding the type of functionality a library is performing, such as where it creates new strings or calls Java methods.
+As detailed in section [Reviewing Disassembled Native Code](#reviewing-disassembled-native-code), the first argument passed to every JNI function is a JNI interface pointer. This pointer contains a table of functions that allows native code to access the Android Runtime. Identifying calls to these functions can help with understanding library functionality, such as what strings are created or Java methods are called.
 
 [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace") is a Frida based tool similar to frida-trace which specifically targets the usage of Android's JNI API by native libraries, providing a convenient way to obtain JNI method traces including arguments and return values.
 
@@ -1032,7 +1032,7 @@ You can easily install it by running `pip install jnitrace` and run it straighta
 $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 ```
 
-<img src="Images/Chapters/0x05c/jnitrace_trace_helloworldjni.png" width="500px"/>
+<img src="Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="500px"/>
 
 
 The output is colorized like frida-trace to easily distinguish output by thread.
