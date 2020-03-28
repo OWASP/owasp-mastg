@@ -1037,7 +1037,7 @@ $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 
 The output is colorized like frida-trace to easily distinguish output by thread.
 
-At the top of the output is the thread ID, followed by the JNI method call, the arguments passed to the function, and the return value. In the case of a call to a Java method, from native code, the Java method arguments will also be supplied. Finally `jnitrace` will attempt to use the `Frida` backtracing library to show where the JNI call was made from.
+When tracing JNI API calls you can see the thread ID at the top, followed by the JNI method call including the method name, the input arguments and the return value. In the case of a call to a Java method from native code, the Java method arguments will also be supplied. Finally jnitrace will attempt to use the Frida backtracing library to show where the JNI call was made from.
 
 > The `-l` option can be provided multiple times to trace multiple libraries, or `*` can be provided to trace all libraries. This, however, may provide a lot of output.
 
