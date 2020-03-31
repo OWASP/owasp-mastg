@@ -1030,7 +1030,6 @@ $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 
 <img src="Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="500px"/>
 
-
 In the output you can see the trace of a call to `NewStringUTF` made from the native code (its return value is then given back to Java code, see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code)" for more details). Note how similarly to frida-trace, the output is colorized helping to visually distinguish the different threads.
 
 When tracing JNI API calls you can see the thread ID at the top, followed by the JNI method call including the method name, the input arguments and the return value. In the case of a call to a Java method from native code, the Java method arguments will also be supplied. Finally jnitrace will attempt to use the Frida backtracing library to show where the JNI call was made from.
