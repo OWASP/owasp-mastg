@@ -1646,7 +1646,7 @@ $ chmod 755 tcpdump
 
 In certain production builds, you might encounter an error `mount: '/system' not in /proc/mounts`.
 
-In that case, you can replace the above line `$ mount -o rw,remount /system;` with `$ mount -o rw,remount /`, as described in [this Stackoverflow post](https://stackoverflow.com/a/28018008 "How can I remount my Android/system as read-write in a bash script using adb?").
+In that case, you can replace the above line `$ mount -o rw,remount /system;` with `$ mount -o rw,remount /`, as described in [this Stack Overflow post](https://stackoverflow.com/a/28018008 "How can I remount my Android/system as read-write in a bash script using adb?").
 
 > Remember: To use tcpdump, you need root privileges on the phone!
 
