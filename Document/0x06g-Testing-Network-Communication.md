@@ -5,7 +5,7 @@ Almost every iOS app acts as a client to one or more remote services. As this ne
 Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. 
 Since iOS 12.0 the [Network.framework](https://developer.apple.com/documentation/network "API Reference Network") framework and the [URLSession](https://developer.apple.com/documentation/foundation/urlsession "API Reference URLSession") class provide methods to load network and URL requests asynchronously and synchronously. Older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html "Using Sockets and Socket Streams").
 
-### Network.framework
+### Network Framework
 
 `Network.framework` was introduced at [The Apple Worldwide Developers Conference (WWDC)](https://developer.apple.com/videos/play/wwdc2018/715 "Introducing Network.framework: A modern alternative to Sockets") in 2018 and is a replacement to the `Sockets` API. This low-level networking framework provides classes to send and receive data with built in dynamic networking, security and performance support.
 
