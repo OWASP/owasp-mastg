@@ -13,7 +13,7 @@ Network.framework uses TLS 1.3 by default if the `using: .tls` argument is used,
 
 ### URLSession
 
-URLSession was developed from Network.framework and utilizes the framework's transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS. URLSession should be used instead of Network.framework for HTTP and URL connections.
+`URLSession` was built upon the Network framework and utilizes the same transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS. `URLSession` should be used instead of the Network framework for HTTP and URL connections.
 
 #### Network.framework TLS example
 
