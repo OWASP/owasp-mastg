@@ -60,8 +60,8 @@ Additionally, you should always rely on secure hardware (if available) for stori
 For more information on algorithm choice and best practices, see the following resources:
 
 - ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
-- [NIST recommendations (2016)](https://www.keylength.com/en/4/ "NIST recommendations")
-- [BSI recommendations (2017)](https://www.keylength.com/en/8/ "BSI recommendations")
+- [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
+- [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
 
 ### Common Configuration Issues (MSTG-CRYPTO-1, MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
 
@@ -73,7 +73,13 @@ Ensure that the key length fulfills [accepted industry standards](https://www.en
 
 #### Symmetric Encryption with Hard-Coded Cryptographic Keys
 
-The security of symmetric encryption and keyed hashes (MACs) depends on the secrecy of the key. If the key is disclosed, the security gained by encryption is lost. To prevent this, never store secret keys in the same place as the encrypted data they helped create. Developers often make the mistake of encrypting locally stored data with a static, hard-coded encryption key and compiling that key into the app. This makes the key accessible to anyone who can use a disassembler.
+The security of symmetric encryption and keyed hashes (MACs) depends on the secrecy of the key. If the key is disclosed, the security gained by encryption is lost. To prevent this, never store secret keys in the same place as the encrypted data they helped create. Developers often make the mistake of encrypting locally stored data with a static, hardcoded encryption key and compiling that key into the app. This makes the key accessible to anyone who can use a disassembler.
+
+Hardcoded encryption key means that a key is:
+
+- part of application resources
+- part of a static identifier (which might not be clearly within the definition)
+- hardcoded in code
 
 First, ensure that no keys or passwords are stored within the source code. This means you should check native code, JavaScript/Dart code, Java/Kotlin code on Android and Objective-C/Swift in iOS. Note that hard-coded keys are problematic even if the source code is obfuscated since obfuscation is easily bypassed by dynamic instrumentation.
 

@@ -17,7 +17,7 @@ KeyStore and KeyChain provides APIs for storing and using keys (behind the scene
 - generating of a key
 - using of a key
 - storing of a key
-- archiving, of a key
+- archiving of a key
 - deleting of a key
 
 > Please note that storing of a key is analyzed in the chapter "[Testing Data Storage](0x05d-Testing-Data-Storage.md)".
@@ -27,9 +27,7 @@ These phases are managed by Keystore/KeyChain system. However how the system wor
 - [Key generation](0x05e-Testing-Cryptography.md#key-generation)
 - [Random number generation](0x05e-Testing-Cryptography.md#random-number-generation)
 
-You can go further and verify how good is a key by performing [key attestation](0x05e-Testing-Cryptography.md#key-attestation). 
-
-You can go to the conclusion that everything in cryptography is about a key (and you will not be far away from the truth). You went through functions how the key is created and it is a time to verify how good is a key. In th
+You can go further and verify how good is a key by performing [key attestation](0x05e-Testing-Cryptography.md#key-attestation).
 
 Apps that target modern API levels, went through the following changes:
 
@@ -63,7 +61,7 @@ The following list of recommendations should be considered during app examinatio
 
 #### Provider
 
-Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionallities which depend on cryptography.  
+Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
 The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
 
@@ -272,8 +270,6 @@ For the security analysis perspective the analysts may perform the following che
 
 #### Overview
 
-[//]: # (The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption.)
-
 This test case focuses on hardcoded symmetric cryptography as the only method of encryption. Following checks should be performed:
 
 - identify all instance of symmectric cryptography
@@ -321,10 +317,6 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 
 #### Overview
 
-[//]: # (The app uses proven implementations of cryptographic primitives.)
-[//]: # (The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices.)
-[//]: # (The app does not use cryptographic protocols or algorithms that are widely considered deprecated for security purposes.)
-
 These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
 
 - identify all instance of cryptography primitives and their implementation (library or custom implementation)
@@ -343,13 +335,11 @@ Identify all the instances of the cryptographic primitives in code. Identify all
 
 Identify that all calls to getInstance use default `provider` of security services by not specifing it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
 
-Ensure that the best practices outlined in the "Cryptography for Mobile Apps" chapter are followed. Verify that the configuration of cryptographic algorithms used are aligned with best practices from [NIST](https://www.keylength.com/en/4/ "NIST recommendations - 2016") and [BSI](https://www.keylength.com/en/8/ "BSI recommendations - 2017") and are considered as strong. Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure.
+Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues). Make sure that `SHA1PRNG` is no longer used as it is not cryptographically secure. Lastly, make sure that keys are not hardcoded in native code..
 
-[!!! list of recommended algorithms/modes and not recommended - configuration of crypto (PCI DSS, NIST/BSI requirements)
-no ECB, DES, RC
-]
+#### Dynamic Analysis
 
-Lastly, make sure that keys are not hardcoded in native code and that no insecure mechanisms are used at this level.
+[//]: # (TODO:Dynamic Analysis)
 
 When you have access to the source code, check at least for the following:
 
@@ -361,8 +351,6 @@ When you have access to the source code, check at least for the following:
 
 #### Overview
 
-[//]: # (The app doesn't re-use the same cryptographic key for multiple purposes.)
-[//]: # (key purpose - no reuse a key in business logic and functions like signing,encrypting additionally check how it was configured in keystore)
 This test case focuses on verification of purpose and reusage of the same cryptographic keys. Following checks should be performed:
 
 - identify all instanaces where cryptography is used
@@ -370,20 +358,39 @@ This test case focuses on verification of purpose and reusage of the same crypto
 - identify type of cryptography
 - verify if cryptography is used according to its purpose
 
-Guides:
-
-- make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
-- make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
-
 #### Static Analysis
 
+Identify all instanaces where cryptography is used. You can look for:
+
+- classes `Cipher`, `Mac`, `MessageDigest`, `Signature`
+- interfaces `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
+- functions `getInstance`, `generateKey`
+- exceptions `KeyStoreException`, `CertificateException`, `NoSuchAlgorithmException`
+- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
+
+For all identified instance, identify purpose of using cryptography and its type. It can be used :
+
+- to encrypt/decrypt - that ensures confidentiality of data
+- to sign/verify - that ensures integrity of data (as well as accountability in some cases)
+- to maintance - that protects key during an operation (like import to KeyStore)
+
+Additionally, you should identify business logic which uses identified instances of cryptography. That should give you explanation why cryptography is used from business perspective (i.e. to protect confidentiality of data at rest, to confirm that file was signed from device X which belongs to Y).
+
+During verification take the following checks should be performed:
+
+- make sure that key is used according to purpose defined during its creation (it is relevant to KeyStore keys, which can have KeyProperties defined)
+- make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
+- make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
+- make sure that cryptography is used according to business purpose.
+
 #### Dynamic Analysis
+
+[//]: # (TODO:Dynamic Analysis)
 
 ### Testing Random Number Generation (MSTG-CRYPTO-6)
 
 #### Overview
 
-[//]: # (All random values are generated using a sufficiently secure random number generator.)
 This test case focuses on random values used by application. Following checks should be performed:
 
 - identify all instances where random values are used and all instances of random number generators
