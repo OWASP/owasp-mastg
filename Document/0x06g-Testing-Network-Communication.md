@@ -2,7 +2,8 @@
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
-Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS 12.0+ (older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html "Using Sockets and Socket Streams"), the [Network.framework](https://developer.apple.com/documentation/network "API Reference Network") framework and the [URLSession](https://developer.apple.com/documentation/foundation/urlsession "API Reference URLSession") class provide methods to load network and URL requests asynchronously and synchronously.
+Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. 
+Since iOS 12.0 the [Network.framework](https://developer.apple.com/documentation/network "API Reference Network") framework and the [URLSession](https://developer.apple.com/documentation/foundation/urlsession "API Reference URLSession") class provide methods to load network and URL requests asynchronously and synchronously. Older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html "Using Sockets and Socket Streams").
 
 ### Network.framework
 
