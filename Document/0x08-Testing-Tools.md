@@ -169,3 +169,4 @@ The applications listed below can be used as training materials. Note: only the 
 - DVIA-v2: A vulnerable iOS app, written in Swift with over 15 vulnerabilities - <https://github.com/prateek147/DVIA-v2>
 - iGoat: An iOS Objective-C app serving as a learning tool for iOS developers (iPhone, iPad, etc.) and mobile app pentesters. It was inspired by the WebGoat project, and has a similar conceptual flow to it - <https://github.com/owasp/igoat>
 - iGoat-Swift: A Swift version of original iGoat project - <https://github.com/owasp/igoat-swift>
+- UnSAFE Bank: UnSAFE Bank is a core virtual banking application designed with the aim to incorporate the cybersecurity risks and various test cases such that newbie, developers, and security analysts can learn, hack and improvise their vulnerability assessment and penetration testing skills. - <https://github.com/lucideus-repo/UnSAFE_Bank>
