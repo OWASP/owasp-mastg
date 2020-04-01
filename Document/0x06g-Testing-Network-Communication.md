@@ -9,7 +9,7 @@ Since iOS 12.0 the [Network.framework](https://developer.apple.com/documentation
 
 `Network.framework` was introduced at [The Apple Worldwide Developers Conference (WWDC)](https://developer.apple.com/videos/play/wwdc2018/715 "Introducing Network.framework: A modern alternative to Sockets") in 2018 and is a replacement to the `Sockets` API. This low-level networking framework provides classes to send and receive data with built in dynamic networking, security and performance support.
 
-Network.framework uses TLS 1.3 by default if the `using: .tls` argument is used, and should be used over the legacy [Secure Transport](https://developer.apple.com/documentation/security/secure_transport "API Reference Secure Transport") framework.
+TLS 1.3 is enabled by default in Network.framework,  if the argument `using: .tls` is used. It is the preferred option over the legacy [Secure Transport](https://developer.apple.com/documentation/security/secure_transport "API Reference Secure Transport") framework.
 
 ### URLSession
 
