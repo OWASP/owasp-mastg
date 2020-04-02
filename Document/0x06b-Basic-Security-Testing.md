@@ -270,7 +270,8 @@ Mach header
 Mach header
       magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
 MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       5728   NOUNDEFS DYLDLINK TWOLEVEL PIE
-# If yes then we specify the "--arch" parameter to "arm64" otherwise it is not needed if the binary only contain a ARM64 binary
+# If yes then we specify the "--arch" parameter to "arm64" otherwise it is not needed 
+# if the binary only contain a ARM64 binary
 # Dump the Objective-C classes to a temporary file 
 $ dsdump --objc --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/OBJC.txt   
 # Dump the Swift type descriptors to a temporary file if the app is implemented in Swift
