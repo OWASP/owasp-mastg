@@ -259,7 +259,7 @@ It has several features, like app installation, access the app sandbox without j
 
 [dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It does not support ARM 32-bit and support Swift version superior or equals to 5. 
 
-This is an example showing how to dump Objective-C classes and Swift type descriptors of an iOS application:
+This is an example showing how you can dump Objective-C classes and Swift type descriptors of an iOS application:
 
 ```shell
 # Verify if this is a FAT binary and that it contains a ARM64 binary
