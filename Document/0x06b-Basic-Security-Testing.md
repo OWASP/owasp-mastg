@@ -255,6 +255,28 @@ It has several features, like app installation, access the app sandbox without j
 
 [Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
 
+##### dsdump
+
+[dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It does not support ARM 32 bits and support Swift version superior or equals to 5. 
+
+This is an example showing how to dump Objective-C classes and Swift type descriptors of an iOS application:
+
+```shell
+# Verify if this is a FAT binary and that it contains a ARM64 binary
+$ otool -hv [APP_MAIN_BINARY_FILE]
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC     ARM         V7  0x00     EXECUTE    39       5016   NOUNDEFS DYLDLINK TWOLEVEL PIE
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       5728   NOUNDEFS DYLDLINK TWOLEVEL PIE
+# If yes then we specify the "--arch" parameter to "arm64" otherwise it is not needed if the binary only contain a ARM64 binary
+# Dump the Objective-C classes to a temporary file 
+$ dsdump --objc --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/OBJC.txt   
+# Dump the Swift type descriptors to a temporary file if the app is implemented in Swift
+$ dsdump --swift --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/SWIFT.txt
+```
+
 ##### Mobile-Security-Framework - MobSF
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pentesting framework that also supports iOS IPA files. The easiest way of getting MobSF started is via Docker.
