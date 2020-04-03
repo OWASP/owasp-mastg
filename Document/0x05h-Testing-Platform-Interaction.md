@@ -1020,7 +1020,7 @@ To address these attack vectors, check the following:
 - The HTTPS communication must be implemented according to best practices to avoid MITM attacks. This means:
   - all communication is encrypted via TLS (see test case "Testing for Unencrypted Sensitive Data on the Network"),
   - the certificate is checked properly (see test case "Testing Endpoint Identify Verification"), and/or
-  - the certificate should be pinned (see "Testing Custom Certificate Stores and SSL Pinning").
+  - the certificate should be pinned (see "Testing Custom Certificate Stores and Certificate Pinning").
 
 ### Testing WebView Protocol Handlers (MSTG-PLATFORM-6)
 
