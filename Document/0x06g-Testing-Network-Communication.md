@@ -15,7 +15,7 @@ TLS 1.3 is enabled by default in the Network framework, if the argument `using: 
 
 `URLSession` was built upon the Network framework and utilizes the same transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS.
 
-`URLSession` should be used for HTTP and HTTPS connections, instead of utilizing the Network framework directly. The class natively supports both URL schemes and is optimized for such connections. It and requires less boilerplate code, reducing the propensity for errors and ensures default secure connections by inspecting the scheme of a URL, instead of requiring the connection protocol to be specified. The Network framework should only be used when there are low-level and/or advanced networking requirements.
+`URLSession` should be used for HTTP and HTTPS connections, instead of utilizing the Network framework directly. The class natively supports both URL schemes and is optimized for such connections. It requires less boilerplate code, reducing the propensity for errors and ensuring secure connections by default. The Network framework should only be used when there are low-level and/or advanced networking requirements.
 
 The official Apple documentation includes examples of using the Network Framework to [implement netcat](https://developer.apple.com/documentation/network/implementing_netcat_with_network_framework "Implementing netcat with Network Framework") and `URLSession` to [fetch website data into memory](https://developer.apple.com/documentation/foundation/url_loading_system/fetching_website_data_into_memory "Fetching Website Data into Memory").
 
