@@ -2468,3 +2468,4 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - Radare2 - <https://www.radare.org>
 - smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smali/wiki/smalidea>
 - VxStripper - <http://vxstripper.pagesperso-orange.fr>
+- Dextra - <http://newandroidbook.com/tools/dextra.html>
