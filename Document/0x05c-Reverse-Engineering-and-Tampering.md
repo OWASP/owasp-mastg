@@ -361,7 +361,7 @@ Android platform provides many in-built libraries for frequently used functional
 
 For instance, if in an application `javax.crypto.Cipher` class is imported, it indicates that application will be performing some kind of cryptographic operation. Fortunately, Cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analysing cryptography APIs. Example, by looking for `Cipher.getInstance()` function, we can determine the cryptographic algorithm being used. With such approach we can directly move to analysing cryptographic assets, which often are very critical in an application. Further information on how to analyse Android's cryptographic APIs is discussed in  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")" section.
 
-Similarly, the above approach can be used in determining where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments, must use `android.nfc` package. By searching for critical functions like `processCommandApdu()` from `android.nfc.cardemulation.HostApduService` class, can provide us a starting point for analysis NFC APIs.
+Similarly, the above approach can be used in determining where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments, must use `android.nfc` package. By searching for critical functions like `processCommandApdu()` from `android.nfc.cardemulation.HostApduService` class, can provide us a starting point for NFC API analysis.
 
 Checking for the imported classes in an application can help us in understanding the functionalities implemented. Further by determining the most important functions of an imported class, one can start analysis by assuming this function as the centrepiece of the puzzle.
 
@@ -370,7 +370,7 @@ Checking for the imported classes in an application can help us in understanding
 
 Android require applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check network configuration, as often debug environment (less secure) configurations are pushed into final release build by mistake.
 
-Also, many applications to further strengthen the network security, use Certificate Pinning. certificate pinning not only deters MITM attacks, but also slows down reverse engineering of network traffic. But there are many pitfalls while implementing it correctly, one such common mistake being - not verifying a self-signed certificate used in certificate pinning.
+Also, many applications to further strengthen the network security, use Certificate Pinning. Certificate pinning not only deters MITM attacks, but also slows down reverse engineering of network traffic. But there are many pitfalls while implementing it correctly, one such common mistake being - not verifying a self-signed certificate used in certificate pinning.
 
 Implementation of secure connections and verifying them can be an intricate process, and it is covered in more detail in "[Android Network APIs](0x05g-testing-network-communication "Android Network APIs")" section.
 
