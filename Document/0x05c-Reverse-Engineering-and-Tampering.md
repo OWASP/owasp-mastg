@@ -292,15 +292,15 @@ During **black-box testing**, you won't have access to the original form of the 
 
 #### Basic Information Gathering
 
-As discussed in previous sections, an Android application can consist of both Java bytecode and native code. To start with analysis of an application, each type of code may require different approach and tools. In this section we will learn about some approaches and tools for collecting basic information about a given Android application using static analysis.
+As discussed in previous sections, an Android application can consist of both Java bytecode and native code. To start with analysis of an application, each type of code may require different approach and tools. In this section, we will learn about some approaches and tools for collecting basic information about a given Android application using static analysis.
 
 ##### Retrieving Strings
 
-While performing any kind of binary analysis, strings can be considered as one of the most valuable starting point. Strings provide a context to a part of the binary being analyzed. For example, an error log string "Data encryption failed." gives us a hint that the adjoining code is responsible for performing some kind of encryption operation.
+While performing any kind of binary analysis, strings can be considered as one of the most valuable starting point. Strings provide a context to a part of the binary being analyzed. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code is responsible for performing some kind of encryption operation.
 
 ###### Java
 
-As we already know, all the Java bytecode of an Android application is compiled into a dex file. Each dex file contains a [string identifiers list](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids). Each string used in the code is given an identifier number, and internally this identifier number is used whenever a string is need to be referred. This list contains all the string identifiers used in the binary, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hard coded strings). We can simply dump this list to get all the strings used in the Java bytecode. Fortunately, there are plenty of tools already available for dumping strings form Java bytecode and one can choose depending on the needs. In this section we will use Ghidra (GUI based), and [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
+As we already know, all the Java bytecode of an Android application is compiled into a dex file. Each dex file contains a [string identifiers list](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids). Each string used in the code is given an identifier number, and internally this identifier number is used whenever a string is referred. This list contains all the string identifiers used in the binary, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hard coded strings). Knowing this, we can simply dump this list to get all the strings used in the Java bytecode in a dex file. Fortunately, there are plenty of tools already available for dumping strings form Java bytecode and one can choose depending on the needs. In this section we will use Ghidra (GUI based), and [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
 
 With Ghidra, strings can be obtained by simply loading the dex file into the tool and by selecting **Window -> Defined strings** in the menu.
 
@@ -315,18 +315,18 @@ Dextra is a CLI based tool, and provides multiple features to explore dex files.
 dextra -S classes.dex
 ```
 
-The output from Dextra can be manipulated using standard Linux commands, for example, using `grep` to search for a certain keyword.
+The output from Dextra can be manipulated using standard Linux commands, for example, using `grep` to search for certain keywords.
 
-The list of strings obtained using the above tools can be very big, as it also contain the various class and package names in it. Going through the complete list, specially for big binaries, can be cumbersome, in such cases performing a keyword based search can be more efficient. Some keywords which can be a good starting point are - password, key, and secret.
+It is important to know, the list of strings obtained using the above tools can be very big, as it also includes the various class and package names used in the application. Going through the complete list, specially for big binaries, can be very cumbersome. Thus, it is recommended to start with keyword based searching and go through the list only when keyword search does not work. Some keywords which can be a good starting point are - password, key, and secret.
 
 
 ###### Native
 
-For extracting strings from the native code used in an Android application, we can use either Ghidra (GUI based) or `strings` utility command available on \*nix.
+For extracting strings from the native code used in an Android application, we can either use Ghidra (GUI based) or `strings` utility command available on \*nix.
 
 Use of Ghidra for extracting strings for a native binary has already been discussed in "[Using Disassemblers and Decompilers](0x04c-tampering-and-reverse-engineering#ghidra "Using Disassembler and Decompilers")" section.
 
-Using `strings` command is straightforward and demonstrated below for a native library:
+`strings` is a CLI based tool and using it is straightforward, as demonstrated below for a native library:
 
 ```bash
 strings libnative-lib.so
@@ -352,25 +352,25 @@ Another popular Java decompiler tool is jadx. Using jadx, cross references for a
 ###### Native
 While analysing an Android application's native library using Ghidra, cross references can be obtained similarly to Java, i.e, by right clicking the desired function and selecting **Show References to**.
 
-<img src="Images/Chapters/0x05c/native_java_xrefs.png" width="500px"/>
+<img src="Images/Chapters/0x05c/ghidra_native_xrefs.png" width="500px"/>
 
 
 ##### API Usage
 
-Android platform provides many in-built libraries for frequently used functionalities in applications, example libraries for cryptography, Bluetooth, NFC, network, location etc. Presence of these imported libraries in an application's code can give us valuable information about the nature of application being evaluated.
+Android platform provides many in-built libraries for frequently used functionalities in applications, example cryptography, Bluetooth, NFC, network or location libraries. Presence of these imported libraries in an application's code can give us valuable information about the nature of application being evaluated.
 
-For instance, in an application `javax.crypto.Cipher` class is imported, it indicates that application will be performing some kind of cryptographic operation. Fortunately, Cryptographic calls are very standard in nature, i.e, they need to be called in a particular fixed order to work properly. By looking for Cipher.getInstance() function, we can determine the cryptographic algorithm being used. With such approach we can directly move to analysing cryptographic assets, which often are very critical assets of an application. Further information on how to analyse Android's cryptographic APIs is discussed in  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")" section.
+For instance, if in an application `javax.crypto.Cipher` class is imported, it indicates that application will be performing some kind of cryptographic operation. Fortunately, Cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analysing cryptography APIs. Example, by looking for `Cipher.getInstance()` function, we can determine the cryptographic algorithm being used. With such approach we can directly move to analysing cryptographic assets, which often are very critical in an application. Further information on how to analyse Android's cryptographic APIs is discussed in  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")" section.
 
-Similarly, the above approach can be used in determining where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments, must be using `android.nfc` package. By searching for critical functions like `processCommandApdu()` can narrow down on the NFC functionality being used.
+Similarly, the above approach can be used in determining where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments, must use `android.nfc` package. By searching for critical functions like `processCommandApdu()` from `android.nfc.cardemulation.HostApduService` class, can provide us a starting point for analysis NFC APIs.
 
 Checking for the imported classes in an application can help us in understanding the functionalities implemented. Further by determining the most important functions of an imported class, one can start analysis by assuming this function as the centrepiece of the puzzle.
 
 
 ##### Checking Secure Connections
 
-Android require applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check network configuration, as often debug environment (less secure) configurations are pushed into final release build.
+Android require applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check network configuration, as often debug environment (less secure) configurations are pushed into final release build by mistake.
 
-Also, many applications to further strengthen the network security, use Certificate Pinning. Certificate Pinning not only deters MITM attacks, but also slows down reverse engineering of network traffic. But there are many pitfalls while implementing it correctly, example verifying the certificate when self-signed certificates are used.
+Also, many applications to further strengthen the network security, use Certificate Pinning. certificate pinning not only deters MITM attacks, but also slows down reverse engineering of network traffic. But there are many pitfalls while implementing it correctly, one such common mistake being - not verifying a self-signed certificate used in certificate pinning.
 
 Implementation of secure connections and verifying them can be an intricate process, and it is covered in more detail in "[Android Network APIs](0x05g-testing-network-communication "Android Network APIs")" section.
 
