@@ -879,6 +879,10 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 |---|---|
 | <img src="Images/Chapters/0x05d/1.png" width="500px"/> | <img src="Images/Chapters/0x05d/2.png" width="500px"/> |
 
+On devices supporting [file-based encryption (FBE)](https://source.android.com/security/encryption/file-based "FBE"), snapshots are stored in the `/data/system_ce/<USER_ID>/<IMAGE_FOLDER_NAME>` folder. `<IMAGE_FOLDER_NAME>` depends on the vendor but most common names are `snapshots` and `recent_images`. If the device doesn't support FBE, the `/data/system/<IMAGE_FOLDER_NAME>` folder is used.
+
+> Accessing these folders and the snapshots requires root.
+
 ### Checking Memory for Sensitive Data (MSTG-STORAGE-10)
 
 #### Overview
