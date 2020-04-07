@@ -309,7 +309,6 @@ This will highlight all the classes that use the `SecretKeySpec` class, we now e
 
 #### Dynamic Analysis
 
-[//]: # (TODO: extend that section, we need to show how monitor filesystem for changes during app operation, we can show how to hook to crypto methods)
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
 ### Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
@@ -338,13 +337,7 @@ Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0
 
 #### Dynamic Analysis
 
-[//]: # (TODO:Dynamic Analysis)
-
-When you have access to the source code, check at least for the following:
-
-- Check which mechanism is used to store a key: prefer the `AndroidKeyStore` over all other solutions.
-- Check if defense in depth mechanisms are used to ensure usage of a TEE. For instance: is temporal validity enforced? Is hardware security usage evaluated by the code? See the [KeyInfo documentation](https://developer.android.com/reference/android/security/keystore/KeyInfo "KeyInfo") for more details.
-- In case of whitebox cryptography solutions: study their effectiveness or consult a specialist in that area.
+Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
 ### Testing the Purposes of Keys (MSTG-CRYPTO-5)
 
@@ -384,7 +377,7 @@ During verification take the following checks should be performed:
 
 #### Dynamic Analysis
 
-[//]: # (TODO:Dynamic Analysis)
+Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
 ### Testing Random Number Generation (MSTG-CRYPTO-6)
 
@@ -454,6 +447,7 @@ If you want to test for randomness, you can try to capture a large set of number
 - Android Developer blog: Changes for NDK Developers - <https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html>
 - Android Developer blog: Crypto Provider Deprecated - <https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html>
 - Android Developer blog: Cryptography Changes in Android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
+- Android Developer blog: Some SecureRandom Thoughts - <https://android-developers.googleblog.com/2013/08/some-securerandom-thoughts.html>
 - Android Developer documentation - <https://developer.android.com/guide>
 - BSI Recommendations - 2017 - <https://www.keylength.com/en/8/>
 - Ida Pro - <https://www.hex-rays.com/products/ida/>
