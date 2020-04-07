@@ -10,11 +10,13 @@ In this guide, we'll introduce static and dynamic analysis and instrumentation. 
 
 Make sure that the following is installed on your system:
 
-- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
+- [class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
 
-- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "Class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
+- [class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
 
-- [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "Class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
+- [class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
+
+- [dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
 
 - [MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
@@ -439,6 +441,62 @@ Copy the modified binary to any directory on the test device. The following exam
 ```shell
 $ iproxy 2222 22
 $ scp -P 2222 debugserver root@localhost:/tmp/
+```
+
+Note: On iOS 12 and higher, use the following procedure to sign the debugserver binary obtained from the XCode image.
+
+1) Copy the debugserver binary to the device via scp, for example, in the /tmp folder.
+
+2) Connect to the device via SSH and create the file, named entitlements.xml, with the following content:
+
+```xml
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>platform-application</key>
+	<true/>
+    <key>com.apple.private.security.no-container</key>
+    <true/>
+	<key>com.apple.private.skip-library-validation</key>
+	<true/>
+	<key>com.apple.backboardd.debugapplications</key>
+	<true/>
+	<key>com.apple.backboardd.launchapplications</key>
+	<true/>
+	<key>com.apple.diagnosticd.diagnostic</key>
+	<true/>
+	<key>com.apple.frontboard.debugapplications</key>
+	<true/>
+	<key>com.apple.frontboard.launchapplications</key>
+	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.network.server</key>
+	<true/>
+	<key>com.apple.springboard.debugapplications</key>
+	<true/>
+	<key>com.apple.system-task-ports</key>
+	<true/>
+	<key>get-task-allow</key>
+	<true/>
+	<key>run-unsigned-code</key>
+	<true/>
+	<key>task_for_pid-allow</key>
+	<true/>
+</dict>
+</plist>
+```
+
+3) Type the following command to sign the debugserver binary:
+
+```shell
+$ ldid -Sentitlements.xml debugserver
+```
+
+4) Verify that the debugserver binary can be executed via the following command:
+
+```shell
+$ ./debugserver
 ```
 
 You can now attach debugserver to any process running on the device.
@@ -1380,11 +1438,12 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 
 #### Tools
 
-- Class-dump - <http://stevenygard.com/projects/class-dump/>
-- Class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
-- Class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
+- class-dump - <http://stevenygard.com/projects/class-dump/>
+- class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
+- class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
 - Cycript - <http://www.cycript.org/>
 - Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
+- dsdump - <https://github.com/DerekSelander/dsdump>
 - Frida - <https://www.frida.re>
 - Ghidra - <https://ghidra-sre.org/>
 - Hopper - <https://www.hopperapp.com/>

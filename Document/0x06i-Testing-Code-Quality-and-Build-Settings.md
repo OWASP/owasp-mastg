@@ -273,7 +273,7 @@ After you obtain the library and Clutched it (e.g. removed the DRM), you can run
 $ otool -L <Executable>
 ```
 
-However, these do not include all the libraries being used. Next, with Class-dump (for Objective-C) you can generate a subset of the header files used and derive which libraries are involved. But not detect the version of the library.
+However, these do not include all the libraries being used. Next, with class-dump (for Objective-C) or the more recent dsdump you can generate a subset of the header files used and derive which libraries are involved. But not detect the version of the library.
 
 ```shell
 $ ./class-dump <Executable> -r
@@ -663,7 +663,7 @@ Dynamic analysis is not applicable for finding security features offered by the 
 - CocoaPods - <https://CocoaPods.org>
 - OWASP Dependency Checker - <https://jeremylong.github.io/DependencyCheck/>
 - Sourceclear - <https://sourceclear.com>
-- Class-dump - <https://github.com/nygard/class-dump>
+- class-dump - <https://github.com/nygard/class-dump>
 - RetireJS - <https://retirejs.github.io/retire.js/>
 - idb - <https://github.com/dmayer/idb>
 - Codesign - <https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html>
