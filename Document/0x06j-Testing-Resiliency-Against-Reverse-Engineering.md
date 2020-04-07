@@ -381,6 +381,45 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 [needle][script_jailbreak-detection-bypass] > run
 ```
 
+
+
+#### Using getppid
+
+Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the *user mode* and has PID=1. However, if a debugger starts an application, we can observe that `getppid()` returns PID different than 1. The whole detection can be implemented in the following way:
+
+```objective-c
+- (bool)AmIBeingDebugged{
+    int ppid = getppid();
+    return ppid != 1;
+}
+```
+
+The listings below present shortened outputs of `getppid` and `ps aux`  for two different cases:
+
+1. An application has been opened normally from the SpringBoard. 
+
+   getppid() returns 1, so *launchd* is the parent of our process. 
+
+   ```
+   owasp-iPhone:~ root# ps aux
+   USER   PID   COMMAND
+   root   1    /sbin/launchd
+   mobile 1480 /var/containers/Bundle/Application/.../OWASP.app/OWASP
+   ```
+
+2. An application has been opened by a debugger, e.g. `ios-deploy --debug --bundle OWASP.app`
+
+   getppid() returns 1491, so *debugserver* is the parent of our process.
+
+   ```
+   owasp-iPhone:~ root# ps aux
+   USER   PID   COMMAND
+   mobile 1491 /Developer/usr/bin/debugserver --lockdown --launch=frontboard
+   mobile 1492 /var/containers/Bundle/Application/.../OWASP.app/OWASP
+   ```
+
+
+
 ### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
 #### Overview
