@@ -1399,7 +1399,7 @@ You can find some general guidelines about Android View security in the [Android
 
 When either of the first two techniques are implemented, the Android framework will discard touches or taps that are received from any other visible window. This will safeguard users against this severe vulnerability.
 
-The third technique can be applied to specific components instead of the application as a whole. This type of mitigation can be used when there is a business need to allow overlay feature by third party application. In these cases, the developer must identify all sensitive input fields and apply `FLAG_WINDOW_IS_OBSCURED` to them, minimizing the impact of the tapjacking vulnerability.
+The third technique can be applied to specific components instead of the application as a whole. This type of mitigation can be used when there is a business need to allow overlay feature by a third party application. In these cases, the developer must identify all sensitive input UI elements and apply `FLAG_WINDOW_IS_OBSCURED` or `FLAG_WINDOW_IS_PARTIALLY_OBSCURED` to them, minimizing the impact of the tapjacking vulnerability. An appropriate response to this check might be to drop the suspect touches or to take additional precautions to confirm the user's actual intent.
 #### Dynamic Analysis
 
 To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
