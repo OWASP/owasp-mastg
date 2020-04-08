@@ -1387,7 +1387,7 @@ There are several ways to perform dynamic analysis:
 
 Tapjacking is a vulnerability in which the malicious application abuses the screen overlay feature of Android to capture user taps and keystrokes. This is possible because an active screen overlay can listen for taps and intercept any information being passed in the underlying activity.
 
-Over the years many known malwares like MazorBot, BankBot, MysteryBot have been abusing screen overlay feature to target business critical applications, namely in the banking sector. The [blog](https://www.infosecurity-magazine.com/opinions/overlay-attacks-safeguard-mobile/ "blog") discusses more about these type of malwares.
+Over the years many known malware like MazorBot, BankBot or MysteryBot have been abusing the screen overlay feature of Android to target business critical applications, namely in the banking sector. This [blog](https://www.infosecurity-magazine.com/opinions/overlay-attacks-safeguard-mobile/ "Dealing with Overlay Attacks: Adopting Built-in Security to Safeguard Mobile Experience") discusses more about this type of malware.
 
 #### Static Analysis
 
