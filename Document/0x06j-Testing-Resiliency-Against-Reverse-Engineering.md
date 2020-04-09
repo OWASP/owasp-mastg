@@ -383,7 +383,7 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 
 #### Using getppid
 
-Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the *user mode* and has PID=1. However, if a debugger starts an application, we can observe that `getppid()` returns PID different than 1. The whole detection can be implemented in the following way:
+Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in the following way:
 
 ```swift
 func AmIBeingDebugged() -> Bool {
