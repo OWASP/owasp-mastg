@@ -394,32 +394,6 @@ Applications on iOS can detect if they have been started by a debugger by checki
 }
 ```
 
-The listings below present shortened outputs of `getppid` and `ps aux`  for two different cases:
-
-1. An application has been opened normally from the SpringBoard. 
-
-   getppid() returns 1, so *launchd* is the parent of our process. 
-
-   ```
-   owasp-iPhone:~ root# ps aux
-   USER   PID   COMMAND
-   root   1    /sbin/launchd
-   mobile 1480 /var/containers/Bundle/Application/.../OWASP.app/OWASP
-   ```
-
-2. An application has been opened by a debugger, e.g. `ios-deploy --debug --bundle OWASP.app`
-
-   getppid() returns 1491, so *debugserver* is the parent of our process.
-
-   ```
-   owasp-iPhone:~ root# ps aux
-   USER   PID   COMMAND
-   mobile 1491 /Developer/usr/bin/debugserver --lockdown --launch=frontboard
-   mobile 1492 /var/containers/Bundle/Application/.../OWASP.app/OWASP
-   ```
-
-
-
 ### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
 #### Overview
