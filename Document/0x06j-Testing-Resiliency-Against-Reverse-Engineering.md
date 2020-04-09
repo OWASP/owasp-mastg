@@ -385,12 +385,10 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 
 Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the *user mode* and has PID=1. However, if a debugger starts an application, we can observe that `getppid()` returns PID different than 1. The whole detection can be implemented in the following way:
 
-```objective-c
-- (bool)AmIBeingDebugged{
-    int ppid = getppid();
-    return ppid != 1;
-}
-```
+```swift
+func AmIBeingDebugged() -> Bool {
+    return getppid() != 1
+}```
 
 ### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
