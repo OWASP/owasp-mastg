@@ -268,7 +268,7 @@ script.load()
 sys.stdin.read()
 ```
 
-### Anti-Debugging Checks (MSTG-RESILIENCE-2)
+### Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
 
 #### Overview
 
