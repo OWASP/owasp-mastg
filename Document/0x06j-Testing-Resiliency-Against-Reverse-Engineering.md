@@ -272,13 +272,11 @@ sys.stdin.read()
 
 #### Overview
 
-Debugging and exploring applications are helpful during reversing. Using a debugger, a reverse engineer can not only track critical variables but also read and modify memory.
+Exploring applications using a debugger is very helpful during reversing, you can not only track variables containing sensitive data but also read and modify memory. Given the damage debugging can be used for, application developers use many techniques to prevent it. These are called anti-debugging techniques.
 
-Given the damage debugging can be used for, application developers use many techniques to prevent it. These are called anti-debugging techniques. As discussed in the "Testing Resiliency Against Reverse Engineering" chapter for Android, anti-debugging techniques can be preventive or reactive.
+As discussed in chapter "[Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")", anti-debugging techniques can be preventive or reactive. Preventive techniques prevent the debugger from attaching to the application at all, and reactive techniques allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior.
 
-Preventive techniques prevent the debugger from attaching to the application at all, and reactive techniques allow the presence of a debugger to be verified and allow the application to diverge from expected behavior.
-
-There are several anti-debugging techniques; a few of them are discussed below.
+There are several anti-debugging techniques, a few of them are discussed below.
 
 ##### Using ptrace
 
