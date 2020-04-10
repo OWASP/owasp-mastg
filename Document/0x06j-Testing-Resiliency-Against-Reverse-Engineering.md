@@ -388,7 +388,8 @@ Applications on iOS can detect if they have been started by a debugger by checki
 ```swift
 func AmIBeingDebugged() -> Bool {
     return getppid() != 1
-}```
+}
+```
 
 ### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
