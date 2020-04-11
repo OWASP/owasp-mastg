@@ -171,7 +171,8 @@ These libraries can lead to unwanted side-effects:
 - A library can no longer be maintained or hardly be used, which is why no vulnerabilities are reported and/or fixed. This can lead to having bad and/or vulnerable code in your application through the library.
 - A library can use a license, such as LGPL2.1, which requires the application author to provide access to the source code for those who use the application and request insight in its sources. In fact the application should then be allowed to be redistributed with modifications to its source code. This can endanger the intellectual property (IP) of the application.
 
-Note: there are two widely used package management tools: Carthage and CocoaPods.
+Note: there are three widely used package management tools: Swift Package Manager, Carthage, and CocoaPods.
+
 Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
 #### Static Analysis
@@ -180,7 +181,27 @@ Please note that this issue can hold on multiple levels: When you use webviews w
 
 In order to ensure that the libraries used by the apps are not carrying vulnerabilities, one can best check the dependencies installed by CocoaPods or Carthage.
 
-In case CocoaPods is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities:
+###### Swift Package Manager
+
+In case [Swift Package Manager](https://swift.org/package-manager "Swift Package Manager on Swift.org") is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities:
+
+First, at the root of the project, where the Package.swift file is located, type
+
+```shell
+$ swift build
+```
+
+Next, check the Package.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
+
+You can utilize the OWASP [Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [Swift Package Manager Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html "dependency-check – SWIFT Package Manager Analyzer") to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe) of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/) entries. Scan the application's Package.swift file and generate a report of known vulnerable libraries with the following command:
+
+```shell
+$ dependency-check  --enableExperimental --out . --scan Package.swift
+```
+
+###### CocoaPods
+
+In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities:
 
 First, at the root of the project, where the Podfile is located, execute the following commands:
 
@@ -235,7 +256,19 @@ Last, if the application is a high-risk application, you will end up vetting the
 
 ##### Detecting the Licenses Used by the Libraries of the Application
 
-In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by CocoaPods or Carthage.
+In order to ensure that the copyright laws are not infringed, one can best check the dependencies installed by Swift Packager Manager, CocoaPods, or Carthage.
+
+###### Swift Package Manager
+
+When the application sources are available and Swift Package Manager is used, execute the following code in the root directory of the project, where the Package.swift file is located:
+
+```shell
+$ swift build
+```
+
+The sources of each of the dependencies have now been downloaded to `/.build/checkouts/` folder in the project. Here you can find the license for each of the libraries in their respective folder.
+
+###### CocoaPods
 
 When the application sources are available and CocoaPods is used, then execute the following steps to get the different licenses:
 First, at the root of the project, where the Podfile is located, type
@@ -255,6 +288,8 @@ $ carthage update --platform iOS
 ```
 
 The sources of each of the dependencies have now been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.
+
+###### Issues with library licenses
 
 When a library contains a license in which the app's IP needs to be open-sourced, check if there is an alternative for the library which can be used to provide similar functionalities.
 
