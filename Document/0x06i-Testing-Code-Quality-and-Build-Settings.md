@@ -244,7 +244,9 @@ $ carthage update --platform iOS
 
 Next, check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
 
-> Note, at the time of writing of this chapter, there is no automated support for Carthage based dependency analysis known to the authors.
+> Note, at the time of writing this chapter, there is no automated support for Carthage based dependency analysis known to the authors.
+
+###### Discovered library vulnerabilities
 
 When a library is found to contain vulnerabilities, then the following reasoning applies:
 
@@ -286,7 +288,9 @@ $ sudo gem install CocoaPods
 $ pod install
 ```
 
-This will create aPods folder where all libraries are installed, each in their own folder. You can now check the licenses for each of the libraries by inspecting the license files in each of the folders.
+This will create a Pods folder where all libraries are installed, each in their own folder. You can now check the licenses for each of the libraries by inspecting the license files in each of the folders.
+
+###### Carthage
 
 When the application sources are available and Carthage is used, execute the following code in the root directory of the project, where the Cartfile is located:
 
@@ -372,44 +376,44 @@ func dosomething(argumentx:TypeX) throws {
 
 - Handle the error with a `do-catch` statement. You can use the following pattern:
 
-    ```swift
-    func doTryExample() {
-        do {
-            try functionThatThrows(number: 203)
-        } catch NumberError.lessThanZero {
-            // Handle number is less than zero
-        } catch let NumberError.tooLarge(delta) {
-            // Handle number is too large (with delta value)
-        } catch {
-            // Handle any other errors
-        }
-    }
+  ```swift
+  func doTryExample() {
+      do {
+          try functionThatThrows(number: 203)
+      } catch NumberError.lessThanZero {
+          // Handle number is less than zero
+      } catch let NumberError.tooLarge(delta) {
+          // Handle number is too large (with delta value)
+      } catch {
+          // Handle any other errors
+      }
+  }
 
-    enum NumberError: Error {
-        case lessThanZero
-        case tooLarge(Int)
-        case tooSmall(Int)
-    }
+  enum NumberError: Error {
+      case lessThanZero
+      case tooLarge(Int)
+      case tooSmall(Int)
+  }
 
-    func functionThatThrows(number: Int) throws -> Bool {
-        if number < 0 {
-            throw NumberError.lessThanZero
-        } else if number < 10 {
-            throw NumberError.tooSmall(10 - number)
-        } else if number > 100 {
-            throw NumberError.tooLarge(100 - number)
-        } else {
-            return true
-        }
-    }
-    ```
+  func functionThatThrows(number: Int) throws -> Bool {
+      if number < 0 {
+          throw NumberError.lessThanZero
+      } else if number < 10 {
+          throw NumberError.tooSmall(10 - number)
+      } else if number > 100 {
+          throw NumberError.tooLarge(100 - number)
+      } else {
+          return true
+      }
+  }
+  ```
 
 - Handle the error as an optional value:
 
-    ```swift
-        let x = try? functionThatThrows()
-        // In this case the value of x is nil in case of an error.
-    ```
+  ```swift
+      let x = try? functionThatThrows()
+      // In this case the value of x is nil in case of an error.
+  ```
 
 - Use the `try!` expression to assert that the error won't occur.
 - Handle the generic error as a `Result` return:
@@ -572,7 +576,7 @@ For any managed code (Objective-C / Swift) in the project, check the following i
 
 [A great talk is given on this subject at Realm academy](https://academy.realm.io/posts/russ-bishop-unsafe-swift/ "Russh Bishop on Unsafe Swift") and [a nice tutorial to see what is actually happening](https://www.raywenderlich.com/780-unsafe-swift-using-pointers-and-interacting-with-c "Unsafe Swift: Using Pointers And Interacting With C") is provided by Ray Wenderlich on this subject.
 
->Please note that with Swift 5 you can only deallocate full blocks, which means the playground has changed a bit.
+> Please note that with Swift 5 you can only deallocate full blocks, which means the playground has changed a bit.
 
 #### Dynamic Analysis
 
