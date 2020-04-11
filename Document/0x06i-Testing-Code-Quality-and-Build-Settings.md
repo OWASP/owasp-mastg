@@ -225,7 +225,15 @@ The result of the steps above can now be used as input for searching different v
 2. If the project uses CocaoPods in combination with Objective-C, SourceClear can be used.
 3. Using CocoaPods with `http` based links instead of `https` might allow for man-in-the-middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
 
-In case Carthage is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities:
+You can utilize the OWASP [Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [CocoaPods Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html "dependency-check – CocoaPods Analyzer") to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe) of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/) entries. Scan the application's \*.podspec and/or Podfile.lock files and generate a report of known vulnerable libraries with the following command:
+
+```shell
+$ dependency-check  --enableExperimental --out . --scan Podfile.lock
+```
+
+###### Carthage
+
+In case [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub") is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities:
 
 First, at the root of the project, where the Cartfile is located, type
 
