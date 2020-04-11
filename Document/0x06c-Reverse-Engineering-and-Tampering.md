@@ -329,10 +329,10 @@ $ xcodebuild
 $ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 ```
 
-We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
+We'll also use [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
 
 ```shell
-$ git clone https://github.com/phonegap/ios-deploy.git
+$ git clone https://github.com/ios-control/ios-deploy.git
 $ cd ios-deploy/
 $ xcodebuild
 $ cd build/Release
