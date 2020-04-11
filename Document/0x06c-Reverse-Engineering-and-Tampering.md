@@ -376,7 +376,7 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 
 ##### Open Connections
 
-`lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
+`lsof` command when invoked with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
 ```shell
 iPhone:~ root# lsof -i -a -p 1
