@@ -706,9 +706,10 @@ Dynamic analysis is not applicable for finding security features offered by the 
 
 ##### Tools
 
+- Swift Package Manager - <https://swift.org/package-manager/>
 - Carthage - <https://github.com/carthage/carthage>
 - CocoaPods - <https://CocoaPods.org>
-- OWASP Dependency Checker - <https://jeremylong.github.io/DependencyCheck/>
+- OWASP Dependency Check - <https://jeremylong.github.io/DependencyCheck/>
 - Sourceclear - <https://sourceclear.com>
 - class-dump - <https://github.com/nygard/class-dump>
 - RetireJS - <https://retirejs.github.io/retire.js/>
