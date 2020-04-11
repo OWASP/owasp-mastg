@@ -272,23 +272,19 @@ sys.stdin.read()
 
 #### Overview
 
-Exploring applications using a debugger is very helpful during reversing, you can not only track variables containing sensitive data but also read and modify memory. Given the damage debugging can be used for, application developers use many techniques to prevent it. These are called anti-debugging techniques.
+Exploring applications using a debugger is very helpful during reversing, you can not only track variables containing sensitive data but also read and modify memory and registers. Given the damage debugging can be used for, application developers use many so-called anti-debugging techniques to prevent it.
 
 As discussed in chapter "[Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")", anti-debugging techniques can be preventive or reactive. Preventive techniques prevent the debugger from attaching to the application at all, and reactive techniques allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior.
 
-There are several anti-debugging techniques, a few of them are discussed below.
+There are several anti-debugging techniques applicable to iOS, a few of them are discussed below.
 
 ##### Using ptrace
 
-iOS runs on an XNU kernel. The XNU kernel implements a `ptrace` system call that's not as powerful as the Unix and Linux implementations. The XNU kernel exposes another interface via Mach IPC to enable debugging. The iOS implementation of `ptrace` serves an important function: preventing the debugging of processes. This feature is implemented as the PT_DENY_ATTACH option of the `ptrace` syscall. Using PT_DENY_ATTACH is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
+As seen in chapter "[Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
-The Mac Hacker's Handbook description of PT_DENY_ATTACH:
+Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
 
-> This request is the other operation used by the traced process; it allows a process that's not currently being traced to deny future traces by its parent. All other arguments are ignored. If the process is currently being traced, it will exit with the exit status of ENOTSUP; otherwise, it sets a flag that denies future traces. An attempt by the parent to trace a process which has set this flag will result in the segmentation violation in the parent.
-
-In other words, using `ptrace` with PT_DENY_ATTACH ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate.
-
-Before diving into the details, it is important to know that `ptrace` is not part of the public iOS API. Non-public APIs are prohibited, and the App Store may reject apps that include them. Because of this, `ptrace` is not directly called in the code; it's called when a `ptrace` function pointer is obtained via `dlsym`.
+> Before diving into the details, it is important to know that `ptrace` is not part of the public iOS API. Non-public APIs are prohibited, and the App Store may reject apps that include them. Because of this, `ptrace` is not directly called in the code; it's called when a `ptrace` function pointer is obtained via `dlsym`.
 
 The following is an example implementation of the above logic:
 
@@ -303,7 +299,7 @@ void anti_debug() {
 }
 ```
 
-The following is an example of a disassembled binary that implements this approach:
+To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
 
 <img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="500px"/>
 
@@ -312,6 +308,8 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 <img src="Images/Chapters/0x06j/ptracePatched.png" width="500px"/>
 
 [Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between byte-code and instruction mnemonics.
+
+See other different variants of ptrace-based anti-debugging techniques in [this article](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
 
 ##### Using sysctl
 
@@ -750,7 +748,7 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 
 ### References
 
-- [#geist] Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
+- [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
 
 #### OWASP MASVS
 
