@@ -393,17 +393,21 @@ launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 
 On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
 
-The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse.
+The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyze.
 
 #### Debugging
 
-Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
+Coming from a Linux background you'd expect the `ptrace` system call to be as powerful as you're used to but, for some reason, Apple decided to leave it incomplete. You can use it for attaching, stepping or continuing the process but it cannot read or write memory (all `PT_READ_*` and `PT_WRITE*` requests are missing).
 
-The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
+> See more information in Chapter 5 "Non Sequitur: Process Tracing and Debugging" and 13 "BS"D - The BSD Layer" from "Mac OS X and iOS Internals: To the Apple's Core" [#levin] and Chapter 4 "Tracing and Debugging" from "The Mac Hacker's Handbook" [#miller].
+
+Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all. Debugging on iOS is generally implemented via Mach IPC/APIs (`mach_vm_*` functions operating on task ports, that's why `task_for_pid` is required).
+
+To attach to a target process, the debugger process (e.g. debugserver) calls `task_for_pid` with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`vm_read`/`vm_write`).
 
 ##### Debugging with LLDB
 
-iOS ships with the console app debugserver, which allows remote debugging via GDB or LLDB. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
@@ -1435,6 +1439,8 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 - Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
 - Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
 - r2frida Wiki - <https://github.com/enovella/r2frida-wiki/blob/master/README.md>
+- [#miller] - Charlie Miller, Dino Dai Zovi. The Mac Hacker's Handbook. Wiley, 2012 - <http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118204123.html>
+- [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - <http://newosxbook.com/MOXiI.pdf>
 
 #### Tools
 
