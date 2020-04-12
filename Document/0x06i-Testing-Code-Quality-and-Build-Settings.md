@@ -201,7 +201,7 @@ $ dependency-check  --enableExperimental --out . --scan Package.swift
 
 ###### CocoaPods
 
-In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities:
+In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing third party dependencies, the following steps can be taken to analyze the third party libraries for vulnerabilities.
 
 First, at the root of the project, where the Podfile is located, execute the following commands:
 
