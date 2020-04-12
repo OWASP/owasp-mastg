@@ -234,7 +234,7 @@ $ dependency-check  --enableExperimental --out . --scan Podfile.lock
 
 ###### Carthage
 
-In case [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub") is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities:
+In case [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub") is used for third party dependencies, then the following steps can be taken to analyze the third party libraries for vulnerabilities.
 
 First, at the root of the project, where the Cartfile is located, type
 
