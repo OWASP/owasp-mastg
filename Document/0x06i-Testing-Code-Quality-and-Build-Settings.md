@@ -223,7 +223,7 @@ The result of the steps above can now be used as input for searching different v
 
 1. If the developer packs all dependencies in terms of its own support library using a .podspec file, then this .podspec file can be checked with the experimental CocoaPods podspec checker.
 2. If the project uses CocoaPods in combination with Objective-C, SourceClear can be used.
-3. Using CocoaPods with `http` based links instead of `https` might allow for man-in-the-middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
+3. Using CocoaPods with HTTP-based links instead of HTTPS might allow for man-in-the-middle attacks during the download of the dependency, allowing an attacker to replace (parts of) the library with other content. Therefore, always use HTTPS.
 
 You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [CocoaPods Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html "dependency-check – CocoaPods Analyzer") 
 to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries.  Scan the application's \*.podspec and/or Podfile.lock files and generate a report of known vulnerable libraries with the following command:
