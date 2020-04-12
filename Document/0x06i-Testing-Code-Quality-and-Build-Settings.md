@@ -191,7 +191,7 @@ First, at the root of the project, where the Package.swift file is located, type
 $ swift build
 ```
 
-Next, check the Package.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
+Next, check the file Package.resolved for the actual versions used and inspect the given libraries for known vulnerabilities.
 
 You can utilize the OWASP [Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [Swift Package Manager Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html "dependency-check – SWIFT Package Manager Analyzer") to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe) of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/) entries. Scan the application's Package.swift file and generate a report of known vulnerable libraries with the following command:
 
