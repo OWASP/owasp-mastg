@@ -222,7 +222,7 @@ The result of the steps above can now be used as input for searching different v
 > Note:
 
 1. If the developer packs all dependencies in terms of its own support library using a .podspec file, then this .podspec file can be checked with the experimental CocoaPods podspec checker.
-2. If the project uses CocaoPods in combination with Objective-C, SourceClear can be used.
+2. If the project uses CocoaPods in combination with Objective-C, SourceClear can be used.
 3. Using CocoaPods with `http` based links instead of `https` might allow for man-in-the-middle attacks during the download of the dependency, which might allow the attacker to replace (parts of) the library you download with other content. Therefore: always use `https`.
 
 You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [CocoaPods Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/cocoapods.html "dependency-check – CocoaPods Analyzer") 
