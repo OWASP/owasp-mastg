@@ -388,6 +388,19 @@ Inspect the source code to determine whether native Android mechanisms identify 
 
 To mitigate unauthorized use of keys on the Android device, Android KeyStore lets apps specify authorized uses of their keys when generating or importing the keys. Once made, authorizations cannot be changed.
 
+Storing a Key - from most secure to least secure:
+
+- all keys are stored on server and available authentication
+- master key is stored on server and use to encrypt other keys, which are stored in Android KeyStore/SharedPreferences
+- the key is derived each time from user provided passphrase
+- the key is stored in hardware-backed Android KeyStore
+- the key is stored in software implementation of Android KeyStore
+- master key is stored in Android Keystore and use to encrypt other keys, which are stored in SharedPreferences
+- all keys are stored in SharedPreferences
+- [not recommended] hardcoded encryption keys in the source code
+- [not recommended] predictable key derivation function based on stable attributes
+- [not recommended] stored generated keys in public places (like `/sdcard/`)
+
 The most secure way of handling key material, is simply never storing it on the device. This means that the user should be prompted to input a passphrase every time the application needs to perform a cryptographic operation. Although this is not the ideal implementation from a user experience point of view and construction of passphrase (prone to human error), it is however the most secure way of handling key material. The reason is because key material will only be available in an array in memory while it is being used. Once the key is not needed anymore, the array can be zeroed out. This minimizes the attack window as good as possible. No key material touches the filesystem and no passphrase is stored. However, note that some ciphers do not properly clean up their byte-arrays. For instance, the AES Cipher in BouncyCastle does not always clean up its latest working key. Next, BigInteger based keys (e.g. private keys) cannot be removed from the heap nor zeroed out just like that. Last, take care when trying to zero out the key.
 
 More user-friendly and recommended way is to use the [Android KeyStore API](https://developer.android.com/reference/java/security/KeyStore.html "Android AndroidKeyStore API") system (itself or through KeyChain) to store key material. If it is possible, hardware-backed storage should be used. Otherwise, it should fallback to software implementation of Android Keystore.

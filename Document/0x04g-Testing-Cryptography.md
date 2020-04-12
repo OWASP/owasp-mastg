@@ -79,7 +79,7 @@ The security of symmetric encryption and keyed hashes (MACs) depends on the secr
 Hardcoded encryption key means that a key is:
 
 - part of application resources
-- part of a static identifier (which might not be clearly within the definition)
+- value which can be derived from known values
 - hardcoded in code
 
 First, ensure that no keys or passwords are stored within the source code. This means you should check native code, JavaScript/Dart code, Java/Kotlin code on Android and Objective-C/Swift in iOS. Note that hard-coded keys are problematic even if the source code is obfuscated since obfuscation is easily bypassed by dynamic instrumentation.

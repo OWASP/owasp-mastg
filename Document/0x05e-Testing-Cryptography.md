@@ -259,7 +259,7 @@ Identify all the instances of symmetric key encryption in code and look for mech
 Verify that symmetric keys in all identified instances are not hardcoded. Check if symmetric keys are not:
 
 - part of application resources
-- part of a static identifier (which might not be clearly within the definition)
+- values which can be derived from known values
 - hardcoded in code
 
 Verify that all identified instances of hardcoded symmetric cryptography is not used in security-sensitive contexts as the only method of encryption.
