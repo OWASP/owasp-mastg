@@ -243,10 +243,10 @@ Here is an example of a manifest file, including the package name (the conventio
     <uses-permission android:name="android.permission.INTERNET" />
 
     <provider
-        android:name="com.owasp.myapplication.myProvider"
+        android:name="com.owasp.myapplication.MyProvider"
         android:exported="false" />
 
-    <receiver android:name=".myReceiver" >
+    <receiver android:name=".MyReceiver" >
         <intent-filter>
             <action android:name="com.owasp.myapplication.myaction" />
         </intent-filter>
