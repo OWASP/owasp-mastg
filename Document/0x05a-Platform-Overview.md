@@ -418,7 +418,7 @@ There are two ways to make a Broadcast Receiver known to the system. One way is 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 ```xml
-<receiver android:name=".myReceiver" >
+<receiver android:name=".MyReceiver" >
     <intent-filter>
         <action android:name="com.owasp.myapplication.MY_ACTION" />
     </intent-filter>
