@@ -193,7 +193,7 @@ The process `Zygote` starts up during [Android initialization](https://github.co
 
 In Android, the lifetime of an app process is controlled by the operating system. A new Linux process is created when an app component is started and the same app doesn’t yet have any other components running. Android may kill this process when the latter is no longer necessary or when reclaiming memory is necessary to run more important apps. The decision to kill a process is primarily related to the state of the user's interaction with the process. In general, processes can be in one of four states.
 
-- A foreground process (e.g., an activity running at the top of the screen or a running BroadcastReceive)
+- A foreground process (e.g., an activity running at the top of the screen or a running BroadcastReceiver)
 - A visible process is a process that the user is aware of, so killing it would have a noticeable negative impact on user experience. One example is running an activity that's visible to the user on-screen but not in the foreground.
 
 - A service process is a process hosting a service that has been started with the `startService` method. Though these processes aren't directly visible to the user, they are generally things that the user cares about (such as background network data upload or download), so the system will always keep such processes running unless there's insufficient memory to retain all foreground and visible processes.
