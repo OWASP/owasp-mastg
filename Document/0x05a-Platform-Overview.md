@@ -318,7 +318,7 @@ Because fragments have their own life cycle, the Fragment class contains event m
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
 ```Java
-public class myFragment extends Fragment {
+public class MyFragment extends Fragment {
     ...
 }
 ```
