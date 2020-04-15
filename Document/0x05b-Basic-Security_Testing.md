@@ -14,7 +14,7 @@ In addition, you may want to complete your host setup by installing the [Android
 
 ##### Setting up the Android SDK
 
-Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **Android** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
+Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
 
 - Android 9.0 (API level 28)
 - Android 8.1 (API level 27)
