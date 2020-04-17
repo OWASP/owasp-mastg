@@ -216,7 +216,7 @@ echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
 
-Please note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
+Please note that Xposed, as of early 2020, does not work on Android 9 (API level 28) yet. However it was unofficially ported for Android Pie. You can find the code and usage examples at [EdXposed](https://github.com/ElderDrivers/EdXposed) Github repo.
 
 #### Recommended Tools - Host computer
 
