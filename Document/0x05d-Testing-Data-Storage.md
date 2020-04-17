@@ -294,7 +294,7 @@ Although the key attestation process can be implemented within the application d
 - The server should initiate the key attestation process by creating a random number securely using CSPRNG(Cryptographically Secure Random Number Generator) and the same should be sent to the user as a challenge.
 - The client should call the `setAttestationChallenge` API with the challenge received from the server and should then retrieve the attestation certificate chain using the `KeyStore.getCertificateChain` method.
 - The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
-  - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness.
+  - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness. Check on Google mantained [Certificate Revocation Status List](https://developer.android.com/training/articles/security-key-attestation#root_certificat "Certificate Revocation Status List") if none of the cerificates in the chain was revoked.
   - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
   - Extract the attestation certificate extension data, which appears within the first element of the certificate chain and perform the following checks:
     - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
