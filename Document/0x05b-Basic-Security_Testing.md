@@ -1852,7 +1852,7 @@ There are different configurations available for the Network Security Configurat
 ```xml
 <certificates src=["system" | "user" | "raw resource"]
               overridePins=["true" | "false"] />
-
+```
 
 Each certificate can be one of the following:
 - a "raw resource" ID pointing to a file containing X.509 certificates
