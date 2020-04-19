@@ -296,11 +296,14 @@ Although the key attestation process can be implemented within the application d
 - The attestation response should be sent to the server for the verification and following checks should be performed for the verification of the key attestation response:
   - Verify the certificate chain, up to the root and perform certificate sanity checks such as validity, integrity and trustworthiness. Check on Google mantained [Certificate Revocation Status List](https://developer.android.com/training/articles/security-key-attestation#root_certificat "Certificate Revocation Status List") if none of the cerificates in the chain was revoked.
   - Check if the root certificate is signed with the Google attestation root key which makes the attestation process trustworthy.
-  - Extract the attestation certificate extension data, which appears within the first element of the certificate chain and perform the following checks:
+  - Extract the attestation [certificate extension data](https://developer.android.com/training/articles/security-key-attestation#certificate_schema "Certificate extension data schema"), which appears within the first element of the certificate chain and perform the following checks:
     - Verify that the attestation challenge is having the same value which was generated at the server while initiating the attestation process.
     - Verify the signature in the key attestation response.
-    - Now check the security level of the Keymaster to determine if the device has secure key storage mechanism. Keymaster is a piece of software that runs in the security context and provides all the secure keystore operations. The security level will be one of `Software`, `TrustedEnvironment` or `StrongBox`.
-    - Additionally, you can check the attestation security level which will be one of Software, TrustedEnvironment or StrongBox to check how the attestation certificate was generated. Also, some other checks pertaining to keys can be made such as purpose, access time, authentication requirement, etc. to verify the key attributes.
+    - Verify the security level of the Keymaster to determine if the device has secure key storage mechanism. Keymaster is a piece of software that runs in the security context and provides all the secure keystore operations. The security level will be one of `Software`, `TrustedEnvironment` or `StrongBox`. The client supports hardware-level key attestation if security level is `TrustedEnvironment` or `StrongBox` and attestation certificate chain contains a root certificate singed with Google attestation root key.
+    - Verify client's status to ensure full chain of trust - verified boot key, locked bootloader and verified boot state.
+    - Additionally, you can verify the key pair's attributes such as purpose, access time, authentication requirement, etc.
+
+> Note, if for any reason that process fails, it means that the key is not in security hardware. That does not mean that the key is compromised
 
 The typical example of Android Keystore attestation response looks like this:
 
