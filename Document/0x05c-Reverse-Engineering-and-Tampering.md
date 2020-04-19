@@ -304,7 +304,7 @@ As we already know, all the Java bytecode of an Android application is compiled 
 
 With Ghidra, strings can be obtained by simply loading the dex file into the tool and by selecting **Window -> Defined strings** in the menu.
 
-> Loading APK file directly to Ghidra is buggy, thus it is recommended to extract dex file by unzipping the APK file and using it in Ghidra.
+> Loading an APK file directly into Ghidra might lead to inconsistencies. Thus it is recommended to extract the dex file by unzipping the APK file and then loading it into Ghidra.
 
 <img src="Images/Chapters/0x05c/ghidra_dex_strings.png" width="500px"/>
 
