@@ -326,7 +326,7 @@ For extracting strings from the native code used in an Android application, we c
 
 How to use Ghidra for extracting strings for a native binary has already been discussed in the section "[Using Disassemblers and Decompilers](0x04c-tampering-and-reverse-engineering#ghidra "Using Disassembler and Decompilers")".
 
-`strings` is a CLI based tool and using it is straightforward, as demonstrated below for a native library:
+`strings` is a CLI based tool and is pretty straightforward to use, as demonstrated below for a native library:
 
 ```bash
 strings libnative-lib.so
