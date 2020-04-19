@@ -324,7 +324,7 @@ It is important to know, the list of strings obtained using the above tools can 
 
 For extracting strings from the native code used in an Android application, we can either use Ghidra (GUI based) or the Unix utility `strings` (CLI).
 
-Use of Ghidra for extracting strings for a native binary has already been discussed in "[Using Disassemblers and Decompilers](0x04c-tampering-and-reverse-engineering#ghidra "Using Disassembler and Decompilers")" section.
+How to use Ghidra for extracting strings for a native binary has already been discussed in the section "[Using Disassemblers and Decompilers](0x04c-tampering-and-reverse-engineering#ghidra "Using Disassembler and Decompilers")".
 
 `strings` is a CLI based tool and using it is straightforward, as demonstrated below for a native library:
 
