@@ -357,7 +357,7 @@ While analysing an Android application's native library using Ghidra, cross refe
 
 ##### API Usage
 
-Android platform provides many in-built libraries for frequently used functionalities in applications, example cryptography, Bluetooth, NFC, network or location libraries. Presence of these imported libraries in an application's code can give us valuable information about the nature of application being evaluated.
+The Android platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Presence of these imported libraries in an application's code can give us valuable information about the nature of application being evaluated.
 
 For instance, if in an application `javax.crypto.Cipher` class is imported, it indicates that application will be performing some kind of cryptographic operation. Fortunately, Cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analysing cryptography APIs. Example, by looking for `Cipher.getInstance()` function, we can determine the cryptographic algorithm being used. With such approach we can directly move to analysing cryptographic assets, which often are very critical in an application. Further information on how to analyse Android's cryptographic APIs is discussed in  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")" section.
 
