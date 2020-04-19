@@ -329,13 +329,15 @@ How to use Ghidra for extracting strings for a native binary has already been di
 `strings` is a CLI based tool and is pretty straightforward to use, as demonstrated below for a native library:
 
 ```bash
-strings libnative-lib.so
+strings libnative-lib.so > output.txt
 ...
 Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
 ...
 Hello from C++
 ...
 ```
+
+The output can also be piped to a text file, and using other Unix utilities like `grep`, `head` etc for further analysis. 
 
 ##### Cross References
 
