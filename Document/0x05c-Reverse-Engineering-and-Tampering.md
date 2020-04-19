@@ -317,7 +317,7 @@ dextra -S classes.dex
 
 The output from Dextra can be manipulated using standard Linux commands, for example, using `grep` to search for certain keywords.
 
-It is important to know, the list of strings obtained using the above tools can be very big, as it also includes the various class and package names used in the application. Going through the complete list, specially for big binaries, can be very cumbersome. Thus, it is recommended to start with keyword based searching and go through the list only when keyword search does not work. Some generic keywords which can be a good starting point are - password, key, and secret. Other useful keywords in context of the app can be explored while you are using the app. 
+It is important to know, the list of strings obtained using the above tools can be very big, as it also includes the various class and package names used in the application. Going through the complete list, specially for big binaries, can be very cumbersome. Thus, it is recommended to start with keyword based searching and go through the list only when keyword search does not work. Some generic keywords which can be a good starting point are - password, key, and secret. Other useful keywords in context of the app can be explored while you are using the app.
 
 
 ###### Native
@@ -340,6 +340,7 @@ Hello from C++
 ##### Cross References
 
 ###### Java
+
 Java cross references is supported by many tools, including Ghidra and [jadx](https://github.com/skylot/jadx "jadx"). With Ghidra cross references can be obtained by right clicking on the desired function in the symbol tree and selecting **Show References to**, as shown in the image below.
 
 <img src="Images/Chapters/0x05c/Ghidra_java_xrefs.png" width="500px"/>
@@ -350,6 +351,7 @@ Another popular Java decompiler tool is jadx. Using jadx, cross references for a
 
 
 ###### Native
+
 While analysing an Android application's native library using Ghidra, cross references can be obtained similarly to Java, i.e, by right clicking the desired function and selecting **Show References to**.
 
 <img src="Images/Chapters/0x05c/ghidra_native_xrefs.png" width="500px"/>
