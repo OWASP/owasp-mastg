@@ -81,11 +81,10 @@ AndroidX Security library introduced encrypted shared preferences. You can use E
 ```Kotlin
 val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
 val masterKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
-
 val sharedPreferences = EncryptedSharedPreferences.create(
     "enc_prefs",
     masterKeyAlias,
-    this,
+    context,
     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
 )
