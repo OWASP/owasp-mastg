@@ -62,6 +62,35 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 
 > Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
 
+##### Shared Preferences (Encrypted)
+AndroidX Security library introduced encrypted shared preferences. You can use EncryptedSharedPreferences class to encrypt keys and values. EncryptedSharedPreferences class uses the classic SharedPreferences interface so you can use it just like regular SharedPreferences to store and read values. You can use the following code to create an encrypted preference file.
+
+##### Java:
+```Java
+ String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+ SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+     "secret_shared_prefs",
+     masterKeyAlias,
+     context,
+     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+ );
+```
+
+##### Kotlin:
+```Kotlin
+val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
+val masterKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
+
+val sharedPreferences = EncryptedSharedPreferences.create(
+    "enc_prefs",
+    masterKeyAlias,
+    this,
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+)
+```
+
 ##### SQLite Database (Unencrypted)
 
 SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has built-in support for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
