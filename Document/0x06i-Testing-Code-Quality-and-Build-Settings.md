@@ -160,7 +160,7 @@ For the other "manager-based" debug code: click through the application on both 
 
 #### Overview
 
-iOS applications often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem.
+iOS applications often make use of third party libraries which accelerate development as the developer has to write less code in order to solve a problem. However, third party libraries may contain vulnerabilities, incompatible licensing, or malicious content. Additionally, it is difficult for organizations and developers to manage application dependencies, including monitoring library releases and applying available security patches.
 
 There are three widely used package management tools [Swift Package Manager](https://swift.org/package-manager "Swift Package Manager on Swift.org"), [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub"), and [CocoaPods](https://cocoapods.org "CocoaPods.org"):
 
