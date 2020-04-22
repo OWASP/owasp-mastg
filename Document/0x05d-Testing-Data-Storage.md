@@ -216,7 +216,7 @@ Search for the class `FileInputStream` to find out which files are opened and re
 
 Every Android-compatible device supports [shared external storage](https://developer.android.com/guide/topics/data/data-storage.html#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or internal (non-removable).
 Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
-You can use the following code to persistently store sensitive information to external storage as the contents of the file `password.txt`:
+You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
 
 Java:
 ```java
