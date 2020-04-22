@@ -634,8 +634,8 @@ Initializing jdb ...
 
 You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
-- \*classes: list all loaded classes
-- class/method/fields _class id_: Print details about a class and list its method and fields
+- classes: list all loaded classes
+- class/methods/fields _class id_: Print details about a class and list its methods and fields
 - locals: print local variables in current stack frame
 - print/dump _expr_: print information about an object
 - stop in _method_: set a method breakpoint
@@ -726,7 +726,7 @@ This is the plaintext string you're looking for!
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect—it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
-To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code ""Reviewing Decompiled Java Code"")" section. On the device, choose the app as “debug app” on the Developer options” (Uncrackable1 in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
+To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" section. On the device, choose the app as “debug app” on the “Developer options” (Uncrackable1 in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
@@ -1066,7 +1066,8 @@ PANDA comes with pre-made plugins, including a string search tool and a syscall 
 
 ```shell
 $ cd qemu
-$ ./configure --target-list=arm-softmmu --enable-android $ makee
+$ ./configure --target-list=arm-softmmu --enable-android
+$ make
 ```
 
 As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 (API level 9) Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
