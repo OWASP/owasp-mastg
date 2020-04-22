@@ -185,7 +185,8 @@ If the database is not encrypted, you should be able to obtain the data. If the 
 You can save files to the device's [internal storage](https://developer.android.com/guide/topics/data/data-storage.html#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
 The following code would persistently store sensitive data to internal storage:
 
-##### Java:
+Example for Java:
+
 ```java
 FileOutputStream fos = null;
 try {
