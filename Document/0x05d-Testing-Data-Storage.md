@@ -199,7 +199,8 @@ try {
    e.printStackTrace();
 }
 ```
-##### Kotlin
+Example for Kotlin:
+
 ```kotlin
 var fos: FileOutputStream? = null
 fos = openFileOutput("FILENAME", Context.MODE_PRIVATE)
