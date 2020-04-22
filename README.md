@@ -97,7 +97,13 @@ You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master
 
 **We are searching for additional authors, reviewers and editors.**
 
-You can start contributing on many different ways ([filing or reporting issues](https://github.com/OWASP/owasp-mstg/issues "our issues section"), browsing the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content") and proofread it, etc.), please check our [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") for ideas and before you get started.
+You can start contributing on many different ways:
+
+- [Filing or reporting issues](https://github.com/OWASP/owasp-mstg/issues/new/choose "New Issue"),
+- [Choosing one of the existing issues and working on them](https://github.com/OWASP/owasp-mstg/issues "our issues section") or
+- Browsing the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content") and proofreading it.
+
+Please check our [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") for ideas before you get started.
 
 Please let us know if you'd like to work on an existing open issue before you start working on it. To do so simply write a comment in the issue itself or drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!"). This helps us to keep track of what everyone is doing and prevent conflicts.
 
