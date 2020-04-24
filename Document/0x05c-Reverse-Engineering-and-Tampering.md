@@ -347,8 +347,6 @@ For instance, if an application is importing `javax.crypto.Cipher`, it indicates
 
 Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class. 
 
-Checking for the imported classes in an application can help us in understanding the functionalities implemented. Further by determining the most important functions of an imported class, one can start analysis by assuming this function as the centrepiece of the puzzle.
-
 
 ##### Checking Secure Connections
 
