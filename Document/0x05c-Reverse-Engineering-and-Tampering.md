@@ -296,7 +296,7 @@ As discussed in previous sections, an Android application can consist of both Ja
 
 ##### Retrieving Strings
 
-While performing any kind of binary analysis, strings can be considered as one of the most valuable starting point. Strings provide a context to a part of the binary being analyzed. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code is responsible for performing some kind of encryption operation.
+While performing any kind of binary analysis, strings can be considered as one of the most valuable starting points as they provide context. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code might be responsible for performing some kind of encryption operation.
 
 ###### Java
 
