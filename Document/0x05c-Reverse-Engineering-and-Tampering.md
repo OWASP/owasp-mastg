@@ -339,7 +339,6 @@ Similarly to Java analysis, you can also use Ghidra to analyze native libraries 
 
 <img src="Images/Chapters/0x05c/ghidra_native_xrefs.png" width="500px"/>
 
-
 ##### API Usage
 
 The Android platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Presence of these imported libraries in an application's code can give us valuable information about the nature of application being evaluated.
