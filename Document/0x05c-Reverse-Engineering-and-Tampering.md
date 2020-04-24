@@ -323,21 +323,6 @@ It is important to know, the list of strings obtained using the above tools can 
 
 In order to extract strings from native code used in an Android application, you can use GUI tools such as Ghidra or Cutter or rely on CLI-based tools such as the _strings_ Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based ones you can take advantage of other tools such as grep (e.g. in conjunction with regular expressions) to further filter and analyze the results. 
 
-How to use Ghidra for extracting strings for a native binary has already been discussed in the section "[Using Disassemblers and Decompilers](0x04c-tampering-and-reverse-engineering#ghidra "Using Disassembler and Decompilers")".
-
-`strings` is a CLI based tool and is pretty straightforward to use, as demonstrated below for a native library:
-
-```bash
-strings libnative-lib.so > output.txt
-...
-Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
-...
-Hello from C++
-...
-```
-
-The output can also be piped to a text file, and using other Unix utilities like `grep`, `head` etc for further analysis. 
-
 ##### Cross References
 
 ###### Java
