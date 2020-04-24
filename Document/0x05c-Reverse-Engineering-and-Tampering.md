@@ -331,8 +331,6 @@ Java cross references is supported by many tools, including Ghidra and [jadx](ht
 
 <img src="Images/Chapters/0x05c/Ghidra_java_xrefs.png" width="500px"/>
 
-Another popular Java decompiler tool is jadx. Using jadx, cross references for a desired function can be obtained by right clicking the decompiled function and selecting **Find Usage**.
-
 <img src="Images/Chapters/0x05c/jadx_java_xrefs.png" width="500px"/>
 
 
