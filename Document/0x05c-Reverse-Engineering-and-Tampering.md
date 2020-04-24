@@ -292,7 +292,7 @@ During **black-box testing**, you won't have access to the original form of the 
 
 #### Basic Information Gathering
 
-As discussed in previous sections, an Android application can consist of both Java bytecode and native code. To start with analysis of an application, each type of code may require different approach and tools. In this section, we will learn about some approaches and tools for collecting basic information about a given Android application using static analysis.
+As discussed in previous sections, an Android application can consist of both Java/Kotlin bytecode and native code. In this section, we will learn about some approaches and tools for collecting basic information using static analysis.
 
 ##### Retrieving Strings
 
