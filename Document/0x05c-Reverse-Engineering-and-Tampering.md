@@ -333,7 +333,6 @@ Java cross references is supported by many tools, including Ghidra and [jadx](ht
 
 <img src="Images/Chapters/0x05c/jadx_java_xrefs.png" width="500px"/>
 
-
 ###### Native
 
 While analysing an Android application's native library using Ghidra, cross references can be obtained similarly to Java, i.e, by right clicking the desired function and selecting **Show References to**.
