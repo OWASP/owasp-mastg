@@ -302,7 +302,7 @@ While performing any kind of binary analysis, strings can be considered as one o
 
 As we already know, all the Java and Kotlin bytecode of an Android application is compiled into a DEX file. Each DEX file contains a [list of string identifiers](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids), which contains all the string identifiers used in the binary whenever a string is referred, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hardcoded strings). You can simply dump this list using tools such as Ghidra (GUI based) or [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
 
-With Ghidra, strings can be obtained by simply loading the dex file into the tool and by selecting **Window -> Defined strings** in the menu.
+With Ghidra, strings can be obtained by simply loading the DEX file and selecting **Window -> Defined strings** in the menu.
 
 > Loading an APK file directly into Ghidra might lead to inconsistencies. Thus it is recommended to extract the DEX file by unzipping the APK file and then loading it into Ghidra.
 
