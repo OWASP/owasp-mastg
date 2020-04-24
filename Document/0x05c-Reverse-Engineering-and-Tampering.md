@@ -319,8 +319,7 @@ The output from Dextra can be manipulated using standard Linux commands, for exa
 
 It is important to know, the list of strings obtained using the above tools can be very big, as it also includes the various class and package names used in the application. Going through the complete list, specially for big binaries, can be very cumbersome. Thus, it is recommended to start with keyword-based searching and go through the list only when keyword search does not help. Some generic keywords which can be a good starting point are - password, key, and secret. Other useful keywords specific to the context of the app can be obtained while you are using the app itself. For instance, imagine that the app has as login form, you can take note of the displayed placeholder or title text of the input fields and use that as an entry point for your static analysis.
 
-
-###### Native
+###### Native Code
 
 For extracting strings from the native code used in an Android application, we can either use Ghidra (GUI based) or the Unix utility `strings` (CLI).
 
