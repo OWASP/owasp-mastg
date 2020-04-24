@@ -309,7 +309,7 @@ With Ghidra, strings can be obtained by simply loading the dex file into the too
 <img src="Images/Chapters/0x05c/ghidra_dex_strings.png" width="500px"/>
 
 
-Dextra is a CLI based tool, and provides multiple features to explore dex files. All the strings in a dex file can be dumped using Dextra using the following command:
+With Dextra, you can dump all the strings using the following command:
 
 ```bash
 dextra -S classes.dex
