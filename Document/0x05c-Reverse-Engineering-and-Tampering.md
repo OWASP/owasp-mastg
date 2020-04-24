@@ -356,7 +356,6 @@ Also, many applications to further strengthen the network security, use Certific
 
 Implementation of secure connections and verifying them can be an intricate process, and it is covered in more detail in "[Android Network APIs](0x05g-testing-network-communication "Android Network APIs")" section.
 
-
 #### Manual (Reversed) Code Review
 
 ##### Reviewing Decompiled Java Code
