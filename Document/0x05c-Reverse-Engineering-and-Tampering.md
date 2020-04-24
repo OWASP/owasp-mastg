@@ -298,7 +298,7 @@ As discussed in previous sections, an Android application can consist of both Ja
 
 While performing any kind of binary analysis, strings can be considered as one of the most valuable starting points as they provide context. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code might be responsible for performing some kind of encryption operation.
 
-###### Java
+###### Java and Kotlin Bytecode
 
 As we already know, all the Java bytecode of an Android application is compiled into a dex file. Each dex file contains a [string identifiers list](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids). Each string used in the code is given an identifier number, and internally this identifier number is used whenever a string is referred. This list contains all the string identifiers used in the binary, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hard coded strings). Knowing this, we can simply dump this list to get all the strings used in the Java bytecode that is part of the dex file. Fortunately, there are plenty of tools already available for dumping strings form Java bytecode and one can choose depending on the needs. In this section we will use Ghidra (GUI based), and [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
 
