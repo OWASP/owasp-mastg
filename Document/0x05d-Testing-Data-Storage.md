@@ -173,7 +173,7 @@ Every Android-compatible device supports [shared external storage](https://devel
 Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
 You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
 
-Java:
+Example for Java:
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
 String password = "SecretPassword";
@@ -183,7 +183,7 @@ FileOutputStream fos;
     fos.close();
 ```
 
-Kotlin:
+Example for Kotlin:
 ```kotlin
 val password = "SecretPassword"
 val path = context.getExternalFilesDir(null)
