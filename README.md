@@ -111,6 +111,8 @@ You can create an OWASP Slack account here: [https://owasp-slack.herokuapp.com/]
 
 > The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that maintaining translations has proven to be an extremely challenging task. You're free to do forks for your own translations but please understand that any PRs containing them will be declined due to the previously mentioned reasons. However, we strongly encourage further translations of the MASVS as it is much easier to maintain.
 
+A translation of the MSTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
+
 ## Authoring Credit
 
 Contributors are added to the acknowledgements table based on their contributions logged by GitHub. The list of names is sorted by the number of lines added. Authors are categorized as follows:
