@@ -48,7 +48,7 @@ Once the activity has been called, the file key.xml will be created with the pro
 ```xml
 <?xml version='1.0' encoding='utf-8' standalone='yes' ?>
 <map>
-  <string name="username">asharedPreferences.edit().putString("owasp", "mstg").apply()dministrator</string>
+  <string name="username">administrator</string>
   <string name="password">supersecret</string>
 </map>
 ```
