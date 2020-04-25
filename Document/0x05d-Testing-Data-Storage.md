@@ -62,51 +62,6 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 
 > Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
 
-##### Shared Preferences (Encrypted)
-AndroidX Security library introduced encrypted shared preferences. You can use EncryptedSharedPreferences class to encrypt keys and values. EncryptedSharedPreferences class uses the classic SharedPreferences interface so you can use it just like regular SharedPreferences to store and read values. You can use the following code to create an encrypted preference file.
-
-##### Java:
-```Java
- String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
- SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
-     "secret_shared_prefs",
-     masterKeyAlias,
-     context,
-     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
- );
- sharedPreferences.edit().putString("owasp", "mstg").apply();
-```
-
-##### Kotlin:
-```Kotlin
-val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
-val masterKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
-val sharedPreferences = EncryptedSharedPreferences.create(
-    "enc_prefs",
-    masterKeyAlias,
-    context,
-    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-)
-sharedPreferences.edit().putString("owasp", "mstg").apply()
-```
-
-When you use EncryptedSharedPreferences, your shared preferences file looks something like below:
-
-```xml
-<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
-<map>
-    <string name="__androidx_security_crypto_encrypted_prefs_key_keyset__">12a901cca0577ba5ae123770618e2ef062fa216e07071b9adc5bdc1ec3f87b9a4d3165dd6e6938a915c791c41ee2ace6f4fc18ee7cd1959e1f337339ae150ecd4f18ae125339fee2075d9a40fc6530affff9877d924b81fac30da9448297b0721898128faec8623dd0122250e6493fe450ce62d22a6673ae669cb3096b5fd11faf26ba1c6d6a7cd9f09f22eab39bb5bcc38ee14f4b37c3b3d4de68e6a45ffe6347e9556ce63d89de9cf77edf1a4408e58cdaac02123c0a30747970652e676f6f676c65617069732e636f6d2f676f6f676c652e63727970746f2e74696e6b2e4165735369764b6579100118e58cdaac022001</string>
-    <string name="__androidx_security_crypto_encrypted_prefs_value_keyset__">128801034203ae997b791b9fac79ab512f3e4652be2e541a4276207dd01b51199516237eef5e9f7f0c136b327863a064410bc99a3479e046c1d19692f85568be19a1f494d47ba2e05c21e2a02495edcc06e02563c3111af06a87e7f3c6c9f80cc426dd46e9d3a1a1cdcbd5d6b0c1857dcb6d08dd76e5311d3d0a3dbea4a6003285c530cedd5f9a6d14c7761a4408b0bee0ae06123c0a30747970652e676f6f676c65617069732e636f6d2f676f6f676c652e63727970746f2e74696e6b2e41657347636d4b6579100118b0bee0ae062001</string>
-      <string name="ASWWhmW+K7+XfOhoi8F68WCy38bMvL9Xk14=">AWXYHzDQNGOq+jRYvCju5ak7uVgNUTsLFmHhUZyreljln4BOHEQtRWfyT4jM</string>
-</map>
-```
-
-You can see that the key value pair is encrypted and two keysets are created. These keysets are encrypted with the master key that was used while creating the shared preference object. The master key is automatically stored in Android Keystore. This saves us from the trouble of handling the key.
-
-> Please note EncryptedSharedPreferences requires minSdkVersion to be 23 or later.
-
 ##### SQLite Database (Unencrypted)
 
 SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has built-in support for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
