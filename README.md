@@ -93,25 +93,23 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
 
-## Contributions, feature requests and feedback
+## Contributions, Feature Requests and Feedback
 
-**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content"). Also, check the [issues](https://github.com/OWASP/owasp-mstg/issues "our issues section") and the [project page](https://github.com/OWASP/owasp-mstg/projects/2 "The MSTG Project") for a list of open tasks.
+**We are searching for additional authors, reviewers and editors.**
 
-Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
+You can start contributing on many different ways:
 
-[https://owasp-slack.herokuapp.com/](https://owasp-slack.herokuapp.com/ "Join OWASP Slack")
+- [Filing or reporting issues](https://github.com/OWASP/owasp-mstg/issues/new/choose "New Issue"),
+- [Choosing one of the existing issues and working on them](https://github.com/OWASP/owasp-mstg/issues "our issues section") or
+- Browsing the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content") and proofreading it.
 
-Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started.
+Please check our [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") for ideas before you get started.
 
-Please note that the MSTG focuses primarily on the native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Nativescript/React-native/Xamarin/Cordova/... apps are not within the focus of the MSTG. However, some key-controls, such as pinning, have been explained already for some of these platforms.
-If you are looking for more security recommendations on this field, take a look the work-in-progress Google sheets based on the compliancy checklist 1.1.2:
+Please let us know if you'd like to work on an existing open issue before you start working on it. To do so simply write a comment in the issue itself or drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!"). This helps us to keep track of what everyone is doing and prevent conflicts.
 
-- [Flutter Compliancy Checklist (WIP)](https://drive.google.com/open?id=1wHK3VI1cU1xmYrCu9yb5OHKUEeLIPSkC "Flutter Compliancy Checklist");
-- [React-Native Compliancy Checklist (WIP)](https://drive.google.com/open?id=1P5FZ_Bup5eSPOmkePZA8cIpKGOKvngkN "React-Native Compliancy Checklist").
-- [Xamarin Compliancy Checklist (WIP)](https://drive.google.com/open?id=1UL1yLRREJwXfe0HlrcX-IuvPYQM7lTtG "Xamarin Compliancy Checklist").
+You can create an OWASP Slack account here: [https://owasp-slack.herokuapp.com/](https://owasp-slack.herokuapp.com/ "Join OWASP Slack")
 
-If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues "Issue") or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
-If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones "Milestones").
+> The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that maintaining translations has proven to be an extremely challenging task. You're free to do forks for your own translations but please understand that any PRs containing them will be declined due to the previously mentioned reasons. However, we strongly encourage further translations of the MASVS as it is much easier to maintain.
 
 ## Authoring Credit
 
@@ -130,4 +128,14 @@ If you are willing to write a large portion of the guide and help consistently d
 
 ## Crackmes
 
-In the Crackmes folder, you can find a set of mobile apps to hack. Are you able to find the secrets? For more details: check the [README.md](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md "Crackmes readme") at the [Crackmes folder](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes "Crackmes folder").
+In the [Crackmes folder](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes "Crackmes folder"), you can find a set of mobile apps to hack. Are you able to find the secrets? For more details check the [Crackmes README file](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md "Crackmes readme").
+
+## About Hybrid Apps
+
+Please note that the MSTG focuses primarily on native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Apps using frameworks such as Nativescript, React-native, Xamarin, Cordova, etc. are not within the main focus of the MSTG. However, some essential controls, such as certificate pinning, have been explained already for some of these platforms.
+
+If you are looking for more security recommendations on this field, feel free to take a look and contribute to the work-in-progress Google sheets based on the compliancy checklist 1.1.2:
+
+- [Flutter Compliancy Checklist (WIP)](https://drive.google.com/open?id=1wHK3VI1cU1xmYrCu9yb5OHKUEeLIPSkC "Flutter Compliancy Checklist")
+- [React-Native Compliancy Checklist (WIP)](https://drive.google.com/open?id=1P5FZ_Bup5eSPOmkePZA8cIpKGOKvngkN "React-Native Compliancy Checklist")
+- [Xamarin Compliancy Checklist (WIP)](https://drive.google.com/open?id=1UL1yLRREJwXfe0HlrcX-IuvPYQM7lTtG "Xamarin Compliancy Checklist")
