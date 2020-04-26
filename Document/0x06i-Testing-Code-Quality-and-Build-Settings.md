@@ -219,7 +219,7 @@ $ pod install
 Next, now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
 
 ```shell
-$ sudo gem install cocoapods-dependencies
+$ sudo gem install CocoaPods-dependencies
 $ pod dependencies
 ```
 
