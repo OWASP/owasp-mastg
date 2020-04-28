@@ -1619,6 +1619,18 @@ With the following command you can specifically grep for the log output of the a
 ```shell
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
+##### Enumerating Domains
+Even before we deep dive into the traffic analysis, we can learn about the domains to which the application communicates by reverse-engineering the application and grepping the domain names using regular expressions. This not only helps us to know about the domains to which our application is meant to communicate but can also sometimes help us to identify other environments such as staging, pre-production, etc. which might be of use later during the penetration testing. 
+
+Instead of manually searching in the decompiled code, we can alternatively use [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration"), a python utility to perform passive enumeration on Android application. It takes the APK file as an input and provides the following information by searching the decompiled code:
+
+- List of domains in the application
+- List of S3 buckets referenced in the code
+- List of S3 websites referenced in the code
+- List of IP addresses referenced in the code
+You can read more about it [here](https://medium.com/@shivsahni2/apkenum-a-python-utility-for-apk-enumeration-cce0eda6fa30 "Walkthrough of APKEnum").
+
+Once we have the list of domain names, we can perform further reconnaissance on domain names to know more about the target. 
 
 ### Setting up a Network Testing Environment
 
@@ -2103,6 +2115,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
+-APKEnum - <https://medium.com/@shivsahni2/apkenum-a-python-utility-for-apk-enumeration-cce0eda6fa30>
 
 #### Tools
 
@@ -2152,3 +2165,4 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>
 - Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
+- APKEnum - <https://github.com/shivsahni/APKEnum>
