@@ -308,7 +308,6 @@ With Ghidra, strings can be obtained by simply loading the DEX file and selectin
 
 <img src="Images/Chapters/0x05c/ghidra_dex_strings.png" width="500px"/>
 
-
 With Dextra, you can dump all the strings using the following command:
 
 ```bash
