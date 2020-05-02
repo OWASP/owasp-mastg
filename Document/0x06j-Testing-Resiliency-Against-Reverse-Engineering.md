@@ -623,6 +623,8 @@ However, this is not a concern on iOS. As discussed in the section [Testing on t
 
 Obfuscation is a process of transforming the original algorithms, data structures into a form that is difficult to disassemble and understand but the program after the modification preserves the original functionality. Both code and data can be obfuscated, so that an attacker can mostly rely on dynamic analysis.
 
+> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from further analysis.
+
 #### Obfuscation Techniques
 
 The following techniques can be used to obfuscate an application:
@@ -634,7 +636,7 @@ The following techniques can be used to obfuscate an application:
 
 #### Name obfuscation of classes, methods and fields
 
-The standard compiler generates binary’s symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *ViewController.detectJailbreak()* from DViA app.
+The standard compiler generates binary’s symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *ViewController.detectJailbreak()* from example "AssemblyApp" app.
 
 ```assembly
 _$s11AssemblyApp14ViewControllerC15detectJailbreakyyFySb_s5Error_pSgtcfU_:
@@ -671,7 +673,7 @@ This technique makes the program's control-flow more complex by injecting dead c
 
 #### String encryption
 
-Applications are often compiled with hardcoded keys, licences, tokens and URL endpoints. By default, all of them are stored in plaintext in the *data section* of an application’s binary. String encryption aims to replace these values with their encrypted forms and inject stubs of code into the program that decrypts data before it is used by the program.
+Applications are often compiled with hardcoded keys, licences, tokens and URL endpoints. By default, all of them are stored in plaintext in the *data section* of an application’s binary. String encryption aims to replace these values with their encrypted forms and inject stubs of code into the program that decrypts data before it is used by the program. 
 
 #### Recommended tools
 
