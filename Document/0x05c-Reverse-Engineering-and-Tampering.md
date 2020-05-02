@@ -2436,7 +2436,7 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - IDA Pro - <https://www.hex-rays.com/products/ida/>
 - JAD Decompiler - <http://www.javadecompilers.com/jad>
 - JD (Java Decompiler) - <http://jd.benow.ca/>
-- Jadx - <https://github.com/skylot/jadx>
+- jadx - <https://github.com/skylot/jadx>
 - JEB Decompiler - <https://www.pnfsoftware.com>
 - OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
 - Procyon Decompiler - <https://bitbucket.org/mstrobel/procyon/overview>
