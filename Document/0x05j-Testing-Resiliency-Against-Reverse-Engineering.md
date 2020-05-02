@@ -395,44 +395,30 @@ JNIEXPORT void JNICALL Java_sg_vantagepoint_jdwptest_MainActivity_JDWPfun(
 
 #### Traditional Anti-Debugging
 
-Most JDWP anti-debugging tricks (which may be safe for timer-based checks) won't catch classical, ptrace-based debuggers, so other defenses are necessary. Many _traditional_ Linux anti-debugging tricks are used in this situation.
+On Linux, the [`ptrace` system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of a process (the _tracee_) and to examine and change that process' memory and registers. `ptrace` is the primary way to implement system call tracing and breakpoint debugging in native code. Most JDWP anti-debugging tricks (which may be safe for timer-based checks) won't catch classical debuggers based on `ptrace` and therefore, many Android anti-debugging tricks include `ptrace`, often exploiting the fact that only one debugger at a time can attach to a process.
 
 ##### Checking TracerPid
 
-When the `ptrace` system call is used to attach to a process, the "TracerPid" field in the status file of the debugged process shows the PID of the attaching process. The default value of "TracerPid" is 0 (no process attached). Consequently, finding anything other than 0 in that field is a sign of debugging or other ptrace shenanigans.
+When you debug an app and set a breakpoint on native code, Android Studio will copy the needed files to the target device and start the lldb-server which will use `ptrace` to attach to the process. From this moment on, if you inspect the [status file](http://man7.org/linux/man-pages/man5/proc.5.html "/proc/[pid]/status") of the debugged process (`/proc/<pid>/status` or `/proc/self/status`), you will see that the "TracerPid" field has a value different from 0, which is a sign of debugging.
 
-The following implementation is from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/ "anti-emulator"):
+> Remember that **this only applies to native code**. If you're debugging a Java/Kotlin-only app the value of the "TracerPid" field should be 0.
 
-```java
-    public static boolean hasTracerPid() throws IOException {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("/proc/self/status")), 1000);
-            String line;
+This technique is usually applied within the JNI native libraries in C, you can take a look at [Google's gperftools (Google Performance Tools)) Heap Checker](https://github.com/gperftools/gperftools/blob/master/src/heap-checker.cc#L112 "heap-checker.cc - IsDebuggerAttached") implementation of the `IsDebuggerAttached` method. However, if you prefer to include this check as part of your Java/Kotlin code you can refer to this Java implementation of the `hasTracerPid` method from [Tim Strazzere's Anti-Emulator project](https://github.com/strazzere/anti-emulator/ "anti-emulator").
 
-            while ((line = reader.readLine()) != null) {
-                if (line.length() > tracerpid.length()) {
-                    if (line.substring(0, tracerpid.length()).equalsIgnoreCase(tracerpid)) {
-                        if (Integer.decode(line.substring(tracerpid.length() + 1).trim()) > 0) {
-                            return true;
-                        }
-                        break;
-                    }
-                }
-            }
+When trying to implement such a method yourself, you can manually check the value of TracerPid with ADB. The following listing uses Google's NDK sample app [hello-jni (com.example.hellojni)](https://github.com/android/ndk-samples/tree/android-mk/hello-jni "hello-jni sample") to perform the check after attaching Android Studio's debugger:
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        } finally {
-            reader.close();
-        }
-        return false;
-    }
+```bash
+$ adb shell ps -A | grep com.example.hellojni
+u0_a271      11657   573 4302108  50600 ptrace_stop         0 t com.example.hellojni
+$ adb shell cat /proc/11657/status | grep -e "^TracerPid:" | sed "s/^TracerPid:\t//"
+TracerPid:      11839
+$ adb shell ps -A | grep 11839
+u0_a271      11839 11837   14024   4548 poll_schedule_timeout 0 S lldb-server
 ```
 
-##### Using Fork and ptrace
+You can see how the status file of com.example.hellojni (PID=11657) contains a TracerPID of 11839, which we can identify as the lldb-server process.
 
-On Linux, the [`ptrace` system call](http://man7.org/linux/man-pages/man2/ptrace.2.html "Ptrace man page") is used to observe and control the execution of a process (the "tracee") and to examine and change that process' memory and registers. `ptrace` is the primary way to implement breakpoint debugging and system call tracing. Many anti-debugging tricks include `ptrace`, often exploiting the fact that only one debugger at a time can attach to a process.
+##### Using Fork and ptrace
 
 You can prevent debugging of a process by forking a child process and attaching it to the parent as a debugger via code similar to the following simple example code:
 
