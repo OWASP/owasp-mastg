@@ -327,11 +327,7 @@ In order to extract strings from native code used in an Android application, you
 
 ###### Java and Kotlin
 
-Java cross references is supported by many tools, including Ghidra and [jadx](https://github.com/skylot/jadx "jadx"). With Ghidra cross references can be obtained by right clicking on the desired function in the symbol tree and selecting **Show References to**, as shown in the image below.
-
-<img src="Images/Chapters/0x05c/Ghidra_java_xrefs.png" width="500px"/>
-
-<img src="Images/Chapters/0x05c/jadx_java_xrefs.png" width="500px"/>
+There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage** in jadx](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx").
 
 ###### Native Code
 
