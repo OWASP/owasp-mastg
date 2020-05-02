@@ -636,19 +636,19 @@ The following techniques can be used to obfuscate an application:
 
 #### Name obfuscation of classes, methods and fields
 
-The standard compiler generates binary’s symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *ViewController.detectJailbreak()* from example "AssemblyApp" app.
+The standard compiler generates binary’s symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *JailbreakDetectionViewController.jailbreakTest4Tapped(..)* from DVIA-v2 app.
 
 ```assembly
-_$s11AssemblyApp14ViewControllerC15detectJailbreakyyFySb_s5Error_pSgtcfU_:
-push       rbp
+__T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:
+stp        x22, x21, [sp, #-0x30]!
 mov        rbp, rsp
 ```
 
 After the obfuscation we can observe that the symbol’s name is no longer meaningful as shown on the listing below.
 
 ```assembly
-_$s11AssemblyApp32zNNtWKQptikYUBNBgfFVMjSkvRdhhnbyyFySb_s5Error_pSgtcfU_:
-push       rbp
+__T07DVIA_v232zNNtWKQptikYUBNBgfFVMjSkvRdhhnbyyFySbyypF:
+stp        x22, x21, [sp, #-0x30]!
 mov        rbp, rsp
 ```
 
