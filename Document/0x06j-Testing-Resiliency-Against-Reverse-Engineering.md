@@ -626,58 +626,59 @@ Obfuscation is a process of transforming the original algorithms, data structure
 #### Obfuscation Techniques
 
 The following techniques can be used to obfuscate an application:
-- String encryption
-- Renaming classes, methods and fields with random or confusing values
-- Injecting dead code
-- Substituting code for simple operations
+- Name obfuscation of classes, methods and fields
+- Instructions substitution
 - Control flow flattening
+- Dead code injection
+- String encryption
 
-#### String encryption
-Applications are often compiled with hardcoded keys, licences, tokens and URL endpoints. By default, all of them are stored in plaintext in the data section of an application’s binary. String encryption aims to replace these values with their encrypted forms and inject stubs of code into the program that decrypts strings before they are used.
+#### Name obfuscation of classes, methods and fields
 
+The standard compiler generates binary’s symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *ViewController.detectJailbreak()* from DViA app.
 
-In our Apps we often store static strings for example keychain keys or Certificate pinning hashes. It is fairly easy for reverse engineer to get those keys from compiled Application. Meaningful string can give hacker information what we do in this part of program. String encryption will transform all these string keys into encrypted form. So when the reverse engineer will extract all static string, he won’t get any clue what is going on in our App.
-We would like to use those keys, before using them so we need to decrypt them. Since We can do that hacker is able to do it also, but It won’t be as easy as just extracting them. 
+```assembly
+_$s11AssemblyApp14ViewControllerC15detectJailbreakyyFySb_s5Error_pSgtcfU_:
+push       rbp
+mov        rbp, rsp
+```
 
+After the obfuscation we can observe that the symbol’s name is no longer meaningful as shown on the listing below.
 
-single obfustication like SwiftShield may not be enough to stop the hacker from reading our code. We should use many obfuscation techniques to provide the best protection for our apps. 
+```assembly
+_$s11AssemblyApp32zNNtWKQptikYUBNBgfFVMjSkvRdhhnbyyFySb_s5Error_pSgtcfU_:
+push       rbp
+mov        rbp, rsp
+```
+
+Nevertheless, the binary’s code is not modified, so an attacker can still retrieve the logic of the algorithm by reading the disassembled version of the function and figure out its purpose.
+
+#### Instructions substitution
+
+This technique replaces standard binary operators like addition, subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. Nevertheless, this technique is vulnerable to code re-optimaliztion.
 
 #### Control flow Flattering
-This obfustication will generate additional code which will always execute in the same way.
-For example it will add an if statement of switch to our implementation.
-
-Let’s see our technique in the simple example, we have a simple addOne method.
-```
-func addOne(to number: Int) {
-	return number + 1
-}
-```
-Our obfuscator will add some boiler plate code.
-
-```
-func addOne(to number: Int) {
-	let one = 1
-	let two = 2
-	if true == true {
-		switch 1 {
-			case 1:
-				return number + 1
-			case 2:
-				return number + two
-			….
-		}
-	} else {
-		return number + random()
-	}
-}
-```
-
-As you can see the code if not that readable in the Swift form, you can image how it will increase the number of lines in the assembly. This technique will definitely get hard times for reverse engineer.
-
-For a detailed explanation, see: [Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf) by T László and Á Kiss.
+Control flow Flattening replaces original code with a more complex representation. The transformation breaks the body of the function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because the natural conditional constructs that made the code easier to read are now gone.
 
 
-#### SwiftShield
+
+![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png)
+
+The image shows how the control-flow flattening alters code ([Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf))
+
+#### Dead code injection
+
+This technique makes the program's control-flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but brings the overhead for the reverse engineering.
+
+#### String encryption
+
+Applications are often compiled with hardcoded keys, licences, tokens and URL endpoints. By default, all of them are stored in plaintext in the *data section* of an application’s binary. String encryption aims to replace these values with their encrypted forms and inject stubs of code into the program that decrypts data before it is used by the program.
+
+#### Recommended tools
+
+* [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the XCODE project and replaces all names of classes, methods and fields with random values before the compiler is used.
+* [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation instead of the the source code. It can be used for symbols obfuscation, string encryption and control-flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
+
+#### How to use SwiftShield
 
 > Warning: SwiftShield irreversibly overwrites all your source files. Ideally, you should have it run only on your CI server, and on release builds.
 
