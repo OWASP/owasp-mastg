@@ -345,9 +345,9 @@ Similarly, the above approach can be used to determine where and how an applicat
 
 Android requires applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations might be pushed into final release build by mistake.
 
-Also, many applications to further strengthen the network security, use Certificate Pinning. Certificate pinning not only deters MITM attacks, but also slows down reverse engineering of network traffic. But there are many pitfalls while implementing it correctly, one such common mistake being - not verifying a self-signed certificate used in certificate pinning.
+The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation or an inherently wrong security network configuration.
 
-Implementation of secure connections and verifying them can be an intricate process, and it is covered in more detail in "[Android Network APIs](0x05g-testing-network-communication "Android Network APIs")" section.
+Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x05b-Basic-Security_Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "Android Basic Security Testing" chapter and also check the test cases in the chapter "[Android Network APIs](0x05g-testing-network-communication "Android Network APIs")".
 
 #### Manual (Reversed) Code Review
 
