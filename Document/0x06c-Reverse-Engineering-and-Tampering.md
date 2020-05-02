@@ -401,7 +401,7 @@ Coming from a Linux background you'd expect the `ptrace` system call to be as po
 
 > See more information in Chapter 5 "Non Sequitur: Process Tracing and Debugging" and 13 "BS"D - The BSD Layer" from "Mac OS X and iOS Internals: To the Apple's Core" [#levin] and Chapter 4 "Tracing and Debugging" from "The Mac Hacker's Handbook" [#miller].
 
-Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all. Debugging on iOS is generally implemented via Mach IPC/APIs (`mach_vm_*` functions operating on task ports, that's why `task_for_pid` is required).
+Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Debugging on iOS is generally implemented via Mach IPC/APIs (`mach_vm_*` functions operating on task ports, that's why `task_for_pid` is required).
 
 To attach to a target process, the debugger process (e.g. debugserver) calls `task_for_pid` with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`vm_read`/`vm_write`).
 
