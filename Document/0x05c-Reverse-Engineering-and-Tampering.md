@@ -333,8 +333,6 @@ There are many RE tools that support retrieving Java cross references. For many 
 
 Similarly to Java analysis, you can also use Ghidra to analyze native libraries and obtain cross references by right clicking the desired function and selecting **Show References to**.
 
-<img src="Images/Chapters/0x05c/ghidra_native_xrefs.png" width="500px"/>
-
 ##### API Usage
 
 The Android platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Determining the presence of these libraries in an application can give us valuable information about its nature.
