@@ -342,7 +342,7 @@ For instance, if an application is importing `javax.crypto.Cipher`, it indicates
 Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class. 
 
 
-##### Checking Secure Connections
+##### Network Communication
 
 Android requires applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations are pushed into final release build by mistake.
 
