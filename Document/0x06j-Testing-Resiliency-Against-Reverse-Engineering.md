@@ -272,11 +272,13 @@ sys.stdin.read()
 
 #### Overview
 
-Exploring applications using a debugger is very helpful during reversing, you can not only track variables containing sensitive data but also read and modify memory and registers. Given the damage debugging can be used for, application developers use many so-called anti-debugging techniques to prevent it.
+Exploring applications using a debugger is very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
 
-As discussed in chapter "[Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")", anti-debugging techniques can be preventive or reactive. Preventive techniques prevent the debugger from attaching to the application at all, and reactive techniques allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior.
+There are several anti-debugging techniques applicable to iOS, a few of them are discussed below. As discussed in chapter "[Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")", anti-debugging techniques can be preventive or reactive. As a first line of defense, you can use preventive techniques impede the debugger from attaching to the application at all. Additionally you can also apply reactive techniques which allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior, acting as a secondary or supportive measure to increate the overall resilience.
 
-There are several anti-debugging techniques applicable to iOS, a few of them are discussed below.
+Application developers of apps processing highly sensitive data should be very aware of the fact that preventing debugging is virtually impossible. A very determined attacker (or one with sufficient privileges) will eventually manage to bypass all your anti-debugging checks as they usually consist of patching the app binary or simply putting some dynamic hooks with e.g. Frida.
+
+While [according to Apple](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger") "you should restrict use of the above code to the debug build of your program", [research shows that many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
 ##### Using ptrace
 
@@ -303,7 +305,7 @@ To demonstrate how to bypass this technique we'll use an example of a disassembl
 
 <img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="500px"/>
 
-Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset *0x1908A*. At offset *0x19098*, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction BLX R6 (0xB0 0x47 in Little Endian) with the NOP (0x00 0xBF in Little Endian) instruction. After patching, the code will be similar to the following:
+Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (0xB0 0x47 in Little Endian) with the `NOP` (0x00 0xBF in Little Endian) instruction. After patching, the code will be similar to the following:
 
 <img src="Images/Chapters/0x06j/ptracePatched.png" width="500px"/>
 
@@ -313,11 +315,9 @@ See other different variants of ptrace-based anti-debugging techniques in [this 
 
 ##### Using sysctl
 
-Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation:
+Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation, it allows processes to set system information (if having the appropriate privileges) to simply to retrieve system information (such as whether the process is being debugged). However, note that just the fact that an app uses `sysctl` might be an indicator of anti-debugging but this [won't be always the case](http://www.cocoawithlove.com/blog/2016/03/08/swift-wrapper-for-sysctl.html "Gathering system information in Swift with sysctl").
 
-> The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
-
-`sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?"):
+The following example from the [Apple Documentation Archive](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?") checks the `info.kp_proc.p_flag` flag returned by the call to `sysctl` with the appropriate parameters:
 
 ```C
 #include <assert.h>
@@ -360,32 +360,27 @@ static bool AmIBeingDebugged(void)
 }
 ```
 
-When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
+One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
 
 <img src="Images/Chapters/0x06j/sysctlOriginal.png" width="550px"/>
 
-After the instruction at offset *0xC13C*, MOVNE R0, #1 is patched and changed to MOVNE R0, #0 (0x00 0x20 in in byte-code), the patched code is similar to the following:
+After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in byte-code), the patched code is similar to the following:
 
 <img src="Images/Chapters/0x06j/sysctlPatched.png" width="550px"/>
 
-You can bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
-
-Needle contains a module aimed to bypass non-specific jailbreak detection implementations. Needle uses Frida to hook native methods that may be used to determine whether the device is jailbroken. It also searches for function names that may be used in the jailbreak detection process and returns "false" when the device is jailbroken. Use the following command to execute this module:
-
-```shell
-[needle] > use dynamic/detection/script_jailbreak-detection-bypass
-[needle][script_jailbreak-detection-bypass] > run
-```
+You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
 #### Using getppid
 
-Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in the following way:
+Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in native code (via syscalls), using Objective-C or Swift as shown here:
 
 ```swift
 func AmIBeingDebugged() -> Bool {
     return getppid() != 1
 }
 ```
+
+Similarly to the other techniques, this has also a trivial bypass (e.g. by patching the binary or by using Frida hooks).
 
 ### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
@@ -759,6 +754,7 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 ### References
 
 - [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
+- Jan Seredynski. A security review of 1,300 AppStore applications (5 April 2020) - <https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html>
 
 #### OWASP MASVS
 
