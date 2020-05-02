@@ -344,7 +344,7 @@ Similarly, the above approach can be used to determine where and how an applicat
 
 ##### Network Communication
 
-Android requires applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations are pushed into final release build by mistake.
+Android requires applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations might be pushed into final release build by mistake.
 
 Also, many applications to further strengthen the network security, use Certificate Pinning. Certificate pinning not only deters MITM attacks, but also slows down reverse engineering of network traffic. But there are many pitfalls while implementing it correctly, one such common mistake being - not verifying a self-signed certificate used in certificate pinning.
 
