@@ -397,17 +397,13 @@ The contents of an application's sandboxed folder has already been discussed in 
 
 #### Debugging
 
-Coming from a Linux background you'd expect the `ptrace` system call to be as powerful as you're used to but, for some reason, Apple decided to leave it incomplete. You can use it for attaching, stepping or continuing the process but it cannot read or write memory (all `PT_READ_*` and `PT_WRITE*` requests are missing).
+Coming from a Linux background you'd expect the `ptrace` system call to be as powerful as you're used to but, for some reason, Apple decided to leave it incomplete. iOS debuggers such as LLDB use it for attaching, stepping or continuing the process but they cannot use it to read or write memory (all `PT_READ_*` and `PT_WRITE*` requests are missing). Instead, they have to obtain a so-called Mach task port (by calling `task_for_pid` with the target process ID) and then use the Mach IPC interface API functions to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`mach_vm_read`/`mach_vm_write`).
 
-> See more information in Chapter 5 "Non Sequitur: Process Tracing and Debugging" and 13 "BS"D - The BSD Layer" from "Mac OS X and iOS Internals: To the Apple's Core" [#levin] and Chapter 4 "Tracing and Debugging" from "The Mac Hacker's Handbook" [#miller].
-
-Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Debugging on iOS is generally implemented via Mach IPC/APIs (`mach_vm_*` functions operating on task ports, that's why `task_for_pid` is required).
-
-To attach to a target process, the debugger process (e.g. debugserver) calls `task_for_pid` with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`mach_vm_read`/`mach_vm_write`).
+> For more information you can refer to the LLVM project in GitHub which contains the [source code for LLDB](https://github.com/llvm/llvm-project/tree/master/lldb "LLDB") as well as Chapter 5 "Non Sequitur: Process Tracing and Debugging" and 13 "BS"D - The BSD Layer" from "Mac OS X and iOS Internals: To the Apple's Core" [#levin] and Chapter 4 "Tracing and Debugging" from "The Mac Hacker's Handbook" [#miller].
 
 ##### Debugging with LLDB
 
-The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable (so that the debugger process can call `task_for_pid` to obtain the target Mach task port as seen before). An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
