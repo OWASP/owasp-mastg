@@ -290,6 +290,65 @@ For white-box source code testing, you'll need a setup similar to the developer'
 
 During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's APK format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
 
+#### Basic Information Gathering
+
+As discussed in previous sections, an Android application can consist of both Java/Kotlin bytecode and native code. In this section, we will learn about some approaches and tools for collecting basic information using static analysis.
+
+##### Retrieving Strings
+
+While performing any kind of binary analysis, strings can be considered as one of the most valuable starting points as they provide context. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code might be responsible for performing some kind of encryption operation.
+
+###### Java and Kotlin Bytecode
+
+As we already know, all the Java and Kotlin bytecode of an Android application is compiled into a DEX file. Each DEX file contains a [list of string identifiers](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids), which contains all the string identifiers used in the binary whenever a string is referred, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hardcoded strings). You can simply dump this list using tools such as Ghidra (GUI based) or [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
+
+With Ghidra, strings can be obtained by simply loading the DEX file and selecting **Window -> Defined strings** in the menu.
+
+> Loading an APK file directly into Ghidra might lead to inconsistencies. Thus it is recommended to extract the DEX file by unzipping the APK file and then loading it into Ghidra.
+
+<img src="Images/Chapters/0x05c/ghidra_dex_strings.png" width="500px"/>
+
+With Dextra, you can dump all the strings using the following command:
+
+```bash
+dextra -S classes.dex
+```
+
+The output from Dextra can be manipulated using standard Linux commands, for example, using `grep` to search for certain keywords.
+
+It is important to know, the list of strings obtained using the above tools can be very big, as it also includes the various class and package names used in the application. Going through the complete list, specially for big binaries, can be very cumbersome. Thus, it is recommended to start with keyword-based searching and go through the list only when keyword search does not help. Some generic keywords which can be a good starting point are - password, key, and secret. Other useful keywords specific to the context of the app can be obtained while you are using the app itself. For instance, imagine that the app has as login form, you can take note of the displayed placeholder or title text of the input fields and use that as an entry point for your static analysis.
+
+###### Native Code
+
+In order to extract strings from native code used in an Android application, you can use GUI tools such as Ghidra or Cutter or rely on CLI-based tools such as the _strings_ Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based ones you can take advantage of other tools such as grep (e.g. in conjunction with regular expressions) to further filter and analyze the results. 
+
+##### Cross References
+
+###### Java and Kotlin
+
+There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage** in jadx](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx").
+
+###### Native Code
+
+Similarly to Java analysis, you can also use Ghidra to analyze native libraries and obtain cross references by right clicking the desired function and selecting **Show References to**.
+
+##### API Usage
+
+The Android platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Determining the presence of these libraries in an application can give us valuable information about its nature.
+
+For instance, if an application is importing `javax.crypto.Cipher`, it indicates that the application will be performing some kind of cryptographic operation. Fortunately, cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analyzing cryptography APIs. For example, by looking for the `Cipher.getInstance` function, we can determine the cryptographic algorithm being used. With such an approach we can directly move to analyzing cryptographic assets, which often are very critical in an application. Further information on how to analyse Android's cryptographic APIs is discussed in the section  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")".
+
+Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class. 
+
+
+##### Network Communication
+
+Android requires applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations might be pushed into final release build by mistake.
+
+The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation or an inherently wrong security network configuration.
+
+Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x05b-Basic-Security_Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "Android Basic Security Testing" chapter and also check the test cases in the chapter "[Android Network APIs](0x05g-Testing-Network-Communication.md "Android Network APIs")".
+
 #### Manual (Reversed) Code Review
 
 ##### Reviewing Decompiled Java Code
@@ -2612,9 +2671,11 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - IDA Pro - <https://www.hex-rays.com/products/ida/>
 - JAD Decompiler - <http://www.javadecompilers.com/jad>
 - JD (Java Decompiler) - <http://jd.benow.ca/>
+- jadx - <https://github.com/skylot/jadx>
 - JEB Decompiler - <https://www.pnfsoftware.com>
 - OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
 - Procyon Decompiler - <https://bitbucket.org/mstrobel/procyon/overview>
 - Radare2 - <https://www.radare.org>
 - smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smali/wiki/smalidea>
 - VxStripper - <http://vxstripper.pagesperso-orange.fr>
+- Dextra - <http://newandroidbook.com/tools/dextra.html>
