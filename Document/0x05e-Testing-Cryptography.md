@@ -6,7 +6,7 @@ In the chapter "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)", 
 
 We can identify key components of cryptography system in Android:
 
-- [Provider](0x05e-Testing-Cryptography.md#provider)
+- [Security Provider](0x05e-Testing-Cryptography.md#security-provider)
 - KeyStore - see the section [KeyStore](0x05d-Testing-Data-Storage.md#keystore) in the chapter "Testing Data Storage"
 - KeyChain - see the section [KeyChain](0x05d-Testing-Data-Storage.md#keychain) in the chapter "Testing Data Storage"
 
@@ -41,8 +41,8 @@ Apps that target modern API levels, went through the following changes:
   - You need to have large enough arrays as input bytes for generating a key otherwise, an `InvalidKeySpecException` is thrown.
   - If a Socket read is interrupted, you get a `SocketException`.
 - For Android 9 (API level 28) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P") shows even more changes:
-  - You get a warning if you still specify a provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
-  - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
+  - You get a warning if you still specify a security provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
+  - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") list all network security changes.
 
 #### Recommendation
@@ -50,20 +50,20 @@ Apps that target modern API levels, went through the following changes:
 The following list of recommendations should be considered during app examination:
 
 - You should ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed.
-- You should ensure that provider has the latest updates - [Updating security provider](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
-- You should stop specifying a provider and use the default implementation (AndroidOpenSSL, Conscrypt).
-- You should stop using Crypto provider and its `SHA1PRNG` as they are depracated.
-- You should specify a provider only for the Android Keystore system.
+- You should ensure that security provider has the latest updates - [Updating security provider](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
+- You should stop specifying a security provider and use the default implementation (AndroidOpenSSL, Conscrypt).
+- You should stop using Crypto security provider and its `SHA1PRNG` as they are depracated.
+- You should specify a security provider only for the Android Keystore system.
 - You should stop using Password-based encryption ciphers without IV.
 - You should use KeyGenParameterSpec instead of KeyPairGeneratorSpec.
 
-#### Provider
+#### Security provider
 
 Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
-The list of providers included in Android varies between versions of Android and the OEM-specific builds. Some provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy providers.
+The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
 
-You can list the set of existing providers using following code:
+You can list the set of existing security providers using following code:
 
 ```java
 StringBuilder builder = new StringBuilder();
@@ -104,9 +104,9 @@ provider: HarmonyJSSE 1.0(Harmony JSSE Provider)
 provider: AndroidKeyStore 1.0(Android KeyStore security provider)
 ```
 
-##### Updating Provider
+##### Updating security provider
 
-Keeping up-to-date and patched component is one of security principles. The same applies to `provider`. Application should check if used provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider"). It is related to [Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries).
+Keeping up-to-date and patched component is one of security principles. The same applies to `provider`. Application should check if used security provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider"). It is related to [Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries).
 
 ##### Older Android versions
 
@@ -135,7 +135,7 @@ keyGenerator.init(keyGenParameterSpec);
 SecretKey secretKey = keyGenerator.generateKey();
 ```
 
-The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). `"AndroidKeyStore"` is the name of the cryptographic service provider used in this example. This will automatically ensure that the keys are stored in the `AndroidKeyStore` which is beneficiary for the protection of the key.
+The `KeyGenParameterSpec` indicates that the key can be used for encryption and decryption, but not for other purposes, such as signing or verifying. It further specifies the block mode (CBC), padding (PKCS #7), and explicitly specifies that randomized encryption is required (this is the default). `"AndroidKeyStore"` is the name of security provider used in this example. This will automatically ensure that the keys are stored in the `AndroidKeyStore` which is beneficiary for the protection of the key.
 
 GCM is another AES block mode that provides additional security benefits over other, older modes. In addition to being cryptographically more secure, it also provides authentication. When using CBC (and other modes), authentication would need to be performed separately, using HMACs (see the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter). Note that GCM is the only mode of AES that [does not support paddings](https://developer.android.com/training/articles/keystore.html#SupportedCiphers "Supported Ciphers in AndroidKeyStore").
 
