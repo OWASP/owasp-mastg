@@ -413,9 +413,9 @@ To mitigate unauthorized use of keys on the Android device, Android KeyStore let
 Storing a Key - from most secure to least secure:
 
 - all keys are stored on server and are available after strong authentication
-- master key is stored on server and use to encrypt other keys, which are stored in Android KeyStore/SharedPreferences
-- the key is derived each time from user provided passphrase
+- master key is stored on server and use to encrypt other keys, which are stored in Android SharedPreferences
 - the key is stored in hardware-backed Android KeyStore
+- the key is derived each time from a strong user provided passphrase with sufficient length and salt
 - the key is stored in software implementation of Android KeyStore
 - master key is stored in Android Keystore and use to encrypt other keys, which are stored in SharedPreferences
 - all keys are stored in SharedPreferences
