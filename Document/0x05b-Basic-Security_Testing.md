@@ -1620,17 +1620,11 @@ With the following command you can specifically grep for the log output of the a
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 ##### Enumerating Domains
-Even before we deep dive into the traffic analysis, we can learn about the domains to which the application communicates by reverse-engineering the application and grepping the domain names using regular expressions. This not only helps us to know about the domains to which our application is meant to communicate but can also sometimes help us to identify other environments such as staging, pre-production, etc. which might be of use later during the penetration testing. 
+Most of the apps you might encounter connect to remote endpoints. Even before you perform any dynamic analysis (e.g. traffic capture and analysis), you can obtain some initial inputs or entry points by enumerating the domains to which the application is supposed to communicate with.
 
-Instead of manually searching in the decompiled code, we can alternatively use [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration"), a python utility to perform passive enumeration on Android application. It takes the APK file as an input and provides the following information by searching the decompiled code:
+Typically these domains will be present as strings within the binary of the application. One way to achieve this is by _grepping_ the domain names using regular expressions or by using automated tools such as [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration") or [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"). For this you can target the app binary directly or reverse engineering it and target the disassembled or decompiled code. The latter option has a clear advantage: it can provide you with **context**, as you'll be able to see in which context each domain is being used (e.g. class and method).
 
-- List of domains in the application
-- List of S3 buckets referenced in the code
-- List of S3 websites referenced in the code
-- List of IP addresses referenced in the code
-You can read more about it [here](https://medium.com/@shivsahni2/apkenum-a-python-utility-for-apk-enumeration-cce0eda6fa30 "Walkthrough of APKEnum").
-
-Once we have the list of domain names, we can perform further reconnaissance on domain names to know more about the target. 
+From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the network security configuration or perform further reconnaissance on domain names to know more about the target environment.
 
 ### Setting up a Network Testing Environment
 
