@@ -6,7 +6,7 @@ Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reve
 
 # Android
 
-## [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_01/ "Android level 1")
+## [UnCrackable App for Android Level 1](Android/Level_01 "Android level 1")
 
 This app holds a secret inside. Can you find it?
 
@@ -25,12 +25,12 @@ This app is compatible with Android 4.4 and up.
 ### Solutions
 
 - [Solution using Frida by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/ "Solution by c0dmtr1x")
-- [Solution using static analysis](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Solution using static analysis")
-- [Solution using jdb](0x05c-Reverse-Engineering-and-Tampering.md#debugging-release-apps "Solution using jdb")
+- [Solution using static analysis](../Document/0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Solution using static analysis")
+- [Solution using jdb](../Document/0x05c-Reverse-Engineering-and-Tampering.md#debugging-with-jdb "Solution using jdb")
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html "Solution by Eduardo Novella")
 - [Solution using Xposed by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level1/ "Solution by sh3llc0d3r")
 
-## [UnCrackable App for Android Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_02/ "Android level 2")
+## [UnCrackable App for Android Level 2](Android/Level_02 "Android level 2")
 
 This app holds a secret inside. May include traces of native code.
 
@@ -53,7 +53,7 @@ This app is compatible with Android 4.4 and up.
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html "Solution by Eduardo Novella")
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level2/ "Solution by sh3llc0d3r")
 
-## [UnCrackable App for Android Level 3](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_03/ "Android level 3")
+## [UnCrackable App for Android Level 3](Android/Level_03 "Android level 3")
 
 The crackme from hell!
 
@@ -75,7 +75,7 @@ This app is compatible with Android 4.4 and up.
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html "Solution by Eduardo Novella")
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level3/ "Solution by sh3llc0d3r")
 
-## [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01/ "Android License Validator")
+## [Android License Validator](Android/License_01 "Android License Validator")
 
 A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available!
 
@@ -99,11 +99,11 @@ Copy the binary to your Android device and run using the shell.
 
 ### Solutions
 
-- [Solution using symbolic execution by Bernhard Mueller](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Tampering and Reverse Engineering on Android - Symbolic Execution")
+- [Solution using symbolic execution by Bernhard Mueller](../Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Tampering and Reverse Engineering on Android - Symbolic Execution")
 
 # iOS
 
-## [UnCrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01/ "iOS level 1")
+## [UnCrackable App for iOS Level 1](iOS/Level_01 "iOS level 1")
 
 This app holds a secret inside. Can you find it?
 
@@ -124,7 +124,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html "Solution by Ryan Teoh")
 - [Solution with Angr by Vikas Gupta](https://serializethoughts.com/2019/10/28/solving-mstg-crackme-angr "Solving iOS UnCrackable 1 Crackme Without Using an iOS Device")
 
-## [UnCrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/ "iOS level2")
+## [UnCrackable App for iOS Level 2](iOS/Level_02 "iOS level2")
 
 This app holds a secret inside - and this time it won't be tampered with!
 
