@@ -3138,7 +3138,7 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 - MSTG-PLATFORM-5: "JavaScript is disabled in WebViews unless explicitly required."
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-- MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-PLATFORM-8: "Object deserialization, if any, is implemented using safe serialization APIs."
 
 #### Tools
 

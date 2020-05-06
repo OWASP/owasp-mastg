@@ -913,7 +913,7 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 #### OWASP MASVS
 
-- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-STORAGE-1: "System credential storage facilities need to be used to store sensitive data, such as PII, user credentials or cryptographic keys."
 - MSTG-STORAGE-2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
 - MSTG-STORAGE-3: "No sensitive data is written to application logs."
 - MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."

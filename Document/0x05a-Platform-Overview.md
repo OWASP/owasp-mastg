@@ -193,7 +193,7 @@ The process `Zygote` starts up during [Android initialization](https://github.co
 
 In Android, the lifetime of an app process is controlled by the operating system. A new Linux process is created when an app component is started and the same app doesn’t yet have any other components running. Android may kill this process when the latter is no longer necessary or when reclaiming memory is necessary to run more important apps. The decision to kill a process is primarily related to the state of the user's interaction with the process. In general, processes can be in one of four states.
 
-- A foreground process (e.g., an activity running at the top of the screen or a running BroadcastReceive)
+- A foreground process (e.g., an activity running at the top of the screen or a running BroadcastReceiver)
 - A visible process is a process that the user is aware of, so killing it would have a noticeable negative impact on user experience. One example is running an activity that's visible to the user on-screen but not in the foreground.
 
 - A service process is a process hosting a service that has been started with the `startService` method. Though these processes aren't directly visible to the user, they are generally things that the user cares about (such as background network data upload or download), so the system will always keep such processes running unless there's insufficient memory to retain all foreground and visible processes.
@@ -243,10 +243,10 @@ Here is an example of a manifest file, including the package name (the conventio
     <uses-permission android:name="android.permission.INTERNET" />
 
     <provider
-        android:name="com.owasp.myapplication.myProvider"
+        android:name="com.owasp.myapplication.MyProvider"
         android:exported="false" />
 
-    <receiver android:name=".myReceiver" >
+    <receiver android:name=".MyReceiver" >
         <intent-filter>
             <action android:name="com.owasp.myapplication.myaction" />
         </intent-filter>
@@ -313,12 +313,12 @@ A fragment represents a behavior or a portion of the user interface within the a
 
 Fragments are meant to encapsulate parts of the interface to facilitate re-usability and adaptation to different screen sizes. Fragments are autonomous entities in that they include all their required components (they have their own layout, buttons, etc.). However, they must be integrated with activities to be useful: fragments can't exist on their own. They have their own life cycle, which is tied to the life cycle of the Activities that implement them.
 
-Because fragments have their own life cycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+Because fragments have their own life cycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/guide/components/fragments "Fragment Class") for more details.
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
 ```Java
-public class myFragment extends Fragment {
+public class MyFragment extends Fragment {
     ...
 }
 ```
@@ -418,7 +418,7 @@ There are two ways to make a Broadcast Receiver known to the system. One way is 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 ```xml
-<receiver android:name=".myReceiver" >
+<receiver android:name=".MyReceiver" >
     <intent-filter>
         <action android:name="com.owasp.myapplication.MY_ACTION" />
     </intent-filter>
@@ -476,7 +476,7 @@ Content providers are implemented through a URI addressing scheme: they all use 
 
 ##### Services
 
-Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. Activities are executed in the main app thread. They are great candidates for running asynchronous tasks.
+Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. This makes services a great candidate for running  background tasks. Please note that Services, like Activities, are executed in the main app thread. A service does not create its own thread and does not run in a separate process unless you specify otherwise. 
 
 ##### Permissions
 

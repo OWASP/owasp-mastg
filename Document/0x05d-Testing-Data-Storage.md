@@ -138,7 +138,9 @@ If the database is not encrypted, you should be able to obtain the data. If the 
 ##### Internal Storage
 
 You can save files to the device's [internal storage](https://developer.android.com/guide/topics/data/data-storage.html#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
-The following code would persistently store sensitive data to internal storage:
+The following code snippets would persistently store sensitive data to internal storage.
+
+Example for Java:
 
 ```java
 FileOutputStream fos = null;
@@ -152,6 +154,14 @@ try {
    e.printStackTrace();
 }
 ```
+Example for Kotlin:
+
+```kotlin
+var fos: FileOutputStream? = null
+fos = openFileOutput("FILENAME", Context.MODE_PRIVATE)
+fos.write(test.toByteArray(Charsets.UTF_8))
+fos.close()
+```
 
 You should check the file mode to make sure that only the app can access the file. You can set this access with `MODE_PRIVATE`. Modes such as `MODE_WORLD_READABLE` (deprecated) and `MODE_WORLD_WRITEABLE` (deprecated) may pose a security risk.
 
@@ -161,8 +171,9 @@ Search for the class `FileInputStream` to find out which files are opened and re
 
 Every Android-compatible device supports [shared external storage](https://developer.android.com/guide/topics/data/data-storage.html#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or internal (non-removable).
 Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
-You can use the following code to persistently store sensitive information to external storage as the contents of the file `password.txt`:
+You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
 
+Example for Java:
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
 String password = "SecretPassword";
@@ -170,6 +181,14 @@ FileOutputStream fos;
     fos = new FileOutputStream(file);
     fos.write(password.getBytes());
     fos.close();
+```
+
+Example for Kotlin:
+```kotlin
+val password = "SecretPassword"
+val path = context.getExternalFilesDir(null)
+val file = File(path, "password.txt")
+file.appendText(password)
 ```
 
 The file will be created and the data will be stored in a clear text file in external storage once the activity has been called.
@@ -462,7 +481,7 @@ In the layout definition of an activity, you can define `TextViews` that have XM
         android:inputType="textNoSuggestions"/>
 ```
 
-The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions"):
+The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions").
 
 #### Dynamic Analysis
 
@@ -1208,7 +1227,7 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 
 #### OWASP MASVS
 
-- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-STORAGE-1: "System credential storage facilities need to be used to store sensitive data, such as PII, user credentials or cryptographic keys."
 - MSTG-STORAGE-2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
 - MSTG-STORAGE-3: "No sensitive data is written to application logs."
 - MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
