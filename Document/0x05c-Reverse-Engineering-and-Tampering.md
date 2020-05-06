@@ -320,7 +320,7 @@ It is important to know, the list of strings obtained using the above tools can 
 
 ###### Native Code
 
-In order to extract strings from native code used in an Android application, you can use GUI tools such as Ghidra or Cutter or rely on CLI-based tools such as the _strings_ Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based ones you can take advantage of other tools such as grep (e.g. in conjunction with regular expressions) to further filter and analyze the results.
+In order to extract strings from native code used in an Android application, you can use GUI tools such as Ghidra or Cutter or rely on CLI-based tools such as the _strings_ Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based ones you can take advantage of other tools such as grep (e.g. in conjunction with regular expressions) to further filter and analyze the results. 
 
 ##### Cross References
 
@@ -336,7 +336,7 @@ Similarly to Java analysis, you can also use Ghidra to analyze native libraries 
 
 The Android platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Determining the presence of these libraries in an application can give us valuable information about its nature.
 
-For instance, if an application is importing `javax.crypto.Cipher`, it indicates that the application will be performing some kind of cryptographic operation. Fortunately, cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analyzing cryptography APIs. For example, by looking for the `Cipher.getInstance` function, we can determine the cryptographic algorithm being used. With such an approach we can directly move to analyzing cryptographic assets, which often are very critical in an application. Further information on how to analyze Android's cryptographic APIs is discussed in the section  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")".
+For instance, if an application is importing `javax.crypto.Cipher`, it indicates that the application will be performing some kind of cryptographic operation. Fortunately, cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analyzing cryptography APIs. For example, by looking for the `Cipher.getInstance` function, we can determine the cryptographic algorithm being used. With such an approach we can directly move to analyzing cryptographic assets, which often are very critical in an application. Further information on how to analyse Android's cryptographic APIs is discussed in the section  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")".
 
 Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class. 
 
@@ -2649,7 +2649,7 @@ Original value: c017a390
 New value: bf000000
 ```
 
-Assuming that everything worked, /bin/cat shouldn't be able to _see_ the file.
+Assuming that everything worked, /bin/cat shouldn't be able to "see" the file.
 
 ```shell
 $ adb shell su -c cat /data/local/tmp/nowyouseeme
