@@ -340,17 +340,13 @@ For instance, if an application is importing `javax.crypto.Cipher`, it indicates
 
 Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class. 
 
-##### Enumerating Domains
+##### Network Communication
 
 Most of the apps you might encounter connect to remote endpoints. Even before you perform any dynamic analysis (e.g. traffic capture and analysis), you can obtain some initial inputs or entry points by enumerating the domains to which the application is supposed to communicate with.
 
 Typically these domains will be present as strings within the binary of the application. One way to achieve this is by _grepping_ the domain names using regular expressions or by using automated tools such as [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration") or [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"). For this you can target the app binary directly or reverse engineering it and target the disassembled or decompiled code. The latter option has a clear advantage: it can provide you with **context**, as you'll be able to see in which context each domain is being used (e.g. class and method).
 
-From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the network security configuration or perform further reconnaissance on domain names to know more about the target environment.
-
-##### Network Communication
-
-Android requires applications to use secure network connection, like HTTPS, while communicating with the backend server. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations might be pushed into final release build by mistake.
+From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the network security configuration or perform further reconnaissance on domain names to know more about the target environment. When evaluating an application it is important to check the network configuration, as often debug environment (less secure) configurations might be pushed into final release build by mistake.
 
 The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation or an inherently wrong security network configuration.
 
