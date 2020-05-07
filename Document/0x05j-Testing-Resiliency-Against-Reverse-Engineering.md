@@ -807,7 +807,6 @@ An approach similar to that for application-source integrity checks applies. Ans
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-
 #### Detection Methods
 
 You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide. Other tools, such as Substrate and Xposed, can be detected similarly. Note that DBI/injection/hooking tools can often be detected implicitly, through run time integrity checks, which are discussed below.
@@ -1017,7 +1016,7 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
-In this test case, we describe a few basic obfuscation techniques that are commonly used on Android.
+In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE-9)" in chapter "Code Quality and Build Settings of Android Apps", we describe a few basic obfuscation techniques that are commonly used on Android with R8 and Pro-Guard.
 
 #### Effectiveness Assessment
 
@@ -1325,10 +1324,6 @@ See section "[Dynamic Analysis with an Emulator](#dynamic-analysis-with-an-emula
 6. Can you continue in an authenticated state? If so, binding may not be working properly.
 
 ### References
-
-#### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
 
 #### OWASP MASVS
 

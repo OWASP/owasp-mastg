@@ -83,6 +83,28 @@ Adiantum is available for Android 9 (API level 28) and higher versions. It is na
 Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
 It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
 
+#### Android Security Hardening
+
+Android contains many different features that attempt to make it more difficult for a malicious application to break out of its sandbox. Since applications are effectively running code on your device, it is important that this can be done securely, even if the application itself can not be trusted. The following sections explain which mitigations are in place to prevent applications from abusing vulnerabilities. Note that an OS is never 100% secure and new vulnerabilities are still discovered on a regular basis, even with these mitigations in place.
+
+##### SELinux
+
+Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, by working on a least-privilege principle, vulnerable processes are more difficult to exploit via privilege escalation or lateral movement.
+
+Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
+
+##### ASLR, KASLR, PIE and DEP
+
+Address Space Layout Randomization (ASLR), which has been part of Android since Android 4.1 (API level 15), is a standard protection against buffer-overflow attacks, which makes sure that both the application and the OS are loaded to random memory addresses making it difficult to get the correct address for a specific memory region or library. In Android 8.0 (API level 26), this protection was also implemented for the kernel (KASLR). ASLR protection is only possible if the application can be loaded at a random place in memory, which is indicated by the Position Independent Executable (PIE) flag of the application. Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was dropped. Finally, Data Execution Prevention (DEP) prevents code execution on the stack and heap, which is also used to combat buffer-overflow exploits.
+
+Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2016/07/protecting-android-with-more-linux.html "Protecting Android with more Linux kernel defenses").
+
+##### SECCOMP
+
+Android applications can contain native code written in C or C++. These compiled binaries can communicate both with the Android Runtime through Java Native Interface (JNI) bindings, and with the OS through system calls. Some system calls are either not implemented, or are not supposed to be called by normal applications. As these system calls communicate directly with the kernel, they are a prime target for exploit developers. With Android 8 (API level 26), Android has introduced the support for Secure Computing (SECCOMP) filters for all Zygote based processes (i.e. user applications). These filters restrict the available syscalls to those exposed through bionic.
+
+Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2017/07/seccomp-filter-in-android-o.html "Seccomp filter in Android O").
+
 ### Apps on Android
 
 #### Communication with the Operating System
@@ -97,7 +119,7 @@ Android apps interact with system services via the Android Framework, an abstrac
 
 The framework also offers common security functions, such as cryptography.
 
-The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 7.0 (API level 24-25) and the current Android version is Android 9 (API level 28).
+The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 8.1 (API level 27) and the current Android version is Android 10 (API level 29).
 
 Noteworthy API versions:
 
@@ -107,8 +129,9 @@ Noteworthy API versions:
 - Android 5.0 (API level 21) in November 2014 (ART used by default and many other features added)
 - Android 6.0 (API level 23) in October 2015 (many new features and improvements, including granting; detailed permissions setup at run time rather than all or nothing during installation)
 - Android 7.0 (API level 24-25) in August 2016 (new JIT compiler on ART)
-- Android 8.0 (API level 26-27) in August 2017 (A lot of security improvements)
-- Android 9 (API level 28) in August 2018.
+- Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
+- Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
+- Android 10 (API level 29) in September 2019 (notification bubbles, project Mainline)
 
 #### Linux UID/GID for Normal Applications
 
@@ -170,7 +193,7 @@ The process `Zygote` starts up during [Android initialization](https://github.co
 
 In Android, the lifetime of an app process is controlled by the operating system. A new Linux process is created when an app component is started and the same app doesn’t yet have any other components running. Android may kill this process when the latter is no longer necessary or when reclaiming memory is necessary to run more important apps. The decision to kill a process is primarily related to the state of the user's interaction with the process. In general, processes can be in one of four states.
 
-- A foreground process (e.g., an activity running at the top of the screen or a running BroadcastReceive)
+- A foreground process (e.g., an activity running at the top of the screen or a running BroadcastReceiver)
 - A visible process is a process that the user is aware of, so killing it would have a noticeable negative impact on user experience. One example is running an activity that's visible to the user on-screen but not in the foreground.
 
 - A service process is a process hosting a service that has been started with the `startService` method. Though these processes aren't directly visible to the user, they are generally things that the user cares about (such as background network data upload or download), so the system will always keep such processes running unless there's insufficient memory to retain all foreground and visible processes.
@@ -220,10 +243,10 @@ Here is an example of a manifest file, including the package name (the conventio
     <uses-permission android:name="android.permission.INTERNET" />
 
     <provider
-        android:name="com.owasp.myapplication.myProvider"
+        android:name="com.owasp.myapplication.MyProvider"
         android:exported="false" />
 
-    <receiver android:name=".myReceiver" >
+    <receiver android:name=".MyReceiver" >
         <intent-filter>
             <action android:name="com.owasp.myapplication.myaction" />
         </intent-filter>
@@ -290,12 +313,12 @@ A fragment represents a behavior or a portion of the user interface within the a
 
 Fragments are meant to encapsulate parts of the interface to facilitate re-usability and adaptation to different screen sizes. Fragments are autonomous entities in that they include all their required components (they have their own layout, buttons, etc.). However, they must be integrated with activities to be useful: fragments can't exist on their own. They have their own life cycle, which is tied to the life cycle of the Activities that implement them.
 
-Because fragments have their own life cycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/reference/android/app/Fragment.html "Fragment Class") for more details.
+Because fragments have their own life cycle, the Fragment class contains event managers that can be redefined and extended. These event managers included onAttach, onCreate, onStart, onDestroy and onDetach. Several others exist; the reader should refer to the [Android Fragment specification](https://developer.android.com/guide/components/fragments "Fragment Class") for more details.
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
 ```Java
-public class myFragment extends Fragment {
+public class MyFragment extends Fragment {
     ...
 }
 ```
@@ -395,7 +418,7 @@ There are two ways to make a Broadcast Receiver known to the system. One way is 
 An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 ```xml
-<receiver android:name=".myReceiver" >
+<receiver android:name=".MyReceiver" >
     <intent-filter>
         <action android:name="com.owasp.myapplication.MY_ACTION" />
     </intent-filter>
@@ -404,7 +427,7 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 Please note that in this example, the Broadcast Receiver does not include the [`android:exported`](https://developer.android.com/guide/topics/manifest/receiver-element "receiver element") attribute. As at least one filter was defined, the default value will be set to "true". In absence of any filters, it will be set to "false".
 
-The other way is to create the receiver dynamically in code and register it with the [`Context.registerReceiver`](https://developer.android.com/reference/android/content/Context.html#registerReceiver(android.content.BroadcastReceiver,%2520android.content.IntentFilter) "Context.registerReceiver") method.
+The other way is to create the receiver dynamically in code and register it with the [`Context.registerReceiver`](https://developer.android.com/reference/android/content/Context.html#registerReceiver%28android.content.BroadcastReceiver,%2520android.content.IntentFilter%29 "Context.registerReceiver") method.
 
 An example of registering a Broadcast Receiver dynamically:
 
@@ -429,7 +452,7 @@ Note that the system starts an app with the registered receiver automatically wh
 
 According to [Broadcasts Overview](https://developer.android.com/guide/components/broadcasts "Broadcasts Overview"), a broadcast is considered "implicit" if it does not target an app specifically. After receiving an implicit broadcast, Android will list all apps that have registered a given action in their filters. If more than one app has registered for the same action, Android will prompt the user to select from the list of available apps.
 
-An interesting feature of Broadcast Receivers is that they can be prioritized; this way, an intent will be delivered to all authorized receivers according to their priority. A priority can be assigned to an intent filter in the manifest via the `android:priority` attribute as well as programmatically via the [`IntentFilter.setPriority`](https://developer.android.com/reference/android/content/IntentFilter#setPriority(int) "IntentFilter.setPriority") method. However, note that receivers with the same priority will be [run in an arbitrary order](https://developer.android.com/guide/components/broadcasts.html#sending-broadcasts "Sending Broadcasts").
+An interesting feature of Broadcast Receivers is that they can be prioritized; this way, an intent will be delivered to all authorized receivers according to their priority. A priority can be assigned to an intent filter in the manifest via the `android:priority` attribute as well as programmatically via the [`IntentFilter.setPriority`](https://developer.android.com/reference/android/content/IntentFilter#setPriority%28int%29 "IntentFilter.setPriority") method. However, note that receivers with the same priority will be [run in an arbitrary order](https://developer.android.com/guide/components/broadcasts.html#sending-broadcasts "Sending Broadcasts").
 
 If your app is not supposed to send broadcasts across apps, use a Local Broadcast Manager ([`LocalBroadcastManager`](https://developer.android.com/reference/androidx/localbroadcastmanager/content/LocalBroadcastManager.html "LocalBroadcastManager")). They can be used to make sure intents are received from the internal app only, and any intent from any other app will be discarded. This is very useful for improving security and the efficiency of the app, as no interprocess communication is involved. However, please note that the `LocalBroadcastManager` class is [deprecated](https://developer.android.com/reference/androidx/localbroadcastmanager/content/LocalBroadcastManager.html "LocalBroadcastManager") and Google recommends using alternatives such as [`LiveData`](https://developer.android.com/reference/androidx/lifecycle/LiveData.html "LiveData").
 
@@ -453,7 +476,7 @@ Content providers are implemented through a URI addressing scheme: they all use 
 
 ##### Services
 
-Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. Activities are executed in the main app thread. They are great candidates for running asynchronous tasks.
+Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. This makes services a great candidate for running  background tasks. Please note that Services, like Activities, are executed in the main app thread. A service does not create its own thread and does not run in a separate process unless you specify otherwise. 
 
 ##### Permissions
 

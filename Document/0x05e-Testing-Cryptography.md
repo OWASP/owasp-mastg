@@ -57,6 +57,7 @@ Apps that target modern API levels, went through the following changes:
 - For Android 9 (API level 28) and above the [Android Developer Blog](https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html "Cryptography Changes in Android P") shows even more aggressive changes:
   - You get a warning if you still specify a provider using the `getInstance` method and you target any API below 28. If you target Android 9 (API level 28) or above, you get an error.
   - The `Crypto` provider is now removed. Calling it will result in a `NoSuchProviderException`.
+- For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") list all network security changes.
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
@@ -221,7 +222,7 @@ public static void main (String args[]) {
 
 Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
 
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp's Sequencer") to see how good the quality of the randomness is.
+If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp\'s Sequencer") to see how good the quality of the randomness is.
 
 ### Testing Key Management (MSTG-STORAGE-1, MSTG-CRYPTO-1 and MSTG-CRYPTO-5)
 
@@ -449,22 +450,12 @@ Hook cryptographic methods and analyze the keys that are being used. Monitor fil
 - Verifying Android Key Attestation - <https://medium.com/@herrjemand/webauthn-fido2-verifying-android-keystore-attestation-4a8835b33e9d>
 - W3C Android Key Attestation - <https://www.w3.org/TR/webauthn/#android-key-attestation>
 
-##### OWASP Mobile Top 10 2016
-
-- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
-
 ##### OWASP MASVS
 
-- MSTG-STORAGE-1: "System credential storage facilities are used appropriately to store sensitive data, such as user credentials or cryptographic keys."
+- MSTG-STORAGE-1: "System credential storage facilities need to be used to store sensitive data, such as PII, user credentials or cryptographic keys."
 - MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
 - MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
-- MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes."
-- MSTG-CRYPTO-5: "The app doesn't reuse the same cryptographic key for multiple purposes."
+- MSTG-CRYPTO-4: "The app does not use cryptographic protocols or algorithms that are widely considered deprecated for security purposes."
+- MSTG-CRYPTO-5: "The app doesn't re-use the same cryptographic key for multiple purposes."
 - MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
-
-##### CWE
-
-- CWE-321 - Use of Hard-coded Cryptographic Key
-- CWE-326 - Inadequate Encryption Strength
-- CWE-330 - Use of Insufficiently Random Values

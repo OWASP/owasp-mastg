@@ -492,16 +492,27 @@ Since most Android applications are Java-based, they are [immune to buffer overf
 
 #### Static Analysis
 
-If source code is provided, you can check the build.gradle file to see whether obfuscation settings have been applied. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with "-keepclassmembers" and "-keep class") is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder. The file `proguard-rules.pro` is where you define custom ProGuard rules. You can see that many extended classes in our sample `proguard-rules.pro` file are common Android classes. This should be defined more granularly on specific classes or libraries.
+If source code is provided, you can check the build.gradle file to see whether obfuscation settings have been applied. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with `-keepclassmembers` and `-keep class`) is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder. 
 
-By default, ProGuard removes attributes that are useful for debugging, including line numbers, source file names, and variable names. ProGuard is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier. It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:
+Further information on how to shrink, obfuscate, and optimize your app can be found in the [Android developer documentation](https://developer.android.com/studio/build/shrink-code "Shrink, obfuscate, and optimize your app").
+
+> When you build you project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin works with the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
+
+R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
 
 ```groovy
 android {
     buildTypes {
         release {
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
     }
@@ -509,19 +520,27 @@ android {
 }
 ```
 
-proguard-rules.pro
+The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
 
 ```groovy
+...
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
+...
+```
+
+You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
+
+```groovy
+-keep public class MyClass
 ```
 
 #### Dynamic Analysis
 
-If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting DEX code to a JAR file (e.g., dex2jar). The JAR file can be opened with tools (such as JD-GUI) that can be used to make sure that class, method, and variable names are not human-readable.
+If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting DEX code to a JAR file (e.g. dex2jar). The JAR file can be opened with tools such as JD-GUI that can be used to make sure that class, method, and variable names are not human-readable.
 
-Sample obfuscated code block:
+Below you can find a sample for an obfuscated code block:
 
 ```java
 package com.a.a.a;
@@ -551,30 +570,17 @@ class a$b
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M7 - Poor Code Quality - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality>
-
 #### OWASP MASVS
 
-- MSTG-CODE-1: "The app is signed and provisioned with valid certificate."
+- MSTG-CODE-1: "The app is signed and provisioned with a valid certificate, of which the private key is properly protected."
 - MSTG-CODE-2: "The app has been built in release mode, with settings appropriate for a release build (e.g. non-debuggable)."
 - MSTG-CODE-3: "Debugging symbols have been removed from native binaries."
-- MSTG-CODE-4: "Debugging code has been removed, and the app does not log verbose errors or debugging messages."
+- MSTG-CODE-4: "Debugging code and developer assistance code (e.g. test code, backdoors, hidden settings) have been removed. The app does not log verbose errors or debugging messages."
 - MSTG-CODE-5: "All third party components used by the mobile app, such as libraries and frameworks, are identified, and checked for known vulnerabilities."
 - MSTG-CODE-6: "The app catches and handles possible exceptions."
 - MSTG-CODE-7: "Error handling logic in security controls denies access by default."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 - MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### CWE
-
-- CWE-20 - Improper Input Validation
-- CWE-215 - Information Exposure through Debug Information
-- CWE-388 - Error Handling
-- CWE-489 - Leftover Debug Code
-- CWE-656 - Reliance on Security through Obscurity
-- CWE-937 - OWASP Top Ten 2013 Category A9 - Using Components with Known Vulnerabilities
 
 #### Tools
 

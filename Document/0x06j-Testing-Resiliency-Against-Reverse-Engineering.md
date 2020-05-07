@@ -321,7 +321,7 @@ Another approach to detecting a debugger that's attached to the calling process 
 
 > The `sysctl` function retrieves system information and allows processes with appropriate privileges to set system information.
 
-`sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I'm being run under the debugger?"):
+`sysctl` can also be used to retrieve information about the current process (such as whether the process is being debugged). The following example implementation is discussed in ["How do I determine if I'm being run under the debugger?"](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?"):
 
 ```C
 #include <assert.h>
@@ -379,6 +379,16 @@ Needle contains a module aimed to bypass non-specific jailbreak detection implem
 ```shell
 [needle] > use dynamic/detection/script_jailbreak-detection-bypass
 [needle][script_jailbreak-detection-bypass] > run
+```
+
+#### Using getppid
+
+Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in the following way:
+
+```swift
+func AmIBeingDebugged() -> Bool {
+    return getppid() != 1
+}
 ```
 
 ### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
@@ -607,6 +617,88 @@ The goal of emulator detection is to increase the difficulty of running the app 
 
 However, this is not a concern on iOS. As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator. This makes the simulator useless for black box analysis and reverse engineering.
 
+### Testing Obfuscation (MSTG-RESILIENCE-9)
+
+#### Overview
+
+Obfuscation is the process of transforming code and data to make it more difficult to comprehend. It is an integral part of every software protection scheme. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
+
+#### SwiftShield
+
+> Warning: SwiftShield irreversibly overwrites all your source files. Ideally, you should have it run only on your CI server, and on release builds.
+
+[SwiftShield](https://github.com/rockbruno/swiftshield "SwiftShield") is a tool that generates irreversible, encrypted names for your iOS project's objects (including your Pods and Storyboards). This raises the bar for reverse engineers and will produce less helpful output when using reverse engineering tools such as class-dump and Frida.
+
+A sample Swift project is used to demonstrate the usage of SwiftShield.
+
+1. Check out <https://github.com/sushi2k/SwiftSecurity>.
+2. Open the project in Xcode and make sure that the project is building successfully (Product / Build or Apple-Key + B).
+3. [Download](https://github.com/rockbruno/swiftshield/releases "SwiftShield Download") the latest release of SwiftShield and unzip it.
+4. Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
+
+```bash
+$ cp swiftshield/swiftshield /usr/local/bin/
+```
+
+5. In your terminal go into the SwiftSecurity directory (which you checked out in step 1) and execute the command swiftshield (which you downloaded in step 3):
+
+```bash
+$ cd SwiftSecurity
+$ swiftshield -automatic -project-root . -automatic-project-file SwiftSecurity.xcodeproj -automatic-project-scheme SwiftSecurity
+SwiftShield 3.4.0
+Automatic mode
+Building project to gather modules and compiler arguments...
+-- Indexing ReverseEngineeringToolsChecker.swift --
+Found declaration of ReverseEngineeringToolsChecker (s:13SwiftSecurity30ReverseEngineeringToolsCheckerC)
+Found declaration of amIReverseEngineered (s:13SwiftSecurity30ReverseEngineeringToolsCheckerC20amIReverseEngineeredSbyFZ)
+Found declaration of checkDYLD (s:13SwiftSecurity30ReverseEngineeringToolsCheckerC9checkDYLD33_D6FE91E9C9AEC4D13973F8ABFC1AC788LLSbyFZ)
+Found declaration of checkExistenceOfSuspiciousFiles (s:13SwiftSecurity30ReverseEngineeringToolsCheckerC31checkExistenceOfSuspiciousFiles33_D6FE91E9C9AEC4D13973F8ABFC1AC788LLSbyFZ)
+...
+```
+
+SwiftShield is now detecting class and method names and is replacing their identifier with an encrypted value.
+
+In the original source code you can see all the class and method identifiers:
+
+<img src="Images/Chapters/0x06j/no_obfuscation.png" width="550px"/>
+
+SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
+
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" width="650px"/>
+
+After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
+
+```bash
+$ cat conversionMap.txt
+//
+// SwiftShield Conversion Map
+// Automatic mode for SwiftSecurity, 2020-01-02 13.51.03
+// Deobfuscate crash logs (or any text file) by running:
+// swiftshield -deobfuscate CRASH_FILE -deobfuscate_map THIS_FILE
+//
+
+ViewController ===> hTOUoUmUcEZUqhVHRrjrMUnYqbdqWByU
+viewDidLoad ===> DLaNRaFbfmdTDuJCPFXrGhsWhoQyKLnO
+sceneDidBecomeActive ===> SUANAnWpkyaIWlGUqwXitCoQSYeVilGe
+AppDelegate ===> KftEWsJcctNEmGuvwZGPbusIxEFOVcIb
+Deny_Debugger ===> lKEITOpOvLWCFgSCKZdUtpuqiwlvxSjx
+Button_Emulator ===> akcVscrZFdBBYqYrcmhhyXAevNdXOKeG
+```
+
+This is needed for [deobfuscating encrypted crash logs](https://github.com/rockbruno/swiftshield#-deobfuscating-encrypted-crash-logs "Deobfuscating encrypted Crash logs").
+
+Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/SwiftShieldExample "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
+
+#### Effectiveness Assessment
+
+Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
+
+- meaningful identifiers, such as class names, method names, and variable names, have been discarded.
+- string resources and strings in binaries are encrypted.
+- code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
+
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
+
 ### Device Binding (MSTG-RESILIENCE-10)
 
 #### Overview
@@ -672,17 +764,14 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 
 - [#geist] Dana Geist, Marat Nigmatullin: Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
 
-#### OWASP Mobile Top 10 2016
-
-- M9 - Reverse Engineering - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering>
-
 #### OWASP MASVS
 
 - MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
 - MSTG-RESILIENCE-3: "The app detects, and responds to, tampering with executable files and critical data within its own sandbox."
-- MSTG‑RESILIENCE‑4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
-- MSTG‑RESILIENCE‑5: "The app detects, and responds to, being run in an emulator."
+- MSTG-RESILIENCE-4: "The app detects, and responds to, the presence of widely used reverse engineering tools and frameworks on the device."
+- MSTG-RESILIENCE-5: "The app detects, and responds to, being run in an emulator."
+- MSTG-RESILIENCE-9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
 - MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 - MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
 

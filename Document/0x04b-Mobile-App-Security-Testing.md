@@ -366,10 +366,10 @@ The security of an application developed with DevOps must be considered during o
 
 #### OWASP MASVS
 
-- V1.1: "All app components are identified and known to be needed."
-- V1.3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
-- V1.4: "Data considered sensitive in the context of the mobile app is clearly identified."
-- V1.5: "All app components are defined in terms of the business functions and/or security functions they provide."
-- V1.6: "A threat model for the mobile app and the associated remote services has been produced that identifies potential threats and countermeasures."
-- V1.7: "All security controls have a centralized implementation."
-- V1.10: "Security is addressed within all parts of the software development lifecycle."
+- MSTG-ARCH-1: "All app components are identified and known to be needed."
+- MSTG-ARCH-3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
+- MSTG-ARCH-4: "Data considered sensitive in the context of the mobile app is clearly identified."
+- MSTG-ARCH-5: "All app components are defined in terms of the business functions and/or security functions they provide."
+- MSTG-ARCH-6: "A threat model for the mobile app and the associated remote services has been produced that identifies potential threats and countermeasures."
+- MSTG-ARCH-7: "All security controls have a centralized implementation."
+- MSTG-ARCH-10: "Security is addressed within all parts of the software development lifecycle."

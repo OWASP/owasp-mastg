@@ -215,10 +215,9 @@ Always make sure that:
 
 Most of the recommendations for static analysis can already be found in chapter "Testing Data Storage for iOS". Next, you can read up on it at the following pages:
 
-- [Apple Developer Documentation: Certificates and keys]( https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
+- [Apple Developer Documentation: Certificates and keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys "Certificates and keys")
 - [Apple Developer Documentation: Generating new keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys "Generating new keys")
-- [Apple Developer Documentation: Key generation attributes](
-https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
+- [Apple Developer Documentation: Key generation attributes](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
 
 #### Dynamic Analysis
 
@@ -262,22 +261,13 @@ If you want to test for randomness, you can try to capture a large set of number
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M5 - Insufficient Cryptography - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography>
-
 #### OWASP MASVS
 
 - MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
-- MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use case, configured with parameters that adhere to industry best practices."
+- MSTG-CRYPTO-3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices."
 - MSTG-CRYPTO-5: "The app doesn't re-use the same cryptographic key for multiple purposes."
 - MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
-
-#### CWE
-
-- CWE-337 - Predictable Seed in PRNG
-- CWE-338 - Use of Cryptographically Weak Pseudo Random Number Generator (PRNG)
 
 #### General Security Documentation
 

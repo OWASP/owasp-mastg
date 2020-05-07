@@ -10,11 +10,13 @@ In this guide, we'll introduce static and dynamic analysis and instrumentation. 
 
 Make sure that the following is installed on your system:
 
-- [Class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "Class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
+- [class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
 
-- [Class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "Class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
+- [class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
 
-- [Class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "Class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
+- [class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
+
+- [dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
 
 - [MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
@@ -176,7 +178,7 @@ If we continue our careful analysis, we can spot the string, "Verification Faile
 
 Moving forward, we have two paths to take. Either we can start analyzing the `buttonClick` function identified in the above step, or start analyzing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path.
 
-An iOS application calls different predefined functions provided by the iOS runtime depending on its the state within the [application life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App's Life Cycle"). These functions are known as the entry points of the app. For example:
+An iOS application calls different predefined functions provided by the iOS runtime depending on its the state within the [application life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle "Managing Your App\'s Life Cycle"). These functions are known as the entry points of the app. For example:
 
 - `[AppDelegate application:didFinishLaunchingWithOptions:]` is called when the application is started for the first time.
 - `[AppDelegate applicationDidBecomeActive:]` is called when the application is moving from inactive to active state.
@@ -359,7 +361,7 @@ In this section, we will learn how to collect process information on iOS using c
 
 Using `lsof` for an iOS application running with PID 2828, list various open files as shown below.
 
-```
+```shell
 iPhone:~ root# lsof -p 2828
 COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
 iOweApp 2828 mobile  cwd    DIR    1,2      864      2 /
@@ -376,7 +378,7 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 
 `lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
-```
+```shell
 iPhone:~ root# lsof -i -a -p 1
 COMMAND PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 launchd   1 root   27u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
@@ -391,7 +393,7 @@ launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 
 On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
 
-The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse. 
+The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse.
 
 #### Debugging
 
@@ -437,8 +439,64 @@ $ codesign -s - --entitlements entitlements.plist -f debugserver
 Copy the modified binary to any directory on the test device. The following examples use usbmuxd to forward a local port through USB.
 
 ```shell
-$ ./tcprelay.py -t 22:2222
+$ iproxy 2222 22
 $ scp -P 2222 debugserver root@localhost:/tmp/
+```
+
+Note: On iOS 12 and higher, use the following procedure to sign the debugserver binary obtained from the XCode image.
+
+1) Copy the debugserver binary to the device via scp, for example, in the /tmp folder.
+
+2) Connect to the device via SSH and create the file, named entitlements.xml, with the following content:
+
+```xml
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>platform-application</key>
+	<true/>
+    <key>com.apple.private.security.no-container</key>
+    <true/>
+	<key>com.apple.private.skip-library-validation</key>
+	<true/>
+	<key>com.apple.backboardd.debugapplications</key>
+	<true/>
+	<key>com.apple.backboardd.launchapplications</key>
+	<true/>
+	<key>com.apple.diagnosticd.diagnostic</key>
+	<true/>
+	<key>com.apple.frontboard.debugapplications</key>
+	<true/>
+	<key>com.apple.frontboard.launchapplications</key>
+	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.network.server</key>
+	<true/>
+	<key>com.apple.springboard.debugapplications</key>
+	<true/>
+	<key>com.apple.system-task-ports</key>
+	<true/>
+	<key>get-task-allow</key>
+	<true/>
+	<key>run-unsigned-code</key>
+	<true/>
+	<key>task_for_pid-allow</key>
+	<true/>
+</dict>
+</plist>
+```
+
+3) Type the following command to sign the debugserver binary:
+
+```shell
+$ ldid -Sentitlements.xml debugserver
+```
+
+4) Verify that the debugserver binary can be executed via the following command:
+
+```shell
+$ ./debugserver
 ```
 
 You can now attach debugserver to any process running on the device.
@@ -511,7 +569,6 @@ Voila, the crackme can be easily solved aided by static analysis and a debugger.
 
 Officially Apple recommends use of LLDB for debugging purposes, but GDB can be also used on iOS. The techniques discussed above are applicable while debugging using GDB as well, provided the LLDB specific commands are [changed to GDB commands](https://lldb.llvm.org/use/map.html "GDB to LLDB command map").
 
-
 #### Tracing
 
 ##### Execution Tracing
@@ -580,7 +637,6 @@ If we revisit that function, we can see that it involves multiple sub-function c
 - Pass the above `callable` object to the concrete execution engine, which in this case is `claripy.backends.concrete`.
 - Access the memory and extract the string from the pointer returned by the above function.
 
-
 ```python
 import angr
 import claripy
@@ -605,7 +661,6 @@ solve()
 ```
 
 Above, Angr executed an ARM64 code in an execution environment provided by one of its concrete execution engines. The result is accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks enable us to perform a comprehensive analysis of a binary, even in the absence of specialized devices needed to run it.
-
 
 ### Tampering and Runtime Instrumentation
 
@@ -845,7 +900,7 @@ In this section we will learn how to use Frida to obtain information about a run
 
 In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
 
-```
+```shell
 $ frida -U -f com.iOweApp
 
 [iPhone::com.iOweApp]-> ObjC.enumerateLoadedClasses()
@@ -870,7 +925,7 @@ $ frida -U -f com.iOweApp
 
 Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
 
-```
+```shell
 [iPhone::com.iOweApp]-> ObjC.classes.JailbreakDetection.$ownMethods
 [
     "+ isJailbroken"
@@ -892,7 +947,7 @@ Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class 
 
 In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
-```
+```shell
 [iPhone::com.iOweApp]-> Process.enumerateModules()
 [
     {
@@ -919,7 +974,7 @@ In Frida REPL process related information can be obtained using the `Process` co
 
 Similarly, information related to various threads can be obtained.
 
-```
+```shell
 Process.enumerateThreads()
 [
     {
@@ -1371,8 +1426,6 @@ Reading 2.390625MB ...
 
 To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
 
-
-
 ### References
 
 - Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
@@ -1385,11 +1438,12 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 
 #### Tools
 
-- Class-dump - <http://stevenygard.com/projects/class-dump/>
-- Class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
-- Class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
+- class-dump - <http://stevenygard.com/projects/class-dump/>
+- class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
+- class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
 - Cycript - <http://www.cycript.org/>
 - Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
+- dsdump - <https://github.com/DerekSelander/dsdump>
 - Frida - <https://www.frida.re>
 - Ghidra - <https://ghidra-sre.org/>
 - Hopper - <https://www.hopperapp.com/>

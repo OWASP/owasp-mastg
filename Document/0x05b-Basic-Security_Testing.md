@@ -14,12 +14,12 @@ In addition, you may want to complete your host setup by installing the [Android
 
 ##### Setting up the Android SDK
 
-Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **Android** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
+Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
 
+- Android 10.0 (API level 29)
 - Android 9.0 (API level 28)
 - Android 8.1 (API level 27)
 - Android 8.0 (API level 26)
-- Android 7.1 (API level 25)
 
 An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
@@ -152,9 +152,6 @@ Virtually any Android mobile can be rooted. Commercial versions of Android OS (w
 
 To root a mobile device, first unlock its boot loader. The unlocking procedure depends on the device manufacturer. However, for practical reasons, rooting some mobile devices is more popular than rooting others, particularly when it comes to security testing: devices created by Google and manufactured by companies like Samsung, LG, and Motorola are among the most popular, particularly because they are used by many developers. The device warranty is not nullified when the boot loader is unlocked and Google provides many tools to support the root itself. A curated list of guides for rooting all major brand devices is posted on the [XDA forums](https://www.xda-developers.com/root/ "Guide to rooting mobile devices").
 
-<br/>
-<br/>
-
 ###### Rooting with Magisk
 
 Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
@@ -176,6 +173,7 @@ There are many tools and frameworks used throughout this guide to assess the sec
 - APK Extractor: App to extract APKs without root.
 - Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#frida "Frida section") section below for more information.
 - Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#drozer "Drozer section") section below for more information.
+- Busybox:  Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
 
 ##### Xposed
 
@@ -215,7 +213,7 @@ echo "Next, run installer and then adb reboot"
 echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive'"
 ```
 
-Please note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
+Please note that Xposed, at the time of this writing, does not work on Android 9 (API level 28). However, it was unofficially ported in 2019 under the name EdXposed, supporting Android 8-10 (API level 26 till 29). You can find the code and usage examples at [EdXposed](https://github.com/ElderDrivers/EdXposed "EdXposed") Github repo.
 
 #### Recommended Tools - Host computer
 
@@ -329,7 +327,7 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic.
 
-PortSwigger provides a good [tutorial on setting up an Android device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device").
+PortSwigger provides a good [tutorial on setting up an Android device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device").
 
 ##### Drozer
 
@@ -347,7 +345,7 @@ The installation instructions for drozer on Unix, Linux and Windows are explaine
 
 Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the GitHub releases page](https://github.com/FSecureLABS/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
-Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. See the full instructions in the [User Guide in section "Starting a Session"](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Starting a Session").
+Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. This is called direct mode and you can see the full instructions in the [User Guide in section "Starting a Session"](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Starting a Session"). An alternative is to run Drozer in infrastructure mode, where, you are running a drozer server that can handle multiple consoles and agents, and routes sessions between them. You can find the details of how to setup drozer in this mode in the ["Infrastructure Mode"](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Infrastructure Mode") section of the User Guide.  
 
 Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
 
@@ -496,7 +494,7 @@ $ frida-ps -Uai
 -----  ----------------------------------------  ---------------------------------------
   766  Android System                            android
 30692  Chrome                                    com.android.chrome
- 3520  Contacts Storage                          com.android.providers.contacts  
+ 3520  Contacts Storage                          com.android.providers.contacts
     -  Uncrackable1                              sg.vantagepoint.uncrackable1
     -  drozer Agent                              com.mwr.dz
 ```
@@ -1346,7 +1344,7 @@ $ gplaycli -p -v -d com.google.android.keep
 
 The `com.google.android.keep.apk` file will be in your current directory. As you might imagine, this approach is a very convenient way to download APKs, especially with regards to automation.
 
-> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").  
+> You may use your own Google Play credentials or token. By default, gplaycli will use [an internally provided token](https://github.com/matlink/gplaycli/blob/3.26/gplaycli/gplaycli.py#L106 "gplaycli Fallback Token").
 
 ##### Extracting the App Package from the Device
 
@@ -1618,6 +1616,13 @@ With the following command you can specifically grep for the log output of the a
 ```shell
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
+##### Enumerating Domains
+
+Most of the apps you might encounter connect to remote endpoints. Even before you perform any dynamic analysis (e.g. traffic capture and analysis), you can obtain some initial inputs or entry points by enumerating the domains to which the application is supposed to communicate with.
+
+Typically these domains will be present as strings within the binary of the application. One way to achieve this is by _grepping_ the domain names using regular expressions or by using automated tools such as [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration") or [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"). For this you can target the app binary directly or reverse engineering it and target the disassembled or decompiled code. The latter option has a clear advantage: it can provide you with **context**, as you'll be able to see in which context each domain is being used (e.g. class and method).
+
+From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the network security configuration or perform further reconnaissance on domain names to know more about the target environment.
 
 ### Setting up a Network Testing Environment
 
@@ -1642,6 +1647,10 @@ $ cp /data/local/tmp/tcpdump /system/xbin/
 $ cd /system/xbin
 $ chmod 755 tcpdump
 ```
+
+In certain production builds, you might encounter an error `mount: '/system' not in /proc/mounts`.
+
+In that case, you can replace the above line `$ mount -o rw,remount /system;` with `$ mount -o rw,remount /`, as described in [this Stack Overflow post](https://stackoverflow.com/a/28018008 "How can I remount my Android/system as read-write in a bash script using adb?").
 
 > Remember: To use tcpdump, you need root privileges on the phone!
 
@@ -1809,7 +1818,7 @@ The available network setup options must be evaluated first. The mobile device u
 Once you've configured the network and established a connection between the testing machine and the mobile device, several steps remain.
 
 - The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp's CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
+- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
 - Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in a [blog post on nviso.be](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
@@ -1847,7 +1856,7 @@ There are different configurations available for the Network Security Configurat
 ```xml
 <certificates src=["system" | "user" | "raw resource"]
               overridePins=["true" | "false"] />
-
+```
 
 Each certificate can be one of the following:
 - a "raw resource" ID pointing to a file containing X.509 certificates
@@ -1889,7 +1898,7 @@ Note that even if this method is quite simple its major drawback is that you hav
 
 > Bear in mind that if the app you are testing has additional hardening measures, like verification of the app signature you might not be able to start the app anymore. As part of the repackaging you will sign the app with your own key and therefore the signature changes will result in triggering such checks that might lead to immediate termination of the app. You would need to identify and disable such checks either by patching them during repackaging of the app or dynamic instrumentation through Frida.
 
-There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass. The last step, [installing the app might fail](https://github.com/51j0/Android-CertKiller/issues "APK not installing"), due to a bug at the moment.
+There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
 
 ```bash
 python main.py -w
@@ -1946,12 +1955,12 @@ From now on, any CA certificate that is installed by the user via "Settings", "S
 
 Alternatively, you can follow the following steps manually in order to achieve the same result:
 
-- Make the /system partition writable, which is only possible on a rooted device. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command 'mount -o rw,remount -t ext4 /system'
+- Make the /system partition writable, which is only possible on a rooted device. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command `mount -o rw,remount -t ext4 /system`
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 
     ```shell
-    $ openssl x509 -inform DER -in cacert.der -out cacert.pem  
-    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1  
+    $ openssl x509 -inform DER -in cacert.der -out cacert.pem
+    $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1
     mv cacert.pem <hash>.0
     ```
 
@@ -2098,6 +2107,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
+-APKEnum - <https://medium.com/@shivsahni2/apkenum-a-python-utility-for-apk-enumeration-cce0eda6fa30>
 
 #### Tools
 
@@ -2147,3 +2157,4 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>
 - Xposed - <https://www.xda-developers.com/xposed-framework-hub/>
+- APKEnum - <https://github.com/shivsahni/APKEnum>

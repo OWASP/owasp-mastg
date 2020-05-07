@@ -132,7 +132,7 @@ There are two `authenticate` methods available in the `BiometricPrompt` class. O
 
 The authentication flow would be as follows when using CryptoObject:
 
-- The app creates a key in the KeyStore with `setUserAuthenticationRequired` set to true and `setInvalidatedByBiometricEnrollment` set to -1.
+- The app creates a key in the KeyStore with `setUserAuthenticationRequired` and `setInvalidatedByBiometricEnrollment` set to true. Additionally, `setUserAuthenticationValidityDurationSeconds` should be set to -1.
 - This key is used to encrypt information that is authenticating the user (e.g. session information or authentication token).
 - A valid set of biometrics must be presented before the key is released from the KeyStore to decrypt the data, which is validated through the `authenticate` method and the `CryptoObject`.
 - This solution cannot be bypassed, even on rooted devices, as the key from the KeyStore can only be used after successful biometric authentication.
@@ -316,20 +316,11 @@ As part of this research two Frida scripts were released, which can be used to t
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
-
 #### OWASP MASVS
 
 - MSTG-AUTH-1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
 - MSTG-AUTH-8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
-
-#### CWE
-
-- CWE-287 - Improper Authentication
-- CWE-604 - Use of Client-Side Authentication
 
 #### Request App Permissions
 

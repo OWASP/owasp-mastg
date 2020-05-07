@@ -127,7 +127,7 @@ Note that zxcvbn can be implemented by the app-developer as well using the Java 
 
 #### Have I Been Pwned: PwnedPasswords
 
-In order to further reduce the likelihood of a successful dictionary attack against a single factor authentication scheme (e.g. password only), you can verify whether a password has been compromised in a data breach. This can be done using services based on the Pwned Passwords API by Troy Hunt (available at api.pwnedpasswords.com). For example, the "[Have I been pwned?](https://haveibeenpwned.com "';--have i been pwned?")" companion website.
+In order to further reduce the likelihood of a successful dictionary attack against a single factor authentication scheme (e.g. password only), you can verify whether a password has been compromised in a data breach. This can be done using services based on the Pwned Passwords API by Troy Hunt (available at api.pwnedpasswords.com). For example, the "[Have I been pwned?](https://haveibeenpwned.com "\';--have i been pwned?")" companion website.
 Based on the SHA-1 hash of a possible password candidate, the API returns the number of times the hash of the given password has been found in the various breaches collected by the service. The workflow takes the following steps:
 
 1. Encode the user input to UTF-8 (e.g.: the password `test`).
@@ -523,7 +523,7 @@ On the negative side, there is no way to control the behavior of the browser (e.
 
 For apps that operate within a closed ecosystem, *embedded authentication* is the better choice. For example, consider a banking app that uses OAuth2 to retrieve an access token from the bank's authentication server, which is then used to access a number of micro services. In that case, credential phishing is not a viable scenario. It is likely preferable to keep the authentication process in the (hopefully) carefully secured banking app, instead of placing trust on external components.
 
-#### Other OAuth2 Best Best Practices
+#### Other OAuth2 Best Practices
 
 For additional best practices and detailed information please refer to the following source documents:
 
@@ -570,31 +570,19 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M4 - Insecure Authentication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M4-Insecure_Authentication>
-
 #### OWASP MASVS
 
 - MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - MSTG-AUTH-1: "If the app provides users access to a remote service, some form of authentication, such as username/password authentication, is performed at the remote endpoint."
 - MSTG-AUTH-2: "If stateful session management is used, the remote endpoint uses randomly generated session identifiers to authenticate client requests without sending the user's credentials."
-- MSTG-AUTH-3: "If stateless token-based authentication is used, the server provides a token that has been signed with a secure algorithm."
-- MSTG-AUTH-4: "The remote endpoint terminates the existing stateful session or invalidates the stateless session token when the user logs out."
+- MSTG-AUTH-3: "If stateless token-based authentication is used, the server provides a token that has been signed using a secure algorithm."
+- MSTG-AUTH-4: "The remote endpoint terminates the existing session when the user logs out."
 - MSTG-AUTH-5: "A password policy exists and is enforced at the remote endpoint."
-- MSTG-AUTH-6: "The remote endpoint implements an exponential back-off or temporarily locks the user account when incorrect authentication credentials are submitted an excessive number of times."
+- MSTG-AUTH-6: "The remote endpoint implements a mechanism to protect against the submission of credentials an excessive number of times."
 - MSTG-AUTH-7: "Sessions are invalidated at the remote endpoint after a predefined period of inactivity and access tokens expire."
 - MSTG-AUTH-9: "A second factor of authentication exists at the remote endpoint and the 2FA requirement is consistently enforced."
 - MSTG-AUTH-10: "Sensitive transactions require step-up authentication."
-- MSTG-AUTH-11: "The app informs the user of all login activities with their account. Users are able view a list of devices used to access the account, and to block specific devices."
-
-#### CWE
-
-- CWE-287 - Improper Authentication
-- CWE-307 - Improper Restriction of Excessive Authentication Attempts
-- CWE-308 - Use of Single-factor Authentication
-- CWE-521 - Weak Password Requirements
-- CWE-613 - Insufficient Session Expiration
+- MSTG-AUTH-11: "The app informs the user of all sensitive activities with their account. Users are able to view a list of devices, view contextual information (IP address, location, etc.), and to block specific devices."
 
 ##### SMS-OTP Research
 

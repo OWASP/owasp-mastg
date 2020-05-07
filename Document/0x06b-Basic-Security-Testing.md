@@ -162,8 +162,8 @@ After adding all the suggested repositories above you can install the following 
 - Apt: Advanced Package Tool, which you can use to manage the installed packages similarly to DPKG, but in a more friendly way. This allows you to install, uninstall, upgrade, and downgrade packages from your Cydia repositories. Comes from Elucubratus.
 - AppSync Unified: Allows you to sync and install unsigned iOS applications.
 - BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
-- Class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generates header files with class interfaces.
-- Class-dump-Z: A command line tool for examining the Swift runtime information stored in Mach-O files and generates header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "Class-dump-Z installation steps") in order to get class-dump-z running on your iOS device.
+- class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generating header files with class interfaces.
+- class-dump-z: A command line tool for examining the Swift runtime information stored in Mach-O files and generating header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "class-dump-z installation steps") in order to get class-dump-z running on your iOS device. Note that class-dump-z is not maintained and does not work well with Swift. It is recommended to use [dsdump](#dsdump "dsdump") instead.
 - Clutch: Used to decrypt an app executable.
 - Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
 - Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
@@ -254,6 +254,36 @@ It has several features, like app installation, access the app sandbox without j
 ##### Keychain-Dumper
 
 [Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
+
+##### dsdump
+
+[dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
+
+The following example shows how you can dump Objective-C classes and Swift type descriptors of an iOS application.
+
+First verify if the app's main binary is a FAT binary containing ARM64:
+
+```shell
+$ otool -hv [APP_MAIN_BINARY_FILE]
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC     ARM         V7  0x00     EXECUTE    39       5016   NOUNDEFS DYLDLINK TWOLEVEL PIE
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       5728   NOUNDEFS DYLDLINK TWOLEVEL PIE
+```
+
+If yes, then we specify the "--arch" parameter to "arm64", otherwise it is not needed if the binary only contains an ARM64 binary.
+
+```shell
+# Dump the Objective-C classes to a temporary file
+$ dsdump --objc --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/OBJC.txt
+
+# Dump the Swift type descriptors to a temporary file if the app is implemented in Swift
+$ dsdump --swift --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/SWIFT.txt
+```
+
+You can find more information about the inner workings of dsdump and how to programmatically inspect a Mach-O binary to display the compiled Swift types and Objective-C classes in [this article](https://derekselander.github.io/dsdump/ "Building a class-dump in 2020").
 
 ##### Mobile-Security-Framework - MobSF
 
@@ -1356,7 +1386,7 @@ Burp Suite is an integrated platform for security testing mobile and web applica
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
-PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device").
+PortSwigger provides a good [tutorial on setting up an iOS device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device").
 
 ##### Using Burp via USB on a Jailbroken Device
 
@@ -1375,7 +1405,7 @@ The next step is to make a remote port forwarding of port 8080 on the iOS device
 ssh -R 8080:localhost:8080 root@localhost -p 2222
 ```
 
-You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp's CA Certificate in an iOS Device") of Burp on your iOS device.
+You should now be able to reach Burp on your iOS device. Open Safari on iOS and go to 127.0.0.1:8080 and you should see the Burp Suite Page. This would also be a good time to [install the CA certificate](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device") of Burp on your iOS device.
 
 The last step would be to set the proxy globally on your iOS device:
 
@@ -1412,8 +1442,8 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - AppSync - <http://repo.hackyouriphone.org/appsyncunified>
 - Burp Suite - <https://portswigger.net/burp/communitydownload>
 - Chimera - <https://chimera.sh/>
-- Class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
-- Class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
+- class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
+- class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
 - Clutch - <https://github.com/KJCracks/Clutch>
 - Cydia Impactor - <http://www.cydiaimpactor.com/>
 - Frida - <https://www.frida.re>

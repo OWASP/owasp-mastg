@@ -113,9 +113,9 @@ Following scenarios are possible:
 
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
-    ```shell
-    $ iw list | grep AP 
-    ```
+```shell
+    $ iw list | grep AP
+```
 
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
 
@@ -131,11 +131,13 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 ##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
+
 1. Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
 For all major Linux and Unix operating systems you need tools such as:
+
 - hostapd,
 - dnsmasq,
 - iptables,
@@ -148,6 +150,7 @@ For Kali Linux you can install these tools with `apt-get`:
 $ apt-get update
 $ apt-get install hostapd dnsmasq aircrack-ng
 ```
+
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
 2. In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
@@ -156,6 +159,7 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 ##### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
+
 - wlan1 - id of the AP network interface (with AP capabilities),
 - wlan0 - id of the target network interface (this can be wired interface or other WiFi card)
 - 10.0.0.0/24 - IP addresses and mask of AP network
@@ -165,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 - hostapd.conf
 
     ```
-    # Name of the WiFi interface we use 
+    # Name of the WiFi interface we use
     interface=wlan1
     # Use the nl80211 driver
     driver=nl80211
@@ -210,7 +214,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
-    ```shell
+```shell
     # check if other process is not using WiFi interfaces
     $ airmon-ng check kill
     # configure IP address of the AP network interface
@@ -221,14 +225,14 @@ To be able to get a man-in-the-middle position you need to run the above configu
     $ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
     # run DNS server
     $ dnsmasq -C dnsmasq.conf -d
-    # enable routing 
+    # enable routing
     $ echo 1 > /proc/sys/net/ipv4/ip_forward
     # iptables will NAT connections from AP network interface to the target network interface
     $ iptables --flush
     $ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
-    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT 
+    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT
     $ iptables -t nat -A POSTROUTING -j MASQUERADE
-    ```
+```
 
 Now you can connect your mobile devices to the access point.
 
@@ -261,17 +265,17 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 - Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
-    ```shell
+```shell
     $ echo "
     rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
     " | sudo pfctl -ef -
-    ```
+```
 
   For Linux systems you can use `iptables`:
 
-    ```shell
-    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080 
-    ```
+```shell
+    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
+```
 
   As last step, you need to set the option 'Support invisible proxy' in the listener settings of Burp Suite.
 
@@ -292,7 +296,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
 <img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location"/>
- 
+
 <br/>
 <br/>
 
@@ -320,7 +324,9 @@ The vast majority of apps rely on HTTP for communication with the backend. HTTPS
 
 ##### Recommended TLS Settings
 
-Ensuring proper TLS configuration on the server side is also important. SSL is deprecated and should no longer be used. TLS v1.2 and v1.3 are considered secure, but many services still allow TLS v1.0 and v1.1 for compatibility with older clients.
+Ensuring proper TLS configuration on the server side is also important. The SSL protocol is deprecated and should no longer be used.
+Also TLS v1.0 and TLS v1.1 have [known vulnerabilities](https://portswigger.net/daily-swig/the-end-is-nigh-browser-makers-ditch-support-for-aging-tls-1-0-1-1-protocols "Browser-makers ditch support for aging TLS 1.0, 1.1 protocols") and their usage is deprecated in all major browsers by 2020.
+TLS v1.2 and TLS v1.3 are considered best practice for secure transmission of data. Starting with Android 10 (API level 29) TLS v1.3 will be enabled by default for faster and secure communication. The [major change with TLS v1.3](https://developer.android.com/about/versions/10/behavior-changes-all#tls-1.3 "TLS 1.3 enabled by default") is that customizing cipher suites is no longer possible and that all of them are enabled when TLS v1.3 is enabled, whereas Zero Round Trip (0-RTT) mode isn't supported.
 
 When both the client and server are controlled by the same organization and used only for communicating with one another, you can increase security by [hardening the configuration](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
@@ -404,6 +410,15 @@ In the following, we’ll present the updated recommended cipher suites list to 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
 
+Note that in Android 10 the following [SHA-2 CBC cipher suites have been removed](https://developer.android.com/about/versions/10/behavior-changes-all#sha2-cbc-cipher-suites "SHA-2 CBC cipher suites removed"):
+
+- `TLS_RSA_WITH_AES_128_CBC_SHA256`
+- `TLS_RSA_WITH_AES_256_CBC_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256`
+- `TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`
+- `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
+- `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384`
+
 Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
 
 #### Static Analysis
@@ -421,7 +436,7 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 - Capture all HTTP(S) and Websocket traffic with an interception proxy like OWASP ZAP or Burp Suite and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
-> Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and SSL Pinning".
+> Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and Certificate Pinning".
 
 If you want to verify whether your server supports the right cipher suites, there are various tools you can use:
 
@@ -457,20 +472,11 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 ### References
 
-#### OWASP Mobile Top 10 2016
-
-- M3 - Insecure Communication - <https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication>
-
 #### OWASP MASVS
 
-- MSTG-NETWORK-1: "Data is encrypted on the network with TLS. The secure channel is used consistently throughout the app."
+- MSTG-NETWORK-1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
-- MSTG-NETWORK-5: "The app doesn't rely on a single insecure communication channel (e-mail or SMS) for critical operations such as enrollment and account recovery."
-
-#### CWE
-
-- CWE-308 - Use of Single-factor Authentication
-- CWE-319 - Cleartext Transmission of Sensitive Information
+- MSTG-NETWORK-5: "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
 
 #### Tools
 
@@ -484,6 +490,7 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 #### Android
 
 - Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>
+- Android documentation: Android 10 Changes - <https://developer.android.com/about/versions/10/behavior-changes-all>
 
 #### iOS
 
