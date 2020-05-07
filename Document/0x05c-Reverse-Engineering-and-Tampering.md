@@ -2653,7 +2653,7 @@ $ adb shell su -c cat /data/local/tmp/nowyouseeme
 tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
 ```
 
-Voilà! The file "nowyouseeme" is now somewhat hidden from all _user mode_ processes (note that you need to do a lot more to properly hide a file, including hooking `stat`, `access`, and other system calls).
+Voilà! The file "nowyouseeme" is now somewhat hidden from all _user mode_ processes. Note that the file can easily be found using other syscalls, and you need to do a lot more to properly hide a file, including hooking `stat`, `access`, and other system calls.
 
 File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of Bernhard Mueller's Hacking Soft Tokens Paper [#mueller].
 
