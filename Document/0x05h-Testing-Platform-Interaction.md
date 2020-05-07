@@ -1381,7 +1381,7 @@ There are several ways to perform dynamic analysis:
 1. For the actual persistence: Use the techniques described in the data storage chapter.
 2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
-### Testing for Tapjacking Vulnerability (MSTG-PLATFORM-9)
+### Testing for Overlay Attacks (MSTG-PLATFORM-9)
 
 #### Overview
 
