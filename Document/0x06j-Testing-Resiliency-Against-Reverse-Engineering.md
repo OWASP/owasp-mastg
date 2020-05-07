@@ -272,13 +272,13 @@ sys.stdin.read()
 
 #### Overview
 
-Exploring applications using a debugger is very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
+Exploring applications using a debugger is a very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
 
-There are several anti-debugging techniques applicable to iOS which can be categorized as preventive or as reactive, a few of them are discussed below. As a first line of defense, you can use preventive techniques impede the debugger from attaching to the application at all. Additionally, you can also apply reactive techniques which allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior. When properly distributed throughout the app, these techniques act as a secondary or supportive measure to increate the overall resilience.
+There are several anti-debugging techniques applicable to iOS which can be categorized as preventive or as reactive; a few of them are discussed below. As a first line of defense, you can use preventive techniques to impede the debugger from attaching to the application at all. Additionally, you can also apply reactive techniques which allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior. When properly distributed throughout the app, these techniques act as a secondary or supportive measure to increase the overall resilience.
 
-Application developers of apps processing highly sensitive data should be very aware of the fact that preventing debugging is virtually impossible. A very determined attacker (or one with sufficient privileges) will eventually manage to bypass all your anti-debugging checks as they usually consist of patching the app binary or simply putting some dynamic hooks with e.g. Frida.
+Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
-While [according to Apple](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger") "you should restrict use of the above code to the debug build of your program", [research shows that many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+According to Apple, you should "[restrict restrict use of the above code to the debug build of your program] (https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
 ##### Using ptrace
 
@@ -311,11 +311,11 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 
 [Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between byte-code and instruction mnemonics.
 
-See other different variants of ptrace-based anti-debugging techniques in [this article](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
+Bypasses for other ptrace-based anti-debugging techniques can be found in ["Defeating Anti-Debug Techniques: macOS ptrace variants" by Alexander O'Mara](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
 
 ##### Using sysctl
 
-Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation, it allows processes to set system information (if having the appropriate privileges) to simply to retrieve system information (such as whether the process is being debugged). However, note that just the fact that an app uses `sysctl` might be an indicator of anti-debugging but this [won't be always the case](http://www.cocoawithlove.com/blog/2016/03/08/swift-wrapper-for-sysctl.html "Gathering system information in Swift with sysctl").
+Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation, it allows processes to set system information (if having the appropriate privileges) or simply to retrieve system information (such as whether or not the process is being debugged). However, note that just the fact that an app uses `sysctl` might be an indicator of anti-debugging controls, though this [won't be always be the case](http://www.cocoawithlove.com/blog/2016/03/08/swift-wrapper-for-sysctl.html "Gathering system information in Swift with sysctl").
 
 The following example from the [Apple Documentation Archive](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?") checks the `info.kp_proc.p_flag` flag returned by the call to `sysctl` with the appropriate parameters:
 
@@ -388,7 +388,7 @@ Similarly to the other techniques, this has also a trivial bypass (e.g. by patch
 
 There are two topics related to file integrity:
 
- 1. _Application source code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add an internal runtime check that determines whether the signatures still match at runtime.
+ 1. _Application source code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
 
  2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the Keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
 
