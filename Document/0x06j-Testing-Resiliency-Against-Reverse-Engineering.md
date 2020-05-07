@@ -278,7 +278,7 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
-While [according to Apple](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger") "you should restrict use of the above code to the debug build of your program", [research shows that many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+According to Apple, you should "[restrict restrict use of the above code to the debug build of your program] (https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
 ##### Using ptrace
 
