@@ -2610,7 +2610,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device :
+Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device:
 
 ```shell
 $ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
