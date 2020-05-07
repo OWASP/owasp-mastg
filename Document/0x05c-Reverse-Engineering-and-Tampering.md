@@ -2481,7 +2481,7 @@ $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
 ```
 
-It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these—open, `openat`, `access`, `accessat`, `facessat`, `stat`, `fstat`, etc. For now, you'll only hook the `openat` system call.  This is the syscall the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
+It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these: `open`, `openat`, `access`, `accessat`, `facessat`, `stat`, `fstat`, etc. For now, you'll only hook the `openat` system call.  This is the syscall that the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
 
 You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
 
