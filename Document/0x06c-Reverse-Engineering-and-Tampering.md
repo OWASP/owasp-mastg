@@ -403,7 +403,7 @@ Coming from a Linux background you'd expect the `ptrace` system call to be as po
 
 ##### Debugging with LLDB
 
-The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable (so that the debugger process can call `task_for_pid` to obtain the target Mach task port as seen before). An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable so that the debugger process can call `task_for_pid` to obtain the target Mach task port as seen before. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
