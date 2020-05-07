@@ -272,7 +272,7 @@ sys.stdin.read()
 
 #### Overview
 
-Exploring applications using a debugger is very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
+Exploring applications using a debugger is a very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
 
 There are several anti-debugging techniques applicable to iOS which can be categorized as preventive or as reactive, a few of them are discussed below. As a first line of defense, you can use preventive techniques impede the debugger from attaching to the application at all. Additionally, you can also apply reactive techniques which allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior. When properly distributed throughout the app, these techniques act as a secondary or supportive measure to increate the overall resilience.
 
