@@ -251,7 +251,8 @@ We have already encountered the `android:debuggable` attribute. This flag in the
 
 ##### isDebuggerConnected
 
-While this might be pretty obvious for a reverse engineer, you can use `isDebuggerConnected` from the `android.os.Debug` class to determine whether a debugger is connected.
+While this might be pretty obvious to circumvent for a reverse engineer, you can use `isDebuggerConnected` from the `android.os.Debug` class to determine whether a debugger is connected.
+
 
 ```java
     public static boolean detectDebugger() {
