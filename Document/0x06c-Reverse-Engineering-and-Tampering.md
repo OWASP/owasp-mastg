@@ -329,10 +329,10 @@ $ xcodebuild
 $ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 ```
 
-We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
+We'll also use [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
 
 ```shell
-$ git clone https://github.com/phonegap/ios-deploy.git
+$ git clone https://github.com/ios-control/ios-deploy.git
 $ cd ios-deploy/
 $ xcodebuild
 $ cd build/Release
@@ -376,7 +376,7 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 
 ##### Open Connections
 
-`lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
+`lsof` command when invoked with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
 ```shell
 iPhone:~ root# lsof -i -a -p 1
@@ -393,17 +393,17 @@ launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 
 On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
 
-The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse.
+The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyze.
 
 #### Debugging
 
-Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
+Coming from a Linux background you'd expect the `ptrace` system call to be as powerful as you're used to but, for some reason, Apple decided to leave it incomplete. iOS debuggers such as LLDB use it for attaching, stepping or continuing the process but they cannot use it to read or write memory (all `PT_READ_*` and `PT_WRITE*` requests are missing). Instead, they have to obtain a so-called Mach task port (by calling `task_for_pid` with the target process ID) and then use the Mach IPC interface API functions to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`mach_vm_read`/`mach_vm_write`).
 
-The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
+> For more information you can refer to the LLVM project in GitHub which contains the [source code for LLDB](https://github.com/llvm/llvm-project/tree/master/lldb "LLDB") as well as Chapter 5 and 13 from "Mac OS X and iOS Internals: To the Apple's Core" [#levin] and Chapter 4 "Tracing and Debugging" from "The Mac Hacker's Handbook" [#miller].
 
 ##### Debugging with LLDB
 
-iOS ships with the console app debugserver, which allows remote debugging via GDB or LLDB. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable so that the debugger process can call `task_for_pid` to obtain the target Mach task port as seen before. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
@@ -418,14 +418,14 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
- <key>com.apple.springboard.debugapplications</key>
- <true/>
- <key>run-unsigned-code</key>
- <true/>
- <key>get-task-allow</key>
- <true/>
- <key>task_for_pid-allow</key>
- <true/>
+    <key>com.apple.springboard.debugapplications</key>
+    <true/>
+    <key>run-unsigned-code</key>
+    <true/>
+    <key>get-task-allow</key>
+    <true/>
+    <key>task_for_pid-allow</key>
+    <true/>
 </dict>
 </plist>
 ```
@@ -449,55 +449,55 @@ Note: On iOS 12 and higher, use the following procedure to sign the debugserver 
 
 2) Connect to the device via SSH and create the file, named entitlements.xml, with the following content:
 
-```xml
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>platform-application</key>
-	<true/>
-    <key>com.apple.private.security.no-container</key>
-    <true/>
-	<key>com.apple.private.skip-library-validation</key>
-	<true/>
-	<key>com.apple.backboardd.debugapplications</key>
-	<true/>
-	<key>com.apple.backboardd.launchapplications</key>
-	<true/>
-	<key>com.apple.diagnosticd.diagnostic</key>
-	<true/>
-	<key>com.apple.frontboard.debugapplications</key>
-	<true/>
-	<key>com.apple.frontboard.launchapplications</key>
-	<true/>
-	<key>com.apple.security.network.client</key>
-	<true/>
-	<key>com.apple.security.network.server</key>
-	<true/>
-	<key>com.apple.springboard.debugapplications</key>
-	<true/>
-	<key>com.apple.system-task-ports</key>
-	<true/>
-	<key>get-task-allow</key>
-	<true/>
-	<key>run-unsigned-code</key>
-	<true/>
-	<key>task_for_pid-allow</key>
-	<true/>
-</dict>
-</plist>
-```
+    ```xml
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>platform-application</key>
+        <true/>
+        <key>com.apple.private.security.no-container</key>
+        <true/>
+        <key>com.apple.private.skip-library-validation</key>
+        <true/>
+        <key>com.apple.backboardd.debugapplications</key>
+        <true/>
+        <key>com.apple.backboardd.launchapplications</key>
+        <true/>
+        <key>com.apple.diagnosticd.diagnostic</key>
+        <true/>
+        <key>com.apple.frontboard.debugapplications</key>
+        <true/>
+        <key>com.apple.frontboard.launchapplications</key>
+        <true/>
+        <key>com.apple.security.network.client</key>
+        <true/>
+        <key>com.apple.security.network.server</key>
+        <true/>
+        <key>com.apple.springboard.debugapplications</key>
+        <true/>
+        <key>com.apple.system-task-ports</key>
+        <true/>
+        <key>get-task-allow</key>
+        <true/>
+        <key>run-unsigned-code</key>
+        <true/>
+        <key>task_for_pid-allow</key>
+        <true/>
+    </dict>
+    </plist>
+    ```
 
 3) Type the following command to sign the debugserver binary:
 
-```shell
-$ ldid -Sentitlements.xml debugserver
-```
+    ```shell
+    $ ldid -Sentitlements.xml debugserver
+    ```
 
 4) Verify that the debugserver binary can be executed via the following command:
 
-```shell
-$ ./debugserver
-```
+    ```shell
+    $ ./debugserver
+    ```
 
 You can now attach debugserver to any process running on the device.
 
@@ -1435,6 +1435,8 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 - Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
 - Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
 - r2frida Wiki - <https://github.com/enovella/r2frida-wiki/blob/master/README.md>
+- [#miller] - Charlie Miller, Dino Dai Zovi. The Mac Hacker's Handbook. Wiley, 2012 - <http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118204123.html>
+- [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - <http://newosxbook.com/MOXiI.pdf>
 
 #### Tools
 
