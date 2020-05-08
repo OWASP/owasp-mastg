@@ -1780,7 +1780,7 @@ extends Activity {
 
 ```
 
-Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this method displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which closes the application via `System.exit(0)` after successful root detection. With Frida, you can prevent the app from exiting by hooking the MainActivity.a method or the callback inside it. The example below shows how you can hook MainActivity.a and prevent it from ending the application. The callback method is in an inner class. If you want to hook it, you need to decompile the app and find its class name in smali code. 
+Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this method displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which closes the application via `System.exit(0)` after successful root detection. With Frida, you can prevent the app from exiting by hooking the MainActivity.a method or the callback inside it. The example below shows how you can hook MainActivity.a and prevent it from ending the application. 
 
 ```javascript
 setImmediate(function() { //prevent timeout
@@ -1879,7 +1879,7 @@ setImmediate(function() { //prevent timeout
 After running the script in Frida and seeing the "[\*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
 
 ```shell
-$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+$ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 
 [*] Starting script
 [USB::Android Emulator 5554::sg.vantagepoint.uncrackable1]-> [*] MainActivity.a modified
