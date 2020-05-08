@@ -34,6 +34,7 @@ Check for files and directories typically associated with jailbreaks, such as:
 /private/var/mobile/Library/SBSettings/Themes
 /private/var/stash
 /private/var/tmp/cydia.log
+/var/tmp/cydia.log
 /usr/bin/sshd
 /usr/libexec/sftp-server
 /usr/libexec/ssh-keysign
@@ -45,6 +46,7 @@ Check for files and directories typically associated with jailbreaks, such as:
 /usr/bin/cycript
 /usr/local/bin/cycript
 /usr/lib/libcycript.dylib
+/var/log/syslog
 ```
 
 ##### Checking File Permissions
