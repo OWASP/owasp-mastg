@@ -4,18 +4,65 @@ This document is automatically generated at {{gitbook.time}}
 
 ## v1.2 - 12 May 2020
 
-94 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A%3E2019-08-02+closed%3A%3E%3D2020-05-12+>.
+94 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>.
+
+191 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>
 
 Major changes include:
 
 - References of OWASP Mobile Top 10 and MSTG-IDs are completely moved to MASVS
-- Reworking of information gathering for Android Apps
-- Update of Local Authentication for Android Apps
+- Reworking of information gathering (static analysis) for Android Apps
+- Update of Biometric Authentication for Android Apps
 - New content and updates in the Android and iOS Reverse Engineering and Tampering chapters
 - 3 new iOS Reverse Engineering test cases
 - Translations of the MSTG are linked to the respective forks but are not part of the MSTG anymore
 - Updated English, Japanese, French, Korean and Spanish checklists to be compatible with MSTG 1.2
-- Updated Acknowledgments, with 1 new co-author
+- Updated Acknowledgments, with 1 new co-author and contributor
+- Added JNI Tracing for Android
+- Added dsdump for dumping Objective-C and Swift content
+- Added the procedure to sign the debugserver for iOS 12 and higher
+- Added dependency-check to verify for vulnerabilities in libraries added by iOS package managers
+- Added getppid as debugger detection (iOS)
+- Added Domain/URL Enumeration in APKs
+- Added introduction into Network.framework (iOS)
+- Added UnSAFE Bank iOS Application
+- Added information on SECCOMP (Android)
+- Added native and java method tracing (Android)
+- Added Android library injection
+- Added Android 10 TLS and cryptography updates
+- Updated code obfuscation for Android and iOS
+- Added test case for Reverse Engineering Tools Detection - MSTG-RESILIENCE-4 (iOS)
+- Added test case for Emulator Detection - MSTG-RESILIENCE-5 (iOS)
+- Added an example with truststore to bypass cert pinning (Android)
+- Added content to information gathering using frida (Android)
+- Added RandoriSec and OWASP Bay area as sponsor
+- Added basic information gathering for Android and iOS
+- Added Simulating a Man-in-the-Middle Attack with an Access Point
+- Added gender neutrality to the MSTG
+- Extended section about dealing with Xamarin Apps
+- Updated all picture links to img tag
+- Updated iTunes limitations and usage since macOS Catalina
+- Added Emulation-based Analysis (iOS and Android)
+- Added Debugging iOS release applications using lldb
+- Added Korean translation of the checklist
+- Updated symbolic execution content (Android)
+- Added Ghidra for Android Reverse Engineering
+- Added section on Manual (Reversed) Code Review for iOS
+- Added explanation of more Frida APIs (iOS and Android)
+- Added Apple CryptoKit
+- Updated and simplified Frida detection methods
+- Added introduction to setup and disassembling for iOS Apps
+- Updated section about frida-ios-dump
+- Added gplaycli (Android)
+- Extended section on how to retrieve UDI (iOS)
+- Added new companies in the Users.md list with companies applying the MSTG/MASVS
+- Updated code samples to Swift 5
+- Adding Process Exploration (Android and iOS)
+- Updated best practices for passwords, added "Have I Been Pwned"
+- Updated SSL Pinning fallback methods
+- Updated app identifier (Android and iOS)
+- Updated permission changes for Android O, P and Q
+- Updated Broadcast Receiver section (Android)
 
 Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
 
