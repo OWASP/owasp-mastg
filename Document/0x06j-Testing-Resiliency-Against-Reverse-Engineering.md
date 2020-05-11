@@ -560,6 +560,9 @@ drwxr-xr-x 11 _installd _installd  352 Nov 19 06:08 ../
 
 Looking at these _traces_ that Frida _leaves behind_, you might already imagine that detecting Frida would be a trivial task. And while it is trivial to detect these libraries, it is equally trivial to bypass such a detection. Detection of tools is a cat and mouse game and things can get much more complicated. The following table shortly presents a set of some typical Frida detection methods and a short discussion on their effectiveness.
 
+<div style="page-break-after: always;">
+</div>
+
 > Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security Suite").
 
 | Method | Description | Discussion |

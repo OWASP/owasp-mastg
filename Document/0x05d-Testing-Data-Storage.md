@@ -894,6 +894,9 @@ If the option has not been set, the application is vulnerable to screen capturin
 
 While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (right image), the snapshot will be empty; if the flag has not been set (left image), activity information will be shown:
 
+<div style="page-break-after: always;">
+</div>
+
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
 | <img src="Images/Chapters/0x05d/1.png" width="500px"/> | <img src="Images/Chapters/0x05d/2.png" width="500px"/> |
