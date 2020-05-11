@@ -280,7 +280,7 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
-According to Apple, you should "[restrict restrict use of the above code to the debug build of your program] (https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+According to Apple, you should "[restrict restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
 ##### Using ptrace
 
@@ -627,16 +627,16 @@ Obfuscation is the process of transforming code and data to make it more difficu
 
 A sample Swift project is used to demonstrate the usage of SwiftShield.
 
-1. Check out <https://github.com/sushi2k/SwiftSecurity>.
-2. Open the project in Xcode and make sure that the project is building successfully (Product / Build or Apple-Key + B).
-3. [Download](https://github.com/rockbruno/swiftshield/releases "SwiftShield Download") the latest release of SwiftShield and unzip it.
-4. Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
+- Check out <https://github.com/sushi2k/SwiftSecurity>.
+- Open the project in Xcode and make sure that the project is building successfully (Product / Build or Apple-Key + B).
+- [Download](https://github.com/rockbruno/swiftshield/releases "SwiftShield Download") the latest release of SwiftShield and unzip it.
+- Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
 
 ```bash
 $ cp swiftshield/swiftshield /usr/local/bin/
 ```
 
-5. In your terminal go into the SwiftSecurity directory (which you checked out in step 1) and execute the command swiftshield (which you downloaded in step 3):
+- In your terminal go into the SwiftSecurity directory (which you checked out in step 1) and execute the command swiftshield (which you downloaded in step 3):
 
 ```bash
 $ cd SwiftSecurity

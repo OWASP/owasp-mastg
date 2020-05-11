@@ -1852,10 +1852,10 @@ There are different configurations available for the Network Security Configurat
 ```
 
 Each certificate can be one of the following:
+
 - a "raw resource" ID pointing to a file containing X.509 certificates
 - "system" for the pre-installed system CA certificates
 - "user" for user-added CA certificates
-
 
 The CA certificates trusted by the app can be a system trusted CA as well as a user CA. Usually you will have added the certificate of your interception proxy already as additional CA in Android. Therefore we will focus on the "user" setting, which allows you to force the Android app to trust this certificate with the following Network Security Configuration configuration below:
 

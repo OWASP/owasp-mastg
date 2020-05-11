@@ -27,9 +27,9 @@ This directory is for tools that are used to generate the necessary files for ou
 
 ## Release process
 
-1. Sync @sushi2k's repository
+1. Sync @sushi2k's repository for Gitbook (done automatically now)
 2. Update the Changelog.md
-3. Generate new PDFS with the new version
+3. Generate new PDFs with the new version
 4. Commit the changes (with message `"Release <version>"`)
 5. Push a tag with the new version (`git tag -a <version> -m "Release message that will be on github"`)
 6. Update the Leanpub Files at Leanpub

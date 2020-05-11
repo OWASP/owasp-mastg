@@ -154,6 +154,7 @@ try {
    e.printStackTrace();
 }
 ```
+
 Example for Kotlin:
 
 ```kotlin
@@ -174,6 +175,7 @@ Files saved to external storage are world-readable. The user can modify them whe
 You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
 
 Example for Java:
+
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
 String password = "SecretPassword";
@@ -184,6 +186,7 @@ FileOutputStream fos;
 ```
 
 Example for Kotlin:
+
 ```kotlin
 val password = "SecretPassword"
 val path = context.getExternalFilesDir(null)

@@ -2,7 +2,24 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## v1.1.3 2 August 2019
+## v1.2 - 12 May 2020
+
+94 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A%3E2019-08-02+closed%3A%3E%3D2020-05-12+>.
+
+Major changes include:
+
+- References of OWASP Mobile Top 10 and MSTG-IDs are completely moved to MASVS
+- Reworking of information gathering for Android Apps
+- Update of Local Authentication for Android Apps
+- New content and updates in the Android and iOS Reverse Engineering and Tampering chapters
+- 3 new iOS Reverse Engineering test cases
+- Translations of the MSTG are linked to the respective forks but are not part of the MSTG anymore
+- Updated English, Japanese, French, Korean and Spanish checklists to be compatible with MSTG 1.2
+- Updated Acknowledgments, with 1 new co-author
+
+Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
+
+## v1.1.3 - 2 August 2019
 
 - Updated Acknowledgments, with 2 new co-authors.
 - Translated various parts into Japanese.
@@ -37,7 +54,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added review criteria for Android instant apps and guidance for app-bundle evaluation.
 - Clarified the differences between various methods of dynamic analysis.
 
-## v1.1.2 12 May 2019
+## v1.1.2 - 12 May 2019
 
 - Added missing mappings for MASVS V1.X.
 - Updated markdown throughout the English MSTG to be consistent.
@@ -48,7 +65,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added missing iOS test case regarding memory corruption issues.
 - Added contributing, code of conduct, markdown linting and dead link detection.
 
-## v1.1.1 7 May 2019
+## v1.1.1 - 7 May 2019
 
 - Improvements on various tool related parts, such as how to use on-device console, adb, nscurl, Frida and Needle.
 - Updated 0x4e regarding SMS communication.
@@ -69,7 +86,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added a lot of information to iOS platform testing.
 - Added a lot of fixes for our book-release.
 
-## v1.1.0 30 Nov 2018
+## v1.1.0 - 30 Nov 2018
 
 - Added more samples in Kotlin.
 - Simplified leanpub and gitbook publishing.
@@ -88,7 +105,7 @@ This document is automatically generated at {{gitbook.time}}
 - Fixed some of the anti-reverse-engineering test cases.
 - Added debugging test case for iOS.
 
-## v1.0.2 13 Oct 2018
+## v1.0.2 - 13 Oct 2018
 
 - Updated guiding documentation (README).
 - Improved automated build of the pdf, epub and mobi.
@@ -99,7 +116,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added fix for Fragment Injection on older Android versions.
 - Improved sections on iOS WebView related testing.
 
-## v1.0.1 17 Sept 2018
+## v1.0.1 - 17 Sept 2018
 
 - Updated guiding documentation (README, PR templates, improved style guide, issue templates).
 - Added automated build of the pdf and DocX.
@@ -143,4 +160,4 @@ This document is automatically generated at {{gitbook.time}}
 - Updated test cases for sensitive data in memory.
 - Added code quality sections.
 
-## v1.0 15 Jun 2018 : First release
+## v1.0 - 15 Jun 2018 (First release)

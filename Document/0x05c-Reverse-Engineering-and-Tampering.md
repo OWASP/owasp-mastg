@@ -338,7 +338,7 @@ The Android platform provides many in-built libraries for frequently used functi
 
 For instance, if an application is importing `javax.crypto.Cipher`, it indicates that the application will be performing some kind of cryptographic operation. Fortunately, cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analyzing cryptography APIs. For example, by looking for the `Cipher.getInstance` function, we can determine the cryptographic algorithm being used. With such an approach we can directly move to analyzing cryptographic assets, which often are very critical in an application. Further information on how to analyze Android's cryptographic APIs is discussed in the section  "[Android Cryptographic APIs](0x05e-testing-cryptography "Android Cryptographic APIs")".
 
-Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class. 
+Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class.
 
 ##### Network Communication
 
@@ -1038,7 +1038,7 @@ Note how, by default, only the arguments passed to the function are shown, but n
 
 In this case, the generated script which traces all calls to the `open` function in `libc.so` is located in is `__handlers__/libc.so/open.js`, it looks as follows:
 
-```
+```javascript
 {
   onEnter: function (log, args, state) {
     log('open(' +
@@ -1061,6 +1061,7 @@ In the above script, `onEnter` takes care of logging the calls to this function 
 Another thing to notice in the output above is that it's colorized. An application can have multiple threads running, and each thread can call the `open` function independently. By using such a color scheme, the output can be easily visually segregated for each thread.
 
 `frida-trace` is a very versatile tool and there are multiple configuration options available such as:
+
 - Including `-I` and excluding `-X` entire modules.
 - Tracing all JNI functions in an Android application using `-i "Java_*"` (note the use of a glob `*` to match all possible functions starting with "Java_").
 - Tracing functions by address when no function name symbols are available (stripped binaries), e.g. `-a "libjpeg.so!0x4793c"`.
@@ -1503,7 +1504,7 @@ In this section, we will learn about techniques for performing library injection
 
 An Android application's decompiled smali code can be patched to introduce a call to `System.loadLibrary`. The following smali patch injects a library named *libinject.so*:
 
-```
+```smali
 const-string v0, "inject"
 invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 ```
@@ -1541,7 +1542,6 @@ $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
 > Please note that if the library to be preloaded does not have SELinux context assigned, from Android 5.0 (API level 21) onwards, you need to disable SELinux to make `LD_PRELOAD` work, which may require root.
-
 
 #### Dynamic Instrumentation
 

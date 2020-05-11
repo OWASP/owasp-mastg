@@ -132,7 +132,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
 
-1. Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
+Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
@@ -153,8 +153,9 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-2. In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
-3. Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
+In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
+
+Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
 ##### Configuration
 
@@ -168,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - hostapd.conf
 
-    ```
+    ```text
     # Name of the WiFi interface we use
     interface=wlan1
     # Use the nl80211 driver
@@ -190,7 +191,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - wpa_supplicant.conf
 
-    ```
+    ```text
     network={
         ssid="NAME_OF_THE_TARGET_NETWORK"
         psk="PASSWORD_OF_THE_TARGET_NETWORK"
@@ -199,7 +200,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - dnsmasq.conf
 
-    ```
+    ```text
     interface=wlan1
     dhcp-range=10.0.0.10,10.0.0.250,12h
     dhcp-option=3,10.0.0.1
