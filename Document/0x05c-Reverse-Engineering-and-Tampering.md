@@ -2457,7 +2457,7 @@ The system should now boot normally. To quickly verify that the correct kernel i
 
 #### System Call Hooking with Kernel Modules
 
-System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality. With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a [classic Linux rootkit technique](http://phrack.org/issues/68/6.html "Phrack Magazine - Android platform based linux kernel rootkit - 4 April 2011") that has been described for Android by Dong-Hoon You.
+System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality. With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You in Phrack Magazine - "Android platform based linux kernel rootkit" on 4 April 2011.
 
 <img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="400px"/>
 
@@ -2552,7 +2552,7 @@ $ adb shell lsmod
 kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
 ```
 
-Now you'll access /dev/kmem to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but /dev/kmem provides an easy way to toggle your hooks on and off). We've have adapted the code from [Dong-Hoon You's Phrack article](http://phrack.org/issues/68/6.html "Phrack Magazine - Android Platform based Linux kernel rootkit - 4 April 2011") for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called kmem_util.c with the following code:
+Now you'll access /dev/kmem to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but /dev/kmem provides an easy way to toggle your hooks on and off). We've have adapted the code from Dong-Hoon You's Phrack article for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called kmem_util.c with the following code:
 
 ```c
 #include <stdio.h>
@@ -2663,7 +2663,7 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - Attacking Android Applications with Debuggers (19 January 2015) - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
 - [#josse] Sébastien Josse, Dynamic Malware Recompilation (6 January 2014) - <http://ieeexplore.ieee.org/document/6759227/>
 - Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
-- Android Platform based Linux kernel rootkit (4 April 2011) - <http://phrack.org/issues/68/6.html>
+- Android Platform based Linux kernel rootkit (4 April 2011 - Phrack Magazine)
 - [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
 
 #### Tools
