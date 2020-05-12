@@ -488,7 +488,7 @@ There are various steps to take:
 
 Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. ProGuard offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
 
-Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://www.owasp.org/index.php/Reviewing_Code_for_Buffer_Overruns_and_Overflows#.NET_.26_Java "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
+Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://owasp.org/www-community/vulnerabilities/Buffer_Overflow "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
 
 #### Static Analysis
 
