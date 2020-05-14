@@ -7,7 +7,9 @@ env:
 before_script:
 - "./Tools/before_install.sh"
 script:
-- travis_wait 30 "./Tools/gendocs.sh"
+- while sleep 5m; do echo "=====[ $SECONDS seconds still running gendocs ]====="; done &
+- "./Tools/gendocs.sh"
+- kill %1
 deploy:
   provider: releases
   api_key:
