@@ -2423,7 +2423,7 @@ ObjC.choose(ObjC.classes['SFSafariViewController'], {
 
 For the `UIWebView` and `WKWebView` WebViews we also print the assotiated URL for the sake of completion.
 
-In order to ensure that you will be able to find the instances of the WebViwes in the heap, be sure to first navigate to the WebView you've found. Once there, run the code above, e.g. by copying into the Frida REPL:
+In order to ensure that you will be able to find the instances of the WebViews in the heap, be sure to first navigate to the WebView you've found. Once there, run the code above, e.g. by copying into the Frida REPL:
 
 ```javascript
 $ frida -U com.authenticationfailure.WheresMyBrowser
