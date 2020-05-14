@@ -32,16 +32,16 @@ Pre-checks:
 - Make sure the contributor list in 0x02-Frontispiece.md is up to date with the [contributor scripts](https://github.com/commjoen/contributors-mstg)
 - Make sure you have all the files in GIT that you want to release: do not add files to it from another PR.
 - Make sure you have put the right version everywhere
+- Make sure that excels have been updated a priori the release process of a new version. Directly after the release, the actual excel-links can be tested for the new tag set. (so make sure that the new excel links are compatible with the chosen tag in step 3).
 
 Steps:
 
 1. Sync @sushi2k's repository for Gitbook (done automatically now)
 2. Update the Changelog.md.
-3. Update Excel Checklists with new version in Dashboard tab (and if needed add links to new test cases in MSTG)
-4. Generate new PDF and docx with the new version for review, e.g. version 1.2 (`Tools/gendocsLocal.sh 1.2`). Files are available in `Generated` folder.
-5. Commit the changes with message `"Release <version>"` (`$ git commit -m "Release 1.2"`)
-6. Push a tag with the new version (`git tag -a <version> -m "Release message that will be on github"`)
-7. Update the Leanpub Files at Leanpub
-8. Update OWASP Wiki if necessary
-9. Update the book at lulu.com (Ask @sushi2k)
-10. Tweet about it with @OWASP-MSTG & share a message at LinkedIn.
+3. Generate new PDF and docx with the new version for review, e.g. version 1.2 (`Tools/gendocsLocal.sh 1.2`). Files are available in `Generated` folder.
+4. Commit the changes with message `"Release <version>"` (`$ git commit -m "Release 1.2"`)
+5. Push a tag with the new version (`git tag -a <version> -m "Release message that will be on github"`)
+6. Update the Leanpub Files at Leanpub
+7. Update OWASP Wiki if necessary
+8. Update the book at lulu.com (Ask @sushi2k)
+9. Tweet about it with @OWASP-MSTG & share a message at LinkedIn.
