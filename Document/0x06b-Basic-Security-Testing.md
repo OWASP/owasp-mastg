@@ -783,7 +783,7 @@ When you install an application without using Apple's App Store, this is called 
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
-> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not longer possible to install apps.
+> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not possible to install apps.
 
 ##### Cydia Impactor
 
