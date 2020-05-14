@@ -7,9 +7,7 @@ env:
 before_script:
 - "./Tools/before_install.sh"
 script:
-- "travis_wait 30 sleep 1800 &"
-- curl -s https://raw.githubusercontent.com/xeon-zolt/arch-travis/master/arch-travis.sh | bash
-- "./Tools/gendocs.sh"
+- travis_wait 30 "./Tools/gendocs.sh"
 deploy:
   provider: releases
   api_key:
