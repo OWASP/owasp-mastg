@@ -37,5 +37,5 @@ fi
 echo "Running creaton of pdfs and word documents"
 sh ./gitbookepubandpdf.sh $TRAVIS_TAG
 sh ./generate_document.sh
-echo "Checking epub validity"
-sh epubcheck ../Generated/MSTG-EN.epub
+# echo "Checking epub validity" : will be back as a github task
+# sh epubcheck ../Generated/MSTG-EN.epub : will be back as a github task
