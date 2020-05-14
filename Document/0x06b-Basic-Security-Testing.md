@@ -329,7 +329,7 @@ The following is displayed:
 
 > In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
 
-Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
+Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation") for more details.
 
 ##### Needle
 
