@@ -1,11 +1,13 @@
 #!/bin/sh
 
 cd $TRAVIS_BUILD_DIR/Tools
+if [ -z "$TRAVIS_TAG" ]; then 
 echo "Applying Linter check"
 sh ./Apply_Linter_Check.sh
 echo "Counting amount of linter issues:"
 LINTRESULT=$(wc -l ../linter-result.out)
 echo $LINTRESULT
+fi
 if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
     echo "Applying Link check"
     export LINKRESULT=$(sh ./Apply_Link_Check.sh)
@@ -35,5 +37,5 @@ fi
 echo "Running creaton of pdfs and word documents"
 sh ./gitbookepubandpdf.sh $TRAVIS_TAG
 sh ./generate_document.sh
-echo "Checking epub validity"
-sh epubcheck ../Generated/MSTG-EN.epub
+# echo "Checking epub validity" : will be back as a github task
+# sh epubcheck ../Generated/MSTG-EN.epub : will be back as a github task
