@@ -30,7 +30,7 @@ This directory is for tools that are used to generate the necessary files for ou
 Pre-checks:
 
 - Make sure the contributor list in 0x02-Frontispiece.md is up to date with the [contributor scripts](https://github.com/commjoen/contributors-mstg)
-- Make sure you have all the files in GIT that you want to release: do not add files to it from another PR.
+- Make sure you have all the files in GIT that you want to release: do not add files to it from another PR, and let the pipeline do its work.
 - Make sure you have put the right version everywhere
 - Make sure that excels have been updated a priori the release process of a new version. Directly after the release, the actual excel-links can be tested for the new tag set. (so make sure that the new excel links are compatible with the chosen tag in step 3).
 
@@ -38,7 +38,7 @@ Steps:
 
 1. Sync @sushi2k's repository for Gitbook (done automatically now)
 2. Update the Changelog.md.
-3. Generate new PDF and docx with the new version for review, e.g. version 1.2 (`Tools/gendocsLocal.sh 1.2`). Files are available in `Generated` folder.
+3. Generate new PDF and docx with the new version for review, e.g. version 1.2 (`cd Tools && ./gendocsLocal.sh 1.2`). Files are available in `Generated` folder for verification purpose ONLY.
 4. Commit the changes with message `"Release <version>"` (`$ git commit -m "Release 1.2"`)
 5. Push a tag with the new version (`git tag -a <version> -m "Release message that will be on github"`)
 6. Update the Leanpub Files at Leanpub
