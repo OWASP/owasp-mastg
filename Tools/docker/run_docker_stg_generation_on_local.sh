@@ -21,13 +21,13 @@ if [[ "$(docker images -q $IMG 2> /dev/null)" == "" ]]; then
   docker build --tag $IMG tools/docker/
 fi
 
-for folder in ./Document*; do
-  echo "Generating $folder"
-  [ -f $folder-temp ] && rm -rf $folder-temp
-  cp -r $folder $folder-temp
-  docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc $IMG "/pandoc_makedocs.sh $folder-temp ${VERSION}" || echo "$folder failed" &
+export folder=Document
+echo "Generating $folder"
+[ -f $folder-temp ] && rm -rf $folder-temp
+cp -r $folder $folder-temp
+docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc $IMG "/pandoc_makedocs.sh $folder-temp ${VERSION}" || echo "$folder failed" &
 
-done
+
 
 wait
 
