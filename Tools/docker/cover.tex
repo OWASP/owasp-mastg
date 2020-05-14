@@ -1,0 +1,10 @@
+% IMPORTANT NOTE this file requires latex-header.tex
+% cover.jpg is in the root folder (owasp-MSTG/)
+% Version text is written at (X,Y), where (0, 0) is the lower left corner of the page.
+
+\thispagestyle{empty} % remove page numbers
+
+% https://tex.stackexchange.com/questions/136900/insert-a-full-page-image
+\incgraph[documentpaper, 
+    overlay={\node[white] at (page.center) {\huge {{MSTG-LANGUAGE}}};\node[white] at (18.3,11.7) {\Huge Version {{MSTG-VERSION}}};}]
+    [width=\paperwidth,height=\paperheight]{cover.jpg}
