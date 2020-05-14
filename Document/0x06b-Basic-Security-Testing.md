@@ -224,7 +224,7 @@ For a quick start you can go through the [iOS examples](https://www.frida.re/doc
 
 ##### Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#Using Frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
 ##### IDB
 
