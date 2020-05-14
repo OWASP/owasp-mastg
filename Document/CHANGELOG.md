@@ -2,7 +2,7 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## v1.2 - 12 May 2020
+## v1.2 - 14 May 2020
 
 95 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>.
 

@@ -21,6 +21,8 @@ deploy:
   file:
     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.pdf"
     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.docx"
+    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.epub"
+    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.mobi"
   skip_cleanup: true
   overwrite: true
   name: "Intermediate update $TRAVIS_TAG"
