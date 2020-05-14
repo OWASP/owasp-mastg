@@ -1,11 +1,13 @@
 #!/bin/sh
 
 cd $TRAVIS_BUILD_DIR/Tools
+if [ -z "$TRAVIS_TAG" ]; then 
 echo "Applying Linter check"
 sh ./Apply_Linter_Check.sh
 echo "Counting amount of linter issues:"
 LINTRESULT=$(wc -l ../linter-result.out)
 echo $LINTRESULT
+fi
 if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
     echo "Applying Link check"
     export LINKRESULT=$(sh ./Apply_Link_Check.sh)

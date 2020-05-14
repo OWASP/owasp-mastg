@@ -39,9 +39,9 @@ Steps:
 1. Sync @sushi2k's repository for Gitbook (done automatically now)
 2. Update the Changelog.md.
 3. Generate new PDF and docx with the new version for review, e.g. version 1.2 (`cd Tools && ./gendocsLocal.sh 1.2`). Files are available in `Generated` folder for verification purpose ONLY.
-4. Commit the changes with message `"Release <version>"` (`$ git commit -m "Release 1.2"`)
-5. Push a tag with the new version (`git tag -a <version> -m "Release message that will be on github"`)
-6. Update the Leanpub Files at Leanpub
-7. Update OWASP Wiki if necessary
-8. Update the book at lulu.com (Ask @sushi2k)
+4. Commit the changes with message `"Release <version>"` (`$ git commit -m "Release 1.2"`). Then push it to a release branch, make sure it gets reviewed & merged.
+5. Push a tag with the new version (`git checkout master && git tag -a <version> -m "Release message that will be on github" && git push --tags` )
+6. Update the Leanpub Files at Leanpub with the downloaded files from the release page.
+7. Update OWASP Wiki if necessary with release news.
+8. Update the book at lulu.com (Ask @sushi2k) with the downloaded PDF from the release page.
 9. Tweet about it with @OWASP-MSTG & share a message at LinkedIn.

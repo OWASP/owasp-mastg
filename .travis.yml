@@ -1,12 +1,6 @@
 sudo: required
 language: objective-c
 osx_image: xcode10.2
-before_install:
-#- rvm install 2.5.1 --disable-binary
-- npm install -g markdownlint-cli
-- npm install -g markdown-link-check
-- npm install -g gitbook-cli
-- gem install asciidoctor
 env:
   global:
     secure: "QiUUbQ9WJKSAxMquDGnSYe2QICwJBK/44vYksIP6b+KTeFwfKmKSWa5B63W9NxGEm1GKQeCnIaplpDw21lB0NKluSkbIAEW7AQfY+txJ3VFIf+DHs3Gid+fni4WuDPU48QCNxBiW7bNHV63Dpn0FNISCphhjEVmR7LYY2Ie4IB1ZBsxLvoMKaAzhP/escQWsxip3aCldYCSnFk6YJMNwNamJsQsGLJZOj6jeJEz2AyNqbe0J27BKH9hEkUS58VFNfvWCw79L1Mby0CIkqefZ63lPjXrqLZBy+6pc+JDj4VTC5TRRGEymQLuJAzRmFCUfgfhEqg/Cv+ZfNCDRgl9BYx0CWVU9KWafz4/VrlzhnLPNxhYU3ky+H9kxKZ2VBRNT8aLTXfHqtIQGe0WlRO1SokSQ8n0fyU3kdPHFhLu09tpG0lhmw/+u3i0mXJ8KhYCaMID51z4gBkI3nzemCeDHVkDOFIgPgUSekEzb3Mi0NupxbFjwNt1Dj8QI9mmI8AZUe94AlpJFVaRPmPoOffkm5+Z38Y9+fsC+wRy5qBwFkKZ9pP1rsrOEqcZd7K/Z39CQPQIAI9nAOOKjcmP3DV1h5JQWLElhintdG7IsW/TnNiAXtBrd0F+qKOkCd2dRvCwdLTuvW02R3cFgMyGq9HpuR8M2Bo3O2JdULWC+SFsLxoQ="
