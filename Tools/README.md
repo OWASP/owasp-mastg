@@ -27,12 +27,20 @@ This directory is for tools that are used to generate the necessary files for ou
 
 ## Release process
 
+Pre-checks:
+
+- make sure the contributor list is up to date with the [contributor scripts](https://github.com/commjoen/contributors-mstg)
+- make sure you have all the files in GIT that you want to release: do not add files to it from another PR.
+- make sure you have put the right version everywhere
+
+Steps:
+
 1. Sync @sushi2k's repository for Gitbook (done automatically now)
-2. Update the Changelog.md
-3. Generate new PDFs with the new version
+2. Update the Changelog.md.
+3. Generate new PDF with the new version for review.
 4. Commit the changes (with message `"Release <version>"`)
 5. Push a tag with the new version (`git tag -a <version> -m "Release message that will be on github"`)
 6. Update the Leanpub Files at Leanpub
 7. Update OWASP Wiki if necessary
 8. Update the book at lulu.com (Ask @sushi2k)
-9. Tweet about it with @OWASP-MSTG.
+9. Tweet about it with @OWASP-MSTG & share a message at LinkedIn.
