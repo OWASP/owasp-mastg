@@ -110,7 +110,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 - gdb: A tool to perform runtime analysis of iOS applications - <http://cydia.radare.org/debs/>
 - idb: A tool to simplify some common tasks for iOS pentesting and research - <https://github.com/dmayer/idb>
 - Introspy-iOS: Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
-- keychaindumper: A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken - <http://cydia.radare.org/debs/>
+- keychaindumper: A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken - <https://github.com/ptoomey3/Keychain-Dumper>
 - lldb: A debugger by Apple’s Xcode used for debugging iOS applications - <https://lldb.llvm.org/>
 - Needle: A modular framework to conduct security assessments of iOS apps including Binary Analysis, Static Code Analysis and Runtime Manipulation - <https://github.com/mwrlabs/needle>
 - Passionfruit: Simple iOS app blackbox assessment tool with Fully web based GUI. Powered by frida.re and vuejs - <https://github.com/chaitin/passionfruit>

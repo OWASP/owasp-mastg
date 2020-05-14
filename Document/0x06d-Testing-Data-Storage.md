@@ -220,13 +220,11 @@ The SQLite 3 library must be added to an app if the app is to use SQLite. This l
 
 ##### Firebase Real-time Databases
 
+##### Firebase Real-time Databases
+
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
-###### Identifying Misconfigured Firebase Instance
-
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on 2 Million+ mobile applications and found that the around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
-
-The misconfigured Firebase instance can be identified by making the following network call:
+A misconfigured Firebase instance can be identified by making the following network call:
 
 `https://\<firebaseProjectName\>.firebaseio.com/.json`
 
@@ -719,13 +717,12 @@ In case you need to work with an encrypted backup, there are some Python scripts
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
-<table bordercolor="#FFFFFF">
-  <tr><td>
-    <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270">
-  </td><td>
-    <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270">
-  </td></tr>
-</table>
+<div style="page-break-after: always;">
+</div>
+
+| Enable Pin | Pin Screen |
+|---|---|
+| <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270"> | <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270"> |
 
 After you enable the pin, use iMazing to perform a device backup:
 
@@ -934,5 +931,4 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 #### Others
 
-- Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>
 - [#mandt] Tarjei Mandt, Mathew Solnik  and  David Wang, Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>

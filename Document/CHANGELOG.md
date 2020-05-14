@@ -2,7 +2,71 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## v1.1.3 2 August 2019
+## v1.2 - 12 May 2020
+
+95 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>.
+
+191 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>
+
+Major changes include:
+
+- References of OWASP Mobile Top 10 and MSTG-IDs are completely moved to MASVS
+- Reworking of information gathering (static analysis) for Android Apps
+- Update of Biometric Authentication for Android Apps
+- New content and updates in the Android and iOS Reverse Engineering and Tampering chapters
+- 3 new iOS Reverse Engineering test cases
+- Translations of the MSTG are linked to the respective forks but are not part of the MSTG anymore
+- Updated English, Japanese, French, Korean and Spanish checklists to be compatible with MSTG 1.2
+- Updated Acknowledgments, with 1 new co-author and contributor
+- Added JNI Tracing for Android
+- Added dsdump for dumping Objective-C and Swift content
+- Added the procedure to sign the debugserver for iOS 12 and higher
+- Added dependency-check to verify for vulnerabilities in libraries added by iOS package managers
+- Added getppid as debugger detection (iOS)
+- Added Domain/URL Enumeration in APKs
+- Added introduction into Network.framework (iOS)
+- Added UnSAFE Bank iOS Application
+- Added information on SECCOMP (Android)
+- Added native and java method tracing (Android)
+- Added Android library injection
+- Added Android 10 TLS and cryptography updates
+- Updated code obfuscation for Android and iOS
+- Added test case for Reverse Engineering Tools Detection - MSTG-RESILIENCE-4 (iOS)
+- Added test case for Emulator Detection - MSTG-RESILIENCE-5 (iOS)
+- Added an example with truststore to bypass cert pinning (Android)
+- Added content to information gathering using frida (Android)
+- Added RandoriSec and OWASP Bay area as sponsor
+- Added basic information gathering for Android and iOS
+- Added Simulating a Man-in-the-Middle Attack with an Access Point
+- Added gender neutrality to the MSTG
+- Extended section about dealing with Xamarin Apps
+- Updated all picture links to img tag
+- Updated iTunes limitations and usage since macOS Catalina
+- Added Emulation-based Analysis (iOS and Android)
+- Added Debugging iOS release applications using lldb
+- Added Korean translation of the checklist
+- Updated symbolic execution content (Android)
+- Added Ghidra for Android Reverse Engineering
+- Added section on Manual (Reversed) Code Review for iOS
+- Added explanation of more Frida APIs (iOS and Android)
+- Added Apple CryptoKit
+- Updated and simplified Frida detection methods
+- Added introduction to setup and disassembling for iOS Apps
+- Updated section about frida-ios-dump
+- Added gplaycli (Android)
+- Extended section on how to retrieve UDI (iOS)
+- Added new companies in the Users.md list with companies applying the MSTG/MASVS
+- Updated code samples to Swift 5
+- Adding Process Exploration (Android and iOS)
+- Updated best practices for passwords, added "Have I Been Pwned"
+- Updated SSL Pinning fallback methods
+- Updated app identifier (Android and iOS)
+- Updated permission changes for Android O, P and Q
+- Updated Broadcast Receiver section (Android)
+
+Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
+
+## v1.1.3 - 2 August 2019
 
 - Updated Acknowledgments, with 2 new co-authors.
 - Translated various parts into Japanese.
@@ -37,7 +101,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added review criteria for Android instant apps and guidance for app-bundle evaluation.
 - Clarified the differences between various methods of dynamic analysis.
 
-## v1.1.2 12 May 2019
+## v1.1.2 - 12 May 2019
 
 - Added missing mappings for MASVS V1.X.
 - Updated markdown throughout the English MSTG to be consistent.
@@ -48,7 +112,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added missing iOS test case regarding memory corruption issues.
 - Added contributing, code of conduct, markdown linting and dead link detection.
 
-## v1.1.1 7 May 2019
+## v1.1.1 - 7 May 2019
 
 - Improvements on various tool related parts, such as how to use on-device console, adb, nscurl, Frida and Needle.
 - Updated 0x4e regarding SMS communication.
@@ -69,7 +133,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added a lot of information to iOS platform testing.
 - Added a lot of fixes for our book-release.
 
-## v1.1.0 30 Nov 2018
+## v1.1.0 - 30 Nov 2018
 
 - Added more samples in Kotlin.
 - Simplified leanpub and gitbook publishing.
@@ -88,7 +152,7 @@ This document is automatically generated at {{gitbook.time}}
 - Fixed some of the anti-reverse-engineering test cases.
 - Added debugging test case for iOS.
 
-## v1.0.2 13 Oct 2018
+## v1.0.2 - 13 Oct 2018
 
 - Updated guiding documentation (README).
 - Improved automated build of the pdf, epub and mobi.
@@ -99,7 +163,7 @@ This document is automatically generated at {{gitbook.time}}
 - Added fix for Fragment Injection on older Android versions.
 - Improved sections on iOS WebView related testing.
 
-## v1.0.1 17 Sept 2018
+## v1.0.1 - 17 Sept 2018
 
 - Updated guiding documentation (README, PR templates, improved style guide, issue templates).
 - Added automated build of the pdf and DocX.
@@ -143,4 +207,4 @@ This document is automatically generated at {{gitbook.time}}
 - Updated test cases for sensitive data in memory.
 - Added code quality sections.
 
-## v1.0 15 Jun 2018 (First release)
+## v1.0 - 15 Jun 2018 (First release)

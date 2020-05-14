@@ -105,9 +105,7 @@ Secure ways to retrieve the key include:
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on more than 2 Million mobile applications and found that around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
-
-The misconfigured Firebase instance can be identified by making the following network call:
+A misconfigured Firebase instance can be identified by making the following network call:
 
 `https://\<firebaseProjectName\>.firebaseio.com/.json`
 
@@ -154,6 +152,7 @@ try {
    e.printStackTrace();
 }
 ```
+
 Example for Kotlin:
 
 ```kotlin
@@ -174,6 +173,7 @@ Files saved to external storage are world-readable. The user can modify them whe
 You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
 
 Example for Java:
+
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
 String password = "SecretPassword";
@@ -184,6 +184,7 @@ FileOutputStream fos;
 ```
 
 Example for Kotlin:
+
 ```kotlin
 val password = "SecretPassword"
 val path = context.getExternalFilesDir(null)
@@ -894,6 +895,9 @@ If the option has not been set, the application is vulnerable to screen capturin
 
 While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (right image), the snapshot will be empty; if the flag has not been set (left image), activity information will be shown:
 
+<div style="page-break-after: always;">
+</div>
+
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
 | <img src="Images/Chapters/0x05d/1.png" width="500px"/> | <img src="Images/Chapters/0x05d/2.png" width="500px"/> |
@@ -1261,7 +1265,3 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Java AES Crypto - <https://github.com/tozny/java-aes-crypto>
 - SQL Cipher - <https://www.zetetic.net/sqlcipher/sqlcipher-for-android>
 - Secure Preferences - <https://github.com/scottyab/secure-preferences>
-
-#### Others
-
-- Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>
