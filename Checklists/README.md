@@ -19,23 +19,26 @@ Newer and older versions of the Excel are released on a regular basis and can be
 
 You should ensure that the generated hash is similar to the one in the table below! File hashes serve as a file verification mechanism to ensure that you are using the same excel found in this guide, and that it was downloaded properly.
 
+```
+
+```
 | Filename | SHA256 Sum |
 |---|---|
-| Mobile_App_Security_Checklist-English_1.1.3.1.xlsx | ff030f7fbff9aade234aaa8a078352d3d8154ceda3899d77e6b8ed335f77f4dd |
-| Mobile_App_Security_Checklist-French_1.1.3.1.xlsx | 17ac6d18ad791bcb045e36d165ab1592f11c20c2157fd618eda16356072928c4 |
-| Mobile_App_Security_Checklist-Japanese_1.1.3.1.xlsx | 1be6c12ad72894d3b19dce404485170c3ebbe4081fcaae74ae26d01009021794 |
-| Mobile_App_Security_Checklist-Korean_1.1.3.1.xlsx | 7b83bd510c7710c608a521fc99937f90765b0615c06be02b2365fb52e134332a |
-| Mobile_App_Security_Checklist-Spanish_1.1.3.1.xlsx | 9f84210e19e9c8db58d82800020ef814e212bfa95cef59b50f4b50239b66454e |
+| Mobile_App_Security_Checklist-English_1.2.xlsx | 80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8 |
+| Mobile_App_Security_Checklist-French_1.2.xlsx | 080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609 |
+| Mobile_App_Security_Checklist-Japanese_1.2.xlsx | d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90 |
+| Mobile_App_Security_Checklist-Korean_1.2.xlsx | 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc |
+| Mobile_App_Security_Checklist-Spanish_1.2.xlsx | 4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6 |
 
-### Generate on Linux
+### Generate on Linux / macOS
 
 ```bash
-$ sha256sum Mobile_App_Security_Checklist-*
-ff030f7fbff9aade234aaa8a078352d3d8154ceda3899d77e6b8ed335f77f4dd *Mobile_App_Security_Checklist-English_1.1.3.1.xlsx
-17ac6d18ad791bcb045e36d165ab1592f11c20c2157fd618eda16356072928c4 *Mobile_App_Security_Checklist-French_1.1.3.1.xlsx
-1be6c12ad72894d3b19dce404485170c3ebbe4081fcaae74ae26d01009021794 *Mobile_App_Security_Checklist-Japanese_1.1.3.1.xlsx
-7b83bd510c7710c608a521fc99937f90765b0615c06be02b2365fb52e134332a *Mobile_App_Security_Checklist-Korean_1.1.3.1.xlsx
-9f84210e19e9c8db58d82800020ef814e212bfa95cef59b50f4b50239b66454e *Mobile_App_Security_Checklist-Spanish_1.1.3.1.xlsx
+$ sha256sum *.xlsx
+80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8  Mobile_App_Security_Checklist-English_1.2.xlsx
+080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609  Mobile_App_Security_Checklist-French_1.2.xlsx
+d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90  Mobile_App_Security_Checklist-Japanese_1.2.xlsx
+849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc  Mobile_App_Security_Checklist-Korean_1.2.xlsx
+4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6  Mobile_App_Security_Checklist-Spanish_1.2.xlsx
 ```
 
 ### Generate on Windows
@@ -45,33 +48,22 @@ owasp-mstg\Checklists> Get-FileHash -Algorithm SHA256 -Path .\Mobile_App_Securit
 
 
 Algorithm : SHA256
-Hash      : FF030F7FBFF9AADE234AAA8A078352D3D8154CEDA3899D77E6B8ED335F77F4DD
-Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-English_1.1.3.1.xlsx
+Hash      : 80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-English_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : 17AC6D18AD791BCB045E36D165AB1592F11C20C2157FD618EDA16356072928C4
-Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-French_1.1.3.1.xlsx
+Hash      : 080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-French_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : 1BE6C12AD72894D3B19DCE404485170C3EBBE4081FCAAE74AE26D01009021794
-Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Japanese_1.1.3.1.xlsx
+Hash      : d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Japanese_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : 7B83BD510C7710C608A521FC99937F90765B0615C06BE02B2365FB52E134332A
-Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Korean_1.1.3.1.xlsx
+Hash      : 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Korean_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : 9F84210E19E9C8DB58D82800020EF814E212BFA95CEF59B50F4B50239B66454E
-Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Spanish_1.1.3.1.xlsx
-```
-
-### Generate on MacOS
-
-```bash
-owasp-mstg/Checklists> shasum -a 256 Mobile_App_Security_Checklist-*
-ff030f7fbff9aade234aaa8a078352d3d8154ceda3899d77e6b8ed335f77f4dd  Mobile_App_Security_Checklist-English_1.1.3.1.xlsx
-17ac6d18ad791bcb045e36d165ab1592f11c20c2157fd618eda16356072928c4  Mobile_App_Security_Checklist-French_1.1.3.1.xlsx
-1be6c12ad72894d3b19dce404485170c3ebbe4081fcaae74ae26d01009021794  Mobile_App_Security_Checklist-Japanese_1.1.3.1.xlsx
-7b83bd510c7710c608a521fc99937f90765b0615c06be02b2365fb52e134332a  Mobile_App_Security_Checklist-Korean_1.1.3.1.xlsx
-9f84210e19e9c8db58d82800020ef814e212bfa95cef59b50f4b50239b66454e  Mobile_App_Security_Checklist-Spanish_1.1.3.1.xlsx
+Hash      : 4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Spanish_1.2.xlsx
 ```
