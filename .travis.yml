@@ -1,28 +1,28 @@
-sudo: required
-language: objective-c
-osx_image: xcode10.2
-env:
-  global:
-    secure: "QiUUbQ9WJKSAxMquDGnSYe2QICwJBK/44vYksIP6b+KTeFwfKmKSWa5B63W9NxGEm1GKQeCnIaplpDw21lB0NKluSkbIAEW7AQfY+txJ3VFIf+DHs3Gid+fni4WuDPU48QCNxBiW7bNHV63Dpn0FNISCphhjEVmR7LYY2Ie4IB1ZBsxLvoMKaAzhP/escQWsxip3aCldYCSnFk6YJMNwNamJsQsGLJZOj6jeJEz2AyNqbe0J27BKH9hEkUS58VFNfvWCw79L1Mby0CIkqefZ63lPjXrqLZBy+6pc+JDj4VTC5TRRGEymQLuJAzRmFCUfgfhEqg/Cv+ZfNCDRgl9BYx0CWVU9KWafz4/VrlzhnLPNxhYU3ky+H9kxKZ2VBRNT8aLTXfHqtIQGe0WlRO1SokSQ8n0fyU3kdPHFhLu09tpG0lhmw/+u3i0mXJ8KhYCaMID51z4gBkI3nzemCeDHVkDOFIgPgUSekEzb3Mi0NupxbFjwNt1Dj8QI9mmI8AZUe94AlpJFVaRPmPoOffkm5+Z38Y9+fsC+wRy5qBwFkKZ9pP1rsrOEqcZd7K/Z39CQPQIAI9nAOOKjcmP3DV1h5JQWLElhintdG7IsW/TnNiAXtBrd0F+qKOkCd2dRvCwdLTuvW02R3cFgMyGq9HpuR8M2Bo3O2JdULWC+SFsLxoQ="
-before_script:
-- "./Tools/before_install.sh"
-script:
-- while sleep 5m; do echo "=====[ $SECONDS seconds still running gendocs ]====="; done &
-- "./Tools/gendocs.sh"
-- kill %1
-deploy:
-  provider: releases
-  api_key:
-    secure: ijkS09Ml4PiHMI26VZydrxKC9amBSxdRa2XF04RtQOKQlnx3Mvd2nYny8l5gDM8zBPENWx3IY9b089g0sVPtlGHmCOsuvrmllakI4qtHvKQDkHf7yb8t2gK5KAOusiO7gcfNwNjDK4b8G8nmIomYKyF3xzIhZMJkaIRzKhiLqvNAvtulMaBDDuFARBCRsA/pujIIMD/h/iMhDdZJWlQafaBWPbdqrHillaOo+TF4cEv3i5olOwO6LfAChhY7NP+YJEF3jlWG4NLmVvDQA3RvJQoVleIPadyLZgnKjcR1dNbGKqugtYlnBGvzf3f8MDB8x7Z4+aASTDUiL8TM+yVuFuyhTbjSSFAZ0i0nQE7NTO9/5RfGSZEuaLy1FRxBFAVBYyWTjQo1knKTxvKvIMyDOPNlSaPYxv5ZcaP4QnwS/40g9jKzQgT1Oz9+qrd2LLc7YIKXjheSMYSZRFxP4t0iFPMn3ZtjlJdO2aIZaQh5HK41H2Sq273ZgjMHCt9CppHhKM3dPKvR4FK09b+ZVPhGkvqL+GXHaVaTiVjm42xtkB2r1gDjMll5M042IZUeCyJ3gy4ceiQtB9u2Z0GwVzaumUXIzzrNgZcbhKrxvPaWe405C9IslyqN1uXZvlU0MnGOgEUPmIqyAYrcRwP7NFsSyesQUEvkJrJXRjSJKrgnT4k=
-  file:
-    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.pdf"
-    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.docx"
-    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.epub"
-    - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.mobi"
-  skip_cleanup: true
-  overwrite: true
-  name: "Intermediate update $TRAVIS_TAG"
-  body: "Intermediate update ($TRAVIS_TAG). See CHANGELOG.md for updates on intermediate update releases."
-  on:
-    repo: OWASP/owasp-mstg
-    tags: true
+# sudo: required
+# language: objective-c
+# osx_image: xcode10.2
+# env:
+#   global:
+#     secure: "QiUUbQ9WJKSAxMquDGnSYe2QICwJBK/44vYksIP6b+KTeFwfKmKSWa5B63W9NxGEm1GKQeCnIaplpDw21lB0NKluSkbIAEW7AQfY+txJ3VFIf+DHs3Gid+fni4WuDPU48QCNxBiW7bNHV63Dpn0FNISCphhjEVmR7LYY2Ie4IB1ZBsxLvoMKaAzhP/escQWsxip3aCldYCSnFk6YJMNwNamJsQsGLJZOj6jeJEz2AyNqbe0J27BKH9hEkUS58VFNfvWCw79L1Mby0CIkqefZ63lPjXrqLZBy+6pc+JDj4VTC5TRRGEymQLuJAzRmFCUfgfhEqg/Cv+ZfNCDRgl9BYx0CWVU9KWafz4/VrlzhnLPNxhYU3ky+H9kxKZ2VBRNT8aLTXfHqtIQGe0WlRO1SokSQ8n0fyU3kdPHFhLu09tpG0lhmw/+u3i0mXJ8KhYCaMID51z4gBkI3nzemCeDHVkDOFIgPgUSekEzb3Mi0NupxbFjwNt1Dj8QI9mmI8AZUe94AlpJFVaRPmPoOffkm5+Z38Y9+fsC+wRy5qBwFkKZ9pP1rsrOEqcZd7K/Z39CQPQIAI9nAOOKjcmP3DV1h5JQWLElhintdG7IsW/TnNiAXtBrd0F+qKOkCd2dRvCwdLTuvW02R3cFgMyGq9HpuR8M2Bo3O2JdULWC+SFsLxoQ="
+# before_script:
+# - "./Tools/before_install.sh"
+# script:
+# - while sleep 5m; do echo "=====[ $SECONDS seconds still running gendocs ]====="; done &
+# - "./Tools/gendocs.sh"
+# - kill %1
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: ijkS09Ml4PiHMI26VZydrxKC9amBSxdRa2XF04RtQOKQlnx3Mvd2nYny8l5gDM8zBPENWx3IY9b089g0sVPtlGHmCOsuvrmllakI4qtHvKQDkHf7yb8t2gK5KAOusiO7gcfNwNjDK4b8G8nmIomYKyF3xzIhZMJkaIRzKhiLqvNAvtulMaBDDuFARBCRsA/pujIIMD/h/iMhDdZJWlQafaBWPbdqrHillaOo+TF4cEv3i5olOwO6LfAChhY7NP+YJEF3jlWG4NLmVvDQA3RvJQoVleIPadyLZgnKjcR1dNbGKqugtYlnBGvzf3f8MDB8x7Z4+aASTDUiL8TM+yVuFuyhTbjSSFAZ0i0nQE7NTO9/5RfGSZEuaLy1FRxBFAVBYyWTjQo1knKTxvKvIMyDOPNlSaPYxv5ZcaP4QnwS/40g9jKzQgT1Oz9+qrd2LLc7YIKXjheSMYSZRFxP4t0iFPMn3ZtjlJdO2aIZaQh5HK41H2Sq273ZgjMHCt9CppHhKM3dPKvR4FK09b+ZVPhGkvqL+GXHaVaTiVjm42xtkB2r1gDjMll5M042IZUeCyJ3gy4ceiQtB9u2Z0GwVzaumUXIzzrNgZcbhKrxvPaWe405C9IslyqN1uXZvlU0MnGOgEUPmIqyAYrcRwP7NFsSyesQUEvkJrJXRjSJKrgnT4k=
+#   file:
+#     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.pdf"
+#     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.docx"
+#     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.epub"
+#     - "$TRAVIS_BUILD_DIR/Generated/MSTG-EN.mobi"
+#   skip_cleanup: true
+#   overwrite: true
+#   name: "Intermediate update $TRAVIS_TAG"
+#   body: "Intermediate update ($TRAVIS_TAG). See CHANGELOG.md for updates on intermediate update releases."
+#   on:
+#     repo: OWASP/owasp-mstg
+#     tags: true
