@@ -60,7 +60,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/
 $ adb install UnCrackable-Level1.apk
 ```
 
-<img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400">
+<img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400" />
 
 Seems like we're expected to find some kind of secret code!
 
@@ -117,7 +117,7 @@ In the next dialog, pick any API number; you don't actually want to compile the 
 
 Once you have created the project, expand the "1: Project" view on the left and navigate to the folder `app/src/main/java`. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-<img src="Images/Chapters/0x05c/delete_package.jpg" alt="Delete default package" width="350">
+<img src="Images/Chapters/0x05c/delete_package.jpg" alt="Delete default package" width="350"/>
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
@@ -125,7 +125,7 @@ Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the 
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
-<img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300">
+<img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300"/>
 
 See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
 
@@ -148,7 +148,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWo
 
 > This app is not exactly spectacular—all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
 
-<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
+<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300" />
 
 Decompile the APK with `apkx`.
 
@@ -188,7 +188,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the "lib" directory of the unzipped APK archive, you'll see several subdirectories (one per supported processor architecture), each of them containing a version of the native library, in this case `libnative-lib.so`. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on. Before moving ahead, pay attention to the first parameter passed to the current JNI function. It is the same `JNIEnv` data structure which was discussed earlier in this section.
 
-<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200">
+<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200" />
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
@@ -793,7 +793,7 @@ To set up IDE debugging, first create your Android project in IntelliJ and copy 
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
-<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting For Debugger" width="300">
+<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting For Debugger" width="300"/>
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
@@ -801,7 +801,7 @@ Now you can set breakpoints and attach to the Uncrackable1 app process with the 
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
-<img src="Images/Chapters/0x05c/Choose_Process.png" alt="Choose Process" width="300">
+<img src="Images/Chapters/0x05c/Choose_Process.png" alt="Choose Process" width="300"/>
 
 After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate` method. That's why setting a breakpoint on the `onCreate` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
@@ -841,7 +841,7 @@ Once you modify the binary name or the directory name, `File.exists` should retu
 
 This defeats the first root detection control of UnCrackable App for Android Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
-<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300">
+<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300" />
 
 <img src="Images/Chapters/0x05c/MainActivity_verify.png" width="550px"/>
 
@@ -853,7 +853,7 @@ You can see the secret string in the "Variables" view when you reach the `String
 
 <img src="Images/Chapters/0x05c/secret_code.png" width="550px"/>
 
-<img src="Images/Chapters/0x05c/success.png" alt="Success" width="300">
+<img src="Images/Chapters/0x05c/success.png" alt="Success" width="300"/>
 
 ##### Debugging Native Code
 
@@ -1463,11 +1463,11 @@ The UnCrackable App is not stupid: it notices that it has been run in debuggable
 
 Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
 
-<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300">
+<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300"/>
 
 In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
 
-<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
+<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300"/>
 
 Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `"true"` in the Android Manifest.
 
@@ -1706,7 +1706,7 @@ We'll use Frida to solve the UnCrackable App for Android Level 1 and demonstrate
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 
-<img src="Images/Chapters/0x05c/crackme-frida-1.png" alt="Crackme Root Detected Dialog" width="300">
+<img src="Images/Chapters/0x05c/crackme-frida-1.png" alt="Crackme Root Detected Dialog" width="300"/>
 
 Let's see how we can prevent this.
 
@@ -2453,7 +2453,7 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to **Settings** -> **About phone** and check the **kernel version** field.
 
-<img src="Images/Chapters/0x05c/custom_kernel.jpg" alt="Custom Kernel" width="300">
+<img src="Images/Chapters/0x05c/custom_kernel.jpg" alt="Custom Kernel" width="300"/>
 
 #### System Call Hooking with Kernel Modules
 

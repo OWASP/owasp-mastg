@@ -23,7 +23,7 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 
 An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager">
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager" />
 
 Installed SDKs are on the following paths:
 
@@ -721,7 +721,7 @@ Once you have MobSF up and running you can open it in your browser by navigating
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
 
-<img src="Images/Chapters/0x05b/mobsf_android.png" alt="MobSF for Android">
+<img src="Images/Chapters/0x05b/mobsf_android.png" alt="MobSF for Android" />
 
 The following is displayed:
 
@@ -1013,19 +1013,19 @@ And of course you can also use the disassembler capabilities of r2 and print the
 
 r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
 
-<img src="Images/Chapters/0x05b/r2_pd_10.png" width="550px"/>
+<img src="Images/Chapters/0x05b/r2_pd_10.png" width="550px" />
 
 Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
 
-<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="550px"/>
+<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="550px" />
 
 By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
 
-<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="550px"/>
+<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="550px" />
 
 Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
 
-<img src="Images/Chapters/0x05b/r2_graphmode.png" width="550px"/>
+<img src="Images/Chapters/0x05b/r2_graphmode.png" width="550px" />
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
@@ -1694,7 +1694,7 @@ Wireshark should start immediately (-k). It gets all data from stdin (-i -) via 
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="450px">
+<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" alt="Wireshark and tcpdump" width="450px" />
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 

@@ -1,0 +1,40 @@
+name: Document Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    # - name: Pull the Docker image
+    #   run: docker pull owasp/masvs-docgenerator:0.2
+    # # only use below when testing new container builds
+    - name: Build the Docker image
+      run: docker build ./tools/docker --tag mstg-generator:latest
+    - name: Generate English PDF
+      run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc mstg-generator:latest '/pandoc_makedocs.sh Document SNAPSHOT'
+    - name: Upload English PDF
+      uses: actions/upload-artifact@v1
+      with:
+        name: OWASP_MSTG-SNAPSHOT-en.pdf
+        path: OWASP_MSTG-SNAPSHOT-en.pdf
+    - name: Upload English EPUB
+      uses: actions/upload-artifact@v1
+      with:
+        name: OWASP_MSTG-SNAPSHOT-en.epub
+        path: OWASP_MSTG-SNAPSHOT-en.epub
+    - name: Upload English DOCX
+      uses: actions/upload-artifact@v1
+      with:
+        name: OWASP_MSTG-SNAPSHOT-en_WIP_.docx
+        path: OWASP_MSTG-SNAPSHOT-en_WIP_.docx
+    - name: Upload English MOBI
+      uses: actions/upload-artifact@v1
+      with:
+        name: OWASP_MSTG-SNAPSHOT-en.mobi
+        path: OWASP_MSTG-SNAPSHOT-en.mobi

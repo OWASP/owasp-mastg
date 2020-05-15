@@ -1,0 +1,59 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/GITHUB_REFs
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Upload Release Asset
+jobs:
+  build:
+    name: Upload Release Asset
+    if: github.actor == 'commjoen' || github.actor == 'cpholguera' || github.actor == 'sushi2k'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      # - name: Pull the Docker image
+      #   run: docker pull owasp/masvs-docgenerator:0.1
+      - name: Build the Docker image
+        run: docker build ./tools/docker --tag mstg-generator:latest
+      - name: Generate English PDF
+        run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc mstg-generator:latest '/pandoc_makedocs.sh Document SNAPSHOT'
+      - name: Upload English PDF
+        uses: actions/upload-artifact@v1
+        with:
+          name: OWASP_MSTG-SNAPSHOT-en.pdf
+          path: OWASP_MSTG-SNAPSHOT-en.pdf
+      - name: Upload English EPUB
+        uses: actions/upload-artifact@v1
+        with:
+          name: OWASP_MSTG-SNAPSHOT-en.epub
+          path: OWASP_MSTG-SNAPSHOT-en.epub
+      - name: Upload English DOCX
+        uses: actions/upload-artifact@v1
+        with:
+          name: OWASP_MSTG-SNAPSHOT-en_WIP_.docx
+          path: OWASP_MSTG-SNAPSHOT-en_WIP_.docx
+      - name: Upload English MOBI
+        uses: actions/upload-artifact@v1
+        with:
+          name: OWASP_MSTG-SNAPSHOT-en.mobi
+          path: OWASP_MSTG-SNAPSHOT-en.mobi
+      - name: Release
+        uses: softprops/action-gh-release@91409e712cf565ce9eff10c87a8d1b11b81757ae
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body_path: tools/RECENT_CHANGES.TXT
+          files: |
+            OWASP_MSTG-${{ steps.get_version.outputs.VERSION }}-en.epub
+            OWASP_MSTG-${{ steps.get_version.outputs.VERSION }}-en.mobi
+            OWASP_MSTG-${{ steps.get_version.outputs.VERSION }}-en.pdf
+            OWASP_MSTG-${{ steps.get_version.outputs.VERSION }}-en_WIP_.docx
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      

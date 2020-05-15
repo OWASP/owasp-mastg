@@ -1,4 +1,4 @@
-<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="../Document/Images/mstg-cover-release-small.jpg"></a>
+<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="../Document/Images/mstg-cover-release-small.jpg" /></a>
 
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
 
@@ -19,9 +19,7 @@ Newer and older versions of the Excel are released on a regular basis and can be
 
 You should ensure that the generated hash is similar to the one in the table below! File hashes serve as a file verification mechanism to ensure that you are using the same excel found in this guide, and that it was downloaded properly.
 
-```
-
-```
+```bash
 | Filename | SHA256 Sum |
 |---|---|
 | Mobile_App_Security_Checklist-English_1.2.xlsx | 80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8 |
@@ -29,6 +27,7 @@ You should ensure that the generated hash is similar to the one in the table bel
 | Mobile_App_Security_Checklist-Japanese_1.2.xlsx | d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90 |
 | Mobile_App_Security_Checklist-Korean_1.2.xlsx | 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc |
 | Mobile_App_Security_Checklist-Spanish_1.2.xlsx | 4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6 |
+```
 
 ### Generate on Linux / macOS
 

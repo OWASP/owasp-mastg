@@ -307,7 +307,7 @@ To demonstrate how to bypass this technique we'll use an example of a disassembl
 
 <img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="500px"/>
 
-Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (0xB0 0x47 in Little Endian) with the `NOP` (0x00 0xBF in Little Endian) instruction. After patching, the code will be similar to the following:
+Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
 
 <img src="Images/Chapters/0x06j/ptracePatched.png" width="500px"/>
 

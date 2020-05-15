@@ -1,0 +1,18 @@
+{
+    "ignorePatterns": [
+        {
+            "pattern": "https://github.com/Your_Github_Handle/owasp-masvs"
+        },{
+            "pattern": "changelog"
+        }
+
+    ],
+    "replacementPatterns": [
+        {
+            "pattern": "^.attachments",
+            "replacement": "file://some/conventional/folder/.attachments"
+        }
+    ],
+    "see":" https://github.com/tcort/markdown-link-check#config-file-format"
+}
+

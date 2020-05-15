@@ -1,6 +1,6 @@
 # UnCrackable Mobile Apps
 
-<img align="left" width="100px" src="../Document/Images/Other/uncrackable-logo.png">
+<img align="left" width="100px" src="../Document/Images/Other/uncrackable-logo.png" />
 
 Welcome to the UnCrackable Apps for Android and iOS, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the Mobile Security Testing Guide. Of course, you can also solve them for fun. If you do solve any of the challenges, please take a moment to do our brief post-cracking [survey](https://www.surveymonkey.com/r/2TS2MZJ).
 
