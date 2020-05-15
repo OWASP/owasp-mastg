@@ -1400,9 +1400,11 @@ As a final note, always remember to properly check the API level that app is tar
 
 #### Dynamic Analysis
 
-To identify the existence of this vulnerability, create a sample APK consisting of a single activity and Toast dialog. Upon installing the sample APK on the device and post launching it, if the toast dialog overlays on the application to test then it is vulnerable to Tapjacking.
+Below APKs can be used as a proof of concept to identify the existence of this vulnerability. These proof of concept APK will work well till Android 7.0 (API level 24).  
 
-You can also test this vulnerability using an automated tool called [QARK](https://github.com/linkedin/qark "Qark"). [This article](https://resources.infosecinstitute.com/android-penetration-tools-walkthrough-series-qark "Android Penetration Tools Walkthrough Series: QARK") from Infosec institute explains this tool and how to use it for detecting tapjacking on OWASP's GoatDroid application.
+[Tapjacking POC](https://github.com/FSecureLABS/tapjacking-poc "Tapjacking POC"): This APK creates a simple overlay which sits on top of the testing application.
+
+[Invisible Keyboard](https://github.com/DEVizzi/Invisible-Keyboard, "Invisible Keyboard"): This APK creates multiple overlays on the keyboard to capture keystrokes. This is one of the exploit demonstrated in Cloak and Dagger attacks.
 
 ### Testing enforced updating (MSTG-ARCH-9)
 
@@ -1544,4 +1546,3 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 #### Tools
 
 - Drozer - <https://github.com/mwrlabs/drozer>
-- QARK - <https://github.com/linkedin/qark>
