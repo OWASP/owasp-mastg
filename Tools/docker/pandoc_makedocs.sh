@@ -32,7 +32,8 @@ echo "processing image tags and pagebreaks in $FOLDER/0x*.md, using $LANGUAGE"
 for FILE in $FOLDER/0x*.md
 do
   [ -f temp-$LANGUAGE ] && rm temp-$LANGUAGE
-  sed -f tools/docker/imagereplace.sed -f tools/docker/pagebreakreplace.sed $FILE > temp-$LANGUAGE
+  # sed -f tools/docker/imagereplace.sed -f tools/docker/pagebreakreplace.sed $FILE > temp-$LANGUAGE
+  sed -f tools/docker/imagereplace.sed $FILE > temp-$LANGUAGE
   cat temp-$LANGUAGE > $FILE
   [ -f temp-$LANGUAGE ] && rm temp-$LANGUAGE
 done

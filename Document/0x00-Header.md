@@ -3,4 +3,3 @@
 
 # Mobile Application Security Testing Guide
 
-[DATE]
