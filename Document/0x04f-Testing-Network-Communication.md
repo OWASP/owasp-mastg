@@ -14,7 +14,7 @@ Several free and commercial proxy tools are available. Here are some of the most
 
 To use the interception proxy, you'll need run it on your machine and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
-<img src="Images/Chapters/0x04f/BURP.png" width="550px"/>
+<img src="Images/Chapters/0x04f/BURP.png" width="550px" />
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
@@ -93,7 +93,7 @@ bettercap will then automatically send the packets to the network gateway in the
 
 On the mobile phone start the browser and navigate to `http://example.com`, you should see output like the following when you are using Wireshark.
 
-<img src="Images/Chapters/0x04f/bettercap.png" alt="Wireshark">
+<img src="Images/Chapters/0x04f/bettercap.png" alt="Wireshark" />
 
 If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
 
@@ -126,7 +126,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 
 > If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
-<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point">
+<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point" />
 
 ##### Installation
 
@@ -296,7 +296,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
     - Redirect to port: provide original port location
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
-<img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location"/>
+<img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location" />
 
 <br/>
 <br/>
