@@ -268,7 +268,7 @@ When keys are generated and used within the `AndroidKeyStore` and the `KeyInfo.i
 
 Android 9 (API level 28) adds the ability to import keys securely into the `AndroidKeystore`. First `AndroidKeystore` generates a key pair using `PURPOSE_WRAP_KEY` which should also be protected with an attestation certificate, this pair aims to protect the Keys being imported to `AndroidKeystore`. The encrypted keys are generated as ASN.1-encoded message in the `SecureKeyWrapper` format which also contains a description of the ways the imported key is allowed to be used. The keys are then decrypted inside the `AndroidKeystore` hardware belonging to the specific device that generated the wrapping key so they never appear as plaintext in the device's host memory.
 
-<img src="Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png" alt="Secure key import into Keystore" width="500"/>
+<img src="Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png" alt="Secure key import into Keystore" width="500" />
 
 ```java
 KeyDescription ::= SEQUENCE {
@@ -394,7 +394,7 @@ $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 
 This will highlight all the classes that use the `SecretKeySpec` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
 
-<img src="Images/Chapters/0x5e/static_encryption_key.png" width="600px"/>
+<img src="Images/Chapters/0x5e/static_encryption_key.png" width="600px" />
 
 When you have access to the source code, check at least for the following:
 

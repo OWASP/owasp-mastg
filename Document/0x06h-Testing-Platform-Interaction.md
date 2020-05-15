@@ -115,7 +115,7 @@ Since iOS 10, these are the main areas which you need to inspect for permissions
 
 [*Purpose strings*](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or *usage description strings* are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
 
-<img src="Images/Chapters/0x06h/permission_request_alert.png" width="250px"/>
+<img src="Images/Chapters/0x06h/permission_request_alert.png" width="250px" />
 
 If linking on or after iOS 10, developers are required to include purpose strings in their app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5 "The Information Property List File") file. Otherwise, if the app attempts to access protected data or resources without having provided the corresponding purpose string, [the access will fail and the app might even crash](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources").
 
@@ -126,7 +126,7 @@ If having the original source code, you can verify the permissions included in t
 
 You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
-<img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="550px"/>
+<img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="550px" />
 
 If only having the IPA:
 
@@ -311,7 +311,7 @@ $ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 
 Now we open the share dialog:
 
-<img src="Images/Chapters/0x06h/telegram_share_something.png" width="250px"/>
+<img src="Images/Chapters/0x06h/telegram_share_something.png" width="250px" />
 
 The following methods are displayed:
 
@@ -364,7 +364,7 @@ We see that `+[CLLocationManager authorizationStatus]` returned `0x4` ([CLAuthor
 
 Next, there is a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to *trigger* them in order to be listed on that screen.
 
-<img src="Images/Chapters/0x06h/settings_allow_screen.png" width="550px"/>
+<img src="Images/Chapters/0x06h/settings_allow_screen.png" width="550px" />
 
 For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.
 
@@ -441,7 +441,7 @@ Try to retrieve the `apple-app-site-association` file from the server using the 
 
 You can retrieve it yourself with your browser or use the [Apple App Site Association (AASA) Validator](https://branch.io/resources/aasa-validator/ "AASA"). After entering the domain, it will display the file, verify it for you and show the results (e.g. if it is not being properly served over HTTPS). See the following example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association "Apple\'s apple-app-site-association file"):
 
-<img src="Images/Chapters/0x06h/apple-app-site-association-file_validation.png" width="550px"/>
+<img src="Images/Chapters/0x06h/apple-app-site-association-file_validation.png" width="550px" />
 
 ```json
 {
@@ -642,11 +642,11 @@ One of them should offer the "Open in app" option and the other should not.
 
 If we long press on the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
 
-<img src="Images/Chapters/0x06h/forbidden_universal_link.png" width="250px"/>
+<img src="Images/Chapters/0x06h/forbidden_universal_link.png" width="250px" />
 
 If we long press on the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
 
-<img src="Images/Chapters/0x06h/allowed_universal_link.png" width="250px"/>
+<img src="Images/Chapters/0x06h/allowed_universal_link.png" width="250px" />
 
 > Note that there is a difference between a click and a long press. Once we long press a link and select an option, e.g. "Open in Safari", this will become the default option for all future clicks until we long press again and select another option.
 
@@ -696,7 +696,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 
 Write `https://t.me/addstickers/radare` (found through a quick Internet research) and open it from the Notes app.
 
-<img src="Images/Chapters/0x06h/telegram_add_stickers_universal_link.png" width="250px"/>
+<img src="Images/Chapters/0x06h/telegram_add_stickers_universal_link.png" width="250px" />
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
@@ -898,7 +898,7 @@ This knowledge should help you when testing apps supporting Handoff.
 
 Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide *share activity sheet* that appears after clicking on the "Share" button.
 
-<img src="Images/Chapters/0x06h/share_activity_sheet.png" width="550px"/>
+<img src="Images/Chapters/0x06h/share_activity_sheet.png" width="550px" />
 
 The available built-in sharing mechanisms (aka. Activity Types) include:
 
@@ -1162,7 +1162,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 2. Wait for the **AirDrop** popup to appear and click on **Accept**.
 3. As there is no default app that will open the file, it switches to the **Open with...** popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
 
-    <img src="Images/Chapters/0x06h/airdrop_openwith.png" width="250px"/>
+    <img src="Images/Chapters/0x06h/airdrop_openwith.png" width="250px" />
 
 4. After selecting **SomeFileManager** we can see the following:
 
@@ -1230,7 +1230,7 @@ There are three important elements here:
 
 For example, the user selects text in the *host app*, clicks on the "Share" button and selects one "app" or action from the list. This triggers the *app extension* of the *containing app*. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13 "An app extension can communicate indirectly with its containing app") which pretty good summarizes this:
 
-<img src="Images/Chapters/0x06h/app_extensions_communication.png" width="550px"/>
+<img src="Images/Chapters/0x06h/app_extensions_communication.png" width="550px" />
 
 ###### Security Considerations
 
@@ -1262,7 +1262,7 @@ The static analysis will take care of:
 
 If you have the original source code you can search for all occurrences of `NSExtensionPointIdentifier` with Xcode (cmd+shift+f) or take a look into "Build Phases / Embed App extensions":
 
-<img src="Images/Chapters/0x06h/xcode_embed_app_extensions.png" width="550px"/>
+<img src="Images/Chapters/0x06h/xcode_embed_app_extensions.png" width="550px" />
 
 There you can find the names of all embedded app extensions followed by `.appex`, now you can navigate to the individual app extensions in the project.
 
@@ -1324,7 +1324,7 @@ Only the data types present here and not having `0` as `MaxCount` will be suppor
 
 Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group") and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults") API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11 "An app extension’s container is distinct from its containing app’s container"):
 
-<img src="Images/Chapters/0x06h/app_extensions_container_restrictions.png" width="500px"/>
+<img src="Images/Chapters/0x06h/app_extensions_container_restrictions.png" width="500px" />
 
 As also mentioned in the guide, the app must set up a shared container if the app extension uses the `NSURLSession` class to perform a background upload or download, so that both the extension and its containing app can access the transferred data.
 
@@ -1345,7 +1345,7 @@ For this we should hook `NSExtensionContext - inputItems` in the data originatin
 
 Following the previous example of Telegram we will now use the "Share" button on a text file (that was received from a chat) to create a note in the Notes app with it:
 
-<img src="Images/Chapters/0x06h/telegram_share_extension.png" width="250px"/>
+<img src="Images/Chapters/0x06h/telegram_share_extension.png" width="250px" />
 
 If we run a trace, we'd see the following output:
 
@@ -1569,7 +1569,7 @@ The first step to test custom URL schemes is finding out whether an application 
 
 If you have the original source code and want to view registered protocol handlers, simply open the project in Xcode, go to the **Info** tab and open the **URL Types** section as presented in the screenshot below:
 
-<img src="Images/Chapters/0x06h/URL_scheme.png" width="500px"/>
+<img src="Images/Chapters/0x06h/URL_scheme.png" width="500px" />
 
 Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app’s `Info.plist` file (example from [iGoat-Swift](https://github.com/OWASP/iGoat-Swift "iGoat-Swift")):
 
@@ -1940,7 +1940,7 @@ Now we know that:
 
 The call was successful and we see now that the iGoat app was open:
 
-<img src="Images/Chapters/0x06h/iGoat_opened_via_url_scheme.jpg" width="250px"/>
+<img src="Images/Chapters/0x06h/iGoat_opened_via_url_scheme.jpg" width="250px" />
 
 Notice that we can also see that the caller (source application) was Safari if we look in the upper-left corner of the screenshot.
 
@@ -1997,7 +1997,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behavior.
 
-<img src="Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png" width="250px"/>
+<img src="Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png" width="250px" />
 
 First of all we let frida-trace generate the stubs for us:
 
@@ -2080,7 +2080,7 @@ There you can observe the following:
 
 It is interesting to see that if you navigate again to "<https://telegram.me/fridadotre>", click on **cancel** and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
 
-<img src="Images/Chapters/0x06h/open_in_telegram_via_universallink.png" width="250px"/>
+<img src="Images/Chapters/0x06h/open_in_telegram_via_universallink.png" width="250px" />
 
 You can try this while tracing both methods:
 
@@ -2271,7 +2271,7 @@ A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). S
 - An Action ("Share") button.
 - A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
 
-<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="500px"/>
+<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="500px" />
 
 There are a couple of things to consider:
 
@@ -2878,7 +2878,7 @@ window.webkit.messageHandlers.javaScriptBridge.postMessage(["getSecret"]);
 
 Of course, you may also use the Exploitation Helper it provides:
 
-<img src="Images/Chapters/0x06h/exploit_javascript_bridge.png" width="250px"/>
+<img src="Images/Chapters/0x06h/exploit_javascript_bridge.png" width="250px" />
 
 See another example for a vulnerable iOS app and function that is exposed to a WebView in [#thiel2] page 156.
 
