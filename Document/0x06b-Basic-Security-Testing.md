@@ -529,6 +529,8 @@ root@localhost's password:
 iPhone:~ root#
 ```
 
+You can [make the iproxy run automatically in the background](https://iphonedevwiki.net/index.php/SSH_Over_USB "Making iproxy run automatically in the background on OS X") if you don't want to run the binary every time you want to SSH over USB.
+
 You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
 
 ##### On-device Shell App
