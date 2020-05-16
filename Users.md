@@ -24,7 +24,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Secarma](https://www.secarma.com/ "Secarma")
 - [SecuRing](https://securing.biz/ "SecuRing")
 - [STM Solutions](https://stmsolutions.pl/ "STM Solutions")
-- [Toreon](https://www.toreon.com/ethical-hackers/ "Toreon")
+- [Toreon](https://www.toreon.com/ "Toreon")
 - [VantagePoint](https://www.vantagepoint.sg "VantagePoint")
 - [Vertical Structure](https://www.verticalstructure.com "Vertical Structure Ltd")
 - [Websec Canada](https://www.websec.ca/mobile-application-security "Websec Canada")
@@ -38,7 +38,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 
 - [Egov standards for India](http://egovstandards.gov.in/notified-standards-0 "Egov standards for India")
 - [Finish Transport and Communication Agency (TRAFICOM) - Assessment guideline for electronic identification services (Draft)](https://www.traficom.fi/sites/default/files/media/file/DRAFT%20Traficom%20guideline%20211%202019%20conformity%20assessment%20of%20eID%20service.pdf "Finish Transport and Communication Agency (TRAFICOM)")
-- [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/implementation-guidelines/mobile-initiated-sepa-credit-transfer-interoperability "European Payments Council")
+- [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability "European Payments Council")
 - [Vetting the Security of Mobile Applications: NIST Publishes SP 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1 "National Institute of Standards and Technology")
 
 ## Application in scientific research

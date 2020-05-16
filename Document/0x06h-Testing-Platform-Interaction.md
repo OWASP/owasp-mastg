@@ -281,7 +281,7 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
     }
     ```
 
-    See Table1 in ["Determining the Availability of Location Services"](https://developer.apple.com/documentation/corelocation/determining_the_availability_of_location_services?language=objc#2854917 "Getting the availability of Core Location services") (Apple Developer Documentation) for a complete list.
+    See Table1 in ["Determining the Availability of Location Services"](https://developer.apple.com/documentation/corelocation/adding_location_services_to_your_app "Getting the availability of Core Location services") (Apple Developer Documentation) for a complete list.
 
 Go through the application searching for usages of these APIs and check what happens to sensitive data that might be obtained from them. For example, it might be stored or transmitted over the network, if this is the case, proper data protection and transport security should be additionally verified.
 
@@ -1372,7 +1372,7 @@ RET: (
 Here we can observe that:
 
 - This occurred under-the-hood via XPC, concretely it is implemented via a `NSXPCConnection` that uses the `libxpc.dylib` Framework.
-- The UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Share/Info.plist "Info.plist of the \'Share Extension\' of Telegram").
+- The UTIs included in the `NSItemProvider` are `public.plain-text` and `public.file-url`, the latter being included in `NSExtensionActivationRule` from the [`Info.plist` of the "Share Extension" of Telegram](https://github.com/TelegramMessenger/Telegram-iOS/blob/master/Telegram/Share/Info.plist "Info.plist of the \'Share Extension\' of Telegram").
 
 ###### Identifying the App Extensions Involved
 
@@ -1619,7 +1619,7 @@ Before calling the `openURL:options:completionHandler:` method, apps can call [`
 
 `canOpenURL` will always return `NO` for undeclared schemes, whether or not an appropriate app is installed. However, this restriction only applies to `canOpenURL`, **the `openURL:options:completionHandler:` method will still open any URL scheme, even if the `LSApplicationQueriesSchemes` array was declared**, and return `YES` / `NO` depending on the result.
 
-As an example, Telegram declares in its [`Info.plist`](https://github.com/peter-iakovlev/Telegram-iOS/blob/master/Telegram-iOS/Info.plist#L63 "Telegram\'s Info.plist Line 63") these Queries Schemes, among others:
+As an example, Telegram declares in its [`Info.plist`](https://github.com/TelegramMessenger/Telegram-iOS/blob/master/Telegram/Telegram-iOS/Info.plist#L233 "Telegram\'s Info.plist Line 63") these Queries Schemes, among others:
 
 ```xml
     <key>LSApplicationQueriesSchemes</key>

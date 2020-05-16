@@ -56,7 +56,7 @@ echo "Create PDF"
     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.pdf $CHAPTERS \
     --verbose
 
-echo "Create epub"
+echo "create epub"
 pandoc --resource-path=.:${FOLDER} \
     -f markdown \
     -t epub \
@@ -74,8 +74,9 @@ pandoc --resource-path=.:${FOLDER} \
     --reference-doc tools/custom-reference.docx \
     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}_WIP_.docx $CHAPTERS 
 
-echo "create epub"
-kindlegen ${OUTPUT_BASE_NAME}-${LANGUAGE}.epub
+echo "Create mobi"
+ebook-convert "${OUTPUT_BASE_NAME}-${LANGUAGE}.epub" "${OUTPUT_BASE_NAME}-${LANGUAGE}.mobi"
+# kindlegen ${OUTPUT_BASE_NAME}-${LANGUAGE}.epub
 
 rm tmp_first_page-$LANGUAGE.tex
 rm tmp_cover-$LANGUAGE.tex
