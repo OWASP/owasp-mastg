@@ -995,10 +995,10 @@ The file might be formatted in XML or binary (bplist). You can convert it to XML
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
-- App permissions Purpose Strings: `UsageDescription` (see "iOS Platform APIs")
-- Custom URL schemes: `CFBundleURLTypes` (see "iOS Platform APIs")
-- Exported/imported *custom document types*: `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` (see "iOS Platform APIs")
-- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "iOS Network APIs")
+- App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported *custom document types*: `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network APIs](0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
