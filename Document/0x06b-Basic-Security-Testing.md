@@ -1006,7 +1006,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 iOS app binaries are fat binaries (they can be deployed on all devices 32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
 
-Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details.
+Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md) for more details.
 
 ###### Native Libraries
 
