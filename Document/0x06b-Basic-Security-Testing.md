@@ -1188,7 +1188,7 @@ As well as the Data directory in **Files** -> **Data**:
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px">
 
-Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
 
