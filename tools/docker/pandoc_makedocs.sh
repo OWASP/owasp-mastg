@@ -56,7 +56,7 @@ echo "Create PDF"
     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.pdf $CHAPTERS \
     --verbose
 
-echo "Create epub"
+echo "Create mobi"
 pandoc --resource-path=.:${FOLDER} \
     -f markdown \
     -t epub \
