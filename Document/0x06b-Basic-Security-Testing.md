@@ -31,7 +31,7 @@ $ xcode-select --install
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Just select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
-<img src="Images/Chapters/0x06b/UDID-Finder.png" alt="UDID in Finder" width="500"/>
+<img src="Images/Chapters/0x06b/UDID-Finder.png" alt="UDID in Finder" width="500" />
 
 If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
 
@@ -313,7 +313,7 @@ Once you have MobSF up and running you can open it in your browser by navigating
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
 
-<img src="Images/Chapters/0x06b/mobsf_ios.png" alt="MobSF for iOS"/>
+<img src="Images/Chapters/0x06b/mobsf_ios.png" alt="MobSF for iOS" />
 
 The following is displayed:
 
@@ -442,7 +442,7 @@ listening on http://localhost:31337
 
 When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon you will get an overview of all installed apps:
 
-<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250"/>
+<img src="Images/Chapters/0x06b/Passionfruit.png" alt="Passionfruit" width="250" />
 
 With Passionfruit it's possible to explore different kinds of information concerning an iOS app. Once you selected the iOS app you can perform many tasks such as:
 
@@ -473,7 +473,7 @@ One of the most common things you do when testing an app is accessing the device
 
 In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either Cydia (see screenshot above) or Sileo installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
-<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250"/>
+<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250" />
 
 In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the Settings -> Wi-Fi menu and tapping once on the info icon of the network you're connected to.
 
@@ -569,7 +569,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 After starting Passionfruit you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory"/>
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory" />
 
 When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
@@ -579,7 +579,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passionfruit File Options" width="500px"/>
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passionfruit File Options" width="500px" />
 
 ##### Objection
 
@@ -1051,13 +1051,13 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550px"/>
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550px" />
 
 ##### Accessing App Data Directories
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
 
-<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350"/>
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350" />
 
 On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) assigned for its directory names.
 
@@ -1178,15 +1178,15 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
-<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550px"/>
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550px" />
 
 Including the `Info.plist` file:
 
-<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550px"/>
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550px" />
 
 As well as the Data directory in **Files** -> **Data**:
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px"/>
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px" />
 
 Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
 
@@ -1201,11 +1201,11 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 5. Reproduce the problem.
 6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-<img src="Images/Chapters/0x06b/open_device_console.png"  width="550px"/>
+<img src="Images/Chapters/0x06b/open_device_console.png" width="550px" />
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
-<img src="Images/Chapters/0x06b/device_console.png"  width="550px"/>
+<img src="Images/Chapters/0x06b/device_console.png" width="550px" />
 
 You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
 
@@ -1226,7 +1226,7 @@ Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch
 
 Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the **Console** -> **Output** tab:
 
-<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View"/>
+<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View" />
 
 Needle also has an option to capture the logs of an iOS application, you can start the monitoring by opening Needle and running the following commands:
 
@@ -1317,7 +1317,7 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
-<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250"/>
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250" />
 
 ###### Keychain-dumper (Jailbroken)
 
@@ -1375,7 +1375,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 ip.addr == 192.168.1.1 && http
 ```
 
-<img src="Images/Chapters/0x06b/wireshark_filters.png" width="550px"/>
+<img src="Images/Chapters/0x06b/wireshark_filters.png" width="550px" />
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 

@@ -479,7 +479,7 @@ In the layout definition of an activity, you can define `TextViews` that have XM
 ```xml
    <EditText
         android:id="@+id/KeyBoardCache"
-        android:inputType="textNoSuggestions"/>
+        android:inputType="textNoSuggestions" />
 ```
 
 The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions").
@@ -900,7 +900,7 @@ While black-box testing the app, navigate to any screen that contains sensitive 
 
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
-| <img src="Images/Chapters/0x05d/1.png" width="500px"/> | <img src="Images/Chapters/0x05d/2.png" width="500px"/> |
+| <img src="Images/Chapters/0x05d/1.png" width="500px" /> | <img src="Images/Chapters/0x05d/2.png" width="500px" /> |
 
 On devices supporting [file-based encryption (FBE)](https://source.android.com/security/encryption/file-based "FBE"), snapshots are stored in the `/data/system_ce/<USER_ID>/<IMAGE_FOLDER_NAME>` folder. `<IMAGE_FOLDER_NAME>` depends on the vendor but most common names are `snapshots` and `recent_images`. If the device doesn't support FBE, the `/data/system/<IMAGE_FOLDER_NAME>` folder is used.
 
@@ -1142,11 +1142,11 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 For rudimentary analysis, you can use Android Studio's built-in tools. They are on the _Android Monitor_ tab. To dump memory, select the device and app you want to analyze and click _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory, which is on the app's project path.
 
-<img src="Images/Chapters/0x05d/Dump_Java_Heap.png" width="550px"/>
+<img src="Images/Chapters/0x05d/Dump_Java_Heap.png" width="550px" />
 
 To navigate through class instances that were saved in the memory dump, select the Package Tree View in the tab showing the _.hprof_ file.
 
-<img src="Images/Chapters/0x05d/Package_Tree_View.png" width="550px"/>
+<img src="Images/Chapters/0x05d/Package_Tree_View.png" width="550px" />
 
 For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer Tool (MAT). It is available as an Eclipse plugin and as a standalone application.
 

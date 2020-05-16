@@ -18,12 +18,10 @@ jobs:
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      # - name: Pull the Docker image
-      #   run: docker pull owasp/masvs-docgenerator:0.1
-      - name: Build the Docker image
-        run: docker build ./tools/docker --tag mstg-generator:latest
+      - name: Pull the Docker image
+        run: docker pull owasp/mstg-docgenerator:0.2
       - name: Generate English PDF
-        run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc mstg-generator:latest '/pandoc_makedocs.sh Document SNAPSHOT'
+        run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc owasp/mstg-docgenerator:0.2 '/pandoc_makedocs.sh Document SNAPSHOT'
       - name: Upload English PDF
         uses: actions/upload-artifact@v1
         with:
