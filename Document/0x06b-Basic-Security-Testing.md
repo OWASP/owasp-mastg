@@ -224,7 +224,7 @@ For a quick start you can go through the [iOS examples](https://www.frida.re/doc
 
 ##### Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
 ##### IDB
 
@@ -329,7 +329,7 @@ The following is displayed:
 
 > In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
 
-Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
+Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation") for more details.
 
 ##### Needle
 
@@ -783,7 +783,7 @@ When you install an application without using Apple's App Store, this is called 
 
 Different methods exist for installing an IPA package onto an iOS device, which are described in detail below.
 
-> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not longer possible to install apps.
+> Please note that iTunes is no longer available in macOS Catalina. If you are using an older version of macOS, iTunes is still available but since iTunes 12.7 it is not possible to install apps.
 
 ##### Cydia Impactor
 
@@ -925,7 +925,7 @@ You can also directly open passionfruit and after selecting your iOS device you'
 
 ##### Exploring the App Package
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in [Basic Testing Operations - Obtaining and Extracting Apps](#obtaining-and-extracting-apps "Obtaining and Extracting Apps").
 
 You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
@@ -995,10 +995,10 @@ The file might be formatted in XML or binary (bplist). You can convert it to XML
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
-- App permissions Purpose Strings: `UsageDescription` (see "iOS Platform APIs")
-- Custom URL schemes: `CFBundleURLTypes` (see "iOS Platform APIs")
-- Exported/imported *custom document types*: `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` (see "iOS Platform APIs")
-- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "iOS Network APIs")
+- App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported *custom document types*: `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network APIs](0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
@@ -1006,7 +1006,7 @@ Please refer to the mentioned chapters to learn more about how to test each of t
 
 iOS app binaries are fat binaries (they can be deployed on all devices 32- and 64-bit). In contrast to Android, where you can actually decompile the app binary to Java code, the iOS app binaries can only be disassembled.
 
-Refer to the chapter "Reverse Engineering and Tampering on iOS" for more details.
+Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md) for more details.
 
 ###### Native Libraries
 
@@ -1045,7 +1045,7 @@ Regular           420  None                ...  libswiftCoreFoundation.dylib
 
 Please note that this might not be the complete list of native code elements being used by the app as some can be part of the source code, meaning that they'll be compiled in the app binary and therefore cannot be found as standalone libraries or Frameworks in the `Frameworks` folder.
 
-For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to the chapter "Tampering and Reverse Engineering on iOS" for more information about how to reverse engineer Frameworks.
+For now this is all information you can get about the Frameworks unless you start reverse engineering them. Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md) for more information about how to reverse engineer Frameworks.
 
 ###### Other App Resources
 
@@ -1188,7 +1188,7 @@ As well as the Data directory in **Files** -> **Data**:
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px" />
 
-Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
 
 ##### Monitoring System Logs
 
@@ -1207,7 +1207,7 @@ To save the console output to a text file, go to the top right side of the Conso
 
 <img src="Images/Chapters/0x06b/device_console.png" width="550px" />
 
-You can also connect to the device shell as explained in "Accessing the Device Shell", install socat via apt-get and run the following command:
+You can also connect to the device shell as explained in [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell), install socat via apt-get and run the following command:
 
 ```shell
 iPhone:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock
@@ -1389,7 +1389,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 
 ##### Using Burp via USB on a Jailbroken Device
 
-In the section "Accessing the Device Shell" we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
