@@ -49,7 +49,7 @@ echo "Create PDF"
   pandoc --resource-path=.:${FOLDER} \
     --pdf-engine=xelatex --template=eisvogel \
     --columns 72 \
-    --toc -V toc-title:"${TOC_TITLE}" --toc-depth=2 \
+    --toc -V toc-title:"${TOC_TITLE}" --toc-depth=3 \
     --metadata title="OWASP Mobile Application Security Testing Guide $VERSION" \
     -H tmp_latex-header-$LANGUAGE.tex -V linkcolor:blue \
     --include-before-body tmp_cover-$LANGUAGE.tex --include-before-body tmp_first_page-$LANGUAGE.tex \

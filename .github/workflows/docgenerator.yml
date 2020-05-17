@@ -13,9 +13,6 @@ jobs:
 
     - name: Pull the Docker image
       run: docker pull owasp/mstg-docgenerator:0.2
-    # # only use below when testing new container builds
-    # - name: Build the Docker image
-    #   run: docker build ./tools/docker --tag mstg-generator:latest
     - name: Generate English PDF
       run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc owasp/mstg-docgenerator:0.2 '/pandoc_makedocs.sh Document SNAPSHOT'
     - name: Upload English PDF
