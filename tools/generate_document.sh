@@ -7,8 +7,8 @@ type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not install
 # 2. add [DATE] to tag+tag of Date
 
 cd ../Document
-# ../Tools/metadata.yml \
-pandoc -f gfm --toc -N --columns 10000 --self-contained -s --reference-doc ../Tools/reference.docx -t docx  -o ../Generated/MSTG-EN.docx \
+# ../tools/metadata.yml \
+pandoc -f gfm --toc -N --columns 10000 --self-contained -s --reference-doc ../tools/reference.docx -t docx  -o ../Generated/MSTG-EN.docx \
 0x00-Header.md \
 Foreword.md \
 0x02-Frontispiece.md \
@@ -51,7 +51,7 @@ SUMMARY.md
 
 # cd ../Document-ru
 #
-# pandoc -f gfm --toc -N --columns 10000 --self-contained --reference-doc ../Tools/reference.docx -t docx  -o ../Generated/MSTG_2.docx \
+# pandoc -f gfm --toc -N --columns 10000 --self-contained --reference-doc ../tools/reference.docx -t docx  -o ../Generated/MSTG_2.docx \
 # 0x03-Overview.md \
 # 0x04-General-Testing-Guide.md \
 # 0x04a-Mobile-App-Taxonomy.md \
@@ -87,11 +87,11 @@ SUMMARY.md
 # 0x08-Testing-Tools.md \
 # 0x09-Suggested-Reading.md
 #
-# pandoc -f gfm -N --columns 10000 --reference-doc ../Tools/reference.docx -o ../Generated/MSTG_1-ru.docx \
+# pandoc -f gfm -N --columns 10000 --reference-doc ../tools/reference.docx -o ../Generated/MSTG_1-ru.docx \
 # 0x00-Header.md \
 # Foreword.md \
 # 0x02-Frontispiece.md
 #
-# pandoc -f docx -N --columns 10000 --reference-doc ../Tools/reference.docx -o ../Generated/MSTG-ru.docx \
+# pandoc -f docx -N --columns 10000 --reference-doc ../tools/reference.docx -o ../Generated/MSTG-ru.docx \
 # ../Generated/MSTG_1-ru.docx \
 # ../Generated/MSTG_2-ru.docx
