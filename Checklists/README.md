@@ -28,7 +28,7 @@ You should ensure that the generated hash is similar to the one in the table bel
 | Mobile_App_Security_Checklist-French_1.2.xlsx | 080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609 |
 | Mobile_App_Security_Checklist-Japanese_1.2.xlsx | d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90 |
 | Mobile_App_Security_Checklist-Korean_1.2.xlsx | 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc |
-| Mobile_App_Security_Checklist-Spanish_1.2.xlsx | 4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6 |
+| Mobile_App_Security_Checklist-Spanish_1.2.xlsx | b540a7674082b690cbe35bf145eadc424073a7cfe033b70da1babb1762df5d44 |
 
 ### Generate on Linux / macOS
 
@@ -38,7 +38,7 @@ $ sha256sum *.xlsx
 080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609  Mobile_App_Security_Checklist-French_1.2.xlsx
 d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90  Mobile_App_Security_Checklist-Japanese_1.2.xlsx
 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc  Mobile_App_Security_Checklist-Korean_1.2.xlsx
-4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6  Mobile_App_Security_Checklist-Spanish_1.2.xlsx
+b540a7674082b690cbe35bf145eadc424073a7cfe033b70da1babb1762df5d44  Mobile_App_Security_Checklist-Spanish_1.2.xlsx
 ```
 
 ### Generate on Windows
@@ -64,6 +64,6 @@ Hash      : 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc
 Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Korean_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : 4c530937706bbd946622bc806c0fe5fdbc604bd280e7546620eb5de9d1897bb6
+Hash      : b540a7674082b690cbe35bf145eadc424073a7cfe033b70da1babb1762df5d44
 Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Spanish_1.2.xlsx
 ```
