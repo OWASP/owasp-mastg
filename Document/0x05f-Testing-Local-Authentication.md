@@ -273,7 +273,7 @@ KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
 keyStore.load(null);
 PrivateKey key = (PrivateKey) keyStore.getKey(MY_KEY, null);
 signature.initSign(key);
-CryptoObject cryptObject = new FingerprintManager.CryptoObject(signature);
+CryptoObject cryptoObject = new FingerprintManager.CryptoObject(signature);
 
 CancellationSignal cancellationSignal = new CancellationSignal();
 FingerprintManager fingerprintManager =
