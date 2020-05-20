@@ -1844,7 +1844,7 @@ public class a {
 }
 ```
 
-Notice the `string.equals` comparison at the end of the `a` method and the creation of the string `arrby` in the `try` block above. `arrby` is the return value of the function `sg.vantagepoint.a.a.a`. `string.equals` comparison compares your input with `arrby`. So we want the return value of `sg.vantagepoint.a.a.a.`
+Look at the `string.equals` comparison at the end of the `a` method and the creation of the string `arrby` in the `try` block above. `arrby` is the return value of the function `sg.vantagepoint.a.a.a`. `string.equals` comparison compares your input with `arrby`. So we want the return value of `sg.vantagepoint.a.a.a.`
 
 Instead of reversing the decryption routines to reconstruct the secret key, you can simply ignore all the decryption logic in the app and hook the `sg.vantagepoint.a.a.a` function to catch its return value.
 Here is the complete script that prevents exiting on root and intercepts the decryption of the secret string:
