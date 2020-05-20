@@ -637,7 +637,7 @@ The following techniques can be used to obfuscate an application:
 
 #### Name obfuscation of classes, methods and fields
 
-The standard compiler generates binary’s symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *JailbreakDetectionViewController.jailbreakTest4Tapped(..)* from DVIA-v2 app.
+The standard compiler generates binary symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *JailbreakDetectionViewController.jailbreakTest4Tapped(..)* from the app Damn Vulnerable iOS App Version 2 (DVIA-v2).
 
 ```assembly
 __T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:
@@ -653,16 +653,15 @@ stp        x22, x21, [sp, #-0x30]!
 mov        rbp, rsp
 ```
 
-Nevertheless, the binary’s code is not modified, so an attacker can still retrieve the logic of the algorithm by reading the disassembled version of the function and figure out its purpose.
+Nevertheless, the binary’s code is not modified, so an attacker can still retrieve the logic of the algorithm by reading the disassembled version of the function and understand its purpose.
 
 #### Instructions substitution
 
-This technique replaces standard binary operators like addition, subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. Nevertheless, this technique is vulnerable to code re-optimaliztion.
+This technique replaces standard binary operators like addition or subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. Nevertheless, this technique is vulnerable to de-obfuscation, but it can still be time consuming depending on the complexity and depth of the substitutions.
 
-#### Control flow Flattering
-Control flow Flattening replaces original code with a more complex representation. The transformation breaks the body of the function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because the natural conditional constructs that made the code easier to read are now gone.
+#### Control Flow Flattening
 
-
+Control Flow Flattening replaces original code with a more complex representation. The transformation breaks the body of the function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because the natural conditional constructs that made the code easier to read are now gone.
 
 ![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png)
 
@@ -670,7 +669,7 @@ The image shows how the control-flow flattening alters code ([Obfuscating C++ pr
 
 #### Dead code injection
 
-This technique makes the program's control-flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but brings the overhead for the reverse engineering.
+This technique makes the program's control-flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
 
 #### String encryption
 
@@ -678,7 +677,7 @@ Applications are often compiled with hardcoded keys, licences, tokens and URL en
 
 #### Recommended tools
 
-* [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the XCODE project and replaces all names of classes, methods and fields with random values before the compiler is used.
+* [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 * [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation instead of the the source code. It can be used for symbols obfuscation, string encryption and control-flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
 #### How to use SwiftShield
