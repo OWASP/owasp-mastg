@@ -628,6 +628,7 @@ Obfuscation is a process of transforming the original algorithms, data structure
 #### Obfuscation Techniques
 
 The following techniques can be used to obfuscate an application:
+
 - Name obfuscation of classes, methods and fields
 - Instructions substitution
 - Control flow flattening
