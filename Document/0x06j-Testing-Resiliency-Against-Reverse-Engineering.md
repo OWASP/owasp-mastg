@@ -744,7 +744,7 @@ Button_Emulator ===> akcVscrZFdBBYqYrcmhhyXAevNdXOKeG
 
 This is needed for [deobfuscating encrypted crash logs](https://github.com/rockbruno/swiftshield#-deobfuscating-encrypted-crash-logs "Deobfuscating encrypted Crash logs").
 
-Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/SwiftShieldExample "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
+Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
 #### Effectiveness Assessment
 
