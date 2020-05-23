@@ -1,4 +1,4 @@
-<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="../Document/Images/mstg-cover-release-small.jpg"></a>
+<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="../Document/Images/mstg-cover-release-small.jpg" /></a>
 
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
 
@@ -19,9 +19,7 @@ Newer and older versions of the Excel are released on a regular basis and can be
 
 You should ensure that the generated hash is similar to the one in the table below! File hashes serve as a file verification mechanism to ensure that you are using the same excel found in this guide, and that it was downloaded properly.
 
-```
-
-```
+```bash
 | Filename | SHA256 Sum |
 |---|---|
 | Mobile_App_Security_Checklist-English_1.2.xlsx | 80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8 |

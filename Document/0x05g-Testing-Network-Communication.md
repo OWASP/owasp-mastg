@@ -420,15 +420,15 @@ If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-c
 <network-security-config>
     <base-config>
         <trust-anchors>
-            <certificates src="system"/>
-            <certificates src="user"/>
+            <certificates src="system" />
+            <certificates src="user" />
         </trust-anchors>
     </base-config>
     <domain-config>
         <domain includeSubdomains="false">owasp.org</domain>
         <trust-anchors>
-            <certificates src="system"/>
-            <certificates src="user"/>
+            <certificates src="system" />
+            <certificates src="user" />
         </trust-anchors>
         <pin-set expiration="2018/8/10">
             <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of

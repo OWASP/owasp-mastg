@@ -1119,7 +1119,7 @@ There are a few key terms you can look for when the source code is available:
 
 - The creation of private keys in the `AndroidKeyStore` using the `KeyPairGeneratorSpec` or `KeyGenParameterSpec` APIs.
 
-To be sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The file should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
+To be sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The file should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE" />`.
 
 > Apps for Android 8.0 (API level 26) will get the result "UNKNOWN" when they request `Build.Serial`.
 
@@ -1212,7 +1212,7 @@ Go through the following steps for Instance ID:
     ```xml
     <service android:name=".MyInstance IDService" android:exported="false">
     <intent-filter>
-            <action android:name="com.google.android.gms.iid.Instance ID"/>
+            <action android:name="com.google.android.gms.iid.Instance ID" />
     </intent-filter>
     </service>
     ```
@@ -1236,8 +1236,8 @@ For devices running Android version O and later, you can request the device's se
 1. Set the permission in your Android manifest:
 
     ```xml
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     ```
 
 2. Request the permission at runtime from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
@@ -1252,7 +1252,7 @@ Retrieve the IMEI:
 1. Set the required permission in your Android manifest:
 
     ```xml
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     ```
 
 2. If you're using Android version Android 6 (API level 23) or later, request the permission at runtime from the user: See [https://developer.android.com/training/permissions/requesting.html](https://developer.android.com/training/permissions/requesting.html "Request App Permissions") for more details.
@@ -1292,7 +1292,7 @@ There are a few key terms you can look for when the source code is available:
   String IMEI = tm.getDeviceId();
 ```
 
-To make sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The manifest should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE"/>`.
+To make sure that the identifiers can be used, check `AndroidManifest.xml` for usage of the IMEI and `Build.Serial`. The manifest should contain the permission `<uses-permission android:name="android.permission.READ_PHONE_STATE" />`.
 
 There are a few ways to test device binding dynamically:
 

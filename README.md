@@ -1,4 +1,4 @@
-<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg"></a>
+<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg" /></a>
 
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
 
@@ -75,23 +75,23 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 4. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
-5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
+5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
 
     ```shell
     $ git clone https://github.com/OWASP/owasp-mstg/
-    $ cd owasp-mstg/Tools/
+    $ cd owasp-mstg/tools/
     $ ./generate_document.sh
     ```
 
-6. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
+6. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
 
     ```shell
     $ git clone https://github.com/OWASP/owasp-mstg/
-    $ cd owasp-mstg/Tools/
+    $ cd owasp-mstg/tools/
     $ ./gitbookandpdf.sh
     ```
 
-You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
+Note: we are working towards using a new document generation system with a new format of the document. Want to check it out? Execute on mac : `./tools/docker/run_docker_stg_generation_on_local.sh`.
 
 ## Contributions, Feature Requests and Feedback
 
