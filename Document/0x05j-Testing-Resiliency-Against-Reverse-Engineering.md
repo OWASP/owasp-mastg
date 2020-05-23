@@ -271,7 +271,7 @@ JNIEXPORT jboolean JNICALL Java_com_test_debugging_DebuggerConnectedJNI(JNIenv *
 
 ##### Timer Checks
 
-`Debug.threadCpuTimeNanos` indicates the amount of time that the current thread has been executing code. Because debugging slows down process execution, [you can use the difference in execution time to guess whether a debugger is attached](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses").
+`Debug.threadCpuTimeNanos` indicates the amount of time that the current thread has been executing code. Because debugging slows down process execution, [you can use the difference in execution time to guess whether a debugger is attached](https://www.yumpu.com/en/document/read/15228183/android-reverse-engineering-defenses-bluebox-labs "Bluebox Security - Android Reverse Engineering & Defenses").
 
 ```java
 static boolean detect_threadCpuTimeNanos(){
