@@ -12,7 +12,7 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 ### Reverse Engineering
 
-Reverse engineering is the process of taking an app apart to find out how it works. You can do this by examining the compiled app (static analysis), observing the app during run time (dynamic analysis), or a combination of both.
+Reverse engineering is the process of taking an app apart to find out how it works. You can do this by examining the compiled app (static analysis), observing the app during runtime (dynamic analysis), or a combination of both.
 
 #### Tooling
 
@@ -60,7 +60,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/
 $ adb install UnCrackable-Level1.apk
 ```
 
-<img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400">
+<img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400" />
 
 Seems like we're expected to find some kind of secret code!
 
@@ -111,27 +111,27 @@ You should now find the decompiled sources in the directory `Uncrackable-Level1/
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because Intellij uses the package name to identify the correct process.
 
-<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px"/>
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px" />
 
 In the next dialog, pick any API number; you don't actually want to compile the project, so the number doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
 Once you have created the project, expand the "1: Project" view on the left and navigate to the folder `app/src/main/java`. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-<img src="Images/Chapters/0x05c/delete_package.jpg" alt="Delete default package" width="350">
+<img src="Images/Chapters/0x05c/delete_package.jpg" alt="Delete default package" width="350" />
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
-<img src="Images/Chapters/0x05c/drag_code.jpg" width="500px"/>
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="500px" />
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
-<img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300">
+<img src="Images/Chapters/0x05c/final_structure.jpg" alt="Final Structure" width="300" />
 
 See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
 
 ##### Disassembling Native Code
 
-Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged (compiled) into ELF dynamic libraries (\*.so), which the Android app loads at run time via the `System.load` method. However, instead of relying on widely used C libraries (such as glibc), Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
+Dalvik and ART both support the Java Native Interface (JNI), which defines a way for Java code to interact with native code written in C/C++. As on other Linux-based operating systems, native code is packaged (compiled) into ELF dynamic libraries (\*.so), which the Android app loads at runtime via the `System.load` method. However, instead of relying on widely used C libraries (such as glibc), Android binaries are built against a custom libc named [Bionic](https://github.com/android/platform_bionic "Bionic libc"). Bionic adds support for important Android-specific services such as system properties and logging, and it is not fully POSIX-compatible.
 
 When reversing an Android application containing native code, we need to understand a couple of data structures related to the JNI bridge between Java and native code. From the reversing perspective, we need to be aware of two key data structures: `JavaVM` and `JNIEnv`. Both of them are pointers to pointers to function tables:
 
@@ -148,7 +148,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWo
 
 > This app is not exactly spectacular—all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support— it's just enough to show the basic principles of JNI calls.
 
-<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300">
+<img src="Images/Chapters/0x05c/helloworld.png" alt="Hello World" width="300" />
 
 Decompile the APK with `apkx`.
 
@@ -180,7 +180,7 @@ extends AppCompatActivity {
 }
 ```
 
-Note the declaration of `public native String stringFromJNI` at the bottom. The keyword "native" tells the Java compiler that this method is implemented in a native language. The corresponding function is resolved during run time, but only if a native library that exports a global symbol with the expected signature is loaded (signatures comprise a package name, class name, and method name). In this example, this requirement is satisfied by the following C or C++ function:
+Note the declaration of `public native String stringFromJNI` at the bottom. The keyword "native" tells the Java compiler that this method is implemented in a native language. The corresponding function is resolved during runtime, but only if a native library that exports a global symbol with the expected signature is loaded (signatures comprise a package name, class name, and method name). In this example, this requirement is satisfied by the following C or C++ function:
 
 ```c
 JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI(JNIEnv *env, jobject)
@@ -188,7 +188,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the "lib" directory of the unzipped APK archive, you'll see several subdirectories (one per supported processor architecture), each of them containing a version of the native library, in this case `libnative-lib.so`. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on. Before moving ahead, pay attention to the first parameter passed to the current JNI function. It is the same `JNIEnv` data structure which was discussed earlier in this section.
 
-<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200">
+<img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200" />
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
@@ -208,7 +208,7 @@ This is the native function that eventually gets executed when the `stringFromJN
 
 To disassemble the code, you can load `libnative-lib.so` into any disassembler that understands ELF binaries (i.e., any disassembler). If the app ships with binaries for different architectures, you can theoretically pick the architecture you're most familiar with, as long as it is compatible with the disassembler. Each version is compiled from the same source and implements the same functionality. However, if you're planning to debug the library on a live device later, it's usually wise to pick an ARM build.
 
-To support both older and newer ARM processors, Android apps ship with multiple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at run time. The following ABIs are supported:
+To support both older and newer ARM processors, Android apps ship with multiple ARM builds compiled for different Application Binary Interface (ABI) versions. The ABI defines how the application's machine code is supposed to interact with the system at runtime. The following ABIs are supported:
 
 - armeabi: ABI is for ARM-based CPUs that support at least the ARMv5TE instruction set.
 - armeabi-v7a: This ABI extends armeabi to include several CPU instruction set extensions.
@@ -218,7 +218,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ###### radare2
 
-To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to _analyze all referenced code_.
+To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```shell
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -280,7 +280,7 @@ This said, please see section "[Reviewing Disassembled Native Code](#reviewing-d
 
 If you own an IDA Pro license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
-<img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="500px"/>
+<img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="500px" />
 
 > The freeware version of IDA Pro unfortunately does not support the ARM processor type.
 
@@ -290,6 +290,69 @@ For white-box source code testing, you'll need a setup similar to the developer'
 
 During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's APK format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
 
+#### Basic Information Gathering
+
+As discussed in previous sections, an Android application can consist of both Java/Kotlin bytecode and native code. In this section, we will learn about some approaches and tools for collecting basic information using static analysis.
+
+##### Retrieving Strings
+
+While performing any kind of binary analysis, strings can be considered as one of the most valuable starting points as they provide context. For example, an error log string like "Data encryption failed." gives us a hint that the adjoining code might be responsible for performing some kind of encryption operation.
+
+###### Java and Kotlin Bytecode
+
+As we already know, all the Java and Kotlin bytecode of an Android application is compiled into a DEX file. Each DEX file contains a [list of string identifiers](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids), which contains all the string identifiers used in the binary whenever a string is referred, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hardcoded strings). You can simply dump this list using tools such as Ghidra (GUI based) or [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
+
+With Ghidra, strings can be obtained by simply loading the DEX file and selecting **Window -> Defined strings** in the menu.
+
+> Loading an APK file directly into Ghidra might lead to inconsistencies. Thus it is recommended to extract the DEX file by unzipping the APK file and then loading it into Ghidra.
+
+<img src="Images/Chapters/0x05c/ghidra_dex_strings.png" width="500px" />
+
+With Dextra, you can dump all the strings using the following command:
+
+```bash
+dextra -S classes.dex
+```
+
+The output from Dextra can be manipulated using standard Linux commands, for example, using `grep` to search for certain keywords.
+
+It is important to know, the list of strings obtained using the above tools can be very big, as it also includes the various class and package names used in the application. Going through the complete list, specially for big binaries, can be very cumbersome. Thus, it is recommended to start with keyword-based searching and go through the list only when keyword search does not help. Some generic keywords which can be a good starting point are - password, key, and secret. Other useful keywords specific to the context of the app can be obtained while you are using the app itself. For instance, imagine that the app has as login form, you can take note of the displayed placeholder or title text of the input fields and use that as an entry point for your static analysis.
+
+###### Native Code
+
+In order to extract strings from native code used in an Android application, you can use GUI tools such as Ghidra or Cutter or rely on CLI-based tools such as the _strings_ Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based ones you can take advantage of other tools such as grep (e.g. in conjunction with regular expressions) to further filter and analyze the results.
+
+##### Cross References
+
+###### Java and Kotlin
+
+There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage** in jadx](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx").
+
+###### Native Code
+
+Similarly to Java analysis, you can also use Ghidra to analyze native libraries and obtain cross references by right clicking the desired function and selecting **Show References to**.
+
+##### API Usage
+
+The Android platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Determining the presence of these libraries in an application can give us valuable information about its nature.
+
+For instance, if an application is importing `javax.crypto.Cipher`, it indicates that the application will be performing some kind of cryptographic operation. Fortunately, cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analyzing cryptography APIs. For example, by looking for the `Cipher.getInstance` function, we can determine the cryptographic algorithm being used. With such an approach we can directly move to analyzing cryptographic assets, which often are very critical in an application. Further information on how to analyze Android's cryptographic APIs is discussed in the section  "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md "Android Cryptographic APIs")".
+
+Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class.
+
+##### Network Communication
+
+Most of the apps you might encounter connect to remote endpoints. Even before you perform any dynamic analysis (e.g. traffic capture and analysis), you can obtain some initial inputs or entry points by enumerating the domains to which the application is supposed to communicate to.
+
+Typically these domains will be present as strings within the binary of the application. One way to achieve this is by using automated tools such as [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration") or [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"). Alternatively, you can _grep_ for the domain names by using regular expressions. For this you can target the app binary directly or reverse engineer it and target the disassembled or decompiled code. The latter option has a clear advantage: it can provide you with **context**, as you'll be able to see in which context each domain is being used (e.g. class and method).
+``
+
+From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the network security configuration file or perform further reconnaissance on domain names to know more about the target environment. When evaluating an application it is important to check the network security configuration file, as often (less secure) debug configurations might be pushed into final release builds by mistake.
+
+The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation or an inherently wrong security network configuration.
+
+Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x05b-Basic-Security_Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "Android Basic Security Testing" chapter and also check the test cases in the chapter "[Android Network APIs](0x05g-Testing-Network-Communication.md "Android Network APIs")".
+
 #### Manual (Reversed) Code Review
 
 ##### Reviewing Decompiled Java Code
@@ -298,11 +361,11 @@ Following the example from "Decompiling Java Code", we assume that you've succes
 
 When analyzing obfuscated code, annotating class names, method names, and other identifiers as you go along is a good practice. Open the `MainActivity` class in the package `sg.vantagepoint.uncrackable1`. The method `verify` is called when you tap the "verify" button. This method passes the user input to a static method called `a.a`, which returns a boolean value. It seems plausible that `a.a` verifies user input, so we'll refactor the code to reflect this.
 
-<img src="Images/Chapters/0x05c/check_input.jpg" width="500px"/>
+<img src="Images/Chapters/0x05c/check_input.jpg" width="500px" />
 
 Right-click the class name (the first `a` in `a.a`) and select Refactor -> Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later). `a.a` now becomes `Validator.a`. Follow the same procedure to rename the static method `a` to `check_input`.
 
-<img src="Images/Chapters/0x05c/refactored.jpg" width="500px"/>
+<img src="Images/Chapters/0x05c/refactored.jpg" width="500px" />
 
 Congratulations, you just learned the fundamentals of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program until you understand it completely or, at least, well enough for whatever you want to achieve.
 
@@ -407,11 +470,11 @@ The workflow can be further improved by using [r2ghidra-dec](https://github.com/
 
 We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
-<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="500px"/>
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="500px" />
 
 Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI function is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table: an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
 
-<img src="Images/Chapters/0x05c/JNI_interface.png" width="550px"/>
+<img src="Images/Chapters/0x05c/JNI_interface.png" width="550px" />
 
 With that in mind, let's have a look at each line of assembly code.
 
@@ -457,7 +520,7 @@ After opening the library in Ghidra we can see all the functions defined in the 
 
 Inside the current function there is a call to another function, whose address is obtained by accessing an offset in the `JNIEnv` pointer (found as `plParm1`). This logic has been diagrammatically demonstrated above as well. The corresponding C code for the disassembled function is shown in the **Decompiler** window. This decompiled C code makes it much easier to understand the function call being made. Since this function is small and extremely simple, the decompilation output is very accurate, this can change drastically when dealing with complex functions.
 
-<img src="Images/Chapters/0x05c/Ghidra_decompiled_function.png" width="500px"/>
+<img src="Images/Chapters/0x05c/Ghidra_decompiled_function.png" width="500px" />
 
 #### Automated Static Analysis
 
@@ -597,11 +660,11 @@ The file `/proc/<pid>/maps` contains the currently mapped memory regions and the
 
 ##### Sandbox Inspection
 
-The application data is stored in a sandboxed directory present at `/data/data/<app_package_name>`. The content of this directory has already been discussed in detail in the "[Accessing App Data Directories](0x05b-basic-security_testing#accessing-app-data-directories "Accessing App Data Directories")" section.
+The application data is stored in a sandboxed directory present at `/data/data/<app_package_name>`. The content of this directory has already been discussed in detail in the "[Accessing App Data Directories](0x05b-Basic-Security_Testing.md#accessing-app-data-directories "Accessing App Data Directories")" section.
 
 #### Debugging
 
-So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during run time makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
+So far, you've been using static analysis techniques without running the target apps. In the real world, especially when reversing malware or more complex apps, pure static analysis is very difficult. Observing and manipulating an app during runtime makes it much, much easier to decipher its behavior. Next, we'll have a look at dynamic analysis methods that help you do just that.
 
 Android apps support two different types of debugging: Debugging on the level of the Java runtime with the Java Debug Wire Protocol (JDWP), and Linux/Unix-style ptrace-based debugging on the native layer, both of which are valuable to reverse engineers.
 
@@ -657,7 +720,7 @@ Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.Mai
     }
 ```
 
-You can bypass this with a little run time tampering. With the app still suspended, set a method breakpoint on `android.app.Dialog.setCancelable` and resume the app.
+You can bypass this with a little runtime tampering. With the app still suspended, set a method breakpoint on `android.app.Dialog.setCancelable` and resume the app.
 
 ```shell
 > stop in android.app.Dialog.setCancelable
@@ -730,33 +793,33 @@ To set up IDE debugging, first create your Android project in IntelliJ and copy 
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
-<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting For Debugger" width="300">
+<img src="Images/Chapters/0x05c/waitfordebugger.png" alt="Waiting For Debugger" width="300" />
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
-<img src="Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="550px"/>
+<img src="Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="550px" />
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
-<img src="Images/Chapters/0x05c/Choose_Process.png" alt="Choose Process" width="300">
+<img src="Images/Chapters/0x05c/Choose_Process.png" alt="Choose Process" width="300" />
 
 After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate` method. That's why setting a breakpoint on the `onCreate` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
 Next, single-step through the `onCreate` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
 
-<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="500px"/>
+<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="500px" />
 
 Once you "Force Step Into", the debugger will stop at the beginning of the next method, which is the `a` method of the class `sg.vantagepoint.a.c`.
 
-<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="500px"/>
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="500px" />
 
 This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
 
-<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="500px"/>
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="500px" />
 
 You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a` method.
 
-<img src="Images/Chapters/0x05c/step_over.png" width="500px"/>
+<img src="Images/Chapters/0x05c/step_over.png" width="500px" />
 
 Step into the `System.getenv` method with the "Force Step Into" feature.
 
@@ -764,33 +827,33 @@ After you get the colon-separated directory names, the debugger cursor will retu
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
-<img src="Images/Chapters/0x05c/step_out.png" width="500px"/>
+<img src="Images/Chapters/0x05c/step_out.png" width="500px" />
 
 After the `a` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
-<img src="Images/Chapters/0x05c/set_value.png" width="500px"/>
+<img src="Images/Chapters/0x05c/set_value.png" width="500px" />
 
-<img src="Images/Chapters/0x05c/modified_binary_name.png" width="500px"/>
+<img src="Images/Chapters/0x05c/modified_binary_name.png" width="500px" />
 
 Once you modify the binary name or the directory name, `File.exists` should return `false`.
 
-<img src="Images/Chapters/0x05c/file_exists_false.png" width="500px"/>
+<img src="Images/Chapters/0x05c/file_exists_false.png" width="500px" />
 
 This defeats the first root detection control of UnCrackable App for Android Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
-<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300">
+<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" alt="Anti Debugging and Tampering Defeated" width="300" />
 
-<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="550px"/>
+<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="550px" />
 
 The secret code is verified by the method `a` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
 
-<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="550px"/>
+<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="550px" />
 
 You can see the secret string in the "Variables" view when you reach the `String.equals` method call.
 
-<img src="Images/Chapters/0x05c/secret_code.png" width="550px"/>
+<img src="Images/Chapters/0x05c/secret_code.png" width="550px" />
 
-<img src="Images/Chapters/0x05c/success.png" alt="Success" width="300">
+<img src="Images/Chapters/0x05c/success.png" alt="Success" width="300" />
 
 ##### Debugging Native Code
 
@@ -840,7 +903,7 @@ Remote debugging using :1234
 
 You have successfully attached to the process! The only problem is that you're already too late to debug the JNI function `StringFromJNI`; it only runs once, at startup. You can solve this problem by activating the "Wait for Debugger" option. Go to **Developer Options** -> **Select debug app** and pick HelloWorldJNI, then activate the **Wait for debugger** switch. Then terminate and re-launch the app. It should be suspended automatically.
 
-Our objective is to set a breakpoint at the first instruction of the native function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` before resuming the app. Unfortunately, this isn't possible at this point in the execution because `libnative-lib.so` isn't yet mapped into process memory—it is loaded dynamically during run time. To get this working, you'll first use jdb to gently change the process into the desired state.
+Our objective is to set a breakpoint at the first instruction of the native function `Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI` before resuming the app. Unfortunately, this isn't possible at this point in the execution because `libnative-lib.so` isn't yet mapped into process memory—it is loaded dynamically during runtime. To get this working, you'll first use jdb to gently change the process into the desired state.
 
 First, resume execution of the Java VM by attaching jdb. You don't want the process to resume immediately though, so pipe the `suspend` command into jdb:
 
@@ -969,13 +1032,13 @@ In order to use `frida-trace`, a Frida server should be running on the device. A
 $ frida-trace -U -i "open" com.android.chrome
 ```
 
-<img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="550px"/>
+<img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="550px" />
 
 Note how, by default, only the arguments passed to the function are shown, but not the return values. Under the hood, `frida-trace` generates one little JavaScript handler file per matched function in the auto-generated `__handlers__` folder, which Frida then injects into the process. You can edit these files for more advanced usage such as obtaining the return value of the functions, their input parameters, accessing the memory, etc. Check Frida's [JavaScript API](https://www.frida.re/docs/javascript-api/ "JavaScript API") for more details.
 
 In this case, the generated script which traces all calls to the `open` function in `libc.so` is located in is `__handlers__/libc.so/open.js`, it looks as follows:
 
-```
+```javascript
 {
   onEnter: function (log, args, state) {
     log('open(' +
@@ -998,6 +1061,7 @@ In the above script, `onEnter` takes care of logging the calls to this function 
 Another thing to notice in the output above is that it's colorized. An application can have multiple threads running, and each thread can call the `open` function independently. By using such a color scheme, the output can be easily visually segregated for each thread.
 
 `frida-trace` is a very versatile tool and there are multiple configuration options available such as:
+
 - Including `-I` and excluding `-X` entire modules.
 - Tracing all JNI functions in an Android application using `-i "Java_*"` (note the use of a glob `*` to match all possible functions starting with "Java_").
 - Tracing functions by address when no function name symbols are available (stripped binaries), e.g. `-a "libjpeg.so!0x4793c"`.
@@ -1028,7 +1092,7 @@ $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 
 > The `-l` option can be provided multiple times to trace multiple libraries, or `*` can be provided to trace all libraries. This, however, may provide a lot of output.
 
-<img src="Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="500px"/>
+<img src="Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="500px" />
 
 In the output you can see the trace of a call to `NewStringUTF` made from the native code (its return value is then given back to Java code, see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code)" for more details). Note how similarly to frida-trace, the output is colorized helping to visually distinguish the different threads.
 
@@ -1104,12 +1168,12 @@ Incorrect serial (wrong format).
 
 So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
-<img src="Images/Chapters/0x05c/disass_main_1874.png" width="550px"/>
+<img src="Images/Chapters/0x05c/disass_main_1874.png" width="550px" />
 ![Disassembly of main function]()
 
 The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
-<img src="Images/Chapters/0x05c/graph_1874.png" width="550px"/>
+<img src="Images/Chapters/0x05c/graph_1874.png" width="550px" />
 
 `strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
@@ -1205,17 +1269,17 @@ We can now use this information about the expected input to further look into th
 
 Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
-<img src="Images/Chapters/0x05c/loop_1784.png" width="550px"/>
+<img src="Images/Chapters/0x05c/loop_1784.png" width="550px" />
 
 XOR is a very commonly used technique to _encrypt_ information where obfuscation is the goal rather than security. **XOR should not be used for any serious encryption**, as it can be cracked using frequency analysis. Therefore, the mere presence of XOR encryption in such a validation logic always requires special attention and analysis.
 
 Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call at `0x000017e8`.
 
-<img src="Images/Chapters/0x05c/values_compare_17dc.png" width="550px"/>
+<img src="Images/Chapters/0x05c/values_compare_17dc.png" width="550px" />
 
 Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. In the above crackme, the symbolic execution engine can determine the constraints on each byte of the input string by mapping a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`).
 
-<img src="Images/Chapters/0x05c/graph_ifelse_1760.png" width="550px"/>
+<img src="Images/Chapters/0x05c/graph_ifelse_1760.png" width="550px" />
 
 The constraints obtained from the above steps are passed to a solver engine, which finds an input that satisfies them - a valid license key.
 
@@ -1262,7 +1326,7 @@ solution = found.solver.eval(found.memory.load(concrete_addr,10), cast_to=bytes)
 print(base64.b32encode(solution))
 ```
 
-As discussed previously in the section "[Dynamic Binary Instrumentation](0x04c-tampering-and-reverse-engineering#dynamic-binary-instrumentation "Dynamic Binary Instrumentation")", the symbolic execution engine constructs a binary tree of the operations for the program input given and generates a mathematical equation for each possible path that might be taken. Internally, Angr explores all the paths between the two points specified by us, and passes the corresponding mathematical equations to the solver to return meaningful concrete results. We can access these solutions via `simulation_manager.found` list, which contains all the possible paths explored by Angr which satisfies our specified search criteria.
+As discussed previously in the section "[Dynamic Binary Instrumentation](0x04c-Tampering-and-Reverse-Engineering.md#static-and-dynamic-binary-analysis "Dynamic Binary Instrumentation")", the symbolic execution engine constructs a binary tree of the operations for the program input given and generates a mathematical equation for each possible path that might be taken. Internally, Angr explores all the paths between the two points specified by us, and passes the corresponding mathematical equations to the solver to return meaningful concrete results. We can access these solutions via `simulation_manager.found` list, which contains all the possible paths explored by Angr which satisfies our specified search criteria.
 
 Take a closer look at the latter part of the script where the final solution string is being retrieved. The address of the string is obtained from address `r11 - 0x20`. This may appear magical at first, but a careful analysis of the function at `0x00001760` holds the clue, as it determines if the given input string is a valid license key or not. In the disassembly above, you can see how the input string to the function (in register R0) is stored into a local stack variable `0x0000176c      str r0, [var_20h]`. Hence, we decided to use this value to retrieve the final solution in the script. Using `found.solver.eval` you can ask the solver questions like "given the output of this sequence of operations (the current state in `found`), what must the input (at `addr`) have been?").
 
@@ -1288,7 +1352,7 @@ To conclude, learning symbolic execution might look a bit intimidating at first,
 
 ### Tampering and Runtime Instrumentation
 
-First, we'll look at some simple ways to modify and instrument mobile apps. *Tampering* means making patches or run-time changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile app-sec however, the term loosely refers to all kinds of run-time manipulation, including overriding methods to change behavior.
+First, we'll look at some simple ways to modify and instrument mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile application security however, the term loosely refers to all kinds of runtime manipulation, including overriding methods to change behavior.
 
 #### Patching, Repackaging, and Re-Signing
 
@@ -1297,7 +1361,7 @@ Making small changes to the Android Manifest or bytecode is often the quickest w
 1. You can't intercept HTTPS traffic with a proxy because the app employs SSL pinning.
 2. You can't attach a debugger to the app because the `android:debuggable` flag is not set to `"true"` in the Android Manifest.
 
-In most cases, both issues can be fixed by making minor changes to the app (aka. patching) and then re-signing and repackaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception—in these cases, you have to patch the additional checks as well.
+In most cases, both issues can be fixed by making minor changes to the app (aka. patching) and then re-signing and repackaging it. Apps that run additional integrity checks beyond default Android code-signing are an exception. In those cases, you have to patch the additional checks as well.
 
 The first step is unpacking and disassembling the APK with `apktool`:
 
@@ -1342,7 +1406,7 @@ This modification will break the APK signature, so you'll also have to re-sign t
 
 Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` flag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
 
-When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the run time state of a program makes understanding the program *a lot* easier.
+When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged—after all, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the runtime state of a program makes understanding the program *a lot* easier.
 
 To _convert_ a release build into a debuggable build, you need to modify a flag in the Android Manifest file (AndroidManifest.xml). Once you've unpacked the app (e.g. `apktool d --no-src UnCrackable-Level1.apk`) and decoded the Android Manifest, add `android:debuggable="true"` to it using a text editor:
 
@@ -1399,11 +1463,11 @@ The UnCrackable App is not stupid: it notices that it has been run in debuggable
 
 Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
 
-<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300">
+<img src="Images/Chapters/0x05c/debugger_detection.png" alt="Debugger Detection" width="300" />
 
 In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
 
-<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300">
+<img src="Images/Chapters/0x05c/developer-options.png" alt="Developer Options" width="300" />
 
 Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `"true"` in the Android Manifest.
 
@@ -1440,7 +1504,7 @@ In this section, we will learn about techniques for performing library injection
 
 An Android application's decompiled smali code can be patched to introduce a call to `System.loadLibrary`. The following smali patch injects a library named *libinject.so*:
 
-```
+```smali
 const-string v0, "inject"
 invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 ```
@@ -1478,7 +1542,6 @@ $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
 > Please note that if the library to be preloaded does not have SELinux context assigned, from Android 5.0 (API level 21) onwards, you need to disable SELinux to make `LD_PRELOAD` work, which may require root.
-
 
 #### Dynamic Instrumentation
 
@@ -1643,7 +1706,7 @@ We'll use Frida to solve the UnCrackable App for Android Level 1 and demonstrate
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 
-<img src="Images/Chapters/0x05c/crackme-frida-1.png" alt="Crackme Root Detected Dialog" width="300">
+<img src="Images/Chapters/0x05c/crackme-frida-1.png" alt="Crackme Root Detected Dialog" width="300" />
 
 Let's see how we can prevent this.
 
@@ -2390,13 +2453,13 @@ $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to **Settings** -> **About phone** and check the **kernel version** field.
 
-<img src="Images/Chapters/0x05c/custom_kernel.jpg" alt="Custom Kernel" width="300">
+<img src="Images/Chapters/0x05c/custom_kernel.jpg" alt="Custom Kernel" width="300" />
 
 #### System Call Hooking with Kernel Modules
 
-System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality. With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You [1].
+System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality. With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You in Phrack Magazine - "Android platform based linux kernel rootkit" on 4 April 2011.
 
-<img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="400px"/>
+<img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="400px" />
 
 You first need the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers aren't so lucky). You can look up the address in the /proc/kallsyms file:
 
@@ -2418,7 +2481,7 @@ $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
 ```
 
-It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these—open, openat, access, accessat, facessat, stat, fstat, etc. For now, you'll only hook the openat system call.  This is the syscall the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
+It's time to write the kernel module. For file-hiding, you'll need to hook one of the system calls used to open (or check for the existence of) files. There are many of these: `open`, `openat`, `access`, `accessat`, `facessat`, `stat`, `fstat`, etc. For now, you'll only hook the `openat` system call.  This is the syscall that the /bin/cat program uses when accessing a file, so the call should be suitable for a demonstration.
 
 You can find the function prototypes for all system calls in the kernel header file arch/arm/include/asm/unistd.h. Create a file called kernel_hook.c with the following code:
 
@@ -2489,7 +2552,7 @@ $ adb shell lsmod
 kernel_hook 1160 0 [permanent], Live 0xbf000000 (PO)
 ```
 
-Now you'll access /dev/kmem to overwrite the original function pointer in sys_call_table with the address of your newly injected function (this could have been done directly in the kernel module, but /dev/kmem provides an easy way to toggle your hooks on and off). I have adapted the code from [Dong-Hoon You's Phrack article](http://phrack.org/issues/68/6.html "Phrack Magazine - Android Platform based Linux kernel rootkit") for this purpose. However, I used the file interface instead of mmap() because I found that the latter caused kernel panics. Create a file called kmem_util.c with the following code:
+Now you'll access /dev/kmem to overwrite the original function pointer in `sys_call_table` with the address of your newly injected function (this could have been done directly in the kernel module, but /dev/kmem provides an easy way to toggle your hooks on and off). We've have adapted the code from Dong-Hoon You's Phrack article for this purpose. However, you can use the file interface instead of `mmap` because the latter might cause kernel panics. Create a file called kmem_util.c with the following code:
 
 ```c
 #include <stdio.h>
@@ -2547,7 +2610,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-Beginning with Android Lollipop, all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device :
+Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device:
 
 ```shell
 $ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
@@ -2555,27 +2618,27 @@ $ adb push kmem_util /data/local/tmp/
 $ adb shell chmod 755 /data/local/tmp/kmem_util
 ```
 
-Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The openat system call is defined in unistd.h, which is in the kernel sources:
+Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The `openat` system call is defined in unistd.h, which is in the kernel sources:
 
 ```shell
 $ grep -r "__NR_openat" arch/arm/include/asm/unistd.h
 \#define __NR_openat            (__NR_SYSCALL_BASE+322)
 ```
 
-The final piece of the puzzle is the address of your replacement-openat. Again, you can get this address from /proc/kallsyms.
+The final piece of the puzzle is the address of your replacement-`openat`. Again, you can get this address from /proc/kallsyms.
 
 ```shell
 $ adb shell cat /proc/kallsyms | grep new_openat
 bf000000 t new_openat    [kernel_hook]
 ```
 
-Now you have everything you need to overwrite the sys_call_table entry. The syntax for kmem_util is:
+Now you have everything you need to overwrite the `sys_call_table` entry. The syntax for kmem_util is:
 
 ```shell
 $ ./kmem_util <syscall_table_base_address> <offset> <func_addr>
 ```
 
-The following command patches the openat system call table so that it points to your new function.
+The following command patches the `openat` system call table so that it points to your new function.
 
 ```shell
 $ adb shell su -c /data/local/tmp/kmem_util c000f984 322 bf000000
@@ -2583,34 +2646,37 @@ Original value: c017a390
 New value: bf000000
 ```
 
-Assuming that everything worked, /bin/cat shouldn't be able to "see" the file.
+Assuming that everything worked, /bin/cat shouldn't be able to _see_ the file.
 
 ```shell
 $ adb shell su -c cat /data/local/tmp/nowyouseeme
 tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
 ```
 
-Voilà! The file "nowyouseeme" is now somewhat hidden from all usermode processes (note that you need to do a lot more to properly hide a file, including hooking stat(), access(), and other system calls).
+Voilà! The file "nowyouseeme" is now somewhat hidden from all _user mode_ processes. Note that the file can easily be found using other syscalls, and you need to do a lot more to properly hide a file, including hooking `stat`, `access`, and other system calls.
 
 File-hiding is of course only the tip of the iceberg: you can accomplish a lot using kernel modules, including bypassing many root detection measures, integrity checks, and anti-debugging measures. You can find more examples in the "case studies" section of Bernhard Mueller's Hacking Soft Tokens Paper [#mueller].
 
 ### References
 
 - Bionic - <https://github.com/android/platform_bionic>
-- Attacking Android Applications with Debuggers - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
-- [#josse] Sébastien Josse, Dynamic Malware Recompilation - <http://ieeexplore.ieee.org/document/6759227/>
+- Attacking Android Applications with Debuggers (19 January 2015) - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
+- [#josse] Sébastien Josse, Dynamic Malware Recompilation (6 January 2014) - <http://ieeexplore.ieee.org/document/6759227/>
 - Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
-- Android Platform based Linux kernel rootkit - <http://phrack.org/issues/68/6.html>
-- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
+- Android Platform based Linux kernel rootkit (4 April 2011 - Phrack Magazine)
+- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
 
 #### Tools
 
 - Angr - <https://angr.io/>
+- APKEnum - <https://github.com/shivsahni/APKEnum>
 - apktool - <https://github.com/iBotPeaches/Apktool>
 - apkx - <https://github.com/b-mueller/apkx>
 - CFR Decompiler - <https://www.benf.org/other/cfr/>
+- Dextra - <http://newandroidbook.com/tools/dextra.html>
 - IDA Pro - <https://www.hex-rays.com/products/ida/>
 - JAD Decompiler - <http://www.javadecompilers.com/jad>
+- jadx - <https://github.com/skylot/jadx>
 - JD (Java Decompiler) - <http://jd.benow.ca/>
 - JEB Decompiler - <https://www.pnfsoftware.com>
 - OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>

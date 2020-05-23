@@ -112,16 +112,16 @@ The first code block defines the new permission, which is self-explanatory. The 
     android:permission="com.example.myapp.permission.START_MAIN_ACTIVITY">
     <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.LAUNCHER" />
      </intent-filter>
 </activity>
 ```
 
-Once the permission `START_MAIN_ACTIVITY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY"/>` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below that is based on the [permission overview](https://developer.android.com/guide/topics/permissions/overview "permission overview") and [manifest-intro](https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct "manifest-intro").
+Once the permission `START_MAIN_ACTIVITY` has been created, apps can request it via the `uses-permission` tag in the `AndroidManifest.xml` file. Any application granted the custom permission `START_MAIN_ACTIVITY` can then launch the `TEST_ACTIVITY`. Please note `<uses-permission android:name="myapp.permission.START_MAIN_ACTIVITY" />` must be declared before the `<application>` or an exception will occur at runtime. Please see the example below that is based on the [permission overview](https://developer.android.com/guide/topics/permissions/overview "permission overview") and [manifest-intro](https://developer.android.com/guide/topics/manifest/manifest-intro#filestruct "manifest-intro").
 
 ```xml
 <manifest>
-<uses-permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY"/>
+<uses-permission android:name="com.example.myapp.permission.START_MAIN_ACTIVITY" />
         <application>
             <activity>
             </activity>
@@ -707,12 +707,12 @@ In the "Sieve" app, we find three exported activities, identified by `<activity>
 ```xml
 <activity android:excludeFromRecents="true" android:label="@string/app_name" android:launchMode="singleTask" android:name=".MainLoginActivity" android:windowSoftInputMode="adjustResize|stateVisible">
     <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
     </intent-filter>
 </activity>
-<activity android:clearTaskOnLaunch="true" android:excludeFromRecents="true" android:exported="true" android:finishOnTaskLaunch="true" android:label="@string/title_activity_file_select" android:name=".FileSelectActivity"/>
-<activity android:clearTaskOnLaunch="true" android:excludeFromRecents="true" android:exported="true" android:finishOnTaskLaunch="true" android:label="@string/title_activity_pwlist" android:name=".PWList"/>
+<activity android:clearTaskOnLaunch="true" android:excludeFromRecents="true" android:exported="true" android:finishOnTaskLaunch="true" android:label="@string/title_activity_file_select" android:name=".FileSelectActivity" />
+<activity android:clearTaskOnLaunch="true" android:excludeFromRecents="true" android:exported="true" android:finishOnTaskLaunch="true" android:label="@string/title_activity_pwlist" android:name=".PWList" />
 
 ```
 
@@ -727,8 +727,8 @@ By inspecting the `PWList.java` activity, we see that it offers options to list 
 In the "Sieve" app, we find two exported services, identified by `<service>`:
 
 ```xml
-<service android:exported="true" android:name=".AuthService" android:process=":remote"/>
-<service android:exported="true" android:name=".CryptoService" android:process=":remote"/>
+<service android:exported="true" android:name=".AuthService" android:process=":remote" />
+<service android:exported="true" android:name=".CryptoService" android:process=":remote" />
 ```
 
 ##### Inspect the source code
@@ -777,7 +777,7 @@ In the "Android Insecure Bank" app, we find a broadcast receiver in the manifest
 ```xml
 <receiver android:exported="true" android:name="com.android.insecurebankv2.MyBroadCastReceiver">
     <intent-filter>
-        <action android:name="theBroadcast"/>
+        <action android:name="theBroadcast" />
     </intent-filter>
 </receiver>
 ```
@@ -1145,7 +1145,7 @@ If `addJavascriptInterface` is necessary, take the following considerations:
 
 - Only JavaScript provided with the APK should be allowed to use the bridges, e.g. by verifying the URL on each bridged Java method (via `WebView.getUrl`).
 - No JavaScript should be loaded from remote endpoints, e.g. by keeping page navigation within the app's domains and opening all other domains on the default browser (e.g. Chrome, Firefox).
-- If necessary for legacy reasons (e.g. having to support older devices), at least set the minimal API level to 17 in the manifest file of the app (`<uses-sdk android:minSdkVersion="17"/>`).
+- If necessary for legacy reasons (e.g. having to support older devices), at least set the minimal API level to 17 in the manifest file of the app (`<uses-sdk android:minSdkVersion="17" />`).
 
 #### Dynamic Analysis
 

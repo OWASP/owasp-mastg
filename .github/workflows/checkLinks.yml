@@ -1,0 +1,25 @@
+name: Check Markdown Links
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: link-check
+        uses: gaurav-nelson/github-action-markdown-link-check@0f8975d33c4555ebd148e2cd39176b3add9639dc
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: '.github/workflows/config/mlc_config.json'
+          folder-path: '.'

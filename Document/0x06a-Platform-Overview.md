@@ -33,7 +33,7 @@ The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" alt="iOS Security Architecture" width="275">
+<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" alt="iOS Security Architecture" width="275" />
 
 #### Hardware Security
 
@@ -127,13 +127,13 @@ A language.lproj folder exists for each language that the application supports. 
 - A storyboard is a visual representation of the iOS application's user interface. It shows screens and the connections between those screens.
 - The strings file format consists of one or more key-value pairs and optional comments.
 
-<img src="Images/Chapters/0x06a/iOS_project_folder.png" alt="iOS App Folder Structure" width="500">
+<img src="Images/Chapters/0x06a/iOS_project_folder.png" alt="iOS App Folder Structure" width="500" />
 
 On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [TestFlight](https://developer.apple.com/testflight/ "TestFlight").
 
 #### App Permissions
 
-In contrast to Android apps (before Android 6.0 (API level 23)), iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during run time, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
+In contrast to Android apps (before Android 6.0 (API level 23)), iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during runtime, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
 
 iOS developers can't set requested permissions directly — they indirectly request them with sensitive APIs. For example, when accessing a user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of permissions they request and data they need to access (e.g., NSContactsUsageDescription).
 

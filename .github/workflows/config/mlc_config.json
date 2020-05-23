@@ -1,0 +1,32 @@
+{
+    "ignorePatterns": [
+        {
+            "pattern": "https://github.com/Your_Github_Handle/owasp-mstg"
+        },{
+            "pattern": "changelog"
+        },{
+            "pattern": "https://github.com/commjoen/contributors-mstg"
+        },{
+            "pattern": "http://127.0.0.1:8000"
+        },{
+            "pattern": "https://haveibeenpwned.com"
+        },{
+            "pattern": "https://build.frida.re/"
+        },{
+            "pattern": "http://apt.thebigboss.org/repofiles/cydia/"
+        },{
+            "pattern": "https://build.frida.re"
+        },{
+            "pattern": "http://cydia.radare.org/debs/"
+        }
+
+    ],
+    "replacementPatterns": [
+        {
+            "pattern": "^.attachments",
+            "replacement": "file://some/conventional/folder/.attachments"
+        }
+    ],
+    "see":" https://github.com/tcort/markdown-link-check#config-file-format"
+}
+

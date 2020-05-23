@@ -14,7 +14,7 @@ Several free and commercial proxy tools are available. Here are some of the most
 
 To use the interception proxy, you'll need run it on your machine and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
-<img src="Images/Chapters/0x04f/BURP.png" width="550px"/>
+<img src="Images/Chapters/0x04f/BURP.png" width="550px" />
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
@@ -93,7 +93,7 @@ bettercap will then automatically send the packets to the network gateway in the
 
 On the mobile phone start the browser and navigate to `http://example.com`, you should see output like the following when you are using Wireshark.
 
-<img src="Images/Chapters/0x04f/bettercap.png" alt="Wireshark">
+<img src="Images/Chapters/0x04f/bettercap.png" alt="Wireshark" />
 
 If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
 
@@ -126,13 +126,13 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 
 > If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
-<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point">
+<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point" />
 
 ##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
 
-1. Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
+Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
@@ -153,8 +153,9 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-2. In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
-3. Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
+In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
+
+Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
 ##### Configuration
 
@@ -168,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - hostapd.conf
 
-    ```
+    ```text
     # Name of the WiFi interface we use
     interface=wlan1
     # Use the nl80211 driver
@@ -190,7 +191,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - wpa_supplicant.conf
 
-    ```
+    ```text
     network={
         ssid="NAME_OF_THE_TARGET_NETWORK"
         psk="PASSWORD_OF_THE_TARGET_NETWORK"
@@ -199,7 +200,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - dnsmasq.conf
 
-    ```
+    ```text
     interface=wlan1
     dhcp-range=10.0.0.10,10.0.0.250,12h
     dhcp-option=3,10.0.0.1
@@ -295,7 +296,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
     - Redirect to port: provide original port location
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
-<img width=600px src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location"/>
+<img src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location" width="600px" />
 
 <br/>
 <br/>
