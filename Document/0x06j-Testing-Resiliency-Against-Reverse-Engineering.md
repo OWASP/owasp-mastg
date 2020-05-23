@@ -284,7 +284,7 @@ According to Apple, you should "[restrict restrict use of the above code to the 
 
 ##### Using ptrace
 
-As seen in chapter "[Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
+As seen in chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
 Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
 
@@ -683,7 +683,7 @@ Button_Emulator ===> akcVscrZFdBBYqYrcmhhyXAevNdXOKeG
 
 This is needed for [deobfuscating encrypted crash logs](https://github.com/rockbruno/swiftshield#-deobfuscating-encrypted-crash-logs "Deobfuscating encrypted Crash logs").
 
-Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/SwiftShieldExample "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
+Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
 #### Effectiveness Assessment
 
