@@ -617,7 +617,7 @@ However, this is not a concern on iOS. As discussed in the section [Testing on t
 
 #### Overview
 
-Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees. 
+Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
 > Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from further analysis.
 
@@ -673,8 +673,8 @@ Applications are often compiled with hardcoded keys, licences, tokens and URL en
 
 #### Recommended tools
 
-* [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
-* [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation instead of the the source code. It can be used for symbols obfuscation, string encryption and control-flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
+- [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
+- [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation instead of the the source code. It can be used for symbols obfuscation, string encryption and control-flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
 #### How to use SwiftShield
 
