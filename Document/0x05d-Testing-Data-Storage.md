@@ -105,9 +105,7 @@ Secure ways to retrieve the key include:
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
-In Jan 2018, [Appthority Mobile Threat Team (MTT)](https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf "Unsecured Firebase Databases: Exposing Sensitive Data via Thousands of Mobile Apps") performed security research on insecure backend services connecting to mobile applications. They discovered a misconfiguration in Firebase, which is one of the top 10 most popular data stores which could allow attackers to retrieve all the unprotected data hosted on the cloud server. The team performed the research on more than 2 Million mobile applications and found that around 9% of Android applications and almost half (47%) of iOS apps that connect to a Firebase database were vulnerable.
-
-The misconfigured Firebase instance can be identified by making the following network call:
+A misconfigured Firebase instance can be identified by making the following network call:
 
 `https://\<firebaseProjectName\>.firebaseio.com/.json`
 
@@ -154,6 +152,7 @@ try {
    e.printStackTrace();
 }
 ```
+
 Example for Kotlin:
 
 ```kotlin
@@ -174,6 +173,7 @@ Files saved to external storage are world-readable. The user can modify them whe
 You can use the following code snippets to persistently store sensitive information to external storage as the contents of the file `password.txt`.
 
 Example for Java:
+
 ```java
 File file = new File (Environment.getExternalFilesDir(), "password.txt");
 String password = "SecretPassword";
@@ -184,6 +184,7 @@ FileOutputStream fos;
 ```
 
 Example for Kotlin:
+
 ```kotlin
 val password = "SecretPassword"
 val path = context.getExternalFilesDir(null)
@@ -364,7 +365,7 @@ For the security analysis perspective the analysts may perform the following che
 
 Android 9 (API level 28) adds the ability to import keys securely into the `AndroidKeystore`. First `AndroidKeystore` generates a key pair using `PURPOSE_WRAP_KEY` which should also be protected with an attestation certificate, this pair aims to protect the Keys being imported to `AndroidKeystore`. The encrypted keys are generated as ASN.1-encoded message in the `SecureKeyWrapper` format which also contains a description of the ways the imported key is allowed to be used. The keys are then decrypted inside the `AndroidKeystore` hardware belonging to the specific device that generated the wrapping key so they never appear as plaintext in the device's host memory.
 
-<img src="Images/Chapters/0x5e/Android9_secure_key_import_to_keystore.png" alt="Secure key import into Keystore" width="500">
+<img src="Images/Chapters/0x5d/Android9_secure_key_import_to_keystore.png" alt="Secure key import into Keystore" width="500">
 
 ```java
 KeyDescription ::= SEQUENCE {
@@ -423,7 +424,7 @@ Storing a Key - from most secure to least secure:
 - [not recommended] predictable key derivation function based on stable attributes
 - [not recommended] stored generated keys in public places (like `/sdcard/`)
 
-The most secure way of handling key material, is simply never storing it on the device. That can be achieved by using [hardware-backed Android KeyStore](0x05d-Testing-Data-Storage.md#hardware-backed-android-keystore) if device is running Android 7.0 (API level 24) and above with available hardware component (Trusted Execution Environment (TEE) or a Secure Element (SE)). That can be check by using guidelines provided for [the secure implementation of Key Attestation](0x05d-Testing-Data-Storage.md#key-attestation). If hardware component is not available and/or support for Android 6.0 (API level 23) and below is required, then that can be achieved by storing a key on remote server and make a key available after authentication. 
+The most secure way of handling key material, is simply never storing it on the device. That can be achieved by using [hardware-backed Android KeyStore](0x05d-Testing-Data-Storage.md#hardware-backed-android-keystore) if device is running Android 7.0 (API level 24) and above with available hardware component (Trusted Execution Environment (TEE) or a Secure Element (SE)). That can be check by using guidelines provided for [the secure implementation of Key Attestation](0x05d-Testing-Data-Storage.md#key-attestation). If hardware component is not available and/or support for Android 6.0 (API level 23) and below is required, then that can be achieved by storing a key on remote server and make a key available after authentication.
 
 > Please note that if the keys are stored on the server, the app need to be online to decrypt the data. This might be a limitation in some use case of mobile apps and should be carefully thought through as this becomes part of the architecture of the app.
 
@@ -606,7 +607,7 @@ In the layout definition of an activity, you can define `TextViews` that have XM
 ```xml
    <EditText
         android:id="@+id/KeyBoardCache"
-        android:inputType="textNoSuggestions"/>
+        android:inputType="textNoSuggestions" />
 ```
 
 The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions").
@@ -1022,9 +1023,12 @@ If the option has not been set, the application is vulnerable to screen capturin
 
 While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (right image), the snapshot will be empty; if the flag has not been set (left image), activity information will be shown:
 
+<div style="page-break-after: always;">
+</div>
+
 | `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
 |---|---|
-| <img src="Images/Chapters/0x05d/1.png" width="500px"/> | <img src="Images/Chapters/0x05d/2.png" width="500px"/> |
+| <img src="Images/Chapters/0x05d/1.png" width="500px" /> | <img src="Images/Chapters/0x05d/2.png" width="500px" /> |
 
 On devices supporting [file-based encryption (FBE)](https://source.android.com/security/encryption/file-based "FBE"), snapshots are stored in the `/data/system_ce/<USER_ID>/<IMAGE_FOLDER_NAME>` folder. `<IMAGE_FOLDER_NAME>` depends on the vendor but most common names are `snapshots` and `recent_images`. If the device doesn't support FBE, the `/data/system/<IMAGE_FOLDER_NAME>` folder is used.
 
@@ -1266,11 +1270,11 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 For rudimentary analysis, you can use Android Studio's built-in tools. They are on the _Android Monitor_ tab. To dump memory, select the device and app you want to analyze and click _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory, which is on the app's project path.
 
-<img src="Images/Chapters/0x05d/Dump_Java_Heap.png" width="550px"/>
+<img src="Images/Chapters/0x05d/Dump_Java_Heap.png" width="550px" />
 
 To navigate through class instances that were saved in the memory dump, select the Package Tree View in the tab showing the _.hprof_ file.
 
-<img src="Images/Chapters/0x05d/Package_Tree_View.png" width="550px"/>
+<img src="Images/Chapters/0x05d/Package_Tree_View.png" width="550px" />
 
 For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer Tool (MAT). It is available as an Eclipse plugin and as a standalone application.
 
@@ -1389,7 +1393,3 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - Java AES Crypto - <https://github.com/tozny/java-aes-crypto>
 - SQL Cipher - <https://www.zetetic.net/sqlcipher/sqlcipher-for-android>
 - Secure Preferences - <https://github.com/scottyab/secure-preferences>
-
-#### Others
-
-- Appthority Mobile Threat Team Research Paper - <https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf>

@@ -1,0 +1,39 @@
+\usepackage{sectsty}
+\sectionfont{\LARGE\clearpage}
+
+\usepackage{hyperref}
+
+\hypersetup{
+  pdftitle={OWASP Mobile Application Security Testing Guide},
+  pdfauthor={Sven Schleier, Jeroen Willemsen and Carlos Holguera},
+  pdfsubject={The Mobile Application Security Testing Guide (MASVS) is a guide for developers and testers.},
+  pdfkeywords={Mobile Security,iOS,Android,OWASP}
+}
+
+\usepackage{incgraph,tikz}
+
+% Make "clones" of the commands
+\let\originalparagraph\paragraph
+\let\originalsubparagraph\subparagraph
+
+% Redefine the commands using the "clones"
+\renewcommand{\paragraph}[1]%
+{\originalparagraph{#1}\hfill}
+\renewcommand{\subparagraph}[1]%
+{\originalsubparagraph{#1}\hfill}
+
+% Remove all captions
+\renewcommand{\caption}[2][]{}
+
+% TODO for colored tables: add this to pandocker command -V table-use-row-colors=true
+
+\usepackage{geometry}
+
+\geometry{
+    a4paper,
+    left=20mm,
+    top=20mm,
+    headheight=40pt,
+    voffset=20pt,
+    footskip=50pt %40pt gives some more space at the bottom: test it!
+}

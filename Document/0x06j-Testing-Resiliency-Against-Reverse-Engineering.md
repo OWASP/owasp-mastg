@@ -90,9 +90,9 @@ In the first case, make sure the application is fully functional on non-jailbrok
 
 Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
 
-<img src="Images/Chapters/0x06b/HopperDisassembling.png" width="350px"/>
+<img src="Images/Chapters/0x06b/HopperDisassembling.png" width="350px" />
 
-<img src="Images/Chapters/0x06b/HopperDecompile.png" width="350px"/>
+<img src="Images/Chapters/0x06b/HopperDecompile.png" width="350px" />
 
 As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`) and an instance method (`-[JailbreakDetectionVC isJailbroken]`). The main difference is that we can inject Cycript in the app and call the class method directly, whereas the instance method requires first looking for instances of the target class. The function `choose` will look in the memory heap for known signatures of a given class and return an array of instances. Putting an application into a desired state (so that the class is indeed instantiated) is important.
 
@@ -120,7 +120,7 @@ cy# [a[0] isJailbroken]
 True
 ```
 
-<img src="Images/Chapters/0x06j/deviceISjailbroken.png" width="250px"/>
+<img src="Images/Chapters/0x06j/deviceISjailbroken.png" width="250px" />
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
@@ -130,7 +130,7 @@ cy# [a[0] isJailbroken]
 false
 ```
 
-<img src="Images/Chapters/0x06j/deviceisNOTjailbroken.png" width="250px"/>
+<img src="Images/Chapters/0x06j/deviceisNOTjailbroken.png" width="250px" />
 
 In this case we have bypassed the jailbreak detection of the application!
 
@@ -280,11 +280,11 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
-According to Apple, you should "[restrict restrict use of the above code to the debug build of your program] (https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+According to Apple, you should "[restrict restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
 ##### Using ptrace
 
-As seen in chapter "[Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
+As seen in chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
 Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
 
@@ -305,11 +305,11 @@ void anti_debug() {
 
 To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
 
-<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="500px"/>
+<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="500px" />
 
-Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (0xB0 0x47 in Little Endian) with the `NOP` (0x00 0xBF in Little Endian) instruction. After patching, the code will be similar to the following:
+Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
 
-<img src="Images/Chapters/0x06j/ptracePatched.png" width="500px"/>
+<img src="Images/Chapters/0x06j/ptracePatched.png" width="500px" />
 
 [Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between byte-code and instruction mnemonics.
 
@@ -364,11 +364,11 @@ static bool AmIBeingDebugged(void)
 
 One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
 
-<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="550px"/>
+<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="550px" />
 
 After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in byte-code), the patched code is similar to the following:
 
-<img src="Images/Chapters/0x06j/sysctlPatched.png" width="550px"/>
+<img src="Images/Chapters/0x06j/sysctlPatched.png" width="550px" />
 
 You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
@@ -560,6 +560,9 @@ drwxr-xr-x 11 _installd _installd  352 Nov 19 06:08 ../
 
 Looking at these _traces_ that Frida _leaves behind_, you might already imagine that detecting Frida would be a trivial task. And while it is trivial to detect these libraries, it is equally trivial to bypass such a detection. Detection of tools is a cat and mouse game and things can get much more complicated. The following table shortly presents a set of some typical Frida detection methods and a short discussion on their effectiveness.
 
+<div style="page-break-after: always;">
+</div>
+
 > Some of the following detection methods are implemented in the [iOS Security Suite](https://github.com/securing/IOSSecuritySuite "iOS Security Suite").
 
 | Method | Description | Discussion |
@@ -624,16 +627,16 @@ Obfuscation is the process of transforming code and data to make it more difficu
 
 A sample Swift project is used to demonstrate the usage of SwiftShield.
 
-1. Check out <https://github.com/sushi2k/SwiftSecurity>.
-2. Open the project in Xcode and make sure that the project is building successfully (Product / Build or Apple-Key + B).
-3. [Download](https://github.com/rockbruno/swiftshield/releases "SwiftShield Download") the latest release of SwiftShield and unzip it.
-4. Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
+- Check out <https://github.com/sushi2k/SwiftSecurity>.
+- Open the project in Xcode and make sure that the project is building successfully (Product / Build or Apple-Key + B).
+- [Download](https://github.com/rockbruno/swiftshield/releases "SwiftShield Download") the latest release of SwiftShield and unzip it.
+- Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
 
 ```bash
 $ cp swiftshield/swiftshield /usr/local/bin/
 ```
 
-5. In your terminal go into the SwiftSecurity directory (which you checked out in step 1) and execute the command swiftshield (which you downloaded in step 3):
+- In your terminal go into the SwiftSecurity directory (which you checked out in step 1) and execute the command swiftshield (which you downloaded in step 3):
 
 ```bash
 $ cd SwiftSecurity
@@ -653,11 +656,11 @@ SwiftShield is now detecting class and method names and is replacing their ident
 
 In the original source code you can see all the class and method identifiers:
 
-<img src="Images/Chapters/0x06j/no_obfuscation.png" width="550px"/>
+<img src="Images/Chapters/0x06j/no_obfuscation.png" width="550px" />
 
 SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
 
-<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" width="650px"/>
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" width="650px" />
 
 After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 
@@ -680,7 +683,7 @@ Button_Emulator ===> akcVscrZFdBBYqYrcmhhyXAevNdXOKeG
 
 This is needed for [deobfuscating encrypted crash logs](https://github.com/rockbruno/swiftshield#-deobfuscating-encrypted-crash-logs "Deobfuscating encrypted Crash logs").
 
-Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/SwiftShieldExample "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
+Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
 #### Effectiveness Assessment
 
@@ -755,7 +758,7 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 
 ### References
 
-- [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <http://delaat.net/rp/2015-2016/p51/report.pdf>
+- [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf>
 - Jan Seredynski. A security review of 1,300 AppStore applications (5 April 2020) - <https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html>
 
 #### OWASP MASVS

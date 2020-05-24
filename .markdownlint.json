@@ -1,7 +1,11 @@
 {
+    "MD004": {"style": "dash"},
     "MD013": false,
     "MD014": false,
     "MD024": false,
     "MD033": {"allowed_elements": ["img", "br", "div"]},
+    "MD036": {
+        "punctuation": ".,;:!。"
+      },
     "MD041": false
 }
