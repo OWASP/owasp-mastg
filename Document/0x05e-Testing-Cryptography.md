@@ -22,7 +22,7 @@ KeyStore and KeyChain provide APIs for storing and using keys (behind the scene,
 
 > Please note that storing of a key is analyzed in the chapter "[Testing Data Storage](0x05d-Testing-Data-Storage.md)".
 
-These phases are managed by Keystore/KeyChain system. However how the system works depends on how application developer used it. Then, you should focus on functions which are used by application developer. You should identify and verify following functions:
+These phases are managed by the Keystore/KeyChain system. However how the system works depends on how the application developer implemented it. For the analysis process you should focus on functions which are used by the application developer. You should identify and verify the following functions:
 
 - [Key generation](0x05e-Testing-Cryptography.md#key-generation)
 - [Random number generation](0x05e-Testing-Cryptography.md#random-number-generation)
