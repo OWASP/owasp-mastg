@@ -15,7 +15,7 @@ Android cryptography APIs are based on the Java Cryptography Architecture (JCA).
 KeyStore and KeyChain provide APIs for storing and using keys (behind the scene, KeyChain API uses KeyStore system). These systems allow to administer the full lifecycle of the cryptographic keys. Requirements and guidance for implementation of cryptographic key management can be found in [Key Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html "Key Management Cheat Sheet"). We can identify following phases:
 
 - generating a key
-- using of a key
+- using a key
 - storing of a key
 - archiving of a key
 - deleting a key
