@@ -16,7 +16,7 @@ KeyStore and KeyChain provide APIs for storing and using keys (behind the scene,
 
 - generating a key
 - using a key
-- storing of a key
+- storing a key
 - archiving of a key
 - deleting a key
 
