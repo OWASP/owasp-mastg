@@ -417,7 +417,7 @@ Storing a Key - from most secure to least secure:
 - master key is stored on server and use to encrypt other keys, which are stored in Android SharedPreferences
 - the key is derived each time from a strong user provided passphrase with sufficient length and salt
 - the key is stored in software implementation of Android KeyStore
-- master key is stored in Android Keystore and use to encrypt other keys, which are stored in SharedPreferences
+- master key is stored in software implementation of Android Keystore and use to encrypt other keys, which are stored in SharedPreferences
 - all keys are stored in SharedPreferences
 - [not recommended] hardcoded encryption keys in the source code
 - [not recommended] predictable key derivation function based on stable attributes
