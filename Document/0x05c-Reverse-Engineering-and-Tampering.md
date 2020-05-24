@@ -1780,7 +1780,7 @@ extends Activity {
 
 ```
 
-Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this method displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which closes the application via `System.exit(0)` after successful root detection. With Frida, you can prevent the app from exiting by hooking the MainActivity.a method or the callback inside it. The example below shows how you can hook MainActivity.a and prevent it from ending the application. 
+Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this method displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which closes the application via `System.exit` after successful root detection. With Frida, you can prevent the app from exiting by hooking the `MainActivity.a` method or the callback inside it. The example below shows how you can hook `MainActivity.a` and prevent it from ending the application. 
 
 ```javascript
 setImmediate(function() { //prevent timeout
