@@ -322,7 +322,7 @@ Although the key attestation process can be implemented within the application d
     - Verify client's status to ensure full chain of trust - verified boot key, locked bootloader and verified boot state.
     - Additionally, you can verify the key pair's attributes such as purpose, access time, authentication requirement, etc.
 
-> Note, if for any reason that process fails, it means that the key is not in security hardware. That does not mean that the key is compromised
+> Note, if for any reason that process fails, it means that the key is not in security hardware. That does not mean that the key is compromised.
 
 The typical example of Android Keystore attestation response looks like this:
 
