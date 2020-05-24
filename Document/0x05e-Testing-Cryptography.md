@@ -17,7 +17,7 @@ KeyStore and KeyChain provide APIs for storing and using keys (behind the scene,
 - generating a key
 - using a key
 - storing a key
-- archiving of a key
+- archiving a key
 - deleting a key
 
 > Please note that storing of a key is analyzed in the chapter "[Testing Data Storage](0x05d-Testing-Data-Storage.md)".
