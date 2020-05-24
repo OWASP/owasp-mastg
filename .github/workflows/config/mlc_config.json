@@ -18,6 +18,8 @@
             "pattern": "https://build.frida.re"
         },{
             "pattern": "http://cydia.radare.org/debs/"
+        },{
+            "pattern": "https://cydia.akemi.ai/"
         }
 
     ],
