@@ -1797,7 +1797,7 @@ setImmediate(function() { //prevent timeout
 });
 ```
 
-Wrap your code in the function `setImmediate` to prevent timeouts (you may or may not need to do this), then call `Java.perform` to use Frida's methods for dealing with Java. Afterwards retrieve a wrapper for `MainActivity` class and overwrite its `a` method. Unlike the original, the new version of `a` just writes console output and *doesn't exit the app*. An alternative solution is to hook onClick method of the OnClickListener interface. You can overwrite the onClick method and prevent it from ending the application with `System.exit(0)` call. If you want to inject your own Frida  script, the script should either disable the `AlertDialog` entirely or change the behavior of the onClick method so the app does not exit when you click the "OK" dialog button.
+Wrap your code in the function `setImmediate` to prevent timeouts (you may or may not need to do this), then call `Java.perform` to use Frida's methods for dealing with Java. Afterwards retrieve a wrapper for `MainActivity` class and overwrite its `a` method. Unlike the original, the new version of `a` just writes console output and doesn't exit the app. An alternative solution is to hook `onClick` method of the `OnClickListener` interface. You can overwrite the `onClick` method and prevent it from ending the application with the `System.exit` call. If you want to inject your own Frida script, it should either disable the `AlertDialog` entirely or change the behavior of the `onClick` method so the app does not exit when you click "OK".
 
 Save the above script as `uncrackable1.js` and load it:
 
