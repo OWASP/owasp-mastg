@@ -621,8 +621,6 @@ Obfuscation is a process of transforming code into a form that is difficult to d
 
 > Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
 
-#### Obfuscation Techniques
-
 The following techniques can be used to obfuscate an application:
 
 - Name obfuscation
