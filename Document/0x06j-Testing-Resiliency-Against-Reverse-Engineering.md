@@ -667,7 +667,7 @@ This technique makes the program's control flow more complex by injecting dead c
 
 #### String encryption
 
-Applications are often compiled with hardcoded keys, licences, tokens and URL endpoints. By default, all of them are stored in plaintext in the data section of an application’s binary. String encryption aims to replace these values with their encrypted forms and inject stubs of code into the program that decrypts data before it is used by the program.
+Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
 
 #### Recommended tools
 
