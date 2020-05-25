@@ -649,7 +649,7 @@ mov        rbp, rsp
 
 Nevertheless, this only applies to the names of functions, classes and fields. The actual code remains unmodified, so an attacker can still read the disassembled version of the function and try to understand its purpose (e.g. to retrieve the logic of a security algorithm).
 
-#### Instructions substitution
+#### Instruction Substitution
 
 This technique replaces standard binary operators like addition or subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. Nevertheless, this technique is vulnerable to de-obfuscation, but it can still be time consuming depending on the complexity and depth of the substitutions.
 
