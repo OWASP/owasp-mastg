@@ -631,7 +631,7 @@ The following techniques can be used to obfuscate an application:
 - Dead code injection
 - String encryption
 
-#### Name obfuscation of classes, methods and fields
+#### Name Obfuscation
 
 The standard compiler generates binary symbols based on class and function names from the source code. Therefore, symbol names remain meaningful and can be easily read by disassembling the application. For instance, a function which detects a jailbreak can be located by searching for relevant keywords inside the binary. The listing below shows the disassembled function *JailbreakDetectionViewController.jailbreakTest4Tapped(..)* from the app Damn Vulnerable iOS App Version 2 (DVIA-v2).
 
