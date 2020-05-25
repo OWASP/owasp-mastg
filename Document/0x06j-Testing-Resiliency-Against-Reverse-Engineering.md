@@ -671,7 +671,7 @@ Applications are often compiled with hardcoded keys, licences, tokens and endpoi
 
 #### Recommended Tools
 
-- [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
+- [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
 #### How to use SwiftShield
