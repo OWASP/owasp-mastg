@@ -669,7 +669,7 @@ This technique makes the program's control flow more complex by injecting dead c
 
 Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
 
-#### Recommended tools
+#### Recommended Tools
 
 - [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to obfuscate binary's symbols. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation instead of the the source code. It can be used for symbols obfuscation, string encryption and control-flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
