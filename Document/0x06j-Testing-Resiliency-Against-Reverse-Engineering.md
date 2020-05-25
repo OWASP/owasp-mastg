@@ -619,7 +619,7 @@ However, this is not a concern on iOS. As discussed in the section [Testing on t
 
 Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
-> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from further analysis.
+> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
 
 #### Obfuscation Techniques
 
