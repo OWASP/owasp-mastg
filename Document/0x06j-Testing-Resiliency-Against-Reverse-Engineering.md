@@ -624,7 +624,7 @@ Obfuscation is a process of transforming code into a form that is difficult to d
 The following techniques can be used to obfuscate an application:
 
 - Name obfuscation
-- Instructions substitution
+- Instruction substitution
 - Control flow flattening
 - Dead code injection
 - String encryption
