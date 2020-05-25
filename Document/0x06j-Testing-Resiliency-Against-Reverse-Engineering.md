@@ -659,7 +659,7 @@ Control flow flattening replaces original code with a more complex representatio
 
 ![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png)
 
-The image shows how the control-flow flattening alters code ([Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf))
+The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
 
 #### Dead code injection
 
