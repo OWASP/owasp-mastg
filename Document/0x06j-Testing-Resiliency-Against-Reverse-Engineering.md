@@ -663,7 +663,7 @@ The image shows how the control-flow flattening alters code ([Obfuscating C++ pr
 
 #### Dead code injection
 
-This technique makes the program's control-flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
+This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
 
 #### String encryption
 
