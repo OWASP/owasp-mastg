@@ -649,7 +649,7 @@ stp        x22, x21, [sp, #-0x30]!
 mov        rbp, rsp
 ```
 
-Nevertheless, the binary’s code is not modified, so an attacker can still retrieve the logic of the algorithm by reading the disassembled version of the function and understand its purpose.
+Nevertheless, this only applies to the names of functions, classes and fields. The actual code remains unmodified, so an attacker can still read the disassembled version of the function and try to understand its purpose (e.g. to retrieve the logic of a security algorithm).
 
 #### Instructions substitution
 
