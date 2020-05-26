@@ -382,13 +382,13 @@ Locate uses of the cryptographic primitives in the code. Some of the most freque
 
 As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
 
-```shell
+```bash
 $ baksmali d file.apk -o smali_output/
 ```
 
 Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
 
-```shell
+```bash
 $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 ```
 

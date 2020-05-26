@@ -55,7 +55,7 @@ Nevertheless, if the code has been purposefully obfuscated (or some tool-breakin
 
 The process of decompilation consists of converting Java bytecode back into Java source code. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
-```shell
+```bash
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 $ adb install UnCrackable-Level1.apk
 ```
@@ -66,7 +66,7 @@ Seems like we're expected to find some kind of secret code!
 
 We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file and look at the content.
 
-```shell
+```bash
 $ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
 Archive:  UnCrackable-Level1.apk
   inflating: UnCrackable-Level1/AndroidManifest.xml
@@ -91,7 +91,7 @@ Once you have a JAR file, you can use any free decompiler to produce Java code. 
 
 The easiest way to run CFR is through `apkx`, which also packages `dex2jar` and automates extraction, conversion, and decompilation. Install it:
 
-```shell
+```bash
 $ git clone https://github.com/b-mueller/apkx
 $ cd apkx
 $ sudo ./install.sh
@@ -99,7 +99,7 @@ $ sudo ./install.sh
 
 This should copy `apkx` to `/usr/local/bin`. Run it on `UnCrackable-Level1.apk`:
 
-```shell
+```bash
 $ apkx UnCrackable-Level1.apk
 Extracting UnCrackable-Level1.apk to UnCrackable-Level1
 Converting: classes.dex -> classes.jar (dex2jar)
@@ -142,7 +142,7 @@ It is worth highlighting that analyzing disassembled native code is much more ch
 
 In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
 
-```shell
+```bash
 $ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 ```
 
@@ -152,7 +152,7 @@ $ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWo
 
 Decompile the APK with `apkx`.
 
-```shell
+```bash
 $ apkx HelloWord-JNI.apk
 Extracting HelloWord-JNI.apk to HelloWord-JNI
 Converting: classes.dex -> classes.jar (dex2jar)
@@ -173,7 +173,8 @@ extends AppCompatActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         this.setContentView(2130968603);
-        ((TextView)this.findViewById(2131427422)).setText((CharSequence)this.stringFromJNI());
+        ((TextView)this.findViewById(2131427422)).setText((CharSequence)this. \
+        stringFromJNI());
     }
 
     public native String stringFromJNI();
@@ -192,14 +193,14 @@ So where is the native implementation of this function? If you look into the "li
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
-```shell
+```bash
 $ greadelf -W -s libnative-lib.so | grep Java
      3: 00004e49   112 FUNC    GLOBAL DEFAULT   11 Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI
 ```
 
 You can also see this using radare2's rabin2:
 
-```shell
+```bash
 $ rabin2 -s HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so | grep -i Java
 003 0x00000e78 0x00000e78 GLOBAL   FUNC   16 Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI
 ```
@@ -220,7 +221,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
-```shell
+```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
 
 [x] Analyze all flags starting with sym. and entry0 (aa)
@@ -373,7 +374,8 @@ Next, Ctrl+click (or Command+click on Mac) on the `check_input` method. This tak
 
 ```java
     public static boolean check_input(String string) {
-        byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
+        byte[] arrby = Base64.decode((String) \
+        "5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
         byte[] arrby2 = new byte[]{};
         try {
             arrby = sg.vantagepoint.a.a.a(Validator.b("8d127684cbc37c17616d806cf50473cc"), arrby);
@@ -389,7 +391,8 @@ Next, Ctrl+click (or Command+click on Mac) on the `check_input` method. This tak
     }
 ```
 
-So, you have a Base64-encoded String that's passed to the function `a` in the package `sg.vantagepoint.a.a` (again, everything is called `a`) along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this particular `a` do? Ctrl-click it to find out.
+So, you have a Base64-encoded String that's passed to the function `a` in the package \
+`sg.vantagepoint.a.a` (again, everything is called `a`) along with something that looks suspiciously like a hex-encoded encryption key (16 hex bytes = 128bit, a common key length). What exactly does this particular `a` do? Ctrl-click it to find out.
 
 ```java
 public class a {
@@ -414,7 +417,7 @@ Following the example from "Disassembling Native Code" we will use different dis
 
 Once you've opened your file in radare2 you should first get the address of the function you're looking for. You can do this by listing or getting information `i` about the symbols `s` (`is`) and grepping (`~` radare2's built-in grep) for some keyword, in our case we're looking for JNI related symbols so we enter "Java":
 
-```shell
+```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
 ...
 [0x00000e3c]> is~Java
@@ -423,7 +426,7 @@ $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
 
 The method can be found at address `0x00000e78`. To display its disassembly simply run the following commands:
 
-```shell
+```bash
 [0x00000e3c]> e emu.str=true;
 [0x00000e3c]> s 0x00000e78
 [0x00000e78]> af
@@ -449,7 +452,7 @@ Let's explain the previous commands:
 
 Using radare2 you can quickly run commands and exit by using the flags `-qc '<commands>'`. From the previous steps we know already what to do so we will simply put everything together:
 
-```shell
+```bash
 $ r2 -qc 'e emu.str=true; s 0x00000e78; af; pdf' HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
 
 ╭ (fcn) sym.Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI 12
@@ -468,7 +471,7 @@ The workflow can be further improved by using [r2ghidra-dec](https://github.com/
 
 ###### IDA Pro
 
-We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
+We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_ MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
 <img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="500px" />
 
@@ -584,7 +587,7 @@ In this section, we will be using information from procfs directly or indirectly
 
 You can use `lsof` with the flag `-p <pid>` to return the list of open files for the specified process. See the [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") for more options.
 
-```shell
+```bash
 # lsof -p 6233
 COMMAND     PID       USER   FD      TYPE             DEVICE  SIZE/OFF       NODE NAME
 .foobar.c  6233     u0_a97  cwd       DIR                0,1         0          1 /
@@ -607,7 +610,7 @@ This can be extremely useful to spot unusual files when monitoring applications 
 
 You can find system-wide networking information in `/proc/net` or just by inspecting the `/proc/<pid>/net` directories (for some reason not process specific). There are multiple files present in these directories, of which `tcp`, `tcp6` and `udp` might be considered relevant from the tester's perspective.
 
-```shell
+```bash
 # cat /proc/7254/net/tcp
 sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
 ...
@@ -625,7 +628,7 @@ In the output above, the most relevant fields for us are:
 
 Another alternative is to use the `netstat` command, which also provides information about the network activity for the complete system in a more readable format, and can be easily filtered as per our requirements. For instance, we can easily filter it by PID:
 
-```shell
+```bash
 # netstat -p | grep 24685
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program Name
@@ -647,7 +650,7 @@ tcp        0      0 192.168.1.17:38481      sc-in-f100.1e100.:https ESTABLISHED 
 
 The file `/proc/<pid>/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
 
-```shell
+```bash
 # cat /proc/9568/maps
 12c00000-52c00000 rw-p 00000000 00:04 14917                              /dev/ashmem/dalvik-main space (region space) (deleted)
 6f019000-6f2c0000 rw-p 00000000 fd:00 1146914                            /data/dalvik-cache/arm64/system@framework@boot.art
@@ -680,7 +683,7 @@ In the following section, we'll show how to solve the UnCrackable App for Androi
 
 The `adb` command line tool was introduced in the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" chapter. You can use its `adb jdwp` command to list the process IDs of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host machine and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
 
-```shell
+```bash
 $ adb jdwp
 12167
 $ adb forward tcp:7777 jdwp:12167
@@ -688,7 +691,7 @@ $ adb forward tcp:7777 jdwp:12167
 
 You're now ready to attach jdb. Attaching the debugger, however, causes the app to resume, which you don't want. You want to keep it suspended so that you can explore first. To prevent the process from resuming, pipe the `suspend` command into jdb:
 
-```shell
+```bash
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 Initializing jdb ...
 > All threads suspended.
@@ -722,7 +725,7 @@ Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.Mai
 
 You can bypass this with a little runtime tampering. With the app still suspended, set a method breakpoint on `android.app.Dialog.setCancelable` and resume the app.
 
-```shell
+```bash
 > stop in android.app.Dialog.setCancelable
 Set breakpoint android.app.Dialog.setCancelable
 > resume
@@ -734,7 +737,7 @@ main[1]
 
 The app is now suspended at the first instruction of the `setCancelable` method. You can print the arguments passed to `setCancelable` with the `locals` command (the arguments are shown incorrectly under "local variables").
 
-```shell
+```bash
 main[1] locals
 Method arguments:
 Local variables:
@@ -743,7 +746,7 @@ flag = true
 
 `setCancelable(true)` was called, so this can't be the call we're looking for. Resume the process with the `resume` command.
 
-```shell
+```bash
 main[1] resume
 Breakpoint hit: "thread=main", android.app.Dialog.setCancelable(), line=1,110 bci=0
 main[1] locals
@@ -752,7 +755,7 @@ flag = false
 
 You've now reached a call to `setCancelable` with the argument `false`. Set the variable to `true` with the `set` command and resume.
 
-```shell
+```bash
 main[1] set flag = true
  flag = true = true
 main[1] resume
@@ -762,7 +765,7 @@ Repeat this process, setting `flag` to `true` each time the breakpoint is reache
 
 Now that the anti-tampering is out of the way, you're ready to extract the secret string! In the "static analysis" section, you saw that the string is decrypted with AES, then compared with the string input to the message box. The method `equals` of the `java.lang.String` class compares the string input with the secret string. Set a method breakpoint on `java.lang.String.equals`, enter an arbitrary text string in the edit field, and tap the "verify" button. Once the breakpoint is reached, you can read the method argument with the `locals` command.
 
-```shell
+```bash
 > stop in java.lang.String.equals
 Set breakpoint java.lang.String.equals
 >
@@ -861,19 +864,19 @@ Native code on Android is packed into ELF shared libraries and runs just like an
 
 You'll now set up your JNI demo app, HelloWorld-JNI.apk, for debugging. It's the same APK you downloaded in "Statically Analyzing Native Code". Use `adb install` to install it on your device or on an emulator.
 
-```shell
+```bash
 $ adb install HelloWorld-JNI.apk
 ```
 
 If you followed the instructions at the beginning of this chapter, you should already have the Android NDK. It contains prebuilt versions of gdbserver for various architectures. Copy the gdbserver binary to your device:
 
-```shell
+```bash
 $ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
 
 The `gdbserver --attach` command causes gdbserver to attach to the running process and bind to the IP address and port specified in `comm`, which in this case is a HOST:PORT descriptor. Start HelloWorldJNI on the device, then connect to the device and determine the PID of the HelloWorldJNI process (sg.vantagepoint.helloworldjni). Then switch to the root user and attach `gdbserver`:
 
-```shell
+```bash
 $ adb shell
 $ ps | grep helloworld
 u0_a164   12690 201   1533400 51692 ffffffff 00000000 S sg.vantagepoint.helloworldjni
@@ -885,13 +888,13 @@ Listening on port 1234
 
 The process is now suspended, and `gdbserver` is listening for debugging clients on port `1234`. With the device connected via USB, you can forward this port to a local port on the host with the `abd forward` command:
 
-```shell
+```bash
 $ adb forward tcp:1234 tcp:1234
 ```
 
 You'll now use the prebuilt version of `gdb` included in the NDK toolchain.
 
-```shell
+```bash
 $ $TOOLCHAIN/bin/gdb libnative-lib.so
 GNU gdb (GDB) 7.11
 (...)
@@ -907,7 +910,7 @@ Our objective is to set a breakpoint at the first instruction of the native func
 
 First, resume execution of the Java VM by attaching jdb. You don't want the process to resume immediately though, so pipe the `suspend` command into jdb:
 
-```shell
+```bash
 $ adb jdwp
 14342
 $ adb forward tcp:7777 jdwp:14342
@@ -916,7 +919,7 @@ $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 
 Next, suspend the process where the Java runtime loads `libnative-lib.so`. In jdb, set a breakpoint at the `java.lang.System.loadLibrary` method and resume the process. After the breakpoint has been reached, execute the `step up` command, which will resume the process until `loadLibrary`returns. At this point, `libnative-lib.so` has been loaded.
 
-```shell
+```bash
 > stop in java.lang.System.loadLibrary
 > resume
 All threads resumed.
@@ -931,7 +934,7 @@ main[1]
 
 Execute `gdbserver` to attach to the suspended app. This will cause the app to be suspended by both the Java VM and the Linux kernel (creating a state of “double-suspension”).
 
-```shell
+```bash
 $ adb forward tcp:1234 tcp:1234
 $ $TOOLCHAIN/arm-linux-androideabi-gdb libnative-lib.so
 GNU gdb (GDB) 7.7
@@ -948,7 +951,7 @@ Remote debugging using :1234
 
 Besides being useful for debugging, the jdb command line tool offers basic execution tracing functionality. To trace an app right from the start, you can pause the app with the Android "Wait for Debugger" feature or a `kill –STOP` command and attach jdb to set a deferred method breakpoint on any initialization method. Once the breakpoint is reached, activate method tracing with the `trace go methods` command and resume execution. jdb will dump all method entries and exits from that point onwards.
 
-```shell
+```bash
 $ adb forward tcp:7777 jdwp:7288
 $ { echo "suspend"; cat; } | jdb -attach localhost:7777
 Set uncaught java.lang.Throwable
@@ -988,7 +991,7 @@ Strace is a standard Linux utility that is not included with Android by default,
 
 If the "Wait for debugger" feature in **Settings > Developer options** is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
 
-```shell
+```bash
 $ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e "!read" -ff -p "$pid"; break; fi; done
 ```
 
@@ -998,7 +1001,7 @@ Ftrace is a tracing utility built directly into the Linux kernel. On a rooted de
 
 Conveniently, the stock Android kernel on both Lollipop and Marshmallow include ftrace functionality. The feature can be enabled with the following command:
 
-```shell
+```bash
 $ echo 1 > /proc/sys/kernel/ftrace_enabled
 ```
 
@@ -1106,7 +1109,7 @@ The Android emulator is based on QEMU, a generic and open source machine emulato
 
 Because the Android emulator is a fork of QEMU, it comes with all QEMU features, including monitoring, debugging, and tracing facilities. QEMU-specific parameters can be passed to the emulator with the `-qemu` command line flag. You can use QEMU's built-in tracing facilities to log executed instructions and virtual register values. Starting QEMU with the `-d` command line flag will cause it to dump the blocks of guest code, micro operations, or host instructions being executed. With the `–d_asm` flag, QEMU logs all basic blocks of guest code as they enter QEMU's translation function. The following command logs all translated blocks to a file:
 
-```shell
+```bash
 $ emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-save -qemu -d in_asm,cpu 2>/tmp/qemu.log
 ```
 
@@ -1128,7 +1131,7 @@ All of this makes it possible to build tracers that are practically transparent 
 
 PANDA comes with pre-made plugins, including a string search tool and a syscall tracer. Most importantly, it supports Android guests, and some of the DroidScope code has even been ported. Building and running PANDA for Android ("PANDROID") is relatively straightforward. To test it, clone Moiyx's git repository and build PANDA:
 
-```shell
+```bash
 $ cd qemu
 $ ./configure --target-list=arm-softmmu --enable-android
 $ make
@@ -1152,7 +1155,7 @@ The target crackme is a simple [Android license key validation](https://github.c
 
 The crackme consists of a single ELF executable file, which can be executed on any Android device by following the instructions below:
 
-```shell
+```bash
 $ adb push validate /data/local/tmp
 [100%] /data/local/tmp/validate
 
@@ -1169,7 +1172,6 @@ Incorrect serial (wrong format).
 So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
 <img src="Images/Chapters/0x05c/disass_main_1874.png" width="550px" />
-![Disassembly of main function]()
 
 The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
@@ -1179,7 +1181,7 @@ The function names have been stripped from the binary, but luckily there are eno
 
 We can now use this information about the expected input to further look into the validation function at `0x00001760`.
 
-```assembly_x86
+```gnuassembler
 ╭ (fcn) fcn.00001760 268
 │   fcn.00001760 (int32_t arg1);
 │           ; var int32_t var_20h @ fp-0x20
@@ -1338,7 +1340,7 @@ Also, it may appear as if the script is simply reading the solution string from 
 
 Running this script should return the following output:
 
-```shell
+```bash
 (angr) $ python solve.py
 WARNING | cle.loader | The main binary is a position-independent executable.
 It is being loaded with a base address of 0x400000.
@@ -1365,7 +1367,7 @@ In most cases, both issues can be fixed by making minor changes to the app (aka.
 
 The first step is unpacking and disassembling the APK with `apktool`:
 
-```shell
+```bash
 $ apktool d target_apk.apk
 ```
 
@@ -1381,7 +1383,7 @@ In our example, a search for "X509TrustManager" returns one class that implement
 
 To bypass the pinning check, add the `return-void` opcode to the first line of each method. This opcode causes the checks to return immediately. With this modification, no certificate checks are performed, and the application accepts all certificates.
 
-```smali
+```default
 .method public checkServerTrusted([LJava/security/cert/X509Certificate;Ljava/lang/String;)V
   .locals 3
   .param p1, "chain"  # [Ljava/security/cert/X509Certificate;
@@ -1420,7 +1422,7 @@ Even if we haven't altered the source code, this modification also breaks the AP
 
 You can easily repackage an app by doing the following:
 
-```shell
+```bash
 $ cd UnCrackable-Level1
 $ apktool b
 $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
@@ -1434,26 +1436,26 @@ Before re-signing, you first need a code-signing certificate. If you have built 
 
 The standard Java distribution includes `keytool` for managing KeyStores and certificates. You can create your own signing certificate and key, then add it to the debug KeyStore:
 
-```shell
+```bash
 $ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
 ```
 
 After the certificate is available, you can re-sign the APK with it. Be sure that `apksigner` is in the path and that you run it from the folder where your repackaged APK is located.
 
-```shell
+```bash
 $ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
 ```
 
 Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` must be called **after** signing.
 
-```shell
+```bash
 $ jarsigner -verbose -keystore ~/.android/debug.keystore ../UnCrackable-Repackaged.apk signkey
 $ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
 Now you may reinstall the app:
 
-```shell
+```bash
 $ adb install UnCrackable-Repackaged.apk
 ```
 
@@ -1586,7 +1588,7 @@ function describeJavaClass(className) {
 
 After saving the script to a file called java_class_listing.js, you can tell Frida CLI to load it by using the flag `-l` and inject it to the process ID specified by `-p`.
 
-```shell
+```bash
 frida -U -l java_class_listing.js -p <pid>
 
 // Output
@@ -1618,7 +1620,7 @@ Given the verbosity of the output, the system classes can be filtered out progra
 
 You can retrieve process related information straight from the Frida CLI by using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
-```shell
+```bash
 [Huawei Nexus 6P::sg.vantagepoint.helloworldjni]-> Process.enumerateModules()
 [
     {
@@ -1808,7 +1810,7 @@ Wrap your code in the function `setImmediate` to prevent timeouts (you may or ma
 
 Save the above script as `uncrackable1.js` and load it:
 
-```shell
+```bash
 $ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 ```
 
@@ -1826,7 +1828,8 @@ import android.util.Log;
 
 public class a {
     public static boolean a(String string) {
-        byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
+        byte[] arrby = Base64.decode((String) \
+        "5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
         byte[] arrby2 = new byte[]{};
         try {
             arrby2 = arrby = sg.vantagepoint.a.a.a((byte[])a.b((String)"8d127684cbc37c17616d806cf50473cc"), (byte[])arrby);
@@ -1886,7 +1889,7 @@ setImmediate(function() {
 
 After running the script in Frida and seeing the "[\*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
 
-```shell
+```bash
 $ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
 
 [*] Starting script
@@ -1950,7 +1953,7 @@ While you're searching or exploring the app memory, you can always verify where 
 
 If you're only interested into the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
 
-```shell
+```bash
 [0x00000000]> \il
 0x000000558b1fd000 app_process64
 0x0000007dbc859000 libandroid_runtime.so
@@ -1974,7 +1977,7 @@ As you might expect you can correlate the addresses of the libraries with the me
 
 You can also use objection to display the same information.
 
-```shell
+```bash
 $ objection --gadget sg.vantagepoint.helloworldjni explore
 
 sg.vantagepoint.helloworldjni on (google: 8.1.0) [usb] # memory list modules
@@ -2091,7 +2094,7 @@ You can dump the app's process memory with [objection](https://github.com/sensep
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
-```shell
+```bash
 $ objection --gadget sg.vantagepoint.helloworldjni explore
 
 sg.vantagepoint.helloworldjni on (google: 8.1.0) [usb] # memory dump all /Users/foo/memory_Android/memory
@@ -2153,7 +2156,7 @@ Runtime reverse engineering can be seen as the on-the-fly version of reverse eng
 
 We'll keep using the HelloWorld JNI app, open a session with r2frida `r2 frida://usb//sg.vantagepoint.helloworldjni` and you can start by displaying the target binary information by using the `\i` command:
 
-```shell
+```bash
 [0x00000000]> \i
 arch                arm
 bits                64
@@ -2209,14 +2212,14 @@ And list the exports with `\iE <lib>`:
 
 The next thing you might want to look at are the **currently loaded** Java classes:
 
-```shell
+```bash
 [0x00000000]> \ic~sg.vantagepoint.helloworldjni
 sg.vantagepoint.helloworldjni.MainActivity
 ```
 
 List class fields:
 
-```shell
+```bash
 [0x00000000]> \ic sg.vantagepoint.helloworldjni.MainActivity~sg.vantagepoint.helloworldjni
 public native java.lang.String sg.vantagepoint.helloworldjni.MainActivity.stringFromJNI()
 public sg.vantagepoint.helloworldjni.MainActivity()
@@ -2256,7 +2259,7 @@ java.lang.BootClassLoader@b1f1189dalvik.system.PathClassLoader[
 
 Next, imagine that you are interested into the method exported by libnative-lib.so `0x7d1c49954c f Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI`. You can seek to that address with `s 0x7d1c49954c`, analyze that function `af` and print 10 lines of its disassembly `pd 10`:
 
-```shell
+```bash
 [0x7d1c49954c]> pdf
             ;-- sym.fun.Java_sg_vantagepoint_helloworldjni_MainActivity_stringFromJNI:
 ╭ (fcn) fcn.7d1c49954c 18
@@ -2281,7 +2284,7 @@ Working on real devices has advantages, especially for interactive, debugger-sup
 
 Initramfs is a small CPIO archive stored inside the boot image. It contains a few files that are required at boot, before the actual root file system is mounted. On Android, initramfs stays mounted indefinitely. It contains an important configuration file, default.prop, that defines some basic system properties. Changing this file can make the Android environment easier to reverse engineer. For our purposes, the most important settings in default.prop are `ro.debuggable` and `ro.secure`.
 
-```shell
+```bash
 $ cat /default.prop
 #
 # ADDITIONAL_DEFAULT_PROPERTIES
@@ -2307,14 +2310,14 @@ ro.dalvik.vm.native.bridge=0
 Setting `ro.debuggable` to "1" makes all running apps debuggable (i.e., the debugger thread will run in every process), regardless of the value of the `android:debuggable` attribute in the Android Manifest. Setting `ro.secure` to "0" causes adbd to run as root.
 To modify initrd on any Android device, back up the original boot image with TWRP or dump it with the following command:
 
-```shell
+```bash
 $ adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
 $ adb pull /mnt/sdcard/boot.img /tmp/boot.img
 ```
 
 To extract the contents of the boot image, use the abootimg tool as described in Krzysztof Adamski's how-to :
 
-```shell
+```bash
 $ mkdir boot
 $ cd boot
 $ ../abootimg -x /tmp/boot.img
@@ -2325,7 +2328,7 @@ $ cat ../initrd.img | gunzip | cpio -vid
 
 Note the boot parameters written to bootimg.cfg; you'll need them when booting your new kernel and ramdisk.
 
-```shell
+```bash
 $ ~/Desktop/abootimg/boot$ cat bootimg.cfg
 bootsize = 0x1600000
 pagesize = 0x800
@@ -2339,7 +2342,7 @@ cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=3
 
 Modify default.prop and package your new ramdisk:
 
-```shell
+```bash
 $ cd initrd
 $ find . | cpio --create --format='newc' | gzip > ../myinitd.img
 ```
@@ -2358,7 +2361,7 @@ For hacking, I recommend an AOSP-supported device. Google's Nexus smartphones an
 
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the `msm` repository and check out one of the `android-msm-hammerhead` branches (hammerhead is the codename of the Nexus 5, and finding the right branch is confusing). Once you have downloaded the sources, create the default kernel config with the command `make hammerhead_defconfig` (replacing "hammerhead" with your target device).
 
-```shell
+```bash
 $ git clone https://android.googlesource.com/kernel/msm.git
 $ cd msm
 $ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
@@ -2370,7 +2373,7 @@ $ vim .config
 
 I recommend using the following settings to add loadable module support, enable the most important tracing facilities, and open kernel memory for patching.
 
-```shell
+```bash
 CONFIG_MODULES=Y
 CONFIG_STRICT_MEMORY_RWX=N
 CONFIG_DEVMEM=Y
@@ -2388,7 +2391,7 @@ CONFIG KDB=Y
 
 Once you're finished editing save the .config file, build the kernel.
 
-```shell
+```bash
 $ export ARCH=arm
 $ export SUBARCH=arm
 $ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
@@ -2397,7 +2400,7 @@ $ make
 
 You can now create a standalone toolchain for cross-compiling the kernel and subsequent tasks. To create a toolchain for Android 7.0 (API level 24), run make-standalone-toolchain.sh from the Android NDK package:
 
-```shell
+```bash
 $ cd android-ndk-rXXX
 $ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
 ```
@@ -2405,7 +2408,7 @@ $ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --in
 Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
 the kernel.
 
-```shell
+```bash
 $ export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
 $ make
 ```
@@ -2414,7 +2417,7 @@ $ make
 
 Before booting into the new kernel, make a copy of your device's original boot image. Find the boot partition:
 
-```shell
+```bash
 root@hammerhead:/dev # ls -al /dev/block/platform/msm_sdcc.1/by-name/
 lrwxrwxrwx root     root              1970-08-30 22:31 DDR -> /dev/block/mmcblk0p24
 lrwxrwxrwx root     root              1970-08-30 22:31 aboot -> /dev/block/mmcblk0p6
@@ -2426,14 +2429,14 @@ lrwxrwxrwx root     root              1970-08-30 22:31 userdata -> /dev/block/mm
 
 Then dump the whole thing into a file:
 
-```shell
+```bash
 $ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
 $ adb pull /data/local/tmp/boot.img
 ```
 
 Next, extract the ramdisk and information about the structure of the boot image. There are various tools that can do this;  I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
 
-```shell
+```bash
 $ abootimg -x boot.img
 ```
 
@@ -2441,13 +2444,13 @@ This should create the files bootimg.cfg, initrd.img, and zImage (your original 
 
 You can now use fastboot to test the new kernel. The `fastboot boot` command allows you to run the kernel without actually flashing it (once you're sure everything works, you can make the changes permanent with fastboot flash, but you don't have to). Restart the device in fastboot mode with the following command:
 
-```shell
+```bash
 $ adb reboot bootloader
 ```
 
 Then use the `fastboot boot` command to boot Android with the new kernel. Specify the kernel offset, ramdisk offset, tags offset, and command line (use the values listed in your extracted bootimg.cfg) in addition to the newly built kernel and the original ramdisk.
 
-```shell
+```bash
 $ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
 ```
 
@@ -2463,7 +2466,7 @@ System call hooking allows you to attack any anti-reversing defenses that depend
 
 You first need the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers aren't so lucky). You can look up the address in the /proc/kallsyms file:
 
-```shell
+```bash
 $ adb shell "su -c echo 0 > /proc/sys/kernel/kptr_restrict"
 $ adb shell cat /proc/kallsyms | grep sys_call_table
 c000f984 T sys_call_table
@@ -2475,7 +2478,7 @@ This is the only memory address you need for writing your kernel module—you ca
 
 In this how-to, we will use a Kernel module to hide a file. Create a file on the device so you can hide it later:
 
-```shell
+```bash
 $ adb shell "su -c echo ABCD > /data/local/tmp/nowyouseeme"
 $ adb shell cat /data/local/tmp/nowyouseeme
 ABCD
@@ -2527,7 +2530,7 @@ return 0;
 
 To build the kernel module, you need the kernel sources and a working toolchain. Since you've already built a complete kernel, you're all set. Create a Makefile with the following content:
 
-```make
+```makefile
 KERNEL=[YOUR KERNEL PATH]
 TOOLCHAIN=[YOUR TOOLCHAIN PATH]
 
@@ -2542,7 +2545,7 @@ clean:
 
 Run make to compile the code—this should create the file kernel_hook.ko. Copy kernel_hook.ko to the device and load it with the `insmod` command. Using the `lsmod` command, verify that the module has been loaded successfully.
 
-```shell
+```bash
 $ make
 (...)
 $ adb push kernel_hook.ko /data/local/tmp/
@@ -2612,7 +2615,7 @@ int main(int argc, char *argv[]) {
 
 Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device:
 
-```shell
+```bash
 $ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
 $ adb push kmem_util /data/local/tmp/
 $ adb shell chmod 755 /data/local/tmp/kmem_util
@@ -2620,27 +2623,27 @@ $ adb shell chmod 755 /data/local/tmp/kmem_util
 
 Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The `openat` system call is defined in unistd.h, which is in the kernel sources:
 
-```shell
+```bash
 $ grep -r "__NR_openat" arch/arm/include/asm/unistd.h
 \#define __NR_openat            (__NR_SYSCALL_BASE+322)
 ```
 
 The final piece of the puzzle is the address of your replacement-`openat`. Again, you can get this address from /proc/kallsyms.
 
-```shell
+```bash
 $ adb shell cat /proc/kallsyms | grep new_openat
 bf000000 t new_openat    [kernel_hook]
 ```
 
 Now you have everything you need to overwrite the `sys_call_table` entry. The syntax for kmem_util is:
 
-```shell
+```bash
 $ ./kmem_util <syscall_table_base_address> <offset> <func_addr>
 ```
 
 The following command patches the `openat` system call table so that it points to your new function.
 
-```shell
+```bash
 $ adb shell su -c /data/local/tmp/kmem_util c000f984 322 bf000000
 Original value: c017a390
 New value: bf000000
@@ -2648,7 +2651,7 @@ New value: bf000000
 
 Assuming that everything worked, /bin/cat shouldn't be able to _see_ the file.
 
-```shell
+```bash
 $ adb shell su -c cat /data/local/tmp/nowyouseeme
 tmp-mksh: cat: /data/local/tmp/nowyouseeme: No such file or directory
 ```

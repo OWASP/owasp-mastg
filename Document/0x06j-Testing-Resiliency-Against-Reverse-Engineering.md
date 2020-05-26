@@ -98,7 +98,7 @@ As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`)
 
 Let's inject Cycript into our process (look for your PID with `top`):
 
-```shell
+```bash
 iOS8-jailbreak:~ root# cycript -p 12345
 cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
@@ -106,14 +106,14 @@ true
 
 As you can see, our class method was called directly, and it returned "true". Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
 
-```shell
+```bash
 cy# a=choose(JailbreakDetectionVC)
 []
 ```
 
 Oops! The return value is an empty array. That means that there are no instances of this class registered in the runtime. In fact, we haven't clicked the second "Jailbreak Test" button, which initializes this class:
 
-```shell
+```bash
 cy# a=choose(JailbreakDetectionVC)
 [#"<JailbreakDetectionVC: 0x14ee15620>"]
 cy# [a[0] isJailbroken]
@@ -124,7 +124,7 @@ True
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
-```shell
+```bash
 cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
 false
@@ -143,7 +143,7 @@ One feature of Frida that we will use to bypass jailbreak detection is so-called
 3. The iOS device must be connected via USB cable.
 4. Use `frida-trace` on your workstation:
 
-```shell
+```bash
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
 ```
 
@@ -159,7 +159,7 @@ This will start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJ
 
 This will provide the following output:
 
-```shell
+```bash
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]:"
 
 Instrumenting functions...                                           `...

@@ -209,7 +209,7 @@ The following steps should work even when targeting an encrypted binary. If for 
 
 If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
-```shell
+```bash
 $ binwalk -e -y=xml ./Telegram\ X
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
@@ -220,7 +220,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
-```shell
+```bash
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
 0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC
@@ -239,7 +239,7 @@ In both cases (binwalk or radare2) we were able to extract the same two `plist` 
 
 If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
 
-```shell
+```bash
 $ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
     15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/Telegram\ X
 
@@ -303,7 +303,7 @@ In the following example we use Telegram to open the share dialog from a chat an
 
 First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
 
-```shell
+```bash
 $ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 ```
 
@@ -315,7 +315,7 @@ Now we open the share dialog:
 
 The following methods are displayed:
 
-```shell
+```bash
   1942 ms  +[PHPhotoLibrary authorizationStatus]
   1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
   1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
@@ -323,7 +323,7 @@ The following methods are displayed:
 
 If we click on **Location**, another method will be traced:
 
-```shell
+```bash
  11186 ms  +[CLLocationManager authorizationStatus]
  11186 ms     | +[CLLocationManager _authorizationStatus]
  11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
@@ -348,7 +348,7 @@ Use the auto-generated stubs of frida-trace to get more information like the ret
 
 Clicking again on "Location" reveals more information:
 
-```shell
+```bash
   3630 ms  -[CLLocationManager init]
   3630 ms     | -[CLLocationManager initWithEffectiveBundleIdentifier:0x0 bundle:0x0]
   3634 ms  -[CLLocationManager setDelegate:0x14c9ab000]
@@ -690,7 +690,7 @@ This section explains how to trace the link receiver method and how to extract a
 
 In order to open the links we will also use the Notes app and frida-trace with the following pattern:
 
-```shell
+```bash
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
@@ -700,7 +700,7 @@ Write `https://t.me/addstickers/radare` (found through a quick Internet research
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
-```shell
+```bash
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -708,7 +708,7 @@ Instrumenting functions...
 
 You can see that only one function was found and is being instrumented. Trigger now the universal link and observe the traces.
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 ```
@@ -732,7 +732,7 @@ You can observe that the function is in fact being called. You can now add code 
 
 The new output is:
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  application:<Application: 0x10556b3c0>
@@ -760,7 +760,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 Again, we first let frida-trace generate the stubs in `__handlers__/`:
 
-```shell
+```bash
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -772,7 +772,7 @@ $S10TelegramUI31AuthorizationSequenceControllerC7account7strings7openUrl5apiId0J
 
 Now you can see a long list of functions but we still don't know which ones will be called. Trigger the universal link again and observe the traces.
 
-```shell
+```bash
            /* TID 0x303 */
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
@@ -788,7 +788,7 @@ There is probably no documentation for that Swift function but you can just dema
 
 > xcrun can be used invoke Xcode developer tools from the command-line, without having them in the path. In this case it will locate and run swift-demangle, an Xcode tool that demangles Swift symbols.
 
-```shell
+```bash
 $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
 18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA0
 12PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF
@@ -829,7 +829,7 @@ For now we will use this information to properly print the parameters by editing
 
 This way, the next time we run it we get a much more detailed output:
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  application:<Application: 0x10556b3c0>
@@ -877,7 +877,7 @@ Actually, the previous example in "Checking How the Links Are Opened" is very si
 
 In the detailed output above you can see that `NSUserActivity` object we've received meets exactly the mentioned points:
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  application:<Application: 0x10556b3c0>
@@ -1166,7 +1166,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 
 4. After selecting **SomeFileManager** we can see the following:
 
-    ```shell
+    ```bash
     (0x1c4077000)  -[AppDelegate application:openURL:options:]
     application: <UIApplication: 0x101c00950>
     openURL: file:///var/mobile/Library/Application%20Support
@@ -1188,7 +1188,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 
 As you can see, the sending application is `com.apple.sharingd` and the URL's scheme is `file://`. Note that once we select the app that should open the file, the system already moved the file to the corresponding destination, that is to the app's Inbox. The apps are then responsible for deleting the files inside their Inboxes. This app, for example, moves the file to `/var/mobile/Documents/` and removes it from the Inbox.
 
-```shell
+```bash
 (0x1c002c760)  -[XXFileManager moveItemAtPath:toPath:error:]
 moveItemAtPath: /var/mobile/Library/Application Support/Containers
                             /com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
@@ -1281,7 +1281,7 @@ Binary file Payload/Telegram X.app//Watch/Watch.app/PlugIns/Watch Extension.appe
 
 You can also access per SSH, find the app bundle and list all inside PlugIns (they are placed there by default) or do it with objection:
 
-```shell
+```bash
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
     /var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/
     Telegram X.app/PlugIns
@@ -1349,7 +1349,7 @@ Following the previous example of Telegram we will now use the "Share" button on
 
 If we run a trace, we'd see the following output:
 
-```shell
+```bash
 (0x1c06bb420) NSExtensionContext - inputItems
 0x18284355c Foundation!-[NSExtension _itemProviderForPayload:extensionContext:]
 0x1828447a4 Foundation!-[NSExtension _loadItemForPayload:contextIdentifier:completionHandler:]
@@ -1380,7 +1380,7 @@ You can also find out which app extension is taking care of your the requests an
 
 We run the same example again:
 
-```shell
+```bash
 (0x1c0370200) NSExtension - _plugIn
 RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785
 1(2) /private/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35
@@ -1698,7 +1698,7 @@ Notes — mobilenotes://
 
 We search for this method in the Telegram source code, this time without using Xcode, just with `egrep`:
 
-```shell
+```bash
 $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
 ./AppDelegate.swift:552: return UIApplication.shared.open(parsedUrl,
@@ -1711,7 +1711,7 @@ $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
 If we inspect the results we will see that `openURL:options:completionHandler:` is actually being used for universal links, so we have to keep searching. For example, we can search for `openURL(`:
 
-```shell
+```bash
 $ egrep -nr "openURL\(" ./Telegram-iOS/
 
 ./ApplicationContext.swift:763:  UIApplication.shared.openURL(parsedUrl)
@@ -1787,7 +1787,7 @@ Search for deprecated methods like:
 
 For example, here we find those three:
 
-```shell
+```bash
 $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
 
 0x1000d9e90 31 30 UIApplicationOpenURLOptionsKey
@@ -1860,7 +1860,7 @@ For this you can also use [IDB](https://www.idbtool.com/ "IDB"):
 
 Needle can be used to test custom URL schemes, the following module can be used to open the URLs (URIs):
 
-```shell
+```bash
 [needle] >
 [needle] > use dynamic/ipc/open_uri
 [needle][open_uri] > show options
@@ -2176,7 +2176,7 @@ Doing this with Frida is pretty easy, you can refer to this [blog post](https://
 
 Before running the fuzzer we need the URL schemes as inputs. From the static analysis we know that the iGoat-Swift app supports the following URL scheme and parameters: `iGoat://?contactNumber={0}&message={0}`.
 
-```shell
+```bash
 $ frida -U SpringBoard -l ios-url-scheme-fuzzing.js
 [iPhone::SpringBoard]-> fuzz("iGoat", "iGoat://?contactNumber={0}&message={0}")
 Watching for crashes from iGoat...
@@ -2234,7 +2234,7 @@ The script will detect if a crash occurred. On this run it did not detect any cr
 
 In the **URL Handlers** section, go to the **Fuzzer** tab. On the left side default IDB payloads are listed. Once you have generated your payload list (e.g. using FuzzDB), go to the **Fuzz Template** section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
-```shell
+```bash
 myURLscheme://$@$
 ```
 
@@ -2299,7 +2299,7 @@ In the compiled binary you can search in its symbols or strings like this:
 
 ###### UIWebView
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 489 0x0002fee9 0x10002fee9   9  10 (5.__TEXT.__cstring) ascii UIWebView
 896 0x0003c813 0x0003c813  24  25 () ascii @_OBJC_CLASS_$_UIWebView
@@ -2308,7 +2308,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 
 ###### WKWebView
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 490 0x0002fef3 0x10002fef3   9  10 (5.__TEXT.__cstring) ascii WKWebView
 625 0x00031670 0x100031670  17  18 (5.__TEXT.__cstring) ascii unwindToWKWebView
@@ -2318,7 +2318,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 
 Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init "WKWebView init(frame:configuration:)")):
 
-```shell
+```bash
 $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 0x5c3ac 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
 0x5d97a 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
@@ -2328,7 +2328,7 @@ $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 
 You can also demangle it:
 
-```shell
+```bash
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
 ---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
@@ -2348,7 +2348,7 @@ webPreferences.javaScriptEnabled = false
 
 If only having the compiled binary you can search for this in it:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 391 0x0002f2c7 0x10002f2c7  17  18 (4.__TEXT.__objc_methname) ascii javaScriptEnabled
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
@@ -2362,7 +2362,7 @@ In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [m
 
 In the compiled binary:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 # nothing found
@@ -2487,7 +2487,7 @@ ObjC.choose(ObjC.classes['WKWebView'], {
 
 The output shows now that, in fact, JavaScript is enabled:
 
-```shell
+```bash
 
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
@@ -2517,7 +2517,7 @@ ObjC.choose(ObjC.classes['WKWebView'], {
 
 The output shows that some of the resources on the page have been loaded through insecure connections:
 
-```shell
+```bash
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
@@ -2609,7 +2609,7 @@ do {
 
 If only having the compiled binary, you can also search for these methods, e.g.:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
@@ -2630,7 +2630,7 @@ In this case, the parameter `allowingReadAccessToURL` contains a single file "WK
 
 In the compiled binary:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
 237 0x0002dff1 37 (4.__TEXT.__objc_methname) ascii loadFileURL:allowingReadAccessToURL:
 ```
@@ -2696,7 +2696,7 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
-```shell
+```bash
 $ frida-trace -U "Where's My Browser?"
     -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
@@ -2716,7 +2716,7 @@ In this case, `baseURL` is set to `nil`, meaning that the effective origin is "n
 
 As an additional note regarding `UIWebView`s, if you retrieve the effective origin from a `UIWebView` where `baseURL` is also set to `nil` you will see that it is not set to "null", instead you'll obtain something similar to the following:
 
-```shell
+```bash
 applewebdata://5361016c-f4a0-4305-816b-65411fc1d780
 ```
 
@@ -2762,7 +2762,7 @@ allowUniversalAccessFromFileURLs:  0
 
 Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to "0", meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to "1" this time:
 
-```shell
+```bash
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 ...
 

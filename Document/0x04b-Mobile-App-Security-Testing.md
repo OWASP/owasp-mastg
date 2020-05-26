@@ -360,7 +360,7 @@ The security of an application developed with DevOps must be considered during o
 - Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
-<img src="Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg" width="550" />
+<img src="Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg" width="500" />
 
 ### References
 

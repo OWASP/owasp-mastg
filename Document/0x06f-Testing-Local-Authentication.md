@@ -178,13 +178,13 @@ if (status == noErr){
 
 Usage of frameworks in an app can also be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using otool:
 
-```shell
+```bash
 $ otool -L <AppName>.app/<AppName>
 ```
 
 If `LocalAuthentication.framework` is used in an app, the output will contain both of the following lines (remember that `LocalAuthentication.framework` uses `Security.framework` under the hood):
 
-```shell
+```bash
 /System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication
 /System/Library/Frameworks/Security.framework/Security
 ```
@@ -227,7 +227,7 @@ Alternatively, you can use [objection to bypass Touch ID](https://github.com/sen
 
 Needle can be used to bypass insecure biometric authentication in iOS platforms. Needle utilizes Frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
 
-```shell
+```bash
 [needle][container] > use hooking/frida/script_touch-id-bypass
 [needle][script_touch-id-bypass] > run
 ```

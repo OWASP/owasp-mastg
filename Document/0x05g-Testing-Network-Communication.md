@@ -175,13 +175,13 @@ Open the identified file. In this case, the file can be found at "res/xml/networ
 
 If a configuration exists, the following event may be visible in the log:
 
-```shell
+```bash
 D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
 ```
 
 If a certificate pinning validation check has failed, the following event will be logged:
 
-```shell
+```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
@@ -364,13 +364,13 @@ As an example, let's say that you find an application which uses a BKS (BouncyCa
 
 To add your proxy's certificate use the following command:
 
-```shell
+```bash
 $ keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
 ```
 
 To list certificates in the BKS truststore use the following command:
 
-```shell
+```bash
 $ keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
 ```
 

@@ -55,7 +55,7 @@ Once the activity has been called, the file key.xml will be created with the pro
 
 - `MODE_WORLD_READABLE` allows all applications to access and read the contents of `key.xml`.
 
-```shell
+```bash
 root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 -rw-rw-r-- u0_a118    170 2016-04-23 16:51 key.xml
 ```
@@ -111,7 +111,7 @@ A misconfigured Firebase instance can be identified by making the following netw
 
 The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Scanner"), a python script that automates the task above as shown below:
 
-```shell
+```bash
 python FirebaseScanner.py -p <pathOfAPKFile>
 
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
@@ -430,7 +430,7 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 
 Remember that you can target a specific app by filtering the Logcat output as follows:
 
-```shell
+```bash
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
@@ -571,7 +571,7 @@ Here we see that there are actually two paths, "/Keys" and "/Passwords", and the
 
 To dynamically analyze an application's content providers, first enumerate the attack surface: pass the app's package name to the Drozer module `app.provider.info`:
 
-```shell
+```bash
 dz> run app.provider.info -a com.mwr.example.sieve
   Package: com.mwr.example.sieve
   Authority: com.mwr.example.sieve.DBContentProvider
@@ -597,7 +597,7 @@ In this example, two content providers are exported. Both can be accessed withou
 
 To identify content provider URIs within the application, use Drozer's `scanner.provider.finduris` module. This module guesses paths and determines accessible content URIs in several ways:
 
-```shell
+```bash
 dz> run scanner.provider.finduris -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Unable to Query content://com.mwr.example.sieve.DBContentProvider/
@@ -611,7 +611,7 @@ content://com.mwr.example.sieve.DBContentProvider/Passwords/
 
 Once you have a list of accessible content providers, try to extract data from each provider with the `app.provider.query` module:
 
-```shell
+```bash
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --vertical
 _id: 1
 service: Email
@@ -624,7 +624,7 @@ You can also use Drozer to insert, update, and delete records from a vulnerable 
 
 - Insert record
 
-  ```shell
+  ```bash
   dz> run app.provider.insert content://com.vulnerable.im/messages
                   --string date 1331763850325
                   --string type 0
@@ -633,7 +633,7 @@ You can also use Drozer to insert, update, and delete records from a vulnerable 
 
 - Update record
 
-  ```shell
+  ```bash
   dz> run app.provider.update content://settings/secure
                   --selection "name=?"
                   --selection-args assisted_gps_enabled
@@ -642,7 +642,7 @@ You can also use Drozer to insert, update, and delete records from a vulnerable 
 
 - Delete record
 
-  ```shell
+  ```bash
   dz> run app.provider.delete content://settings/secure
                   --selection "name=?"
                   --selection-args my_setting
@@ -652,7 +652,7 @@ You can also use Drozer to insert, update, and delete records from a vulnerable 
 
 The Android platform promotes SQLite databases for storing user data. Because these databases are based on SQL, they may be vulnerable to SQL injection. You can use the Drozer module `app.provider.query` to test for SQL injection by manipulating the projection and selection fields that are passed to the content provider:
 
-```shell
+```bash
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "'"
 unrecognized token: "' FROM Passwords" (code 1): , while compiling: SELECT ' FROM Passwords
 
@@ -662,7 +662,7 @@ unrecognized token: "')" (code 1): , while compiling: SELECT * FROM Passwords WH
 
 If an application is vulnerable to SQL Injection, it will return a verbose error message. SQL Injection on Android may be used to modify or query data from the vulnerable content provider. In the following example, the Drozer module `app.provider.query` is used to list all the database tables:
 
-```shell
+```bash
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "*
 FROM SQLITE_MASTER WHERE type='table';--"
 | type  | name             | tbl_name         | rootpage | sql              |
@@ -673,7 +673,7 @@ FROM SQLITE_MASTER WHERE type='table';--"
 
 SQL Injection may also be used to retrieve data from otherwise protected tables:
 
-```shell
+```bash
 dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection "* FROM Key;--"
 | Password | pin |
 | thisismypassword | 9876 |
@@ -681,7 +681,7 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 
 You can automate these steps with the `scanner.provider.injection` module, which automatically finds vulnerable content providers within an app:
 
-```shell
+```bash
 dz> run scanner.provider.injection -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Injection in Projection:
@@ -698,14 +698,14 @@ Injection in Selection:
 
 Content providers can provide access to the underlying filesystem. This allows apps to share files (the Android sandbox normally prevents this). You can use the Drozer modules `app.provider.read` and `app.provider.download` to read and download files, respectively, from exported file-based content providers. These content providers are susceptible to directory traversal, which allows otherwise protected files in the target application's sandbox to be read.
 
-```shell
+```bash
 dz> run app.provider.download content://com.vulnerable.app.FileProvider/../../../../../../../../data/data/com.vulnerable.app/database.db /home/user/database.db
 Written 24488 bytes
 ```
 
 Use the `scanner.provider.traversal` module to automate the process of finding content providers that are susceptible to directory traversal:
 
-```shell
+```bash
 dz> run scanner.provider.traversal -a com.mwr.example.sieve
 Scanning com.mwr.example.sieve...
 Vulnerable Providers:
@@ -715,7 +715,7 @@ Vulnerable Providers:
 
 Note that `adb` can also be used to query content providers:
 
-```shell
+```bash
 $ adb shell content query --uri content://com.owaspomtg.vulnapp.provider.CredentialProvider/credentials
 Row: 0 id=1, username=admin, password=StrongPwd
 Row: 1 id=2, username=test, password=test
@@ -819,13 +819,13 @@ To check for key/value backup implementations, look for these classes in the sou
 
 After executing all available app functions, attempt to back up via `adb`. If the backup is successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
-```shell
+```bash
 $ adb backup -apk -nosystem <package-name>
 ```
 
 ADB should respond now with "Now unlock your device and confirm the backup operation" and you should be asked on the Android phone for a password. This is an optional step and you don't need to provide one. If the phone does not prompt this message, try the following command including the quotes:
 
-```shell
+```bash
 $ adb backup "-apk -nosystem <package-name>"
 ```
 
@@ -834,37 +834,37 @@ The problem happens when your device has an adb version prior to 1.0.31. If that
 Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, the file _.ab_ will be in your working directory.
 Run the following command to convert the .ab file to tar.
 
-```shell
+```bash
 $ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
 In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can try to use Python instead.
 
-```shell
+```bash
 $ dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
 ```
 
 The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
-```shell
+```bash
 $ java -jar abe.jar unpack backup.ab
 ```
 
 if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
-```shell
+```bash
 $ abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
 ```
 
 [password]: is the password when your android device asked you earlier. For example here is: 123
 
-```shell
+```bash
 $ java -jar abe.jar unpack backup.ab backup.tar 123
 ```
 
 Extract the tar file to your working directory.
 
-```shell
+```bash
 $ tar xvf mybackup.tar
 ```
 
@@ -1101,7 +1101,7 @@ Wether you are using a rooted or a non-rooted device, you can dump the app's pro
 
 After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
-```shell
+```bash
 # using strings
 $ strings memory > strings.txt
 
@@ -1152,7 +1152,7 @@ For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer T
 
 To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with the Android SDK.
 
-```shell
+```bash
 $ ./hprof-conv memory.hprof memory-mat.hprof
 ```
 

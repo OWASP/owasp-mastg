@@ -29,7 +29,7 @@ Make sure that the release build has been signed via both the v1 and v2 schemes 
 
 APK signatures can be verified with the `apksigner` tool. It is located at `[SDK-Path]/build-tools/[version]`.
 
-```shell
+```bash
 $ apksigner verify --verbose Desktop/example.apk
 Verifies
 Verified using v1 scheme (JAR signing): true
@@ -42,7 +42,7 @@ The contents of the signing certificate can be examined with `jarsigner`. Note t
 
 The output for an APK signed with a debug certificate is shown below:
 
-```shell
+```bash
 
 $ jarsigner -verify -verbose -certs example.apk
 
@@ -94,7 +94,7 @@ For a release build, this attribute should always be set to `"false"` (the defau
 
 Drozer can be used to determine whether an application is debuggable. The Drozer module `app.package.attacksurface` also displays information about IPC components exported by the application.
 
-```shell
+```bash
 dz> run app.package.attacksurface com.mwr.dz
 Attack Surface:
   1 activities exported
@@ -106,7 +106,7 @@ Attack Surface:
 
 To scan for all debuggable applications on a device, use the `app.package.debuggable` module:
 
-```shell
+```bash
 dz> run app.package.debuggable
 Package: com.mwr.dz
   UID: 10083
@@ -120,7 +120,7 @@ Package: com.vulnerable.app
 
 If an application is debuggable, executing application commands is trivial. In the `adb` shell, execute `run-as` by appending the package name and application command to the binary name:
 
-```shell
+```bash
 $ run-as com.vulnerable.app id
 uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
 ```
@@ -133,7 +133,7 @@ The following procedure can be used to start a debug session with `jdb`:
 
 1. Using `adb` and `jdwp`, identify the PID of the active application that you want to debug:
 
-    ```shell
+    ```bash
     $ adb jdwp
     2355
     16346  <== last launched, corresponds to our application
@@ -141,14 +141,14 @@ The following procedure can be used to start a debug session with `jdb`:
 
 2. Create a communication channel by using `adb` between the application process (with the PID) and the analysis workstation by using a specific local port:
 
-    ```shell
+    ```bash
     # adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]
     $ adb forward tcp:55555 jdwp:16346
     ```
 
 3. Using `jdb`, attach the debugger to the local communication channel port and start a debug session:
 
-    ```shell
+    ```bash
     $ jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=55555
     Set uncaught java.lang.Throwable
     Set deferred uncaught java.lang.Throwable
@@ -176,20 +176,20 @@ Symbols are usually stripped during the build process, so you need the compiled 
 
 First, find the `nm` binary in your Android NDK and export it (or create an alias).
 
-```shell
+```bash
 export $NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
 ```
 
 To display debug symbols:
 
-```shell
+```bash
 $ $NM -a libfoo.so
 /tmp/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm: libfoo.so: no symbols
 ```
 
 To display dynamic symbols:
 
-```shell
+```bash
 $ $NM -D libfoo.so
 ```
 
@@ -311,7 +311,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 Once gradle has invoked the plugin, you can create a report by running:
 
-```shell
+```bash
 $ gradle assemble
 $ gradle dependencyCheckAnalyze --info
 ```
@@ -347,7 +347,7 @@ plugins {
 
 Now, after the plugin is picked up, use the following commands:
 
-```shell
+```bash
 $ gradle assemble
 $ gradle downloadLicenses
 ```

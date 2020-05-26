@@ -128,7 +128,7 @@ The application may have ATS exceptions defined to allow it’s normal functiona
 
 It is possible to verify which ATS settings can be used when communicating to a certain endpoint. On macOS the command line utility `nscurl` is available to check the same. The command can be used as follows:
 
-```shell
+```bash
 /usr/bin/nscurl --ats-diagnostics https://www.example.com
 Starting ATS Diagnostics
 
@@ -303,7 +303,7 @@ If you don't have access to the source, you can try binary patching:
 
 It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and Objection (this also works on jailbroken devices). After repackaging your application with Objection as described in "iOS Basic Security Testing", you can use the following command in Objection to disable common SSL Pinning implementations:
 
-```shell
+```bash
 $ ios sslpinning disable
 ```
 

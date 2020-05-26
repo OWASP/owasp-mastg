@@ -95,7 +95,7 @@ On iOS, when an application is uninstalled, the Keychain data used by the applic
 
 When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
 
-```shell
+```bash
 $ python needle.py
 [needle] > use storage/data/keychain_dump
 [needle] > run
@@ -220,8 +220,6 @@ The SQLite 3 library must be added to an app if the app is to use SQLite. This l
 
 ##### Firebase Real-time Databases
 
-##### Firebase Real-time Databases
-
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
 A misconfigured Firebase instance can be identified by making the following network call:
@@ -232,7 +230,7 @@ The _firebaseProjectName_ can be retrieved from the property list(.plist) file. 
 
 Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Scanner"), a python script that automates the task above as shown below:
 
-```shell
+```bash
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
@@ -289,7 +287,7 @@ The Keychain contents can be dumped during dynamic analysis. On a jailbroken dev
 
 The path to the Keychain file is
 
-```shell
+```bash
 /private/var/Keychains/keychain-2.db
 ```
 
@@ -303,7 +301,7 @@ For testing the local storage and verifying what data is stored within it, it's 
 
 Once the app is running in the iOS simulator, you can navigate to the directory of the latest simulator started with the following command:
 
-```shell
+```bash
 $ cd ~/Library/Developer/CoreSimulator/Devices/$(
 ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
 awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
@@ -311,7 +309,7 @@ awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 
 The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
 
-```shell
+```bash
 $ grep -iRn keyword .
 ```
 
@@ -325,7 +323,7 @@ On a jailbroken device, you can use the iOS security assessment framework Needle
 
 To use Needle to read the Keychain, execute the following command:
 
-```shell
+```bash
 [needle] > use storage/data/keychain_dump
 [needle][keychain_dump] > run
 ```  
@@ -334,7 +332,7 @@ To use Needle to read the Keychain, execute the following command:
 
 iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Needle to convert these files to a readable format and inspect the data. Use the following Needle module, which searches for binary cookie files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_binarycookies
 [needle][files_binarycookies] > run
 ```
@@ -343,7 +341,7 @@ iOS applications often store binary cookie files in the application sandbox. Coo
 
 iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the following Needle module, which searches for plist files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_plist
 [needle][files_plist] > run
 ```
@@ -352,7 +350,7 @@ iOS applications often store data in property list (plist) files that are stored
 
 iOS applications can store data in cache databases. These databases contain data such as web requests and responses. Sometimes the data is sensitive. Use the following Needle module, which searches for cache files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_cachedb
 [needle][files_cachedb] > run
 ```
@@ -361,7 +359,7 @@ iOS applications can store data in cache databases. These databases contain data
 
 iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Use the following Needle module, which searches for SQLite databases stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_sql
 [needle][files_sql] >
 ```
@@ -466,7 +464,7 @@ If a jailbroken iPhone is available, execute the following steps:
 
 With Needle:
 
-```shell
+```bash
 [needle] > use storage/caching/keyboard_autocomplete
 [needle] > run
 
@@ -790,7 +788,7 @@ Navigate to an application screen that displays sensitive information, such as a
 
 Screenshot caching vulnerabilities can also be detected with Needle. This is demonstrated in the following Needle excerpt:
 
-```shell
+```bash
 [needle] > use storage/caching/screenshot
 [needle][screenshot] > run
 [V] Creating timestamp file...
@@ -870,7 +868,7 @@ Wether you are using a jailbroken or a non-jailbroken device, you can dump the a
 
 After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
-```shell
+```bash
 # using strings
 $ strings memory > strings.txt
 

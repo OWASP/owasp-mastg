@@ -29,13 +29,13 @@ Installed SDKs are on the following paths:
 
 Windows:
 
-```shell
+```bash
 C:\Users\<username>\AppData\Local\Android\sdk
 ```
 
 MacOS:
 
-```shell
+```bash
 /Users/<username>/Library/Android/sdk
 ```
 
@@ -60,13 +60,13 @@ One possibility for setting up the build system is exporting the compiler path a
 
 To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
 
-```shell
+```bash
 $ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
 ```
 
 This creates a standalone toolchain for Android 7.0 (API level 24) in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
 
-```shell
+```bash
 $  export TOOLCHAIN=/tmp/android-7-toolchain
 ```
 
@@ -121,7 +121,7 @@ AVD supports some hardware emulation, such as [GPS](https://developer.android.co
 
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
-```shell
+```bash
 $ ./android avd
 ```
 
@@ -131,6 +131,8 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
 Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
+
+\pagebreak
 
 ##### Getting Privileged Access
 
@@ -223,7 +225,7 @@ In order to analyze Android apps, you should install the following tools on your
 
 [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or Wi-Fi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
-```shell
+```bash
 $ adb devices -l
 List of devices attached
 090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
@@ -232,11 +234,11 @@ emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for
 
 adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
 
-```shell
+```bash
 $ adb forward tcp:<host port> tcp:<device port>
 ```
 
-```shell
+```bash
 $ adb -s emulator-5554 shell
 root@generic_x86:/ # ls
 acct
@@ -256,7 +258,7 @@ Angr allows for disassembly, program instrumentation, symbolic execution, contro
 
 Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
 
-```shell
+```bash
 $ pip install angr
 ```
 
@@ -272,7 +274,7 @@ You can use angr from a Python REPL - such as iPython - or script your approache
 
 When run with default command line flags, apktool automatically decodes the Android Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code – a feature that we’ll revisit later in this book).
 
-```shell
+```bash
 $ apktool d base.apk
 I: Using Apktool 2.1.0 on base.apk
 I: Loading resource table...
@@ -313,7 +315,7 @@ You can also use apktool to repackage decoded resources back to binary APK/JAR. 
 
 `Apkx` is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
 
-```shell
+```bash
 $ git clone https://github.com/b-mueller/apkx
 $ cd apkx
 $ sudo ./install.sh
@@ -349,7 +351,7 @@ Once the setup is completed you can start a session to an emulator or a device c
 
 Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
 
-```shell
+```bash
 $ dz> run app.package.attacksurface <package>
 ```
 
@@ -357,7 +359,7 @@ Again, without drozer this would have required several steps. The module `app.pa
 
 For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
 
-```shell
+```bash
 $ dz> run app.activity.start --component <package> <component name>
 ```
 
@@ -367,7 +369,7 @@ This previous command will start the activity, hopefully leaking some sensitive 
 
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
-```shell
+```bash
 # List all the installed packages
 $ dz> run app.package.list
 
@@ -433,7 +435,7 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 To install Frida locally, simply run:
 
-```shell
+```bash
 $ pip install frida-tools
 ```
 
@@ -446,19 +448,19 @@ The next step is to set up Frida on your Android device:
 
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
-```shell
+```bash
 $ frida --version
 ```
 
 Or you can run the following command to automatically detect Frida version and download the right frida-server binary:
 
-```shell
+```bash
 $ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
 ```
 
 Copy frida-server to the device and run it:
 
-```shell
+```bash
 $ adb push frida-server /data/local/tmp/
 $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell "su -c /data/local/tmp/frida-server &"
@@ -468,7 +470,7 @@ $ adb shell "su -c /data/local/tmp/frida-server &"
 
 With frida-server running, you should now be able to get a list of running processes with the following command (use the `-U` option to indicate Frida to use a connected USB devices or emulator):
 
-```shell
+```bash
 $ frida-ps -U
   PID  Name
 -----  --------------------------------------------------------------
@@ -491,7 +493,7 @@ Or restrict the list with the `-Uai` flag combination to get all apps (`-a`) cur
 ```bash
 $ frida-ps -Uai
   PID  Name                                      Identifier
------  ----------------------------------------  ---------------------------------------
+-----  ----------------------------------------  ------------------------------
   766  Android System                            android
 30692  Chrome                                    com.android.chrome
  3520  Contacts Storage                          com.android.providers.contacts
@@ -505,7 +507,7 @@ This will show the names and identifiers of all apps, if they are currently runn
 
 To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
-```shell
+```bash
 $ frida-trace -U com.android.chrome -i "open"
 ```
 
@@ -517,13 +519,13 @@ Unfortunately tracing high-level methods of Java classes is not yet supported (b
 
 Use the Frida CLI tool (`frida`) to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
-```shell
+```bash
 $ frida -U com.android.chrome
 ```
 
 With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to load `myscript.js`:
 
-```shell
+```bash
 $ frida -U -l myscript.js com.android.chrome
 ```
 
@@ -561,7 +563,7 @@ setImmediate(function() {
 
 The output would look like this:
 
-```shell
+```bash
 [*] Starting script
 [*] Instance found: android.view.View{7ccea78 G.ED..... ......ID 0,0-0,0 #7f0c01fc app:id/action_bar_black_background}
 [*] Instance found: android.view.View{2809551 V.ED..... ........ 0,1731-0,1731 #7f0c01ff app:id/menu_anchor_stub}
@@ -698,14 +700,14 @@ Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pentesting framework that also supports Android APK files. The easiest way of getting MobSF started is via Docker.
 
-```shell
+```bash
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
 Or install and start it locally on your host computer by running:
 
-```shell
+```bash
 # Setup
 git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
 cd Mobile-Security-Framework-MobSF
@@ -760,17 +762,15 @@ Finally, in case you do have access to a rooted device, Objection can connect di
 
 Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
 
-```shell
-
+```bash
 $ pip3 install objection
-
 ```
 
 If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
 
 However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
 
-```shell
+```bash
 $ objection patchapk --source app-release.apk
 ```
 
@@ -780,7 +780,7 @@ The patched application then needs to be installed using adb, as explained in "B
 
 Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
-```shell
+```bash
 # Connecting to a patched APK
 objection explore
 
@@ -794,7 +794,7 @@ $ objection --gadget="org.telegram.messenger" explore
 
 Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
 
-```shell
+```bash
 # Show the different storage locations belonging to the app
 $ env
 
@@ -827,7 +827,7 @@ The radare2 framework comprises a set of small utilities that can be used from t
 
 For example, you can use `rafind2` to read strings directly from an encoded Android Manifest (AndroidManifest.xml):
 
-```shell
+```bash
 # Permissions
 $ rafind2 -ZS permission AndroidManifest.xml
 # Activities
@@ -842,7 +842,7 @@ $ rafind2 -ZS receiver AndroidManifest.xml
 
 Or use `rabin2` to get information about a binary file:
 
-```shell
+```bash
 $ rabin2 -I UnCrackable-Level1/classes.dex
 arch     dalvik
 baddr    0x0
@@ -899,7 +899,7 @@ Usage: rabin2 [-AcdeEghHiIjlLMqrRsSUvVxzZ] [-@ at] [-a arch] [-b bits] [-B addr]
 
 Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries just like any other binary:
 
-```shell
+```bash
 $ r2 classes.dex
 ```
 
@@ -909,7 +909,7 @@ Once in the r2 shell, you can also access functions offered by the other radare2
 
 To print all the strings use `rabin2 -Z` or the command `iz` (or the less verbose `izq`) from the r2 shell.
 
-```shell
+```bash
 [0x000009c8]> izq
 0xc50 39 39 /dev/com.koushikdutta.superuser.daemon/
 0xc79 25 25 /system/app/Superuser.apk
@@ -927,7 +927,7 @@ To print all the strings use `rabin2 -Z` or the command `iz` (or the less verbos
 
 Most of the time you can append special options to your commands such as `q` to make the command less verbose (quiet) or `j` to give the output in JSON format (use `~{}` to prettify the JSON string).
 
-```shell
+```bash
 [0x000009c8]> izj~{}
 [
   {
@@ -954,7 +954,7 @@ Most of the time you can append special options to your commands such as `q` to 
 
 You can print the class names and their methods with the r2 command `ic` (_information classes_).
 
-```shell
+```bash
 [0x000009c8]> ic
 ...
 0x0000073c [0x00000958 - 0x00000abc]    356 class 5 Lsg/vantagepoint/uncrackable1/MainActivity
@@ -970,7 +970,7 @@ You can print the class names and their methods with the r2 command `ic` (_infor
 
 You can print the imported methods with the r2 command `ii` (_information imports_).
 
-```shell
+```bash
 [0x000009c8]> ii
 [Imports]
 Num  Vaddr       Bind      Type Name
@@ -991,41 +991,44 @@ A common approach when inspecting a binary is to search for something, navigate 
 
 In this case we will grep the flags using the keyword "verify":
 
-```shell
+```bash
 [0x000009c8]> f~+verify
-0x00000a38 132 sym.Lsg_vantagepoint_uncrackable1_MainActivity.method.verify_Landroid_view_View__V
-0x00000a38 132 method.public.Lsg_vantagepoint_uncrackable1_MainActivity.Lsg_vantagepoint_uncrackable1
-                                                        _MainActivity.method.verify_Landroid_view_View__V
+0x00000a38 132 sym.Lsg_vantagepoint_uncrackable1_MainActivity.method. \
+verify_Landroid_view_View__V
+0x00000a38 132 method.public.Lsg_vantagepoint_uncrackable1_MainActivity. \
+Lsg_vantagepoint_uncrackable1
+        _MainActivity.method.verify_Landroid_view_View__V
 0x00001400 6 str.verify
 ```
 
 It seems that we've found one method in 0x00000a38 (that was tagged two times) and one string in 0x00001400. Let's navigate (seek) to that method by using its flag:
 
-```shell
-[0x000009c8]> s sym.Lsg_vantagepoint_uncrackable1_MainActivity.method.verify_Landroid_view_View__V
+```bash
+[0x000009c8]> s sym.Lsg_vantagepoint_uncrackable1_MainActivity.method. \
+verify_Landroid_view_View__V
 ```
 
 And of course you can also use the disassembler capabilities of r2 and print the disassembly with the command `pd` (or `pdf` if you know you're already located in a function).
 
-```shell
+```bash
 [0x00000a38]> pd
 ```
 
 r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
 
-<img src="Images/Chapters/0x05b/r2_pd_10.png" width="550px" />
+<img src="Images/Chapters/0x05b/r2_pd_10.png" width="600" />
 
 Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
 
-<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="550px" />
+<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="600" />
 
 By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
 
-<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="550px" />
+<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="600" />
 
 Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
 
-<img src="Images/Chapters/0x05b/r2_graphmode.png" width="550px" />
+<img src="Images/Chapters/0x05b/r2_graphmode.png" width="600" />
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://radare.gitbooks.io/radare2book/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
@@ -1048,7 +1051,7 @@ Please refer to [r2frida's official installation instructions](https://github.co
 
 With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
 
-```shell
+```bash
 $ r2 frida://1234
 ```
 
@@ -1056,7 +1059,7 @@ For more examples on how to connect to frida-server, [see the usage section in t
 
 Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
 
-```shell
+```bash
 [0x00000000]> \i
 arch                x86
 bits                64
@@ -1075,7 +1078,7 @@ isDebuggerAttached  false
 
 To search in memory for a specific keyword, you may use the search command `\/`:
 
-```shell
+```bash
 [0x00000000]> \/ unacceptable
 Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
 Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
@@ -1088,20 +1091,24 @@ hits: 23
 
 To output the search results in JSON format, we simply add `j` to our previous search command (just as we do in the r2 shell). This can be used in most of the commands:
 
-```shell
+```bash
 [0x00000000]> \/j unacceptable
 Searching 12 bytes: 75 6e 61 63 63 65 70 74 61 62 6c 65
 Searching 12 bytes in [0x0000561f05ebf000-0x0000561f05eca000]
 ...
 Searching 12 bytes in [0xffffffffff600000-0xffffffffff601000]
 hits: 23
-{"address":"0x561f072c4223","size":12,"flag":"hit14_1","content":"unacceptable policyunsupported md algorithmvar bad valuec0"},{"address":"0x561f072c4275","size":12,"flag":"hit14_2","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61"},{"address":"0x561f072c42c8","size":12,"flag":"hit14_3","content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61 "},
+{"address":"0x561f072c4223","size":12,"flag":"hit14_1","content":"unacceptable \
+policyunsupported md algorithmvar bad valuec0"},{"address":"0x561f072c4275", \
+"size":12,"flag":"hit14_2","content":"unacceptableSearching 12 bytes: 75 6e 61 \
+63 63 65 70 74 61"},{"address":"0x561f072c42c8","size":12,"flag":"hit14_3", \
+"content":"unacceptableSearching 12 bytes: 75 6e 61 63 63 65 70 74 61 "},
 ...
 ```
 
 To list the loaded libraries use the command `\il` and filter the results using the internal grep from radare2 with the command `~`. For example, the following command will list the loaded libraries matching the keywords `keystore`, `ssl` and `crypto`:
 
-```shell
+```bash
 [0x00000000]> \il~keystore,ssl,crypto
 0x00007f3357b8e000 libssl.so.1.1
 0x00007f3357716000 libcrypto.so.1.1
@@ -1109,7 +1116,7 @@ To list the loaded libraries use the command `\il` and filter the results using 
 
 Similarly, to list the exports and filter the results by a specific keyword:
 
-```shell
+```bash
 [0x00000000]> \iE libssl.so.1.1~CIPHER
 0x7f3357bb7ef0 f SSL_CIPHER_get_bits
 0x7f3357bb8260 f SSL_CIPHER_find
@@ -1126,13 +1133,13 @@ Similarly, to list the exports and filter the results by a specific keyword:
 
 To list or set a breakpoint use the command db. This is useful when analyzing/modifying memory:
 
-```shell
+```bash
 [0x00000000]> \db
 ```
 
 Finally, remember that you can also run Frida JavaScript code with `\.` plus the name of the script:
 
-```shell
+```bash
 [0x00000000]> \. agent.js
 ```
 
@@ -1150,7 +1157,7 @@ In order to connect to the shell of an Android device from your host computer, [
 
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
-```shell
+```bash
 $ adb shell
 ```
 
@@ -1158,7 +1165,7 @@ $ adb shell
 
 If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
 
-```shell
+```bash
 $ adb shell
 bullhead:/ $ su
 bullhead:/ # id
@@ -1171,7 +1178,7 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 
 If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
-```shell
+```bash
 $ adb devices
 List of devices attached
 00c907098530a82c    device
@@ -1208,13 +1215,13 @@ Termux is a terminal emulator for Android that provides a Linux environment that
 
 You can copy files to and from a device by using the commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
-```shell
+```bash
 $ adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
 
-```shell
+```bash
 $ adb pull /sdcard
 /sdcard/: 1190 files pulled. 14.1 MB/s (304526427 bytes in 20.566s)
 ```
@@ -1233,7 +1240,7 @@ This option is useful when you are working on a specific app and want to copy fi
 
 First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
-```shell
+```bash
 $ frida-ps -U | grep -i owasp
 21228  sg.vp.owasp_mobile.omtg_android
 
@@ -1259,7 +1266,7 @@ Readable: True  Writable: True
 
 One you have a file you want to download you can just run `file download <some_file>`. This will download that file to your working directory. The same way you can upload files using `file upload`.
 
-```shell
+```bash
 ...[usb] # ls
 Type    ...  Name
 ------  ...  -----------------------------------------------
@@ -1280,7 +1287,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
-```shell
+```bash
 $ sftp -P 8022 root@localhost
 ...
 sftp> cd /data/data
@@ -1352,19 +1359,19 @@ Obtaining app packages from the device is the recommended method as we can guara
 
 Use `adb pull` to retrieve the APK. If you don't know the package name, the first step is to list all the applications installed on the device:
 
-```shell
+```bash
 $ adb shell pm list packages
 ```
 
 Once you have located the package name of the application, you need the full path where it is stored on the system to download it.
 
-```shell
+```bash
 $ adb shell pm path <package name>
 ```
 
 With the full path to the APK, you can now simply use `adb pull` to extract it.
 
-```shell
+```bash
 $ adb pull <apk path>
 ```
 
@@ -1445,7 +1452,7 @@ Once you have collected the package name of the application you want to target, 
 
 APK files are actually ZIP files that can be unpacked using a standard unarchiver:
 
-```shell
+```bash
 $ unzip base.apk
 $ ls -lah
 -rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
@@ -1472,7 +1479,7 @@ The following files are unpacked:
 
 As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
 
-```shell
+```bash
 $ ls -alh
 total 32
 drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
@@ -1509,7 +1516,7 @@ Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering
 
 You can inspect the `lib` folder in the APK:
 
-```shell
+```bash
 $ ls -1 lib/armeabi/
 libdatabase_sqlcipher.so
 libnative.so
@@ -1519,7 +1526,7 @@ libstlport_shared.so
 
 or from the device with objection:
 
-```shell
+```bash
 ...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # ls lib
 Type    ...  Name
 ------  ...  ------------------------
@@ -1541,7 +1548,7 @@ Once you have installed the app, there is further information to explore, where 
 
 When using objection you can retrieve different kinds of information, where `env` will show you all the directory information of the app.
 
-```shell
+```bash
 $ objection -g sg.vp.owasp_mobile.omtg_android explore
 
 ...g.vp.owasp_mobile.omtg_android on (google: 8.1.0) [usb] # env
@@ -1564,7 +1571,7 @@ Among this information we find:
 
 The internal data directory is used by the app to store data created during runtime and has the following basic structure:
 
-```shell
+```bash
 ...g.vp.owasp_mobile.omtg_android on (google: 8.1.0)  [usb] # ls
 Type       ...  Name
 ---------  ...  -------------------
@@ -1607,13 +1614,13 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - You can execute Logcat with adb to store the log output permanently:
 
-```shell
+```bash
 $ adb logcat > logcat.log
 ```
 
 With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for ```ps``` to be able to get its PID.
 
-```shell
+```bash
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
@@ -1623,7 +1630,7 @@ $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 [Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
-```shell
+```bash
 $ adb root
 $ adb remount
 $ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
@@ -1631,7 +1638,7 @@ $ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 
 If execution of `adb root` returns the error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
-```shell
+```bash
 $ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
 $ adb shell
 $ su
@@ -1649,7 +1656,7 @@ In that case, you can replace the above line `$ mount -o rw,remount /system;` wi
 
 Execute `tcpdump` once to see if it works. Once a few packets have come in, you can stop tcpdump by pressing CTRL+c.
 
-```shell
+```bash
 $ tcpdump
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
@@ -1664,7 +1671,7 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 
 To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to `netcat` (nc):
 
-```shell
+```bash
 $ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
@@ -1678,13 +1685,13 @@ By using the pipe (`|`), we sent all output from tcpdump to netcat, which opens 
 
 To access port 11111, you need to forward the port to your machine via adb.
 
-```shell
+```bash
 $ adb forward tcp:11111 tcp:11111
 ```
 
 The following command connects you to the forwarded port via netcat and piping to Wireshark.
 
-```shell
+```bash
 $ nc localhost 11111 | wireshark -k -S -i -
 ```
 
@@ -1720,7 +1727,7 @@ FCM uses the ports 5228, 5229, and 5230 for HTTP communication. Usually, only po
 
 - Configure local port forwarding for the ports used by FCM. The following example applies to macOS:
 
-```shell
+```bash
 $ echo "
 rdr pass inet proto tcp from any to any port 5228-> 127.0.0.1 port 8080
 rdr pass inet proto tcp from any to any port 5229 -> 127.0.0.1 port 8080
@@ -1736,7 +1743,7 @@ For XMPP communication, [FCM uses ports](https://firebase.google.com/docs/cloud-
 
 - Configure local port forwarding for the ports used by FCM. The following example applies to macOS:
 
-```shell
+```bash
 $ echo "
 rdr pass inet proto tcp from any to any port 5235-> 127.0.0.1 port 8080
 rdr pass inet proto tcp from any to any port 5236 -> 127.0.0.1 port 8080
@@ -1781,7 +1788,7 @@ HTTP and HTTPS requests should now be routed over the proxy on the host machine.
 
 A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
 
-```shell
+```bash
 $ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
 ```
 
@@ -1793,7 +1800,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 2. Change the file extension from `.der` to `.cer`.
 3. Push the file to the emulator:
 
-    ```shell
+    ```bash
     $ adb push cacert.cer /sdcard/
     ```
 
@@ -1951,7 +1958,7 @@ Alternatively, you can follow the following steps manually in order to achieve t
 - Make the /system partition writable, which is only possible on a rooted device. Run the 'mount' command to make sure the /system is writable: `mount -o rw,remount /system`. If this command fails, try running the following command `mount -o rw,remount -t ext4 /system`
 - Prepare the proxy's CA certificates to match system certificates format. Export the proxy's certificates in `der` format (this is the default format in Burp Suite) then run the following commands:
 
-    ```shell
+    ```bash
     $ openssl x509 -inform DER -in cacert.der -out cacert.pem
     $ openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1
     mv cacert.pem <hash>.0
@@ -1959,7 +1966,7 @@ Alternatively, you can follow the following steps manually in order to achieve t
 
 - Finally, copy the `<hash>.0` file into the directory /system/etc/security/cacerts and then run the following command:
 
-    ```shell
+    ```bash
     chmod 644 <hash>.0
     ```
 
@@ -1981,7 +1988,7 @@ What to do if the Wi-Fi we need for testing has client isolation?
 
 You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your laptop and use adb to make a reverse port forwarding:
 
-```shell
+```bash
 $ adb reverse tcp:8080 tcp:8080
 ```
 
@@ -2004,13 +2011,13 @@ You could also use an access point that is under your control to redirect the tr
 
 You can use iptables on the Android device to redirect all traffic to your interception proxy. The following command would redirect port 80 to your proxy running on port 8080
 
-```shell
+```bash
 $ iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
 ```
 
 Verify the iptables settings and check the IP and port.
 
-```shell
+```bash
 $ iptables -t nat -L
 Chain PREROUTING (policy ACCEPT)
 target     prot opt source               destination
@@ -2034,7 +2041,7 @@ target     prot opt source               destination
 
 In case you want to reset the iptables configuration you can flush the rules:
 
-```shell
+```bash
 $ iptables -t nat -F
 ```
 
@@ -2044,7 +2051,7 @@ Read the chapter "Testing Network Communication" and the test case "Simulating a
 
 The machine where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
 
-```shell
+```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
 bettercap v2.22 (built for darwin amd64 with go1.12.1) [type 'help' for a list of commands]
 
