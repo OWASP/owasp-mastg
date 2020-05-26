@@ -661,7 +661,7 @@ Control flow flattening replaces original code with a more complex representatio
 
 The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
 
-#### Dead code injection
+#### Dead Code Injection
 
 This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
 
