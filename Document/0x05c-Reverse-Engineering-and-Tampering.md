@@ -1861,7 +1861,7 @@ setImmediate(function() { //prevent timeout
         console.log("[*] MainActivity.a modified");
 
         var aaClass = Java.use("sg.vantagepoint.a.a");
-	aaClass.a.implementation = function(arg1, arg2) {
+        aaClass.a.implementation = function(arg1, arg2) {
         var retval = this.a(arg1, arg2);
         var password = '';
         for(var i = 0; i < retval.length; i++) {
