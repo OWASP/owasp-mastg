@@ -665,7 +665,7 @@ The image shows how control flow flattening alters code (see "[Obfuscating C++ p
 
 This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
 
-#### String encryption
+#### String Encryption
 
 Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
 
