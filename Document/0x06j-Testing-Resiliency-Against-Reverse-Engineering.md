@@ -10,7 +10,7 @@ Jailbreak detection mechanisms are added to reverse engineering defense to make 
 
 Check for files and directories typically associated with jailbreaks, such as:
 
-```text
+```default
 /Applications/Cydia.app
 /Applications/FakeCarrier.app
 /Applications/Icy.app

@@ -169,7 +169,7 @@ $ adb shell dumpsys package sg.vp.owasp_mobile.omtg_android | grep permission
 
 Please reference this [permissions overview](https://developer.android.com/guide/topics/permissions/overview#permission-groups "Table 1. Dangerous permissions and permission groups.") for descriptions of the listed permissions that are considered dangerous.
 
-```text
+```default
 READ_CALENDAR
 WRITE_CALENDAR
 READ_CALL_LOG

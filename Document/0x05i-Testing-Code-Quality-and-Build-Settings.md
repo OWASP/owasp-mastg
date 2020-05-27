@@ -59,7 +59,7 @@ Ignore the "CertPath not validated" error. This error occurs with Java SDK 7 and
 
 The signing configuration can be managed through Android Studio or the `signingConfig` block in `build.gradle`. To activate both the v1 and v2 schemes, the following values must be set:
 
-```groovy
+```default
 v1SigningEnabled true
 v2SigningEnabled true
 ```
@@ -199,7 +199,7 @@ Dynamic symbols can be stripped via the `visibility` compiler flag. Adding this 
 
 Make sure that the following has been added to build.gradle:
 
-```groovy
+```default
 externalNativeBuild {
     cmake {
         cppFlags "-fvisibility=hidden"
@@ -296,7 +296,7 @@ Detecting vulnerabilities in third party dependencies can be done by means of th
 In order to use the plugin, the following steps need to be applied:
 Install the plugin from the Maven central repository by adding the following script to your build.gradle:
 
-```groovy
+```default
 buildscript {
     repositories {
         mavenCentral()
@@ -339,7 +339,7 @@ In order to ensure that the copyright laws are not infringed, one can best check
 
 In your `build.gradle` file add:
 
-```groovy
+```default
 plugins {
     id "com.github.hierynomus.license-report" version"{license_plugin_version}"
 }
@@ -500,7 +500,7 @@ Further information on how to shrink, obfuscate, and optimize your app can be fo
 
 R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
 
-```groovy
+```default
 android {
     buildTypes {
         release {
@@ -522,7 +522,7 @@ android {
 
 The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
 
-```groovy
+```default
 ...
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
@@ -532,7 +532,7 @@ The file `proguard-rules.pro` is where you define custom ProGuard rules. With th
 
 You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
 
-```groovy
+```default
 -keep public class MyClass
 ```
 

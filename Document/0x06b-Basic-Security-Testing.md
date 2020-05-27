@@ -1371,7 +1371,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 1. Launch Wireshark and select "rvi0" as the capture interface.
 1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
-```text
+```default
 ip.addr == 192.168.1.1 && http
 ```
 

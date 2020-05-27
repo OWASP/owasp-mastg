@@ -75,7 +75,7 @@ Follow this [checklist](https://developer.android.com/training/safetynet/attesta
 
 Perhaps the most widely used method of programmatic detection is checking for files typically found on rooted devices, such as package files of common rooting apps and their associated files and directories, including the following:
 
-```text
+```default
 /system/app/Superuser.apk
 /system/etc/init.d/99SuperSUDaemon
 /dev/com.koushikdutta.superuser.daemon/
@@ -84,7 +84,7 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
-```text
+```default
 /sbin/su  
 /system/bin/su  
 /system/bin/failsafe/su  
@@ -163,7 +163,7 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
-```text
+```default
 com.thirdparty.superuser
 eu.chainfire.supersu
 com.noshufou.android.su
@@ -870,7 +870,7 @@ There are several indicators that the device in question is being emulated. Alth
 
 The first set of indicators are in the file `build.prop`.
 
-```text
+```default
 API Method          Value           Meaning
 Build.ABI           armeabi         possibly emulator
 BUILD.ABI2          unknown         possibly emulator
@@ -893,7 +893,7 @@ You can edit the file `build.prop` on a rooted Android device or modify it while
 
 The next set of static indicators utilize the Telephony manager. All Android emulators have fixed values that this API can query.
 
-```text
+```default
 API                                                     Value                   Meaning
 TelephonyManager.getDeviceId()                          0's                     emulator
 TelephonyManager.getLine1 Number()                      155552155               emulator
@@ -1156,7 +1156,7 @@ Go through the following steps for Instance ID:
 
 2. Setup Google Play services. In the file `build.gradle`, add
 
-    ```groovy
+    ```default
     apply plugin: 'com.android.application'
         ...
 

@@ -107,7 +107,7 @@ Firebase is a development platform with more than 15 products, and one of them i
 
 A misconfigured Firebase instance can be identified by making the following network call:
 
-`https://\<firebaseProjectName\>.firebaseio.com/.json`
+`https://_firebaseProjectName_.firebaseio.com/.json`
 
 The _firebaseProjectName_ can be retrieved from the mobile application by reverse engineering the application. Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Scanner"), a python script that automates the task above as shown below:
 
@@ -270,7 +270,7 @@ Verify common locations of secrets:
 - build configs, such as in local.properties or gradle.properties
   Example:
 
-  ```groovy
+  ```default
   buildTypes {
     debug {
       minifyEnabled true
@@ -893,14 +893,10 @@ If the option has not been set, the application is vulnerable to screen capturin
 
 #### Dynamic Analysis
 
-While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (right image), the snapshot will be empty; if the flag has not been set (left image), activity information will be shown:
+While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (left image), the snapshot will be empty; if the flag has not been set (right image), activity information will be shown:
 
-<div style="page-break-after: always;">
-</div>
-
-| `FLAG_SECURE` not set  | `FLAG_SECURE` set  |
-|---|---|
-| <img src="Images/Chapters/0x05d/1.png" width="500px" /> | <img src="Images/Chapters/0x05d/2.png" width="500px" /> |
+<img src="Images/Chapters/0x05d/2.png" width="200px" />
+<img src="Images/Chapters/0x05d/1.png" width="200px" />
 
 On devices supporting [file-based encryption (FBE)](https://source.android.com/security/encryption/file-based "FBE"), snapshots are stored in the `/data/system_ce/<USER_ID>/<IMAGE_FOLDER_NAME>` folder. `<IMAGE_FOLDER_NAME>` depends on the vendor but most common names are `snapshots` and `recent_images`. If the device doesn't support FBE, the `/data/system/<IMAGE_FOLDER_NAME>` folder is used.
 
