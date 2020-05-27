@@ -519,7 +519,9 @@ $ iproxy 2222 22
 waiting for connection
 ```
 
-The above command maps port `22` on the iOS device to port `2222` on localhost. With the following command in a new terminal window, you can connect to the device:
+The above command maps port `22` on the iOS device to port `2222` on localhost. You can also [make iproxy run automatically in the background](https://iphonedevwiki.net/index.php/SSH_Over_USB "Making iproxy run automatically in the background on OS X") if you don't want to run the binary every time you want to SSH over USB.
+
+With the following command in a new terminal window, you can connect to the device:
 
 ```bash
 $ ssh -p 2222 root@localhost
