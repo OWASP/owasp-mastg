@@ -298,7 +298,7 @@ Android 7.0 (API level 24) adds the `setInvalidatedByBiometricEnrollment(boolean
 Android 8.0 (API level 26) adds two additional error codes:
 
 - `FINGERPRINT_ERROR_LOCKOUT_PERMANENT`: The user has tried too many times to unlock their device using the fingerprint reader.
-- `FINGERPRINT_ERROR_VENDOR` – A vendor-specific fingerprint reader error occurred.
+- `FINGERPRINT_ERROR_VENDOR`: A vendor-specific fingerprint reader error occurred.
 
 ##### Third party SDKs
 

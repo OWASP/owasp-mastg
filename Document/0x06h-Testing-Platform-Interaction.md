@@ -1684,15 +1684,15 @@ The method [`openURL:options:completionHandler:`](https://developer.apple.com/do
 Additionally, if you are interested into knowing if the app is querying specific services or apps, and if the app is well-known, you can also search for common URL schemes online and include them in your greps. For example, a [quick Google search reveals](https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/ "Always-Updated List of iOS App URL Scheme Names"):
 
 ```default
-Apple Music — music:// or musics:// or audio-player-event://
-Calendar — calshow:// or x-apple-calevent://
-Contacts — contacts://
-Diagnostics — diagnostics:// or diags://
-GarageBand — garageband://
-iBooks — ibooks:// or itms-books:// or itms-bookss://
-Mail — message:// or mailto://emailaddress
-Messages — sms://phonenumber
-Notes — mobilenotes://
+Apple Music - music:// or musics:// or audio-player-event://
+Calendar - calshow:// or x-apple-calevent://
+Contacts - contacts://
+Diagnostics - diagnostics:// or diags://
+GarageBand - garageband://
+iBooks - ibooks:// or itms-books:// or itms-bookss://
+Mail - message:// or mailto://emailaddress
+Messages - sms://phonenumber
+Notes - mobilenotes://
 ...
 ```
 
