@@ -373,9 +373,7 @@ Finally, in case you do have access to a jailbroken device, Objection can connec
 Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
 
 ```bash
-
 $ pip3 install objection
-
 ```
 
 If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
@@ -615,7 +613,7 @@ You can also upload files to the iOS device with `file upload <local_file_path>`
 
 During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
 
-```http
+```default
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
@@ -711,7 +709,6 @@ Finished dumping ph.telegra.Telegraph in 20.5 seconds
 After copying the IPA file over to the host system and unzipping it, you can see that the Telegram application can now be parsed by class-dump, indicating that it is no longer encrypted:
 
 ```bash
-
 $ class-dump Telegram
 ...
 //
@@ -731,7 +728,6 @@ struct CGPoint {
     double _field2;
 };
 ...
-
 ```
 
 Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
@@ -1317,7 +1313,7 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
-<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250" />
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="450" />
 
 ###### Keychain-dumper (Jailbroken)
 

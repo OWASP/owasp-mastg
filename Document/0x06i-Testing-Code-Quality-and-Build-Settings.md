@@ -105,7 +105,7 @@ You can take the following static analysis approach for the logging statements:
 3. When you find one of them, determine whether the developers used a wrapping function around the logging function for better mark up of the statements to be logged; if so, add that function to your search.
 4. For every result of steps 2 and 3, determine whether macros or debug-state related guards have been set to turn the logging off in the release build. Please note the change in how Objective-C can use preprocessor macros:
 
-```objc
+```objectivec
 #ifdef DEBUG
     // Debug-only code
 #endif
@@ -125,7 +125,7 @@ As a developer, incorporating debug statements into your application's debug ver
 
 In Objective-C, developers can use preprocessor macros to filter out debug code:
 
-```objc
+```objectivec
 #ifdef DEBUG
     // Debug-only code
 #endif
@@ -133,7 +133,7 @@ In Objective-C, developers can use preprocessor macros to filter out debug code:
 
 In Swift 2 (with Xcode 7), you have to set custom compiler flags for every target, and compiler flags have to start with "-D". So you can use the following annotations when the debug flag `DMSTG-DEBUG` is set:
 
-```swift
+```default
 #if MSTG-DEBUG
     // Debug-only code
 #endif
@@ -141,7 +141,7 @@ In Swift 2 (with Xcode 7), you have to set custom compiler flags for every targe
 
 In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build settings/Swift compiler - Custom flags. Instead of a preprocessor, Swift 3 uses [conditional compilation blocks](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-ID34 "Swift conditional compilation blocks") based on the defined conditions:
 
-```swift
+```default
 #if DEBUG_LOGGING
     // Debug-only code
 #endif
@@ -350,7 +350,7 @@ Objective-C has two types of errors:
 `NSException` is used to handle programming and low-level errors (e.g., division by 0 and out-of-bounds array access).
 An `NSException` can either be raised by `raise` or thrown with `@throw`. Unless caught, this exception will invoke the unhandled exception handler, with which you can log the statement (logging will halt the program). `@catch` allows you to recover from the exception if you're using a `@try`-`@catch`-block:
 
-```objc
+```objectivec
  @try {
     //do work here
  }
@@ -375,7 +375,7 @@ Methods that can throw errors use the `throws` keyword. The `Result` type repres
 
 - Propagate the error from a function to the code that calls that function. In this situation, there's no `do-catch`; there's only a `throw` throwing the actual error or a `try` to execute the method that throws. The method containing the `try` also requires the `throws` keyword:
 
-```swift
+```default
 func dosomething(argumentx:TypeX) throws {
     try functionThatThrows(argumentx: argumentx)
 }
@@ -383,7 +383,7 @@ func dosomething(argumentx:TypeX) throws {
 
 - Handle the error with a `do-catch` statement. You can use the following pattern:
 
-  ```swift
+  ```default
   func doTryExample() {
       do {
           try functionThatThrows(number: 203)
@@ -417,7 +417,7 @@ func dosomething(argumentx:TypeX) throws {
 
 - Handle the error as an optional value:
 
-  ```swift
+  ```default
       let x = try? functionThatThrows()
       // In this case the value of x is nil in case of an error.
   ```
@@ -425,7 +425,7 @@ func dosomething(argumentx:TypeX) throws {
 - Use the `try!` expression to assert that the error won't occur.
 - Handle the generic error as a `Result` return:
 
-```swift
+```default
 enum ErrorType: Error {
     case typeOne
     case typeTwo
@@ -452,7 +452,7 @@ func callResultFunction() {
 
 - Handle network and JSON decoding errors with a `Result` type:
 
-```swift
+```default
 struct MSTG: Codable {
     var root: String
     var plugins: [String]
@@ -637,50 +637,50 @@ Below are procedures for checking the binary security features described above. 
 
 - PIE:
 
-```bash
-$ unzip DamnVulnerableiOSApp.ipa
-$ cd Payload/DamnVulnerableIOSApp.app
-$ otool -hv DamnVulnerableIOSApp
-DamnVulnerableIOSApp (architecture armv7):
-Mach header
-magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
-WEAK_DEFINES BINDS_TO_WEAK PIE
-DamnVulnerableIOSApp (architecture arm64):
-Mach header
-magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
-MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
-WEAK_DEFINES BINDS_TO_WEAK PIE
-```
+    ```bash
+    $ unzip DamnVulnerableiOSApp.ipa
+    $ cd Payload/DamnVulnerableIOSApp.app
+    $ otool -hv DamnVulnerableIOSApp
+    DamnVulnerableIOSApp (architecture armv7):
+    Mach header
+    magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+    MH_MAGIC ARM V7 0x00 EXECUTE 38 4292 NOUNDEFS DYLDLINK TWOLEVEL
+    WEAK_DEFINES BINDS_TO_WEAK PIE
+    DamnVulnerableIOSApp (architecture arm64):
+    Mach header
+    magic cputype cpusubtype caps filetype ncmds sizeofcmds flags
+    MH_MAGIC_64 ARM64 ALL 0x00 EXECUTE 38 4856 NOUNDEFS DYLDLINK TWOLEVEL
+    WEAK_DEFINES BINDS_TO_WEAK PIE
+    ```
 
 - stack canary:
 
-```bash
-$ otool -Iv DamnVulnerableIOSApp | grep stack
-0x0046040c 83177 ___stack_chk_fail
-0x0046100c 83521 _sigaltstack
-0x004fc010 83178 ___stack_chk_guard
-0x004fe5c8 83177 ___stack_chk_fail
-0x004fe8c8 83521 _sigaltstack
-0x00000001004b3fd8 83077 ___stack_chk_fail
-0x00000001004b4890 83414 _sigaltstack
-0x0000000100590cf0 83078 ___stack_chk_guard
-0x00000001005937f8 83077 ___stack_chk_fail
-0x0000000100593dc8 83414 _sigaltstack
-```
+    ```bash
+    $ otool -Iv DamnVulnerableIOSApp | grep stack
+    0x0046040c 83177 ___stack_chk_fail
+    0x0046100c 83521 _sigaltstack
+    0x004fc010 83178 ___stack_chk_guard
+    0x004fe5c8 83177 ___stack_chk_fail
+    0x004fe8c8 83521 _sigaltstack
+    0x00000001004b3fd8 83077 ___stack_chk_fail
+    0x00000001004b4890 83414 _sigaltstack
+    0x0000000100590cf0 83078 ___stack_chk_guard
+    0x00000001005937f8 83077 ___stack_chk_fail
+    0x0000000100593dc8 83414 _sigaltstack
+    ```
 
 - Automatic Reference Counting:
 
-```bash
-$ otool -Iv DamnVulnerableIOSApp | grep release
-0x0045b7dc 83156 ___cxa_guard_release
-0x0045fd5c 83414 _objc_autorelease
-0x0045fd6c 83415 _objc_autoreleasePoolPop
-0x0045fd7c 83416 _objc_autoreleasePoolPush
-0x0045fd8c 83417 _objc_autoreleaseReturnValue
-0x0045ff0c 83441 _objc_release
-[SNIP]
-```
+    ```bash
+    $ otool -Iv DamnVulnerableIOSApp | grep release
+    0x0045b7dc 83156 ___cxa_guard_release
+    0x0045fd5c 83414 _objc_autorelease
+    0x0045fd6c 83415 _objc_autoreleasePoolPop
+    0x0045fd7c 83416 _objc_autoreleasePoolPush
+    0x0045fd8c 83417 _objc_autoreleaseReturnValue
+    0x0045ff0c 83441 _objc_release
+    [SNIP]
+    ```
 
 ##### With idb
 

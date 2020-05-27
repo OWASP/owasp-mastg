@@ -271,7 +271,7 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
 - Bluetooth: the [`state`](https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state?language=objc "CBManager state") property of the [`CBCentralManager`](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager?language=objc "CBCentralManager") class is used to check system-authorization status for using Bluetooth peripherals.
 - Location: search for methods of `CLLocationManager`, e.g. [`locationServicesEnabled`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423648-locationservicesenabled?language=objc "CLLocationManager locationServicesEnabled").
 
-    ```swift
+    ```default
     func checkForLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
             // Location services are available, so query the user’s location.
@@ -510,7 +510,7 @@ You should check how the received data is validated. Apple [explicitly warns abo
 
 As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift verifies exactly this before opening the URL:
 
-```swift
+```default
 func application(_ application: UIApplication, continue userActivity: NSUserActivity,
                  restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     // ...
@@ -526,7 +526,7 @@ In addition, remember that if the URL includes parameters, they should not be tr
 
 The `NSURLComponents` API can be used to parse and manipulate the components of the URL. This can be also part of the method `application:continueUserActivity:restorationHandler:` itself or might occur on a separate method being called from it. The following [example](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links#3001935 "An example of handling a universal link") demonstrates this:
 
-```swift
+```default
 func application(_ application: UIApplication,
                  continue userActivity: NSUserActivity,
                  restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
@@ -564,7 +564,7 @@ If you have the original source code, you can search it for the `openURL:options
 
 This is an example from the Telegram app:
 
-```swift
+```default
 }, openUniversalUrl: { url, completion in
     if #available(iOS 10.0, *) {
         var parsedUrl = URL(string: url)
@@ -796,7 +796,7 @@ $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05force
 
 Resulting in:
 
-```swift
+```default
 ---> TelegramUI.openExternalUrl(
     account: TelegramCore.Account, context: TelegramUI.OpenURLContext, url: Swift.String,
     forceExternal: Swift.Bool, presentationData: TelegramUI.PresentationData,
@@ -1647,7 +1647,7 @@ In order to determine how a URL path is built and validated, if you have the ori
 
 In Telegram you will [find four different methods being used](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1250 "Telegram\'s AppDelegate.swift Line 1250"):
 
-```swift
+```default
 func application(_ application: UIApplication, open url: URL, sourceApplication: String?) -> Bool {
     self.openUrl(url: url)
     return true
@@ -1727,7 +1727,7 @@ If we inspect those lines we will see how this method is also being used to open
 
 When just searching for `://` we see:
 
-```Swift
+```default
 if documentUri.hasPrefix("file://"), let path = URL(string: documentUri)?.path {
 if !url.hasPrefix("mt-encrypted-file://?") {
 guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.index(url.startIndex,
@@ -1741,7 +1741,7 @@ if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreId)") {
 
 After combining the results of both searches and carefully inspecting the source code we find the following piece of code:
 
-```swift
+```default
 openUrl: { url in
             var parsedUrl = URL(string: url)
             if let parsed = parsedUrl {
@@ -2271,7 +2271,7 @@ A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). S
 - An Action ("Share") button.
 - A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
 
-<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="500px" />
+<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="300" />
 
 There are a couple of things to consider:
 
@@ -2341,7 +2341,7 @@ First of all, rememeber that JavaScript cannot be disabled for `UIWebVIews`.
 
 For `WKWebView`s, as a best practice, JavaScript should be disabled unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled "WKPreferences javaScriptEnabled") property is set to `false`:
 
-```swift
+```default
 let webPreferences = WKPreferences()
 webPreferences.javaScriptEnabled = false
 ```
@@ -2560,7 +2560,7 @@ This presents an issue especially in `UIWebView`s loading untrusted content via 
 
 Here's an example of a vulnerable `UIWebView` from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/UIWebViewController.swift#L219 "Where\'s My Browser? UIWebViewController.swift Line 219"):
 
-```swift
+```default
 let scenario2HtmlPath = Bundle.main.url(forResource: "web/UIWebView/scenario2.html", withExtension: nil)
 do {
     let scenario2Html = try String(contentsOf: scenario2HtmlPath!, encoding: .utf8)
@@ -2576,7 +2576,7 @@ Search the source code for the mentioned methods and inspect their parameters.
 
 Example in Objective-C:
 
-```objc
+```objectivec
 
 - (void)viewDidLoad
 {
@@ -2599,7 +2599,7 @@ Example in Objective-C:
 
 Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L196 "Where\'s My Browser? WKWebViewController.swift Line 196"):
 
-```swift
+```default
 let scenario2HtmlPath = Bundle.main.url(forResource: "web/WKWebView/scenario2.html", withExtension: nil)
 do {
     let scenario2Html = try String(contentsOf: scenario2HtmlPath!, encoding: .utf8)
@@ -2620,7 +2620,7 @@ In addition, you should also verify if the app is using the method [`loadFileURL
 
 Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L186 "Where\'s My Browser? WKWebViewController.swift Line 186"):
 
-```swift
+```default
 var scenario1Url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
 scenario1Url = scenario1Url.appendingPathComponent("WKWebView/scenario1.html")
 wkWebView.loadFileURL(scenario1Url, allowingReadAccessTo: scenario1Url)
@@ -2657,7 +2657,7 @@ For example, it is possible to set the **[undocumented property](https://github.
 
 Objective-C:
 
-```objc
+```objectivec
 
 [webView.configuration.preferences setValue:@YES forKey:@"allowFileAccessFromFileURLs"];
 
@@ -2665,7 +2665,7 @@ Objective-C:
 
 Swift:
 
-```swift
+```default
 
 webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 
@@ -2792,7 +2792,7 @@ Look out for code that maps native objects to the `JSContext` associated with a 
 
 In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
-```objc
+```objectivec
 
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
 
@@ -2808,7 +2808,7 @@ The following example from ["Where's My Browser?"](https://github.com/authentica
 
 First we see how the JavaScript bridge is enabled:
 
-```swift
+```default
 func enableJavaScriptBridge(_ enabled: Bool) {
     options_dict["javaScriptBridge"]?.value = enabled
     let userContentController = wkWebViewConfiguration.userContentController
@@ -2833,7 +2833,7 @@ function invokeNativeOperation() {
 
 The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/JavaScriptBridgeMessageHandler.swift#L29 "Where\'s My Browser? JavaScriptBridgeMessageHandler.swift Line 29"):
 
-```swift
+```default
 class JavaScriptBridgeMessageHandler: NSObject, WKScriptMessageHandler {
 
 //...
@@ -2851,7 +2851,7 @@ message.webView?.evaluateJavaScript(javaScriptCallBack, completionHandler: nil)
 
 The problem here is that the `JavaScriptBridgeMessageHandler` not only contains that function, it also exposes a sensitive function:
 
-```swift
+```default
 case "getSecret":
         result = "XSRSOGKC342"
 ```
@@ -2892,7 +2892,7 @@ There are several ways to persist an object on iOS:
 
 iOS comes with two protocols for object encoding and decoding for Objective-C or `NSObject`s: `NSCoding` and `NSSecureCoding`. When a class conforms to either of the protocols, the data is serialized to `NSData`: a wrapper for byte buffers. Note that `Data` in Swift is the same as `NSData` or its mutable counterpart: `NSMutableData`. The `NSCoding` protocol declares the two methods that must be implemented in order to encode/decode its instance-variables. A class using `NSCoding` needs to implement `NSObject` or be annotated as an @objc class. The `NSCoding` protocol requires to implement encode and init as shown below.
 
-```swift
+```default
 class CustomPoint: NSObject, NSCoding {
 
     //required by NSCoding:
@@ -2923,7 +2923,7 @@ class CustomPoint: NSObject, NSCoding {
 
 The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSecureCoding` protocol has been introduced. When conforming to [`NSSecureCoding`](https://developer.apple.com/documentation/foundation/NSSecureCoding "NSSecureCoding") you need to include:
 
-```swift
+```default
 
 static var supportsSecureCoding: Bool {
         return true
@@ -2932,7 +2932,7 @@ static var supportsSecureCoding: Bool {
 
 when `init(coder:)` is part of the class. Next, when decoding the object, a check should be made, e.g.:
 
-```swift
+```default
 let obj = decoder.decodeObject(of:MyClass.self, forKey: "myKey")
 ```
 
@@ -2944,7 +2944,7 @@ Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the
 
 `NSKeyedArchiver` is a concrete subclass of `NSCoder` and provides a way to encode objects and store them in a file. The `NSKeyedUnarchiver` decodes the data and recreates the original data. Let's take the example of the `NSCoding` section and now archive and unarchive them:
 
-```swift
+```default
 
 // archiving:
 NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
@@ -2963,7 +2963,7 @@ Note that additional protection needs to be in place to secure the file in case 
 
 With Swift 4, the `Codable` type alias arrived: it is a combination of the `Decodable` and `Encodable` protocols. A `String`, `Int`, `Double`, `Date`, `Data` and `URL` are `Codable` by nature: meaning they can easily be encoded and decoded without any additional work. Let's take the following example:
 
-```swift
+```default
 struct CustomPointStruct:Codable {
     var x: Double
     var name: String
@@ -2996,7 +2996,7 @@ Again, note in case of immutability: confidential information cannot be removed 
 
 Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
 
-```swift
+```default
 struct CustomPointStruct: Codable {
     var point: Double
     var name: String
@@ -3021,7 +3021,7 @@ JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just
 
 You can persist objects to *property lists* (also called plists in previous sections). You can find two examples below of how to use it:
 
-```swift
+```default
 
 // archiving:
 let data = NSKeyedArchiver.archivedDataWithRootObject(customPoint)
@@ -3037,7 +3037,7 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 
 In this first example, the `NSUserDefaults` are used, which is the primary *property list*. We can do the same with the `Codable` version:
 
-```swift
+```default
 struct CustomPointStruct: Codable {
         var point: Double
         var name: String

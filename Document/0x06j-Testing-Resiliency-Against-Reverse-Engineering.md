@@ -53,7 +53,7 @@ Check for files and directories typically associated with jailbreaks, such as:
 
 Another way to check for jailbreaking mechanisms is to try to write to a location that's outside the application's sandbox. You can do this by having the application attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the device has been jailbroken.
 
-```objc
+```objectivec
 NSError *error;
 NSString *stringToBeWritten = @"This is a test.";
 [stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
@@ -71,7 +71,7 @@ if(error==nil){
 
 You can check protocol handlers by attempting to open a Cydia URL. The Cydia app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
-```objc
+```objectivec
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ```
 
@@ -292,7 +292,7 @@ Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstand
 
 The following is an example implementation of the above logic:
 
-```objc
+```objectivec
 #import <dlfcn.h>
 #import <sys/types.h>
 #import <stdio.h>
@@ -376,7 +376,7 @@ You can also bypass a `sysctl` check by using the debugger itself and setting a 
 
 Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in native code (via syscalls), using Objective-C or Swift as shown here:
 
-```swift
+```default
 func AmIBeingDebugged() -> Bool {
     return getppid() != 1
 }
@@ -467,7 +467,7 @@ When you generate an HMAC with CC:
 4. Append the hash value to the actual data.
 5. Store the results of step 4.
 
-```objc
+```objectivec
     // Allocate a buffer to hold the digest and perform the digest.
     NSMutableData* actualData = [getData];
     //get the key from the keychain
@@ -485,7 +485,7 @@ When verifying the HMAC with CC, follow these steps:
 2. Repeat steps 1-3 of the procedure for generating an HMAC on the `NSData`.
 3. Compare the extracted HMAC bytes to the result of step 1.
 
-```objc
+```objectivec
   NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
   NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
   NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
@@ -656,11 +656,11 @@ SwiftShield is now detecting class and method names and is replacing their ident
 
 In the original source code you can see all the class and method identifiers:
 
-<img src="Images/Chapters/0x06j/no_obfuscation.png" width="550px" />
+![No Obfuscation](Images/Chapters/0x06j/no_obfuscation.png)
 
 SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
 
-<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" width="650px" />
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" alt="swiftshield obfsucated"  width="650px" />
 
 After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 

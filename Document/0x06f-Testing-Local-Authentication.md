@@ -31,7 +31,7 @@ The `evaluatePolicy` function returns a boolean value indicating whether the use
 
 The Apple Developer website offers code samples for both [Swift](https://developer.apple.com/documentation/localauthentication "LocalAuthentication") and [Objective-C](https://developer.apple.com/documentation/localauthentication?language=objc "LocalAuthentication"). A typical implementation in Swift looks as follows.
 
-```swift
+```default
 let context = LAContext()
 var error: NSError?
 
@@ -60,7 +60,7 @@ In the following example we will save the string "test_strong_password" to the k
 
 ##### Swift
 
-```swift
+```default
 // 1. create AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
@@ -97,7 +97,7 @@ if status == noErr {
 
 ##### Objective-C
 
-```objc
+```objectivec
 
     // 1. create AccessControl object that will represent authentication settings
     CFErrorRef *err = nil;
@@ -130,7 +130,7 @@ Now we can request the saved item from the keychain. Keychain services will pres
 
 ##### Swift
 
-```swift
+```default
 // 1. define query
 var query = [String: Any]()
 query[kSecClass as String] = kSecClassGenericPassword
@@ -155,7 +155,7 @@ if status == noErr {
 
 ##### Objective-C
 
-```objc
+```objectivec
 // 1. define query
 NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
     (__bridge id)kSecReturnData: @YES,

@@ -71,7 +71,7 @@ In case you want to use these mechanisms, it is recommended to test whether the 
 
 Swift:
 
-```swift
+```default
 public func devicePasscodeEnabled() -> Bool {
     return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
 }
@@ -79,12 +79,12 @@ public func devicePasscodeEnabled() -> Bool {
 
 Objective-C:
 
-```objc
+```objectivec
 -(BOOL)devicePasscodeEnabled:(LAContex)context{
   if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
         return true;
     } else {
-        creturn false;
+        return false;
     }
 }
 ```
@@ -125,7 +125,7 @@ There's no iOS API that developers can use to force wipe data when an applicatio
 
 - When an application is first launched after installation, wipe all Keychain data associated with the application. This will prevent a device's second user from accidentally gaining access to the previous user's accounts. The following Swift example is a basic demonstration of this wiping procedure:
 
-```swift
+```default
 let userDefaults = UserDefaults.standard
 
 if userDefaults.bool(forKey: "hasRunBefore") == false {
@@ -149,7 +149,7 @@ The encryption must be implemented so that the secret key is stored in the Keych
 
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
-```swift
+```default
 // private key parameters
 let privateKeyParams = [
     kSecAttrLabel as String: "privateLabel",
@@ -201,7 +201,7 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 
 The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
 
-```objc
+```objectivec
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -240,7 +240,7 @@ python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 
 The following example demonstrates how to use encryption with a Realm database:
 
-```swift
+```default
 // Open the encrypted Realm file where getKey() is a method to obtain a key from the Keychain or a server
 let config = Realm.Configuration(encryptionKey: getKey())
 do {
@@ -438,7 +438,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 - Search through the source code for similar implementations, such as
 
-```objc
+```objectivec
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
 ```
@@ -447,7 +447,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to `YES`.
 
-```objc
+```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -494,7 +494,7 @@ With Needle:
 
 ```
 
-```objc
+```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -579,7 +579,7 @@ In the iOS project's storyboard, navigate to the configuration options for the t
 **Source Code**
 If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true". This option obscures the text input by showing dots.
 
-```Swift
+```default
 sensitiveTextField.isSecureTextEntry = true
 ```
 
@@ -621,7 +621,7 @@ Both file system properties are preferable to the deprecated approach of directl
 
 The following is [sample Objective-C code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
 
-```ObjC
+```objectivec
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
 {
     NSURL* URL= [NSURL fileURLWithPath: filePathString];
@@ -639,7 +639,7 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 
 The following is sample Swift code for excluding a file from a backup on iOS 5.1 and later, see [Swift excluding files from iCloud backup](https://bencoding.com/2017/02/20/swift-excluding-files-from-icloud-backup/) for more information:
 
-```swift
+```default
 enum ExcludeFileError: Error {
     case fileDoesNotExist
     case error(String)
@@ -715,12 +715,9 @@ In case you need to work with an encrypted backup, there are some Python scripts
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
-<div style="page-break-after: always;">
-</div>
+<img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" width="270" />
 
-| Enable Pin | Pin Screen |
-|---|---|
-| <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270" /> | <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270" /> |
+<img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" width="270" />
 
 After you enable the pin, use iMazing to perform a device backup:
 
@@ -768,7 +765,7 @@ While analyzing the source code, look for the fields or screens that take or dis
 
 The following is a sample remediation method that will set a default screenshot:
 
-```objc
+```objectivec
 @property (UIImageView *)backgroundImage;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -830,7 +827,7 @@ Such data structures give developers direct access to memory. Make sure that thi
 
 Avoid Swift data types other than collections regardless of whether they are considered mutable. Many Swift data types hold their data by value, not by reference. Although this allows modification of the memory allocated to simple types like `char` and `int`, handling a complex type such as `String` by value involves a hidden layer of objects, structures, or primitive arrays whose memory can't be directly accessed or modified. Certain types of usage may seem to create a mutable data object (and even be documented as doing so), but they actually create a mutable identifier (variable) instead of an immutable identifier (constant). For example, many think that the following results in a mutable `String` in Swift, but this is actually an example of a variable whose complex value can be changed (replaced, not modified in place):
 
-```swift
+```default
 var str1 = "Goodbye"              // "Goodbye", base address:            0x0001039e8dd0
 str1.append(" ")                 // "Goodbye ", base address:            0x608000064ae0
 str1.append("cruel world!")      // "Goodbye cruel world", base address: 0x6080000338a0

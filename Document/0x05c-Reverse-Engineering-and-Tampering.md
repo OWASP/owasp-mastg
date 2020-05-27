@@ -481,19 +481,19 @@ Not a lot of code there, but you should analyze it. The first thing you need to 
 
 With that in mind, let's have a look at each line of assembly code.
 
-```arm
+```gnuassembler
 LDR  R2, [R0]
 ```
 
 Remember: the first argument (in R0) is a pointer to the JNI function table pointer. The `LDR` instruction loads this function table pointer into R2.
 
-```arm
+```gnuassembler
 LDR  R1, =aHelloFromC
 ```
 
 This instruction loads into R1 the PC-relative offset of the string "Hello from C++". Note that this string comes directly after the end of the function block at offset 0xe84. Addressing relative to the program counter allows the code to run independently of its position in memory.
 
-```arm
+```gnuassembler
 LDR.W  R2, [R2, #0x29C]
 ```
 
@@ -505,13 +505,13 @@ jstring     (*NewStringUTF)(JNIEnv*, const char*);
 
 The function takes two arguments: the JNIEnv pointer (already in R0) and a String pointer. Next, the current value of PC is added to R1, resulting in the absolute address of the static string "Hello from C++" (PC + offset).
 
-```arm
+```gnuassembler
 ADD  R1, PC
 ```
 
 Finally, the program executes a branch instruction to the `NewStringUTF` function pointer loaded into R2:
 
-```arm
+```gnuassembler
 BX   R2
 ```
 
