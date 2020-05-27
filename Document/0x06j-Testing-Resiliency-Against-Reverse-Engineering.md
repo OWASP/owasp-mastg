@@ -10,7 +10,7 @@ Jailbreak detection mechanisms are added to reverse engineering defense to make 
 
 Check for files and directories typically associated with jailbreaks, such as:
 
-```text
+```default
 /Applications/Cydia.app
 /Applications/FakeCarrier.app
 /Applications/Icy.app
@@ -53,7 +53,7 @@ Check for files and directories typically associated with jailbreaks, such as:
 
 Another way to check for jailbreaking mechanisms is to try to write to a location that's outside the application's sandbox. You can do this by having the application attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the device has been jailbroken.
 
-```objc
+```objectivec
 NSError *error;
 NSString *stringToBeWritten = @"This is a test.";
 [stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
@@ -71,7 +71,7 @@ if(error==nil){
 
 You can check protocol handlers by attempting to open a Cydia URL. The Cydia app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
-```objc
+```objectivec
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ```
 
@@ -98,7 +98,7 @@ As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`)
 
 Let's inject Cycript into our process (look for your PID with `top`):
 
-```shell
+```bash
 iOS8-jailbreak:~ root# cycript -p 12345
 cy# [SFAntiPiracy isTheDeviceJailbroken]
 true
@@ -106,14 +106,14 @@ true
 
 As you can see, our class method was called directly, and it returned "true". Now, let's call the `-[JailbreakDetectionVC isJailbroken]` instance method. First, we have to call the `choose` function to look for instances of the `JailbreakDetectionVC` class.
 
-```shell
+```bash
 cy# a=choose(JailbreakDetectionVC)
 []
 ```
 
 Oops! The return value is an empty array. That means that there are no instances of this class registered in the runtime. In fact, we haven't clicked the second "Jailbreak Test" button, which initializes this class:
 
-```shell
+```bash
 cy# a=choose(JailbreakDetectionVC)
 [#"<JailbreakDetectionVC: 0x14ee15620>"]
 cy# [a[0] isJailbroken]
@@ -124,7 +124,7 @@ True
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
-```shell
+```bash
 cy# JailbreakDetectionVC.prototype.isJailbroken=function(){return false}
 cy# [a[0] isJailbroken]
 false
@@ -143,7 +143,7 @@ One feature of Frida that we will use to bypass jailbreak detection is so-called
 3. The iOS device must be connected via USB cable.
 4. Use `frida-trace` on your workstation:
 
-```shell
+```bash
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
 ```
 
@@ -159,7 +159,7 @@ This will start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJ
 
 This will provide the following output:
 
-```shell
+```bash
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]:"
 
 Instrumenting functions...                                           `...
@@ -292,7 +292,7 @@ Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstand
 
 The following is an example implementation of the above logic:
 
-```objc
+```objectivec
 #import <dlfcn.h>
 #import <sys/types.h>
 #import <stdio.h>
@@ -376,7 +376,7 @@ You can also bypass a `sysctl` check by using the debugger itself and setting a 
 
 Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in native code (via syscalls), using Objective-C or Swift as shown here:
 
-```swift
+```default
 func AmIBeingDebugged() -> Bool {
     return getppid() != 1
 }
@@ -467,7 +467,7 @@ When you generate an HMAC with CC:
 4. Append the hash value to the actual data.
 5. Store the results of step 4.
 
-```objc
+```objectivec
     // Allocate a buffer to hold the digest and perform the digest.
     NSMutableData* actualData = [getData];
     //get the key from the keychain
@@ -485,7 +485,7 @@ When verifying the HMAC with CC, follow these steps:
 2. Repeat steps 1-3 of the procedure for generating an HMAC on the `NSData`.
 3. Compare the extracted HMAC bytes to the result of step 1.
 
-```objc
+```objectivec
   NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
   NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
   NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
@@ -711,11 +711,11 @@ SwiftShield is now detecting class and method names and is replacing their ident
 
 In the original source code you can see all the class and method identifiers:
 
-<img src="Images/Chapters/0x06j/no_obfuscation.png" width="550px" />
+![No Obfuscation](Images/Chapters/0x06j/no_obfuscation.png)
 
 SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
 
-<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" width="650px" />
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.png" alt="swiftshield obfsucated"  width="650px" />
 
 After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 

@@ -86,8 +86,8 @@ First, ensure that no keys or passwords are stored within the source code. This 
 
 If the app is using two-way SSL (both server and client certificates are validated), make sure that:
 
-    1. The password to the client certificate isn't stored locally or is locked in the device Keychain.
-    2. The client certificate isn't shared among all installations.
+- The password to the client certificate isn't stored locally or is locked in the device Keychain.
+- The client certificate isn't shared among all installations.
 
 If the app relies on an additional encrypted container stored in app data, check how the encryption key is used. If a key-wrapping scheme is used, ensure that the master secret is initialized for each user or the container is re-encrypted with new key. If you can use the master secret or previous password to decrypt the container, check how password changes are handled.
 

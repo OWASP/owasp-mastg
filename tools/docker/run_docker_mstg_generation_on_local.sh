@@ -27,15 +27,12 @@ echo "Generating $folder"
 cp -r $folder $folder-temp
 docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc $IMG "/pandoc_makedocs.sh $folder-temp ${VERSION}" || echo "$folder failed" &
 
-
-
 wait
 
-# echo "Cleaning up"
-# for folder in Document*; do
-#     if [ -d "$folder-temp" ]; then 
-#         rm -Rf $folder-temp
-#     fi
-# done
-
-# rm tmp-*
+# Remove Document-temp from document creation
+echo "Cleaning up"
+for folder in Document*; do
+    if [ -d "$folder-temp" ]; then 
+        rm -Rf $folder-temp
+    fi
+done

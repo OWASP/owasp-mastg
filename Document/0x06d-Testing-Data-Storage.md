@@ -71,7 +71,7 @@ In case you want to use these mechanisms, it is recommended to test whether the 
 
 Swift:
 
-```swift
+```default
 public func devicePasscodeEnabled() -> Bool {
     return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
 }
@@ -79,12 +79,12 @@ public func devicePasscodeEnabled() -> Bool {
 
 Objective-C:
 
-```objc
+```objectivec
 -(BOOL)devicePasscodeEnabled:(LAContex)context{
   if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:nil]) {
         return true;
     } else {
-        creturn false;
+        return false;
     }
 }
 ```
@@ -95,7 +95,7 @@ On iOS, when an application is uninstalled, the Keychain data used by the applic
 
 When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
 
-```shell
+```bash
 $ python needle.py
 [needle] > use storage/data/keychain_dump
 [needle] > run
@@ -125,7 +125,7 @@ There's no iOS API that developers can use to force wipe data when an applicatio
 
 - When an application is first launched after installation, wipe all Keychain data associated with the application. This will prevent a device's second user from accidentally gaining access to the previous user's accounts. The following Swift example is a basic demonstration of this wiping procedure:
 
-```swift
+```default
 let userDefaults = UserDefaults.standard
 
 if userDefaults.bool(forKey: "hasRunBefore") == false {
@@ -149,7 +149,7 @@ The encryption must be implemented so that the secret key is stored in the Keych
 
 Here is sample Swift code you can use to create keys (Notice the `kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave`: this indicates that we want to use the Secure Enclave directly.):
 
-```swift
+```default
 // private key parameters
 let privateKeyParams = [
     kSecAttrLabel as String: "privateLabel",
@@ -201,7 +201,7 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 
 The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
 
-```objc
+```objectivec
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -220,8 +220,6 @@ The SQLite 3 library must be added to an app if the app is to use SQLite. This l
 
 ##### Firebase Real-time Databases
 
-##### Firebase Real-time Databases
-
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
 A misconfigured Firebase instance can be identified by making the following network call:
@@ -232,7 +230,7 @@ The _firebaseProjectName_ can be retrieved from the property list(.plist) file. 
 
 Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Scanner"), a python script that automates the task above as shown below:
 
-```shell
+```bash
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
@@ -242,7 +240,7 @@ python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 
 The following example demonstrates how to use encryption with a Realm database:
 
-```swift
+```default
 // Open the encrypted Realm file where getKey() is a method to obtain a key from the Keychain or a server
 let config = Realm.Configuration(encryptionKey: getKey())
 do {
@@ -289,7 +287,7 @@ The Keychain contents can be dumped during dynamic analysis. On a jailbroken dev
 
 The path to the Keychain file is
 
-```shell
+```bash
 /private/var/Keychains/keychain-2.db
 ```
 
@@ -303,7 +301,7 @@ For testing the local storage and verifying what data is stored within it, it's 
 
 Once the app is running in the iOS simulator, you can navigate to the directory of the latest simulator started with the following command:
 
-```shell
+```bash
 $ cd ~/Library/Developer/CoreSimulator/Devices/$(
 ls -alht ~/Library/Developer/CoreSimulator/Devices | head -n 2 |
 awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
@@ -311,7 +309,7 @@ awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 
 The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
 
-```shell
+```bash
 $ grep -iRn keyword .
 ```
 
@@ -325,7 +323,7 @@ On a jailbroken device, you can use the iOS security assessment framework Needle
 
 To use Needle to read the Keychain, execute the following command:
 
-```shell
+```bash
 [needle] > use storage/data/keychain_dump
 [needle][keychain_dump] > run
 ```  
@@ -334,7 +332,7 @@ To use Needle to read the Keychain, execute the following command:
 
 iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Needle to convert these files to a readable format and inspect the data. Use the following Needle module, which searches for binary cookie files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_binarycookies
 [needle][files_binarycookies] > run
 ```
@@ -343,7 +341,7 @@ iOS applications often store binary cookie files in the application sandbox. Coo
 
 iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the following Needle module, which searches for plist files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_plist
 [needle][files_plist] > run
 ```
@@ -352,7 +350,7 @@ iOS applications often store data in property list (plist) files that are stored
 
 iOS applications can store data in cache databases. These databases contain data such as web requests and responses. Sometimes the data is sensitive. Use the following Needle module, which searches for cache files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_cachedb
 [needle][files_cachedb] > run
 ```
@@ -361,7 +359,7 @@ iOS applications can store data in cache databases. These databases contain data
 
 iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Use the following Needle module, which searches for SQLite databases stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
-```shell
+```bash
 [needle] > use storage/data/files_sql
 [needle][files_sql] >
 ```
@@ -440,7 +438,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 - Search through the source code for similar implementations, such as
 
-```objc
+```objectivec
   textObject.autocorrectionType = UITextAutocorrectionTypeNo;
   textObject.secureTextEntry = YES;
 ```
@@ -449,7 +447,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 
 The application must prevent the caching of sensitive information entered into text fields. You can prevent caching by disabling it programmatically, using the `textObject.autocorrectionType = UITextAutocorrectionTypeNo` directive in the desired UITextFields, UITextViews, and UISearchBars. For data that should be masked, such as PINs and passwords, set `textObject.secureTextEntry` to `YES`.
 
-```objc
+```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -466,7 +464,7 @@ If a jailbroken iPhone is available, execute the following steps:
 
 With Needle:
 
-```shell
+```bash
 [needle] > use storage/caching/keyboard_autocomplete
 [needle] > run
 
@@ -496,7 +494,7 @@ With Needle:
 
 ```
 
-```objc
+```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
@@ -581,7 +579,7 @@ In the iOS project's storyboard, navigate to the configuration options for the t
 **Source Code**
 If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true". This option obscures the text input by showing dots.
 
-```Swift
+```default
 sensitiveTextField.isSecureTextEntry = true
 ```
 
@@ -623,7 +621,7 @@ Both file system properties are preferable to the deprecated approach of directl
 
 The following is [sample Objective-C code for excluding a file from a backup](https://developer.apple.com/library/content/qa/qa1719/index.html "How do I prevent files from being backed up to iCloud and iTunes?") on iOS 5.1 and later:
 
-```ObjC
+```objectivec
 - (BOOL)addSkipBackupAttributeToItemAtPath:(NSString *) filePathString
 {
     NSURL* URL= [NSURL fileURLWithPath: filePathString];
@@ -641,7 +639,7 @@ The following is [sample Objective-C code for excluding a file from a backup](ht
 
 The following is sample Swift code for excluding a file from a backup on iOS 5.1 and later, see [Swift excluding files from iCloud backup](https://bencoding.com/2017/02/20/swift-excluding-files-from-icloud-backup/) for more information:
 
-```swift
+```default
 enum ExcludeFileError: Error {
     case fileDoesNotExist
     case error(String)
@@ -717,12 +715,9 @@ In case you need to work with an encrypted backup, there are some Python scripts
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
-<div style="page-break-after: always;">
-</div>
+<img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" width="270" />
 
-| Enable Pin | Pin Screen |
-|---|---|
-| <img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" alt="configure pin" width="270" /> | <img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" alt="pin enabled" width="270" /> |
+<img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" width="270" />
 
 After you enable the pin, use iMazing to perform a device backup:
 
@@ -770,7 +765,7 @@ While analyzing the source code, look for the fields or screens that take or dis
 
 The following is a sample remediation method that will set a default screenshot:
 
-```objc
+```objectivec
 @property (UIImageView *)backgroundImage;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -790,7 +785,7 @@ Navigate to an application screen that displays sensitive information, such as a
 
 Screenshot caching vulnerabilities can also be detected with Needle. This is demonstrated in the following Needle excerpt:
 
-```shell
+```bash
 [needle] > use storage/caching/screenshot
 [needle][screenshot] > run
 [V] Creating timestamp file...
@@ -832,7 +827,7 @@ Such data structures give developers direct access to memory. Make sure that thi
 
 Avoid Swift data types other than collections regardless of whether they are considered mutable. Many Swift data types hold their data by value, not by reference. Although this allows modification of the memory allocated to simple types like `char` and `int`, handling a complex type such as `String` by value involves a hidden layer of objects, structures, or primitive arrays whose memory can't be directly accessed or modified. Certain types of usage may seem to create a mutable data object (and even be documented as doing so), but they actually create a mutable identifier (variable) instead of an immutable identifier (constant). For example, many think that the following results in a mutable `String` in Swift, but this is actually an example of a variable whose complex value can be changed (replaced, not modified in place):
 
-```swift
+```default
 var str1 = "Goodbye"              // "Goodbye", base address:            0x0001039e8dd0
 str1.append(" ")                 // "Goodbye ", base address:            0x608000064ae0
 str1.append("cruel world!")      // "Goodbye cruel world", base address: 0x6080000338a0
@@ -870,7 +865,7 @@ Wether you are using a jailbroken or a non-jailbroken device, you can dump the a
 
 After the memory has been dumped (e.g. to a file called "memory"), depending on the nature of the data you're looking for, you'll need a set of different tools to process and analyze that memory dump. For instance, if you're focusing on strings, it might be sufficient for you to execute the command `strings` or `rabin2 -zz` to extract those strings.
 
-```shell
+```bash
 # using strings
 $ strings memory > strings.txt
 

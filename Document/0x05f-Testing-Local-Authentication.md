@@ -98,7 +98,7 @@ The Android platform offers three different classes for biometric authentication
 - Android P / 9 (API level 28) and higher: `BiometricPrompt`
 - Android 6.0 (API level 23) and higher: `FingerprintManager` (deprecated in Android 9)
 
-<img src="Images/Chapters/0x05f/biometricprompt-architecture.png" width="500" alt="Biometric Auth in Android" />
+<img src="Images/Chapters/0x05f/biometricprompt-architecture.png" width="500" />
 
 The class [`BiometricManager`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricManager "BiometricManager") can be used to verify if biometric hardware is available on the device and if it's configured by the user. If that's the case, the class [`BiometricPrompt`](https://developer.android.com/reference/kotlin/android/hardware/biometrics/BiometricPrompt "BiometricPrompt") can be used to show a system-provided biometric dialog.
 

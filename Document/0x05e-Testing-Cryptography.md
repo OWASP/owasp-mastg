@@ -82,7 +82,7 @@ String providers = builder.toString();
 
 Below you can find the output of a running Android 4.4 (API level 19) in an emulator with Google Play APIs, after the security provider has been patched:
 
-```text
+```default
 provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
 provider: AndroidOpenSSL1.0 (Android's OpenSSL-backed security provider)
 provider: DRLCertFactory1.0 (ASN.1, DER, PkiPath, PKCS7)

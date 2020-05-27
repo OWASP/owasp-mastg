@@ -38,13 +38,13 @@ Examples:
 
 Generating and releasing a symmetric key:
 
-```swift
+```default
 let encryptionKey = SymmetricKey(size: .bits256)
 ```
 
 Calculating a SHA-2 512-bit digest:
 
-```swift
+```default
 let rawString = "OWASP MTSG"
 let rawData = Data(rawString.utf8)
 let hash = SHA512.hash(data: rawData) // Compute the digest
@@ -136,7 +136,7 @@ Given the continuous evolution of all third party libraries, this should not be 
 
 There are various methods on how to store the key on the device. Not storing a key at all will ensure that no key material can be dumped. This can be achieved by using a Password Key Derivation function, such as PKBDF-2. See the example below:
 
-```swift
+```default
 func pbkdf2SHA1(password: String, salt: Data, keyByteCount: Int, rounds: Int) -> Data? {
     return pbkdf2(hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA1), password: password, salt: salt, keyByteCount: keyByteCount, rounds: rounds)
 }
@@ -235,7 +235,7 @@ The Randomization Services API uses the `SecRandomCopyBytes` function to generat
 
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 
-```swift
+```default
 func SecRandomCopyBytes(_ rnd: SecRandomRef?,
                       _ count: Int,
                       _ bytes: UnsafeMutablePointer<UInt8>) -> Int32
@@ -243,13 +243,13 @@ func SecRandomCopyBytes(_ rnd: SecRandomRef?,
 
 The [Objective-C version](https://developer.apple.com/reference/security/1399291-secrandomcopybytes?language=objc "SecRandomCopyBytes (Objective-C)") is
 
-```objc
+```objectivec
 int SecRandomCopyBytes(SecRandomRef rnd, size_t count, uint8_t *bytes);
 ```
 
 The following is an example of the APIs usage:
 
-```objc
+```objectivec
 int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 ```
 

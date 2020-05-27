@@ -21,7 +21,7 @@ Xcode is an Integrated Development Environment (IDE) for macOS that contains a s
 
 All development tools are already included within Xcode, but they are not available within your terminal. In order to make them available systemwide, it is recommended to install the Command Line Tools package. This will be handy during testing of iOS apps as some of the tools you will be using later (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
 
-```shell
+```bash
 $ xcode-select --install
 ```
 
@@ -181,7 +181,7 @@ Besides Cydia there are several other open source tools available and should be 
 
 Besides Cydia you can also ssh into your iOS device and you can install the packages directly via apt-get, like for example adv-cmds.
 
-```shell
+```bash
 $ apt-get update
 $ apt-get install adv-cmds
 ```
@@ -238,7 +238,7 @@ Please keep in mind that IDB might be unstable and crash after selecting the app
 
 With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
-```shell
+```bash
 $ brew install ios-deploy
 ```
 
@@ -262,7 +262,7 @@ The following example shows how you can dump Objective-C classes and Swift type 
 
 First verify if the app's main binary is a FAT binary containing ARM64:
 
-```shell
+```bash
 $ otool -hv [APP_MAIN_BINARY_FILE]
 Mach header
       magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
@@ -274,7 +274,7 @@ MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       5728   NOUNDEFS DYL
 
 If yes, then we specify the "--arch" parameter to "arm64", otherwise it is not needed if the binary only contains an ARM64 binary.
 
-```shell
+```bash
 # Dump the Objective-C classes to a temporary file
 $ dsdump --objc --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/OBJC.txt
 
@@ -288,14 +288,14 @@ You can find more information about the inner workings of dsdump and how to prog
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pentesting framework that also supports iOS IPA files. The easiest way of getting MobSF started is via Docker.
 
-```shell
+```bash
 $ docker pull opensecurity/mobile-security-framework-mobsf
 $ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
 Or install and start it locally on your host computer by running:
 
-```shell
+```bash
 # Setup
 git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
 cd Mobile-Security-Framework-MobSF
@@ -358,7 +358,7 @@ However, Objection also provides a REPL that allows you to interact with the app
 
 All these tasks and more can be easily done by using the commands in objection's REPL. For example, you can obtain the classes used in an app, functions of classes or information about the bundles of an app by running:
 
-```shell
+```bash
 OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list classes
 OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <ClassName>
 OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
@@ -372,23 +372,21 @@ Finally, in case you do have access to a jailbroken device, Objection can connec
 
 Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
 
-```shell
-
+```bash
 $ pip3 install objection
-
 ```
 
 If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
 
 However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
 
-```shell
+```bash
 $ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
 ```
 
 Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
 
-```shell
+```bash
 $ ios-deploy --bundle Payload/my-app.app -W -d
 ```
 
@@ -396,7 +394,7 @@ $ ios-deploy --bundle Payload/my-app.app -W -d
 
 Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
-```shell
+```bash
 # Connecting to a patched IPA
 $ objection explore
 
@@ -410,7 +408,7 @@ $ objection --gadget="Telegram" explore
 
 Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
 
-```shell
+```bash
 # Show the different storage locations belonging to the app
 $ env
 
@@ -434,7 +432,7 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard app data via Vue.js-based GUI. It can be installed with npm.
 
-```shell
+```bash
 $ npm install -g passionfruit
 $ passionfruit
 listening on http://localhost:31337
@@ -479,7 +477,7 @@ In order to enable SSH access to your iOS device you can install the OpenSSH pac
 
 You can now access the remote device's shell by running `ssh root@<device_ip_address>`, which will log you in as the root user:
 
-```shell
+```bash
 $ ssh root@192.168.197.234
 root@192.168.197.234's password:
 iPhone:~ root#
@@ -499,7 +497,7 @@ If you forget your password and want to reset it to the default `alpine`:
 1. Edit the file `/private/etc/master.password` on your jailbroken iOS device (using an on-device shell as shown below)
 2. Find the lines:
 
-   ```shell
+   ```bash
     root:xxxxxxxxx:0:0::0:0:System Administrator:/var/root:/bin/sh
     mobile:xxxxxxxxx:501:501::0:0:Mobile User:/var/mobile:/bin/sh
    ```
@@ -515,7 +513,7 @@ Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it 
 
 Connect macOS to an iOS device by installing and starting iproxy:
 
-```shell
+```bash
 $ brew install libimobiledevice
 $ iproxy 2222 22
 waiting for connection
@@ -525,7 +523,7 @@ The above command maps port `22` on the iOS device to port `2222` on localhost. 
 
 With the following command in a new terminal window, you can connect to the device:
 
-```shell
+```bash
 $ ssh -p 2222 root@localhost
 root@localhost's password:
 iPhone:~ root#
@@ -543,13 +541,13 @@ Opening a reverse shell over SSH can be done by running the command `ssh -R <rem
 
 On the on-device shell app run the following command and, when asked, enter the password of the `mstg` user of the host computer:
 
-```shell
+```bash
 ssh -R 2222:localhost:22 mstg@192.168.197.235
 ```
 
 On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
 
-```shell
+```bash
 $ ssh -p 2222 root@localhost
 ```
 
@@ -561,7 +559,7 @@ There might be various scenarios where you might need to transfer data from the 
 
 As we know now, files from our app are stored in the Data directory. You can now simply archive the Data directory with `tar` and pull it from the device with `scp`:
 
-```shell
+```bash
 iPhone:~ root# tar czvf /tmp/data.tgz /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F5560EB0693
 iPhone:~ root# exit
 $ scp -P 2222 root@localhost:/tmp/data.tgz .
@@ -587,21 +585,21 @@ When navigating through the directories and selecting a file, a pop-up will show
 
 When you are starting objection you will find the prompt within the Bundle directory.
 
-```shell
+```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # pwd print
 Current directory: /var/containers/Bundle/Application/DABF849D-493E-464C-B66B-B8B6C53A4E76/org.owasp.MSTG.app
 ```
 
 Use the `env` command to get the directories of the app and navigate to the Documents directory.
 
-```shell
+```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # cd /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
 /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/Documents
 ```
 
 With the command `file download <filename>` you can download a file from the iOS device to your workstation and can analyze it afterwards.
 
-```shell
+```bash
 org.owasp.MSTG on (iPhone: 10.3.3) [usb] # file download .com.apple.mobile_container_manager.metadata.plist
 Downloading /var/mobile/Containers/Data/Application/72C7AAFB-1D75-4FBA-9D83-D8B4A2D44133/.com.apple.mobile_container_manager.metadata.plist to .com.apple.mobile_container_manager.metadata.plist
 Streaming file from device...
@@ -617,19 +615,19 @@ You can also upload files to the iOS device with `file upload <local_file_path>`
 
 During development, apps are sometimes provided to testers via over-the-air (OTA) distribution. In that situation, you'll receive an itms-services link, such as the following:
 
-```http
+```default
 itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist
 ```
 
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPA from an OTA distribution URL. Install it via npm:
 
-```shell
+```bash
 $ npm install -g itms-services
 ```
 
 Save the IPA file locally with the following command:
 
-```shell
+```bash
 # itms-services -u "itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaws.com/test-uat/manifest.plist" -o - > out.ipa
 ```
 
@@ -645,7 +643,7 @@ Save the IPA file locally with the following command:
 
     If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from memory and rebuild the IPA file. Because of DRM, the file is encrypted when it is stored on the iOS device, so simply pulling the binary from the Bundle (either through SSH or Objection) will not be successful. The following shows the output of running class-dump on the Telegram app, which was directly pulled from the installation directory of the iPhone:
 
-```shell
+```bash
 $ class-dump Telegram
 //
 //     Generated by class-dump 3.5 (64 bit) (Debug version compiled Jun  9 2015 22:53:21).
@@ -681,7 +679,7 @@ In order to retrieve the unencrypted version, we can use tools such as [frida-io
 
 After building Clutch as explained on the Clutch GitHub page, push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
 
-```shell
+```bash
 root# ./Clutch -i
 2019-06-04 20:16:57.807 Clutch[2449:440427] command: Prints installed applications
 Installed apps:
@@ -692,7 +690,7 @@ Installed apps:
 
 Once you have the bundle identifier, you can use Clutch to create the IPA:
 
-```shell
+```bash
 root# ./Clutch -d ph.telegra.Telegraph
 2019-06-04 20:19:28.460 Clutch[2450:440574] command: Dump specified bundleID into .ipa file
 ph.telegra.Telegraph contains watchOS 2 compatible application. It's not possible to dump watchOS 2 apps with Clutch (null) at this moment.
@@ -712,8 +710,7 @@ Finished dumping ph.telegra.Telegraph in 20.5 seconds
 
 After copying the IPA file over to the host system and unzipping it, you can see that the Telegram application can now be parsed by class-dump, indicating that it is no longer encrypted:
 
-```shell
-
+```bash
 $ class-dump Telegram
 ...
 //
@@ -733,7 +730,6 @@ struct CGPoint {
     double _field2;
 };
 ...
-
 ```
 
 Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
@@ -746,7 +742,7 @@ First, make sure that the configuration in `dump.py` is set to either localhost 
 
 Now you can safely use the tool to enumerate the apps installed:
 
-```shell
+```bash
 $ python dump.py -l
  PID  Name             Identifier
 ----  ---------------  -------------------------------------
@@ -760,7 +756,7 @@ $ python dump.py -l
 
 and you can dump one of the listed binaries:
 
-```shell
+```bash
 $ python dump.py ph.telegra.Telegraph
 
 Start the target app ph.telegra.Telegraph
@@ -797,13 +793,13 @@ On Linux and also macOS, you can alternatively use [libimobiledevice](https://ww
 
 The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
 
-```shell
+```bash
 $ brew install libimobiledevice
 ```
 
 After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
 
-```shell
+```bash
 # The following command will show detailed information about the iOS device connected via USB.
 $ ideviceinfo
 # The following command will install the IPA to your iOS device.
@@ -833,7 +829,7 @@ $ idevicedebug -d run OWASP.iGoat-Swift
 
 The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
 
-```shell
+```bash
 $ ipainstaller App_name.ipa
 ```
 
@@ -841,20 +837,20 @@ $ ipainstaller App_name.ipa
 
 On macOS one more tool can be used on the command line called [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), to allow installation and debugging of iOS apps from the command line. It can be installed via brew:
 
-```shell
+```bash
 $ brew install ios-deploy
 ```
 
 After the installation, go into the directory of the IPA you want to install and unzip it as ios-deploy installs an app by using the bundle.
 
-```shell
+```bash
 $ unzip Name.ipa
 $ ios-deploy --bundle 'Payload/Name.app' -W -d -v
 ```
 
 After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the application again.
 
-```shell
+```bash
 $ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
 ```
 
@@ -931,7 +927,7 @@ Once you have collected the package name of the application you want to target, 
 
 You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
-```shell
+```bash
 $ ls -1 Payload/iGoat-Swift.app
 rutger.html
 mansi.html
@@ -1024,7 +1020,7 @@ And get a more detailed view including their imports/exports:
 
 They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
 
-```shell
+```bash
 $ ls -1 Frameworks/
 Realm.framework
 libswiftCore.dylib
@@ -1034,7 +1030,7 @@ libswiftCoreFoundation.dylib
 
 or from the device with objection (as well as per SSH of course):
 
-```shell
+```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
 NSFileType      Perms  NSFileProtection    ...  Name
 ------------  -------  ------------------  ...  ----------------------------
@@ -1067,7 +1063,7 @@ In order to easily obtain the installation directory information for user-instal
 
 Connect to the terminal on the device and run the command `ipainstaller` ([IPA Installer Console](https://cydia.saurik.com/package/com.autopear.installipa "IPA Installer Console")) as follows:
 
-```shell
+```bash
 iPhone:~ root# ipainstaller -l
 ...
 OWASP.iGoat-Swift
@@ -1081,7 +1077,7 @@ Data: /private/var/mobile/Containers/Data/Application/8C8E7EB0-BC9B-435B-8EF8-8F
 
 Using objection's command `env` will also show you all the directory information of the app. Connecting to the application with objection is described in the section "[Recommended Tools - Objection](#using-objection "Recommended Tools - Objection")".
 
-```shell
+```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # env
 
 Name               Path
@@ -1140,7 +1136,7 @@ Data directory:
 
 Let's take a closer look at iGoat-Swift's Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
-```shell
+```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls
 NSFileType      Perms  NSFileProtection    ...  Name
 ------------  -------  ------------------  ...  --------------------------------------
@@ -1211,7 +1207,7 @@ To save the console output to a text file, go to the top right side of the Conso
 
 You can also connect to the device shell as explained in [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell), install socat via apt-get and run the following command:
 
-```shell
+```bash
 iPhone:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock
 
 ========================
@@ -1232,7 +1228,7 @@ Additionally, Passionfruit offers a view of all the NSLog-based application logs
 
 Needle also has an option to capture the logs of an iOS application, you can start the monitoring by opening Needle and running the following commands:
 
-```shell
+```bash
 [needle] > use dynamic/monitor/syslog
 [needle][syslog] > run
 ```
@@ -1245,7 +1241,7 @@ Dumping the KeyChain data can be done with multiple tools, but not all of them w
 
 The KeyChain data can easily be viewed using Objection. First, connect objection to the app as described in "Recommended Tools - Objection". Then, use the `ios keychain dump` command to get an overview of the keychain:
 
-```shell
+```bash
 $ objection --gadget="iGoat-Swift" explore
 ... [usb] # ios keychain dump
 ...
@@ -1274,7 +1270,7 @@ Before dumping the keychain, open Needle and use the `device/dependency_installe
 
 Finally, select the `storage/data/keychain_dump_frida` module and run it:
 
-```shell
+```bash
 [needle][keychain_dump_frida] > use storage/data/keychain_dump_frida
 [needle][keychain_dump_frida] > run
 [*] Checking connection with device...
@@ -1319,13 +1315,13 @@ Note that currently only the `keychain_dump_frida` module works on iOS 12, but n
 
 With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
-<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="250" />
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="450" />
 
 ###### Keychain-dumper (Jailbroken)
 
 [Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain-dumper") lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
 
-```shell
+```bash
 $ git clone https://github.com/ptoomey3/Keychain-Dumper
 $ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
 $ ssh -p 2222 root@localhost
@@ -1365,7 +1361,7 @@ You can remotely sniff all traffic in real-time on iOS by [creating a Remote Vir
 1. Connect your iOS device to your macOS machine via USB.
 2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
 
-```shell
+```bash
 $ rvictl -s <UDID>
 Starting device <UDID> [SUCCEEDED] with interface rvi0
 ```
@@ -1373,7 +1369,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 1. Launch Wireshark and select "rvi0" as the capture interface.
 1. Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
-```text
+```default
 ip.addr == 192.168.1.1 && http
 ```
 
@@ -1395,14 +1391,14 @@ In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#acce
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
-```shell
+```bash
 $ iproxy 2222 22
 waiting for connection
 ```
 
 The next step is to make a remote port forwarding of port 8080 on the iOS device to the localhost interface on our computer to port 8080.
 
-```shell
+```bash
 ssh -R 8080:localhost:8080 root@localhost -p 2222
 ```
 

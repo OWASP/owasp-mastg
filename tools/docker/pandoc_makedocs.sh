@@ -49,8 +49,9 @@ echo "Create PDF"
   pandoc --resource-path=.:${FOLDER} \
     --pdf-engine=xelatex --template=eisvogel \
     --columns 72 \
+    --highlight-style=tango \
     --toc -V toc-title:"${TOC_TITLE}" --toc-depth=3 \
-    --metadata title="OWASP Mobile Application Security Testing Guide $VERSION" \
+    --metadata title="OWASP Mobile Security Testing Guide $VERSION" \
     -H tmp_latex-header-$LANGUAGE.tex -V linkcolor:blue \
     --include-before-body tmp_cover-$LANGUAGE.tex --include-before-body tmp_first_page-$LANGUAGE.tex \
     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.pdf $CHAPTERS \
@@ -60,7 +61,7 @@ echo "create epub"
 pandoc --resource-path=.:${FOLDER} \
     -f markdown \
     -t epub \
-    --metadata title="OWASP Mobile Application Security Testing Guide" \
+    --metadata title="OWASP Mobile Security Testing Guide" \
     --metadata lang="${LANGUAGE}" \
     --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
     --epub-cover-image=cover.jpg \
