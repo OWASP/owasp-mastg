@@ -223,7 +223,7 @@ Encryption should be implemented using proven SDK functions. The following descr
 
 A typical misuse are hard-coded cryptographic keys. Hard-coded and world-readable cryptographic keys significantly increase the possibility that encrypted data will be recovered. Once an attacker obtains the data, decrypting it is trivial. Symmetric cryptography keys must be stored on the device, so identifying them is just a matter of time and effort. Consider the following code:
 
-```Java
+```java
 this.db = localUserSecretStore.getWritableDatabase("SuperPassword123");
 ```
 
@@ -231,7 +231,7 @@ Obtaining the key is trivial because it is contained in the source code and iden
 
 Consider the following code:
 
-```Java
+```java
 //A more complicated effort to store the XOR'ed halves of a key (instead of the key itself)
 private static final String[] myCompositeKey = new String[]{
   "oNQavjbaNNSgEqoCkT9Em4imeQQ=","3o8eFOX4ri/F8fgHgiy/BS47"
@@ -240,7 +240,7 @@ private static final String[] myCompositeKey = new String[]{
 
 The algorithm for decoding the original key might be something like this:
 
-```Java
+```java
 public void useXorStringHiding(String myHiddenMessage) {
   byte[] xorParts0 = Base64.decode(myCompositeKey[0],0);
   byte[] xorParts1 = Base64.decode(myCompositeKey[1],0);
@@ -1010,7 +1010,7 @@ For example, capturing a screenshot of a banking application may reveal informat
 
 To determine whether the application may expose sensitive information via the app switcher, find out whether the [`FLAG_SECURE`](https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE "FLAG_SECURE Option") option has been set. You should find something similar to the following code snippet:
 
-```Java
+```java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
 

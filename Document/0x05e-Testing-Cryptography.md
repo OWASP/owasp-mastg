@@ -94,7 +94,7 @@ provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
 
 Below you can find the output of a running Android 9 (API level 28) in an emulator with Google Play APIs:
 
-```text
+```default
 provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
 provider: AndroidOpenSSL 1.0(Android's OpenSSL-backed security provider)
 provider: CertPathProvider 1.0(Provider of CertPathBuilder and CertPathVerifier)
@@ -118,7 +118,7 @@ Android SDK provides mechanisms for specifying secure key generation and use. An
 
 Here's an example of using AES/CBC/PKCS7Padding on API 23+:
 
-```Java
+```java
 String keyAlias = "MySecretKey";
 
 KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder(keyAlias,
@@ -143,7 +143,7 @@ Attempting to use the generated key in violation of the above spec would result 
 
 Here's an example of using that key to encrypt:
 
-```Java
+```java
 String AES_MODE = KeyProperties.KEY_ALGORITHM_AES
         + "/" + KeyProperties.BLOCK_MODE_CBC
         + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7;
@@ -164,7 +164,7 @@ Both the IV (initialization vector) and the encrypted bytes need to be stored; o
 
 Here's how that cipher text would be decrypted. The `input` is the encrypted byte array and `iv` is the initialization vector from the encryption step:
 
-```Java
+```java
 // byte[] input
 // byte[] iv
 Key key = AndroidKeyStore.getKey(AES_KEY_ALIAS, null);
@@ -182,7 +182,7 @@ Prior to Android 6.0 (API level 23), AES key generation was not supported. As a 
 
 Here's an example of `KeyPairGenerator` and `KeyPairGeneratorSpec` used to create the RSA key pair:
 
-```Java
+```java
 Date startDate = Calendar.getInstance().getTime();
 Calendar endCalendar = Calendar.getInstance();
 endCalendar.add(Calendar.YEAR, 1);
@@ -266,13 +266,13 @@ Verify that all identified instances of hardcoded symmetric cryptography is not 
 
 As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
 
-```shell
+```bash
 $ baksmali d file.apk -o smali_output/
 ```
 
 Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
 
-```shell
+```bash
 $ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
 ```
 
@@ -369,7 +369,7 @@ Identify all the instances of random number generators and look for either custo
 
 The following sample source code shows weak random number generation:
 
-```Java
+```java
 import java.util.Random;
 // ...
 
@@ -391,7 +391,7 @@ Pseudo-random number generators [can produce predictable numbers](https://www.se
 
 The following sample source code shows the generation of a secure random number:
 
-```Java
+```java
 import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 // ...

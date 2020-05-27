@@ -57,27 +57,27 @@ echo "Create PDF"
     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.pdf $CHAPTERS \
     --verbose
 
-echo "create epub"
-pandoc --resource-path=.:${FOLDER} \
-    -f markdown \
-    -t epub \
-    --metadata title="OWASP Mobile Security Testing Guide" \
-    --metadata lang="${LANGUAGE}" \
-    --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
-    --epub-cover-image=cover.jpg \
-    -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.epub $CHAPTERS 
+# echo "create epub"
+# pandoc --resource-path=.:${FOLDER} \
+#     -f markdown \
+#     -t epub \
+#     --metadata title="OWASP Mobile Security Testing Guide" \
+#     --metadata lang="${LANGUAGE}" \
+#     --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
+#     --epub-cover-image=cover.jpg \
+#     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.epub $CHAPTERS 
 
-echo "create docx"
-pandoc --resource-path=.:${FOLDER} \
-    -f markdown \
-    -t docx \
-    --toc -N --columns 10000 --self-contained -s \
-    --reference-doc tools/custom-reference.docx \
-    -o ${OUTPUT_BASE_NAME}-${LANGUAGE}_WIP_.docx $CHAPTERS 
+# echo "create docx"
+# pandoc --resource-path=.:${FOLDER} \
+#     -f markdown \
+#     -t docx \
+#     --toc -N --columns 10000 --self-contained -s \
+#     --reference-doc tools/custom-reference.docx \
+#     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}_WIP_.docx $CHAPTERS 
 
-echo "Create mobi"
-ebook-convert "${OUTPUT_BASE_NAME}-${LANGUAGE}.epub" "${OUTPUT_BASE_NAME}-${LANGUAGE}.mobi"
-# kindlegen ${OUTPUT_BASE_NAME}-${LANGUAGE}.epub
+# echo "Create mobi"
+# ebook-convert "${OUTPUT_BASE_NAME}-${LANGUAGE}.epub" "${OUTPUT_BASE_NAME}-${LANGUAGE}.mobi"
+# # kindlegen ${OUTPUT_BASE_NAME}-${LANGUAGE}.epub
 
 rm tmp_first_page-$LANGUAGE.tex
 rm tmp_cover-$LANGUAGE.tex

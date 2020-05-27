@@ -189,7 +189,7 @@ Xposed has been compared to Frida. When you run Frida server on a rooted device,
 
 Xposed can also be installed on an emulator through the following script:
 
-```sh
+```bash
 #!/bin/sh
 echo "Start your emulator with 'emulator -avd NAMEOFX86A8.0 -writable-system -selinux permissive -wipe-data'"
 adb root && adb remount
@@ -1618,7 +1618,7 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 $ adb logcat > logcat.log
 ```
 
-With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for ```ps``` to be able to get its PID.
+With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for `ps` to be able to get its PID.
 
 ```bash
 $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"

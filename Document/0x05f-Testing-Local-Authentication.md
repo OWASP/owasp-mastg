@@ -19,16 +19,16 @@ Note that the security of Confirm Credentials is only as strong as the protectio
 Reassure that the lock screen is set:
 
 ```java
-   KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-   if (!mKeyguardManager.isKeyguardSecure()) {
-            // Show a message that the user hasn't set up a lock screen.
-   }
+KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+if (!mKeyguardManager.isKeyguardSecure()) {
+    // Show a message that the user hasn't set up a lock screen.
+}
 ```
 
 - Create the key protected by the lock screen. In order to use this key, the user needs to have unlocked the device in the last X seconds, or the device needs to be unlocked again. Make sure that this timeout is not too long, as it becomes harder to ensure that it was the same user using the app as the user unlocking the device:
 
-```java
-  try {
+    ```java
+    try {
         KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
         keyStore.load(null);
         KeyGenerator keyGenerator = KeyGenerator.getInstance(
@@ -50,22 +50,21 @@ Reassure that the lock screen is set:
             | CertificateException | IOException e) {
         throw new RuntimeException("Failed to create a symmetric key", e);
     }
-
-```
+    ```
 
 - Setup the lock screen to confirm:
 
-```java
-  private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
-  Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
-        if (intent != null) {
-            startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
-        }
-```
+    ```java
+    private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 1; //used as a number to verify whether this is where the activity results from
+    Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null);
+    if (intent != null) {
+        startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
+    }
+    ```
 
 - Use the key after lock screen:
 
-```java
+    ```java
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS) {
@@ -78,7 +77,7 @@ Reassure that the lock screen is set:
             }
         }
     }
-```
+    ```
 
 Make sure that the unlocked key is used during the application flow. For example, the key may be used to decrypt local storage or a message received from a remote endpoint. If the application simply checks whether the user has unlocked the key or not, the application may be vulnerable to a local authentication bypass.
 
@@ -94,9 +93,9 @@ Biometric authentication is a convenient mechanism for authentication, but also 
 
 The Android platform offers three different classes for biometric authentication:
 
-- Android Q / 10 (API level 29) and higher: `BiometricManager`
-- Android P / 9 (API level 28) and higher: `BiometricPrompt`
-- Android 6.0 (API level 23) and higher: `FingerprintManager` (deprecated in Android 9)
+- Android 10 (API level 29) and higher: `BiometricManager`
+- Android 9 (API level 28) and higher: `BiometricPrompt`
+- Android 6.0 (API level 23) and higher: `FingerprintManager` (deprecated in Android 9 (API level 28))
 
 <img src="Images/Chapters/0x05f/biometricprompt-architecture.png" width="500" />
 
@@ -108,7 +107,7 @@ This is different to the `FingerprintManager` class which only supports fingerpr
 
 A very detailed overview and explanation of the Biometric API on Android was published on the [Android Developer Blog](https://android-developers.googleblog.com/2019/10/one-biometric-api-over-all-android.html "One Biometric API Over all Android").
 
-##### FingerprintManager (deprecated in Android 9)
+##### FingerprintManager (deprecated in Android 9 (API level 28))
 
 Android 6.0 (API level 23) introduced public APIs for authenticating users via fingerprint, but is deprecated in Android 9 (API level 28). Access to the fingerprint hardware is provided through the [`FingerprintManager`](https://developer.android.com/reference/android/hardware/fingerprint/ "FingerprintManager") class. An app can request fingerprint authentication by instantiating a `FingerprintManager` object and calling its `authenticate` method. The caller registers callback methods to handle possible outcomes of the authentication process (i.e. success, failure, or error). Note that this method doesn't constitute strong proof that fingerprint authentication has actually been performed - for example, the authentication step could be patched out by an attacker, or the "success" callback could be overloaded using dynamic instrumentation.
 
@@ -143,7 +142,7 @@ Developers can use several [validation classes](https://source.android.com/secur
 
 ##### FingerprintManager
 
-> This section describes how to implement biometric authentication by using the `FingerprintManager` class. Please keep in mind that this class is deprecated and the [Biometric library](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") should be used instead as a best practice. This section is just for reference, in case you come across such an implementation and need to analyse it.
+> This section describes how to implement biometric authentication by using the `FingerprintManager` class. Please keep in mind that this class is deprecated and the [Biometric library](https://developer.android.com/jetpack/androidx/releases/biometric "Biometric library for Android") should be used instead as a best practice. This section is just for reference, in case you come across such an implementation and need to analyze it.
 
 Begin by searching for `FingerprintManager.authenticate` calls. The first parameter passed to this method should be a `CryptoObject` instance which is a [wrapper class for crypto objects](https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.CryptoObject.html "FingerprintManager.CryptoObject") supported by FingerprintManager. Should the parameter be set to `null`, this means the fingerprint authorization is purely event-bound, likely creating a security issue.
 
@@ -156,35 +155,35 @@ Safely implementing fingerprint authentication requires following a few simple p
 - The permission must be requested in the Android Manifest:
 
     ```xml
-        <uses-permission
-            android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT" />
     ```
 
 - Fingerprint hardware must be available:
 
-    ```Java
-        FingerprintManager fingerprintManager = (FingerprintManager)
-                        context.getSystemService(Context.FINGERPRINT_SERVICE);
-        fingerprintManager.isHardwareDetected();
+    ```java
+    FingerprintManager fingerprintManager = (FingerprintManager)
+                    context.getSystemService(Context.FINGERPRINT_SERVICE);
+    fingerprintManager.isHardwareDetected();
     ```
 
 - The user must have a protected lock screen:
 
-    ```Java
-        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
+    ```java
+    KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    keyguardManager.isKeyguardSecure();  //note if this is not the case: ask the user to setup a protected lock screen
     ```
 
 - At least one finger should be registered:
 
     ```java
-        fingerprintManager.hasEnrolledFingerprints();
+    fingerprintManager.hasEnrolledFingerprints();
     ```
 
 - The application should have permission to ask for a user fingerprint:
 
     ```java
-        context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
+    context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PermissionResult.PERMISSION_GRANTED;
     ```
 
 If any of the above checks fail, the option for fingerprint authentication should not be offered.
@@ -193,14 +192,14 @@ It is important to remember that not every Android device offers hardware-backed
 
 ```java
 SecretKeyFactory factory = SecretKeyFactory.getInstance(getEncryptionKey().getAlgorithm(), ANDROID_KEYSTORE);
-                KeyInfo secetkeyInfo = (KeyInfo) factory.getKeySpec(yourencryptionkeyhere, KeyInfo.class);
+KeyInfo secetkeyInfo = (KeyInfo) factory.getKeySpec(yourencryptionkeyhere, KeyInfo.class);
 secetkeyInfo.isInsideSecureHardware()
 ```
 
 On certain systems, it is possible to enforce the policy for biometric authentication through hardware as well. This is checked by:
 
 ```java
-    keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
+keyInfo.isUserAuthenticationRequirementEnforcedBySecureHardware();
 ```
 
 The following describes how to do fingerprint authentication using a symmetric key pair.
@@ -208,33 +207,33 @@ The following describes how to do fingerprint authentication using a symmetric k
 Fingerprint authentication may be implemented by creating a new AES key using the `KeyGenerator` class by adding `setUserAuthenticationRequired(true)` in `KeyGenParameterSpec.Builder`.
 
 ```java
-    generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
+generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE);
 
-    generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
-            KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-            .setUserAuthenticationRequired(true)
-            .build()
-    );
+generator.init(new KeyGenParameterSpec.Builder (KEY_ALIAS,
+        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+        .setUserAuthenticationRequired(true)
+        .build()
+);
 
-    generator.generateKey();
+generator.generateKey();
 ```
 
 To perform encryption or decryption with the protected key, create a `Cipher` object and initialize it with the key alias.
 
 ```java
-    SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
+SecretKey keyspec = (SecretKey)keyStore.getKey(KEY_ALIAS, null);
 
-    if (mode == Cipher.ENCRYPT_MODE) {
-        cipher.init(mode, keyspec);
+if (mode == Cipher.ENCRYPT_MODE) {
+    cipher.init(mode, keyspec);
 ```
 
 Keep in mind, a new key cannot be used immediately - it has to be authenticated through the `FingerprintManager` first. This involves wrapping the `Cipher` object into `FingerprintManager.CryptoObject` which is passed to `FingerprintManager.authenticate` before it will be recognized.
 
 ```java
-    cryptoObject = new FingerprintManager.CryptoObject(cipher);
-    fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
+cryptoObject = new FingerprintManager.CryptoObject(cipher);
+fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
 ```
 
 When the authentication succeeds, the callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called at which point, the authenticated `CryptoObject` can be retrieved from the result.
@@ -253,7 +252,7 @@ To implement fingerprint authentication using asymmetric cryptography, first cre
 
 A key pair is generated as follows:
 
-```Java
+```java
 KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore");
 keyPairGenerator.initialize(
         new KeyGenParameterSpec.Builder(MY_KEY,
@@ -267,7 +266,7 @@ keyPairGenerator.generateKeyPair();
 
 To use the key for signing, you need to instantiate a CryptoObject and authenticate it through `FingerprintManager`.
 
-```Java
+```java
 Signature.getInstance("SHA256withECDSA");
 KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
 keyStore.load(null);
@@ -283,7 +282,7 @@ fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, this, null)
 
 You can now sign the contents of a byte array `inputBytes` as follows.
 
-```Java
+```java
 Signature signature = cryptoObject.getSignature();
 signature.update(inputBytes);
 byte[] signed = signature.sign();

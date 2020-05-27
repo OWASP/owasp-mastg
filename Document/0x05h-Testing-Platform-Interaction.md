@@ -469,7 +469,7 @@ public class MyPreferences extends PreferenceActivity {
 
 The following examples show the `isValidFragment` method being overridden with an implementation that allows the loading of `MyPreferenceFragment` only:
 
-```Java
+```java
 @Override
 protected boolean isValidFragment(String fragmentName)
 {
@@ -482,7 +482,7 @@ return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
 
 MainActivity.class
 
-```Java
+```java
 public class MainActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -492,7 +492,7 @@ public class MainActivity extends PreferenceActivity {
 
 MyFragment.class
 
-```Java
+```java
 public class MyFragment extends Fragment {
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -509,7 +509,7 @@ public class MyFragment extends Fragment {
 
 To exploit this vulnerable Activity, you can create an application with the following code:
 
-```Java
+```java
 Intent i = new Intent();
 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
@@ -562,7 +562,7 @@ The example above specifies a new URL scheme called `myapp://`. The category `br
 
 Data can then be transmitted through this new scheme with, for example, the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
 
-```Java
+```java
 Intent intent = getIntent();
 if (Intent.ACTION_VIEW.equals(intent.getAction())) {
   Uri uri = intent.getData();
@@ -595,7 +595,7 @@ dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms:
 
 When used to call a defined schema (myapp://someaction/?var0=string&var1=string), the module may also be used to send data to the app, as in the example below.
 
-```Java
+```java
 Intent intent = getIntent();
 if (Intent.ACTION_VIEW.equals(intent.getAction())) {
   Uri uri = intent.getData();
@@ -980,7 +980,7 @@ JavaScript can be injected into web applications via reflected, stored, or DOM-b
 
 The source code must be checked for usage and implementations of the WebView class. To create and use a WebView, you must create an instance of the WebView class.
 
-```Java
+```java
 WebView webview = new WebView(this);
 setContentView(webview);
 webview.loadUrl("https://www.owasp.org/");
@@ -988,7 +988,7 @@ webview.loadUrl("https://www.owasp.org/");
 
 Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://goo.gl/G9spo2 "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
 
-```Java
+```java
 webview.getSettings().setJavaScriptEnabled(true);
 ```
 
@@ -1045,7 +1045,7 @@ If one or more of the above methods is/are activated, you should determine wheth
 
 If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL`](https://goo.gl/4vdSQM "loadURL in WebView") method.
 
-```Java
+```java
 WebView = new WebView(this);
 webView.loadUrl("file:///android_asset/filename.html");
 ```
@@ -1096,7 +1096,7 @@ You need to determine whether the method `addJavascriptInterface` is used, how i
 
 The following example shows how `addJavascriptInterface` is used to bridge a Java Object and JavaScript in a WebView:
 
-```Java
+```java
 WebView webview = new WebView(this);
 WebSettings webSettings = webview.getSettings();
 webSettings.setJavaScriptEnabled(true);
@@ -1110,7 +1110,7 @@ setContentView(myWebView);
 
 In Android 4.2 (API level 17) and above, an annotation `@JavascriptInterface` explicitly allows JavaScript to access a Java method.
 
-```Java
+```java
 public class MSTG_ENV_008_JS_Interface {
 
         Context mContext;
@@ -1135,7 +1135,7 @@ public class MSTG_ENV_008_JS_Interface {
 
 This is how you can call the method `returnString` from JavaScript, the string "Secret String" will be stored in the variable `result`:
 
-```Javascript
+```javascript
 var result = window.Android.returnString();
 ```
 

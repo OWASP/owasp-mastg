@@ -319,7 +319,7 @@ Because fragments have their own life cycle, the Fragment class contains event m
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
-```Java
+```java
 public class MyFragment extends Fragment {
     ...
 }
@@ -331,7 +331,7 @@ To manage its fragments, an activity can use a Fragment Manager (FragmentManager
 
 Fragment Managers can be created via the following:
 
-```Java
+```java
 FragmentManager fm = getFragmentManager();
 ```
 
@@ -388,14 +388,14 @@ Found 99 services:
 
 There are two types of intents. Explicit intents name the component that will be started (the fully qualified class name). For instance:
 
-```Java
-    Intent intent = new Intent(this, myActivity.myClass);
+```java
+Intent intent = new Intent(this, myActivity.myClass);
 ```
 
 Implicit intents are sent to the OS to perform a given action on a given set of data (The URL of the OWASP website in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
 
-```Java
-    Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
+```java
+Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
 ```
 
 An *intent filter* is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
@@ -433,7 +433,7 @@ The other way is to create the receiver dynamically in code and register it with
 
 An example of registering a Broadcast Receiver dynamically:
 
-```Java
+```java
 // Define a broadcast receiver
 myReceiver = new BroadcastReceiver() {
     @Override

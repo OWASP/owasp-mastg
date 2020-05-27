@@ -1504,9 +1504,9 @@ In this section, we will learn about techniques for performing library injection
 
 ###### Patching the Application's Smali Code
 
-An Android application's decompiled smali code can be patched to introduce a call to `System.loadLibrary`. The following smali patch injects a library named *libinject.so*:
+An Android application's decompiled smali code can be patched to introduce a call to `System.loadLibrary`. The following smali patch injects a library named libinject.so:
 
-```smali
+```default
 const-string v0, "inject"
 invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 ```
