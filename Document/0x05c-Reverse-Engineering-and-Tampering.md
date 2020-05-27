@@ -1723,96 +1723,89 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+import sg.vantagepoint.a.b;
+import sg.vantagepoint.a.c;
 import sg.vantagepoint.uncrackable1.a;
-import sg.vantagepoint.uncrackable1.b;
-import sg.vantagepoint.uncrackable1.c;
 
 public class MainActivity
 extends Activity {
     private void a(String string) {
         AlertDialog alertDialog = new AlertDialog.Builder((Context)this).create();
         alertDialog.setTitle((CharSequence)string);
-        alertDialog.setMessage((CharSequence)"This in unacceptable. The app is now going to exit.");
-        alertDialog.setButton(-3, (CharSequence)"OK", (DialogInterface.OnClickListener)new b(this));
+        alertDialog.setMessage((CharSequence)"This is unacceptable. The app is now going to exit.");
+        alertDialog.setButton(-3, (CharSequence)"OK", new DialogInterface.OnClickListener(){
+
+            public void onClick(DialogInterface dialogInterface, int n) {
+                System.exit((int)0);
+            }
+        });
+        alertDialog.setCancelable(false);
         alertDialog.show();
     }
 
     protected void onCreate(Bundle bundle) {
-        if (sg.vantagepoint.a.c.a() || sg.vantagepoint.a.c.b() || sg.vantagepoint.a.c.c()) {
-            this.a("Root detected!"); //This is the message we are looking for
+        if (c.a() || c.b() || c.c()) {
+            this.a("Root detected!");
         }
-        if (sg.vantagepoint.a.b.a((Context)this.getApplicationContext())) {
+        if (b.a(this.getApplicationContext())) {
             this.a("App is debuggable!");
         }
         super.onCreate(bundle);
         this.setContentView(2130903040);
     }
 
+    /*
+     * Enabled aggressive block sorting
+     */
     public void verify(View object) {
-        object = ((EditText)this.findViewById(2131230720)).getText().toString();
+        object = ((EditText)this.findViewById(2130837505)).getText().toString();
         AlertDialog alertDialog = new AlertDialog.Builder((Context)this).create();
         if (a.a((String)object)) {
             alertDialog.setTitle((CharSequence)"Success!");
-            alertDialog.setMessage((CharSequence)"This is the correct secret.");
+            object = "This is the correct secret.";
         } else {
             alertDialog.setTitle((CharSequence)"Nope...");
-            alertDialog.setMessage((CharSequence)"That's not it. Try again.");
+            object = "That's not it. Try again.";
         }
-        alertDialog.setButton(-3, (CharSequence)"OK", (DialogInterface.OnClickListener)new c(this));
+        alertDialog.setMessage((CharSequence)object);
+        alertDialog.setButton(-3, (CharSequence)"OK", new DialogInterface.OnClickListener(){
+
+            public void onClick(DialogInterface dialogInterface, int n) {
+                dialogInterface.dismiss();
+            }
+        });
         alertDialog.show();
     }
 }
+
 ```
 
-Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which closes the application via `System.exit(0)` after successful root detection. With Frida, you can prevent the app from exiting by hooking the callback.
+Notice the "Root detected" message in the `onCreate` method and the various methods called in the preceding `if`-statement (which perform the actual root checks). Also note the "This is unacceptable..." message from the first method of the class, `private void a`. Obviously, this method displays the dialog box. There is an `alertDialog.onClickListener` callback set in the `setButton` method call, which closes the application via `System.exit` after successful root detection. With Frida, you can prevent the app from exiting by hooking the `MainActivity.a` method or the callback inside it. The example below shows how you can hook `MainActivity.a` and prevent it from ending the application.
 
-The `onClickListener` implementation for the dialog button doesn't do much:
-
-```java
-package sg.vantagepoint.uncrackable1;
-
-class b implements android.content.DialogInterface$OnClickListener {
-    final sg.vantagepoint.uncrackable1.MainActivity a;
-
-    b(sg.vantagepoint.uncrackable1.MainActivity a0)
-    {
-        this.a = a0;
-        super();
-    }
-
-    public void onClick(android.content.DialogInterface a0, int i)
-    {
-        System.exit(0);
-    }
-}
-```
-
-It just exits the app. Now intercept it with Frida to prevent the app from exiting after root detection:
-
-```java
+```javascript
 setImmediate(function() { //prevent timeout
     console.log("[*] Starting script");
 
     Java.perform(function() {
-      bClass = Java.use("sg.vantagepoint.uncrackable1.b");
-      bClass.onClick.implementation = function(v) {
-         console.log("[*] onClick called");
+      var mainActivity = Java.use("sg.vantagepoint.uncrackable1.MainActivity");
+      mainActivity.a.implementation = function(v) {
+         console.log("[*] MainActivity.a called");
       };
-      console.log("[*] onClick handler modified");
+      console.log("[*] MainActivity.a modified");
 
     });
 });
 ```
 
-Wrap your code in the function `setImmediate` to prevent timeouts (you may or may not need to do this), then call `Java.perform` to use Frida's methods for dealing with Java. Afterwards retrieve a wrapper for the class that implements the `OnClickListener` interface and overwrite its `onClick` method. Unlike the original, the new version of `onClick` just writes console output and *doesn't exit the app*. If you inject your version of this method via Frida, the app should not exit when you click the "OK" dialog button.
+Wrap your code in the function `setImmediate` to prevent timeouts (you may or may not need to do this), then call `Java.perform` to use Frida's methods for dealing with Java. Afterwards retrieve a wrapper for `MainActivity` class and overwrite its `a` method. Unlike the original, the new version of `a` just writes console output and doesn't exit the app. An alternative solution is to hook `onClick` method of the `OnClickListener` interface. You can overwrite the `onClick` method and prevent it from ending the application with the `System.exit` call. If you want to inject your own Frida script, it should either disable the `AlertDialog` entirely or change the behavior of the `onClick` method so the app does not exit when you click "OK".
 
 Save the above script as `uncrackable1.js` and load it:
 
 ```shell
-$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+$ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 ```
 
-After you see the "onClickHandler modified" message, you can safely press "OK". The app will not exit anymore.
+After you see the "MainActivity.a modified" message and the app will not exit anymore.
 
 You can now try to input a "secret string". But where do you get it?
 
@@ -1827,59 +1820,58 @@ import android.util.Log;
 public class a {
     public static boolean a(String string) {
         byte[] arrby = Base64.decode((String)"5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", (int)0);
-        byte[] arrby2 = new byte[]{};
         try {
-            arrby2 = arrby = sg.vantagepoint.a.a.a((byte[])a.b((String)"8d127684cbc37c17616d806cf50473cc"), (byte[])arrby);
+            arrby = sg.vantagepoint.a.a.a(a.b("8d127684cbc37c17616d806cf50473cc"), arrby);
         }
-        catch (Exception var2_2) {
-            Log.d((String)"CodeCheck", (String)("AES error:" + var2_2.getMessage()));
+        catch (Exception exception) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("AES error:");
+            stringBuilder.append(exception.getMessage());
+            Log.d((String)"CodeCheck", (String)stringBuilder.toString());
+            arrby = new byte[]{};
         }
-        if (!string.equals(new String(arrby2))) return false;
-        return true;
+        return string.equals((Object)new String(arrby));
     }
 
     public static byte[] b(String string) {
         int n = string.length();
         byte[] arrby = new byte[n / 2];
-        int n2 = 0;
-        while (n2 < n) {
-            arrby[n2 / 2] = (byte)((Character.digit(string.charAt(n2), 16) << 4) + Character.digit(string.charAt(n2 + 1), 16));
-            n2 += 2;
+        for (int i = 0; i < n; i += 2) {
+            arrby[i / 2] = (byte)((Character.digit((char)string.charAt(i), (int)16) << 4) + Character.digit((char)string.charAt(i + 1), (int)16));
         }
         return arrby;
     }
 }
 ```
 
-Notice the `string.equals` comparison at the end of the `a` method and the creation of the string `arrby2` in the `try` block above. `arrby2` is the return value of the function `sg.vantagepoint.a.a.a`. `string.equals` comparison compares your input with `arrby2`. So we want the return value of `sg.vantagepoint.a.a.a.`
+Look at the `string.equals` comparison at the end of the `a` method and the creation of the string `arrby` in the `try` block above. `arrby` is the return value of the function `sg.vantagepoint.a.a.a`. `string.equals` comparison compares your input with `arrby`. So we want the return value of `sg.vantagepoint.a.a.a.`
 
 Instead of reversing the decryption routines to reconstruct the secret key, you can simply ignore all the decryption logic in the app and hook the `sg.vantagepoint.a.a.a` function to catch its return value.
 Here is the complete script that prevents exiting on root and intercepts the decryption of the secret string:
 
-```java
-setImmediate(function() {
+```javascript
+setImmediate(function() { //prevent timeout
     console.log("[*] Starting script");
 
     Java.perform(function() {
-        bClass = Java.use("sg.vantagepoint.uncrackable1.b");
-        bClass.onClick.implementation = function(v) {
-         console.log("[*] onClick called.");
+        var mainActivity = Java.use("sg.vantagepoint.uncrackable1.MainActivity");
+        mainActivity.a.implementation = function(v) {
+           console.log("[*] MainActivity.a called");
         };
-        console.log("[*] onClick handler modified");
+        console.log("[*] MainActivity.a modified");
 
-        aaClass = Java.use("sg.vantagepoint.a.a");
+        var aaClass = Java.use("sg.vantagepoint.a.a");
         aaClass.a.implementation = function(arg1, arg2) {
-            retval = this.a(arg1, arg2);
-            password = '';
-            for(i = 0; i < retval.length; i++) {
-               password += String.fromCharCode(retval[i]);
-            }
+        var retval = this.a(arg1, arg2);
+        var password = '';
+        for(var i = 0; i < retval.length; i++) {
+            password += String.fromCharCode(retval[i]);
+        }
 
-            console.log("[*] Decrypted: " + password);
+        console.log("[*] Decrypted: " + password);
             return retval;
         };
         console.log("[*] sg.vantagepoint.a.a.a modified");
-
     });
 });
 ```
@@ -1887,12 +1879,12 @@ setImmediate(function() {
 After running the script in Frida and seeing the "[\*] sg.vantagepoint.a.a.a modified" message in the console, enter a random value for "secret string" and press verify. You should get an output similar to the following:
 
 ```shell
-$ frida -U -l uncrackable1.js sg.vantagepoint.uncrackable1
+$ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 
 [*] Starting script
-[USB::Android Emulator 5554::sg.vantagepoint.uncrackable1]-> [*] onClick handler modified
+[USB::Android Emulator 5554::sg.vantagepoint.uncrackable1]-> [*] MainActivity.a modified
 [*] sg.vantagepoint.a.a.a modified
-[*] onClick called.
+[*] MainActivity.a called.
 [*] Decrypted: I want to believe
 ```
 
