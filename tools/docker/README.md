@@ -29,6 +29,8 @@ See the results in: <https://github.com/OWASP/owasp-mstg/actions>
     git tag -a docker-<docker-container-image-version> -m "Changeson docker image"
   ```
 
+  - You would need to login first with `docker login`. Don't use your password but create a personal access token on <hub.docker.com>.
+
 - Create a new image and push it to docker hub (requires being logged in to Docker hub and Docker hub membership of OWASP organization):
 
   ```sh
@@ -39,7 +41,16 @@ See the results in: <https://github.com/OWASP/owasp-mstg/actions>
     docker push owasp/mstg-docgenerator:<docker-container-image-version>
   ```
 
-- Create a new PR with the new version in the `docgenerator.yml`, `release.yml`, and `run_docker_mstg_generation_on_local.sh`.
+- You might be getting the error `denied: requested access to the resource is denied` when doing `docker push`. If that's the case try the following (Source: <https://github.com/docker/hub-feedback/issues/1222#issuecomment-572410689>):
+
+  ```bash
+  $ docker login --username=<username> --password-stdin && docker push owasp/mstg-docgenerator:<docker-container-image-version>
+  ```
+
+- Create a new PR with the new version of:
+  - `/github/workflows/docgenerator.yml`
+  - `/github/workflows/release.yml`
+  - `tools/docker/run_docker_mstg_generation_on_local.sh`
 
 ### In case of a new document
 
