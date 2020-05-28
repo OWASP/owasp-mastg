@@ -44,7 +44,7 @@ See the results in: <https://github.com/OWASP/owasp-mstg/actions>
 - You might be getting the error `denied: requested access to the resource is denied` when doing `docker push`. If that's the case try the following (Source: <https://github.com/docker/hub-feedback/issues/1222#issuecomment-572410689>):
 
   ```bash
-  $ docker login --username=<username> --password-stdin && docker push owasp/mstg-docgenerator:0.3
+  $ docker login --username=<username> --password-stdin && docker push owasp/mstg-docgenerator:<docker-container-image-version>
   ```
 
 - Create a new PR with the new version of:
