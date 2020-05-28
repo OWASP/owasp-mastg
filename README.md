@@ -78,23 +78,15 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 4. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
-5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
+5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/tools/docker/run_docker_stg_generation_on_local.sh "The document generator") (requires [Docker](https://www.docker.com "Docker")). This produces the PDF, Epub, Mobi, and DocX in the root of the MSTG folder..
 
     ```shell
     $ git clone https://github.com/OWASP/owasp-mstg/
-    $ cd owasp-mstg/tools/
-    $ ./generate_document.sh
+    $ cd owasp-mstg/
+    $ ./tools/docker/run_docker_stg_generation_on_local.sh
     ```
 
-6. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
-
-    ```shell
-    $ git clone https://github.com/OWASP/owasp-mstg/
-    $ cd owasp-mstg/tools/
-    $ ./gitbookandpdf.sh
-    ```
-
-Note: we are working towards using a new document generation system with a new format of the document. Want to check it out? Execute on mac : `./tools/docker/run_docker_stg_generation_on_local.sh`.
+6. Just check the latest build of the repository at [Github actions](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22 "Document build"). This offers you the latest SNAPSHOT version of the document to download.
 
 ## Contributions, Feature Requests and Feedback
 
