@@ -16,7 +16,7 @@ echo "Version = ${VERSION}"
 # export IMG="owasp/mstg-docgenerator:0.2"
 # docker pull $IMG
 # only use this when you are updating the docker tooling
-export IMG="owasp/mstg-docgenerator:latest"
+export IMG="owasp/mstg-docgenerator:0.3"
 if [[ "$(docker images -q $IMG 2> /dev/null)" == "" ]]; then
   docker build --tag $IMG tools/docker/
 fi
