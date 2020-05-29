@@ -715,9 +715,9 @@ In case you need to work with an encrypted backup, there are some Python scripts
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
-<img src="Images/Chapters/0x06d/bither_demo_enable_pin.PNG" width="270" />
+<img src="Images/Chapters/0x06d/bither_demo_enable_pin.png" width="270" />
 
-<img src="Images/Chapters/0x06d/bither_demo_pin_screen.PNG" width="270" />
+<img src="Images/Chapters/0x06d/bither_demo_pin_screen.png" width="270" />
 
 After you enable the pin, use iMazing to perform a device backup:
 
