@@ -83,7 +83,7 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
     ```shell
     $ git clone https://github.com/OWASP/owasp-mstg/
     $ cd owasp-mstg/
-    $ ./tools/docker/run_docker_stg_generation_on_local.sh
+    $ ./tools/docker/run_docker_mstg_generation_on_local.sh
     ```
 
 6. Just check the latest build of the repository at [Github actions](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22 "Document build"). This offers you the latest SNAPSHOT version of the document to download.
