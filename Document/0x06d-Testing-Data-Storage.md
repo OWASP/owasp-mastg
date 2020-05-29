@@ -93,33 +93,17 @@ Objective-C:
 
 On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical ability to perform.
 
-When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
+When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. Use Objection runtime mobile exploration toolkit to dump the keychain data. The following Objection command demonstrate this procedure:
 
 ```bash
-$ python needle.py
-[needle] > use storage/data/keychain_dump
-[needle] > run
-  {
-   "Creation Time" : "Jan 15, 2018, 10:20:02 GMT",
-   "Account" : "username",
-   "Service" : "",
-   "Access Group" : "ABCD.com.test.passwordmngr-test",
-   "Protection" : "kSecAttrAccessibleWhenUnlocked",
-   "Modification Time" : "Jan 15, 2018, 10:28:02 GMT",
-   "Data" : "testUser",
-   "AccessControl" : "Not Applicable"
- },
- {
-   "Creation Time" : "Jan 15, 2018, 10:20:02 GMT",
-   "Account" : "password",
-   "Service" : "",
-   "Access Group" : "ABCD.com.test.passwordmngr-test,
-   "Protection" : "kSecAttrAccessibleWhenUnlocked",
-   "Modification Time" : "Jan 15, 2018, 10:28:02 GMT",
-   "Data" : "rosebud",
-   "AccessControl" : "Not Applicable"
- }
-```
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios keychain dump
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Save the output by adding `--json keychain.json` to this command
+Dumping the iOS keychain...
+Created                    Accessible                      ACL    Type      Account                    Service                                                        Data
+-------------------------  ------------------------------  -----  --------  -------------------------  -------------------------------------------------------------  ------------------------------------
+2020-02-11 13:26:52 +0000  WhenUnlocked                    None   Password  keychainValue              com.highaltitudehacks.DVIAswiftv2.develop                      mysecretpass123
+```  
 
 There's no iOS API that developers can use to force wipe data when an application is uninstalled. Instead, developers should take the following steps to prevent Keychain data from persisting between application installations:
 
