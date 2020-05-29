@@ -1684,15 +1684,15 @@ The method [`openURL:options:completionHandler:`](https://developer.apple.com/do
 Additionally, if you are interested into knowing if the app is querying specific services or apps, and if the app is well-known, you can also search for common URL schemes online and include them in your greps. For example, a [quick Google search reveals](https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/ "Always-Updated List of iOS App URL Scheme Names"):
 
 ```default
-Apple Music — music:// or musics:// or audio-player-event://
-Calendar — calshow:// or x-apple-calevent://
-Contacts — contacts://
-Diagnostics — diagnostics:// or diags://
-GarageBand — garageband://
-iBooks — ibooks:// or itms-books:// or itms-bookss://
-Mail — message:// or mailto://emailaddress
-Messages — sms://phonenumber
-Notes — mobilenotes://
+Apple Music - music:// or musics:// or audio-player-event://
+Calendar - calshow:// or x-apple-calevent://
+Contacts - contacts://
+Diagnostics - diagnostics:// or diags://
+GarageBand - garageband://
+iBooks - ibooks:// or itms-books:// or itms-bookss://
+Mail - message:// or mailto://emailaddress
+Messages - sms://phonenumber
+Notes - mobilenotes://
 ...
 ```
 
@@ -2570,7 +2570,7 @@ do {
 
 The page loads resources from the internet using HTTP, enabling a potential MITM to exfiltrate secrets contained in local files, e.g. in shared preferences.
 
-When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:")/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others: [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
+When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:") or [`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others: [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
 
 Search the source code for the mentioned methods and inspect their parameters.
 

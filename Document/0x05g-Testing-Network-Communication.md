@@ -25,7 +25,7 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 The following code snippet is sometimes used during development and will accept any certificate, overwriting the functions `checkClientTrusted`, `checkServerTrusted`, and `getAcceptedIssuers`. Such implementations should be avoided, and, if they are necessary, they should be clearly separated from production builds to avoid built-in security flaws.
 
-```Java
+```java
 TrustManager[] trustAllCerts = new TrustManager[] {
     new X509TrustManager() {
         @Override
@@ -84,7 +84,7 @@ final static HostnameVerifier NO_VERIFY = new HostnameVerifier() {
 
 With a built-in `HostnameVerifier`, accepting any hostname is possible:
 
-```Java
+```java
 HostnameVerifier NO_VERIFY = org.apache.http.conn.ssl.SSLSocketFactory
                              .ALLOW_ALL_HOSTNAME_VERIFIER;
 ```
@@ -260,7 +260,7 @@ Applications developed in Xamarin will typically use ServicePointManager to impl
 
 Normally a function is created to check the certificate(s) and return the boolean value to the method ServerCertificateValidationCallback:
 
-```c#
+```cs
 [Activity(Label = "XamarinPinning", MainLauncher = true)]
     public class MainActivity : Activity
     {
