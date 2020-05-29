@@ -12,9 +12,9 @@ jobs:
         fetch-depth: 1
 
     - name: Pull the Docker image
-      run: docker pull owasp/mstg-docgenerator:0.2
+      run: docker pull owasp/mstg-docgenerator:0.3
     - name: Generate English PDF
-      run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc owasp/mstg-docgenerator:0.2 '/pandoc_makedocs.sh Document SNAPSHOT'
+      run: docker run --rm -u `id -u`:`id -g` -v ${PWD}:/pandoc owasp/mstg-docgenerator:0.3 '/pandoc_makedocs.sh Document SNAPSHOT'
     - name: Upload English PDF
       uses: actions/upload-artifact@v1
       with:
