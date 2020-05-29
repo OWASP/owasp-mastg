@@ -127,10 +127,10 @@ Note that zxcvbn can be implemented by the app-developer as well using the Java 
 In order to further reduce the likelihood of a successful dictionary attack against a single factor authentication scheme (e.g. password only), you can verify whether a password has been compromised in a data breach. This can be done using services based on the Pwned Passwords API by Troy Hunt (available at api.pwnedpasswords.com). For example, the "[Have I been pwned?](https://haveibeenpwned.com "\';--have i been pwned?")" companion website.
 Based on the SHA-1 hash of a possible password candidate, the API returns the number of times the hash of the given password has been found in the various breaches collected by the service. The workflow takes the following steps:
 
-1. Encode the user input to UTF-8 (e.g.: the password `test`).
-2. Take the SHA-1 hash of the result of step 1 (e.g.: the hash of `test` is `A94A8FE5CCB19BA61C4C0873D391E987982FBBD3`).
-3. Copy the first 5 characters (the hash prefix) and use them for a range-search by  using the following API: `http GET https://api.pwnedpasswords.com/range/A94A8`
-4. Iterate through the result and look for the rest of the hash (e.g. is `FE5CCB19BA61C4C0873D391E987982FBBD3` part of the returned list?). If it is not part of the returned list, then the password for the given hash has not been found. Otherwise, as in case of `FE5CCB19BA61C4C0873D391E987982FBBD3`, it will return a counter showing how many times it has been found in breaches (e.g.: `FE5CCB19BA61C4C0873D391E987982FBBD3:76479`).
+- Encode the user input to UTF-8 (e.g.: the password `test`).
+- Take the SHA-1 hash of the result of step 1 (e.g.: the hash of `test` is `A94A8FE5CCB19BA61C4C0873D391E987982FBBD3`).
+- Copy the first 5 characters (the hash prefix) and use them for a range-search by  using the following API: `http GET https://api.pwnedpasswords.com/range/A94A8`
+- Iterate through the result and look for the rest of the hash (e.g. is `FE5CCB19BA61C4C0873D391E987982FBBD3` part of the returned list?). If it is not part of the returned list, then the password for the given hash has not been found. Otherwise, as in case of `FE5CCB19BA61C4C0873D391E987982FBBD3`, it will return a counter showing how many times it has been found in breaches (e.g.: `FE5CCB19BA61C4C0873D391E987982FBBD3:76479`).
 
 Further documentation on the Pwned Passwords API can be found [online](https://haveibeenpwned.com/API/v3 "Api Docs V3").
 
@@ -332,10 +332,10 @@ Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Se
 
 Token-based authentication is implemented by sending a signed token (verified by the server) with each HTTP request. The most commonly used token format is the JSON Web Token, defined in [RFC7519](https://tools.ietf.org/html/rfc7519 "RFC7519"). A JWT may encode the complete session state as a JSON object. Therefore, the server doesn't have to store any session data or authentication information.
 
-JWT tokens consist of three Base64Url-encoded parts separated by dots. Token structure example:
+JWT tokens consist of three Base64Url-encoded parts separated by dots. The Token structure is as follows:
 
 ```default
-<base64UrlEncode(header)>.<base64UrlEncode(payload)>.<base64UrlEncode(signature)>
+base64UrlEncode(header).base64UrlEncode(payload).base64UrlEncode(signature)
 ```
 
 The following example shows a [Base64Url-encoded JSON Web Token](https://jwt.io/#debugger "JWT Example on jwt.io"):
