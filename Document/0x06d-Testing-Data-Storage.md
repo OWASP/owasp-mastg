@@ -389,7 +389,7 @@ Use the following keywords to check the app's source code for predefined and cus
 
 A generalized approach to this issue is to use a define to enable `NSLog` statements for development and debugging, then disable them before shipping the software. You can do this by adding the following code to the appropriate PREFIX_HEADER (\*.pch) file:
 
-```C#
+```objectivec
 #ifdef DEBUG
 #   define NSLog (...) NSLog(__VA_ARGS__)
 #else

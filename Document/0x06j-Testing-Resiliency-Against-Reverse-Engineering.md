@@ -149,7 +149,7 @@ $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp 
 
 This will start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJailbroken]`, and create a JavaScript hook with the `onEnter` and `onLeave` callback functions. Now, replacing the return value via `value.replace` is trivial, as shown in the following example:
 
-```JavaScript
+```javascript
     onLeave: function (log, retval, state) {
     console.log("Function [JailbreakDetectionVC isJailbroken] originally returned:"+ retval);
     retval.replace(0);  
@@ -321,7 +321,7 @@ Another approach to detecting a debugger that's attached to the calling process 
 
 The following example from the [Apple Documentation Archive](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?") checks the `info.kp_proc.p_flag` flag returned by the call to `sysctl` with the appropriate parameters:
 
-```C
+```c
 #include <assert.h>
 #include <stdbool.h>
 #include <sys/types.h>

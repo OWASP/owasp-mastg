@@ -138,11 +138,11 @@ This can be done by using the built-in utilities on macOS. You can use [share th
 
 For all major Linux and Unix operating systems you need tools such as:
 
-- hostapd,
-- dnsmasq,
-- iptables,
-- wpa_supplicant,
-- airmon-ng.
+- hostapd
+- dnsmasq
+- iptables
+- wpa_supplicant
+- airmon-ng
 
 For Kali Linux you can install these tools with `apt-get`:
 
@@ -169,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - hostapd.conf
 
-    ```default
+    ```bash
     # Name of the WiFi interface we use
     interface=wlan1
     # Use the nl80211 driver
@@ -191,7 +191,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - wpa_supplicant.conf
 
-    ```default
+    ```bash
     network={
         ssid="NAME_OF_THE_TARGET_NETWORK"
         psk="PASSWORD_OF_THE_TARGET_NETWORK"
@@ -200,7 +200,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - dnsmasq.conf
 
-    ```default
+    ```bash
     interface=wlan1
     dhcp-range=10.0.0.10,10.0.0.250,12h
     dhcp-option=3,10.0.0.1
@@ -216,23 +216,23 @@ The following configuration files need to be changed and adjusted accordingly:
 To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
 ```bash
-    # check if other process is not using WiFi interfaces
-    $ airmon-ng check kill
-    # configure IP address of the AP network interface
-    $ ifconfig wlan1 10.0.0.1 up
-    # start access point
-    $ hostapd hostapd.conf
-    # connect the target network interface
-    $ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
-    # run DNS server
-    $ dnsmasq -C dnsmasq.conf -d
-    # enable routing
-    $ echo 1 > /proc/sys/net/ipv4/ip_forward
-    # iptables will NAT connections from AP network interface to the target network interface
-    $ iptables --flush
-    $ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
-    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT
-    $ iptables -t nat -A POSTROUTING -j MASQUERADE
+# check if other process is not using WiFi interfaces
+$ airmon-ng check kill
+# configure IP address of the AP network interface
+$ ifconfig wlan1 10.0.0.1 up
+# start access point
+$ hostapd hostapd.conf
+# connect the target network interface
+$ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
+# run DNS server
+$ dnsmasq -C dnsmasq.conf -d
+# enable routing
+$ echo 1 > /proc/sys/net/ipv4/ip_forward
+# iptables will NAT connections from AP network interface to the target network interface
+$ iptables --flush
+$ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
+$ iptables --append FORWARD --in-interface wlan1 -j ACCEPT
+$ iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
 
 Now you can connect your mobile devices to the access point.
@@ -260,23 +260,23 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 
 - Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
 
-    ```csharp
+    ```cs
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
 - Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
-```bash
+    ```bash
     $ echo "
     rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
     " | sudo pfctl -ef -
-```
+    ```
 
   For Linux systems you can use `iptables`:
 
-```bash
+    ```bash
     $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
-```
+    ```
 
   As last step, you need to set the option 'Support invisible proxy' in the listener settings of Burp Suite.
 
@@ -292,8 +292,8 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 2. Select and edit your listener from the list of proxy listeners.
 3. Go to **Request handling** tab and set:
 
-    - Redirect to host: provide original traffic location
-    - Redirect to port: provide original port location
+    - Redirect to host: provide original traffic location.
+    - Redirect to port: provide original port location.
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location" width="600px" />

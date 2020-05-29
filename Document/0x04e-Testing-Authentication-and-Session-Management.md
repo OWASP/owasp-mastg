@@ -37,7 +37,7 @@ You can find details on how to test for the requirements above in the following 
 
 #### Stateful vs. Stateless Authentication
 
-You'll usually find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so there must be a way to associate a user's subsequent HTTP requests with that user—otherwise, the user's log in credentials would have to be sent with every request. Also, both the server and client need to keep track of user data (e.g., the user's privileges or role). This can be done in two different ways:
+You'll usually find that the mobile app uses HTTP as the transport layer. The HTTP protocol itself is stateless, so there must be a way to associate a user's subsequent HTTP requests with that user. Otherwise, the user's log in credentials would have to be sent with every request. Also, both the server and client need to keep track of user data (e.g., the user's privileges or role). This can be done in two different ways:
 
 - With *stateful* authentication, a unique session id is generated when the user logs in. In subsequent requests, this session ID serves as a reference to the user details stored on the server. The session ID is *opaque*; it doesn't contain any user data.
 
@@ -404,8 +404,8 @@ A common method of granting tokens combines [access tokens and refresh tokens](h
 
 For apps that handle sensitive data, make sure that the refresh token expires after a reasonable period of time. The following example code shows a refresh token API that checks the refresh token's issue date. If the token is not older than 14 days, a new access token is issued. Otherwise, access is denied and the user is prompted to login again.
 
-```Java
- app.post('/renew_access_token', function (req, res) {
+```java
+app.post('/renew_access_token', function (req, res) {
   // verify the existing refresh token
   var profile = jwt.verify(req.body.token, secret);
 

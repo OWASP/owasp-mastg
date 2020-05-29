@@ -219,7 +219,7 @@ StrictMode is a developer tool for detecting violations, e.g. accidental disk or
 
 Here is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread:
 
-```Java
+```java
 public void onCreate() {
      if (DEVELOPER_MODE) {
          StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
