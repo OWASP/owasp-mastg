@@ -209,7 +209,7 @@ The following steps should work even when targeting an encrypted binary. If for 
 
 If you have the app binary in your computer, one approach is to use binwalk to extract (`-e`) all XML files (`-y=xml`):
 
-```shell
+```bash
 $ binwalk -e -y=xml ./Telegram\ X
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
@@ -220,7 +220,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
-```shell
+```bash
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
 
 0x0015d2a4 ascii <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<!DOCTYPE plist PUBLIC
@@ -239,7 +239,7 @@ In both cases (binwalk or radare2) we were able to extract the same two `plist` 
 
 If you access the app binary on the jailbroken device (e.g via SSH), you can use grep with the `-a, --text` flag (treats all files as ASCII text):
 
-```shell
+```bash
 $ grep -a -A 5 'PropertyList' /var/containers/Bundle/Application/
     15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/Telegram X.app/Telegram\ X
 
@@ -271,7 +271,7 @@ You can use the [Apple Developer Documentation](https://developer.apple.com/docu
 - Bluetooth: the [`state`](https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state?language=objc "CBManager state") property of the [`CBCentralManager`](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager?language=objc "CBCentralManager") class is used to check system-authorization status for using Bluetooth peripherals.
 - Location: search for methods of `CLLocationManager`, e.g. [`locationServicesEnabled`](https://developer.apple.com/documentation/corelocation/cllocationmanager/1423648-locationservicesenabled?language=objc "CLLocationManager locationServicesEnabled").
 
-    ```swift
+    ```default
     func checkForLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
             // Location services are available, so query the user’s location.
@@ -303,7 +303,7 @@ In the following example we use Telegram to open the share dialog from a chat an
 
 First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
 
-```shell
+```bash
 $ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 ```
 
@@ -315,7 +315,7 @@ Now we open the share dialog:
 
 The following methods are displayed:
 
-```shell
+```bash
   1942 ms  +[PHPhotoLibrary authorizationStatus]
   1959 ms  +[TGMediaAssetsLibrary authorizationStatusSignal]
   1959 ms     | +[TGMediaAssetsModernLibrary authorizationStatusSignal]
@@ -323,7 +323,7 @@ The following methods are displayed:
 
 If we click on **Location**, another method will be traced:
 
-```shell
+```bash
  11186 ms  +[CLLocationManager authorizationStatus]
  11186 ms     | +[CLLocationManager _authorizationStatus]
  11186 ms     |    | +[CLLocationManager _authorizationStatusForBundleIdentifier:0x0 bundle:0x0]
@@ -348,7 +348,7 @@ Use the auto-generated stubs of frida-trace to get more information like the ret
 
 Clicking again on "Location" reveals more information:
 
-```shell
+```bash
   3630 ms  -[CLLocationManager init]
   3630 ms     | -[CLLocationManager initWithEffectiveBundleIdentifier:0x0 bundle:0x0]
   3634 ms  -[CLLocationManager setDelegate:0x14c9ab000]
@@ -510,7 +510,7 @@ You should check how the received data is validated. Apple [explicitly warns abo
 
 As stated in the [Apple Developer Documentation](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links "Handling Universal Links"), when iOS opens an app as the result of a universal link, the app receives an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The activity object’s `webpageURL` property contains the HTTP or HTTPS URL that the user accesses. The following example in Swift verifies exactly this before opening the URL:
 
-```swift
+```default
 func application(_ application: UIApplication, continue userActivity: NSUserActivity,
                  restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     // ...
@@ -526,7 +526,7 @@ In addition, remember that if the URL includes parameters, they should not be tr
 
 The `NSURLComponents` API can be used to parse and manipulate the components of the URL. This can be also part of the method `application:continueUserActivity:restorationHandler:` itself or might occur on a separate method being called from it. The following [example](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links#3001935 "An example of handling a universal link") demonstrates this:
 
-```swift
+```default
 func application(_ application: UIApplication,
                  continue userActivity: NSUserActivity,
                  restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
@@ -564,7 +564,7 @@ If you have the original source code, you can search it for the `openURL:options
 
 This is an example from the Telegram app:
 
-```swift
+```default
 }, openUniversalUrl: { url, completion in
     if #available(iOS 10.0, *) {
         var parsedUrl = URL(string: url)
@@ -690,7 +690,7 @@ This section explains how to trace the link receiver method and how to extract a
 
 In order to open the links we will also use the Notes app and frida-trace with the following pattern:
 
-```shell
+```bash
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
@@ -700,7 +700,7 @@ Write `https://t.me/addstickers/radare` (found through a quick Internet research
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
-```shell
+```bash
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -708,7 +708,7 @@ Instrumenting functions...
 
 You can see that only one function was found and is being instrumented. Trigger now the universal link and observe the traces.
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 ```
@@ -732,7 +732,7 @@ You can observe that the function is in fact being called. You can now add code 
 
 The new output is:
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  application:<Application: 0x10556b3c0>
@@ -760,7 +760,7 @@ $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 
 Again, we first let frida-trace generate the stubs in `__handlers__/`:
 
-```shell
+```bash
 $ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 Instrumenting functions...
 -[AppDelegate application:continueUserActivity:restorationHandler:]
@@ -772,7 +772,7 @@ $S10TelegramUI31AuthorizationSequenceControllerC7account7strings7openUrl5apiId0J
 
 Now you can see a long list of functions but we still don't know which ones will be called. Trigger the universal link again and observe the traces.
 
-```shell
+```bash
            /* TID 0x303 */
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
@@ -788,7 +788,7 @@ There is probably no documentation for that Swift function but you can just dema
 
 > xcrun can be used invoke Xcode developer tools from the command-line, without having them in the path. In this case it will locate and run swift-demangle, an Xcode tool that demangles Swift symbols.
 
-```shell
+```bash
 $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05forceD016presentationData
 18applicationContext20navigationController12dismissInputy0A4Core7AccountC_AA14OpenURLContextOSSSbAA0
 12PresentationK0CAA0a11ApplicationM0C7Display010NavigationO0CSgyyctF
@@ -796,7 +796,7 @@ $ xcrun swift-demangle S10TelegramUI15openExternalUrl7account7context3url05force
 
 Resulting in:
 
-```swift
+```default
 ---> TelegramUI.openExternalUrl(
     account: TelegramCore.Account, context: TelegramUI.OpenURLContext, url: Swift.String,
     forceExternal: Swift.Bool, presentationData: TelegramUI.PresentationData,
@@ -829,7 +829,7 @@ For now we will use this information to properly print the parameters by editing
 
 This way, the next time we run it we get a much more detailed output:
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  application:<Application: 0x10556b3c0>
@@ -877,7 +877,7 @@ Actually, the previous example in "Checking How the Links Are Opened" is very si
 
 In the detailed output above you can see that `NSUserActivity` object we've received meets exactly the mentioned points:
 
-```shell
+```bash
 298382 ms  -[AppDelegate application:0x10556b3c0 continueUserActivity:0x1c4237780
                 restorationHandler:0x16f27a898]
 298382 ms  application:<Application: 0x10556b3c0>
@@ -1166,7 +1166,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 
 4. After selecting **SomeFileManager** we can see the following:
 
-    ```shell
+    ```bash
     (0x1c4077000)  -[AppDelegate application:openURL:options:]
     application: <UIApplication: 0x101c00950>
     openURL: file:///var/mobile/Library/Application%20Support
@@ -1188,7 +1188,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 
 As you can see, the sending application is `com.apple.sharingd` and the URL's scheme is `file://`. Note that once we select the app that should open the file, the system already moved the file to the corresponding destination, that is to the app's Inbox. The apps are then responsible for deleting the files inside their Inboxes. This app, for example, moves the file to `/var/mobile/Documents/` and removes it from the Inbox.
 
-```shell
+```bash
 (0x1c002c760)  -[XXFileManager moveItemAtPath:toPath:error:]
 moveItemAtPath: /var/mobile/Library/Application Support/Containers
                             /com.some.filemanager/Documents/Inbox/OWASP_MASVS.pdf
@@ -1281,7 +1281,7 @@ Binary file Payload/Telegram X.app//Watch/Watch.app/PlugIns/Watch Extension.appe
 
 You can also access per SSH, find the app bundle and list all inside PlugIns (they are placed there by default) or do it with objection:
 
-```shell
+```bash
 ph.telegra.Telegraph on (iPhone: 11.1.2) [usb] # cd PlugIns
     /var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35/
     Telegram X.app/PlugIns
@@ -1349,7 +1349,7 @@ Following the previous example of Telegram we will now use the "Share" button on
 
 If we run a trace, we'd see the following output:
 
-```shell
+```bash
 (0x1c06bb420) NSExtensionContext - inputItems
 0x18284355c Foundation!-[NSExtension _itemProviderForPayload:extensionContext:]
 0x1828447a4 Foundation!-[NSExtension _loadItemForPayload:contextIdentifier:completionHandler:]
@@ -1380,7 +1380,7 @@ You can also find out which app extension is taking care of your the requests an
 
 We run the same example again:
 
-```shell
+```bash
 (0x1c0370200) NSExtension - _plugIn
 RET: <PKPlugin: 0x1163637f0 ph.telegra.Telegraph.Share(5.3) 5B6DE177-F09B-47DA-90CD-34D73121C785
 1(2) /private/var/containers/Bundle/Application/15E6A58F-1CA7-44A4-A9E0-6CA85B65FA35
@@ -1647,7 +1647,7 @@ In order to determine how a URL path is built and validated, if you have the ori
 
 In Telegram you will [find four different methods being used](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1250 "Telegram\'s AppDelegate.swift Line 1250"):
 
-```swift
+```default
 func application(_ application: UIApplication, open url: URL, sourceApplication: String?) -> Bool {
     self.openUrl(url: url)
     return true
@@ -1683,22 +1683,22 @@ The method [`openURL:options:completionHandler:`](https://developer.apple.com/do
 
 Additionally, if you are interested into knowing if the app is querying specific services or apps, and if the app is well-known, you can also search for common URL schemes online and include them in your greps. For example, a [quick Google search reveals](https://ios.gadgethacks.com/news/always-updated-list-ios-app-url-scheme-names-0184033/ "Always-Updated List of iOS App URL Scheme Names"):
 
-```text
-Apple Music — music:// or musics:// or audio-player-event://
-Calendar — calshow:// or x-apple-calevent://
-Contacts — contacts://
-Diagnostics — diagnostics:// or diags://
-GarageBand — garageband://
-iBooks — ibooks:// or itms-books:// or itms-bookss://
-Mail — message:// or mailto://emailaddress
-Messages — sms://phonenumber
-Notes — mobilenotes://
+```default
+Apple Music - music:// or musics:// or audio-player-event://
+Calendar - calshow:// or x-apple-calevent://
+Contacts - contacts://
+Diagnostics - diagnostics:// or diags://
+GarageBand - garageband://
+iBooks - ibooks:// or itms-books:// or itms-bookss://
+Mail - message:// or mailto://emailaddress
+Messages - sms://phonenumber
+Notes - mobilenotes://
 ...
 ```
 
 We search for this method in the Telegram source code, this time without using Xcode, just with `egrep`:
 
-```shell
+```bash
 $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
 ./AppDelegate.swift:552: return UIApplication.shared.open(parsedUrl,
@@ -1711,7 +1711,7 @@ $ egrep -nr "open.*options.*completionHandler" ./Telegram-iOS/
 
 If we inspect the results we will see that `openURL:options:completionHandler:` is actually being used for universal links, so we have to keep searching. For example, we can search for `openURL(`:
 
-```shell
+```bash
 $ egrep -nr "openURL\(" ./Telegram-iOS/
 
 ./ApplicationContext.swift:763:  UIApplication.shared.openURL(parsedUrl)
@@ -1727,7 +1727,7 @@ If we inspect those lines we will see how this method is also being used to open
 
 When just searching for `://` we see:
 
-```Swift
+```default
 if documentUri.hasPrefix("file://"), let path = URL(string: documentUri)?.path {
 if !url.hasPrefix("mt-encrypted-file://?") {
 guard let dict = TGStringUtils.argumentDictionary(inUrlString: String(url[url.index(url.startIndex,
@@ -1741,7 +1741,7 @@ if let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreId)") {
 
 After combining the results of both searches and carefully inspecting the source code we find the following piece of code:
 
-```swift
+```default
 openUrl: { url in
             var parsedUrl = URL(string: url)
             if let parsed = parsedUrl {
@@ -1787,7 +1787,7 @@ Search for deprecated methods like:
 
 For example, here we find those three:
 
-```shell
+```bash
 $ rabin2 -zzq Telegram\ X.app/Telegram\ X | grep -i "openurl"
 
 0x1000d9e90 31 30 UIApplicationOpenURLOptionsKey
@@ -1860,7 +1860,7 @@ For this you can also use [IDB](https://www.idbtool.com/ "IDB"):
 
 Needle can be used to test custom URL schemes, the following module can be used to open the URLs (URIs):
 
-```shell
+```bash
 [needle] >
 [needle] > use dynamic/ipc/open_uri
 [needle][open_uri] > show options
@@ -2176,7 +2176,7 @@ Doing this with Frida is pretty easy, you can refer to this [blog post](https://
 
 Before running the fuzzer we need the URL schemes as inputs. From the static analysis we know that the iGoat-Swift app supports the following URL scheme and parameters: `iGoat://?contactNumber={0}&message={0}`.
 
-```shell
+```bash
 $ frida -U SpringBoard -l ios-url-scheme-fuzzing.js
 [iPhone::SpringBoard]-> fuzz("iGoat", "iGoat://?contactNumber={0}&message={0}")
 Watching for crashes from iGoat...
@@ -2234,7 +2234,7 @@ The script will detect if a crash occurred. On this run it did not detect any cr
 
 In the **URL Handlers** section, go to the **Fuzzer** tab. On the left side default IDB payloads are listed. Once you have generated your payload list (e.g. using FuzzDB), go to the **Fuzz Template** section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
 
-```shell
+```bash
 myURLscheme://$@$
 ```
 
@@ -2271,7 +2271,7 @@ A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). S
 - An Action ("Share") button.
 - A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
 
-<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="500px" />
+<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="300" />
 
 There are a couple of things to consider:
 
@@ -2299,7 +2299,7 @@ In the compiled binary you can search in its symbols or strings like this:
 
 ###### UIWebView
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 489 0x0002fee9 0x10002fee9   9  10 (5.__TEXT.__cstring) ascii UIWebView
 896 0x0003c813 0x0003c813  24  25 () ascii @_OBJC_CLASS_$_UIWebView
@@ -2308,7 +2308,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "UIWebView$"
 
 ###### WKWebView
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 490 0x0002fef3 0x10002fef3   9  10 (5.__TEXT.__cstring) ascii WKWebView
 625 0x00031670 0x100031670  17  18 (5.__TEXT.__cstring) ascii unwindToWKWebView
@@ -2318,7 +2318,7 @@ $ rabin2 -zz ./WheresMyBrowser | egrep "WKWebView$"
 
 Alternatively you can also search for known methods of these WebView classes. For example, search for the method used to initialize a WKWebView ([`init(frame:configuration:)`](https://developer.apple.com/documentation/webkit/wkwebview/1414998-init "WKWebView init(frame:configuration:)")):
 
-```shell
+```bash
 $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 0x5c3ac 77 76 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfC
 0x5d97a 79 78 __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
@@ -2328,7 +2328,7 @@ $ rabin2 -zzq ./WheresMyBrowser | egrep "WKWebView.*frame"
 
 You can also demangle it:
 
-```shell
+```bash
 $ xcrun swift-demangle __T0So9WKWebViewCABSC6CGRectV5frame_So0aB13ConfigurationC13configurationtcfcTO
 
 ---> @nonobjc __C.WKWebView.init(frame: __C_Synthesized.CGRect,
@@ -2341,14 +2341,14 @@ First of all, rememeber that JavaScript cannot be disabled for `UIWebVIews`.
 
 For `WKWebView`s, as a best practice, JavaScript should be disabled unless it is explicitly required. To verify that JavaScript was properly disabled search the project for usages of `WKPreferences` and ensure that the [`javaScriptEnabled`](https://developer.apple.com/documentation/webkit/wkpreferences/1536203-javascriptenabled "WKPreferences javaScriptEnabled") property is set to `false`:
 
-```swift
+```default
 let webPreferences = WKPreferences()
 webPreferences.javaScriptEnabled = false
 ```
 
 If only having the compiled binary you can search for this in it:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "javascriptenabled"
 391 0x0002f2c7 0x10002f2c7  17  18 (4.__TEXT.__objc_methname) ascii javaScriptEnabled
 392 0x0002f2d9 0x10002f2d9  21  22 (4.__TEXT.__objc_methname) ascii setJavaScriptEnabled:
@@ -2362,7 +2362,7 @@ In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [m
 
 In the compiled binary:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 # nothing found
@@ -2487,7 +2487,7 @@ ObjC.choose(ObjC.classes['WKWebView'], {
 
 The output shows now that, in fact, JavaScript is enabled:
 
-```shell
+```bash
 
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
@@ -2517,7 +2517,7 @@ ObjC.choose(ObjC.classes['WKWebView'], {
 
 The output shows that some of the resources on the page have been loaded through insecure connections:
 
-```shell
+```bash
 $ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 
 onMatch:  <WKWebView: 0x1508b1200; frame = (0 0; 320 393); layer = <CALayer: 0x1c4238f20>>
@@ -2560,7 +2560,7 @@ This presents an issue especially in `UIWebView`s loading untrusted content via 
 
 Here's an example of a vulnerable `UIWebView` from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/UIWebViewController.swift#L219 "Where\'s My Browser? UIWebViewController.swift Line 219"):
 
-```swift
+```default
 let scenario2HtmlPath = Bundle.main.url(forResource: "web/UIWebView/scenario2.html", withExtension: nil)
 do {
     let scenario2Html = try String(contentsOf: scenario2HtmlPath!, encoding: .utf8)
@@ -2570,13 +2570,13 @@ do {
 
 The page loads resources from the internet using HTTP, enabling a potential MITM to exfiltrate secrets contained in local files, e.g. in shared preferences.
 
-When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:")/[`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others: [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
+When working with `WKWebView`s, Apple recommends using [`loadHTMLString:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415004-loadhtmlstring?language=objc "WKWebView loadHTMLString:baseURL:") or [`loadData:MIMEType:textEncodingName:baseURL:`](https://developer.apple.com/documentation/webkit/wkwebview/1415011-loaddata?language=objc "WKWebView loadData:MIMEType:textEncodingName:baseURL:") to load local HTML files and `loadRequest:` for web content. Typically, the local files are loaded in combination with methods including, among others: [`pathForResource:ofType:`](https://developer.apple.com/documentation/foundation/nsbundle/1410989-pathforresource "NSBundle pathForResource:ofType:"), [`URLForResource:withExtension:`](https://developer.apple.com/documentation/foundation/nsbundle/1411540-urlforresource?language=objc "NSBundle URLForResource:withExtension:") or [`init(contentsOf:encoding:)`](https://developer.apple.com/documentation/swift/string/3126736-init "String init(contentsOf:encoding:)").
 
 Search the source code for the mentioned methods and inspect their parameters.
 
 Example in Objective-C:
 
-```objc
+```objectivec
 
 - (void)viewDidLoad
 {
@@ -2599,7 +2599,7 @@ Example in Objective-C:
 
 Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L196 "Where\'s My Browser? WKWebViewController.swift Line 196"):
 
-```swift
+```default
 let scenario2HtmlPath = Bundle.main.url(forResource: "web/WKWebView/scenario2.html", withExtension: nil)
 do {
     let scenario2Html = try String(contentsOf: scenario2HtmlPath!, encoding: .utf8)
@@ -2609,7 +2609,7 @@ do {
 
 If only having the compiled binary, you can also search for these methods, e.g.:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadHTMLString"
 231 0x0002df6c 24 (4.__TEXT.__objc_methname) ascii loadHTMLString:baseURL:
 ```
@@ -2620,7 +2620,7 @@ In addition, you should also verify if the app is using the method [`loadFileURL
 
 Example in Swift from ["Where's My Browser?"](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/master/WheresMyBrowser/WKWebViewController.swift#L186 "Where\'s My Browser? WKWebViewController.swift Line 186"):
 
-```swift
+```default
 var scenario1Url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
 scenario1Url = scenario1Url.appendingPathComponent("WKWebView/scenario1.html")
 wkWebView.loadFileURL(scenario1Url, allowingReadAccessTo: scenario1Url)
@@ -2630,7 +2630,7 @@ In this case, the parameter `allowingReadAccessToURL` contains a single file "WK
 
 In the compiled binary:
 
-```shell
+```bash
 $ rabin2 -zz ./WheresMyBrowser | grep -i "loadFileURL"
 237 0x0002dff1 37 (4.__TEXT.__objc_methname) ascii loadFileURL:allowingReadAccessToURL:
 ```
@@ -2657,7 +2657,7 @@ For example, it is possible to set the **[undocumented property](https://github.
 
 Objective-C:
 
-```objc
+```objectivec
 
 [webView.configuration.preferences setValue:@YES forKey:@"allowFileAccessFromFileURLs"];
 
@@ -2665,7 +2665,7 @@ Objective-C:
 
 Swift:
 
-```swift
+```default
 
 webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 
@@ -2696,7 +2696,7 @@ As we have seen above in "Testing How WebViews are Loaded", if "scenario 2" of t
 
 To quicky inspect this, you can use frida-trace and trace all "loadHTMLString" and "URLForResource:withExtension:" methods.
 
-```shell
+```bash
 $ frida-trace -U "Where's My Browser?"
     -m "*[WKWebView *loadHTMLString*]" -m "*[* URLForResource:withExtension:]"
 
@@ -2716,7 +2716,7 @@ In this case, `baseURL` is set to `nil`, meaning that the effective origin is "n
 
 As an additional note regarding `UIWebView`s, if you retrieve the effective origin from a `UIWebView` where `baseURL` is also set to `nil` you will see that it is not set to "null", instead you'll obtain something similar to the following:
 
-```shell
+```bash
 applewebdata://5361016c-f4a0-4305-816b-65411fc1d780
 ```
 
@@ -2762,7 +2762,7 @@ allowUniversalAccessFromFileURLs:  0
 
 Both `allowFileAccessFromFileURLs` and `allowUniversalAccessFromFileURLs` are set to "0", meaning that they are disabled. In this app we can go to the WebView configuration and enable `allowFileAccessFromFileURLs`. If we do so and re-run the script we will see how it is set to "1" this time:
 
-```shell
+```bash
 $ frida -U -f com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 ...
 
@@ -2792,7 +2792,7 @@ Look out for code that maps native objects to the `JSContext` associated with a 
 
 In Objective-C, the `JSContext` associated with a `UIWebView` is obtained as follows:
 
-```objc
+```objectivec
 
 [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"]
 
@@ -2808,7 +2808,7 @@ The following example from ["Where's My Browser?"](https://github.com/authentica
 
 First we see how the JavaScript bridge is enabled:
 
-```swift
+```default
 func enableJavaScriptBridge(_ enabled: Bool) {
     options_dict["javaScriptBridge"]?.value = enabled
     let userContentController = wkWebViewConfiguration.userContentController
@@ -2833,7 +2833,7 @@ function invokeNativeOperation() {
 
 The called function resides in [`JavaScriptBridgeMessageHandler.swift`](https://github.com/authenticationfailure/WheresMyBrowser.iOS/blob/b8d4abda4000aa509c7a5de79e5c90360d1d0849/WheresMyBrowser/JavaScriptBridgeMessageHandler.swift#L29 "Where\'s My Browser? JavaScriptBridgeMessageHandler.swift Line 29"):
 
-```swift
+```default
 class JavaScriptBridgeMessageHandler: NSObject, WKScriptMessageHandler {
 
 //...
@@ -2851,7 +2851,7 @@ message.webView?.evaluateJavaScript(javaScriptCallBack, completionHandler: nil)
 
 The problem here is that the `JavaScriptBridgeMessageHandler` not only contains that function, it also exposes a sensitive function:
 
-```swift
+```default
 case "getSecret":
         result = "XSRSOGKC342"
 ```
@@ -2892,7 +2892,7 @@ There are several ways to persist an object on iOS:
 
 iOS comes with two protocols for object encoding and decoding for Objective-C or `NSObject`s: `NSCoding` and `NSSecureCoding`. When a class conforms to either of the protocols, the data is serialized to `NSData`: a wrapper for byte buffers. Note that `Data` in Swift is the same as `NSData` or its mutable counterpart: `NSMutableData`. The `NSCoding` protocol declares the two methods that must be implemented in order to encode/decode its instance-variables. A class using `NSCoding` needs to implement `NSObject` or be annotated as an @objc class. The `NSCoding` protocol requires to implement encode and init as shown below.
 
-```swift
+```default
 class CustomPoint: NSObject, NSCoding {
 
     //required by NSCoding:
@@ -2923,7 +2923,7 @@ class CustomPoint: NSObject, NSCoding {
 
 The issue with `NSCoding` is that the object is often already constructed and inserted before you can evaluate the class-type. This allows an attacker to easily inject all sorts of data. Therefore, the `NSSecureCoding` protocol has been introduced. When conforming to [`NSSecureCoding`](https://developer.apple.com/documentation/foundation/NSSecureCoding "NSSecureCoding") you need to include:
 
-```swift
+```default
 
 static var supportsSecureCoding: Bool {
         return true
@@ -2932,7 +2932,7 @@ static var supportsSecureCoding: Bool {
 
 when `init(coder:)` is part of the class. Next, when decoding the object, a check should be made, e.g.:
 
-```swift
+```default
 let obj = decoder.decodeObject(of:MyClass.self, forKey: "myKey")
 ```
 
@@ -2944,7 +2944,7 @@ Note, when `NSData` (Objective-C) or the keyword `let` (Swift) is used: then the
 
 `NSKeyedArchiver` is a concrete subclass of `NSCoder` and provides a way to encode objects and store them in a file. The `NSKeyedUnarchiver` decodes the data and recreates the original data. Let's take the example of the `NSCoding` section and now archive and unarchive them:
 
-```swift
+```default
 
 // archiving:
 NSKeyedArchiver.archiveRootObject(customPoint, toFile: "/path/to/archive")
@@ -2963,7 +2963,7 @@ Note that additional protection needs to be in place to secure the file in case 
 
 With Swift 4, the `Codable` type alias arrived: it is a combination of the `Decodable` and `Encodable` protocols. A `String`, `Int`, `Double`, `Date`, `Data` and `URL` are `Codable` by nature: meaning they can easily be encoded and decoded without any additional work. Let's take the following example:
 
-```swift
+```default
 struct CustomPointStruct:Codable {
     var x: Double
     var name: String
@@ -2996,7 +2996,7 @@ Again, note in case of immutability: confidential information cannot be removed 
 
 Next, Apple provides support for JSON encoding/decoding directly by combining `Codable` together with a `JSONEncoder` and a `JSONDecoder`:
 
-```swift
+```default
 struct CustomPointStruct: Codable {
     var point: Double
     var name: String
@@ -3021,7 +3021,7 @@ JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just
 
 You can persist objects to *property lists* (also called plists in previous sections). You can find two examples below of how to use it:
 
-```swift
+```default
 
 // archiving:
 let data = NSKeyedArchiver.archivedDataWithRootObject(customPoint)
@@ -3037,7 +3037,7 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 
 In this first example, the `NSUserDefaults` are used, which is the primary *property list*. We can do the same with the `Codable` version:
 
-```swift
+```default
 struct CustomPointStruct: Codable {
         var point: Double
         var name: String

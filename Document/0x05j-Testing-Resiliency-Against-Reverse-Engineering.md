@@ -75,7 +75,7 @@ Follow this [checklist](https://developer.android.com/training/safetynet/attesta
 
 Perhaps the most widely used method of programmatic detection is checking for files typically found on rooted devices, such as package files of common rooting apps and their associated files and directories, including the following:
 
-```text
+```default
 /system/app/Superuser.apk
 /system/etc/init.d/99SuperSUDaemon
 /dev/com.koushikdutta.superuser.daemon/
@@ -84,7 +84,7 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
-```text
+```default
 /sbin/su  
 /system/bin/su  
 /system/bin/failsafe/su  
@@ -163,7 +163,7 @@ Supersu-by far the most popular rooting tool-runs an authentication daemon named
 
 You can use the Android package manager to obtain a list of installed packages. The following package names belong to popular rooting tools:
 
-```text
+```default
 com.thirdparty.superuser
 eu.chainfire.supersu
 com.noshufou.android.su
@@ -319,7 +319,7 @@ struct DvmGlobals {
 };
 ```
 
-For example, [setting the gDvm.methDalvikDdmcServer_dispatch function pointer to NULL crashes the JDWP thread](https://slides.night-labs.de/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses"):
+For example, [setting the gDvm.methDalvikDdmcServer_dispatch function pointer to NULL crashes the JDWP thread](https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/AndroidREnDefenses201305.pdf "Bluebox Security - Android Reverse Engineering & Defenses"):
 
 ```c
 JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
@@ -444,7 +444,7 @@ void fork_and_attach()
 
 With the child attached, further attempts to attach to the parent will fail. We can verify this by compiling the code into a JNI function and packing it into an app we run on the device.
 
-```shell
+```bash
 root@android:/ # ps | grep -i anti
 u0_a151   18190 201   1535844 54908 ffffffff b6e0f124 S sg.vantagepoint.antidebug
 u0_a151   18224 18190 1495180 35824 c019a3ac b6e0ee5c S sg.vantagepoint.antidebug
@@ -452,7 +452,7 @@ u0_a151   18224 18190 1495180 35824 c019a3ac b6e0ee5c S sg.vantagepoint.antidebu
 
 Attempting to attach to the parent process with gdbserver fails with an error:
 
-```shell
+```bash
 root@android:/ # ./gdbserver --attach localhost:12345 18190
 warning: process 18190 is already traced by process 18224
 Cannot attach to lwp 18190: Operation not permitted (1)
@@ -536,7 +536,7 @@ Java_sg_vantagepoint_antidebug_MainActivity_antidebug(JNIEnv *env, jobject insta
 
 Again, we pack this into an Android app to see if it works. Just as before, two processes show up when we run the app's debug build.
 
-```shell
+```bash
 root@android:/ # ps | grep -I anti-debug
 u0_a152   20267 201   1552508 56796 ffffffff b6e0f124 S sg.vantagepoint.anti-debug
 u0_a152   20301 20267 1495192 33980 c019a3ac b6e0ee5c S sg.vantagepoint.anti-debug
@@ -544,7 +544,7 @@ u0_a152   20301 20267 1495192 33980 c019a3ac b6e0ee5c S sg.vantagepoint.anti-deb
 
 However, if we terminate the child process at this point, the parent exits as well:
 
-```shell
+```bash
 root@android:/ # kill -9 20301
 130|root@hammerhead:/ # cd /data/local/tmp
 root@android:/ # ./gdbserver --attach localhost:12345 20267
@@ -870,7 +870,7 @@ There are several indicators that the device in question is being emulated. Alth
 
 The first set of indicators are in the file `build.prop`.
 
-```text
+```default
 API Method          Value           Meaning
 Build.ABI           armeabi         possibly emulator
 BUILD.ABI2          unknown         possibly emulator
@@ -893,7 +893,7 @@ You can edit the file `build.prop` on a rooted Android device or modify it while
 
 The next set of static indicators utilize the Telephony manager. All Android emulators have fixed values that this API can query.
 
-```text
+```default
 API                                                     Value                   Meaning
 TelephonyManager.getDeviceId()                          0's                     emulator
 TelephonyManager.getLine1 Number()                      155552155               emulator
@@ -1156,7 +1156,7 @@ Go through the following steps for Instance ID:
 
 2. Setup Google Play services. In the file `build.gradle`, add
 
-    ```groovy
+    ```default
     apply plugin: 'com.android.application'
         ...
 

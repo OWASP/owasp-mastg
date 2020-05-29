@@ -29,7 +29,7 @@ Make sure that the release build has been signed via both the v1 and v2 schemes 
 
 APK signatures can be verified with the `apksigner` tool. It is located at `[SDK-Path]/build-tools/[version]`.
 
-```shell
+```bash
 $ apksigner verify --verbose Desktop/example.apk
 Verifies
 Verified using v1 scheme (JAR signing): true
@@ -42,7 +42,7 @@ The contents of the signing certificate can be examined with `jarsigner`. Note t
 
 The output for an APK signed with a debug certificate is shown below:
 
-```shell
+```bash
 
 $ jarsigner -verify -verbose -certs example.apk
 
@@ -59,7 +59,7 @@ Ignore the "CertPath not validated" error. This error occurs with Java SDK 7 and
 
 The signing configuration can be managed through Android Studio or the `signingConfig` block in `build.gradle`. To activate both the v1 and v2 schemes, the following values must be set:
 
-```groovy
+```default
 v1SigningEnabled true
 v2SigningEnabled true
 ```
@@ -94,7 +94,7 @@ For a release build, this attribute should always be set to `"false"` (the defau
 
 Drozer can be used to determine whether an application is debuggable. The Drozer module `app.package.attacksurface` also displays information about IPC components exported by the application.
 
-```shell
+```bash
 dz> run app.package.attacksurface com.mwr.dz
 Attack Surface:
   1 activities exported
@@ -106,7 +106,7 @@ Attack Surface:
 
 To scan for all debuggable applications on a device, use the `app.package.debuggable` module:
 
-```shell
+```bash
 dz> run app.package.debuggable
 Package: com.mwr.dz
   UID: 10083
@@ -120,7 +120,7 @@ Package: com.vulnerable.app
 
 If an application is debuggable, executing application commands is trivial. In the `adb` shell, execute `run-as` by appending the package name and application command to the binary name:
 
-```shell
+```bash
 $ run-as com.vulnerable.app id
 uid=10084(u0_a84) gid=10084(u0_a84) groups=10083(u0_a83),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:untrusted_app:s0:c512,c768
 ```
@@ -133,7 +133,7 @@ The following procedure can be used to start a debug session with `jdb`:
 
 1. Using `adb` and `jdwp`, identify the PID of the active application that you want to debug:
 
-    ```shell
+    ```bash
     $ adb jdwp
     2355
     16346  <== last launched, corresponds to our application
@@ -141,14 +141,14 @@ The following procedure can be used to start a debug session with `jdb`:
 
 2. Create a communication channel by using `adb` between the application process (with the PID) and the analysis workstation by using a specific local port:
 
-    ```shell
+    ```bash
     # adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]
     $ adb forward tcp:55555 jdwp:16346
     ```
 
 3. Using `jdb`, attach the debugger to the local communication channel port and start a debug session:
 
-    ```shell
+    ```bash
     $ jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=55555
     Set uncaught java.lang.Throwable
     Set deferred uncaught java.lang.Throwable
@@ -176,20 +176,20 @@ Symbols are usually stripped during the build process, so you need the compiled 
 
 First, find the `nm` binary in your Android NDK and export it (or create an alias).
 
-```shell
+```bash
 export $NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
 ```
 
 To display debug symbols:
 
-```shell
+```bash
 $ $NM -a libfoo.so
 /tmp/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm: libfoo.so: no symbols
 ```
 
 To display dynamic symbols:
 
-```shell
+```bash
 $ $NM -D libfoo.so
 ```
 
@@ -199,7 +199,7 @@ Dynamic symbols can be stripped via the `visibility` compiler flag. Adding this 
 
 Make sure that the following has been added to build.gradle:
 
-```groovy
+```default
 externalNativeBuild {
     cmake {
         cppFlags "-fvisibility=hidden"
@@ -219,7 +219,7 @@ StrictMode is a developer tool for detecting violations, e.g. accidental disk or
 
 Here is [an example of `StrictMode`](https://developer.android.com/reference/android/os/StrictMode.html "StrictMode Class") with policies enabled for disk and network access to the main thread:
 
-```Java
+```java
 public void onCreate() {
      if (DEVELOPER_MODE) {
          StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -296,7 +296,7 @@ Detecting vulnerabilities in third party dependencies can be done by means of th
 In order to use the plugin, the following steps need to be applied:
 Install the plugin from the Maven central repository by adding the following script to your build.gradle:
 
-```groovy
+```default
 buildscript {
     repositories {
         mavenCentral()
@@ -311,7 +311,7 @@ apply plugin: 'org.owasp.dependencycheck'
 
 Once gradle has invoked the plugin, you can create a report by running:
 
-```shell
+```bash
 $ gradle assemble
 $ gradle dependencyCheckAnalyze --info
 ```
@@ -339,7 +339,7 @@ In order to ensure that the copyright laws are not infringed, one can best check
 
 In your `build.gradle` file add:
 
-```groovy
+```default
 plugins {
     id "com.github.hierynomus.license-report" version"{license_plugin_version}"
 }
@@ -347,7 +347,7 @@ plugins {
 
 Now, after the plugin is picked up, use the following commands:
 
-```shell
+```bash
 $ gradle assemble
 $ gradle downloadLicenses
 ```
@@ -500,7 +500,7 @@ Further information on how to shrink, obfuscate, and optimize your app can be fo
 
 R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
 
-```groovy
+```default
 android {
     buildTypes {
         release {
@@ -522,7 +522,7 @@ android {
 
 The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
 
-```groovy
+```default
 ...
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
@@ -532,7 +532,7 @@ The file `proguard-rules.pro` is where you define custom ProGuard rules. With th
 
 You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
 
-```groovy
+```default
 -keep public class MyClass
 ```
 

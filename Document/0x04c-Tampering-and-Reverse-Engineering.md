@@ -26,9 +26,9 @@ Before we dive into the world of mobile app reversing, we have some good news an
 
 **Ultimately, the reverse engineer always wins.**
 
-This is particularly true in the mobile industry, where the reverse engineer has a natural advantage: the way mobile apps are deployed and sandboxed is by design more restrictive than the deployment and sandboxing of classical Desktop apps, so including the rootkit-like defensive mechanisms often found in Windows software (e.g., DRM systems) is simply not feasible. The openness of Android allows reverse engineers to make favorable changes to the operating system, aiding the reverse engineering process. iOS gives reverse engineers less control, but defensive options are also more limited.
+This is particularly true in the mobile industry, where the reverse engineer has a natural advantage: the way mobile apps are deployed and sandboxed is by design more restrictive than the deployment and sandboxing of classical Desktop apps, so including the rootkit-like defensive mechanisms often found in Windows software (e.g., DRM systems) is simply not feasible. The openness of Android allows reverse engineers to make favorable changes to the operating system, aiding the reverse engineering process. iOS gives reverse engineers less control, but defensive options are also more limited.
 
-The bad news is that dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features, and highly complex control flow transformations is not for the faint-hearted. The most effective software protection schemes are proprietary and won't be beaten with standard tweaks and tricks. Defeating them requires tedious manual analysis, coding, frustration, and—depending on your personality—sleepless nights and strained relationships.
+The bad news is that dealing with multi-threaded anti-debugging controls, cryptographic white-boxes, stealthy anti-tampering features, and highly complex control flow transformations is not for the faint-hearted. The most effective software protection schemes are proprietary and won't be beaten with standard tweaks and tricks. Defeating them requires tedious manual analysis, coding, frustration and, depending on your personality, sleepless nights and strained relationships.
 
 It's easy for beginners to get overwhelmed by the sheer scope of reversing. The best way to get started is to set up some basic tools (see the relevant sections in the Android and iOS reversing chapters) and start with simple reversing tasks and crackmes. You'll need to learn about the assembler/bytecode language, the operating system, obfuscations you encounter, and so on. Start with simple tasks and gradually level up to more difficult ones.
 
@@ -40,7 +40,7 @@ In the following section. we'll give an overview of the techniques most commonly
 
 *Patching* is the process of changing the compiled app, e.g., changing code in binary executables, modifying Java bytecode, or tampering with resources. This process is known as *modding* in the mobile game hacking scene. Patches can be applied in many ways, including editing binary files in a hex editor and decompiling, editing, and re-assembling an app. We'll give detailed examples of useful patches in later chapters.
 
-Keep in mind that modern mobile operating systems strictly enforce code signing, so running modified apps is not as straightforward as it used to be in desktop environments. Security experts had a much easier life in the 90s! Fortunately, patching is not very difficult if you work on your own device—you simply have to re-sign the app or disable the default code signature verification facilities to run modified code.
+Keep in mind that modern mobile operating systems strictly enforce code signing, so running modified apps is not as straightforward as it used to be in desktop environments. Security experts had a much easier life in the 90s! Fortunately, patching is not very difficult if you work on your own device. You simply have to re-sign the app or disable the default code signature verification facilities to run modified code.
 
 #### Code Injection
 
@@ -64,7 +64,7 @@ In contrast, Frida implements code injection by writing code directly into proce
 - The agent establishes a bi-directional communication channel back to the tool (e.g. the Frida REPL or your custom Python script).
 - The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
 
-<img src="Images/Chapters/0x04/frida.png" alt="Frida Architecture"  width="500" />
+<img src="Images/Chapters/0x04/frida.png" alt="Frida Architecture" width="500" />
 
 - *Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")*
 
@@ -107,7 +107,7 @@ One more thing to mention is the Frida CodeShare project (<https://codeshare.fri
 
 Using them is as simple as including the `--codeshare <handler>` flag and a handler when using the Frida CLI. For example, to use "ObjC method observer", enter the following:
 
-```shell
+```bash
 $ frida --codeshare mrmacete/objc-method-observer -f YOUR_BINARY
 ```
 
@@ -138,15 +138,15 @@ Ghidra is an open source software reverse engineering (SRE) suite of tools devel
 
 Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:
 
-<img src="Images/Chapters/0x04c/Ghidra_new_project.png" alt="Ghidra New Project"  width="500" />
+<img src="Images/Chapters/0x04c/Ghidra_new_project.png" alt="Ghidra New Project" width="450" />
 
 In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
 
-<img src="Images/Chapters/0x04c/Ghidra_import_binary.png" alt="Ghidra import binary"  width="500" />
+<img src="Images/Chapters/0x04c/Ghidra_import_binary.png" alt="Ghidra import binary" width="450" />
 
 If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
 
-<img src="Images/Chapters/0x04c/Ghidra_elf_import.png" alt="Ghidra ELF file import"  width="350" />
+<img src="Images/Chapters/0x04c/Ghidra_elf_import.png" alt="Ghidra ELF file import" width="300" />
 
 To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.
 

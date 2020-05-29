@@ -64,13 +64,13 @@ For a full dynamic analysis of a mobile app, all network traffic should be inter
 
 bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your machine that will act as the MITM. On macOS it can be installed by using brew.
 
-```shell
+```bash
 $ brew install bettercap
 ```
 
 For Kali Linux you can install bettercap with `apt-get`:
 
-```shell
+```bash
 $ apt-get update
 $ apt-get install bettercap
 ```
@@ -81,7 +81,7 @@ There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint
 
 Start your preferred network analyzer tool first, then start bettercap with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
-```shell
+```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
 bettercap v2.22 (built for darwin amd64 with go1.12.1) [type 'help' for a list of commands]
 
@@ -113,8 +113,8 @@ Following scenarios are possible:
 
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
-```shell
-    $ iw list | grep AP
+```bash
+$ iw list | grep AP
 ```
 
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
@@ -138,15 +138,15 @@ This can be done by using the built-in utilities on macOS. You can use [share th
 
 For all major Linux and Unix operating systems you need tools such as:
 
-- hostapd,
-- dnsmasq,
-- iptables,
-- wpa_supplicant,
-- airmon-ng.
+- hostapd
+- dnsmasq
+- iptables
+- wpa_supplicant
+- airmon-ng
 
 For Kali Linux you can install these tools with `apt-get`:
 
-```shell
+```bash
 $ apt-get update
 $ apt-get install hostapd dnsmasq aircrack-ng
 ```
@@ -169,7 +169,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - hostapd.conf
 
-    ```text
+    ```bash
     # Name of the WiFi interface we use
     interface=wlan1
     # Use the nl80211 driver
@@ -191,7 +191,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - wpa_supplicant.conf
 
-    ```text
+    ```bash
     network={
         ssid="NAME_OF_THE_TARGET_NETWORK"
         psk="PASSWORD_OF_THE_TARGET_NETWORK"
@@ -200,7 +200,7 @@ The following configuration files need to be changed and adjusted accordingly:
 
 - dnsmasq.conf
 
-    ```text
+    ```bash
     interface=wlan1
     dhcp-range=10.0.0.10,10.0.0.250,12h
     dhcp-option=3,10.0.0.1
@@ -215,24 +215,24 @@ The following configuration files need to be changed and adjusted accordingly:
 
 To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
-```shell
-    # check if other process is not using WiFi interfaces
-    $ airmon-ng check kill
-    # configure IP address of the AP network interface
-    $ ifconfig wlan1 10.0.0.1 up
-    # start access point
-    $ hostapd hostapd.conf
-    # connect the target network interface
-    $ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
-    # run DNS server
-    $ dnsmasq -C dnsmasq.conf -d
-    # enable routing
-    $ echo 1 > /proc/sys/net/ipv4/ip_forward
-    # iptables will NAT connections from AP network interface to the target network interface
-    $ iptables --flush
-    $ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
-    $ iptables --append FORWARD --in-interface wlan1 -j ACCEPT
-    $ iptables -t nat -A POSTROUTING -j MASQUERADE
+```bash
+# check if other process is not using WiFi interfaces
+$ airmon-ng check kill
+# configure IP address of the AP network interface
+$ ifconfig wlan1 10.0.0.1 up
+# start access point
+$ hostapd hostapd.conf
+# connect the target network interface
+$ wpa_supplicant -B -i wlan0 -c wpa_supplicant.conf
+# run DNS server
+$ dnsmasq -C dnsmasq.conf -d
+# enable routing
+$ echo 1 > /proc/sys/net/ipv4/ip_forward
+# iptables will NAT connections from AP network interface to the target network interface
+$ iptables --flush
+$ iptables --table nat --append POSTROUTING --out-interface wlan0 -j MASQUERADE
+$ iptables --append FORWARD --in-interface wlan1 -j ACCEPT
+$ iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
 
 Now you can connect your mobile devices to the access point.
@@ -258,29 +258,29 @@ Xamarin is a mobile application development platform that is capable of producin
 
 When testing a Xamarin app and when you are trying to set the system proxy in the Wi-Fi settings you won't be able to see any HTTP requests in your interception proxy, as the apps created by Xamarin do not use the local proxy settings of your phone. There are three ways to resolve this:
 
-- Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
+- 1st way: Add a [default proxy to the app](https://developer.xamarin.com/api/type/System.Net.WebProxy/ "System.Net.WebProxy Class"), by adding the following code in the `OnCreate` or `Main` method and re-create the app:
 
-    ```csharp
+    ```cs
     WebRequest.DefaultWebProxy = new WebProxy("192.168.11.1", 8080);
     ```
 
-- Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
+- 2nd way: Use bettercap in order to get a man-in-the-middle position (MITM), see the section above about how to setup a MITM attack. When being MITM you only need to redirect port 443 to your interception proxy running on localhost. This can be done by using the command `rdr` on macOS:
 
-```shell
+    ```bash
     $ echo "
     rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 8080
     " | sudo pfctl -ef -
-```
+    ```
 
-  For Linux systems you can use `iptables`:
+- For Linux systems you can use `iptables`:
 
-```shell
+    ```bash
     $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
-```
+    ```
 
-  As last step, you need to set the option 'Support invisible proxy' in the listener settings of Burp Suite.
+- As last step, you need to set the option 'Support invisible proxy' in the listener settings of Burp Suite.
 
-- Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MiTM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
+- 3rd way: Instead of bettercap an alternative is tweaking the `/etc/hosts` on the mobile phone. Add an entry into `/etc/hosts` for the target domain and point it to the IP address of your intercepting proxy. This creates a similar situation of being MiTM as with bettercap and you need to redirect port 443 to the port which is used by your interception proxy. The redirection can be applied as mentioned above. Additionally, you need to redirect traffic from your interception proxy to the original location and port.
 
 > When redirecting traffic you should create narrow rules to the domains and IPs in scope, to minimize noise and out-of-scope traffic.
 
@@ -292,8 +292,8 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 2. Select and edit your listener from the list of proxy listeners.
 3. Go to **Request handling** tab and set:
 
-    - Redirect to host: provide original traffic location
-    - Redirect to port: provide original port location
+    - Redirect to host: provide original traffic location.
+    - Redirect to port: provide original port location.
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location" width="600px" />
@@ -335,7 +335,9 @@ If a mobile application connects to a specific server, its networking stack can 
 
 ###### Cipher Suites Terminology
 
-Cipher suites have the following structure: **Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm**
+Cipher suites have the following structure:
+
+- **Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm**
 
 This structure can be described as follows:
 

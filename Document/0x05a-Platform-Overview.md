@@ -18,7 +18,7 @@ Android's software stack is composed of several different layers. Each layer def
 
 <img src="Images/Chapters/0x05a/android_software_stack.png" alt="Android Software Stack" width="400" />
 
-At the lowest level, Android is based on a variation of the Linux Kernel. On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware—for example, it allows a stock phone application to use a device's microphone and speaker.
+At the lowest level, Android is based on a variation of the Linux Kernel. On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware. For example, it allows a stock phone application to use a device's microphone and speaker.
 
 Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, then converting the JVM bytecode to the Dalvik .dex format with the `dx` tool.
 
@@ -62,6 +62,8 @@ Android 5.0 (API level 21) and above support full-disk encryption. This encrypti
 ##### File-Based Encryption
 
 Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
+
+\pagebreak
 
 ##### Adiantum
 
@@ -139,13 +141,15 @@ Android leverages Linux user management to isolate apps. This approach is differ
 
 Generally, apps are assigned UIDs in the range of 10000 and 99999. Android apps receive a user name based on their UID. For example, the app with UID 10188 receives the user name `u0_a188`. If the permissions an app requested are granted, the corresponding group ID is added to the app's process. For example, the user ID of the app below is 10188. It belongs to the group ID 3003 (inet). That group is related to android.permission.INTERNET permission. The output of the `id` command is shown below.
 
-```shell
+```bash
 $ id
 uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),
 9997(everybody),50188(all_a188) context=u:r:untrusted_app:s0:c512,c768
 ```
 
-The relationship between group IDs and permissions is defined in the file [frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml "platform.xml")
+The relationship between group IDs and permissions is defined in the following file:
+
+[frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml "platform.xml")
 
 ```xml
 <permission name="android.permission.INTERNET" >
@@ -172,7 +176,7 @@ Installation of a new app creates a new directory named after the app package, w
 
 We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
 
-```shell
+```bash
 drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
 drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
 ```
@@ -205,15 +209,13 @@ Apps must implement callback methods that react to a number of events; for examp
 Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle "Android App Bundle") (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play. App Bundles are signed binaries which contain the code of the app in several modules. The base module contains the core of the application. The base module can be extended with various modules which contain new enrichments/functionalities for the app as further explained on the [developer documentation for app bundle](https://developer.android.com/guide/app-bundle "Documentation on App Bundle").
 If you have an Android App Bundle, you can best use the [bundletool](https://developer.android.com/studio/command-line/bundletool "bundletool") command line tool from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
 
-```shell
-
+```bash
 $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
-
 ```
 
 If you want to create signed APKs ready for deployment to a test device, use:
 
-```shell
+```bash
 $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 --ks=/MyApp/keystore.jks
 --ks-pass=file:/MyApp/keystore.pwd
@@ -317,7 +319,7 @@ Because fragments have their own life cycle, the Fragment class contains event m
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
-```Java
+```java
 public class MyFragment extends Fragment {
     ...
 }
@@ -329,7 +331,7 @@ To manage its fragments, an activity can use a Fragment Manager (FragmentManager
 
 Fragment Managers can be created via the following:
 
-```Java
+```java
 FragmentManager fm = getFragmentManager();
 ```
 
@@ -348,7 +350,7 @@ The term *Binder* stands for a lot of different things, including:
 - Binder service: implementation of the Binder object; for example, location service, and sensor service
 - Binder client: an object using the Binder service
 
-The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently *marshall* the call parameters into a *parcel* and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call—all the heavy lifting is done by the Binder framework.
+The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently *marshall* the call parameters into a *parcel* and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call, all the heavy lifting is done by the Binder framework.
 
 <img src="Images/Chapters/0x05a/binder.jpg" alt="Binder Overview" width="400" />
 
@@ -364,7 +366,7 @@ Servicemanager is a system daemon that manages the registration and lookup of sy
 
 You can query the list of system services with the `service list` command.
 
-```shell
+```bash
 $ adb shell service list
 Found 99 services:
 0 carrier_config: [com.android.internal.telephony.ICarrierConfigLoader]
@@ -386,14 +388,14 @@ Found 99 services:
 
 There are two types of intents. Explicit intents name the component that will be started (the fully qualified class name). For instance:
 
-```Java
-    Intent intent = new Intent(this, myActivity.myClass);
+```java
+Intent intent = new Intent(this, myActivity.myClass);
 ```
 
 Implicit intents are sent to the OS to perform a given action on a given set of data (The URL of the OWASP website in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
 
-```Java
-    Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
+```java
+Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
 ```
 
 An *intent filter* is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
@@ -427,11 +429,11 @@ An example Broadcast Receiver declaration with an intent filter in a manifest:
 
 Please note that in this example, the Broadcast Receiver does not include the [`android:exported`](https://developer.android.com/guide/topics/manifest/receiver-element "receiver element") attribute. As at least one filter was defined, the default value will be set to "true". In absence of any filters, it will be set to "false".
 
-The other way is to create the receiver dynamically in code and register it with the [`Context.registerReceiver`](https://developer.android.com/reference/android/content/Context.html#registerReceiver%28android.content.BroadcastReceiver,%2520android.content.IntentFilter%29 "Context.registerReceiver") method.
+The other way is to create the receiver dynamically in code. The receiver can then register with the method [`Context.registerReceiver`](https://developer.android.com/reference/android/content/Context.html#registerReceiver%28android.content.BroadcastReceiver,%2520android.content.IntentFilter%29 "Context.registerReceiver").
 
 An example of registering a Broadcast Receiver dynamically:
 
-```Java
+```java
 // Define a broadcast receiver
 myReceiver = new BroadcastReceiver() {
     @Override
@@ -531,8 +533,7 @@ The above code defines a new permission named `com.permissions.sample.ACCESS_USE
 
 ###### Enforcing Permissions on Android Components
 
-Android components can be protected with permissions. Activities, Services, content providers, and Broadcast Receivers—all can use the permission mechanism to protect their interfaces.
-Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receivers* by adding the attribute *android:permission* to the respective component tag in AndroidManifest.xml:
+Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
 
 ```xml
 <receiver
@@ -543,7 +544,7 @@ Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receiver
 </receiver>
 ```
 
-*Content providers* are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
+Content Providers are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
 
 - `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
 - `android:permission`: general permission that will control reading and writing to the content provider.
@@ -551,7 +552,7 @@ Permissions can be enforced on *Activities*, *Services*, and *Broadcast Receiver
 
 ### Signing and Publishing Process
 
-Once an app has been successfully developed, the next step is to publish and share it with others. However, apps can't simply be added to a store and shared, for several reasons—they must be signed. The cryptographic signature serves as a verifiable mark placed by the developer of the app. It identifies the app’s author and ensures that the app has not been modified since its initial distribution.
+Once an app has been successfully developed, the next step is to publish and share it with others. However, apps can't simply be added to a store and shared, they must be first signed. The cryptographic signature serves as a verifiable mark placed by the developer of the app. It identifies the app’s author and ensures that the app has not been modified since its initial distribution.
 
 #### Signing Process
 
@@ -560,7 +561,7 @@ When an application is installed on the Android device, the Package Manager ensu
 
 #### APK Signing Schemes
 
-Android supports three application signing schemes. Starting with Android 9 (API level 28), APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 (API level 24) and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing ").
+Android supports three application signing schemes. Starting with Android 9 (API level 28), APKs can be verified with APK Signature Scheme v3 (v3 scheme), APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For Android 7.0 (API level 24) and above, APKs can be verified with the APK Signature Scheme v2 (v2 scheme) or JAR signing (v1 scheme). For backwards compatibility, an APK can be signed with multiple signature schemes in order to make the app run on both newer and older SDK versions. [Older platforms ignore v2 signatures and verify v1 signatures only](https://source.android.com/security/apksigning/ "APK Signing").
 
 ##### JAR Signing (v1 Scheme)
 
@@ -587,11 +588,11 @@ Android uses public/private certificates to sign Android apps (.apk files). Cert
 App creators can either reuse an existing private/public key pair that is in an available KeyStore or generate a new pair.
 In the Android SDK, a new key pair is generated with the `keytool` command. The following command creates a RSA key pair with a key length of 2048 bits and an expiry time of 7300 days = 20 years. The generated key pair is stored in the file 'myKeyStore.jks', which is in the current directory):
 
-```shell
+```bash
 $ keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
 ```
 
-Safely storing your secret key and making sure it remains secret during its entire life cycle is of paramount importance. Anyone who gains access to the key will be able to publish updates to your apps with content that you don't control (thereby adding insecure features or accessing shared content with signature-based permissions). The trust that a user places in an app and its developers is based totally on such certificates; certificate protection and secure management are therefore vital for reputation and customer retention, and secret keys must never be shared with other individuals. Keys are stored in a binary file that can be protected with a password; such files are referred to as 'KeyStores'. KeyStore passwords should be strong and known only to the key creator. For this reason, keys are usually stored on a dedicated build machine that developers have limited access to.
+Safely storing your secret key and making sure it remains secret during its entire life cycle is of paramount importance. Anyone who gains access to the key will be able to publish updates to your apps with content that you don't control (thereby adding insecure features or accessing shared content with signature-based permissions). The trust that a user places in an app and its developers is based totally on such certificates; certificate protection and secure management are therefore vital for reputation and customer retention, and secret keys must never be shared with other individuals. Keys are stored in a binary file that can be protected with a password; such files are referred to as _KeyStores_. KeyStore passwords should be strong and known only to the key creator. For this reason, keys are usually stored on a dedicated build machine that developers have limited access to.
 An Android certificate must have a validity period that's longer than that of the associated app (including updated versions of the app). For example, Google Play will require certificates to remain valid until Oct 22nd, 2033 at least.
 
 ##### Signing an Application
@@ -601,7 +602,7 @@ The goal of the signing process is to associate the app file (.apk) with the dev
 Many Integrated Development Environments (IDE) integrate the app signing process to make it easier for the user. Be aware that some IDEs store private keys in clear text in configuration files; double-check this in case others are able to access such files and remove the information if necessary.
 Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API level 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
 
-```shell
+```bash
 $ apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
 ```
 

@@ -25,7 +25,7 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 The following code snippet is sometimes used during development and will accept any certificate, overwriting the functions `checkClientTrusted`, `checkServerTrusted`, and `getAcceptedIssuers`. Such implementations should be avoided, and, if they are necessary, they should be clearly separated from production builds to avoid built-in security flaws.
 
-```Java
+```java
 TrustManager[] trustAllCerts = new TrustManager[] {
     new X509TrustManager() {
         @Override
@@ -84,7 +84,7 @@ final static HostnameVerifier NO_VERIFY = new HostnameVerifier() {
 
 With a built-in `HostnameVerifier`, accepting any hostname is possible:
 
-```Java
+```java
 HostnameVerifier NO_VERIFY = org.apache.http.conn.ssl.SSLSocketFactory
                              .ALLOW_ALL_HOSTNAME_VERIFIER;
 ```
@@ -175,13 +175,13 @@ Open the identified file. In this case, the file can be found at "res/xml/networ
 
 If a configuration exists, the following event may be visible in the log:
 
-```shell
+```bash
 D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
 ```
 
 If a certificate pinning validation check has failed, the following event will be logged:
 
-```shell
+```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
 
@@ -260,7 +260,7 @@ Applications developed in Xamarin will typically use ServicePointManager to impl
 
 Normally a function is created to check the certificate(s) and return the boolean value to the method ServerCertificateValidationCallback:
 
-```c#
+```cs
 [Activity(Label = "XamarinPinning", MainLauncher = true)]
     public class MainActivity : Activity
     {
@@ -364,13 +364,13 @@ As an example, let's say that you find an application which uses a BKS (BouncyCa
 
 To add your proxy's certificate use the following command:
 
-```shell
+```bash
 $ keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
 ```
 
 To list certificates in the BKS truststore use the following command:
 
-```shell
+```bash
 $ keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
 ```
 
