@@ -308,7 +308,7 @@ You can use the [Objection](https://github.com/sensepost/objection "Objection") 
 To use Objection to read the Keychain, execute the following command:
 
 ```bash
-...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios keychain dump                                                                                                                                                                       
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios keychain dump
 Note: You may be asked to authenticate using the devices passcode or TouchID
 Save the output by adding `--json keychain.json` to this command
 Dumping the iOS keychain...
@@ -322,7 +322,7 @@ Created                    Accessible                      ACL    Type      Acco
 iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Objection to convert these files to a json format and inspect the data.
 
 ```bash
-...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios cookies get --json        
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios cookies get --json
 [
     {
         "domain": "highaltitudehacks.com",
@@ -339,7 +339,7 @@ iOS applications often store binary cookie files in the application sandbox. Coo
 
 ###### Searching for Property List Files
 
-iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the *ios plist cat plistFileName.plist* command to inspect the plist file. 
+iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the *ios plist cat plistFileName.plist* command to inspect the plist file.
 
 To find userInfo.plist find use the *env* command. It will print out the locations of the applications Library, Caches and Documents directories:
 
@@ -356,7 +356,7 @@ LibraryDirectory   /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-87
 Go to Documents directory and list files there by *ls* command.
 
 ```bash
-...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ls                                                                                                                                                                                                              
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ls
 NSFileType      Perms  NSFileProtection                      Read    Write    Owner         Group         Size      Creation                   Name
 ------------  -------  ------------------------------------  ------  -------  ------------  ------------  --------  -------------------------  ------------------------
 Directory         493  n/a                                   True    True     mobile (501)  mobile (501)  192.0 B   2020-02-12 07:03:51 +0000  default.realm.management
