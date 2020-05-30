@@ -1,12 +1,12 @@
-## Data Storage on iOS
+# Data Storage on iOS
 
 The protection of sensitive data, such as authentication tokens and private information, is key for mobile security. In this chapter, you'll learn about the iOS APIs for local data storage, and best practices for using them.
 
-### Testing Local Data Storage (MSTG-STORAGE-1 and MSTG-STORAGE-2)
+## Testing Local Data Storage (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 As little sensitive data as possible should be saved in permanent local storage. However, in most practical scenarios, at least some user data must be stored. Fortunately, iOS offers secure storage APIs, which allow developers to use the cryptographic hardware available on every iOS device. If these APIs are used correctly, sensitive data and files can be secured via hardware-backed 256-bit AES encryption.
 
-#### Data Protection API
+### Data Protection API
 
 App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access control for user data stored in flash memory. The APIs are built on top of the Secure Enclave Processor (SEP), which was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key-the device UID (Unique ID)-is embedded in the secure enclave, ensuring the integrity of data protection even when the operating system kernel is compromised.
 
@@ -32,7 +32,7 @@ All class keys except `NSFileProtectionNone` are encrypted with a key derived fr
 
 Since iOS 7, the default data protection class is "Protected Until First User Authentication".
 
-##### The Keychain
+#### The Keychain
 
 The iOS Keychain can be used to securely store short, sensitive bits of data, such as encryption keys and session tokens. It is implemented as an SQLite database that can be accessed through the Keychain APIs only.
 
@@ -89,7 +89,7 @@ Objective-C:
 }
 ```
 
-###### Keychain Data Persistence
+##### Keychain Data Persistence
 
 On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical ability to perform.
 
@@ -139,7 +139,7 @@ if userDefaults.bool(forKey: "hasRunBefore") == false {
 
 - When developing logout functionality for an iOS application, make sure that the Keychain data is wiped as part of account logout. This will allow users to clear their accounts before uninstalling an application.
 
-#### Static Analysis
+### Static Analysis
 
 When you have access to the source code of an iOS app, try to spot sensitive data that's saved and processed throughout the app. This includes passwords, secret keys, and personally identifiable information (PII), but it may as well include other data identified as sensitive by industry regulations, laws, and company policies. Look for this data being saved via any of the local storage APIs listed below. Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in `NSUserDefaults` without additional encryption.
 
@@ -183,11 +183,11 @@ if status != errSecSuccess {
 
 When checking an iOS app for insecure data storage, consider the following ways to store data because none of them encrypt data by default:
 
-##### `NSUserDefaults`
+#### `NSUserDefaults`
 
 The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults Class") class provides a programmatic interface for interacting with the default system. The default system allows an application to customize its behavior according to user preferences. Data saved by `NSUserDefaults` can be viewed in the application bundle. This class stores data in a plist file, but it's meant to be used with small amounts of data.
 
-##### File system
+#### File system
 
 - `NSData`: creates static data objects, while `NSMutableData` creates dynamic data objects. `NSData` and `NSMutableData` are typically used for data storage, but they are also useful for distributed objects applications, in which data contained in data objects can be copied or moved between applications. The following are methods used to write `NSData` objects:
   - `NSDataWritingWithoutOverwriting`
@@ -208,17 +208,17 @@ The following example shows how to create a securely encrypted file using the `c
   forKey:NSFileProtectionKey]];
 ```
 
-##### CoreData
+#### CoreData
 
 [`Core Data`](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html#//apple_ref/doc/uid/TP40001075-CH8-SW1 "Core Data iOS") is a framework for managing the model layer of objects in your application. It provides general and automated solutions to common tasks associated with object life cycles and object graph management, including persistence. [Core Data can use SQLite as its persistent store](https://cocoacasts.com/what-is-the-difference-between-core-data-and-sqlite/ "What Is the Difference Between Core Data and SQLite"), but the framework itself is not a database.
 
 CoreData does not encrypt it's data by default. As part of a research project (iMAS) from the MITRE Corporation, that was focused on open source iOS security controls, an additional encryption layer can be added to CoreData. See the [GitHub Repo](https://github.com/project-imas/encrypted-core-data "Encrypted Core Data SQLite Store") for more details.
 
-##### SQLite Databases
+#### SQLite Databases
 
 The SQLite 3 library must be added to an app if the app is to use SQLite. This library is a C++ wrapper that provides an API for the SQLite commands.
 
-##### Firebase Real-time Databases
+#### Firebase Real-time Databases
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
@@ -234,7 +234,7 @@ Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsa
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
-##### Realm databases
+#### Realm databases
 
 [Realm Objective-C](https://realm.io/docs/objc/latest/ "Realm Objective-C") and [Realm Swift](https://realm.io/docs/swift/latest/ "Realm Swift") aren't supplied by Apple, but they are still worth noting. They store everything unencrypted, unless the configuration has encryption enabled.
 
@@ -252,15 +252,15 @@ do {
 }
 ```
 
-##### Couchbase Lite Databases
+#### Couchbase Lite Databases
 
 [Couchbase Lite](https://github.com/couchbase/couchbase-lite-ios "Couchbase Lite") is a lightweight, embedded, document-oriented (NoSQL) database engine that can be synced. It compiles natively for iOS and macOS.
 
-##### YapDatabase
+#### YapDatabase
 
 [YapDatabase](https://github.com/yapstudios/YapDatabase "YapDatabase") is a key/value store built on top of SQLite.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 One way to determine whether sensitive information (like credentials and keys) is stored insecurely without leveraging native iOS functions is to analyze the app's data directory. Triggering all app functionality before the data is analyzed is important because the app may store sensitive data only after specific functionality has been triggered. You can then perform static analysis for the data dump according to generic keywords and app-specific data.
 
@@ -293,7 +293,7 @@ The path to the Keychain file is
 
 On a non-jailbroken device, you can use objection to [dump the Keychain items](https://github.com/sensepost/objection/wiki/Notes-About-The-Keychain-Dumper "Notes About The Keychain Dumper") created and stored by the app.
 
-##### Dynamic Analysis with Xcode and iOS simulator
+#### Dynamic Analysis with Xcode and iOS simulator
 
 > This test is only available on macOS, as Xcode and the iOS simulator is needed.
 
@@ -315,11 +315,11 @@ $ grep -iRn keyword .
 
 Then you can monitor and verify the changes in the filesystem of the app and investigate if any sensitive information is stored within the files while using the app.
 
-##### Dynamic Analysis with Needle
+#### Dynamic Analysis with Needle
 
 On a jailbroken device, you can use the iOS security assessment framework Needle to find vulnerabilities caused by the application's data storage mechanism.
 
-###### Reading the Keychain
+##### Reading the Keychain
 
 To use Needle to read the Keychain, execute the following command:
 
@@ -328,7 +328,7 @@ To use Needle to read the Keychain, execute the following command:
 [needle][keychain_dump] > run
 ```  
 
-###### Searching for Binary Cookies
+##### Searching for Binary Cookies
 
 iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Needle to convert these files to a readable format and inspect the data. Use the following Needle module, which searches for binary cookie files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
@@ -337,7 +337,7 @@ iOS applications often store binary cookie files in the application sandbox. Coo
 [needle][files_binarycookies] > run
 ```
 
-###### Searching for Property List Files
+##### Searching for Property List Files
 
 iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the following Needle module, which searches for plist files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
@@ -346,7 +346,7 @@ iOS applications often store data in property list (plist) files that are stored
 [needle][files_plist] > run
 ```
 
-###### Searching for Cache Databases
+##### Searching for Cache Databases
 
 iOS applications can store data in cache databases. These databases contain data such as web requests and responses. Sometimes the data is sensitive. Use the following Needle module, which searches for cache files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
@@ -355,7 +355,7 @@ iOS applications can store data in cache databases. These databases contain data
 [needle][files_cachedb] > run
 ```
 
-###### Searching for SQLite Databases
+##### Searching for SQLite Databases
 
 iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Use the following Needle module, which searches for SQLite databases stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
 
@@ -364,7 +364,7 @@ iOS applications typically use SQLite databases to store data required by the ap
 [needle][files_sql] >
 ```
 
-### Checking Logs for Sensitive Data (MSTG-STORAGE-3)
+## Checking Logs for Sensitive Data (MSTG-STORAGE-3)
 
 There are many legitimate reasons for creating log files on a mobile device, including keeping track of crashes or errors that are stored locally while the device is offline (so that they can be sent to the app's developer once online), and storing usage statistics. However, logging sensitive data, such as credit card numbers and session information, may expose the data to attackers or malicious applications.
 Log files can be created in several ways. The following list shows the methods available on iOS:
@@ -374,7 +374,7 @@ Log files can be created in several ways. The following list shows the methods a
 - NSAssert-like function
 - Macro
 
-#### Static Analysis
+### Static Analysis
 
 Use the following keywords to check the app's source code for predefined and custom logging statements:
 
@@ -397,13 +397,13 @@ A generalized approach to this issue is to use a define to enable `NSLog` statem
 #endif
 ```
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testing" various methods for checking the device logs are explained. Navigate to a screen that displays input fields that take sensitive user information.
 
 After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
-### Determining Whether Sensitive Data Is Sent to Third Parties (MSTG-STORAGE-4)
+## Determining Whether Sensitive Data Is Sent to Third Parties (MSTG-STORAGE-4)
 
 Various third-party services can be embedded in the app. The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
 The downside to third-party services is that developers don't know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
@@ -415,17 +415,17 @@ Most third-party services are implemented in two ways:
 - with a standalone library
 - with a full SDK
 
-#### Static Analysis
+### Static Analysis
 
 To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code.
 
 All data that's sent to third-party services should be anonymized to prevent exposure of PII (Personal Identifiable Information) that would allow the third party to identify the user account. No other data (such as IDs that can be mapped to a user account or session) should be sent to a third party.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 All requests made to external services should be analyzed for embedded sensitive information. By using an interception proxy, you can investigate the traffic between the app and the third party's endpoints. When the app is in use, all requests that don't go directly to the server that hosts the main function should be checked for sensitive information that's sent to a third party. This information could be PII in a request to a tracking or ad service.
 
-### Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
+## Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
 
 Several options for simplifying keyboard input are available to users. These options include autocorrection and spell checking. Most keyboard input is cached by default, in `/private/var/mobile/Library/Keyboard/dynamic-text.dat`.
 
@@ -434,7 +434,7 @@ The [UITextInputTraits protocol](https://developer.apple.com/reference/uikit/uit
 - `var autocorrectionType: UITextAutocorrectionType` determines whether autocorrection is enabled during typing. When autocorrection is enabled, the text object tracks unknown words and suggests suitable replacements, replacing the typed text automatically unless the user overrides the replacement. The default value of this property is `UITextAutocorrectionTypeDefault`, which for most input methods enables autocorrection.
 - `var secureTextEntry: BOOL` determines whether text copying and text caching are disabled and hides the text being entered for `UITextField`. The default value of this property is `NO`.
 
-#### Static Analysis
+### Static Analysis
 
 - Search through the source code for similar implementations, such as
 
@@ -452,7 +452,7 @@ UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
 textField.autocorrectionType = UITextAutocorrectionTypeNo;
 ```
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 If a jailbroken iPhone is available, execute the following steps:
 
@@ -505,9 +505,9 @@ If you must use a non-jailbroken iPhone:
 2. Key in all sensitive data.
 3. Use the app again and determine whether autocorrect suggests previously entered sensitive information.
 
-### Determining Whether Sensitive Data Is Exposed via IPC Mechanisms (MSTG-STORAGE-6)
+## Determining Whether Sensitive Data Is Exposed via IPC Mechanisms (MSTG-STORAGE-6)
 
-#### Overview
+### Overview
 
 [Inter Process Communication (IPC)](https://nshipster.com/inter-process-communication/ "IPC on iOS") allows processes to send each other messages and data. For processes that need to communicate with each other, there are different ways to implement IPC on iOS:
 
@@ -517,11 +517,11 @@ If you must use a non-jailbroken iPhone:
 - **[Mach Ports](https://developer.apple.com/documentation/foundation/nsmachport "NSMachPort")**: All IPC communication ultimately relies on the Mach Kernel API. Mach Ports allow local communication (intra-device communication) only. They can be implemented either natively or via Core Foundation (CFMachPort) and Foundation (NSMachPort) wrappers.
 - **NSFileCoordinator**: The class `NSFileCoordinator` can be used to manage and send data to and from apps via files that are available on the local file system to various processes. [NSFileCoordinator](https://www.atomicbird.com/blog/sharing-with-app-extensions "NSFileCoordinator") methods run synchronously, so your code will be blocked until they stop executing. That's convenient because you don't have to wait for an asynchronous block callback, but it also means that the methods block the running thread.
 
-#### Static Analysis
+### Static Analysis
 
 The following section summarizes keywords that you should look for to identify IPC implementations within iOS source code.
 
-##### XPC Services
+#### XPC Services
 
 Several classes may be used to implement the NSXPCConnection API:
 
@@ -537,7 +537,7 @@ Check for the following two files in the Xcode project for the XPC Services API 
 - [`xpc.h`](https://developer.apple.com/documentation/xpc/xpc_services_xpc.h "xpc.h")
 - `connection.h`
 
-##### Mach Ports
+#### Mach Ports
 
 Keywords to look for in low-level implementations:
 
@@ -551,25 +551,25 @@ Keywords to look for in high-level implementations (Core Foundation and Foundati
 - NSMachPort
 - NSMessagePort
 
-##### NSFileCoordinator
+#### NSFileCoordinator
 
 Keywords to look for:
 
 - NSFileCoordinator
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool is currently available to verify IPC usage.
 
-### Checking for Sensitive Data Disclosed Through the User Interface (MSTG-STORAGE-7)
+## Checking for Sensitive Data Disclosed Through the User Interface (MSTG-STORAGE-7)
 
-#### Overview
+### Overview
 
 Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
 Masking sensitive data (by showing asterisks or dots instead of clear text) should be enforced.
 
-#### Static Analysis
+### Static Analysis
 
 A text field that masks its input can be configured in two ways:
 
@@ -583,21 +583,21 @@ If the text field is defined in the source code, make sure that the option [isSe
 sensitiveTextField.isSecureTextEntry = true
 ```
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that either show such information or take it as input.
 
 If the information is masked by, for example, asterisks or dots, the app isn't leaking data to the user interface.
 
-### Testing Backups for Sensitive Data (MSTG-STORAGE-8)
+## Testing Backups for Sensitive Data (MSTG-STORAGE-8)
 
-#### Overview
+### Overview
 
 iOS includes auto-backup features that create copies of the data stored on the device. You can make iOS backups from your host computer by using iTunes (till macOS Catalina) or Finder (from macOS Catalina onwards), or via the iCloud backup feature. In both cases, the backup includes nearly all data stored on the iOS device except highly sensitive data such as Apple Pay information and Touch ID settings.
 
 Since iOS backs up installed apps and their data, an obvious concern is whether sensitive user data stored by the app might unintentionally leak through the backup. Another concern, though less obvious, is whether sensitive configuration settings used to protect data or restrict app functionality could be tampered to change app behavior after restoring a modified backup. Both concerns are valid and these vulnerabilities have proven to exist in a vast number of apps today.
 
-##### How the Keychain Is Backed Up
+#### How the Keychain Is Backed Up
 
 When users back up their iOS device, the Keychain data is backed up as well, but the secrets in the Keychain remain encrypted. The class keys necessary to decrypt the Keychain data aren't included in the backup. Restoring the Keychain data requires restoring the backup to a device and unlocking the device with the users passcode.
 
@@ -607,7 +607,7 @@ One caveat to using the Keychain, however, is that it was only designed to store
 
 The takeaway: If sensitive data is handled as recommended earlier in this chapter (e.g., stored in the Keychain, with Keychain backed integrity checks, or encrypted with a key that's locked inside the Keychain), backups shouldn't be security issue.
 
-##### Static Analysis
+#### Static Analysis
 
 A backup of a device on which a mobile application has been installed will include all subdirectories (except for `Library/Caches/`) and files in the [app's private directory](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW12 "Directories of an iOS App").
 
@@ -664,7 +664,7 @@ func excludeFileFromBackup(filePath: URL) -> Result<Bool, ExcludeFileError> {
 }
 ```
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 In order to test the backup, you obviously need to create one first. The most common way to create a backup of an iOS device is by using iTunes, which is available for Windows, Linux and of course macOS (till macOS Mojave). When creating a backup via iTunes you can always only backup the whole device and not select just a single app. Make sure that the option "Encrypt local backup" in iTunes is not set, so that the backup is stored in cleartext on your hard drive.
 
@@ -711,7 +711,7 @@ As described in the Static Analysis section, any sensitive data that you're able
 
 In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes/Finder versions and might need to be tweaked.
 
-##### Proof of Concept: Removing UI Lock with Tampered Backup
+#### Proof of Concept: Removing UI Lock with Tampered Backup
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
@@ -753,13 +753,13 @@ You'll see there was a match on a binary file with an obfuscated name. This is y
 
 Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
 
-### Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
+## Testing Auto-Generated Screenshots for Sensitive Information (MSTG-STORAGE-9)
 
-#### Overview
+### Overview
 
 Manufacturers want to provide device users with an aesthetically pleasing effect when an application is started or exited, so they introduced the concept of saving a screenshot when the application goes into the background. This feature can pose a security risk because screenshots (which may display sensitive information such as an email or corporate documents) are written to local storage, where they can be recovered by a rogue application with a sandbox bypass exploit or someone who steals the device.
 
-#### Static Analysis
+### Static Analysis
 
 While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView") to determine whether the application sanitizes the screen before being backgrounded.
 
@@ -777,7 +777,7 @@ The following is a sample remediation method that will set a default screenshot:
 
 This sets the background image to `overlayImage.png` whenever the application is backgrounded. It prevents sensitive data leaks because `overlayImage.png` will always override the current view.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and navigate to the following directory (which may be different for iOS versions below 8.0):
 
@@ -803,9 +803,9 @@ If the application caches the sensitive information in a screenshot, the app fai
 
 The application should show a default image as the top view element when the application enters the background, so that the default image will be cached and not the sensitive information that was displayed.
 
-### Testing Memory for Sensitive Data (MSTG-STORAGE-10)
+## Testing Memory for Sensitive Data (MSTG-STORAGE-10)
 
-#### Overview
+### Overview
 
 Analyzing memory can help developers to identify the root causes of problems such as application crashes. However, it can also be used to access to sensitive data. This section describes how to check process' memory for data disclosure.
 
@@ -815,7 +815,7 @@ To investigate an application's memory, first create a memory dump. Alternativel
 
 Therefore, you're better off starting with static analysis.
 
-#### Static Analysis
+### Static Analysis
 
 Before looking into the source code, checking the documentation and identifying application components provide an overview of where data might be exposed. For example, while sensitive data received from a backend exists in the final model object, multiple copies may also exist in the HTTP client or the XML parser. All these copies should be removed from memory as soon as possible.
 
@@ -855,11 +855,11 @@ In summary, when performing static analysis for sensitive data exposed via memor
 - overwrite the value in memory before removing references,
 - pay attention to third-party components (libraries and frameworks). Having a public API that handles data according to the recommendations above is a good indicator that developers considered the issues discussed here.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 There are several approaches and tools available for dynamically testing the memory of an iOS app for sensitive data.
 
-##### Retrieving and Analyzing a Memory Dump
+#### Retrieving and Analyzing a Memory Dump
 
 Wether you are using a jailbroken or a non-jailbroken device, you can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). You can find a detailed explanation of this process in the section "[Memory Dump](0x06c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")", in the chapter "Tampering and Reverse Engineering on iOS".
 
@@ -895,15 +895,15 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 ...
 ```
 
-##### Runtime Memory Analysis
+#### Runtime Memory Analysis
 
 Using r2frida you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
 For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".
 
-### References
+## References
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-STORAGE-1: "System credential storage facilities need to be used to store sensitive data, such as PII, user credentials or cryptographic keys."
 - MSTG-STORAGE-2: "No sensitive data should be stored outside of the app container or system credential storage facilities."
@@ -916,7 +916,7 @@ For more information, options and approaches, please refer to section "[In-Memor
 - MSTG-STORAGE-9: "The app removes sensitive data from views when moved to the background."
 - MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 
-#### Tools
+### Tools
 
 - Fridump - <https://github.com/Nightbringer21/fridump>
 - Objection - <https://github.com/sensepost/objection>
@@ -924,6 +924,6 @@ For more information, options and approaches, please refer to section "[In-Memor
 - Burp Suite - <https://portswigger.net/burp>
 - Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 
-#### Others
+### Others
 
 - [#mandt] Tarjei Mandt, Mathew Solnik  and  David Wang, Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>

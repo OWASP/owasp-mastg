@@ -1,10 +1,10 @@
-## Local Authentication on iOS
+# Local Authentication on iOS
 
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password or biometric characteristics such as face or fingerprint, which is verified by referencing local data. Generally, this is done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
 As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Testing-Authentication-and-Session-Management.md)": The tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
 
-### Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
+## Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
 
 On iOS, a variety of methods are available for integrating local authentication into apps. The [Local Authentication framework](https://developer.apple.com/documentation/localauthentication "Local Authentication framework") provides a set of APIs for developers to extend an authentication dialog to a user. In the context of connecting to a remote service, it is possible (and recommended) to leverage the [keychain](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/01introduction/introduction.html "Keychain Services") for implementing local authentication.
 
@@ -17,7 +17,7 @@ Developers have two options for incorporating Touch ID/Face ID authentication:
 
 Please be aware that using either the `LocalAuthentication.framework` or the `Security.framework`, will be a control that can be bypassed by an attacker as it does only return a boolean and no data to proceed with. See [Don't touch me that way, by David Lindner et al](https://www.youtube.com/watch?v=XhXIHVGCFFM "Don\'t Touch Me That Way - David Lindner") for more details.
 
-#### Local Authentication Framework
+### Local Authentication Framework
 
 The Local Authentication framework provides facilities for requesting a passphrase or Touch ID authentication from users. Developers can display and utilize an authentication prompt by utilizing the function `evaluatePolicy` of the `LAContext` class.
 
@@ -50,7 +50,7 @@ context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Please, pas
 
 *Touch ID authentication in Swift using the Local Authentication Framework (official code sample from Apple).*
 
-#### Using Keychain Services for Local Authentication
+### Using Keychain Services for Local Authentication
 
 The iOS keychain APIs can (and should) be used to implement local authentication. During this process, the app stores either a secret authentication token or another piece of secret data identifying the user in the keychain. In order to authenticate to a remote service, the user must unlock the keychain using their passphrase or fingerprint to obtain the secret data.
 
@@ -58,7 +58,7 @@ The keychain allows saving items with the special `SecAccessControl` attribute, 
 
 In the following example we will save the string "test_strong_password" to the keychain. The string can be accessed only on the current device while the passcode is set (`kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` parameter) and after Touch ID authentication for the currently enrolled fingers only (`SecAccessControlCreateFlags.biometryCurrentSet` parameter):
 
-##### Swift
+#### Swift
 
 ```default
 // 1. create AccessControl object that will represent authentication settings
@@ -95,7 +95,7 @@ if status == noErr {
 }
 ```
 
-##### Objective-C
+#### Objective-C
 
 ```objectivec
 
@@ -128,7 +128,7 @@ if status == noErr {
 
 Now we can request the saved item from the keychain. Keychain services will present the authentication dialog to the user and return data or nil depending on whether a suitable fingerprint was provided or not.
 
-##### Swift
+#### Swift
 
 ```default
 // 1. define query
@@ -153,7 +153,7 @@ if status == noErr {
 }
 ```
 
-##### Objective-C
+#### Objective-C
 
 ```objectivec
 // 1. define query
@@ -191,7 +191,7 @@ If `LocalAuthentication.framework` is used in an app, the output will contain bo
 
 If `Security.framework` is used, only the second one will be shown.
 
-#### Static Analysis
+### Static Analysis
 
 It is important to remember that the LocalAuthentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation. Therefore, it is best to use the keychain service method, which means you should:
 
@@ -205,7 +205,7 @@ It is important to remember that the LocalAuthentication framework is an event-b
 > Note, a data protection class specifies the access methodology used to secure the data. Each class uses different policies to determine when the data
 is accessible.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
 
@@ -234,13 +234,13 @@ Needle can be used to bypass insecure biometric authentication in iOS platforms.
 
 If vulnerable, the module will automatically bypass the login form.
 
-### Note regarding temporariness of keys in the Keychain
+## Note regarding temporariness of keys in the Keychain
 
 Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an item's accessibility in the keychain: when there is no additional security check when entering the keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
-### References
+## References
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-AUTH-8: "Biometric authentication, if any, is not event-bound (i.e. using an API that simply returns "true" or "false"). Instead, it is based on unlocking the keychain/keystore."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
