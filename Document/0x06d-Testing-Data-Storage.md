@@ -380,7 +380,7 @@ Execute the *ios plist cat userInfo.plist* command to inspect the content of use
 
 ###### Searching for SQLite Databases
 
-iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Objection contains a module to interact with the sqldatabases. It allows to print out the table schema and query its items.
+iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Objection contains a module to interact with the sqldatabases. It allows to print out the contained tables and query its items.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # sqlite connect Model.sqlite
@@ -391,12 +391,26 @@ Writing bytes to destination...
 Successfully downloaded /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library/Application Support/Model.sqlite to /var/folders/4m/dsg0mq_17g39g473z0996r7m0000gq/T/tmpdr_7rvxi.sqlite
 Validating SQLite database format
 Connected to SQLite database at: Model.sqlite
-SQLite @ Model.sqlite >  
 
-...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # sqlite execute schema
-------------------------------------------------------------------
-CREATE TABLE data ( key text NOT NULL UNIQUE, value text NOT NULL)
-------------------------------------------------------------------
+SQLite @ Model.sqlite > .tables
++--------------+
+| name         |
++--------------+
+| ZUSER        |
+| Z_METADATA   |
+| Z_MODELCACHE |
+| Z_PRIMARYKEY |
++--------------+
+Time: 0.013s
+
+SQLite @ Model.sqlite > select * from Z_PRIMARYKEY
++-------+--------+---------+-------+
+| Z_ENT | Z_NAME | Z_SUPER | Z_MAX |
++-------+--------+---------+-------+
+| 1     | User   | 0       | 0     |
++-------+--------+---------+-------+
+1 row in set
+Time: 0.013s
 ```
 
 ###### Searching for Cache Databases
