@@ -1531,7 +1531,7 @@ libnative.write("libnative.so")
 
 In the above example, libinject.so library is injected as a dependency of a native library (libnative.so), which the application already loads by default. Frida gadget can be injected into an application using this approach as explained in detail in [LIEF's documentation](https://lief.quarkslab.com/doc/latest/tutorials/09_frida_lief.html "LIEF's documentation - How to use frida on a non-rooted device"). As in the previous section, it is important to remember adding the library to the respective architecture `lib` folder in the APK and finally re-signing the application.
 
-##### LD_PRELOAD
+##### Preloading Symbols
 
 Above we looked into techniques which require some kind of modification of the application's code. A library can also be injected into a process using functionalities offered by the loader of the operating system. On Android, which is a Linux based OS, you can load an additional library by setting the `LD_PRELOAD` environment variable.
 
