@@ -52,7 +52,7 @@ echo "Create PDF"
     --highlight-style=tango \
     --toc -V toc-title:"${TOC_TITLE}" --toc-depth=3 \
     --metadata title="OWASP Mobile Security Testing Guide $VERSION" \
-    -H tmp_latex-header-$LANGUAGE.tex -V linkcolor:blue \
+    -H tmp_latex-header-$LANGUAGE.tex -V linkcolor:blue -V code-block-font-size:"\tiny" \
     --include-before-body tmp_cover-$LANGUAGE.tex --include-before-body tmp_first_page-$LANGUAGE.tex \
     -o ${OUTPUT_BASE_NAME}-${LANGUAGE}.pdf $CHAPTERS \
     --verbose
