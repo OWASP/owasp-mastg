@@ -51,16 +51,6 @@ editor.putString("username", "administrator")
 editor.putString("password", "supersecret")
 editor.commit()
 ```
-Example for Dart:
-
-```dart
-storeCredentials() async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.setString("username", "administrator");
-                  prefs.setString("password", "supersecret");
-                }
-                storeCredentials);
-```
 
 Once the activity has been called, the file key.xml will be created with the provided data. This code violates several best practices.
 
