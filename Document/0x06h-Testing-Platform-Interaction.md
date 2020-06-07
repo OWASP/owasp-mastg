@@ -631,7 +631,7 @@ First of all we will see the difference between opening an allowed Universal Lin
 
 From the `apple-app-site-association` of apple.com we have seen above we chose the following paths:
 
-```json
+```default
 "paths": [
     "NOT /shop/buy-iphone/*",
     ...
