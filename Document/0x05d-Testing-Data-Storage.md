@@ -42,6 +42,7 @@ editor.putString("username", "administrator");
 editor.putString("password", "supersecret");
 editor.commit();
 ```
+
 Example for Kotlin:
 
 ```kotlin
@@ -277,6 +278,7 @@ Example in Kotlin:
 ```kotlin
 private val myCompositeKey = arrayOf<String>("oNQavjbaNNSgEqoCkT9Em4imeQQ=", "3o8eFOX4ri/F8fgHgiy/BS47")
 ```
+
 The algorithm for decoding the original key might be something like this:
 
 Example in Java:
@@ -605,6 +607,7 @@ Example in Java:
 ```java
 Log.v("Private key tag", new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
 ```
+
 Example in Kotlin:
 
 ```kotlin
@@ -763,6 +766,7 @@ public Cursor query(final Uri uri, final String[] array, final String s, final S
     return sqLiteQueryBuilder.query(this.pwdb.getReadableDatabase(), array, s, array2, (String)null, (String)null, s2);
 }
 ```
+
 Example in Kotlin:
 
 ```kotlin
