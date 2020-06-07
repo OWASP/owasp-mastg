@@ -33,12 +33,24 @@ The following code snippets demonstrate bad practices that disclose sensitive in
 The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
 
+Example for Java:
+
 ```java
 SharedPreferences sharedPref = getSharedPreferences("key", MODE_WORLD_READABLE);
 SharedPreferences.Editor editor = sharedPref.edit();
 editor.putString("username", "administrator");
 editor.putString("password", "supersecret");
 editor.commit();
+```
+
+Example for Kotlin:
+
+```kotlin
+var sharedPref = getSharedPreferences("key", Context.MODE_WORLD_READABLE)
+var editor = sharedPref.edit()
+editor.putString("username", "administrator")
+editor.putString("password", "supersecret")
+editor.commit()
 ```
 
 Once the activity has been called, the file key.xml will be created with the provided data. This code violates several best practices.
@@ -67,11 +79,22 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has built-in support for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
 You may use the following code to store sensitive information within an activity:
 
+Example in Java:
+
 ```java
 SQLiteDatabase notSoSecure = openOrCreateDatabase("privateNotSoSecure", MODE_PRIVATE, null);
 notSoSecure.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR, Password VARCHAR);");
 notSoSecure.execSQL("INSERT INTO Accounts VALUES('admin','AdminPass');");
 notSoSecure.close();
+```
+
+Example in Kotlin:
+
+```kotlin
+var notSoSecure = openOrCreateDatabase("privateNotSoSecure", Context.MODE_PRIVATE, null)
+notSoSecure.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR, Password VARCHAR);")
+notSoSecure.execSQL("INSERT INTO Accounts VALUES('admin','AdminPass');")
+notSoSecure.close()
 ```
 
 Once the activity has been called, the database file `privateNotSoSecure` will be created with the provided data and stored in the clear text file `/data/data/<package-name>/databases/privateNotSoSecure`.
@@ -87,12 +110,22 @@ Sensitive information should not be stored in unencrypted SQLite databases.
 
 With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"), SQLite databases can be password-encrypted.
 
+Example in Java:
+
 ```java
 SQLiteDatabase secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null);
 secureDB.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Password VARCHAR);");
 secureDB.execSQL("INSERT INTO Accounts VALUES('admin','AdminPassEnc');");
 secureDB.close();
+```
 
+Example in Kotlin:
+
+```kotlin
+var secureDB = SQLiteDatabase.openOrCreateDatabase(database, "password123", null)
+secureDB.execSQL("CREATE TABLE IF NOT EXISTS Accounts(Username VARCHAR,Password VARCHAR);")
+secureDB.execSQL("INSERT INTO Accounts VALUES('admin','AdminPassEnc');")
+secureDB.close()
 ```
 
 If encrypted SQLite databases are used, determine whether the password is hard-coded in the source, stored in shared preferences, or hidden somewhere else in the code or filesystem.
@@ -231,6 +264,8 @@ Obtaining the key is trivial because it is contained in the source code and iden
 
 Consider the following code:
 
+Example in Java:
+
 ```java
 //A more complicated effort to store the XOR'ed halves of a key (instead of the key itself)
 private static final String[] myCompositeKey = new String[]{
@@ -238,7 +273,15 @@ private static final String[] myCompositeKey = new String[]{
 };
 ```
 
+Example in Kotlin:
+
+```kotlin
+private val myCompositeKey = arrayOf<String>("oNQavjbaNNSgEqoCkT9Em4imeQQ=", "3o8eFOX4ri/F8fgHgiy/BS47")
+```
+
 The algorithm for decoding the original key might be something like this:
+
+Example in Java:
 
 ```java
 public void useXorStringHiding(String myHiddenMessage) {
@@ -250,6 +293,21 @@ public void useXorStringHiding(String myHiddenMessage) {
     xorKey[i] = (byte) (xorParts0[i] ^ xorParts1[i]);
   }
   HidingUtil.doHiding(myHiddenMessage.getBytes(), xorKey, false);
+}
+```
+
+Example in Kotlin:
+
+```kotlin
+fun useXorStringHiding(myHiddenMessage:String) {
+  val xorParts0 = Base64.decode(myCompositeKey[0], 0)
+  val xorParts1 = Base64.decode(myCompositeKey[1], 0)
+  val xorKey = ByteArray(xorParts0.size)
+  for (i in xorParts1.indices)
+  {
+    xorKey[i] = (xorParts0[i] xor xorParts1[i]).toByte()
+  }
+  HidingUtil.doHiding(myHiddenMessage.toByteArray(), xorKey, false)
 }
 ```
 
@@ -366,6 +424,8 @@ For the security analysis perspective the analysts may perform the following che
 Android 9 (API level 28) adds the ability to import keys securely into the `AndroidKeystore`. First `AndroidKeystore` generates a key pair using `PURPOSE_WRAP_KEY` which should also be protected with an attestation certificate, this pair aims to protect the Keys being imported to `AndroidKeystore`. The encrypted keys are generated as ASN.1-encoded message in the `SecureKeyWrapper` format which also contains a description of the ways the imported key is allowed to be used. The keys are then decrypted inside the `AndroidKeystore` hardware belonging to the specific device that generated the wrapping key so they never appear as plaintext in the device's host memory.
 
 <img src="Images/Chapters/0x05d/Android9_secure_key_import_to_keystore.jpg" alt="Secure key import into Keystore" width="500">
+
+Example in Java:
 
 ```java
 KeyDescription ::= SEQUENCE {
@@ -528,14 +588,30 @@ To determine whether all logging functions from the `android.util.Log` class hav
 
 Note that the example above only ensures that calls to the Log class' methods will be removed. If the string that will be logged is dynamically constructed, the code that constructs the string may remain in the bytecode. For example, the following code issues an implicit `StringBuilder` to construct the log statement:
 
+Example in Java:
+
 ```java
 Log.v("Private key tag", "Private key [byte format]: " + key);
 ```
 
+Example in Kotlin:
+
+```kotlin
+Log.v("Private key tag", "Private key [byte format]: $key")
+```
+
 The compiled bytecode, however, is equivalent to the bytecode of the following log statement, which constructs the string explicitly:
+
+Example in Java:
 
 ```java
 Log.v("Private key tag", new StringBuilder("Private key [byte format]: ").append(key.toString()).toString());
+```
+
+Example in Kotlin:
+
+```kotlin
+Log.v("Private key tag", StringBuilder("Private key [byte format]: ").append(key).toString())
 ```
 
 ProGuard guarantees removal of the `Log.v` method call. Whether the rest of the code (`new StringBuilder ...`) will be removed depends on the complexity of the code and the [ProGuard version](https://stackoverflow.com/questions/6009078/removing-unused-strings-during-proguard-optimisation "Removing unused strings during ProGuard optimization ").
@@ -675,6 +751,8 @@ As shown in the `AndroidManifest.xml` above, the application exports two content
 
 Inspect the `query` function in the `DBContentProvider.java` file to determine whether any sensitive information is being leaked:
 
+Example in Java:
+
 ```java
 public Cursor query(final Uri uri, final String[] array, final String s, final String[] array2, final String s2) {
     final int match = this.sUriMatcher.match(uri);
@@ -687,6 +765,21 @@ public Cursor query(final Uri uri, final String[] array, final String s, final S
     }
     return sqLiteQueryBuilder.query(this.pwdb.getReadableDatabase(), array, s, array2, (String)null, (String)null, s2);
 }
+```
+
+Example in Kotlin:
+
+```kotlin
+fun query(uri: Uri?, array: Array<String?>?, s: String?, array2: Array<String?>?, s2: String?): Cursor {
+        val match: Int = this.sUriMatcher.match(uri)
+        val sqLiteQueryBuilder = SQLiteQueryBuilder()
+        if (match >= 100 && match < 200) {
+            sqLiteQueryBuilder.tables = "Passwords"
+        } else if (match >= 200) {
+            sqLiteQueryBuilder.tables = "Key"
+        }
+        return sqLiteQueryBuilder.query(this.pwdb.getReadableDatabase(), array, s, array2, null as String?, null as String?, s2)
+    }
 ```
 
 Here we see that there are actually two paths, "/Keys" and "/Passwords", and the latter is not being protected in the manifest and is therefore vulnerable.
@@ -1010,11 +1103,22 @@ For example, capturing a screenshot of a banking application may reveal informat
 
 To determine whether the application may expose sensitive information via the app switcher, find out whether the [`FLAG_SECURE`](https://developer.android.com/reference/android/view/Display.html#FLAG_SECURE "FLAG_SECURE Option") option has been set. You should find something similar to the following code snippet:
 
+Example in Java:
+
 ```java
 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
 
 setContentView(R.layout.activity_main);
+```
+
+Example in Kotlin:
+
+```kotlin
+window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE)
+
+setContentView(R.layout.activity_main)
 ```
 
 If the option has not been set, the application is vulnerable to screen capturing.
@@ -1056,9 +1160,18 @@ Using non-primitive mutable types like `StringBuffer` and `StringBuilder` may be
 
 Unfortunately, few libraries and frameworks are designed to allow sensitive data to be overwritten. For example, destroying a key, as shown below, doesn't really remove the key from memory:
 
+Example in Java:
+
 ```java
 SecretKey secretKey = new SecretKeySpec("key".getBytes(), "AES");
 secretKey.destroy();
+```
+
+Example in Kotlin:
+
+```kotlin
+val secretKey: SecretKey = SecretKeySpec("key".toByteArray(), "AES")
+secretKey.destroy()
 ```
 
 Overwriting the backing byte-array from `secretKey.getEncoded` doesn't remove the key either; the SecretKeySpec-based key returns a copy of the backing byte-array. See the sections below for the proper way to remove a `SecretKey` from memory.
@@ -1088,6 +1201,8 @@ To properly clean sensitive information from memory, store it in primitive data 
 
 Make sure to overwrite the content of the critical object once the object is no longer needed. Overwriting the content with zeroes is one simple and very popular method:
 
+Example in Java:
+
 ```java
 byte[] secret = null;
 try{
@@ -1095,6 +1210,19 @@ try{
 } finally {
     if (null != secret) {
         Arrays.fill(secret, (byte) 0);
+    }
+}
+```
+
+Example in Kotlin:
+
+```kotlin
+val secret: ByteArray? = null
+try {
+     //get or generate the secret, do work with it, make sure you make no local copies
+} finally {
+    if (null != secret) {
+        Arrays.fill(secret, 0.toByte())
     }
 }
 ```
@@ -1108,6 +1236,8 @@ Then, using `Arrays.fill` to overwrite the data is a bad idea because the method
 The final issue with the above example is that the content was overwritten with zeroes only. You should try to overwrite critical objects with random data or content from non-critical objects. This will make it really difficult to construct scanners that can identify sensitive data on the basis of its management.
 
 Below is an improved version of the previous example:
+
+Example in Java:
 
 ```java
 byte[] nonSecret = somePublicString.getBytes("ISO-8859-1");
@@ -1128,6 +1258,27 @@ try{
 }
 ```
 
+Example in Kotlin:
+
+```kotlin
+val nonSecret: ByteArray = somePublicString.getBytes("ISO-8859-1")
+val secret: ByteArray? = null
+try {
+     //get or generate the secret, do work with it, make sure you make no local copies
+} finally {
+    if (null != secret) {
+        for (i in secret.indices) {
+            secret[i] = nonSecret[i % nonSecret.size]
+        }
+
+        val out = FileOutputStream("/dev/null")
+        out.write(secret)
+        out.flush()
+        out.close()
+        }
+}
+```
+
 For more information, take a look at [Securely Storing Sensitive Data in RAM](https://www.nowsecure.com/resources/secure-mobile-development/coding-practices/securely-store-sensitive-data-in-ram/ "Securely store sensitive data in RAM").
 
 In the "Static Analysis" section, we mentioned the proper way to handle cryptographic keys when you are using `AndroidKeyStore` or `SecretKey`.
@@ -1137,7 +1288,9 @@ For a better implementation of `SecretKey`, look at the `SecureSecretKey` class 
 - No cross-context handling of sensitive data. Each copy of the key can be cleared from within the scope in which it was created.
 - The local copy is cleared according to the recommendations given above.
 
-  ```java
+Example in Java:
+
+```java
   public class SecureSecretKey implements javax.crypto.SecretKey, Destroyable {
       private byte[] key;
       private final String algorithm;
@@ -1194,7 +1347,63 @@ For a better implementation of `SecretKey`, look at the `SecureSecretKey` class 
           return key == null;
       }
   }
-  ```
+```
+
+Example in Kotlin:
+
+```kotlin
+class SecureSecretKey(key: ByteArray, algorithm: String) : SecretKey, Destroyable {
+    private var key: ByteArray?
+    private val algorithm: String
+    override fun getAlgorithm(): String {
+        return algorithm
+    }
+
+    override fun getFormat(): String {
+        return "RAW"
+    }
+
+    /** Returns a copy of the key.
+     * Make sure to clear the returned byte array when no longer needed.
+     */
+    override fun getEncoded(): ByteArray {
+        if (null == key) {
+            throw NullPointerException()
+        }
+        return key!!.clone()
+    }
+
+    /** Overwrites the key with dummy data to ensure this copy is no longer present in memory. */
+    override fun destroy() {
+        if (isDestroyed) {
+            return
+        }
+        val nonSecret: ByteArray = String("RuntimeException").toByteArray(charset("ISO-8859-1"))
+        for (i in key!!.indices) {
+            key!![i] = nonSecret[i % nonSecret.size]
+        }
+        val out = FileOutputStream("/dev/null")
+        out.write(key)
+        out.flush()
+        out.close()
+        key = null
+        System.gc()
+    }
+
+    override fun isDestroyed(): Boolean {
+        return key == null
+    }
+
+    /** Constructs SecureSecretKey instance out of a copy of the provided key bytes.
+     * The caller is responsible of clearing the key array provided as input.
+     * The internal copy of the key can be cleared by calling the destroy() method.
+     */
+    init {
+        this.key = key.clone()
+        this.algorithm = algorithm
+    }
+}
+```
 
 Secure user-provided data is the final secure information type usually found in memory. This is often managed by implementing a custom input method, for which you should follow the recommendations given here. However, Android allows information to be partially erased from `EditText` buffers via a custom `Editable.Factory`.
 
