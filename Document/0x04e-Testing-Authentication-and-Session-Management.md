@@ -128,9 +128,9 @@ In order to further reduce the likelihood of a successful dictionary attack agai
 Based on the SHA-1 hash of a possible password candidate, the API returns the number of times the hash of the given password has been found in the various breaches collected by the service. The workflow takes the following steps:
 
 - Encode the user input to UTF-8 (e.g.: the password `test`).
-- Take the SHA-1 hash of the result of step 1 (e.g.: the hash of `test` is `A94A8FE5CCB19BA61C4C0873D391E987982FBBD3`).
+- Take the SHA-1 hash of the result of step 1 (e.g.: the hash of `test` is `A94A8FE5CC...`).
 - Copy the first 5 characters (the hash prefix) and use them for a range-search by  using the following API: `http GET https://api.pwnedpasswords.com/range/A94A8`
-- Iterate through the result and look for the rest of the hash (e.g. is `FE5CCB19BA61C4C0873D391E987982FBBD3` part of the returned list?). If it is not part of the returned list, then the password for the given hash has not been found. Otherwise, as in case of `FE5CCB19BA61C4C0873D391E987982FBBD3`, it will return a counter showing how many times it has been found in breaches (e.g.: `FE5CCB19BA61C4C0873D391E987982FBBD3:76479`).
+- Iterate through the result and look for the rest of the hash (e.g. is `FE5CC...` part of the returned list?). If it is not part of the returned list, then the password for the given hash has not been found. Otherwise, as in case of `FE5CC...`, it will return a counter showing how many times it has been found in breaches (e.g.: `FE5CC...:76479`).
 
 Further documentation on the Pwned Passwords API can be found [online](https://haveibeenpwned.com/API/v3 "Api Docs V3").
 
