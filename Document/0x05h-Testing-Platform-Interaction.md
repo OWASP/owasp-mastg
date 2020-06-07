@@ -526,7 +526,13 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 Both Android and iOS allow inter-app communication via custom URL schemes. These custom URLs allow other applications to perform specific actions within the application that offers the custom URL scheme. Custom URIs can begin with any scheme prefix, and they usually define an action to take within the application and parameters for that action.
 
-Consider this contrived example: `sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true`. When a victim clicks such a link on a mobile device, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to
+Consider this contrived example:
+
+```default
+sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
+```
+
+When a victim clicks such a link on a mobile device, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to
 
 - financial loss for the victim if messages are sent to premium services or
 - disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.

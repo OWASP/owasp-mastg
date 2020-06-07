@@ -995,7 +995,7 @@ Here's a non-exhaustive list of some info and the corresponding keywords that yo
 
 - App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Exported/imported *custom document types*: `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported *custom document types*: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network APIs](0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.

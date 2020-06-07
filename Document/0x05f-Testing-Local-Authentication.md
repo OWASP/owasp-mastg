@@ -236,7 +236,7 @@ cryptoObject = new FingerprintManager.CryptoObject(cipher);
 fingerprintManager.authenticate(cryptoObject, new CancellationSignal(), 0, this, null);
 ```
 
-When the authentication succeeds, the callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called at which point, the authenticated `CryptoObject` can be retrieved from the result.
+The callback method `onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)` is called when the authentication succeeds. The authenticated `CryptoObject` can then be retrieved from the result.
 
 ```java
 public void authenticationSucceeded(FingerprintManager.AuthenticationResult result) {
