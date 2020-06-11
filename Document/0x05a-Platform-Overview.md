@@ -442,6 +442,7 @@ Example in Java:
 ```java
 Intent intent = new Intent(this, myActivity.myClass);
 ```
+
 Example in Kotlin:
 
 ```kotlin
