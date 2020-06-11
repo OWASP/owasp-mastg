@@ -319,8 +319,18 @@ Because fragments have their own life cycle, the Fragment class contains event m
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
+Example in Java:
+
 ```java
 public class MyFragment extends Fragment {
+    ...
+}
+```
+
+Example in Kotlin:
+
+```kotlin
+class MyFragment : Fragment() {
     ...
 }
 ```
@@ -331,8 +341,16 @@ To manage its fragments, an activity can use a Fragment Manager (FragmentManager
 
 Fragment Managers can be created via the following:
 
+Example in Java:
+
 ```java
 FragmentManager fm = getFragmentManager();
+```
+
+Example in Kotlin:
+
+```kotlin
+var fm = fragmentManager
 ```
 
 Fragments don't necessarily have a user interface; they can be a convenient and efficient way to manage background operations pertaining to the app's user interface. A fragment may be declared persistent so that if the system preserves its state even if its Activity is destroyed.
@@ -500,7 +518,7 @@ unregisterReceiver(myReceiver);
 
 Example in Kotlin:
 
-```
+```kotlin
 // Define a broadcast receiver
 val myReceiver: BroadcastReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
