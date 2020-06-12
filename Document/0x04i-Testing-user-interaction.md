@@ -1,4 +1,4 @@
-# Testing User Interaction
+# Mobile App User Interaction
 
 ## Testing User Education (MSTG-STORAGE-12)
 
