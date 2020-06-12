@@ -1,6 +1,6 @@
 # Android Platform Overview
 
-This section introduces the Android platform from an architecture point of view. The following five key areas are discussed:
+This chapter introduces the Android platform from an architecture point of view. The following five key areas are discussed:
 
 1. Android security architecture
 2. Android application structure

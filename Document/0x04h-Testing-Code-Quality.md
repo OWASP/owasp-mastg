@@ -1,4 +1,4 @@
-# Testing Code Quality
+# Mobile App Code Quality
 
 Mobile app developers use a wide variety of programming languages and frameworks. As such, common vulnerabilities such as SQL injection, buffer overflows, and cross-site scripting (XSS), may manifest in apps when neglecting secure programming practices.
 
