@@ -1079,7 +1079,7 @@ webView.getSettings().setAllowUniversalAccessFromFileURLs(false);
 webView.getSettings().setAllowContentAccess(false);
 ```
 
-- Create a whitelist that defines local and remote web pages and protocols that are allowed to be loaded.
+- Create a list that defines local and remote web pages and protocols that are allowed to be loaded.
 - Create checksums of the local HTML/JavaScript files and check them while the app is starting up. Minify JavaScript files to make them harder to read.
 
 #### Dynamic Analysis
