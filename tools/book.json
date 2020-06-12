@@ -3,7 +3,7 @@
   "plugins" : [ "anchors" ],
 
   "structure": {
-    "readme": "Foreword.md"
+    "readme": "0x01-Foreword.md"
   },
   "title" : "OWASP Mobile Security Testing Guide []",
   "language": "en",
