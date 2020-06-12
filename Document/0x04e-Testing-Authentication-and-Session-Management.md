@@ -247,7 +247,7 @@ The purpose of this test case is verifying logout functionality and determining 
 
 Failing to destroy the server-side session is one of the most common logout functionality implementation errors. This error keeps the session or token alive, even after the user logs out of the application. An attacker who gets valid authentication information can continue to use it and hijack a user's account.
 
-Many mobile apps don't automatically log users out. There can be various reasons, such as: because it is inconvenient for customers, or because of decisions made when implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying all locally stored tokens or session identifiers. If session information is stored on the server, it should also be destroyed by sending a logout request to that server. In case of a high-risk application, tokens should be blacklisted. Not removing tokens or session identifiers can result in unauthorized access to the application in case the tokens are leaked.
+Many mobile apps don't automatically log users out. There can be various reasons, such as: because it is inconvenient for customers, or because of decisions made when implementing stateless authentication. The application should still have a logout function, and it should be implemented according to best practices, destroying all locally stored tokens or session identifiers. If session information is stored on the server, it should also be destroyed by sending a logout request to that server. In case of a high-risk application, tokens should be on a block-list. Not removing tokens or session identifiers can result in unauthorized access to the application in case the tokens are leaked.
 Note that other sensitive types of information should be removed as well, as any information that is not properly cleared may be leaked later, for example during a device backup.
 
 #### Static Analysis
@@ -258,7 +258,7 @@ If server code is available, make sure logout functionality terminates the sessi
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 - [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
 
-If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Blacklisting JSON Web Token API Keys").
+If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Invalidating JSON Web Token API Keys").
 
 #### Dynamic Analysis
 

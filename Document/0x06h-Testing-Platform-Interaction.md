@@ -522,7 +522,7 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
 }
 ```
 
-In addition, remember that if the URL includes parameters, they should not be trusted before being carefully sanitized and validated (even when including a whitelist of trusted domains here). For example, they might have been spoofed by an attacker or might include malformed data. If that is the case, the whole URL and therefore the universal link request must be discarded.
+In addition, remember that if the URL includes parameters, they should not be trusted before being carefully sanitized and validated (even when coming from trusted domain). For example, they might have been spoofed by an attacker or might include malformed data. If that is the case, the whole URL and therefore the universal link request must be discarded.
 
 The `NSURLComponents` API can be used to parse and manipulate the components of the URL. This can be also part of the method `application:continueUserActivity:restorationHandler:` itself or might occur on a separate method being called from it. The following [example](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links#3001935 "An example of handling a universal link") demonstrates this:
 
@@ -1545,7 +1545,7 @@ Security issues arise when an app processes calls to its URL scheme without prop
 
 One example is the following [bug in the Skype Mobile app](http://www.dhanjani.com/blog/2010/11/insecure-handling-of-url-schemes-in-apples-ios.html "Insecure Handling of URL Schemes in Apple’s iOS"), discovered in 2010: The Skype app registered the `skype://` protocol handler, which allowed other apps to trigger calls to other Skype users and phone numbers. Unfortunately, Skype didn't ask users for permission before placing the calls, so any app could call arbitrary numbers without the user's knowledge. Attackers exploited this vulnerability by putting an invisible `<iframe src="skype://xxx?call"></iframe>` (where `xxx` was replaced by a premium number), so any Skype user who inadvertently visited a malicious website called the premium number.
 
-As a developer, you should carefully validate any URL before calling it. You can whitelist applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
+As a developer, you should carefully validate any URL before calling it. You can allow only certains applications which may be opened via the registered protocol handler. Prompting users to confirm the URL-invoked action is another helpful control.
 
 All URLs are passed to the app delegate, either at launch time or while the app is running or in the background. To handle incoming URLs, the delegate should implement methods to:
 
@@ -1654,7 +1654,7 @@ As an example, Telegram declares in its [`Info.plist`](https://github.com/Telegr
 In order to determine how a URL path is built and validated, if you have the original source code, you can search for the following methods:
 
 - `application:didFinishLaunchingWithOptions:` method or `application:will-FinishLaunchingWithOptions:`: verify how the decision is made and how the information about the URL is retrieved.
-- [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc "UIApplicationDelegate application:openURL:options:"): verify how the resource is being opened, i.e. how the data is being parsed, verify the [options](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey "UIApplicationOpenURLOptionsKey"), especially if the calling app ([`sourceApplication`](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey/1623128-sourceapplication "UIApplicationOpenURLOptionsSourceApplicationKey")) is being verified or checked against a white- or blacklist. The app might also need user permission when using the custom URL scheme.
+- [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc "UIApplicationDelegate application:openURL:options:"): verify how the resource is being opened, i.e. how the data is being parsed, verify the [options](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey "UIApplicationOpenURLOptionsKey"), especially if the calling app ([`sourceApplication`](https://developer.apple.com/documentation/uikit/uiapplication/openurloptionskey/1623128-sourceapplication "UIApplicationOpenURLOptionsSourceApplicationKey")) is being allowed or denied access. The app might also need user permission when using the custom URL scheme.
 
 In Telegram you will [find four different methods being used](https://github.com/peter-iakovlev/Telegram-iOS/blob/87e0a33ac438c1d702f2a0b75bf21f26866e346f/Telegram-iOS/AppDelegate.swift#L1250 "Telegram\'s AppDelegate.swift Line 1250"):
 
@@ -2554,7 +2554,7 @@ WebViews can load remote content from an endpoint, but they can also load local 
 
 Use the following best practices as defensive-in-depth measures:
 
-- Create a whitelist that defines local and remote web pages and URL schemes that are allowed to be loaded.
+- Create a list that defines local and remote web pages and URL schemes that are allowed to be loaded.
 - Create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_%28programming%29) "Minification (programming)") to make them harder to read.
 
 #### Static Analysis

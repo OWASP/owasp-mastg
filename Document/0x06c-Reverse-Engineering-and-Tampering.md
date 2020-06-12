@@ -269,7 +269,7 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 ##### Getting a Developer Provisioning Profile and Certificate
 
-The *provisioning profile* is a plist file signed by Apple. It whitelists your code-signing certificate on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to sign.
+The *provisioning profile* is a plist file signed by Apple, which adds your code-signing certificate to its accept-list on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to sign.
 
 Depending on whether you're registered as an iOS developer, you can obtain a certificate and provisioning profile in one of the following ways:
 
