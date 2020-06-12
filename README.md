@@ -19,7 +19,6 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 
 ### Introduction
 
-- [Header](Document/0x00-Header.md)
 - [Foreword](Document/Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
