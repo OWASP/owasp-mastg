@@ -643,3 +643,5 @@ The Android application attack surface consists of all components of the applica
   - [Data Storage on Android](0x05d-Testing-Data-Storage.md#data-storage-on-android "Data Storage on Android")
 - Protect itself against compromised environments, repackaging or other local attacks, see also:
   - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")
+- Implement the client side security measures such as Root Detection, Certificate/Public Key Pinning
+
