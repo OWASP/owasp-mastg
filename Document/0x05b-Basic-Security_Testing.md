@@ -2144,6 +2144,9 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
 - Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
 - Mitm-relay - <https://github.com/jrmdev/mitm_relay>
+- Mitm Proxy - <https://mitmproxy.org>
+- Upstream Proxy - <https://github.com/inaz2/proxy2>
+- JWT Secret Key Cracker - <https://github.com/brendan-rius/c-jwt-cracker>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Nathan - <https://github.com/mseclab/nathan>
 - Objection - <https://github.com/sensepost/objection>
