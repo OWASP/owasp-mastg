@@ -319,7 +319,7 @@ Created                    Accessible                      ACL    Type      Acco
 
 ###### Searching for Binary Cookies
 
-iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Objection to convert these files to a json format and inspect the data.
+iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use objection to convert these files to a JSON format and inspect the data.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios cookies get --json
