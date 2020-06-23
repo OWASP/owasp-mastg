@@ -207,7 +207,7 @@ is accessible.
 
 #### Dynamic Analysis
 
-[Objection Biometrics Bypass](https://github.com/sensepost/objection/wiki/Understanding-the-iOS-Biometrics-Bypass "Understanding the iOS Biometrics Bypass") can be used to bypass LocalAuthentication. Objection uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Use the *ios ui biometrics_bypass* command to bypass the insecure biometric authentication. Objection will register job, which will replace the `evaluatePolicy` result. It will work in both Swift and Objective-C implementations.
+[Objection Biometrics Bypass](https://github.com/sensepost/objection/wiki/Understanding-the-iOS-Biometrics-Bypass "Understanding the iOS Biometrics Bypass") can be used to bypass LocalAuthentication. Objection uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Use the `ios ui biometrics_bypass` command to bypass the insecure biometric authentication. Objection will register a job, which will replace the `evaluatePolicy` result. It will work in both, Swift and Objective-C implementations.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios ui biometrics_bypass
