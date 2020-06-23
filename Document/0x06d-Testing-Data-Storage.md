@@ -341,7 +341,7 @@ iOS applications often store binary cookie files in the application sandbox. Coo
 
 iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the `ios plist cat plistFileName.plist` command to inspect the plist file.
 
-To find userInfo.plist find use the *env* command. It will print out the locations of the applications Library, Caches and Documents directories:
+To find the file userInfo.plist, use the `env` command. It will print out the locations of the applications Library, Caches and Documents directories:
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # env
