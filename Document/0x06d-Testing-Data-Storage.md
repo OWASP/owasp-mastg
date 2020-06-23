@@ -301,7 +301,7 @@ Then you can monitor and verify the changes in the filesystem of the app and inv
 
 ##### Dynamic Analysis with Objection
 
-You can use the [Objection](https://github.com/sensepost/objection "Objection") runtime mobile exploration toolkit to find vulnerabilities caused by the application's data storage mechanism. Objection can be used without Jailbroken device, but it will require [Patching iOS Applications](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Objection").
+You can use the [objection](https://github.com/sensepost/objection "objection") runtime mobile exploration toolkit to find vulnerabilities caused by the application's data storage mechanism. Objection can be used without a Jailbroken device, but it will require [patching the iOS Application](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Objection").
 
 ###### Reading the Keychain
 
