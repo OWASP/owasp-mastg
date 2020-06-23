@@ -415,7 +415,7 @@ Time: 0.013s
 
 ###### Searching for Cache Databases
 
-iOS applications can store data in cache databases. These databases contain data such as web requests and responses. Sometimes the data is sensitive. To display the cache go to *{Path To App}/Library/Caches/{Bundle Identifier}*, the WebKit cash is being stored in the Cache.db file. Objection can interact with it as with normal sqlite db.
+iOS applications can store data in cache databases. These databases contain data such as web requests and responses. This data can be sensitive, if tokens, usernames or other information is cached. To display the cache go to the app path and go to `/Library/Caches/{Bundle Identifier}`. The WebKit cache is being stored in the Cache.db file. Objection can interact with it, as it is a normal SQLite database.
 
 ### Checking Logs for Sensitive Data (MSTG-STORAGE-3)
 
