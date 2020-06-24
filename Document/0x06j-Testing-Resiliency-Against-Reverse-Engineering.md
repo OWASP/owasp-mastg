@@ -280,7 +280,7 @@ There are several anti-debugging techniques applicable to iOS which can be categ
 
 Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
-According to Apple, you should "[restrict restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+According to Apple, you should "[restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
 ##### Using ptrace
 
@@ -390,7 +390,7 @@ Similarly to the other techniques, this has also a trivial bypass (e.g. by patch
 
 There are two topics related to file integrity:
 
- 1. _Application source code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
+ 1. _Application source code integrity checks:_ In the "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
 
  2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the Keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
 
@@ -603,7 +603,7 @@ The following steps should guide you when bypassing detection of reverse enginee
 1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by patching the binary through usage of radare2/Cutter or Ghidra.
 2. Use Frida or Cydia Substrate to hook file system APIs on the Objective-C/Swift or native layers. Return a handle to the original file, not the modified file.
 
-Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)" for examples of patching and code injection.
+Refer to the chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)" for examples of patching and code injection.
 
 ### Testing Emulator Detection (MSTG-RESILIENCE-5)
 

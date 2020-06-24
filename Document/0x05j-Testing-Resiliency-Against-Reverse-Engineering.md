@@ -617,7 +617,7 @@ If anti-debugging mechanisms are missing or too easily bypassed, make suggestion
 
 There are two topics related to file integrity:
 
- 1. _Code integrity checks:_ In the "Tampering and Reverse Engineering" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app byte-code, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
+ 1. _Code integrity checks:_ In the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app byte-code, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
  2. _The file storage integrity checks:_ The integrity of files that the application stores on the SD card or public storage and the integrity of key-value pairs that are stored in `SharedPreferences` should be protected.
 
 ##### Sample Implementation - Application Source Code
@@ -1108,7 +1108,7 @@ There are a few key terms you can look for when the source code is available:
   - `Build.SERIAL` without `Build.getSerial`
   - `htc.camera.sensor.front_SN` for HTC devices
   - `persist.service.bdroid.bdadd`
-  - `Settings.Secure.bluetooth_address`, unless the system permission LOCAL_MAC_ADDRESS is enabled in the manifest
+  - `Settings.Secure.bluetooth_address` or `WifiInfo.getMacAddress` from `WifiManager`, unless the system permission `LOCAL_MAC_ADDRESS` is enabled in the manifest.
 - `ANDROID_ID` used only as an identifier. This will influence the binding quality over time for older devices.
 - The absence of Instance ID, `Build.SERIAL`, and the IMEI.
 
