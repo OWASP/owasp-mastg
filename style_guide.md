@@ -24,11 +24,12 @@ Consider creating a supporting document and linking to it from the page rather t
 
 The MSTG reaches all kind of people all over the world. To ensure inclusiveness and diversity, please refrain from using the following throughout the book:
 
-- she / her / hers
-- he / him / his
+- she / her / hers / herself
+- he / him / his / himself
 
 Or any other constructions like "he/she", "s/he", "his or her". Instead, use the following gender-neutral alternatives:
 
+- Omit the pronoun if possible: "The user authenticates himself using ..." -> "The user authenticates using ..."
 - Replace pronouns with "the or "a": "When the user enters his password ..." -> "When the user enters the password ..."
 - Use plural nouns and pronouns: "An attacker will use his jailbroken device ..." -> "Attackers will use their jailbroken devices ..."
 - Use the second person: "If the attacker runs this code, he can bypass ..." -> "If you run this code, you can bypass ..."
