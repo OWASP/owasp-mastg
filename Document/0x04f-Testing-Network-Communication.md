@@ -489,6 +489,8 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - tcpdump - <https://www.androidtcpdump.com/>
 - Testssl.sh - <https://github.com/drwetter/testssl.sh>
 - Wireshark - <https://www.wireshark.org/>
+- Mitm Proxy - <https://mitmproxy.org>
+- Upstream Proxy - <https://github.com/inaz2/proxy2>
 
 #### Android
 
