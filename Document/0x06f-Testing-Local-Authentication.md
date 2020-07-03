@@ -207,32 +207,16 @@ is accessible.
 
 #### Dynamic Analysis
 
-On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
-
-- **Settings** -> **Swizzler**
-- Enable **Inject Swizzler into Apps**
-- Enable **Log Everything to Syslog**
-- Enable **Log Everything to File**
-- Enter the submenu **iOS Frameworks**
-- Enable **LocalAuthentication**
-- Enter the submenu **Select Target Apps**
-- Enable the target app
-- Close the app and start it again
-- When the Touch ID prompt shows click **cancel**
-- If the application flow continues without requiring the Touch ID then the bypass has worked.
-
-If you're using Needle, run the `hooking/frida/script_touch-id-bypass` module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses Cycript instead of Frida is also available in Needle.
-
-Alternatively, you can use [objection to bypass Touch ID](https://github.com/sensepost/objection/wiki/Understanding-the-Touch-ID-Bypass "Understanding the Touch ID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
-
-Needle can be used to bypass insecure biometric authentication in iOS platforms. Needle utilizes Frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
+[Objection Biometrics Bypass](https://github.com/sensepost/objection/wiki/Understanding-the-iOS-Biometrics-Bypass "Understanding the iOS Biometrics Bypass") can be used to bypass LocalAuthentication. Objection uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Use the `ios ui biometrics_bypass` command to bypass the insecure biometric authentication. Objection will register a job, which will replace the `evaluatePolicy` result. It will work in both, Swift and Objective-C implementations.
 
 ```bash
-[needle][container] > use hooking/frida/script_touch-id-bypass
-[needle][script_touch-id-bypass] > run
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios ui biometrics_bypass
+(agent) Registering job 3mhtws9x47q. Type: ios-biometrics-disable
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # (agent) [3mhtws9x47q] Localized Reason for auth requirement: Please authenticate yourself
+(agent) [3mhtws9x47q] OS authentication response: false
+(agent) [3mhtws9x47q] Marking OS response as True instead
+(agent) [3mhtws9x47q] Biometrics bypass hook complete
 ```
-
-If vulnerable, the module will automatically bypass the login form.
 
 ### Note regarding temporariness of keys in the Keychain
 
