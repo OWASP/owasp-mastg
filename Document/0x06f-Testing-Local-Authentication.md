@@ -196,10 +196,10 @@ If `Security.framework` is used, only the second one will be shown.
 It is important to remember that the LocalAuthentication framework is an event-based procedure and as such, should not be the sole method of authentication. Though this type of authentication is effective on the user-interface level, it is easily bypassed through patching or instrumentation. Therefore, it is best to use the keychain service method, which means you should:
 
 - Verify that sensitive processes, such as re-authenticating a user performing a payment transaction, are protected using the keychain services method.
-- Verify that access control flags are set for the keychain item which ensure that the keychain item its data can only be unlocked by means of authenticating the user. This can be with one of the following flags:
+- Verify that access control flags are set for the keychain item which ensure that the data of the keychain item can only be unlocked by means of authenticating the user. This can be done with one of the following flags:
   - `kSecAccessControlBiometryCurrentSet` (before iOS 11.3 `kSecAccessControlTouchIDCurrentSet`). This will make sure that a user needs to authenticate with biometrics (e.g. Face ID or Touch ID) before accessing the data in the keychain item. Whenever the user adds a fingerprint or facial representation to the device, it will automatically invalidate the entry in the Keychain. This makes sure that the keychain item can only ever be unlocked by users that were enrolled when the item was added to the keychain.
   - `kSecAccessControlBiometryAny` (before iOS 11.3 `kSecAccessControlTouchIDAny`). This will make sure that a user needs to authenticate with biometrics (e.g. Face ID or Touch ID) before accessing the data in the Keychain entry. The Keychain entry will survive any (re-)enroling of new fingerprints or facial representation. This can be very convenient if the user has a changing fingerprint. However, it also means that attackers, who are somehow able to enrole their fingerprints or facial representations to the device, can now access those entries as well.
-  - `kSecAccessControlUserPresence` can be used as an alternative. This will allow the user to authenticate himself through a passcode if the biometric authentication no longer works. This is considered to be weaker than `kSecAccessControlBiometryAny` since it is much easier to steal someone's passcode entry by means of shouldersurfing, than it is to bypass the Touch ID or Face ID service.
+  - `kSecAccessControlUserPresence` can be used as an alternative. This will allow the user to authenticate through a passcode if the biometric authentication no longer works. This is considered to be weaker than `kSecAccessControlBiometryAny` since it is much easier to steal someone's passcode entry by means of shouldersurfing, than it is to bypass the Touch ID or Face ID service.
 - In order to make sure that biometrics can be used, verify that the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` or the `kSecAttrAccessibleWhenPasscodeSet` protection class is set when the `SecAccessControlCreateWithFlags` method is called. Note that the `...ThisDeviceOnly` variant will make sure that the keychain item is not synchronized with other iOS devices.
 
 > Note, a data protection class specifies the access methodology used to secure the data. Each class uses different policies to determine when the data
@@ -207,29 +207,15 @@ is accessible.
 
 ### Dynamic Analysis
 
-On a jailbroken device tools like [Swizzler2](https://github.com/vtky/Swizzler2 "Swizzler2") and [Needle](https://github.com/mwrlabs/needle "Needle") can be used to bypass LocalAuthentication. Both tools use Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Follow the steps below to activate this feature in Swizzler2:
-
-- **Settings** -> **Swizzler**
-- Enable **Inject Swizzler into Apps**
-- Enable **Log Everything to Syslog**
-- Enable **Log Everything to File**
-- Enter the submenu **iOS Frameworks**
-- Enable **LocalAuthentication**
-- Enter the submenu **Select Target Apps**
-- Enable the target app
-- Close the app and start it again
-- When the Touch ID prompt shows click **cancel**
-- If the application flow continues without requiring the Touch ID then the bypass has worked.
-
-If you're using Needle, run the `hooking/frida/script_touch-id-bypass` module and follow the prompts. This will spawn the application and instrument the `evaluatePolicy` function. When prompted to authenticate via Touch ID, tap cancel. If the application flow continues, then you have successfully bypassed Touch ID. A similar module (hooking/cycript/cycript_touchid) that uses Cycript instead of Frida is also available in Needle.
-
-Alternatively, you can use [objection to bypass Touch ID](https://github.com/sensepost/objection/wiki/Understanding-the-Touch-ID-Bypass "Understanding the Touch ID Bypass") (this also works on a non-jailbroken device), patch the app, or use Cycript or similar tools to instrument the process.
-
-Needle can be used to bypass insecure biometric authentication in iOS platforms. Needle utilizes Frida to bypass login forms developed using `LocalAuthentication.framework` APIs. The following module can be used to test for insecure biometric authentication:
+[Objection Biometrics Bypass](https://github.com/sensepost/objection/wiki/Understanding-the-iOS-Biometrics-Bypass "Understanding the iOS Biometrics Bypass") can be used to bypass LocalAuthentication. Objection uses Frida to instrument the `evaluatePolicy` function so that it returns `True` even if authentication was not successfully performed. Use the `ios ui biometrics_bypass` command to bypass the insecure biometric authentication. Objection will register a job, which will replace the `evaluatePolicy` result. It will work in both, Swift and Objective-C implementations.
 
 ```bash
-[needle][container] > use hooking/frida/script_touch-id-bypass
-[needle][script_touch-id-bypass] > run
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios ui biometrics_bypass
+(agent) Registering job 3mhtws9x47q. Type: ios-biometrics-disable
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # (agent) [3mhtws9x47q] Localized Reason for auth requirement: Please authenticate yourself
+(agent) [3mhtws9x47q] OS authentication response: false
+(agent) [3mhtws9x47q] Marking OS response as True instead
+(agent) [3mhtws9x47q] Biometrics bypass hook complete
 ```
 
 If vulnerable, the module will automatically bypass the login form.

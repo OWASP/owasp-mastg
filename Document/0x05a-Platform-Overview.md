@@ -319,8 +319,18 @@ Because fragments have their own life cycle, the Fragment class contains event m
 
 Fragments can be easily implemented by extending the Fragment class provided by Android:
 
+Example in Java:
+
 ```java
 public class MyFragment extends Fragment {
+    ...
+}
+```
+
+Example in Kotlin:
+
+```kotlin
+class MyFragment : Fragment() {
     ...
 }
 ```
@@ -331,8 +341,16 @@ To manage its fragments, an activity can use a Fragment Manager (FragmentManager
 
 Fragment Managers can be created via the following:
 
+Example in Java:
+
 ```java
 FragmentManager fm = getFragmentManager();
+```
+
+Example in Kotlin:
+
+```kotlin
+var fm = fragmentManager
 ```
 
 Fragments don't necessarily have a user interface; they can be a convenient and efficient way to manage background operations pertaining to the app's user interface. A fragment may be declared persistent so that if the system preserves its state even if its Activity is destroyed.
@@ -360,8 +378,39 @@ Services that allow other applications to bind to them are called *bound service
 
 Servicemanager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added with `addService` and retrieved by name with the static `getService` method in `android.os.ServiceManager`:
 
+Example in Java:
+
 ```java
-  public static IBinder getService(String name)
+public static IBinder getService(String name) {
+        try {
+            IBinder service = sCache.get(name);
+            if (service != null) {
+                return service;
+            } else {
+                return getIServiceManager().getService(name);
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "error in getService", e);
+        }
+        return null;
+    }
+```
+
+Example in Kotlin:
+
+```kotlin
+companion object {
+        private val sCache: Map<String, IBinder> = ArrayMap()
+        fun getService(name: String): IBinder? {
+            try {
+                val service = sCache[name]
+                return service ?: getIServiceManager().getService(name)
+            } catch (e: RemoteException) {
+                Log.e(FragmentActivity.TAG, "error in getService", e)
+            }
+            return null
+        }
+    }
 ```
 
 You can query the list of system services with the `service list` command.
@@ -388,14 +437,30 @@ Found 99 services:
 
 There are two types of intents. Explicit intents name the component that will be started (the fully qualified class name). For instance:
 
+Example in Java:
+
 ```java
 Intent intent = new Intent(this, myActivity.myClass);
 ```
 
+Example in Kotlin:
+
+```kotlin
+var intent = Intent(this, myActivity.myClass)
+```
+
 Implicit intents are sent to the OS to perform a given action on a given set of data (The URL of the OWASP website in our example below). It is up to the system to decide which app or class will perform the corresponding service. For instance:
+
+Example in Java:
 
 ```java
 Intent intent = new Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"));
+```
+
+Example in Kotlin:
+
+```kotlin
+var intent = Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"))
 ```
 
 An *intent filter* is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
@@ -433,9 +498,11 @@ The other way is to create the receiver dynamically in code. The receiver can th
 
 An example of registering a Broadcast Receiver dynamically:
 
+Example in Java:
+
 ```java
 // Define a broadcast receiver
-myReceiver = new BroadcastReceiver() {
+BroadcastReceiver myReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Intent received by myReceiver");
@@ -448,6 +515,24 @@ intentFilter.addAction("com.owasp.myapplication.MY_ACTION");
 registerReceiver(myReceiver, intentFilter);
 // To un-register the broadcast receiver
 unregisterReceiver(myReceiver);
+```
+
+Example in Kotlin:
+
+```kotlin
+// Define a broadcast receiver
+val myReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        Log.d(FragmentActivity.TAG, "Intent received by myReceiver")
+    }
+}
+// Define an intent filter with actions that the broadcast receiver listens for
+val intentFilter = IntentFilter()
+intentFilter.addAction("com.owasp.myapplication.MY_ACTION")
+// To register the broadcast receiver
+registerReceiver(myReceiver, intentFilter)
+// To un-register the broadcast receiver
+unregisterReceiver(myReceiver)
 ```
 
 Note that the system starts an app with the registered receiver automatically when a relevant intent is raised.
