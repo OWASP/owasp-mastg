@@ -324,7 +324,7 @@ It need to be validated whether the copyrights of the licenses have been adhered
 
 When no source-code is available for libraries analysis, you can find some of the frameworks being used with [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
 
-###### objection 
+###### objection
 
 objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
 
