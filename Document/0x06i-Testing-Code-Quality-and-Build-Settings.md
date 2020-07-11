@@ -322,11 +322,11 @@ It need to be validated whether the copyrights of the licenses have been adhered
 
 ##### Listing application libraries
 
-When no source-code is available for libraries analysis, you can find some of the frameworks being used with [Objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
+When no source-code is available for libraries analysis, you can find some of the frameworks being used with [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
 
-###### Objection 
+###### objection 
 
-Objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
+objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
 
 `list_bundles` command lists all of the application’s non framework bundles. The output of both commands contains executable name, bundle id, version of the library and path to the library.
 
@@ -356,6 +356,12 @@ Realm           org.cocoapods.Realm                        4.1.1      ...8/DVIA-
                                                                       ...vateFrameworks/CoreDuetContext.framework
                                                                       ...ystem/Library/Frameworks/IOKit.framework
 ```
+
+###### MobSF
+
+After obtaining the application ipa file, it can be uploaded to the MobSF. Version `3.0.9` of the MobSF listed only system libraries used in the application.
+
+<img src="Images/Chapters/0x06i/mobsf_libraries.png" alt="IDB Analyze Binary" width="700px" />
 
 ###### otool
 
