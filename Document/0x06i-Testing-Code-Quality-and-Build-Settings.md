@@ -320,7 +320,45 @@ The dynamic analysis of this section comprises of two parts: the actual license 
 
 It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-When no source-code is available for library analysis, you can find some of the frameworks being used with otool and MobSF.
+##### Listing application libraries
+
+When no source-code is available for libraries analysis, you can find some of the frameworks being used with [Objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
+
+###### Objection 
+
+Objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
+
+`list_bundles` command lists all of the application’s non framework bundles. The output of both commands contains executable name, bundle id, version of the library and path to the library.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
+Executable    Bundle                                       Version  Path
+------------  -----------------------------------------  ---------  -------------------------------------------
+DVIA-v2       com.highaltitudehacks.DVIAswiftv2.develop          2  ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
+CoreGlyphs    com.apple.CoreGlyphs                               1  ...m/Library/CoreServices/CoreGlyphs.bundle
+```
+
+`list_frameworks` command lists all of the application’s bundles that represent frameworks.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
+Executable      Bundle                                     Version    Path
+--------------  -----------------------------------------  ---------  -------------------------------------------
+Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-v2.app/Frameworks/Bolts.framework
+Parse           org.cocoapods.Parse                        1.17.3     ...8/DVIA-v2.app/Frameworks/Parse.framework
+                                                                      ...rivateFrameworks/ASEProcessing.framework
+                                                                      ...teFrameworks/AppleNeuralEngine.framework
+DVIA-v2         com.highaltitudehacks.DVIAswiftv2.develop  2.0        ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
+                                                                      ...rameworks/CoreLocationProtobuf.framework
+Flurry_iOS_SDK  org.cocoapods.Flurry-iOS-SDK               10.0.2     ....app/Frameworks/Flurry_iOS_SDK.framework
+RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
+Realm           org.cocoapods.Realm                        4.1.1      ...8/DVIA-v2.app/Frameworks/Realm.framework
+                                                                      ...vateFrameworks/CoreDuetContext.framework
+                                                                      ...ystem/Library/Frameworks/IOKit.framework
+```
+
+###### otool
+
 After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with the root of the application's directory:
 
 ```bash
