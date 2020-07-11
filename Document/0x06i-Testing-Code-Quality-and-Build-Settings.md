@@ -359,7 +359,7 @@ Realm           org.cocoapods.Realm                        4.1.1      ...8/DVIA-
 
 ###### MobSF
 
-After obtaining the application ipa file, it can be uploaded to the MobSF. Version `3.0.9` of the MobSF listed only system libraries used in the application.
+After obtaining the application ipa file, it can be uploaded to the MobSF. MobSF lists external and system libraries, however it provides wrong versions of some libraries. This can be seen by comparing objection results with mobsf results.
 
 <img src="Images/Chapters/0x06i/mobsf_libraries.png" alt="IDB Analyze Binary" width="700px" />
 
