@@ -326,7 +326,7 @@ When no source-code is available for libraries analysis, you can find some of th
 
 ###### objection
 
-objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
+Objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
 
 `list_bundles` command lists all of the application’s non framework bundles. The output of both commands contains executable name, bundle id, version of the library and path to the library.
 
@@ -359,7 +359,7 @@ Realm           org.cocoapods.Realm                        4.1.1      ...8/DVIA-
 
 ###### MobSF
 
-After obtaining the application ipa file, it can be uploaded to the MobSF. MobSF lists external and system libraries, however it provides wrong versions of some libraries. This can be seen by comparing objection results with mobsf results.
+After obtaining the application ipa file, it can be uploaded to the MobSF. MobSF lists external and system libraries. However, it occassionally provides the incorrect version of some libraries. This can be seen by comparing objection results with MobSF results.
 
 <img src="Images/Chapters/0x06i/mobsf_libraries.png" alt="mobsf_libraries" width="700px" />
 
