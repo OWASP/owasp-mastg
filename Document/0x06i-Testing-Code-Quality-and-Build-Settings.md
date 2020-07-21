@@ -326,7 +326,7 @@ When performing app analysis, it is important to also analyze the app dependenci
 
 ###### objection
 
-Objection contains bundles module to work with iOS Bundles. This module has two commands `list_bundles` and `list_frameworks`.
+Objection contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
 
 `list_bundles` command lists all of the application’s non framework bundles. The output of both commands contains executable name, bundle id, version of the library and path to the library.
 
