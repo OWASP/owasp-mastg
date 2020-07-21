@@ -352,7 +352,7 @@ RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.ap
 
 ###### MobSF
 
-After obtaining the application ipa file, it can be uploaded to the MobSF. MobSF lists external and system libraries. However, it occassionally provides the incorrect version of some libraries. This can be seen by comparing objection results with MobSF results.
+After obtaining the application IPA file, you can upload it to MobSF in order to get a list of external and system libraries. However, it **occassionally provides the incorrect version of some libraries**, so you might prefer using objection instead which has the additional advantage of not requiring you to decrypt and extract the IPA.
 
 <img src="Images/Chapters/0x06i/mobsf_libraries.png" alt="mobsf_libraries" width="700px" />
 
