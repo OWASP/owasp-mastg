@@ -338,7 +338,7 @@ DVIA-v2       com.highaltitudehacks.DVIAswiftv2.develop          2  ...-1F0C-4DB
 CoreGlyphs    com.apple.CoreGlyphs                               1  ...m/Library/CoreServices/CoreGlyphs.bundle
 ```
 
-`list_frameworks` command lists all of the application’s bundles that represent frameworks.
+The `list_frameworks` command lists all of the application’s bundles that represent Frameworks.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
