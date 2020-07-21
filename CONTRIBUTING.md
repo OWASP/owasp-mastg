@@ -22,6 +22,13 @@ In order to increase the chances of your PR being accepted, please make sure tha
 
 After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the size of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 7 days have passed.
 
+Once the PR has been reviewed, the reviewers might add some comments and suggested changes, usually via GitHub's ["Suggested Changes"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request "Applying suggested changes") feature (which can be quickly accepted and commited by simply clicking on the "Commit suggestion" button). In order to boost the workflow of reviewing and merging, **the authors of the MSTG reserve the right to commit "Suggested Changes"** falling under the following categories:
+- Minor changes, i.e. only affecting formatting, fixing some clear typos, new lines, markdown linting errors, etc. can be directly commited by the MSTG authors.
+- Moderate and major changes involving the content itself or bigger structural changes must be accepted and commited by the authors of the PR themselves. In case of unresponsiveness within 2 weeks the authors of the MSTG reserve the right to commit any kind of changes.
+Note that all those changes remain transparent to the original author who can verify them any time in the PR changelog.
+
+In case of general unresponsiveness within 3-4 weeks, the authors of the MSTG reserve the right to transfer, finish or even close the PR after giving a proper justification. If your PR was closed but you'd like to finish it please contact us and we'll be happy to re-open it.
+
 ## How to set up your contributor environment
 
 1. Create a GitHub account. Multiple different GitHub subscription plans are available, but you only need a free one. Follow [these steps](https://help.github.com/en/articles/signing-up-for-a-new-github-account "Signing up for a new GitHub account") to set up your account.
