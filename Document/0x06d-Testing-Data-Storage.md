@@ -103,7 +103,37 @@ Dumping the iOS keychain...
 Created                    Accessible                      ACL    Type      Account                    Service                                                        Data
 -------------------------  ------------------------------  -----  --------  -------------------------  -------------------------------------------------------------  ------------------------------------
 2020-02-11 13:26:52 +0000  WhenUnlocked                    None   Password  keychainValue              com.highaltitudehacks.DVIAswiftv2.develop                      mysecretpass123
-```  
+```
+
+The dedicated script referenced in the [tools](#tools) section can be used to find common entries between two Keychain dump. 
+
+Use it like this:
+
+1. Install the application and use it (inital install).
+2. Dump the Keychain using `objection` to a json file.
+3. Remove and reinstall the application.
+4. Dump the Keychain using `objection` to a json file.
+5. Execute the script using the following command:
+
+```shell
+$ python keychain_data_persistence_mstg_check.py --keychain-before DumpKeyChainAfterInitialInstall.json --keychain-after DumpKeyChainAfterReinstall.json
+[+] Load keychains files...
+DumpKeyChainAfterInitialInstall.json: 9 entries
+DumpKeyChainAfterReinstall.json: 13 entries
+[+] Search for keychain entries from initial install still present after app reinstall...
+[+] Common entries found:
+Account    DataHex[:20]          CreateDate           ModificationDate     AccessibleAttribute                           ItemClass             EntitlementGroup
+---------  --------------------  -------------------  -------------------  --------------------------------------------  --------------------  ------------------
+           3082010a0282010100a2  2020-07-13 16:29:47  2020-07-13 16:29:47  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           308204a2020100028201  2020-07-13 16:29:47  2020-07-13 16:29:47  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           3082010a028201010098  2020-07-14 05:55:25  2020-07-14 05:55:25  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           308204a2020100028201  2020-07-14 05:55:25  2020-07-14 05:55:25  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           3082010a0282010100aa  2020-07-14 13:00:42  2020-07-14 13:00:42  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           308204a3020100028201  2020-07-14 13:00:42  2020-07-14 13:00:42  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           3082010a0282010100aa  2020-07-14 13:00:42  2020-07-14 13:00:42  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           308204a3020100028201  2020-07-14 13:00:42  2020-07-14 13:00:42  kSecAttrAccessibleWhenUnlockedThisDeviceOnly  kSecClassKey          6K6297EV27.ios
+           308203423082022aa003  2020-07-14 13:00:42  2020-07-14 13:00:42  kSecAttrAccessibleAlways                      kSecClassCertificate  6K6297EV27.ios
+```
 
 There's no iOS API that developers can use to force wipe data when an application is uninstalled. Instead, developers should take the following steps to prevent Keychain data from persisting between application installations:
 
@@ -976,6 +1006,7 @@ For more information, options and approaches, please refer to section "[In-Memor
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - Burp Suite - <https://portswigger.net/burp>
 - Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
+- Script to find common entries between two Keychain dump - <https://gist.github.com/righettod/c71681d834d2967fddbfc1967d92f200>
 
 #### Others
 
