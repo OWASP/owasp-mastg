@@ -320,7 +320,7 @@ The dynamic analysis of this section comprises of two parts: the actual license 
 
 It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-##### Listing application libraries
+##### Listing Application Libraries
 
 When no source-code is available for libraries analysis, you can find some of the frameworks being used with [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
 
