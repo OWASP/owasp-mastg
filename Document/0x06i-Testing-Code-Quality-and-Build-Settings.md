@@ -322,7 +322,7 @@ It need to be validated whether the copyrights of the licenses have been adhered
 
 ##### Listing Application Libraries
 
-When no source-code is available for libraries analysis, you can find some of the frameworks being used with [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
+When performing app analysis, it is important to also analyze the app dependencies (usually in form of libraries or so-called iOS Frameworks) and ensure that they don't contain any vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependiencies thanks to tools such as [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
 
 ###### objection
 
