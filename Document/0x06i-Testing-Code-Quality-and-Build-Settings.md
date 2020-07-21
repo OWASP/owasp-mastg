@@ -345,16 +345,9 @@ The `list_frameworks` command lists all of the application’s bundles that repr
 Executable      Bundle                                     Version    Path
 --------------  -----------------------------------------  ---------  -------------------------------------------
 Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-v2.app/Frameworks/Bolts.framework
-Parse           org.cocoapods.Parse                        1.17.3     ...8/DVIA-v2.app/Frameworks/Parse.framework
-                                                                      ...rivateFrameworks/ASEProcessing.framework
-                                                                      ...teFrameworks/AppleNeuralEngine.framework
-DVIA-v2         com.highaltitudehacks.DVIAswiftv2.develop  2.0        ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
-                                                                      ...rameworks/CoreLocationProtobuf.framework
-Flurry_iOS_SDK  org.cocoapods.Flurry-iOS-SDK               10.0.2     ....app/Frameworks/Flurry_iOS_SDK.framework
 RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
-Realm           org.cocoapods.Realm                        4.1.1      ...8/DVIA-v2.app/Frameworks/Realm.framework
-                                                                      ...vateFrameworks/CoreDuetContext.framework
                                                                       ...ystem/Library/Frameworks/IOKit.framework
+...
 ```
 
 ###### MobSF
