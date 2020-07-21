@@ -75,10 +75,6 @@ You can check protocol handlers by attempting to open a Cydia URL. The Cydia app
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ```
 
-##### Calling System APIs
-
-Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1". This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
-
 #### Bypassing Jailbreak Detection
 
 Once you start an application that has jailbreak detection enabled on a jailbroken device, you'll notice one of the following things:
