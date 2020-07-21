@@ -328,7 +328,7 @@ When performing app analysis, it is important to also analyze the app dependenci
 
 Objection contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
 
-`list_bundles` command lists all of the application’s non framework bundles. The output of both commands contains executable name, bundle id, version of the library and path to the library.
+The `list_bundles` command lists all of the application’s bundles that are not related to Frameworks. The output contains executable name, bundle id, version of the library and path to the library.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
