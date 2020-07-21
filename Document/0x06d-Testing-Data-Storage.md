@@ -105,7 +105,7 @@ Created                    Accessible                      ACL    Type      Acco
 2020-02-11 13:26:52 +0000  WhenUnlocked                    None   Password  keychainValue              com.highaltitudehacks.DVIAswiftv2.develop                      mysecretpass123
 ```
 
-The dedicated script referenced in the [tools](#tools) section can be used to find common entries between two Keychain dump. 
+The dedicated script referenced in the [tools](#tools) section can be used to find common entries between two Keychain dump.
 
 Use it like this:
 
