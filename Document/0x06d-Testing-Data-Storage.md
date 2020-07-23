@@ -109,7 +109,7 @@ The dedicated script referenced in the [tools](#tools) section can be used to fi
 
 Use it like this:
 
-1. Install the application and use it (inital install).
+1. Install the application and use it (initial install).
 2. Dump the Keychain using `objection` to a json file.
 3. Remove and reinstall the application.
 4. Dump the Keychain using `objection` to a json file.
