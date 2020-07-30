@@ -322,7 +322,7 @@ It need to be validated whether the copyrights of the licenses have been adhered
 
 ##### Listing Application Libraries
 
-When performing app analysis, it is important to also analyze the app dependencies (usually in form of libraries or so-called iOS Frameworks) and ensure that they don't contain any vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependiencies thanks to tools such as [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool.
+When performing app analysis, it is important to also analyze the app dependencies (usually in form of libraries or so-called iOS Frameworks) and ensure that they don't contain any vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependiencies using tools like [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool. Objection is the recommended tool, it gives the most accurate results and it is easy to use.
 
 ###### objection
 
@@ -348,26 +348,6 @@ Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-
 RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
                                                                       ...ystem/Library/Frameworks/IOKit.framework
 ...
-```
-
-###### MobSF
-
-After obtaining the application IPA file, you can upload it to MobSF in order to get a list of external and system libraries. However, it **occassionally provides the incorrect version of some libraries**, so you might prefer using objection instead which has the additional advantage of not requiring you to decrypt and extract the IPA.
-
-<img src="Images/Chapters/0x06i/mobsf_libraries.png" alt="mobsf_libraries" width="700px" />
-
-###### otool
-
-After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with the root of the application's directory:
-
-```bash
-$ otool -L <Executable>
-```
-
-However, these do not include all the libraries being used. Next, with class-dump (for Objective-C) or the more recent dsdump you can generate a subset of the header files used and derive which libraries are involved. But not detect the version of the library.
-
-```bash
-$ ./class-dump <Executable> -r
 ```
 
 ### Testing Exception Handling (MSTG-CODE-6)
