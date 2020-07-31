@@ -115,7 +115,7 @@ Further information is available on the [Android Security website](https://sourc
 
 Android implements an extensive permissions system that is used as an access control mechanism. They are used to control access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
 
-<b>Protection Levels</b>
+Protection Levels
 
 Android permissions are ranked on the basis of the protection level they offer and divided into four different categories:
 
@@ -128,7 +128,7 @@ Example: `android.permission.ACCESS_MOCK_LOCATION`
 - *SystemOrSignature*: This permission is granted only to apps embedded in the system image or signed with the same certificate that the app that declared the permission was signed with.
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
-<b>Requesting Permissions</b>
+Requesting Permissions
 
 Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags into their manifest.
 The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
@@ -142,7 +142,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 </manifest>
 ```
 
-<b> Declaring Permissions </b>
+Declaring Permissions
 
 Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html "predefined permissions") or define its own. A new permission is declared with the `<permission>` element.
 The example below shows an app declaring a permission:
@@ -160,7 +160,7 @@ The example below shows an app declaring a permission:
 
 The above code defines a new permission named `com.permissions.sample.ACCESS_USER_INFO` with the protection level `Signature`. Any components protected with this permission would be accessible only by apps signed with the same developer certificate.
 
-<b>Enforcing Permissions on Android Components </b>
+Enforcing Permissions on Android Components
 
 Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
 
@@ -182,11 +182,13 @@ Content Providers are a little different. They support a separate set of permiss
 #### Domain 3: Network security
 
 ##### TLS by Default
+
 By default, since Android 9 (Pie), all network activity is treated as being executed in a hostile environment. This means that the Android system will allow apps only to communicate over a network channel that is established using the Transport Layer Security (TLS) protocol. This protocol effectively encrypts all network traffic and creates a secure channel to a server. It may be the case that you would want to use clear traffic connections for legacy reasons. This can be achieved by adapting the `res/xml/network_security_config.xml` file in the application.
 
 Further information is available in the [Android documentation](https://developer.android.com/training/articles/security-config.html).
 
 ##### DNS over TLS
+
 System-wide DNS over TLS support has been introduced since Android 9 (Pie). It allows you to perform queries to DNS servers using the TLS protocol.  A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html).
