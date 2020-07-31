@@ -1,16 +1,17 @@
 ## Android Platform Overview
 
-This section introduces the Android platform from an architecture point of view. The following five key areas are discussed:
+This section introduces the Android platform from an architecture point of view. The following six key areas are discussed:
 
-1. Android Security Architecture
-2. Android Application Structure
-3. Inter-process Communication (IPC)
-4. Android Application Publishing
-5. Android Application Attack Surface
+1. Android Architecture
+2. Android Security: Defense-in-Depth Approach
+3. Android Application Structure
+4. Inter-process Communication (IPC)
+5. Android Application Publishing
+6. Android Application Attack Surface
 
 Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
 
-### Android Security Architecture
+### Android Architecture
 
 #### High-level Platform Overview
 
@@ -30,37 +31,30 @@ The current version of Android executes this bytecode on the Android runtime (AR
 
 In the DVM, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. JIT compilation adversely affects performance: the compilation must be performed every time the app is executed. To improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of *ahead-of-time* (AOT) , JIT and profile-guided compilation. Apps are recompiled on the device. During this recompilation process device specific optimizations can be performed on the code. This recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
 
-Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape it's own runtime and read the memory of a victim application on the same device.
+Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape it's own runtime and read the memory of a victim application on the same device. In the following section we take a closer look at the different defense layers in the Android operating system.
 
-#### Android Security: Defense-in-Depth Approach
+### Android Security: Defense-in-Depth Approach
 
-The Android architecture implements different security layers that, together, enable a defense-in-depth approach. This means that the confidentiality, integrity or availability of sensitive user-data or applications doesnn't hinge on one single security measure. This section brings an overview of the different layers of defense that the Android system provides. The security strategy can be roughly categorized into four distinct domains, each focusing on protecting against certain attack models.
+The Android architecture implements different security layers that, together, enable a defense-in-depth approach. This means that the confidentiality, integrity or availability of sensitive user-data or applications doesn't hinge on one single security measure. This section brings an overview of the different layers of defense that the Android system provides. The security strategy can be roughly categorized into four distinct domains, each focusing on protecting against certain attack models.
 
 - System-wide security
 - Software isolation
 - Network security
 - Anti-exploitation
 
-##### Domain 1: System-wide security
-###### Device encryption
+#### Domain 1: System-wide security
+##### Device encryption
 
 Android supports device encryption from Android 2.3.4 (API level 10) and it has undergone some big changes since then. Google imposed that all devices running Android 6.0 (API level 23) or higher had to support storage encryption. Although some low-end devices were exempt because it would significantly impact performance. In the following sections you can find information about device encryption and its algorithms.
 
-<b>Full-Disk Encryption </b>
+* <b>Full-Disk Encryption</b> - Android 5.0 (API level 21) and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the user data partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter the password to unlock.
 
-Android 5.0 (API level 21) and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the userdata partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter the password to unlock.
+* <b>File-Based Encryption</b> - Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
 
-<b>File-Based Encryption</b>
-
-Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
-
-
-<b>Adiantum</b>
-
-AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
+* <b>Adiantum</b> - AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
 However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
 
-Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES.
+Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES. Adiantum is secure, as long as ChaCha12 and AES-256 are considered secure.
 
 Adiantum is a composition of other ciphers:
 
@@ -69,17 +63,14 @@ Adiantum is a composition of other ciphers:
 - XChaCha12: A stream cipher.
 - AES-256: A single invocation of AES.
 
-Adiantum is a new cipher but it is secure, as long as ChaCha12 and AES-256 are considered secure. Its designers didn't create any new cryptographic primitive, instead they relied on other well-known and thoroughly studied primitives to create a new performant algorithm.
-
 Adiantum is available for Android 9 (API level 28) and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching.
-Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
-It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
+Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications. It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
 
-###### Trusted Execution Environment (TEE)
+##### Trusted Execution Environment (TEE)
 
-In order for the Android system to perform encryption it needs a way to securely generate, import and store cryptographic keys. We are shifting the problem of keeping sensitive data secure towards keeping a cryptographic key secure. If the attacker can dump or guess the cryptographic key, the sensitive encrypted data can be retrieved.
+In order for the Android system to perform encryption it needs a way to securely generate, import and store cryptographic keys. We are essentially shifting the problem of keeping sensitive data secure towards keeping a cryptographic key secure. If the attacker can dump or guess the cryptographic key, the sensitive encrypted data can be retrieved.
 
-Android offers a trusted execution environment in dedicated hardware to solve the problem of securely generating and protecting cryptographic keys,. This means that a dedicated hardware component in the Android system is responsible for handling cryptographic key material. Three main modules are responsible for this:
+Android offers a trusted execution environment in dedicated hardware to solve the problem of securely generating and protecting cryptographic keys. This means that a dedicated hardware component in the Android system is responsible for handling cryptographic key material. Three main modules are responsible for this:
 
   * [Hardware-backed KeyStore](https://source.android.com/security/keystore) - This module offers cryptographic services to the Android OS and third-party apps. It enables apps to perform cryptographic sensitive operations in an TEE without exposing the cryptographic key material.
 
@@ -87,14 +78,14 @@ Android offers a trusted execution environment in dedicated hardware to solve th
 
   * [GateKeeper](https://source.android.com/security/authentication/gatekeeper) - The GateKeeper module enables device pattern and password authentication. The security sensitive operations during the authentication process happen inside the TEE that is available on the device.
 
-###### Verified Boot
+##### Verified Boot
 
-We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android intruced the concept of <i>verified boot</i>. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running. Passing through and verifying all the required boot phases. When the Android system is finally booted we can rest assure that the system is not tampered with. We have crypraphically assured that the code that is running, is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
+We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android introduced the concept of <i>verified boot</i>. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running. Passing through and verifying all the required boot phases. When the Android system is finally booted we can rest assure that the system is not tampered with. We have cryptographically assured that the code that is running, is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
 
 Further information is available in the [Android documentation](https://source.android.com/security/verifiedboot).
 
-##### Domain 2: Software isolation
-###### Android Users and Groups
+#### Domain 2: Software isolation
+##### Android Users and Groups
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
@@ -112,15 +103,15 @@ For example, Android 7.0 (API level 24) defines the following system users:
     ...
 ```
 
-###### SELinux
+##### SELinux
 
 Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, by working on a least-privilege principle, vulnerable processes are more difficult to exploit via privilege escalation or lateral movement.
 
 Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
 
-###### Permissions
+##### Permissions
 
-Android implements an exstensive permissions system that is used as an access control mechanism. They are used to control access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
+Android implements an extensive permissions system that is used as an access control mechanism. They are used to control access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
 
 <b>Protection Levels</b>
 
@@ -186,27 +177,27 @@ Content Providers are a little different. They support a separate set of permiss
 - `android:permission`: general permission that will control reading and writing to the content provider.
 - `android:grantUriPermissions`: `"true"` if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and `"false"` otherwise.
 
-##### Domain 3: Network security
+#### Domain 3: Network security
 
-###### TLS by Default
+##### TLS by Default
 By default, since Android 9 (Pie), all network activity is treated as being executed in a hostile environment. This means that the Android system will allow apps only to communicate over a network channel that is established using the Transport Layer Security (TLS) protocol. This protocol effectively encrypts all network traffic and creates a secure channel to a server. It may be the case that a developer wants to use clear traffic connections for legacy reasons. This can be achieved by adapting the `res/xml/network_security_config.xml` file in the application.
 
 Further information is available in the [Android documentation](https://developer.android.com/training/articles/security-config.html).
 
-###### DNS over TLS
+##### DNS over TLS
 System-wide DNS over TLS support has been introduced since Android 9 (Pie). It allows to perform queries to DNS servers using the TLS protocol.  A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html).
 
-##### Domain 4: Anti-exploitation
+#### Domain 4: Anti-exploitation
 
-###### ASLR, KASLR, PIE and DEP
+##### ASLR, KASLR, PIE and DEP
 
 Address Space Layout Randomization (ASLR), which has been part of Android since Android 4.1 (API level 15), is a standard protection against buffer-overflow attacks, which makes sure that both the application and the OS are loaded to random memory addresses making it difficult to get the correct address for a specific memory region or library. In Android 8.0 (API level 26), this protection was also implemented for the kernel (KASLR). ASLR protection is only possible if the application can be loaded at a random place in memory, which is indicated by the Position Independent Executable (PIE) flag of the application. Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was dropped. Finally, Data Execution Prevention (DEP) prevents code execution on the stack and heap, which is also used to combat buffer-overflow exploits.
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2016/07/protecting-android-with-more-linux.html "Protecting Android with more Linux kernel defenses").
 
-###### SECCOMP Filter
+##### SECCOMP Filter
 
 Android applications can contain native code written in C or C++. These compiled binaries can communicate both with the Android Runtime through Java Native Interface (JNI) bindings, and with the OS through system calls. Some system calls are either not implemented, or are not supposed to be called by normal applications. As these system calls communicate directly with the kernel, they are a prime target for exploit developers. With Android 8 (API level 26), Android has introduced the support for Secure Computing (SECCOMP) filters for all Zygote based processes (i.e. user applications). These filters restrict the available syscalls to those exposed through bionic.
 
