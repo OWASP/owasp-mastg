@@ -63,8 +63,6 @@ Android 5.0 (API level 21) and above support full-disk encryption. This encrypti
 
 Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
 
-\pagebreak
-
 ##### Adiantum
 
 AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
