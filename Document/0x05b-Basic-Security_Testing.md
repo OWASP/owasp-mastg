@@ -132,7 +132,6 @@ Several tools and VMs that can be used to test an app within an emulator environ
 
 Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
 
-\pagebreak
 
 ##### Getting Privileged Access
 
