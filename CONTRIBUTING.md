@@ -27,7 +27,7 @@ Once the PR has been reviewed, the reviewers might add some comments and suggest
 - Moderate and major changes involving the content itself or bigger structural changes must be accepted and commited by the authors of the PR themselves. In case of unresponsiveness within 2 weeks the authors of the MSTG reserve the right to commit any kind of changes.
 Of course, all those changes remain transparent to the original author who can verify them any time in the PR changelog.
 
-In case of general unresponsiveness within 3-4 weeks, the authors of the MSTG reserve the right to transfer, finish or even close the PR after giving a proper justification. If your PR was closed but you'd like to finish it please contact us and we'll be happy to re-open it.
+In case of general unresponsiveness within 3-4 weeks, the authors of the MSTG are allowed to transfer, finish or even close the PR after giving a proper justification. If your PR was closed but you'd like to finish it please contact us and we'll be happy to re-open it.
 
 ## How to set up your contributor environment
 
