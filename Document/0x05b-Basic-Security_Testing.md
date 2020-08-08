@@ -132,7 +132,6 @@ Several tools and VMs that can be used to test an app within an emulator environ
 
 Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
 
-
 ##### Getting Privileged Access
 
 *Rooting* (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.
