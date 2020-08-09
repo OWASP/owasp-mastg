@@ -218,6 +218,8 @@ is accessible.
 (agent) [3mhtws9x47q] Biometrics bypass hook complete
 ```
 
+If vulnerable, the module will automatically bypass the login form.
+
 ## Note regarding temporariness of keys in the Keychain
 
 Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an item's accessibility in the keychain: when there is no additional security check when entering the keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
