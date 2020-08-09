@@ -43,14 +43,14 @@ Apps that target modern API levels, went through the following changes:
   - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") lists all network security changes.
 
-### Recommendation
+## Recommendations
 
 The following list of recommendations should be considered during app examination:
 
 - You should ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed.
 - You should ensure that security provider has the latest updates - [Updating security provider](https://developer.android.com/training/articles/security-gms-provider "Updating security provider").
 - You should stop specifying a security provider and use the default implementation (AndroidOpenSSL, Conscrypt).
-- You should stop using Crypto security provider and its `SHA1PRNG` as they are depracated.
+- You should stop using Crypto security provider and its `SHA1PRNG` as they are deprecated.
 - You should specify a security provider only for the Android Keystore system.
 - You should stop using Password-based encryption ciphers without IV.
 - You should use KeyGenParameterSpec instead of KeyPairGeneratorSpec.
@@ -242,7 +242,7 @@ Most developers should instantiate `SecureRandom` via the default constructor wi
 
 This test case focuses on hardcoded symmetric cryptography as the only method of encryption. Following checks should be performed:
 
-- identify all instance of symmectric cryptography
+- identify all instance of symmetric cryptography
 - verify if symmetric keys in all identified instances are not hardcoded
 - verify if hardcoded symmetric cryptography is not used as the only method of encryption
 
