@@ -93,33 +93,17 @@ Objective-C:
 
 On iOS, when an application is uninstalled, the Keychain data used by the application is retained by the device, unlike the data stored by the application sandbox which is wiped. In the event that a user sells their device without performing a factory reset, the buyer of the device may be able to gain access to the previous user's application accounts and data by reinstalling the same applications used by the previous user. This would require no technical ability to perform.
 
-When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. You can also verify persistence by using the iOS security assessment framework Needle to read the Keychain. The following Needle commands demonstrate this procedure:
+When assessing an iOS application, you should look for Keychain data persistence. This is normally done by using the application to generate sample data that may be stored in the Keychain, uninstalling the application, then reinstalling the application to see whether the data was retained between application installations. Use objection runtime mobile exploration toolkit to dump the keychain data. The following `objection` command demonstrates this procedure:
 
 ```bash
-$ python needle.py
-[needle] > use storage/data/keychain_dump
-[needle] > run
-  {
-   "Creation Time" : "Jan 15, 2018, 10:20:02 GMT",
-   "Account" : "username",
-   "Service" : "",
-   "Access Group" : "ABCD.com.test.passwordmngr-test",
-   "Protection" : "kSecAttrAccessibleWhenUnlocked",
-   "Modification Time" : "Jan 15, 2018, 10:28:02 GMT",
-   "Data" : "testUser",
-   "AccessControl" : "Not Applicable"
- },
- {
-   "Creation Time" : "Jan 15, 2018, 10:20:02 GMT",
-   "Account" : "password",
-   "Service" : "",
-   "Access Group" : "ABCD.com.test.passwordmngr-test,
-   "Protection" : "kSecAttrAccessibleWhenUnlocked",
-   "Modification Time" : "Jan 15, 2018, 10:28:02 GMT",
-   "Data" : "rosebud",
-   "AccessControl" : "Not Applicable"
- }
-```
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios keychain dump
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Save the output by adding `--json keychain.json` to this command
+Dumping the iOS keychain...
+Created                    Accessible                      ACL    Type      Account                    Service                                                        Data
+-------------------------  ------------------------------  -----  --------  -------------------------  -------------------------------------------------------------  ------------------------------------
+2020-02-11 13:26:52 +0000  WhenUnlocked                    None   Password  keychainValue              com.highaltitudehacks.DVIAswiftv2.develop                      mysecretpass123
+```  
 
 There's no iOS API that developers can use to force wipe data when an application is uninstalled. Instead, developers should take the following steps to prevent Keychain data from persisting between application installations:
 
@@ -315,54 +299,123 @@ $ grep -iRn keyword .
 
 Then you can monitor and verify the changes in the filesystem of the app and investigate if any sensitive information is stored within the files while using the app.
 
-#### Dynamic Analysis with Needle
+#### Dynamic Analysis with Objection
 
-On a jailbroken device, you can use the iOS security assessment framework Needle to find vulnerabilities caused by the application's data storage mechanism.
+You can use the [objection](https://github.com/sensepost/objection "objection") runtime mobile exploration toolkit to find vulnerabilities caused by the application's data storage mechanism. Objection can be used without a Jailbroken device, but it will require [patching the iOS Application](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Objection").
 
 ##### Reading the Keychain
 
-To use Needle to read the Keychain, execute the following command:
+To use Objection to read the Keychain, execute the following command:
 
 ```bash
-[needle] > use storage/data/keychain_dump
-[needle][keychain_dump] > run
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios keychain dump
+Note: You may be asked to authenticate using the devices passcode or TouchID
+Save the output by adding `--json keychain.json` to this command
+Dumping the iOS keychain...
+Created                    Accessible                      ACL    Type      Account                    Service                                                        Data
+-------------------------  ------------------------------  -----  --------  -------------------------  -------------------------------------------------------------  ------------------------------------
+2020-02-11 13:26:52 +0000  WhenUnlocked                    None   Password  keychainValue              com.highaltitudehacks.DVIAswiftv2.develop                      mysecretpass123
 ```  
 
 ##### Searching for Binary Cookies
 
-iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use Needle to convert these files to a readable format and inspect the data. Use the following Needle module, which searches for binary cookie files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
+iOS applications often store binary cookie files in the application sandbox. Cookies are binary files containing cookie data for application WebViews. You can use objection to convert these files to a JSON format and inspect the data.
 
 ```bash
-[needle] > use storage/data/files_binarycookies
-[needle][files_binarycookies] > run
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios cookies get --json
+[
+    {
+        "domain": "highaltitudehacks.com",
+        "expiresDate": "2051-09-15 07:46:43 +0000",
+        "isHTTPOnly": "false",
+        "isSecure": "false",
+        "name": "username",
+        "path": "/",
+        "value": "admin123",
+        "version": "0"
+    }
+]
 ```
 
 ##### Searching for Property List Files
 
-iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the following Needle module, which searches for plist files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
+iOS applications often store data in property list (plist) files that are stored in both the application sandbox and the IPA package. Sometimes these files contain sensitive information, such as usernames and passwords; therefore, the contents of these files should be inspected during iOS assessments. Use the `ios plist cat plistFileName.plist` command to inspect the plist file.
+
+To find the file userInfo.plist, use the `env` command. It will print out the locations of the applications Library, Caches and Documents directories:
 
 ```bash
-[needle] > use storage/data/files_plist
-[needle][files_plist] > run
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # env
+Name               Path
+-----------------  -------------------------------------------------------------------------------------------
+BundlePath         /private/var/containers/Bundle/Application/B2C8E457-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
+CachesDirectory    /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library/Caches
+DocumentDirectory  /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Documents
+LibraryDirectory   /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library
 ```
 
-##### Searching for Cache Databases
-
-iOS applications can store data in cache databases. These databases contain data such as web requests and responses. Sometimes the data is sensitive. Use the following Needle module, which searches for cache files stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
+Go to Documents directory and list files there by *ls* command.
 
 ```bash
-[needle] > use storage/data/files_cachedb
-[needle][files_cachedb] > run
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ls
+NSFileType      Perms  NSFileProtection                      Read    Write    Owner         Group         Size      Creation                   Name
+------------  -------  ------------------------------------  ------  -------  ------------  ------------  --------  -------------------------  ------------------------
+Directory         493  n/a                                   True    True     mobile (501)  mobile (501)  192.0 B   2020-02-12 07:03:51 +0000  default.realm.management
+Regular           420  CompleteUntilFirstUserAuthentication  True    True     mobile (501)  mobile (501)  16.0 KiB  2020-02-12 07:03:51 +0000  default.realm
+Regular           420  CompleteUntilFirstUserAuthentication  True    True     mobile (501)  mobile (501)  1.2 KiB   2020-02-12 07:03:51 +0000  default.realm.lock
+Regular           420  CompleteUntilFirstUserAuthentication  True    True     mobile (501)  mobile (501)  284.0 B   2020-05-29 18:15:23 +0000  userInfo.plist
+Unknown           384  n/a                                   True    True     mobile (501)  mobile (501)  0.0 B     2020-02-12 07:03:51 +0000  default.realm.note
+
+Readable: True  Writable: True
+```
+
+Execute the *ios plist cat userInfo.plist* command to inspect the content of userInfo.plist file.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios plist cat userInfo.plist
+{
+        password = password123;
+        username = userName;
+}
 ```
 
 ##### Searching for SQLite Databases
 
-iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Use the following Needle module, which searches for SQLite databases stored in the application container, lists their data protection values, and gives the user the options to inspect or download the file:
+iOS applications typically use SQLite databases to store data required by the application. Testers should check the data protection values of these files and their contents for sensitive data. Objection contains a module to interact with SQLite databases. It allows to dump the schema, their tables and query the records.
 
 ```bash
-[needle] > use storage/data/files_sql
-[needle][files_sql] >
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # sqlite connect Model.sqlite
+Caching local copy of database file...
+Downloading /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library/Application Support/Model.sqlite to /var/folders/4m/dsg0mq_17g39g473z0996r7m0000gq/T/tmpdr_7rvxi.sqlite
+Streaming file from device...
+Writing bytes to destination...
+Successfully downloaded /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library/Application Support/Model.sqlite to /var/folders/4m/dsg0mq_17g39g473z0996r7m0000gq/T/tmpdr_7rvxi.sqlite
+Validating SQLite database format
+Connected to SQLite database at: Model.sqlite
+
+SQLite @ Model.sqlite > .tables
++--------------+
+| name         |
++--------------+
+| ZUSER        |
+| Z_METADATA   |
+| Z_MODELCACHE |
+| Z_PRIMARYKEY |
++--------------+
+Time: 0.013s
+
+SQLite @ Model.sqlite > select * from Z_PRIMARYKEY
++-------+--------+---------+-------+
+| Z_ENT | Z_NAME | Z_SUPER | Z_MAX |
++-------+--------+---------+-------+
+| 1     | User   | 0       | 0     |
++-------+--------+---------+-------+
+1 row in set
+Time: 0.013s
 ```
+
+##### Searching for Cache Databases
+
+iOS applications can store data in cache databases. These databases contain data such as web requests and responses. This data can be sensitive, if tokens, usernames or other information is cached. To display the cache go to the app path and go to `/Library/Caches/{Bundle Identifier}`. The WebKit cache is being stored in the Cache.db file. Objection can interact with it, as it is a normal SQLite database.
 
 ## Checking Logs for Sensitive Data (MSTG-STORAGE-3)
 

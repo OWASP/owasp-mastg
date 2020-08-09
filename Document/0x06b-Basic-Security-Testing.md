@@ -150,7 +150,6 @@ Many tools on a jailbroken device can be installed by using Cydia, which is the 
 - <https://build.frida.re>: Install Frida by adding the repository to Cydia.
 - <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
 - <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
-- <https://coolstar.org/publicrepo/>: For Needle you should consider adding the Coolstar repo, to install Darwin CC Tools.
 
 > In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
 
@@ -167,13 +166,11 @@ After adding all the suggested repositories above you can install the following 
 - Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
 - Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
 - cURL: Is a well known http client which you can use to download packages faster to your device. This can be a great help when you need to install different versions of Frida-server on your device for instance.
-- Darwin CC Tools: Install the Darwin CC Tools from the Coolstar repo as a dependency for Needle.
+- Darwin CC Tools: A useful set of tools like nm, and strip that are capable of auditing mach-o files.
 - IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
 - Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
 - Grep: Handy tool to filter lines.
 - Gzip: A well known ZIP utility.
-- Needle-Agent: This agent is part of the Needle framework and need to be installed on the iOS device.
-- Open for iOS 11: Tool required to make Needle Agent function.
 - PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
 - SOcket CAT: a utility with which you can connect to sockets to read and write messages. This can come in handy if you want to trace the syslog on iOS 12 devices.
 
@@ -330,16 +327,6 @@ The following is displayed:
 > In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
 
 Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation") for more details.
-
-#### Needle
-
-[Needle](https://github.com/mwrlabs/needle "Needle") is an all-in-one iOS security assessment framework, which you can compare to as a "Metasploit" for iOS. The [installation guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide "Needle Installation Guide") in the Github wiki contains all the information needed on how to prepare your Kali Linux or macOS and how to install the Needle Agent on your iOS device.
-
-Please also ensure that you install the Darwin CC Tools from the Coolstar repository, to get Needle to work on iOS 12.
-
-In order to configure Needle read the [Quick Start Guide](https://github.com/mwrlabs/needle/wiki/Quick-Start-Guide "Quick Start Guide") and go through the [Command Reference of Needle](https://github.com/mwrlabs/needle/wiki/Command-Reference "Command Reference of Needle") to get familiar with it.
-
-> There are known issues with Needle when running on iOS devices that are [jailbroken with Chimera](https://github.com/mwrlabs/needle/issues/273 "Many modules dont work with chimera jail break"). Instead, the unc0ver jailbreak should be used.
 
 #### Objection
 
@@ -528,8 +515,6 @@ $ ssh -p 2222 root@localhost
 root@localhost's password:
 iPhone:~ root#
 ```
-
-You can also connect to your iPhone's USB via [Needle](https://labs.mwrinfosecurity.com/blog/needle-how-to/ "Needle").
 
 #### On-device Shell App
 
@@ -1226,13 +1211,6 @@ Additionally, Passionfruit offers a view of all the NSLog-based application logs
 
 <img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View" />
 
-Needle also has an option to capture the logs of an iOS application, you can start the monitoring by opening Needle and running the following commands:
-
-```bash
-[needle] > use dynamic/monitor/syslog
-[needle][syslog] > run
-```
-
 #### Dumping KeyChain Data
 
 Dumping the KeyChain data can be done with multiple tools, but not all of them will work on any iOS version. As is more often the case, try the different tools or look up their documentation for information on the latest supported versions.
@@ -1261,55 +1239,6 @@ OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # quit
 Note that currently, the latest versions of frida-server and objection do not correctly decode all keychain data. Different combinations can be tried to increase compatibility. For example, the previous printout was created with `frida-tools==1.3.0`, `frida==12.4.8` and `objection==1.5.0`.
 
 Finally, since the keychain dumper is executed from within the application context, it will only print out keychain items that can be accessed by the application and **not** the entire keychain of the iOS device.
-
-##### Needle (Jailbroken)
-
-Needle can list the content of the keychain through the `storage/data/keychain_dump_frida` module. However, getting Needle up and running can be difficult. First, make sure that `open`, and the `darwin cc tools` are installed. The installation procedure for these tools is described in "Recommended Tools - iOS Device".
-
-Before dumping the keychain, open Needle and use the `device/dependency_installer` plugin to install any other missing dependencies. This module should return without any errors. If an error did pop up, be sure to fix this error before continuing.
-
-Finally, select the `storage/data/keychain_dump_frida` module and run it:
-
-```bash
-[needle][keychain_dump_frida] > use storage/data/keychain_dump_frida
-[needle][keychain_dump_frida] > run
-[*] Checking connection with device...
-[+] Already connected to: 192.168.43.91
-[+] Target app: OWASP.iGoat-Swift
-[*] Retrieving app's metadata...
-[*] Pulling: /private/var/containers/Bundle/Application/92E7C59C-2F0B-47C5-94B7-DCF506DBEB34/iGoat-Swift.app/Info.plist -> /Users/razr/.needle/tmp/plist
-[*] Setting up local port forwarding to enable communications with the Frida server...
-[*] Launching the app...
-[*] Attaching to process: 4448
-[*] Parsing payload
-[*] Keychain Items:
-[+] {
-    "AccessControls": "",
-    "Account": "keychainValue",
-    "CreationTime": "2019-06-06 10:53:09 +0000",
-    "Data": " (UTF8 String: 'mypassword123')",
-    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
-    "ModifiedTime": "2019-06-06 16:53:38 +0000",
-    "Protection": "kSecAttrAccessibleWhenUnlocked",
-    "Service": "com.highaltitudehacks.dvia",
-    "kSecClass": "kSecClassGenericPassword"
-}
-...
-[+] {
-    "AccessControls": "",
-    "Account": "<53434465 76696365 546f6b65 6e56616c 756532>",
-    "CreationTime": "2019-06-06 10:53:30 +0000",
-    "Data": " (UTF8 String: 'CJ8Y8K2oE3rhOFUhnxJxDS1Zp8Z25XzgY2EtFyMbW3U=')",
-    "EntitlementGroup": "C9MEM643RA.org.dummy.fastlane.FastlaneTest",
-    "ModifiedTime": "2019-06-06 10:53:30 +0000",
-    "Protection": "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly",
-    "Service": "com.toyopagroup.picaboo",
-    "kSecClass": "kSecClassGenericPassword"
-}
-[*] Saving output to file: /Users/razr/.needle/output/frida_script_dump_keychain.txt
-```
-
-Note that currently only the `keychain_dump_frida` module works on iOS 12, but not the `keychain_dump` module.
 
 ##### Passionfruit (Jailbroken / non-Jailbroken)
 
@@ -1456,7 +1385,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
 - libimobiledevice - <https://www.libimobiledevice.org/>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Needle - <https://github.com/mwrlabs/needle>
 - Objection - <https://github.com/sensepost/objection>
 - Passionfruit - <https://github.com/chaitin/passionfruit/>
 - Radare2 - <https://github.com/radare/radare2>

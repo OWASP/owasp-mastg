@@ -8,7 +8,7 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 ### Host Device
 
-At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/index.html#downloads) and [platform tools](https://developer.android.com/studio/releases/platform-tools.html) packages are installed on your system.
+At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
 
 In addition, you may want to complete your host setup by installing the [Android NDK](https://developer.android.com/ndk "Android NDK") if you're planing to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
 
@@ -131,8 +131,6 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
 Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
-
-\pagebreak
 
 #### Getting Privileged Access
 
@@ -339,9 +337,7 @@ The advantage of using drozer consists on its ability to automate several tasks 
 
 ##### Installing Drozer
 
-You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "ropnop Blog - Installing Drozer on OS X El Capitan")) and the [drozer website](https://labs.f-secure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
-
-The installation instructions for drozer on Unix, Linux and Windows are explained in the [drozer Github page](https://github.com/FSecureLABS/drozer "drozer GitHub page"). For macOS, [this blog post](https://blog.ropnop.com/installing-drozer-on-os-x-el-capitan/ "Installing Drozer on OS X El Capitan") demonstrates all installation instructions.
+You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://fi5t.xyz/en/posts/drozer-on-mac/ "(not)Unique experience blog - Installing Drozer on macOS Catalina")) and the [drozer website](https://labs.f-secure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
 ##### Using Drozer
 
