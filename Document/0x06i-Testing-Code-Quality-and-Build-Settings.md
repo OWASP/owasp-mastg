@@ -324,10 +324,6 @@ It need to be validated whether the copyrights of the licenses have been adhered
 
 When performing app analysis, it is important to also analyze the app dependencies (usually in form of libraries or so-called iOS Frameworks) and ensure that they don't contain any vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependencies using tools like [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool. Objection is the recommended tool, since it provides the most accurate results and it is easy to use. It contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
 
-###### objection
-
-Objection contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
-
 The `list_bundles` command lists all of the application’s bundles that are not related to Frameworks. The output contains executable name, bundle id, version of the library and path to the library.
 
 ```bash
