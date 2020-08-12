@@ -1,14 +1,14 @@
-## iOS Cryptographic APIs
+# iOS Cryptographic APIs
 
 In the "Cryptography for Mobile Apps" chapter, we introduced general cryptography best practices and described typical problems that may occur when cryptography is used incorrectly. In this chapter, we'll detail the cryptography APIs available for iOS. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When you're reviewing code, compare the cryptographic parameters with the current best practices linked in this guide.
 
-### Verifying the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
+## Verifying the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
 
-#### Overview
+### Overview
 
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
-##### CryptoKit
+#### CryptoKit
 
 Apple CryptoKit was released with iOS 13 and is built on top of Apple's native cryptographic library `corecrypto`. The Swift framework provides a strongly typed API interface, has effective memory management, conforms to equatable, and supports generics. CryptoKit contains secure algorithms for hashing, symmetric-key cryptography, and public-key cryptography. The framework can also utilize the hardware based key manager from the Secure Enclave.
 
@@ -59,7 +59,7 @@ For more information about Apple CryptoKit, please visit the following resources
 - [WWDC 2019 session 709 | Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/ "Cryptography and Your Apps from WWDC 2019 session 709")
 - [How to calculate the SHA hash of a String or Data instance | Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance "How to calculate the SHA hash of a String or Data instance from Hacking with Swift")
 
-##### CommonCrypto, SecKeyEncrypt and Wrapper libraries
+#### CommonCrypto, SecKeyEncrypt and Wrapper libraries
 
 The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 
@@ -82,7 +82,7 @@ As noted before: some wrapper-libraries exist for both in order to provide conve
 - [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor")
 - [Arcane](https://github.com/onmyway133/Arcane "Arcane")
 
-##### Third party libraries
+#### Third party libraries
 
 There are various third party libraries available, such as:
 
@@ -95,12 +95,12 @@ There are various third party libraries available, such as:
 - **Others**: There are many other libraries, such as [CocoaSecurity](https://github.com/kelp404/CocoaSecurity "CocoaSecurity"), [Objective-C-RSA](https://github.com/ideawu/Objective-C-RSA "Objective-C-RSA"), and [aerogear-ios-crypto](https://github.com/aerogear/aerogear-ios-crypto "Aerogera-ios-crypto"). Some of these are no longer maintained and might never have been security reviewed. Like always, it is recommended to look for supported and maintained libraries.
 - **DIY**: An increasing amount of developers have created their own implementation of a cipher or a cryptographic function. This practice is _highly_ discouraged and should be vetted very thoroughly by a cryptography expert if used.
 
-#### Static Analysis
+### Static Analysis
 
 A lot has been said about deprecated algorithms and cryptographic configurations in section `Cryptography for Mobile Apps`. Obviously, these should be verified for each of the mentioned libraries in this chapter.
 Pay attention to how-to-be-removed key-holding datastructures and plain-text data structures are defined. If the keyword `let` is used, then you create an immutable structure which is harder to wipe from memory. Make sure that it is part of a parent structure which can be easily removed from memory (e.g. a `struct` that lives temporally).
 
-##### CommonCryptor
+#### CommonCryptor
 
 If the app uses standard cryptographic implementations provided by Apple, the easiest way to determine the status of the related algorithm is to check for calls to functions from `CommonCryptor`, such as `CCCrypt` and `CCCryptorCreate`. The [source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h "CommonCryptor.h") contains the signatures of all functions of CommonCryptor.h. For instance, `CCCryptorCreate` has following signature:
 
@@ -118,7 +118,7 @@ CCCryptorStatus CCCryptorCreate(
 You can then compare all the `enum` types to determine which algorithm, padding, and key material is used. Pay attention to the keying material: the key should be generated securely - either using a key derivation function or a random-number generation function.
 Note that functions which are noted in chapter "Cryptography for Mobile Apps" as deprecated, are still programmatically supported. They should not be used.
 
-##### Third party libraries
+#### Third party libraries
 
 Given the continuous evolution of all third party libraries, this should not be the place to evaluate each library in terms of static analysis. Still there are some points of attention:
 
@@ -130,9 +130,9 @@ Given the continuous evolution of all third party libraries, this should not be 
 - **Determine the version being used**: Always check the version of the library being used and check whether there is a new version available in which possible vulnerabilities or shortcomings are patched. Even without a newer version of a library, it can be the case that cryptographic functions have not been reviewed yet. Therefore we always recommend using a library that has been validated or ensure that you have the ability, knowledge and experience to do validation yourself.
 - **By hand?**: We recommend not to roll your own crypto, nor to implement known cryptographic functions yourself.
 
-### Testing Key Management (MSTG-CRYPTO-1 and MSTG-CRYPTO-5)
+## Testing Key Management (MSTG-CRYPTO-1 and MSTG-CRYPTO-5)
 
-#### Overview
+### Overview
 
 There are various methods on how to store the key on the device. Not storing a key at all will ensure that no key material can be dumped. This can be achieved by using a Password Key Derivation function, such as PKBDF-2. See the example below:
 
@@ -200,7 +200,7 @@ Two more notions you should never forget when it comes to cryptography:
 1. Always encrypt/verify with the public key and always decrypt/sign with the private key.
 2. Never reuse the key(pair) for another purpose: this might allow leaking information about the key: have a separate keypair for signing and a separate key(pair) for encryption.
 
-#### Static Analysis
+### Static Analysis
 
 There are various keywords to look for: check the libraries mentioned in the overview and static analysis of the section "Verifying the Configuration of Cryptographic Standard Algorithms" for which keywords you can best check on how keys are stored.
 
@@ -219,19 +219,19 @@ Most of the recommendations for static analysis can already be found in chapter 
 - [Apple Developer Documentation: Generating new keys](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys "Generating new keys")
 - [Apple Developer Documentation: Key generation attributes](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/key_generation_attributes "Key Generation attributes")
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
-### Testing Random Number Generation (MSTG-CRYPTO-6)
+## Testing Random Number Generation (MSTG-CRYPTO-6)
 
-#### Overview
+### Overview
 
 Apple provides a [Randomization Services](https://developer.apple.com/reference/security/randomization_services "Randomization Services") API, which generates cryptographically secure random numbers.
 
 The Randomization Services API uses the `SecRandomCopyBytes` function to generate numbers. This is a wrapper function for the `/dev/random` device file, which provides cryptographically secure pseudorandom values from 0 to 255. Make sure that all random numbers are generated with this API. There is no reason for developers to use a different one.
 
-#### Static Analysis
+### Static Analysis
 
 In Swift, the [`SecRandomCopyBytes` API](https://developer.apple.com/reference/security/1399291-secrandomcopybytes "SecRandomCopyBytes (Swift)") is defined as follows:
 
@@ -255,13 +255,13 @@ int result = SecRandomCopyBytes(kSecRandomDefault, 16, randomBytes);
 
 Note: if other mechanisms are used for random numbers in the code, verify that these are either wrappers around the APIs mentioned above or review them for their secure-randomness. Often this is too hard, which means you can best stick with the implementation above.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 If you want to test for randomness, you can try to capture a large set of numbers and check with [Burp's sequencer plugin](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Sequencer") to see how good the quality of the randomness is.
 
-### References
+## References
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-CRYPTO-1: "The app does not rely on symmetric cryptography with hardcoded keys as a sole method of encryption."
 - MSTG-CRYPTO-2: "The app uses proven implementations of cryptographic primitives."
@@ -269,12 +269,12 @@ If you want to test for randomness, you can try to capture a large set of number
 - MSTG-CRYPTO-5: "The app doesn't re-use the same cryptographic key for multiple purposes."
 - MSTG-CRYPTO-6: "All random values are generated using a sufficiently secure random number generator."
 
-#### General Security Documentation
+### General Security Documentation
 
 - Apple Developer Documentation on Security - <https://developer.apple.com/documentation/security>
 - Apple Security Guide - <https://www.apple.com/business/site/docs/iOS_Security_Guide.pdf>
 
-#### Configuration of Cryptographic algorithms
+### Configuration of Cryptographic algorithms
 
 - Apple's Cryptographic Services Guide - <https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html>
 - Apple Developer Documentation on randomization SecKey - <https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html>
@@ -297,13 +297,13 @@ If you want to test for randomness, you can try to capture a large set of number
 - cartfile - <https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile>
 - Podfile - <https://guides.cocoapods.org/syntax/podfile.html>
 
-#### Random Number Documentation
+### Random Number Documentation
 
 - Apple Developer Documentation on randomization - <https://developer.apple.com/documentation/security/randomization_services>
 - Apple Developer Documentation on secrandomcopybytes - <https://developer.apple.com/reference/security/1399291-secrandomcopybytes>
 - Burp Suite Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
 
-#### Key Management
+### Key Management
 
 - Apple Developer Documentation: Certificates and keys - <https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys>
 - Apple Developer Documentation: Generating new keys - <https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/generating_new_cryptographic_keys>
