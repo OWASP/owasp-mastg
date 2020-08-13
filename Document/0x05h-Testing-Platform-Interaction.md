@@ -524,24 +524,33 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 ### Overview
 
-Both Android and iOS allow inter-app communication via custom URL schemes. These custom URLs allow other applications to perform specific actions within the application that offers the custom URL scheme. Custom URIs can begin with any scheme prefix, and they usually define an action to take within the application and parameters for that action.
+Both Android and iOS allow inter-app communication via custom URL schemes. These custom URLs are defined within an intent filter in the AndroidManifest.xml file and allow for other applications to perform specific actions within the application that offers the custom URL scheme. Custom URIs can begin with any scheme prefix, and they usually define an action to take within the application and parameters for that action.
 
-Consider this contrived example:
+This method of defining URL schemes is commonly used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link. While not inherently risky, this feature can be programmed in a way that increases the application attack surface.
+
+Alternatively, since Android 6.0 (API level 23) App links can be defined. App links, in contrast to deep links, require that the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first using `android:autoVerify="true"` in the intent filter.
+
+ Consider the following slightly contrived examples:
 
 ```default
 sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
 ```
 
-When a victim clicks such a link on a mobile device, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to
+ When a victim clicks such a link on a mobile device, the vulnerable SMS application will send an SMS message from the target's phone containing attacker-crafted content. This could lead to:
 
-- financial loss for the victim if messages are sent to premium services or
-- disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.
+- Financial loss for the victim if messages are sent to premium services.
+- Disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.
+- Potentially damaging social consequences for the targeted individual depending on content sent.
 
-Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
+ Another application specific example of deep linking is show below:
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6.0 (API level 23) App links can be used. App lnks, in contrast to deep links, require the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first by means of using `android:autoVerify="true"` in the intentfilter.
+```default
+myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAgeIs=100
+```
 
-Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
+This application deep link demonstrates abuse of a link in order to target known vulnerabilities already identified within an application. In this example consider an application running a web view with JavaScript enabled, and that the `Whatismyname` parameter is reflected into the web view. In this case, this payload would trigger reflected cross site scripting within the context of the web view when the `Whatismyname` variable is rendered.
+
+For every application, each of these custom defined URL schemes must be enumerated and the actions they perform must be tested. User data and parameters that are provided from a URL Scheme should always be deemed to be untrustworthy input and thus should be validated as any user content typically is:
 
 - When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
 - Using the data for queries? Make sure you make parameterized queries.
@@ -550,7 +559,7 @@ Nevertheless, data that's processed by the app and comes in through URL schemes 
 
 ### Static Analysis
 
-Determine whether custom URL schemes are defined. This can be done in the AndroidManifest.xml file, inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
+To determine whether custom URL schemes are defined the `AndroidManifest.xml` file should be investigated, specifically the data inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
 
 ```xml
 <activity android:name=".MyUriActivity">
@@ -564,9 +573,9 @@ Determine whether custom URL schemes are defined. This can be done in the Androi
 
 ```
 
-The example above specifies a new URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser.
+The example above specifies a new URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser. Specifics of deep link attributes can be found at the [android developer deep link documentation](https://developer.android.com/training/app-links/deep-linking "Deep Linking").
 
-Data can then be transmitted through this new scheme with, for example, the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
+Data can then be transmitted through this new scheme with, for example, the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data on the application side:
 
 ```java
 Intent intent = getIntent();
@@ -577,7 +586,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-Verify the usage of [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()"), which may also be used in this context.
+The usage of the [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()") should be verified in order to understand how the application uses this intent, and if it is abusable. This general approach of locating the getIntent() method can be used across most applications for reverse engineering and understanding how the application handles and uses deep links. Knowledge of this is of great importance when attempting to abuse deep links.
 
 ### Dynamic Analysis
 
@@ -599,7 +608,13 @@ You can call custom URL schemes with the Drozer module `app.activity.start`:
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
-When used to call a defined schema (myapp://someaction/?var0=string&var1=string), the module may also be used to send data to the app, as in the example below.
+Alternatively the Android Debugging Bridge [Activity Manager](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") can be used to call custom URL schemes:
+
+```bash
+$ adb shell am start -W -a android.intent.action.VIEW -d "sms://0123456789" com.google.android.apps.messaging
+```
+
+When used to call a defined schema (myapp://someaction/?var0=string&var1=string), these methods may also be used to send data to the app, as in the example below:
 
 ```java
 Intent intent = getIntent();
