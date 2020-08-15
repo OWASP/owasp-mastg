@@ -101,7 +101,7 @@ Please check our [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/m
 
 Please let us know if you'd like to work on an existing open issue before you start working on it. To do so simply write a comment in the issue itself or drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!"). This helps us to keep track of what everyone is doing and prevent conflicts.
 
-You can create an OWASP Slack account here: [https://owasp-slack.herokuapp.com/](https://owasp-slack.herokuapp.com/ "Join OWASP Slack")
+You can create an OWASP Slack account here: [https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#// "Join OWASP Slack")
 
 > The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that maintaining translations has proven to be an extremely challenging task. You're free to do forks for your own translations but please understand that any PRs containing them will be declined due to the previously mentioned reasons. However, we strongly encourage further translations of the MASVS as it is much easier to maintain.
 >
