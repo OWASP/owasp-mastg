@@ -1539,6 +1539,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
 ### Android Custom URL Schemes
+
 - <https://developer.android.com/training/app-links/>
 - <https://developer.android.com/training/app-links/deep-linking>
 - <https://developer.android.com/training/app-links/verify-site-associations>
