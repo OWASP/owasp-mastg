@@ -526,11 +526,9 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 Both Android and iOS allow inter-app communication via custom URL schemes. These custom URLs are defined within an intent filter in the AndroidManifest.xml file and allow for other applications to perform specific actions within the application that offers the custom URL scheme. Custom URIs can begin with any scheme prefix, and they usually define an action to take within the application and parameters for that action.
 
-This method of defining URL schemes is commonly used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link. While not inherently risky, this feature can be programmed in a way that increases the application attack surface.
+This method of defining URL schemes is commonly used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links") and [App links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), both being a widespread and convenient way to launch a native mobile app via a link. It is important to understand that these features can be programmed by a developer in a way that increases the application attack surface.
 
-Alternatively, since Android 6.0 (API level 23) App links can be defined. App links, in contrast to deep links, require that the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first using `android:autoVerify="true"` in the intent filter.
-
- Consider the following slightly contrived examples:
+ Consider the following slightly contrived examples of deep linking:
 
 ```default
 sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
@@ -540,7 +538,7 @@ sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
 
 - Financial loss for the victim if messages are sent to premium services.
 - Disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.
-- Potentially damaging social consequences for the targeted individual depending on content sent.
+- Potentially damaging social consequences for the targeted individual depending on the content sent.
 
  Another application specific example of deep linking is show below:
 
@@ -549,6 +547,16 @@ myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAge
 ```
 
 This application deep link demonstrates abuse of a link in order to target known vulnerabilities already identified within an application. In this example consider an application running a web view with JavaScript enabled, and that the `Whatismyname` parameter is reflected into the web view. In this case, this payload would trigger reflected cross site scripting within the context of the web view when the `Whatismyname` variable is rendered.
+
+Deep links are also inherently susceptible to deep link collision where by two applications can declare control over the exact same custom schema. This results in a disambiguation dialog being shown to the user whenever they click a custom schema link. A malicious application can attempt to abuse this by declaring control over targeted custom schemas; in which case the user will be prompted to select the application to handle the link and could make the mistake of choosing the malicious application to handle the link instead of the legitimate application.
+
+Since Android 6.0 (API Level 23) a developer can opt to define [App links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), similar to deep links providing a way to launch a native mobile application via a link. There are some key differences from deep links to consider:
+
+- App links only use http:// and https:// schemes, custom schemes are not allowed.
+- App links require a live domain to serve a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link").
+- Verified App links will not show a disambiguation dialog when a user opens a link.
+
+App links are not susceptible to collision due to verifying the domain with a digital asset link. Once the domain is verified the Android system will set that application as the default handler, resulting in no disambiguation dialog being shown to the user as in the case of deep link collision.
 
 For every application, each of these custom defined URL schemes must be enumerated and the actions they perform must be tested. User data and parameters that are provided from a URL Scheme should always be deemed to be untrustworthy input and thus should be validated as any user content typically is:
 
@@ -559,7 +567,7 @@ For every application, each of these custom defined URL schemes must be enumerat
 
 ### Static Analysis
 
-To determine whether custom URL schemes are defined the `AndroidManifest.xml` file should be investigated, specifically the data inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
+To determine whether custom URL schemes are defined the `AndroidManifest.xml` file should be investigated, specifically the data inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme") as shown below:
 
 ```xml
 <activity android:name=".MyUriActivity">
@@ -573,9 +581,26 @@ To determine whether custom URL schemes are defined the `AndroidManifest.xml` fi
 
 ```
 
-The example above specifies a new URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser. Specifics of deep link attributes can be found at the [android developer deep link documentation](https://developer.android.com/training/app-links/deep-linking "Deep Linking").
+This example specifies a new deep link URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser. Specifics of deep link attributes can be found at the [android developer deep link documentation](https://developer.android.com/training/app-links/deep-linking "Deep Linking").
 
-Data can then be transmitted through this new scheme with, for example, the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data on the application side:
+The following example specifies a new app link URL scheme:
+
+```xml
+<activity android:name=".MyUriActivity">
+  <intent-filter android:autoVerify="true">
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:scheme="http" android:host="www.myapp.com" android:path="/my/app/path.html" />
+      <data android:scheme="https" android:host="www.myapp.com" android:path="/my/app/path.html" />
+  </intent-filter>
+</activity>
+
+```
+
+This app link URL scheme declares the use of both the `http://` and `https://` schemes, alongside defining the host and path of which will activate this app link. For example in this case the URL: `https://www.myapp.com/my/app/path.html` would activate this app link. It's important to note the `android:autoVerify="true"` which is required for app links to operate. This `autoVerify` flag causes the Android system to reach out to the declared `android:host` in an attempt to access the [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the app link](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links").
+
+In both examples data can then be transmitted through these declared schemes. For example the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo` could be handled by the following code block to retrieve the data on the application side, this logic holds true for both app links and deep links:
 
 ```java
 Intent intent = getIntent();
@@ -586,7 +611,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-The usage of the [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()") should be verified in order to understand how the application uses this intent, and if it is abusable. This general approach of locating the getIntent() method can be used across most applications for reverse engineering and understanding how the application handles and uses deep links. Knowledge of this is of great importance when attempting to abuse deep links.
+The usage of the [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()")  and [`getData`](https://developer.android.com/reference/android/content/Intent#getData() "getData()") should be verified in order to understand how the application uses this intent, and if it is abusable. This general approach of locating the getIntent() method can be used across most applications for reverse engineering and understanding how the application handles and uses custom URL schemes. Knowledge of this is of great importance when attempting to abuse custom URL schemes.
 
 ### Dynamic Analysis
 
@@ -1512,6 +1537,13 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 ### Android permissions changes in Android 8
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
+
+### Android Custom URL Schemes
+- <https://developer.android.com/training/app-links/>
+- <https://developer.android.com/training/app-links/deep-linking>
+- <https://developer.android.com/training/app-links/verify-site-associations>
+- <https://developers.google.com/digital-asset-links/v1/getting-started>
+- <https://pdfs.semanticscholar.org/0415/59c01d5235f8cf38a3c69ccee7e1f1a98067.pdf>
 
 ### OWASP MASVS
 
