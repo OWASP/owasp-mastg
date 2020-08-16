@@ -528,7 +528,7 @@ Both Android and iOS allow inter-app communication via custom URL schemes. These
 
 This method of defining URL schemes is commonly used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links") and [App links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), both being a widespread and convenient way to launch a native mobile app via a link. It is important to understand that these features can be programmed by a developer in a way that increases the application attack surface.
 
- Consider the following slightly contrived examples of deep linking:
+ Consider the following example of deep linking:
 
 ```default
 sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
