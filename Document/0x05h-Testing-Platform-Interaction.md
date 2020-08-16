@@ -568,7 +568,9 @@ For every application, each of these custom defined URL schemes must be enumerat
 
 ### Static Analysis
 
-To determine whether custom URL schemes are defined the `AndroidManifest.xml` file should be investigated, specifically the data inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme") as shown below:
+You can easily determine whether custom URL schemes are defined just by inspecting the Android Manifest file and looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
+
+The following example specifies a new deep link with a custom URL scheme called `myapp://`. You should pay special attention to the [attributes](https://developer.android.com/training/app-links/deep-linking "Deep Linking") as they give you clues about how the deep link is used. For example, the category `BROWSABLE` will allow the deep link to be opened within a browser.
 
 ```xml
 <activity android:name=".MyUriActivity">
