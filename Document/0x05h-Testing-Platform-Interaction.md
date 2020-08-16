@@ -600,7 +600,7 @@ The following example specifies a new App Link using both the `http://` and `htt
 
 ```
 
-This app link URL scheme declares the use of both the `http://` and `https://` schemes, alongside defining the host and path of which will activate this app link. For example in this case the URL: `https://www.myapp.com/my/app/path.html` would activate this app link. It's important to note the `android:autoVerify="true"` which is required for app links to operate. This `autoVerify` flag causes the Android system to reach out to the declared `android:host` in an attempt to access the [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the app link](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links").
+In this example, the `<intent-filter>` includes the flag `android:autoVerify="true"`, which causes the Android system to reach out to the declared `android:host` in an attempt to access the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the App Links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links").
 
 In both examples data can then be transmitted through these declared schemes. For example the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo` could be handled by the following code block to retrieve the data on the application side, this logic holds true for both app links and deep links:
 
