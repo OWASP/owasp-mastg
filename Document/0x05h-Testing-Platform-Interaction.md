@@ -553,7 +553,7 @@ Deep links are also inherently susceptible to deep link collision where by two a
 Since Android 6.0 (API Level 23) a developer can opt to define [App links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), similar to deep links providing a way to launch a native mobile application via a link. There are some key differences from deep links to consider:
 
 - App Links only use `http://` and `https://` schemes, custom schemes are not allowed.
-- App links require a live domain to serve a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link").
+- App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
 - Verified App links will not show a disambiguation dialog when a user opens a link.
 
 App links are not susceptible to collision due to verifying the domain with a digital asset link. Once the domain is verified the Android system will set that application as the default handler, resulting in no disambiguation dialog being shown to the user as in the case of deep link collision.
