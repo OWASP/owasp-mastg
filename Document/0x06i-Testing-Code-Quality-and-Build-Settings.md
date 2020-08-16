@@ -320,17 +320,30 @@ The dynamic analysis of this section comprises of two parts: the actual license 
 
 It need to be validated whether the copyrights of the licenses have been adhered to. This often means that the application should have an `about` or `EULA` section in which the copy-right statements are noted as required by the license of the third party library.
 
-When no source-code is available for library analysis, you can find some of the frameworks being used with otool and MobSF.
-After you obtain the library and Clutched it (e.g. removed the DRM), you can run oTool with the root of the application's directory:
+#### Listing Application Libraries
+
+When performing app analysis, it is important to also analyze the app dependencies (usually in form of libraries or so-called iOS Frameworks) and ensure that they don't contain any vulnerabilities. Even when you don't have the source code, you can still identify some of the app dependencies using tools like [objection](https://github.com/sensepost/objection), [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF) or otool. Objection is the recommended tool, since it provides the most accurate results and it is easy to use. It contains a module to work with iOS Bundles, which offers two commands: `list_bundles` and `list_frameworks`.
+
+The `list_bundles` command lists all of the application’s bundles that are not related to Frameworks. The output contains executable name, bundle id, version of the library and path to the library.
 
 ```bash
-$ otool -L <Executable>
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_bundles
+Executable    Bundle                                       Version  Path
+------------  -----------------------------------------  ---------  -------------------------------------------
+DVIA-v2       com.highaltitudehacks.DVIAswiftv2.develop          2  ...-1F0C-4DB1-8C39-04ACBFFEE7C8/DVIA-v2.app
+CoreGlyphs    com.apple.CoreGlyphs                               1  ...m/Library/CoreServices/CoreGlyphs.bundle
 ```
 
-However, these do not include all the libraries being used. Next, with class-dump (for Objective-C) or the more recent dsdump you can generate a subset of the header files used and derive which libraries are involved. But not detect the version of the library.
+The `list_frameworks` command lists all of the application’s bundles that represent Frameworks.
 
 ```bash
-$ ./class-dump <Executable> -r
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
+Executable      Bundle                                     Version    Path
+--------------  -----------------------------------------  ---------  -------------------------------------------
+Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-v2.app/Frameworks/Bolts.framework
+RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
+                                                                      ...ystem/Library/Frameworks/IOKit.framework
+...
 ```
 
 ## Testing Exception Handling (MSTG-CODE-6)
