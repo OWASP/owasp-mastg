@@ -22,9 +22,6 @@ Fragmentation is a problem we deal with especially on Android devices. Not every
 
 Mobile devices regularly connect to a variety of networks, including public Wi-Fi networks shared with other (potentially malicious) clients. This creates opportunities for a wide variety of network-based attacks ranging from simple to complicated and old to new. It's crucial to maintain the confidentiality and integrity of information exchanged between the mobile app and remote service endpoints. As a basic requirement, mobile apps must set up a secure, encrypted channel for network communication using the TLS protocol with appropriate settings.
 
-<div style="page-break-after: always;">
-</div>
-
 #### Authentication and Authorization
 
 In most cases, sending users to log in to a remote service is an integral part of the overall mobile app architecture. Even though most of the authentication and authorization logic happens at the endpoint, there are also some implementation challenges on the mobile app side. Unlike web apps, mobile apps often store long-time session tokens that are unlocked with user-to-device authentication features such as fingerprint scanning. While this allows for a quicker login and better user experience (nobody likes to enter complex passwords), it also introduces additional complexity and room for error.
@@ -49,7 +46,7 @@ There are three things you should never bring up in polite conversations: religi
 
 This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. The MSTG maps to the same basic set of security requirements offered by the MASVS and depending on the context they can be used individually or combined to achieve different objectives.
 
-<img src="Images/Chapters/0x03/owasp-mobile-overview.jpg" width="500"/>
+<img src="Images/Chapters/0x03/owasp-mobile-overview.jpg" width="550" />
 
 For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the "[Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)" chapter we'll describe how you can apply the checklist and MSTG to a mobile app penetration test.
 

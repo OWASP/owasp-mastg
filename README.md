@@ -1,11 +1,14 @@
-<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg"></a>
+<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg" /></a>
 
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
 
 [![Creative Commons License](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 
 [![OWASP Flagship](https://img.shields.io/badge/owasp-flagship%20project-48A646.svg)](https://www.owasp.org/index.php/Category:OWASP_Project#tab=Project_Inventory)
-[![Build Status](https://travis-ci.com/OWASP/owasp-mstg.svg?branch=master)](https://travis-ci.com/OWASP/owasp-mstg)
+
+[![Check Markdown Markup](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Markup/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Markup%22)
+[![Document Build](https://github.com/OWASP/owasp-mstg/workflows/Document%20Build/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22)
+[![Check Markdown Links](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Links/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Links%22)
 
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 You can also read the MSTG on [Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "MSTG @ Gitbook") or download it as an [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book").
@@ -16,8 +19,7 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 
 ### Introduction
 
-- [Header](Document/0x00-Header.md)
-- [Foreword](Document/Foreword.md)
+- [Foreword](Document/0x01-Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
@@ -71,47 +73,39 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 2. Check the [releases](https://github.com/OWASP/owasp-mstg/releases "Our releases"). Here you can find a PDF, an archive containing the sources and a DocX document for any given tagged version. Please note that the documents are generated automatically per tag.
 
-3. Get the book as printed version. A hardcopy of the book can be ordered via [lulu.com](http://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24091501.html "MSTG on Lulu.com"). This version of the book is not completely aligned with book printing standards, but we are improving each version. If you recognize any issues or mistakes, even small ones, please raise an [issue](https://github.com/OWASP/owasp-mstg/issues "our issues section") so we can fix it in the next version.
+3. Get the book as printed version. A hardcopy of the book can be ordered via [lulu.com](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html "MSTG on Lulu.com"). This version of the book is not completely aligned with book printing standards, but we are improving each version. If you recognize any issues or mistakes, even small ones, please raise an [issue](https://github.com/OWASP/owasp-mstg/issues "our issues section") so we can fix it in the next version.
 
 4. Get the [e-book](https://leanpub.com/mobile-security-testing-guide-preview "MSTG as an e-book"). The book is available for free, but you can choose to purchase it at a price of your choosing if you wish to support our project. All funds raised through sales of the e-book go directly into the project budget and will be used to fund production of future releases.
 
-5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/generate_document.sh "The document generator") (requires [pandoc](http://pandoc.org "Pandoc")). This produces docx and HTML files in the "Generated" subdirectory.
+5. Clone the repository and run the [document generator](https://github.com/OWASP/owasp-mstg/blob/master/tools/docker/run_docker_mstg_generation_on_local.sh "The document generator") (requires [Docker](https://www.docker.com "Docker")). This produces the PDF, Epub, Mobi, and DOCX in the root of the MSTG folder.
 
     ```shell
     $ git clone https://github.com/OWASP/owasp-mstg/
-    $ cd owasp-mstg/Tools/
-    $ ./generate_document.sh
+    $ cd owasp-mstg/
+    $ ./tools/docker/run_docker_mstg_generation_on_local.sh
     ```
 
-6. Clone the repository and run the [gitbook generator](https://github.com/OWASP/owasp-mstg/blob/master/Tools/gitbookepubandpdf.sh "Gitbook based"). This produces PDF, Epub and Mobi files in the "Generated" subdirectory.
+6. Just check the latest build of the repository at [Github actions](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22 "Document build"). This offers you the latest SNAPSHOT version of the document to download.
 
-    ```shell
-    $ git clone https://github.com/OWASP/owasp-mstg/
-    $ cd owasp-mstg/Tools/
-    $ ./gitbookandpdf.sh
-    ```
+## Contributions, Feature Requests and Feedback
 
-You can also use the [document index](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html "TOC") to navigate the master branch of the MSTG.
+**We are searching for additional authors, reviewers and editors.**
 
-## Contributions, feature requests and feedback
+You can start contributing on many different ways:
 
-**We are searching for additional authors, reviewers and editors.** The best way to get started is to browse the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content"). Also, check the [issues](https://github.com/OWASP/owasp-mstg/issues "our issues section") and the [project page](https://github.com/OWASP/owasp-mstg/projects/2 "The MSTG Project") for a list of open tasks.
+- [Filing or reporting issues](https://github.com/OWASP/owasp-mstg/issues/new/choose "New Issue"),
+- [Choosing one of the existing issues and working on them](https://github.com/OWASP/owasp-mstg/issues "our issues section") or
+- Browsing the [existing content](https://mobile-security.gitbook.io/mobile-security-testing-guide/ "existing content") and proofreading it.
 
-Drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!") before you start working on a topic. This helps us to keep track of what everyone is doing and prevent conflicts. You can create a Slack account here:
+Please check our [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") for ideas before you get started.
 
-[https://owasp.slack.com/](https://join.slack.com/t/owasp/shared_invite/enQtNjExMTc3MTg0MzU4LWQ2Nzg3NGJiZGQ2MjRmNzkzN2Q4YzU1MWYyZTdjYjA2ZTA5M2RkNzE2ZjdkNzI5ZThhOWY5MjljYWZmYmY4ZjM)
+Please let us know if you'd like to work on an existing open issue before you start working on it. To do so simply write a comment in the issue itself or drop a us line on the [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!"). This helps us to keep track of what everyone is doing and prevent conflicts.
 
-Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started.
+You can create an OWASP Slack account here: [https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#// "Join OWASP Slack")
 
-Please note that the MSTG focuses primarily on the native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Nativescript/React-native/Xamarin/Cordova/... apps are not within the focus of the MSTG. However, some key-controls, such as pinning, have been explained already for some of these platforms.
-If you are looking for more security recommendations on this field, take a look the work-in-progress Google sheets based on the compliancy checklist 1.1.2:
-
-- [Flutter Compliancy Checklist (WIP)](https://drive.google.com/open?id=1wHK3VI1cU1xmYrCu9yb5OHKUEeLIPSkC "Flutter Compliancy Checklist");
-- [React-Native Compliancy Checklist (WIP)](https://drive.google.com/open?id=1P5FZ_Bup5eSPOmkePZA8cIpKGOKvngkN "React-Native Compliancy Checklist").
-- [Xamarin Compliancy Checklist (WIP)](https://drive.google.com/open?id=1UL1yLRREJwXfe0HlrcX-IuvPYQM7lTtG "Xamarin Compliancy Checklist").
-
-If there's something you really want to see in the guide, or you want to suggest an improvement, create an issue [issue](https://github.com/OWASP/owasp-mstg/issues "Issue") or ping us on [Slack](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
-If the issue is accepted, we will schedule it into one of our [milestones](https://github.com/OWASP/owasp-mstg/milestones "Milestones").
+> The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that maintaining translations has proven to be an extremely challenging task. You're free to do forks for your own translations but please understand that any PRs containing them will be declined due to the previously mentioned reasons. However, we strongly encourage further translations of the MASVS as it is much easier to maintain.
+>
+> A translation of the MSTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
 
 ## Authoring Credit
 
@@ -130,4 +124,14 @@ If you are willing to write a large portion of the guide and help consistently d
 
 ## Crackmes
 
-In the Crackmes folder, you can find a set of mobile apps to hack. Are you able to find the secrets? For more details: check the [README.md](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md "Crackmes readme") at the [Crackmes folder](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes "Crackmes folder").
+In the [Crackmes folder](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes "Crackmes folder"), you can find a set of mobile apps to hack. Are you able to find the secrets? For more details check the [Crackmes README file](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md "Crackmes readme").
+
+## About Hybrid Apps
+
+Please note that the MSTG focuses primarily on native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Apps using frameworks such as Nativescript, React-native, Xamarin, Cordova, etc. are not within the main focus of the MSTG. However, some essential controls, such as certificate pinning, have been explained already for some of these platforms.
+
+If you are looking for more security recommendations on this field, feel free to take a look and contribute to the work-in-progress Google sheets based on the compliancy checklist 1.1.2:
+
+- [Flutter Compliancy Checklist (WIP)](https://drive.google.com/open?id=1wHK3VI1cU1xmYrCu9yb5OHKUEeLIPSkC "Flutter Compliancy Checklist")
+- [React-Native Compliancy Checklist (WIP)](https://drive.google.com/open?id=1P5FZ_Bup5eSPOmkePZA8cIpKGOKvngkN "React-Native Compliancy Checklist")
+- [Xamarin Compliancy Checklist (WIP)](https://drive.google.com/open?id=1UL1yLRREJwXfe0HlrcX-IuvPYQM7lTtG "Xamarin Compliancy Checklist")

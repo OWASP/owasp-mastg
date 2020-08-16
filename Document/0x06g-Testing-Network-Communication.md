@@ -1,12 +1,27 @@
-## iOS Network APIs
+# iOS Network APIs
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
-Most modern mobile apps use variants of HTTP based web-services, as these protocols are well-documented and supported. On iOS, the `NSURLConnection` class provides methods to load URL requests asynchronously and synchronously.
+Most modern mobile apps use variants of HTTP-based web services, as these protocols are well-documented and supported.
+Since iOS 12.0 the [Network framework](https://developer.apple.com/documentation/network "API Reference Network") and the [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession "API Reference URLSession") class provide methods to load network and URL requests asynchronously and synchronously. Older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html "Using Sockets and Socket Streams").
 
-### App Transport Security (MSTG-NETWORK-2)
+## Network Framework
 
-#### Overview
+The Network framework was introduced at [The Apple Worldwide Developers Conference (WWDC)](https://developer.apple.com/videos/play/wwdc2018/715 "Introducing Network.framework: A modern alternative to Sockets") in 2018 and is a replacement to the Sockets API. This low-level networking framework provides classes to send and receive data with built in dynamic networking, security and performance support.
+
+TLS 1.3 is enabled by default in the Network framework, if the argument `using: .tls` is used. It is the preferred option over the legacy [Secure Transport](https://developer.apple.com/documentation/security/secure_transport "API Reference Secure Transport") framework.
+
+## URLSession
+
+`URLSession` was built upon the Network framework and utilizes the same transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS.
+
+`URLSession` should be used for HTTP and HTTPS connections, instead of utilizing the Network framework directly. The class natively supports both URL schemes and is optimized for such connections. It requires less boilerplate code, reducing the propensity for errors and ensuring secure connections by default. The Network framework should only be used when there are low-level and/or advanced networking requirements.
+
+The official Apple documentation includes examples of using the Network framework to [implement netcat](https://developer.apple.com/documentation/network/implementing_netcat_with_network_framework "Implementing netcat with Network Framework") and `URLSession` to [fetch website data into memory](https://developer.apple.com/documentation/foundation/url_loading_system/fetching_website_data_into_memory "Fetching Website Data into Memory").
+
+## App Transport Security (MSTG-NETWORK-2)
+
+### Overview
 
 [App Transport Security (ATS)](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys") is a set of security checks that the operating system enforces when making connections with [NSURLConnection](https://developer.apple.com/reference/foundation/nsurlconnection "API Reference NSURLConnection"), [NSURLSession](https://developer.apple.com/reference/foundation/urlsession "API Reference NSURLSession") and [CFURL](https://developer.apple.com/reference/corefoundation/cfurl-rd7 "API Reference CFURL") to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
 
@@ -32,7 +47,7 @@ The cipher suite must be one of the following:
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`
 
-##### ATS Exceptions
+#### ATS Exceptions
 
 ATS restrictions can be disabled by configuring exceptions in the Info.plist file under the `NSAppTransportSecurity` key. These exceptions can be applied to:
 
@@ -43,7 +58,7 @@ ATS restrictions can be disabled by configuring exceptions in the Info.plist fil
 
 ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `[NSAppTransportSecurity](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "API Reference NSAppTransportSecurity")` dictionary.
 
-```objc
+```objectivec
 NSAppTransportSecurity : Dictionary {
     NSAllowsArbitraryLoads : Boolean
     NSAllowsArbitraryLoadsForMedia : Boolean
@@ -91,7 +106,7 @@ Starting from January 1 2017, Apple App Store review requires justification if o
 
 However this decline is extended later by Apple stating [“To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”](https://developer.apple.com/news/?id=12212016b "Apple Developer Portal Announcement - Supporting App Transport Security")
 
-#### Analyzing the ATS Configuration
+### Analyzing the ATS Configuration
 
 If the source code is available, open then `Info.plist` file in the application bundle directory and look for any exceptions that the application developer has configured. This file should be examined taking the applications context into consideration.
 
@@ -109,11 +124,11 @@ If the source code is not available, then the `Info.plist` file should be either
 
 The application may have ATS exceptions defined to allow it’s normal functionality. For an example, the Firefox iOS application has ATS disabled globally. This exception is acceptable because otherwise the application would not be able to connect to any HTTP website that does not have all the ATS requirements.
 
-#### Recommendations for usage of ATS
+### Recommendations for usage of ATS
 
 It is possible to verify which ATS settings can be used when communicating to a certain endpoint. On macOS the command line utility `nscurl` is available to check the same. The command can be used as follows:
 
-```shell
+```bash
 /usr/bin/nscurl --ats-diagnostics https://www.example.com
 Starting ATS Diagnostics
 
@@ -184,9 +199,9 @@ In general it can be summarized:
 - If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and if they can be deactivated.
 - If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views
 
-### Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-3 and MSTG-NETWORK-4)
+## Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-3 and MSTG-NETWORK-4)
 
-#### Overview
+### Overview
 
 Certificate Authorities are an integral part of a secure client server communication and they are predefined in the trust store of each operating system. On iOS you are automatically trusting an enormous amount of certificates which you can look up in detail in the Apple documentation, that will show you [lists of available trusted root certificates for each iOS version](https://support.apple.com/en-gb/HT204132 "Lists of available trusted root certificates in iOS").
 
@@ -197,11 +212,11 @@ In order to address this risk you can use certificate pinning. Certificate pinni
 The certificate can be pinned during development, or at the time the app first connects to the backend.
 In that case, the certificate associated or 'pinned' to the host at when it seen for the first time. This second variant is slightly less secure, as an attacker intercepting the initial connection could inject their own certificate.
 
-##### When the Pin Fails
+#### When the Pin Fails
 
 Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or load balancer, or there might be a man-in-the-middle attack going on. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network APIs".
 
-#### Static Analysis
+### Static Analysis
 
 Verify that the server certificate is pinned. Pinning can be implemented on various levels in terms of the certificate tree presented by the server:
 
@@ -213,7 +228,7 @@ The code presented below shows how it is possible to check if the certificate pr
 
 The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.
 
-```objc
+```objectivec
 
 (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
@@ -234,14 +249,19 @@ else {
 
 Note that the certificate pinning example above has a major drawback when you use certificate pinning and the certificate changes, then the pin is invalidated. If you can reuse the public key of the server, then you can create a new certificate with that same public key, which will ease the maintenance. There are various ways in which you can do this:
 
-- Implement your own pin based on the public key: Change the comparison `if ([remoteCertificateData isEqualToData:localCertData]) {` in our example to a comparison of the key-bytes or the certificate-thumb.
+- Implement your own pin based on the public key: Change the comparison the following comparision in our example to a comparison of the key-bytes or the certificate-thumb:
+
+```objectivec
+if ([remoteCertificateData isEqualToData:localCertData]) {
+```
+
 - Use [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
 - Use [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
 - Use [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
-##### Server certificate validation
+#### Server certificate validation
 
 Our test approach is to gradually relax security of the SSL handshake negotiation and check which security mechanisms are enabled.
 
@@ -249,7 +269,7 @@ Our test approach is to gradually relax security of the SSL handshake negotiatio
 2. Now, install the Burp certificate, as explained in [Burp's user documentation](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device"). If the handshake is successful and you can see the traffic in Burp, it means that the certificate is validated against the device's trust store, but no pinning is performed.
 3. If executing the instructions from the previous step doesn't lead to traffic being proxied through burp, it may mean that the certificate is actually pinned and all security measures are in place. However, you still need to bypass the pinning in order to test the application. Please refer to the section "[Bypassing Certificate Pinning](#bypassing-certificate-pinning "Bypassing Certificate Pinning")" below for more information on this.
 
-##### Client certificate validation
+#### Client certificate validation
 
 Some applications use two-way SSL handshake, meaning that application verifies server's certificate and server verifies client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
 
@@ -267,7 +287,7 @@ Sometimes applications have one certificate that is hardcoded and use it for the
 
 Once you have extracted the certificate from the application (e.g. using Cycript or Frida), add it as client certificate in Burp, and you will be able to intercept the traffic.
 
-##### Bypassing Certificate Pinning
+#### Bypassing Certificate Pinning
 
 There are various ways to bypass SSL Pinning and the following section will describe it for jailbroken and non-jailbroken devices.
 
@@ -288,7 +308,7 @@ If you don't have access to the source, you can try binary patching:
 
 It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and Objection (this also works on jailbroken devices). After repackaging your application with Objection as described in "iOS Basic Security Testing", you can use the following command in Objection to disable common SSL Pinning implementations:
 
-```shell
+```bash
 $ ios sslpinning disable
 ```
 
@@ -298,16 +318,16 @@ See also [Objection's documentation on Disabling SSL Pinning for iOS](https://gi
 
 If you want to get more details about white box testing and typical code patterns, refer to [#thiel]. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
-#### References
+### References
 
 - [#thiel] - David Thiel. iOS Application Security, No Starch Press, 2015
 
-##### OWASP MASVS
+#### OWASP MASVS
 
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
-##### Nscurl
+#### Nscurl
 
 - A guide to ATS - Blog post by NowSecure - <https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/>

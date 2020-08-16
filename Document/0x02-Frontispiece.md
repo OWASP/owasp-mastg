@@ -1,10 +1,12 @@
 # Frontispiece
 
+<img src="Images/OWASP_logo.png" alt="OWASP Logo" width="350" />
+
 ## About the OWASP Mobile Security Testing Guide
 
 The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this invite](https://join.slack.com/t/owasp/shared_invite/enQtNjExMTc3MTg0MzU4LWQ2Nzg3NGJiZGQ2MjRmNzkzN2Q4YzU1MWYyZTdjYjA2ZTA5M2RkNzE2ZjdkNzI5ZThhOWY5MjljYWZmYmY4ZjM "Slack channel sign up"). (Please open a PR if the invite has expired.)
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#// "Slack channel sign up"). (Please open a Pull Request in our Github Repo if the invite has expired.)
 
 ## Disclaimer
 
@@ -16,7 +18,7 @@ Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CO
 
 Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-<img src="Images/CC-license.png" alt="drawing" width="150">
+<img src="Images/CC-license.png" alt="drawing" width="200" />
 
 ## ISBN
 
@@ -56,11 +58,14 @@ Romuald is a passionate cyber security & privacy professional with over 15 years
 
 Jeroen is the mobile security lead at NVISO where he is responsible for quality assurance on mobile security projects and for R&D on all things mobile. He worked as a Flash developer during high school and college, but switched to a career in cybersecurity once he graduated and now has more than 5 years of experience in mobile security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
 
+#### Vikas Gupta
+
+Vikas is an experienced cyber security researcher, with expertise in mobile security. In his career he has worked to secure applications for various industries including fintech, banks and governments. He enjoys reverse engineering, especially obfuscated native code and cryptography. He holds masters in security and mobile computing, and an OSCP certification. He is always open to share his knowledge and exchange ideas.
+
 ### Top Contributors
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
-- Vikas Gupta
 - Pawel Rzepa
 - Francesco Stillavato
 - Henry Hoggard
@@ -68,7 +73,9 @@ Top contributors have consistently contributed quality content and have at least
 - Kyle Benac
 - Paulino Calderon
 - Alexander Anthuk
+- Caleb Kinney
 - Abderrahmane Aftahi
+- Koki Takeyama
 - Wen Bin Kong
 - Abdessamad Temmar
 - Cláudio André
@@ -82,7 +89,7 @@ Top contributors have consistently contributed quality content and have at least
 
 Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
 
-Koki Takeyama, Jin Kung Ong, Sjoerd Langkemper, Caleb Kinney, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, José Carlos Andreu, Lukasz Wierzbicki, Dharshin De Silva, Anatoly Rosencrantz, Caitlin Andrews, Abhinav Sejpal, Anita Diamond, Raul Siles, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Anna Szkudlarek, Elie Saad, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Akanksha Bana, Dario Incalza, Jason Doyle, Oguzhan Topgul, Ender IBL, Imani Sherman, magicansk, Sijo Abraham, Dominique RIGHETTO, Pishu Mahtani, Jay Mbolda, Anuruddha E., Emil Tostrup
+Jin Kung Ong, Lukasz Wierzbicki, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, José Carlos Andreu, Dharshin De Silva, Anatoly Rosencrantz, Caitlin Andrews, Abhinav Sejpal, Anita Diamond, Raul Siles, Yogesh Sharma, Dominique RIGHETTO, Enrico Verzegnassi, Nick Epson, Anna Szkudlarek, Elie Saad, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Akanksha Bana, Dario Incalza, Murat Karaoz, Jason Doyle, Oguzhan Topgul, Ender IBL, Imani Sherman, magicansk, Sijo Abraham, Pishu Mahtani, Jay Mbolda, Anuruddha E., Oleg Surnin, Emil Tostrup
 
 ### Reviewers
 
@@ -110,13 +117,13 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 #### Honorable Benefactor
 
-[![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
-
 [OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
+
+<img src="Images/Sponsors/NowSecure_logo.png" width="250" />
 
 #### Good Samaritan Benefactor
 
-[![RandoriSec](Images/Sponsors/Randorisec_logo.png)](https://www.randorisec.fr/ "RandoriSec")
+<img src="Images/Sponsors/Randorisec_logo.png" width="225" />
 
 #### Donators
 

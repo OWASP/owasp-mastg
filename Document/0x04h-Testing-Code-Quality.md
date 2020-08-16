@@ -1,10 +1,10 @@
-## Testing Code Quality
+# Mobile App Code Quality
 
 Mobile app developers use a wide variety of programming languages and frameworks. As such, common vulnerabilities such as SQL injection, buffer overflows, and cross-site scripting (XSS), may manifest in apps when neglecting secure programming practices.
 
 The same programming flaws may affect both Android and iOS apps to some degree, so we'll provide an overview of the most common vulnerability classes frequently in the general section of the guide. In later sections, we will cover OS-specific instances and exploit mitigation features.
 
-### Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
+## Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
 
 An *injection flaw* describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta-characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
@@ -12,7 +12,7 @@ Vulnerabilities of this class are most prevalent in server-side web services. Ex
 
 For example, while an app might query a local SQLite database, such databases usually do not store sensitive data (assuming the developer followed basic security practices). This makes SQL injection a non-viable attack vector. Nevertheless, exploitable injection vulnerabilities sometimes occur, meaning proper input validation is a necessary best practice for programmers.
 
-#### SQL Injection
+### SQL Injection
 
 A *SQL injection* attack involves integrating SQL commands into input data, mimicking the syntax of a predefined SQL command. A successful SQL injection attack allows the attacker to read or write to the database and possibly execute administrative commands, depending on the permissions granted by the server.
 
@@ -47,7 +47,7 @@ Ostorlab exploited the sort parameter of [Yahoo's weather mobile application](ht
 
 Another real-world instance of client-side SQL injection was discovered by Mark Woods within the "Qnotes" and "Qget" Android apps running on QNAP NAS storage appliances. These apps exported content providers vulnerable to SQL injection, allowing an attacker to retrieve the credentials for the NAS device. A detailed description of this issue can be found on the [Nettitude Blog](https://blog.nettitude.com/uk/qnap-android-dont-provide "Nettitude Blog - QNAP Android: Don\'t Over Provide").
 
-#### XML Injection
+### XML Injection
 
 In a *XML injection* attack, the attacker injects XML meta-characters to structurally alter XML content. This can be used to either compromise the logic of an XML-based application or service, as well as possibly allow an attacker to exploit the operation of the XML parser processing the content.
 
@@ -64,7 +64,7 @@ In this example, the local file `/dev/random` is opened where an endless stream 
 
 The current trend in app development focuses mostly on REST/JSON-based services as XML is becoming less common. However, in the rare cases where user-supplied or otherwise untrusted content is used to construct XML queries, it could be interpreted by local XML parsers, such as NSXMLParser on iOS. As such, said input should always be validated and meta-characters should be escaped.
 
-#### Injection Attack Vectors
+### Injection Attack Vectors
 
 The attack surface of mobile apps is quite different from typical web and network applications. Mobile apps don't often expose services on the network, and viable attack vectors on an app's user interface are rare. Injection attacks against an app are most likely to occur through inter-process communication (IPC) interfaces, where a malicious app attacks another app running on the device.
 
@@ -84,14 +84,14 @@ During a manual security review, you should employ a combination of both techniq
 
 Verify that the following best practices have been followed:
 
-- Untrusted inputs are type-checked and/or validated using a white-list of acceptable values.
+- Untrusted inputs are type-checked and/or validated using a list of acceptable values.
 - Prepared statements with variable binding (i.e. parameterized queries) are used when performing database queries. If prepared statements are defined, user-supplied data and SQL code are automatically separated.
 - When parsing XML data, ensure the parser application is configured to reject resolution of external entities in order to prevent XXE attack.
 - When working with x509 formatted certificate data, ensure that secure parsers are used. For instance Bouncy Castle below version 1.6 allows for Remote Code Execution by means of unsafe reflection.
 
 We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
-### Cross-Site Scripting Flaws (MSTG-PLATFORM-2)
+## Cross-Site Scripting Flaws (MSTG-PLATFORM-2)
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
@@ -99,7 +99,7 @@ In the context of *native apps*, XSS risks are far less prevalent for the simple
 
 An older but well-known example is the [local XSS issue in the Skype app for iOS, first identified by Phil Purviance](https://superevr.com/blog/2011/xss-in-skype-for-ios "XSS in Skype for iOS"). The Skype app failed to properly encode the name of the message sender, allowing an attacker to inject malicious JavaScript to be executed when a user views the message. In his proof-of-concept, Phil showed how to exploit the issue and steal a user's address book.
 
-#### Static Analysis
+### Static Analysis
 
 Take a close look at any WebViews present and investigate for untrusted input rendered by the app.
 
@@ -144,7 +144,7 @@ Sergey Bobrov was able to take advantage of this in the following [HackerOne rep
 
 - ADB
 
-  ```shell
+  ```bash
   $ adb shell
   $ am start -n com.quora.android/com.quora.android.ActionBarContentActivity \
   -e url 'http://test/test' -e html 'XSS<script>alert(123)</script>'
@@ -152,7 +152,7 @@ Sergey Bobrov was able to take advantage of this in the following [HackerOne rep
 
 - Clipboard Data
 
-  ```shell
+  ```bash
   $ am start -n com.quora.android/com.quora.android.ModalContentActivity  \
   -e url 'http://test/test' -e html \
   '<script>alert(QuoraAndroid.getClipboardData());</script>'
@@ -198,13 +198,13 @@ Consider how data will be rendered in a response. For example, if data is render
 
 For a comprehensive list of escaping rules and other prevention measures, refer to the [OWASP XSS Prevention Cheat Sheet](https://goo.gl/motVKX "OWASP XSS Prevention Cheat Sheet").
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 XSS issues can be best detected using manual and/or automated input fuzzing, i.e. injecting HTML tags and special characters into all available input fields to verify the web application denies invalid inputs or escapes the HTML meta-characters in its output.
 
 A [reflected XSS attack](https://goo.gl/eqqiHV "Testing for Reflected Cross site scripting (OTG-INPVAL-001)") refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be an effective method. For example, the [BURP Scanner](https://portswigger.net/burp/ "Burp Suite") is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
 
-### Memory Corruption Bugs (MSTG-CODE-8)
+## Memory Corruption Bugs (MSTG-CODE-8)
 
 Memory corruption bugs are a popular mainstay with hackers. This class of bug results from a programming error that causes the program to access an unintended memory location. Under the right conditions, attackers can capitalize on this behavior to hijack the execution flow of the vulnerable program and execute arbitrary code. This kind of vulnerability occurs in a number of ways:
 
@@ -225,7 +225,7 @@ The primary goal in exploiting memory corruption is usually to redirect program 
 Android apps are, for the most part, implemented in Java which is inherently safe from memory corruption issues by design. However, native apps utilizing JNI libraries are susceptible to this kind of bug.
 Similarly, iOS apps can wrap C/C++ calls in Obj-C or Swift, making them susceptible to these kind of attacks.
 
-#### Buffer and Integer Overflows
+### Buffer and Integer Overflows
 
 The following code snippet shows a simple example for a condition resulting in a buffer overflow vulnerability.
 
@@ -259,11 +259,11 @@ Verify that the following best practices have been followed:
 - iOS apps written in Objective-C use NSString class. C apps on iOS should use CFString, the Core Foundation representation of a string.
 - No untrusted data is concatenated into format strings.
 
-#### Static Analysis
+### Static Analysis
 
 Static code analysis of low-level code is a complex topic that could easily fill its own book. Automated tools such as [RATS](https://code.google.com/archive/p/rough-auditing-tool-for-security/downloads "RATS - Rough auditing tool for security") combined with limited manual inspection efforts are usually sufficient to identify low-hanging fruits. However, memory corruption conditions often stem from complex causes. For example, a use-after-free bug may actually be the result of an intricate, counter-intuitive race condition not immediately apparent. Bugs manifesting from deep instances of overlooked code deficiencies are generally discovered through dynamic analysis or by testers who invest time to gain a deep understanding of the program.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 Memory corruption bugs are best discovered via input fuzzing: an automated black-box software testing technique in which malformed data is continually sent to an app to survey for potential vulnerability conditions. During this process, the application is monitored for malfunctions and crashes. Should a crash occur, the hope (at least for security testers) is that the conditions creating the crash reveal an exploitable security flaw.
 
@@ -271,14 +271,14 @@ Fuzz testing techniques or scripts (often called "fuzzers") will typically gener
 
 For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.owasp.org/index.php/Fuzzing "OWASP Fuzzing Guide").
 
-### References
+## References
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-ARCH-2: "Security controls are never enforced only on the client side, but on the respective remote endpoints."
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 
-#### XSS via start ContentActivity
+### XSS via start ContentActivity
 
 - <https://hackerone.com/reports/189793>

@@ -1,4 +1,4 @@
-## Mobile App Security Testing
+# Mobile App Security Testing
 
 In the following sections we'll provide a brief overview of general security testing principles and key terminology. The concepts introduced are largely identical to those found in other types of penetration testing, so if you are an experienced tester you may be familiar with some of the content.
 
@@ -6,9 +6,9 @@ Throughout the guide, we use "mobile app security testing" as a catchall phrase 
 
 In this guide, we cover mobile app security testing in two contexts. The first is the "classical" security test completed near the end of the development life cycle. In this context, the tester accesses a nearly finished or production-ready version of the app, identifies security issues, and writes a (usually devastating) report. The other context is characterized by the implementation of requirements and the automation of security tests from the beginning of the software development life cycle onwards. The same basic requirements and test cases apply to both contexts, but the high-level method and the level of client interaction differ.
 
-### Principles of Testing
+## Principles of Testing
 
-#### White-box Testing versus Black-box Testing
+### White-box Testing versus Black-box Testing
 
 Let's start by defining the concepts:
 
@@ -20,11 +20,11 @@ We strongly advise that you request the source code so that you can use the test
 
 Even though decompiling on Android is straightforward, the source code may be obfuscated, and de-obfuscating will be time-consuming. Time constraints are therefore another reason for the tester to have access to the source code.
 
-#### Vulnerability Analysis
+### Vulnerability Analysis
 
 Vulnerability analysis is usually the process of looking for vulnerabilities in an app. Although this may be done manually, automated scanners are usually used to identify the main vulnerabilities. Static and dynamic analysis are types of vulnerability analysis.
 
-#### Static versus Dynamic Analysis
+### Static versus Dynamic Analysis
 
 Static Application Security Testing (SAST) involves examining an application's components without executing them, by analyzing the source code either manually or automatically.
 OWASP provides information about [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
@@ -33,11 +33,11 @@ Dynamic Application Security Testing (DAST) involves examining the app during ru
 
 Now that we have defined static and dynamic analysis, let's dive deeper.
 
-#### Static Analysis
+### Static Analysis
 
 During static analysis, the mobile app's source code is reviewed to ensure appropriate implementation of security controls. In most cases, a hybrid automatic/manual approach is used. Automatic scans catch the low-hanging fruit, and the human tester can explore the code base with specific usage contexts in mind.
 
-##### Manual Code Review
+#### Manual Code Review
 
 A tester performs manual code review by manually analyzing the mobile application's source code for security vulnerabilities. Methods range from a basic keyword search via the 'grep' command to a line-by-line examination of the source code. IDEs (Integrated Development Environments) often provide basic code review functions and can be extended with various tools.
 
@@ -47,7 +47,7 @@ In contrast to automatic code analysis, manual code review is very good for iden
 
 A manual code review requires an expert code reviewer who is proficient in both the language and the frameworks used for the mobile application. Full code review can be a slow, tedious, time-consuming process for the reviewer, especially given large code bases with many dependencies.
 
-##### Automated Source Code Analysis
+#### Automated Source Code Analysis
 
 Automated analysis tools can be used to speed up the review process of Static Application Security Testing (SAST). They check the source code for compliance with a predefined set of rules or industry best practices, then typically display a list of findings or warnings and flags for all detected violations. Some static analysis tools run against the compiled app only, some must be fed the original source code, and some run as live-analysis plugins in the Integrated Development Environment (IDE).
 
@@ -55,15 +55,18 @@ Although some static code analysis tools incorporate a lot of information about 
 
 The appendix "Testing Tools" includes a list of static analysis tools, which can be found at the end of this book.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 The focus of DAST is the testing and evaluation of apps via their real-time execution. The main objective of dynamic analysis is finding security vulnerabilities or weak spots in a program while it is running. Dynamic analysis is conducted both at the mobile platform layer and against the backend services and APIs, where the mobile app's request and response patterns can be analyzed.
 
 Dynamic analysis is usually used to check for security mechanisms that provide sufficient protection against the most prevalent types of attack, such as disclosure of data in transit, authentication and authorization issues, and server configuration errors.
 
-#### Avoiding False Positives
+<br/>
+<br/>
 
-##### Automated Scanning Tools
+### Avoiding False Positives
+
+#### Automated Scanning Tools
 
 Automated testing tools' lack of sensitivity to app context is a challenge. These tools may identify a potential issue that's irrelevant. Such results are called "false positives".
 
@@ -76,11 +79,11 @@ Let's take CSRF as an example. A successful CSRF attack requires the following:
 
 Mobile apps don't fulfill these requirements: even if WebViews and cookie-based session management are used, any malicious link the user clicks opens in the default browser, which has a separate cookie store.
 
-Stored Cross-Site Scripting (XSS) can be an issue if the app includes WebViews, and it may even lead to command execution if the app exports JavaScript interfaces. However, reflected Cross-Site Scripting is rarely an issue for the reason mentioned above (even though whether they should exist at all is arguable — escaping output is simply a best practice).
+Stored Cross-Site Scripting (XSS) can be an issue if the app includes WebViews, and it may even lead to command execution if the app exports JavaScript interfaces. However, reflected Cross-Site Scripting is rarely an issue for the reason mentioned above (even though whether they should exist at all is arguable, escaping output is simply a best practice).
 
 > In any case, consider exploit scenarios when you perform the risk assessment; don't blindly trust your scanning tool's output.
 
-##### Clipboard
+#### Clipboard
 
 When typing data into input fields, the clipboard can be used to copy in data. The clipboard is accessible system-wide and is therefore shared by apps. This sharing can be misused by malicious apps to get sensitive data that has been stored in the clipboard.
 
@@ -93,7 +96,7 @@ For [Android there was a PoC exploit released](https://arstechnica.com/informati
 
 When using an app you should still be aware that other apps are reading the clipboard continuously, as the [Facebook app](https://www.thedailybeast.com/facebook-is-spying-on-your-clipboard "Facebook Is Spying On Your Clipboard") did. Still, copy-pasting passwords is a security risk you should be aware of, but also cannot be solved by an app.
 
-#### Penetration Testing (a.k.a. Pentesting)
+### Penetration Testing (a.k.a. Pentesting)
 
 The classic approach involves all-around security testing of the app's final or near-final build, e.g., the build that's available at the end of the development process. For testing at the end of the development process, we recommend the [Mobile App Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "OWASP MASVS") and the associated checklist as baseline for testing. A typical security test is structured as follows:
 
@@ -103,7 +106,7 @@ The classic approach involves all-around security testing of the app's final or 
 - **Exploitation** - in this phase, the security tester tries to penetrate the app by exploiting the vulnerabilities identified during the previous phase. This phase is necessary for determining whether vulnerabilities are real and true positives.
 - **Reporting** - in this phase, which is essential to the client, the security tester reports the vulnerabilities. This includes the exploitation process in detail, classifies the type of vulnerability, documents the risk if an attacker would be able to compromise the target and outlines which data the tester has been able to access illegitimately.
 
-##### Preparation
+#### Preparation
 
 The security level at which the app will be tested must be decided before testing. The security requirements should be decided at the beginning of the project. Different organizations have different security needs and resources available for investing in test activities. Although the controls in MASVS Level 1 (L1) are applicable to all mobile apps, walking through the entire checklist of L1 and Level 2 (L2) MASVS controls with technical and business stakeholders is a good way to decide on a level of test coverage.
 
@@ -111,11 +114,11 @@ Organizations may have different regulatory and legal obligations in certain ter
 
 Security goals/controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or application.
 
-<img src="Images/Chapters/0x03/mstg-preparation.png" width="500px"/>
+<img src="Images/Chapters/0x03/mstg-preparation.png" width="550" />
 
 All involved parties must agree on the decisions and the scope in the checklist because these will define the baseline for all security testing.
 
-###### Coordinating with the Client
+##### Coordinating with the Client
 
 Setting up a working test environment can be a challenging task. For example, restrictions on the enterprise wireless access points and networks may impede dynamic analysis performed at client premises. Company policies may prohibit the use of rooted phones or (hardware and software) network testing tools within enterprise networks. Apps that implement root detection and other reverse engineering countermeasures may significantly increase the work required for further analysis.
 
@@ -127,7 +130,7 @@ Depending on the scope of the engagement, this approach may not be possible. Req
 
 The scope of both types of testing should be discussed during the preparation phase. For example, whether the security controls should be adjusted should be decided before testing. Additional topics are discussed below.
 
-###### Identifying Sensitive Data
+##### Identifying Sensitive Data
 
 Classifications of sensitive information differ by industry and country. In addition, organizations may take a restrictive view of sensitive data, and they may have a data classification policy that clearly defines sensitive information.
 
@@ -150,11 +153,11 @@ When no data classification policy is available, use the following list of infor
 
  A definition of "sensitive data" must be decided before testing begins because detecting sensitive data leakage without a definition may be impossible.
 
-###### Intelligence Gathering
+##### Intelligence Gathering
 
 Intelligence gathering involves the collection of information about the app's architecture, the business use cases the app serves, and the context in which the app operates. Such information may be classified as "environmental" or "architectural".
 
-###### Environmental Information
+##### Environmental Information
 
 Environmental information includes:
 
@@ -163,7 +166,7 @@ Environmental information includes:
 - Stakeholders and investors; understanding who is interested in and responsible for the app.
 - Internal processes, workflows, and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic exploits](https://www.owasp.org/index.php/Testing_for_business_logic "Testing business logic").
 
-###### Architectural Information
+##### Architectural Information
 
 Architectural information includes:
 
@@ -172,7 +175,7 @@ Architectural information includes:
 - **Network:** Usage of secure transport protocols (e.g., TLS), usage of strong keys and cryptographic algorithms (e.g., SHA-2) to secure network traffic encryption, usage of certificate pinning to verify the endpoint, etc.
 - **Remote Services:** The remote services the app consumes and whether their being compromised could compromise the client.
 
-##### Mapping the Application
+#### Mapping the Application
 
 Once the security tester has information about the app and its context, the next step is mapping the app's structure and content, e.g., identifying its entry points, features, and data.
 
@@ -183,7 +186,7 @@ Threat Modeling is an important artifact: documents from the workshop usually gr
 
 The [threat modeling guidelines defined in OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
 
-##### Exploitation
+#### Exploitation
 
 Unfortunately, time or financial constraints limit many pentests to application mapping via automated scanners (for vulnerability analysis, for example). Although vulnerabilities identified during the previous phase may be interesting, their relevance must be confirmed with respect to five axes:
 
@@ -195,7 +198,7 @@ Unfortunately, time or financial constraints limit many pentests to application 
 
 Against all odds, some vulnerabilities may not be exploitable and may lead to minor compromises, if any. Other vulnerabilities may seem harmless at first sight, yet be determined very dangerous under realistic test conditions. Testers who carefully go through the exploitation phase support pentesting by characterizing vulnerabilities and their effects.
 
-#### Reporting
+### Reporting
 
 The security tester's findings will be valuable to the client only if they are clearly documented. A good pentest report should include information such as, but not limited to, the following:
 
@@ -209,13 +212,13 @@ The security tester's findings will be valuable to the client only if they are c
 
 Many pentest report templates are available on the Internet: Google is your friend!
 
-### Security Testing and the SDLC
+## Security Testing and the SDLC
 
 Although the principles of security testing haven't fundamentally changed in recent history, software development techniques have changed dramatically. While the widespread adoption of Agile practices was speeding up software development, security testers had to become quicker and more agile while continuing to deliver trustworthy software.
 
 The following section is focused on this evolution and describes contemporary security testing.
 
-#### Security Testing during the Software Development Life Cycle
+### Security Testing during the Software Development Life Cycle
 
 Software development is not very old, after all, so the end of developing without a framework is easy to observe. We have all experienced the need for a minimal set of rules to control work as the source code grows.
 
@@ -227,9 +230,9 @@ Security wasn't originally an integral part of software development. It was an a
 
 > "SDLC" will be used interchangeably with "Secure SDLC" in the following section to help you internalize the idea that security is a part of software development processes. In the same spirit, we use the name DevSecOps to emphasize the fact that security is part of DevOps.
 
-#### SDLC Overview
+### SDLC Overview
 
-##### General Description of SDLC
+#### General Description of SDLC
 
 SDLCs always consist of the same steps (the overall process is sequential in the Waterfall paradigm and iterative in the Agile paradigm):
 
@@ -245,11 +248,11 @@ You can use the [OWASP MASVS](https://mobile-security.gitbook.io/masvs/ "OWASP M
 
 The picture below illustrates all the phases and artifacts:
 
-<img src="Images/Chapters/0x04b/SDLCOverview.jpg" width="500px"/>
+<img src="Images/Chapters/0x04b/SDLCOverview.jpg" width="550" />
 
 Based on the project's general risk profile, you may simplify (or even skip) some artifacts, and you may add others (formal intermediary approvals, formal documentation of certain points, etc.). **Always remember two things: an SDLC is meant to reduce risks associated with software development, and it is a framework that helps you set up controls to that end.** This this is a generic description of SDLC; always tailor this framework to your projects.
 
-##### Defining a Test Strategy
+#### Defining a Test Strategy
 
 Test strategies specify the tests that will be performed during the SDLC as well as testing frequency. Test strategies are used to make sure that the final software product meets security objectives, which are generally determined by clients' legal/marketing/corporate teams.
 The test strategy is usually created during the Secure Design phase, after risks have been clarified (during the Initiation phase) and before code development (the Secure Implementation phase) begins. The strategy requires input from activities such as Risk Management, previous Threat Modeling, and Security Engineering.
@@ -274,16 +277,16 @@ These are only suggestions; other metrics may be more relevant to your project. 
 Distinguishing between tests performed by an internal team and tests performed by an independent third party is important. Internal tests are usually useful for improving daily operations, while third-party tests are more beneficial to the whole organization. Internal tests can be performed quite often, but third-party testing happens at most once or twice a year; also, the former are less expensive than the latter.
 Both are necessary, and many regulations mandate tests from an independent third party because such tests can be more trustworthy.
 
-#### Security Testing in Waterfall
+### Security Testing in Waterfall
 
-##### What Waterfall Is and How Testing Activities Are Arranged
+#### What Waterfall Is and How Testing Activities Are Arranged
 
 Basically, SDLC doesn't mandate the use of any development life cycle: it is safe to say that security can (and must!) be addressed in any situation.
 
 Waterfall methodologies were popular before the 21st century. The most famous application is called the "V model", in which phases are performed in sequence and you can backtrack only a single step.
 The testing activities of this model occur in sequence and are performed as a whole, mostly at the point in the life cycle when most of the app development is complete. This activity sequence means that changing the architecture and other factors that were set up at the beginning of the project is hardly possible even though code may be changed after defects have been identified.
 
-#### Security Testing for Agile/DevOps and DevSecOps
+### Security Testing for Agile/DevOps and DevSecOps
 
 DevOps refers to practices that focus on a close collaboration between all stakeholders involved in software development (generally called Devs) and operations (generally called Ops). DevOps is not about merging Devs and Ops.
 Development and operations teams originally worked in silos, when pushing developed software to production could take a significant amount of time. When development teams made moving more deliveries to production necessary by working with Agile, operation teams had to speed up to match the pace. DevOps is the necessary evolution of the solution to that challenge in that it allows software to be released to users more quickly. This is largely accomplished via extensive build automation, the process of testing and releasing software, and infrastructure changes (in addition to the collaboration aspect of DevOps). This automation is embodied in the deployment pipeline with the concepts of Continuous Integration and Continuous Delivery (CI/CD).
@@ -296,13 +299,13 @@ Security is just as critical to business success as the overall quality, perform
 
 However, DevSecOps is not just a linear process oriented towards delivering the best possible software to operations; it is also a mandate that operations closely monitor software that's in production to identify issues and fix them by forming a quick and efficient feedback loop with development. DevSecOps is a process through which Continuous Improvement is heavily emphasized.
 
-<img src="Images/Chapters/0x04b/DevSecOpsProcess.JPG" width="500px"/>
+<img src="Images/Chapters/0x04b/DevSecOpsProcess.JPG" width="550" />
 
 The human aspect of this emphasis is reflected in the creation of cross-functional teams that work together to achieve business outcomes. This section is focused on necessary interactions and integrating security into the development life cycle (which starts with project inception and ends with the delivery of value to users).
 
-##### What Agile and DevSecOps Are and How Testing Activities Are Arranged
+#### What Agile and DevSecOps Are and How Testing Activities Are Arranged
 
-###### Overview
+##### Overview
 
 Automation is a key DevSecOps practice: as stated earlier, the frequency of deliveries from development to operation increases when compared to the traditional approach, and activities that usually require time need to keep up, e.g. deliver the same added value while taking more time. Unproductive activities must consequently be abandoned, and essential tasks must be fastened. These changes impact infrastructure changes, deployment, and security:
 
@@ -312,7 +315,7 @@ Automation is a key DevSecOps practice: as stated earlier, the frequency of deli
 
 The following sections provide more details about these three points.
 
-###### Infrastructure as Code
+##### Infrastructure as Code
 
 Instead of manually provisioning computing resources (physical servers, virtual machines, etc.) and modifying configuration files, Infrastructure as Code is based on the use of tools and automation to fasten the provisioning process and make it more reliable and repeatable. Corresponding scripts are often stored under version control to facilitate sharing and issue resolution.
 
@@ -327,7 +330,7 @@ Infrastructure as Code is commonly used for projects that have Cloud-based resou
 
 The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terraform](https://www.terraform.io/ "Terraform"), [Packer](https://www.packer.io/ "Packer"), [Chef](https://www.chef.io/chef/ "Chef") and [Ansible](https://www.ansible.com/ "Ansible").
 
-###### Deployment
+##### Deployment
 
 The deployment pipeline's sophistication depends on the maturity of the project organization or development team. In its simplest form, the deployment pipeline consists of a commit phase. The commit phase usually involves running simple compiler checks and the unit test suite as well as creating a deployable artifact of the application. A release candidate is the latest version that has been checked into the trunk of the version control system. Release candidates are evaluated by the deployment pipeline for conformity to standards they must fulfill for deployment to production.
 
@@ -341,7 +344,7 @@ CI/CD means "Continuous Integration/Continuous Delivery" in some contexts and "C
 
 The delivery and deployment of applications with low or medium sensitivity may be merged into a single step, and validation may be performed after delivery. However, keeping these two actions separate and using strong validation are strongly advised for sensitive applications.
 
-###### Security
+##### Security
 
 At this point, the big question is: now that other activities required for delivering code are completed significantly faster and more effectively, how can security keep up? How can we maintain an appropriate level of security? Delivering value to users more often with decreased security would definitely not be good!
 
@@ -357,19 +360,19 @@ The security of an application developed with DevOps must be considered during o
 - Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
-![Example of a DevSecOps process](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg)
+<img src="Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg" width="500" />
 
-### References
+## References
 
 - [paul] - M. Paul. Official (ISC)2 Guide to the CSSLP CBK, Second Edition ((ISC)2 Press), 2014
 - [mcgraw] - G McGraw. Software Security: Building Security In, 2006
 
-#### OWASP MASVS
+### OWASP MASVS
 
-- V1.1: "All app components are identified and known to be needed."
-- V1.3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
-- V1.4: "Data considered sensitive in the context of the mobile app is clearly identified."
-- V1.5: "All app components are defined in terms of the business functions and/or security functions they provide."
-- V1.6: "A threat model for the mobile app and the associated remote services has been produced that identifies potential threats and countermeasures."
-- V1.7: "All security controls have a centralized implementation."
-- V1.10: "Security is addressed within all parts of the software development lifecycle."
+- MSTG-ARCH-1: "All app components are identified and known to be needed."
+- MSTG-ARCH-3: "A high-level architecture for the mobile app and all connected remote services has been defined and security has been addressed in that architecture."
+- MSTG-ARCH-4: "Data considered sensitive in the context of the mobile app is clearly identified."
+- MSTG-ARCH-5: "All app components are defined in terms of the business functions and/or security functions they provide."
+- MSTG-ARCH-6: "A threat model for the mobile app and the associated remote services has been produced that identifies potential threats and countermeasures."
+- MSTG-ARCH-7: "All security controls have a centralized implementation."
+- MSTG-ARCH-10: "Security is addressed within all parts of the software development lifecycle."
