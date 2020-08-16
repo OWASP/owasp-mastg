@@ -1406,7 +1406,7 @@ As a final note, always remember to properly check the API level that app is tar
 
 ### Dynamic Analysis
 
-Below APKs can be used as a proof of concept to identify the existence of this vulnerability. These proof of concept APK will work well till Android 7.0 (API level 24).  
+Abusing this kind of vulnerability on a dynamic manner can be pretty challenging and very specialized as it closely depends on the target Android version. For instance, for versions up to Android 7.0 (API level 24) you can use the following APKs as a proof of concept to identify the existence of the vulnerabilities.  
 
 [Tapjacking POC](https://github.com/FSecureLABS/tapjacking-poc "Tapjacking POC"): This APK creates a simple overlay which sits on top of the testing application.
 
