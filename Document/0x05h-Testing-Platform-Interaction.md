@@ -546,7 +546,7 @@ sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
 myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAgeIs=100
 ```
 
-This application deep link demonstrates abuse of a link in order to target known vulnerabilities already identified within an application. In this example consider an application running a web view with JavaScript enabled, and that the `Whatismyname` parameter is reflected into the web view. In this case, this payload would trigger reflected cross site scripting within the context of the web view when the `Whatismyname` variable is rendered.
+This deep link could be used in order to abuse some known vulnerabilities already identified within an application. For instance, consider an application running a WebView with JavaScript enabled and rendering a `Whatismyname` parameter. In this concrete case, the deep link payload would trigger reflected cross site scripting within the context of the WebView.
 
 Deep links are also inherently susceptible to deep link collision where by two applications can declare control over the exact same custom schema. This results in a disambiguation dialog being shown to the user whenever they click a custom schema link. A malicious application can attempt to abuse this by declaring control over targeted custom schemas; in which case the user will be prompted to select the application to handle the link and could make the mistake of choosing the malicious application to handle the link instead of the legitimate application.
 
