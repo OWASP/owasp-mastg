@@ -633,7 +633,7 @@ You can call custom URL schemes with the Drozer module `app.activity.start`:
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
-Alternatively the Android Debugging Bridge [Activity Manager](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") can be used to call custom URL schemes:
+Alternatively you can use adb with the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to call custom URL schemes:
 
 ```bash
 $ adb shell am start -W -a android.intent.action.VIEW -d "sms://0123456789" com.google.android.apps.messaging
