@@ -1,4 +1,4 @@
-<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="../Document/Images/mstg-cover-release-small.jpg"></a>
+<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="../Document/Images/mstg-cover-release-small.jpg" /></a>
 
 # OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG)
 
@@ -19,23 +19,24 @@ Newer and older versions of the Excel are released on a regular basis and can be
 
 You should ensure that the generated hash is similar to the one in the table below! File hashes serve as a file verification mechanism to ensure that you are using the same excel found in this guide, and that it was downloaded properly.
 
+```bash
 | Filename | SHA256 Sum |
 |---|---|
-| Mobile_App_Security_Checklist-English_1.1.2.xlsx | 97c749e9c47672320b89683cb1ac60555e3ed53cfc296deb2108131910766ad8 |
-| Mobile_App_Security_Checklist-French_1.1.2.xlsx | 4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5 |
-| Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx | a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542 |
-| Mobile_App_Security_Checklist-Korean_1.1.2.xlsx | c41f30e966fca66b03fda58e413bdd1c30fdd25a0f1295eecdd2c9f775899077 |
-| Mobile_App_Security_Checklist-Spanish_1.1.xlsx | f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc |
+| Mobile_App_Security_Checklist-English_1.2.xlsx | 80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8 |
+| Mobile_App_Security_Checklist-French_1.2.xlsx | 080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609 |
+| Mobile_App_Security_Checklist-Japanese_1.2.xlsx | d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90 |
+| Mobile_App_Security_Checklist-Korean_1.2.xlsx | 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc |
+| Mobile_App_Security_Checklist-Spanish_1.2.xlsx | b540a7674082b690cbe35bf145eadc424073a7cfe033b70da1babb1762df5d44 |
 
-### Generate on Linux
+### Generate on Linux / macOS
 
 ```bash
-$ sha256sum Mobile_App_Security_Checklist-*
-97c749e9c47672320b89683cb1ac60555e3ed53cfc296deb2108131910766ad8 *Mobile_App_Security_Checklist-English_1.1.2.xlsx
-4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5 *Mobile_App_Security_Checklist-French_1.1.2.xlsx
-a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542 *Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
-c41f30e966fca66b03fda58e413bdd1c30fdd25a0f1295eecdd2c9f775899077 *Mobile_App_Security_Checklist-Korean_1.1.2.xlsx
-f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc *Mobile_App_Security_Checklist-Spanish_1.1.xlsx
+$ sha256sum *.xlsx
+80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8  Mobile_App_Security_Checklist-English_1.2.xlsx
+080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609  Mobile_App_Security_Checklist-French_1.2.xlsx
+d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90  Mobile_App_Security_Checklist-Japanese_1.2.xlsx
+849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc  Mobile_App_Security_Checklist-Korean_1.2.xlsx
+b540a7674082b690cbe35bf145eadc424073a7cfe033b70da1babb1762df5d44  Mobile_App_Security_Checklist-Spanish_1.2.xlsx
 ```
 
 ### Generate on Windows
@@ -45,33 +46,22 @@ owasp-mstg\Checklists> Get-FileHash -Algorithm SHA256 -Path .\Mobile_App_Securit
 
 
 Algorithm : SHA256
-Hash      : 97C749E9C47672320B89683CB1AC60555E3ED53CFC296DEB2108131910766AD8
-Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-English_1.1.2.xlsx
+Hash      : 80027dca50a3be9f724c32f84117be6e961d62f2a4fa3eab5a94ac5c21ff06c8
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-English_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : 4AC489734A009F1101AAB37CD96925B067E19BAEAD9E4B395A7048AD026844B5
-Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-French_1.1.2.xlsx
+Hash      : 080e281bdd2133f6f96da50380fbe500adf7009ed92f654699ebcab725c14609
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-French_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : A5C636FBA4119305197BFA7BC38DBB15B704F3437312F9481896984B16160542
-Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
+Hash      : d08108f7f4b998c6c39bfc75a7537b7e437fe282d556db715bb11b5bd922ab90
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Japanese_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : C41F30E966FCA66B03FDA58E413BDD1C30FDD25A0F1295EECDD2C9F775899077
-Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Korean_1.1.2.xlsx
+Hash      : 849d65307bd1046329b4019a09bdacf5ccf22a1226028eed1eab94fde293cfcc
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Korean_1.2.xlsx
 
 Algorithm : SHA256
-Hash      : F561377A9E45E235AF0DB9BCF483577E55C4CFD5A40A42EA6A9335681ADD9CCC
-Path      : C:\Users\elie.saad\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Spanish_1.1.xlsx
-```
-
-### Generate on MacOS
-
-```bash
-owasp-mstg/Checklists> shasum -a 256 Mobile_App_Security_Checklist-*
-97c749e9c47672320b89683cb1ac60555e3ed53cfc296deb2108131910766ad8  Mobile_App_Security_Checklist-English_1.1.2.xlsx
-4ac489734a009f1101aab37cd96925b067e19baead9e4b395a7048ad026844b5  Mobile_App_Security_Checklist-French_1.1.2.xlsx
-a5c636fba4119305197bfa7bc38dbb15b704f3437312f9481896984b16160542  Mobile_App_Security_Checklist-Japanese_1.1.2.xlsx
-c41f30e966fca66b03fda58e413bdd1c30fdd25a0f1295eecdd2c9f775899077  Mobile_App_Security_Checklist-Korean_1.1.2.xlsx
-f561377a9e45e235af0db9bcf483577e55c4cfd5a40a42ea6a9335681add9ccc  Mobile_App_Security_Checklist-Spanish_1.1.xlsx
+Hash      : b540a7674082b690cbe35bf145eadc424073a7cfe033b70da1babb1762df5d44
+Path      : C:\Users\user\Github\owasp-mstg\Checklists\Mobile_App_Security_Checklist-Spanish_1.2.xlsx
 ```

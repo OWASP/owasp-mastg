@@ -1,12 +1,12 @@
-## Tampering and Reverse Engineering on iOS
+# iOS Tampering and Reverse Engineering
 
-### Reverse Engineering
+## Reverse Engineering
 
 iOS reverse engineering is a mixed bag. On one hand, apps programmed in Objective-C and Swift can be disassembled nicely. In Objective-C, object methods are called via dynamic function pointers called "selectors", which are resolved by name during runtime. The advantage of runtime name resolution is that these names need to stay intact in the final binary, making the disassembly more readable. Unfortunately, this also means that no direct cross-references between methods are available in the disassembler and constructing a flow graph is challenging.
 
 In this guide, we'll introduce static and dynamic analysis and instrumentation. Throughout this chapter, we refer to the [OWASP UnCrackable Apps for iOS](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios "OWASP UnCrackable Apps for iOS"), so download them from the MSTG repository if you're planning to follow the examples.
 
-#### Tooling
+### Tooling
 
 Make sure that the following is installed on your system:
 
@@ -26,13 +26,13 @@ Make sure that the following is installed on your system:
 
 - [Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
 
-- [Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. This tool has been discussed in "[Ghidra](0x04c-tampering-and-reverse-engineering.md#ghidra "Ghidra")" section.
+- [Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. This tool has been discussed in "[Ghidra](0x04c-Tampering-and-Reverse-Engineering.md#ghidra "Ghidra")" section.
 
-##### Building a Reverse Engineering Environment for Free
+#### Building a Reverse Engineering Environment for Free
 
 Be sure to follow the instructions from the section "Setting up Xcode and Command Line Tools" of chapter "iOS Basic Security Testing". This way you'll have properly installed [Xcode](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") properly installed or install them straight away from your terminal:
 
-```shell
+```bash
 $ xcode-select --install
 ```
 
@@ -40,7 +40,7 @@ $ xcode-select --install
 - swift-demangle is an Xcode tool that demangles Swift symbols. For more information run `xcrun swift-demangle -help` once installed.
 - simctl is an Xcode tool that allows you to interact with iOS simulators via the command line to e.g. manage simulators, launch apps, take screenshots or collect their logs.
 
-##### Commercial Tools
+#### Commercial Tools
 
 Building a reverse engineering environment for free is possible. However, there are some commercial alternatives. The most commonly used are:
 
@@ -48,7 +48,7 @@ Building a reverse engineering environment for free is possible. However, there 
 
 - [Hopper](https://www.hopperapp.com/ "Hopper") is a reverse engineering tool for macOS and Linux used to disassemble, decompile and debug 32/64bits Intel Mac, Linux, Windows and iOS executables.
 
-#### Disassembling and Decompiling
+### Disassembling and Decompiling
 
 Because Objective-C and Swift are fundamentally different, the programming language in which the app is written affects the possibilities for reverse engineering it. For example, Objective-C allows method invocations to be changed at runtime. This makes hooking into other app functions (a technique heavily used by [Cycript](http://www.cycript.org/ "Cycript") and other reverse engineering tools) easy. This "method swizzling" is not implemented the same way in Swift, and the difference makes the technique harder to execute with Swift than with Objective-C.
 
@@ -58,7 +58,7 @@ If you want to disassemble an application from the App Store, remove the Fairpla
 
 In this section the term "app binary" refers to the Macho-O file in the application bundle which contains the compiled code, and should not be confused with the application bundle - the IPA file. See section "[Exploring the App Package](0x06b-Basic-Security-Testing.md#exploring-the-app-package "Exploring the App Package")" in chapter "Basic iOS Security Testing" for more details on the composition of IPA files.
 
-##### Disassembling With IDA Pro
+#### Disassembling With IDA Pro
 
 If you have a license for IDA Pro, you can analyze the app binary using IDA Pro as well.
 
@@ -78,17 +78,17 @@ If you have a regular IDA Pro license and do not want to buy the Hex-Rays decomp
 
 The majority of this chapter applies to applications written in Objective-C or having bridged types, which are types compatible with both Swift and Objective-C. The Swift compatibility of most tools that work well with Objective-C is being improved. For example, Frida supports [Swift bindings](https://github.com/frida/frida-swift "Frida-swift").
 
-### Static Analysis
+## Static Analysis
 
 The preferred method of statically analyzing iOS apps involves using the original Xcode project files. Ideally, you will be able to compile and debug the app to quickly identify any potential issues with the source code.
 
 Black box analysis of iOS apps without access to the original source code requires reverse engineering. For example, no decompilers are available for iOS apps (although most commercial and open-source disassemblers can provide a pseudo-source code view of the binary), so a deep inspection requires you to read assembly code.
 
-#### Basic Information Gathering
+### Basic Information Gathering
 
 You can use class-dump to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
 
-```shell
+```bash
 $ unzip DamnVulnerableiOSApp.ipa
 
 $ cd Payload/DamnVulnerableIOSApp.app
@@ -110,13 +110,13 @@ MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYL
 Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an application to be deployed on all devices.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
-```shell
+```bash
 iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
 ```
 
 And then we can proceed to performing class-dump:
 
-```shell
+```bash
 iOS8-jailbreak:~ root# class-dump DVIA32
 
 @interface FlurryUtil : ./DVIA/DVIA/DamnVulnerableIOSApp/DamnVulnerableIOSApp/YapDatabase/Extensions/Views/Internal/
@@ -133,13 +133,13 @@ Alternatively, you can easily decompile the application with [Hopper Disassemble
 
 The following command is listing shared libraries:
 
-```shell
+```bash
 $ otool -L <binary>
 ```
 
-#### Manual (Reversed) Code Review
+### Manual (Reversed) Code Review
 
-##### Reviewing Disassembled Objective-C and Swift Code
+#### Reviewing Disassembled Objective-C and Swift Code
 
 In this section we will be exploring iOS application's binary code manually and perform static analysis on it. Manual analysis can be a slow process and requires immense patience. A good manual analysis can make the dynamic analysis more successful.
 
@@ -152,17 +152,17 @@ There are no hard written rules for performing static analysis, but there are fe
 
 > Techniques discussed in this section are generic and applicable irrespective of the tools used for analysis.
 
-###### Objective-C
+##### Objective-C
 
 In addition to the techniques learned in the "[Disassembling and Decompiling](#disassembling-and-decompiling "Disassembling and Decompiling")" section, for this section you'll need some understanding of the [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime"). For instance, functions like `_objc_msgSend` or `_objc_release` are specially meaningful for the Objective-C runtime.
 
 We will be using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App"), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
 
-<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen.png" alt="Home screen of the UnCrackable Level 1 application" height="650" width="400">
+<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen2.png" alt="Home screen of the UnCrackable Level 1 application" width="300" />
 
 When the user inputs the wrong string, the application shows a pop-up with the "Verification Failed" message.
 
-<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Verification Failed Pop-Up"  height="650" width="400">
+<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" alt="Verification Failed Pop-Up" width="300" />
 
 You can keep note of the strings displayed in the pop-up, as this might be helpful when searching for the code where the input is processed and a decision is being made. Luckily, the complexity and interaction with this application is straightforward, which bodes well for our reversing endeavors.
 
@@ -170,11 +170,11 @@ You can keep note of the strings displayed in the pop-up, as this might be helpf
 
 We can start by checking the strings present in the binary by opening it in Ghidra. The listed strings might be overwhelming at first, but with some experience in reversing Objective-C code, you'll learn how to _filter_ and discard the strings that are not really helpful or relevant. For instance, the ones shown in screenshot below, which are generated for the Objective-C runtime. Other strings might be helpful in some cases, such as those containing symbols (function names, class names, etc.) and we'll be using them when performing static analysis to check if some specific function is being used.
 
-![Objective-C runtime strings](Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png "Objective-C runtime related strings")
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png" alt="Objective-C runtime related strings" width="500" />
 
 If we continue our careful analysis, we can spot the string, "Verification Failed", which is used for the pop-up when a wrong input is given. If you follow the cross-references (Xrefs) of this string, you will reach `buttonClick` function of the `ViewController` class. We will look into the `buttonClick` function later in this section. When further checking the other strings in the application, only a few of them look a likely candidate for a _hidden flag_. You can try them and verify as well.
 
-![Interesting strings in UnCrackable application](Images/Chapters/0x06c/manual_reversing_ghidra_strings.png "Interesting strings in the UnCrackable Level 1 application")
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_strings.png" alt="Interesting strings in the UnCrackable Level 1 application" width="500" />
 
 Moving forward, we have two paths to take. Either we can start analyzing the `buttonClick` function identified in the above step, or start analyzing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path.
 
@@ -189,17 +189,17 @@ Once we're done with the analysis of all the functions in the `AppDelegate` clas
 
 Luckily the current application has a small code base, and we can find another `ViewController` class in the **Symbol Tree** view. In this class, function `viewDidLoad` function looks interesting. If you check the documentation of [`viewDidLoad`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621495-viewdidload "viewDidLoad()"), you can see that it can also be used to perform additional initialization on views.
 
-![Decompilation of viewDidLoad function](Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png "Decompilation of viewDidLoad function")
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png" alt="Decompilation of viewDidLoad function" width="500" />
 
 If we check the decompilation of this function, there are a few interesting things going on. For instance, there is a call to a native function at line 31 and a label is initialized with a `setHidden` flag set to 1 in lines 27-29. You can keep a note of these observations and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers.
 
 In our first step, we observed that the application verifies the input string only when the UI button is pressed. Thus, analyzing the `buttonClick` function is an obvious target. As earlier mentioned, this function also contains the string we see in the pop-ups. At line 29 a decision is being made, which is based on the result of `isEqualString` (output saved in `uVar1` at line 23). The input for the comparison is coming from the text input field (from the user) and the value of the `label`. Therefore, we can assume that the hidden flag is stored in that label.
 
-![Decompilation of buttonClick function](Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png "Decompilation of buttonClick function")
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png" alt="Decompilation of buttonClick function" width="500" />
 
 Now we have followed the complete flow and have all the information about the application flow. We also concluded that the hidden flag is present in a text label and in order to determine the value of the label, we need to revisit `viewDidLoad` function, and understand what is happening in the native function identified. Analysis of the native function is discussed in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")".
 
-##### Reviewing Disassembled Native Code
+#### Reviewing Disassembled Native Code
 
 Analyzing disassembled native code requires a good understanding of the calling conventions and instructions used by the underlying platform. In this section we are looking in ARM64 disassembly of the native code. A good starting point to learn about ARM architecture is available at [Introduction to ARM Assembly Basics](https://azeria-labs.com/writing-arm-assembly-part-1/ "Introduction to ARM Assembly Basics") by Azeria Labs Tutorials. This is a quick summary of the things that we will be using in this section:
 
@@ -215,20 +215,20 @@ Decompilers can help us in analyzing native code, but they should be used with c
 
 We will be analyzing the native function identified in `viewDidLoad` function in the previous section. The function is located at offset 0x1000080d4. The return value of this function used in the `setText` function call for the label. This text is used to compare against the user input. Thus, we can be sure that this function will be returning a string or equivalent.
 
-![Disassembly of the native function](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png "Disassembly of the native function")
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" alt="Disassembly of the native function" width="500" />
 
 The first thing we can see in the disassembly of the function is that there is no input to the function. The registers X0-X7 are not read throughout the function. Also, there are multiple calls to other functions like the ones at 0x100008158, 0x10000dbf0 etc.
 
 The instructions corresponding to one such function calls can be seen below. The branch instruction `bl` is used to call the function at 0x100008158.
 
-```arm
+```gnuassembler
 1000080f0 1a 00 00 94     bl         FUN_100008158
 1000080f4 60 02 00 39     strb       w0,[x19]=>DAT_10000dbf0
 ```
 
 The return value from the function (found in W0), is stored to the address in register X19 (`strb` stores a byte to the address in register). We can see the same pattern for other function calls, the returned value is stored in X19 register and each time the offset is one more than the previous function call. This behavior can be associated with populating each index of a string array at a time. Each return value is been written to an index of this string array. There are 11 such calls, and from the current evidence we can make an intelligent guess that length of the hidden flag is 11. Towards the end of the disassembly, the function returns with the address to this string array.
 
-```arm
+```gnuassembler
 100008148 e0 03 13 aa     mov        x0=>DAT_10000dbf0,x19
 ```
 
@@ -238,24 +238,24 @@ To determine the value of the hidden flag we need to know the return value of ea
 
 Manually analyzing all the native functions completely will be time consuming and might not be the wisest approach. In such a scenario using a dynamic analysis approach is highly recommended. For instance, by using the techniques like hooking or simply debugging the application, we can easily determine the returned values. Normally it's a good idea to use a dynamic analysis approach and then fallback to manually analyzing the functions in a feedback loop. This way you can benefit from both approaches at the same time while saving time and reducing effort. Dynamic analysis techniques are discussed in "[Dynamic Analysis](#dynamic-analysis "Dynamic Analysis")" section.
 
-#### Automated Static Analysis
+### Automated Static Analysis
 
-Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [Needle](https://github.com/mwrlabs/needle "Needle") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
+Several automated tools for analyzing iOS apps are available; most of them are commercial tools. The free and open source tools [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "Mobile Security Framework (MobSF)") and [objection](https://github.com/sensepost/objection "objection") have some static and dynamic analysis functionality. Additional tools are listed in the "Static Source Code Analysis" section of the "Testing Tools" appendix.
 
 Don't shy away from using automated scanners for your analysis - they help you pick low-hanging fruit and allow you to focus on the more interesting aspects of analysis, such as the business logic. Keep in mind that static analyzers may produce false positives and false negatives; always review the findings carefully.
 
-### Dynamic Analysis
+## Dynamic Analysis
 
 Life is easy with a jailbroken device: not only do you gain easy privileged access to the device, the lack of code signing allows you to use more powerful dynamic analysis techniques. On iOS, most dynamic analysis tools are based on Cydia Substrate, a framework for developing runtime patches, or Frida, a dynamic introspection tool. For basic API monitoring, you can get away with not knowing all the details of how Substrate or Frida work - you can simply use existing API monitoring tools.
 
-#### Dynamic Analysis on Non-Jailbroken Devices
+### Dynamic Analysis on Non-Jailbroken Devices
 
-##### Automated Repackaging with Objection
+#### Automated Repackaging with Objection
 
 [Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter "Manual Repackaging".
 We won't cover Objection in detail in this guide, as you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
 
-##### Manual Repackaging
+#### Manual Repackaging
 
 If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and do pretty much everything you need to do for a dynamic analysis (of course, you can't break out of the sandbox this way, but you won't often need to). However, this technique works only if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
 
@@ -267,9 +267,9 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 > Please note that the following steps apply to macOS only, as Xcode is only available for macOS.
 
-##### Getting a Developer Provisioning Profile and Certificate
+#### Getting a Developer Provisioning Profile and Certificate
 
-The *provisioning profile* is a plist file signed by Apple. It whitelists your code-signing certificate on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to sign.
+The *provisioning profile* is a plist file signed by Apple, which adds your code-signing certificate to its list of accepted certificates on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to sign.
 
 Depending on whether you're registered as an iOS developer, you can obtain a certificate and provisioning profile in one of the following ways:
 
@@ -277,7 +277,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 
 If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the *security* tool to list your signing identities:
 
-```shell
+```bash
 $ security find-identity -v
  1) 61FA3547E0AF42A11E233F6A2B255E6B6AF262CE "iPhone Distribution: Vantage Point Security Pte. Ltd."
  2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
@@ -293,7 +293,7 @@ Apple will issue a free development provisioning profile even if you're not a pa
 
 Once you've obtained the provisioning profile, you can check its contents with the *security* tool. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
-```shell
+```bash
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
 $ /usr/libexec/PlistBuddy -x -c 'Print :Entitlements' profile.plist > entitlements.plist
 $ cat entitlements.plist
@@ -317,11 +317,11 @@ $ cat entitlements.plist
 
 Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the app that has this App ID. The `get-task-allow` key is also important: when set to `true`, other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to `false` in a distribution profile).
 
-##### Other Preparations
+#### Other Preparations
 
 To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool "Optool") can be used to automate this process:
 
-```shell
+```bash
 $ git clone https://github.com/alexzielenski/optool.git
 $ cd optool/
 $ git submodule update --init --recursive
@@ -329,10 +329,10 @@ $ xcodebuild
 $ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 ```
 
-We'll also use [ios-deploy](https://github.com/phonegap/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
+We'll also use [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
 
-```shell
-$ git clone https://github.com/phonegap/ios-deploy.git
+```bash
+$ git clone https://github.com/ios-control/ios-deploy.git
 $ cd ios-deploy/
 $ xcodebuild
 $ cd build/Release
@@ -344,24 +344,24 @@ The last line in both the optool and ios-deploy code snippets creates a symbolic
 
 Reload your shell to make the new commands available:
 
-```shell
+```bash
 zsh: # . ~/.zshrc
 bash: # . ~/.bashrc
 ```
 
-#### Basic Information Gathering
+### Basic Information Gathering
 
 On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via *procfs*. Thus, any information about a target process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command line tools for exploring process information, for instance lsof and vmmap, are removed to reduce the firmware size.
 
 In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using Cydia (the executable is not the latest version available, but nevertheless addresses our purpose).
 
-##### Open Files
+#### Open Files
 
 `lsof` is a powerful command, and provides a plethora of information about a running process. It can provide a list of all open files, including a stream, a network file or a regular file. When invoking the `lsof` command without any option it will list all open files belonging to all active processes on the system, while when invoking with the flags `-c <process name>` or `-p <pid>`, it returns the list of open files for the specified process. The [man page](http://man7.org/linux/man-pages/man8/lsof.8.html "Man Page of lsof") shows various other options in detail.
 
 Using `lsof` for an iOS application running with PID 2828, list various open files as shown below.
 
-```shell
+```bash
 iPhone:~ root# lsof -p 2828
 COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
 iOweApp 2828 mobile  cwd    DIR    1,2      864      2 /
@@ -374,11 +374,11 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 ...
 ```
 
-##### Open Connections
+#### Open Connections
 
-`lsof` command when invoved with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
+`lsof` command when invoked with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
 
-```shell
+```bash
 iPhone:~ root# lsof -i -a -p 1
 COMMAND PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 launchd   1 root   27u  IPv6 0x69c2ce210efdc023      0t0  TCP *:ssh (LISTEN)
@@ -389,25 +389,25 @@ launchd   1 root   31u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->
 launchd   1 root   42u  IPv4 0x69c2ce211253b90b      0t0  TCP 192.168.1.12:ssh->192.168.1.8:62684 (ESTABLISHED)
 ```
 
-##### Sandbox Inspection
+#### Sandbox Inspection
 
 On iOS, each application gets a sandboxed folder to store its data. As per the iOS security model, an application's sandboxed folder cannot be accessed by another application. Additionally, the users do not have direct access to the iOS filesystem, thus preventing browsing or extraction of data from the filesystem. In iOS < 8.3 there were applications available which can be used to browse the device's filesystem, such as iExplorer and iFunBox, but in the recent version of iOS (>8.3) the sandboxing rules are more stringent and these applications do not work anymore. As a result, if you need to access the filesystem it can only be accessed on a jailbroken device. As part of the jailbreaking process, the application sandbox protection is disabled and thus enabling an easy access to sandboxed folders.
 
-The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyse.
+The contents of an application's sandboxed folder has already been discussed in "[Accessing App Data Directories](0x06b-Basic-Security-Testing.md#accessing-app-data-directories)" in the chapter iOS Basic Security Testing. This chapter gives an overview of the folder structure and which directories you should analyze.
 
-#### Debugging
+### Debugging
 
-Debugging on iOS is generally implemented via Mach IPC. To "attach" to a target process, the debugger process calls the `task_for_pid` function with the process ID of the target process and receives a Mach port. The debugger then registers as a receiver of exception messages and starts handling exceptions that occur in the debugger. Mach IPC calls are used to perform actions such as suspending the target process and reading/writing register states and virtual memory.
+Coming from a Linux background you'd expect the `ptrace` system call to be as powerful as you're used to but, for some reason, Apple decided to leave it incomplete. iOS debuggers such as LLDB use it for attaching, stepping or continuing the process but they cannot use it to read or write memory (all `PT_READ_*` and `PT_WRITE*` requests are missing). Instead, they have to obtain a so-called Mach task port (by calling `task_for_pid` with the target process ID) and then use the Mach IPC interface API functions to perform actions such as suspending the target process and reading/writing register states (`thread_get_state`/`thread_set_state`) and virtual memory (`mach_vm_read`/`mach_vm_write`).
 
-The XNU kernel implements the `ptrace` system call, but some of the call's functionality (including reading and writing register states and memory contents) has been eliminated. Nevertheless, `ptrace` is used in limited ways by standard debuggers, such as LLDB and GDB. Some debuggers, including Radare2's iOS debugger, don't invoke `ptrace` at all.
+> For more information you can refer to the LLVM project in GitHub which contains the [source code for LLDB](https://github.com/llvm/llvm-project/tree/master/lldb "LLDB") as well as Chapter 5 and 13 from "Mac OS X and iOS Internals: To the Apple's Core" [#levin] and Chapter 4 "Tracing and Debugging" from "The Mac Hacker's Handbook" [#miller].
 
-##### Debugging with LLDB
+#### Debugging with LLDB
 
-iOS ships with the console app debugserver, which allows remote debugging via GDB or LLDB. By default, however, debugserver can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid` entitlement must be added to the debugserver executable. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
+The default debugserver executable that Xcode installs can't be used to attach to arbitrary processes (it is usually used only for debugging self-developed apps deployed with Xcode). To enable debugging of third-party apps, the `task_for_pid-allow` entitlement must be added to the debugserver executable so that the debugger process can call `task_for_pid` to obtain the target Mach task port as seen before. An easy way to do this is to add the entitlement to the [debugserver binary shipped with Xcode](http://iphonedevwiki.net/index.php/Debugserver "Debug Server on the iPhone Dev Wiki").
 
 To obtain the executable, mount the following DMG image:
 
-```shell
+```bash
 /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/<target-iOS-version>/DeveloperDiskImage.dmg
 ```
 
@@ -418,27 +418,27 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/ PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
- <key>com.apple.springboard.debugapplications</key>
- <true/>
- <key>run-unsigned-code</key>
- <true/>
- <key>get-task-allow</key>
- <true/>
- <key>task_for_pid-allow</key>
- <true/>
+    <key>com.apple.springboard.debugapplications</key>
+    <true/>
+    <key>run-unsigned-code</key>
+    <true/>
+    <key>get-task-allow</key>
+    <true/>
+    <key>task_for_pid-allow</key>
+    <true/>
 </dict>
 </plist>
 ```
 
 Apply the entitlement with codesign:
 
-```shell
+```bash
 $ codesign -s - --entitlements entitlements.plist -f debugserver
 ```
 
 Copy the modified binary to any directory on the test device. The following examples use usbmuxd to forward a local port through USB.
 
-```shell
+```bash
 $ iproxy 2222 22
 $ scp -P 2222 debugserver root@localhost:/tmp/
 ```
@@ -449,59 +449,59 @@ Note: On iOS 12 and higher, use the following procedure to sign the debugserver 
 
 2) Connect to the device via SSH and create the file, named entitlements.xml, with the following content:
 
-```xml
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>platform-application</key>
-	<true/>
-    <key>com.apple.private.security.no-container</key>
-    <true/>
-	<key>com.apple.private.skip-library-validation</key>
-	<true/>
-	<key>com.apple.backboardd.debugapplications</key>
-	<true/>
-	<key>com.apple.backboardd.launchapplications</key>
-	<true/>
-	<key>com.apple.diagnosticd.diagnostic</key>
-	<true/>
-	<key>com.apple.frontboard.debugapplications</key>
-	<true/>
-	<key>com.apple.frontboard.launchapplications</key>
-	<true/>
-	<key>com.apple.security.network.client</key>
-	<true/>
-	<key>com.apple.security.network.server</key>
-	<true/>
-	<key>com.apple.springboard.debugapplications</key>
-	<true/>
-	<key>com.apple.system-task-ports</key>
-	<true/>
-	<key>get-task-allow</key>
-	<true/>
-	<key>run-unsigned-code</key>
-	<true/>
-	<key>task_for_pid-allow</key>
-	<true/>
-</dict>
-</plist>
-```
+    ```xml
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>platform-application</key>
+        <true/>
+        <key>com.apple.private.security.no-container</key>
+        <true/>
+        <key>com.apple.private.skip-library-validation</key>
+        <true/>
+        <key>com.apple.backboardd.debugapplications</key>
+        <true/>
+        <key>com.apple.backboardd.launchapplications</key>
+        <true/>
+        <key>com.apple.diagnosticd.diagnostic</key>
+        <true/>
+        <key>com.apple.frontboard.debugapplications</key>
+        <true/>
+        <key>com.apple.frontboard.launchapplications</key>
+        <true/>
+        <key>com.apple.security.network.client</key>
+        <true/>
+        <key>com.apple.security.network.server</key>
+        <true/>
+        <key>com.apple.springboard.debugapplications</key>
+        <true/>
+        <key>com.apple.system-task-ports</key>
+        <true/>
+        <key>get-task-allow</key>
+        <true/>
+        <key>run-unsigned-code</key>
+        <true/>
+        <key>task_for_pid-allow</key>
+        <true/>
+    </dict>
+    </plist>
+    ```
 
 3) Type the following command to sign the debugserver binary:
 
-```shell
-$ ldid -Sentitlements.xml debugserver
-```
+    ```bash
+    $ ldid -Sentitlements.xml debugserver
+    ```
 
 4) Verify that the debugserver binary can be executed via the following command:
 
-```shell
-$ ./debugserver
-```
+    ```bash
+    $ ./debugserver
+    ```
 
 You can now attach debugserver to any process running on the device.
 
-```shell
+```bash
 VP-iPhone-18:/tmp root# ./debugserver *:1234 -a 2670
 debugserver-@(#)PROGRAM:debugserver  PROJECT:debugserver-320.2.89
 for armv7.
@@ -510,25 +510,25 @@ Attaching to process 2670...
 
 With the following command you can launch an application via debugserver running on the target device:
 
-```shell
+```bash
 debugserver -x backboard *:1234 /Applications/MobileSMS.app/MobileSMS
 ```
 
 Attach to an already running application:
 
-```shell
+```bash
 debugserver *:1234 -a "MobileSMS"
 ```
 
 You may connect now to the iOS device from your host computer:
 
-```shell
+```bash
 (lldb) process connect connect://<ip-of-ios-device>:1234
 ```
 
 Typing `image list` gives a list of main executable and all dependent libraries.
 
-##### Debugging Release Apps
+#### Debugging Release Apps
 
 In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") and solve it using a debugger.
 
@@ -569,9 +569,9 @@ Voila, the crackme can be easily solved aided by static analysis and a debugger.
 
 Officially Apple recommends use of LLDB for debugging purposes, but GDB can be also used on iOS. The techniques discussed above are applicable while debugging using GDB as well, provided the LLDB specific commands are [changed to GDB commands](https://lldb.llvm.org/use/map.html "GDB to LLDB command map").
 
-#### Tracing
+### Tracing
 
-##### Execution Tracing
+#### Execution Tracing
 
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
 
@@ -581,7 +581,7 @@ Frida comes with `frida-trace`, a function tracing tool. `frida-trace` accepts O
 
 Run Safari on the device and make sure the device is connected via USB. Then start `frida-trace` as follows:
 
-```shell
+```bash
 $ frida-trace -U -m "-[NSURL *]" Safari
 Instrumenting functions...
 -[NSURL isMusicStoreURL]: Loaded handler at "/Users/berndt/Desktop/__handlers__/__NSURL_isMusicStoreURL_.js"
@@ -592,7 +592,7 @@ Started tracing 248 functions. Press Ctrl+C to stop.
 
 Next, navigate to a new website in Safari. You should see traced function calls on the `frida-trace` console. Note that the `initWithURL:` method is called to initialize a new URL request object.
 
-```shell
+```bash
            /* TID 0xc07 */
   20313 ms  -[NSURLRequest _initWithCFURLRequest:0x1043bca30 ]
  20313 ms  -[NSURLRequest URL]
@@ -601,27 +601,27 @@ Next, navigate to a new website in Safari. You should see traced function calls 
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
 
-#### Emulation-based Analysis
+### Emulation-based Analysis
 
-##### iOS Simulator
+#### iOS Simulator
 
-Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**. Difference between a simulator and an emulator is previously discussed in "[Emulation-based Dynamic Analysis](0x04c-tampering-and-reverse-engineering#emulation-based-dynamic-analysis "Emulation-based Dynamic Analysis")" section.
+Apple provides a simulator app within Xcode which provides a _real iOS device looking_ user interface for iPhone, iPad or Apple Watch. It allows you to rapidly prototype and test debug builds of your applications during the development process, but actually **it is not an emulator**. Difference between a simulator and an emulator is previously discussed in "[Emulation-based Dynamic Analysis](0x04c-Tampering-and-Reverse-Engineering.md#emulation-based-dynamic-analysis "Emulation-based Dynamic Analysis")" section.
 
 While developing and debugging an application, the Xcode toolchain generates x86 code, which can be executed in the iOS simulator. However, for a release build, only ARM code is generated (incompatible with the iOS simulator). That's why applications downloaded from the Apple App Store cannot be used for any kind of application analysis on the iOS simulator.
 
-##### Corellium
+#### Corellium
 
 Corellium is a commercial tool which offers virtual iOS devices running actual iOS firmware, being the only publicly available iOS emulator ever. Since it is a proprietary product, not much information is available about the implementation. Corellium has no trial or community licenses available, therefore we won't go into much detail regarding its use.
 
 Corellium allows you to launch multiple instances of a device (jailbroken or not) which are accessible as local devices (with a simple VPN configuration). It has the ability to take and restore snapshots of the device state, and also offers a convenient web-based shell to the device. Finally and most importantly, due to its "emulator" nature, you can execute applications downloaded from the Apple App Store, enabling any kind of application analysis as you know it from real iOS (jailbroken) devices.
 
-### Binary Analysis
+## Binary Analysis
 
-An introduction to binary analysis using binary analysis frameworks has already been discussed in the "[Dynamic Analysis](0x05c-reverse-engineering-and-tampering#dynamic-analysis "Dynamic analysis")" section for Android. We recommend you to revisit this section and refresh the concepts on this subject.
+An introduction to binary analysis using binary analysis frameworks has already been discussed in the "[Dynamic Analysis](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis "Dynamic analysis")" section for Android. We recommend you to revisit this section and refresh the concepts on this subject.
 
 For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will revisit the Angr binary analysis framework to analyze the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App") but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
 
-#### Angr
+### Angr
 
 Angr is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
 
@@ -662,27 +662,27 @@ solve()
 
 Above, Angr executed an ARM64 code in an execution environment provided by one of its concrete execution engines. The result is accessed from the memory as if the program is executed on a real device. This case is a good example where binary analysis frameworks enable us to perform a comprehensive analysis of a binary, even in the absence of specialized devices needed to run it.
 
-### Tampering and Runtime Instrumentation
+## Tampering and Runtime Instrumentation
 
-#### Patching, Repackaging, and Re-Signing
+### Patching, Repackaging, and Re-Signing
 
 Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any ZIP tool to unpack the archive.
 
-```shell
+```bash
 $ unzip UnCrackable_Level1.ipa
 ```
 
-##### Patching Example: Installing Frida Gadget
+#### Patching Example: Installing Frida Gadget
 
 IF you want to use Frida on non-jailbroken devices you'll need to include `FridaGadget.dylib`. Download it first:
 
-```shell
+```bash
 $ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
 Copy `FridaGadget.dylib` into the app directory and use optool to add a load command to the "UnCrackable Level 1" binary.
 
-```shell
+```bash
 $ unzip UnCrackable_Level1.ipa
 $ cp FridaGadget.dylib Payload/UnCrackable\ Level\ 1.app/
 $ optool install -c load -p "@executable_path/FridaGadget.dylib"  -t Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
@@ -696,25 +696,25 @@ Successfully inserted a LC_LOAD_DYLIB command for arm64
 Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 ```
 
-##### Repackaging and Re-Signing
+#### Repackaging and Re-Signing
 
 Of course, tampering an app invalidates the main executable's code signature, so this won't run on a non-jailbroken device. You'll need to replace the provisioning profile and sign both the main executable and the files you've made include (e.g. `FridaGadget.dylib`) with the certificate listed in the profile.
 
 First, let's add our own provisioning profile to the package:
 
-```shell
+```bash
 $ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ```
 
 Next, we need to make sure that the Bundle ID in `Info.plist` matches the one specified in the profile because the codesign tool will read the Bundle ID from `Info.plist` during signing; the wrong value will lead to an invalid signature.
 
-```shell
+```bash
 $ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ```
 
 Finally, we use the codesign tool to re-sign both binaries. You need to use *your* signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
 
-```shell
+```bash
 $ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938  Payload/UnCrackable\ Level\ 1.app/FridaGadget.dylib
 Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
@@ -722,20 +722,20 @@ Payload/UnCrackable Level 1.app/FridaGadget.dylib: replacing existing signature
 
 `entitlements.plist` is the file you created for your empty iOS project.
 
-```shell
+```bash
 $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --entitlements entitlements.plist Payload/UnCrackable\ Level\ 1.app/UnCrackable\ Level\ 1
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
 Now you should be ready to run the modified app. Deploy and run the app on the device:
 
-```shell
+```bash
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ```
 
 If everything went well, the app should start in debugging mode with LLDB attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
 
-```shell
+```bash
 $ frida-ps -U
 PID  Name
 ---  ------
@@ -746,7 +746,7 @@ PID  Name
 
 When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/support/code-signing/ "Code Signing") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
 
-##### Patching React Native applications
+#### Patching React Native applications
 
 If the [React Native](https://facebook.github.io/react-native "React Native") framework has been used for development, the main application code is in the file `Payload/[APP].app/main.jsbundle`. This file contains the JavaScript code. Most of the time, the JavaScript code in this file is minified. With the tool [JStillery](https://mindedsecurity.github.io/jstillery "JStillery"), a human-readable version of the file can be retried, which will allow code analysis. The [CLI version of JStillery](https://github.com/mindedsecurity/jstillery/ "CLI version of JStillery") and the local server are preferable to the online version because the latter discloses the source code to a third party.
 
@@ -767,17 +767,17 @@ Use the following approach to patch the JavaScript file:
 5. Put the *patched code* on a single line and copy it into the original `Payload/[APP].app/main.jsbundle` file.
 6. Close and restart the application.
 
-#### Dynamic Instrumentation
+### Dynamic Instrumentation
 
-##### Tooling
+#### Tooling
 
-###### Frida
+##### Frida
 
 [Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
 
 If you haven't already done so, install the Frida Python package on your host machine:
 
-```shell
+```bash
 $ pip install frida
 $ pip install frida-tools
 ```
@@ -788,7 +788,7 @@ Start Cydia and add Frida's repository by navigating to **Manage** -> **Sources*
 
 Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
 
-```shell
+```bash
 $ frida-ps -U
 PID  Name
 ---  ----------------
@@ -805,7 +805,7 @@ PID  Name
 
 We will demonstrate a few more uses for Frida throughout the chapter.
 
-###### Cycript
+##### Cycript
 
 Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing Cydia runtime patches (the so-called "Cydia Substrate Extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C.
 
@@ -813,7 +813,7 @@ Cycript is a scripting language developed by Jay Freeman (aka Saurik). It inject
 
 In order to install Cycript, first download, unpack, and install the SDK.
 
-```shell
+```bash
 #on iphone
 $ wget https://cydia.saurik.com/api/latest/3 -O cycript.zip && unzip cycript.zip
 $ sudo cp -a Cycript.lib/*.dylib /usr/lib
@@ -822,14 +822,14 @@ $ sudo cp -a Cycript.lib/cycript-apl /usr/bin/cycript
 
 To spawn the interactive Cycript shell, run "./cycript" or "cycript" if Cycript is on your path.
 
-```shell
+```bash
 $ cycript
 cy#
 ```
 
 To inject into a running process, we first need to find the process ID (PID). Run the application and make sure the app is in the foreground. Running `cycript -p <PID>` injects Cycript into the process. To illustrate, we will inject into SpringBoard (which is always running).
 
-```shell
+```bash
 $ ps -ef | grep SpringBoard
 501 78 1 0 0:00.00 ?? 0:10.57 /System/Library/CoreServices/SpringBoard.app/SpringBoard
 $ ./cycript -p 78
@@ -838,31 +838,31 @@ cy#
 
 One of the first things you can try out is to get the application instance (`UIApplication`), you can use Objective-C syntax:
 
-```shell
+```bash
 cy# [UIApplication sharedApplication]
 cy# var a = [UIApplication sharedApplication]
 ```
 
 Use that variable now to get the application's delegate class:
 
-```shell
+```bash
 cy# a.delegate
 ```
 
 Let's try to trigger an alert message on SpringBoard with Cycript.
 
-```shell
+```bash
 cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
 cy# [alertView release]
 ```
 
-<img src="Images/Chapters/0x06c/cycript_sample.png" alt="Cycript Alert Sample" width="250">
+<img src="Images/Chapters/0x06c/cycript_sample.png" alt="Cycript Alert Sample" width="250" />
 
 Find the app's document directory with Cycript:
 
-```shell
+```bash
 cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]
 #"file:///var/mobile/Containers/Data/Application/A8AE15EE-DC8B-4F1C-91A5-1FED35212DF/Documents/"
 ```
@@ -885,22 +885,22 @@ cy# [[UIApp keyWindow] recursiveDescription].toString()
 
 You can also use Cycript's built-in functions such as `choose` which searches the heap for instances of the given Objective-C class:
 
-```shell
+```bash
 cy# choose(SBIconModel)
 [#"<SBIconModel: 0x1590c8430>"]
 ```
 
 Learn more in the [Cycript Manual](http://www.cycript.org/manual/ "Cycript Manual").
 
-##### Information Gathering
+#### Information Gathering
 
 In this section we will learn how to use Frida to obtain information about a running application.
 
-##### Getting Loaded Classes and their Methods
+#### Getting Loaded Classes and their Methods
 
 In the Frida REPL Objective-C runtime the `ObjC` command can be used to access information within the running app. Within the `ObjC` command the function `enumerateLoadedClasses` lists the loaded classes for a given application.
 
-```shell
+```bash
 $ frida -U -f com.iOweApp
 
 [iPhone::com.iOweApp]-> ObjC.enumerateLoadedClasses()
@@ -925,7 +925,7 @@ $ frida -U -f com.iOweApp
 
 Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class can be listed.
 
-```shell
+```bash
 [iPhone::com.iOweApp]-> ObjC.classes.JailbreakDetection.$ownMethods
 [
     "+ isJailbroken"
@@ -943,11 +943,11 @@ Using `ObjC.classes.<classname>.$ownMethods` the methods declared in each class 
 ]
 ```
 
-##### Getting Loaded Libraries
+#### Getting Loaded Libraries
 
 In Frida REPL process related information can be obtained using the `Process` command. Within the `Process` command the function `enumerateModules` lists the libraries loaded into the process memory.
 
-```shell
+```bash
 [iPhone::com.iOweApp]-> Process.enumerateModules()
 [
     {
@@ -974,7 +974,7 @@ In Frida REPL process related information can be obtained using the `Process` co
 
 Similarly, information related to various threads can be obtained.
 
-```shell
+```bash
 Process.enumerateThreads()
 [
     {
@@ -990,13 +990,13 @@ Process.enumerateThreads()
 
 The `Process` command exposes multiple functions which can be explored as per needs. Some useful functions are `findModuleByAddress`, `findModuleByName` and `enumerateRanges` besides others.
 
-##### Method Hooking
+#### Method Hooking
 
-###### Frida
+##### Frida
 
 In section ["Execution Tracing"](#execution-tracing "Execution Tracing") we've used frida-trace when navigating to a website in Safari and found that the `initWithURL:` method is called to initialize a new URL request object. We can look up the declaration of this method on the [Apple Developer Website](https://developer.apple.com/documentation/foundation/nsbundle/1409352-initwithurl?language=objc "Apple Developer Website - initWithURL Instance Method"):
 
-```objc
+```objectivec
 - (instancetype)initWithURL:(NSURL *)url;
 ```
 
@@ -1059,7 +1059,7 @@ Start Safari on the iOS device. Run the above Python script on your connected ho
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
-##### Process Exploration
+#### Process Exploration
 
 When testing an app, process exploration can provide the tester with deep insights into the app process memory. It can be achieved via runtime instrumentation and allows to perform tasks such as:
 
@@ -1081,7 +1081,7 @@ $ r2 frida://usb//iGoat-Swift
 
 Once in the r2frida session, all commands start with `\`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `\i`.
 
-###### Memory Maps and Inspection
+##### Memory Maps and Inspection
 
 You can retrieve the app's memory maps by running `\dm`:
 
@@ -1103,7 +1103,7 @@ While you're searching or exploring the app memory, you can always verify where 
 
 If you're only interested into the modules (binaries and libraries) that the app has loaded, you can use the command `\il` to list them all:
 
-```shell
+```bash
 [0x00000000]> \il
 0x0000000100b7c000 iGoat-Swift
 0x0000000100eb4000 TweakInject.dylib
@@ -1124,7 +1124,7 @@ As you might expect you can correlate the addresses of the libraries with the me
 
 You can also use objection to display the same information.
 
-```shell
+```bash
 $ objection --gadget OWASP.iGoat-Swift explore
 
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # memory list modules
@@ -1138,7 +1138,7 @@ SystemConfiguration               0x1862c0000  446464 (436.0 KiB)    /System/Lib
 libc++.1.dylib                    0x1847c0000  368640 (360.0 KiB)    /usr/lib/libc++.1.dylib
 ```
 
-###### In-Memory Search
+##### In-Memory Search
 
 In-memory search is a very useful technique to test for sensitive data that might be present in the app memory.
 
@@ -1228,13 +1228,13 @@ They are in a different rw- region. Note that searching for the wide versions of
 
 In-memory search can be very useful to quickly know if certain data is located in the main app binary, inside a shared library or in another region. You may also use it to test the behavior of the app regarding how the data is kept in memory. For instance, you could continue the previous example, this time clicking on Login and searching again for occurrences of the data. Also, you may check if you still can find those strings in memory after the login is completed to verify if this _sensitive data_ is wiped from memory after its use.
 
-###### Memory Dump
+##### Memory Dump
 
 You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices"). To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
-```shell
+```bash
 $ objection explore
 
 iPhone on (iPhone: 10.3.1) [usb] # memory dump all /Users/foo/memory_iOS/memory
@@ -1244,7 +1244,7 @@ Memory dumped to file: /Users/foo/memory_iOS/memory
 
 Alternatively you can use Fridump. First, you need the name of the app you want to dump, which you can get with `frida-ps`.
 
-```shell
+```bash
 $ frida-ps -U
  PID  Name
 ----  ------
@@ -1253,7 +1253,7 @@ $ frida-ps -U
 
 Afterwards, specify the app name in Fridump.
 
-```shell
+```bash
 $ python3 fridump.py -u Gadget -s
 
 Current Directory: /Users/foo/PentestTools/iOS/fridump
@@ -1303,13 +1303,13 @@ $ strings -e l memory_ios | grep owasp-mstg
 owasp-mstg
 ```
 
-###### Runtime Reverse Engineering
+##### Runtime Reverse Engineering
 
 Runtime reverse engineering can be seen as the on-the-fly version of reverse engineering where you don't have the binary data to your host computer. Instead, you'll analyze it straight from the memory of the app.
 
 We'll keep using the iGoat-Swift app, open a session with r2frida `r2 frida://usb//iGoat-Swift` and you can start by displaying the target binary information by using the `\i` command:
 
-```shell
+```bash
 [0x00000000]> \i
 arch                arm
 bits                64
@@ -1353,7 +1353,7 @@ Or you might prefer to look into the imports/exports. For example:
 
 The next thing you might want to look at are the classes:
 
-```shell
+```bash
 [0x00000000]> \ic~+passcode
 PSPasscodeField
 _UITextFieldPasscodeCutoutBackground
@@ -1364,7 +1364,7 @@ PasscodeFieldCell
 
 List class fields:
 
-```shell
+```bash
 [0x19687256c]> \ic UIPasscodeField
 0x000000018eec6680 - becomeFirstResponder
 0x000000018eec5d78 - appendString:
@@ -1379,7 +1379,7 @@ List class fields:
 
 Imagine that you are interested into `0x000000018eec5c8c - setStringValue:`. You can seek to that address with `s 0x000000018eec5c8c`, analyze that function `af` and print 10 lines of its disassembly `pd 10`:
 
-```shell
+```bash
 [0x18eec5c8c]> pd 10
 ╭ (fcn) fcn.18eec5c8c 35
 │   fcn.18eec5c8c (int32_t arg1, int32_t arg3);
@@ -1426,7 +1426,7 @@ Reading 2.390625MB ...
 
 To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2frida-wiki/blob/master/README.md "r2frida Wiki").
 
-### References
+## References
 
 - Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
 - Apple's Code Signing - <https://developer.apple.com/support/code-signing/>
@@ -1435,8 +1435,10 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 - Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
 - Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
 - r2frida Wiki - <https://github.com/enovella/r2frida-wiki/blob/master/README.md>
+- [#miller] - Charlie Miller, Dino Dai Zovi. The iOS Hacker's Handbook. Wiley, 2012 - <https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122>
+- [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - <http://newosxbook.com/MOXiI.pdf>
 
-#### Tools
+### Tools
 
 - class-dump - <http://stevenygard.com/projects/class-dump/>
 - class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
