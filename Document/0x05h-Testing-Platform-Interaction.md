@@ -639,7 +639,7 @@ Alternatively you can use adb with the [Activity Manager (am) tool](https://deve
 $ adb shell am start -W -a android.intent.action.VIEW -d "sms://0123456789" com.google.android.apps.messaging
 ```
 
-When used to call a defined schema (myapp://someaction/?var0=string&var1=string), these methods may also be used to send data to the app, as in the example below:
+You may also want to test from a separate custom made app. You can use the following code to call a parametrized custom URL scheme such as "myapp://someaction/?var0=string&var1=string":
 
 ```java
 Intent intent = getIntent();
