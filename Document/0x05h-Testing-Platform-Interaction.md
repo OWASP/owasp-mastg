@@ -1392,7 +1392,9 @@ Over the years many known malware like MazorBot, BankBot or MysteryBot have been
 
 ### Static Analysis
 
-You can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"). The so-called _touch filtering_ is a common defense against tapjacking, check the source code for implementation of any of the below techniques:
+You can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, contribute to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
+
+To start your static analysis you can check the source code for the following methods and attributes (non-exhaustive list):
 
 - Override [`onFilterTouchEventForSecurity`](https://developer.android.com/reference/android/view/View#onFilterTouchEventForSecurity%28android.view.MotionEvent%29 "onFilterTouchEventForSecurity") for more fine-grained control and to implement a custom security policy for views.
 - Set the layout attribute [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View#attr_android:filterTouchesWhenObscured "android:filterTouchesWhenObscured") to true or call [`setFilterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "setFilterTouchesWhenObscured").
