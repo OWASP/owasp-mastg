@@ -1374,6 +1374,43 @@ There are several ways to perform dynamic analysis:
 1. For the actual persistence: Use the techniques described in the data storage chapter.
 2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
+## Testing for Overlay Attacks (MSTG-PLATFORM-9)
+
+### Overview
+
+Screen overlay attacks occur when a malicious application manages to put itself on top of another application which remains working normally as if it were on the foreground. The malicious app might create UI elements mimicking the look and feel and the original app or even the Android system UI. The intention is typically to make users believe that they keep interacting with the legitimate app and then try to elevate privileges (e.g by getting some permissions granted), stealthy phishing, capture user taps and keystrokes etc.
+
+There are several attacks affecting different Android versions including:
+
+- [**Tapjacking**](https://blog.devknox.io/tapjacking-android-prevent/ "What is Tapjacking in Android and How to Prevent It") (Android 6.0 (API level 23) and lower) abuses the screen overlay feature of Android listening for taps and intercepting any information being passed to the underlying activity.
+- [**Cloak & Dagger**](https://cloak-and-dagger.org/ "Cloak & Dagger") attacks affect apps targeting Android 5.0 (API level 21) to Android 7.1 (API level 25). They abuse one or both of the `SYSTEM_ALERT_WINDOW` ("draw on top") and `BIND_ACCESSIBILITY_SERVICE` ("a11y") permissions that, in case the app is installed from the Play Store, the users do not need to explicitly grant and for which they are not even notified.
+- [**Toast Overlay**](https://unit42.paloaltonetworks.com/unit42-android-toast-overlay-attack-cloak-and-dagger-with-no-permissions/ "Android Toast Overlay Attack: “Cloak and Dagger” with No Permissions") is quite similar to Cloak & Dagger but do not require specific Android permissions to be granted by users. It was closed with CVE-2017-0752 on Android 8.0 (API level 26).
+
+Usually, this kind of attacks are inherent to an Android system version having certain vulnerabilities or design issues. This makes them challenging and often virtually impossible to prevent unless the app is upgraded targeting a safe Android version (API level).
+
+Over the years many known malware like MazorBot, BankBot or MysteryBot have been abusing the screen overlay feature of Android to target business critical applications, namely in the banking sector. This [blog](https://www.infosecurity-magazine.com/opinions/overlay-attacks-safeguard-mobile/ "Dealing with Overlay Attacks: Adopting Built-in Security to Safeguard Mobile Experience") discusses more about this type of malware.
+
+### Static Analysis
+
+You can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
+
+To start your static analysis you can check the source code for the following methods and attributes (non-exhaustive list):
+
+- Override [`onFilterTouchEventForSecurity`](https://developer.android.com/reference/android/view/View#onFilterTouchEventForSecurity%28android.view.MotionEvent%29 "onFilterTouchEventForSecurity") for more fine-grained control and to implement a custom security policy for views.
+- Set the layout attribute [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View#attr_android:filterTouchesWhenObscured "android:filterTouchesWhenObscured") to true or call [`setFilterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "setFilterTouchesWhenObscured").
+- Check [FLAG_WINDOW_IS_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_OBSCURED "FLAG_WINDOW_IS_OBSCURED") (since API level 9) or [FLAG_WINDOW_IS_PARTIALLY_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_PARTIALLY_OBSCURED "FLAG_WINDOW_IS_PARTIALLY_OBSCURED") (starting on API level 29).
+
+Some attributes might affect the app as a whole, while others can be applied to specific components. The latter would be the case when, for example, there is a business need to specifically allow overlays while wanting to protect sensitive input UI elements. The developers might also take additional precautions to confirm the user's actual intent which might be legitimate and tell it apart from a potential attack.
+
+As a final note, always remember to properly check the API level that app is targeting and the implications that this has. For instance, [Android 8.0 (API level 26) introduced changes](https://developer.android.com/about/versions/oreo/android-8.0-changes#all-aw "Alert windows") to apps requiring `SYSTEM_ALERT_WINDOW` ("draw on top"). From this API level on, apps using `TYPE_APPLICATION_OVERLAY` will be always [shown above other windows](https://developer.android.com/about/versions/oreo/android-8.0-changes#all-aw "Alert Windows") having other types such as `TYPE_SYSTEM_OVERLAY` or `TYPE_SYSTEM_ALERT`. You can use this information to ensure that no overlay attacks may occur at least for this app in this concrete Android version.
+
+### Dynamic Analysis
+
+Abusing this kind of vulnerability on a dynamic manner can be pretty challenging and very specialized as it closely depends on the target Android version. For instance, for versions up to Android 7.0 (API level 24) you can use the following APKs as a proof of concept to identify the existence of the vulnerabilities.  
+
+- [Tapjacking POC](https://github.com/FSecureLABS/tapjacking-poc "Tapjacking POC"): This APK creates a simple overlay which sits on top of the testing application.
+- [Invisible Keyboard](https://github.com/DEVizzi/Invisible-Keyboard, "Invisible Keyboard"): This APK creates multiple overlays on the keyboard to capture keystrokes. This is one of the exploit demonstrated in Cloak and Dagger attacks.
+
 ## Testing enforced updating (MSTG-ARCH-9)
 
 Starting from Android 5.0 (API level 21), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
@@ -1507,7 +1544,8 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-5: "JavaScript is disabled in WebViews unless explicitly required."
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-- MSTG-PLATFORM-8: "Object deserialization, if any, is implemented using safe serialization APIs."
+- MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-PLATFORM-9: "The app does not allow any other application to overlay on itself."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
 ### Tools
