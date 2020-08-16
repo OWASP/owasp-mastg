@@ -558,7 +558,6 @@ There are some key differences from _regular_ deep links to consider:
 - App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
 - Verified App links will not show a disambiguation dialog when a user opens a link.
 
-App links are not susceptible to collision due to verifying the domain with a digital asset link. Once the domain is verified the Android system will set that application as the default handler, resulting in no disambiguation dialog being shown to the user as in the case of deep link collision.
 
 For every application, each of these custom defined URL schemes must be enumerated and the actions they perform must be tested. User data and parameters that are provided from a URL Scheme should always be deemed to be untrustworthy input and thus should be validated as any user content typically is:
 
