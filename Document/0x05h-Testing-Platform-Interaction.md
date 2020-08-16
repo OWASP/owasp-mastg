@@ -584,7 +584,6 @@ The following example specifies a new deep link with a custom URL scheme called 
 
 ```
 
-This example specifies a new deep link URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser. Specifics of deep link attributes can be found at the [android developer deep link documentation](https://developer.android.com/training/app-links/deep-linking "Deep Linking").
 
 The following example specifies a new App Link using both the `http://` and `https://` schemes, along with the host and path which will activate it (in this case, the full URL would be `https://www.myapp.com/my/app/path.html`):
 
