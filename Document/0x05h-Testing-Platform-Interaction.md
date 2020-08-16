@@ -1392,7 +1392,7 @@ Over the years many known malware like MazorBot, BankBot or MysteryBot have been
 
 ### Static Analysis
 
-You can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, contribute to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
+You can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
 
 To start your static analysis you can check the source code for the following methods and attributes (non-exhaustive list):
 
