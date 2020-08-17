@@ -534,11 +534,7 @@ This method of defining URL schemes is commonly used for [deep linking](https://
 sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
 ```
 
- When a victim clicks such a link on a mobile device, the vulnerable SMS application will send an SMS message from the target's phone containing attacker-crafted content. This could lead to:
-
-- Financial loss for the victim if messages are sent to premium services.
-- Disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.
-- Potentially damaging social consequences for the targeted individual depending on the content sent.
+When a victim clicks such a link on a mobile device, a potentially vulnerable SMS application might send an SMS message from the target's phone containing attacker-crafted content. This could lead to financial loss, information disclosure, social damage of the victim, to name a few.
 
  Another application specific example of deep linking is show below:
 
