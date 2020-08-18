@@ -546,7 +546,7 @@ This deep link could be used in order to abuse some known vulnerabilities alread
 
 Deep links are also inherently susceptible to deep link collision where by two applications can declare control over the exact same custom schema. This results in a disambiguation dialog being shown to the user whenever they click a custom schema link. A malicious application can attempt to abuse this by declaring control over targeted custom schemas; in which case the user will be prompted to select the application to handle the link and could make the mistake of choosing the malicious application to handle the link instead of the legitimate application.
 
-Since Android 6.0 (API Level 23) a developer can opt to define [App Links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), which are verified deep links based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed and most importantly, **the disambiguation dialog won't be prompted** and therefore collisions are not possible anymore.
+Since Android 6.0 (API Level 23) a developer can opt to define [**Android App Links**](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), which are verified deep links based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed and most importantly, **the disambiguation dialog won't be prompted** and therefore collisions are not possible anymore.
 
 There are some key differences from _regular_ deep links to consider:
 
