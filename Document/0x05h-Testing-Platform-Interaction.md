@@ -607,7 +607,7 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-The usage of the [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()")  and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()") should be verified in order to understand how the application uses this intent, and if it is abusable. This general approach of locating the `getIntent` method can be used across most applications for reverse engineering and understanding how the application handles and uses custom URL schemes. This knowledge is of great importance when attempting to abuse custom URL schemes.
+The usage of the [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()")  and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()") should be verified in order to understand how the application handles deep link input data, and if it could be subject to any kind of abuse. This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data.
 
 ### Dynamic Analysis
 
