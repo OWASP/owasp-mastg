@@ -534,7 +534,7 @@ Consider the following example of a deep link to an email application:
 emailapp://composeEmail/to=your.boss@company.com&message=SEND%20MONEY%20TO%20HERE!&sendImmediately=true
 ```
 
-When a victim clicks such a link on a mobile device, a potentially vulnerable Email application might send an Email from the target's email address containing attacker-crafted content. This could lead to financial loss, information disclosure, social damage of the victim, to name a few.
+When a victim clicks such a link on a mobile device, a potentially vulnerable application might send an email from the user's original address containing attacker-crafted content. This could lead to financial loss, information disclosure, social damage of the victim, to name a few.
 
 Another application specific example of deep linking is shown below:
 
