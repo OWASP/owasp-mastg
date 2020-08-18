@@ -596,7 +596,7 @@ The following example specifies a new App Link using both the `http://` and `htt
 
 In this example, the `<intent-filter>` includes the flag `android:autoVerify="true"`, which makes it an App Link and causes the Android system to reach out to the declared `android:host` in an attempt to access the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the App Links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links").
 
-In both examples data can then be transmitted through these declared schemes. For example the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo` could be handled by the following code block to retrieve the data on the application side, this logic holds true for both app links and deep links:
+You must pay special attention to deep links being used to transmit data (which is controlled externally, e.g. by the user or any other app). For example, the following URI could be used to transmit two values `valueOne` and `valueTwo`: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. In order to retrieve the input data and potentially process it, the receiving app could implement a code block similar to the following acting as a data handler method. The way to handle data is the same for both deep links and App Links:
 
 ```java
 Intent intent = getIntent();
