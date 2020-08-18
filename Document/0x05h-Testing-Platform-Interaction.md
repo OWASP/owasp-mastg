@@ -552,7 +552,7 @@ There are some key differences from _regular_ deep links to consider:
 
 - App Links only use `http://` and `https://` schemes, any other custom URL schemes are not allowed.
 - App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
-- Verified App links will not show a disambiguation dialog when a user opens a link.
+- App links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
 
 For every application, each of these custom defined URL schemes must be enumerated and the actions they perform must be tested. User data and parameters that are provided from a URL Scheme should always be deemed to be untrustworthy input and thus should be validated as any user content typically is:
 
