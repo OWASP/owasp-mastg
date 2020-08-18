@@ -612,7 +612,9 @@ The usage of the [`getIntent`](https://developer.android.com/reference/android/c
 ### Dynamic Analysis
 
 When testing deep links it's very useful to first build a list of all <intent-filter> elements from the AndroidManifest.xml and any custom URL schemes that they might define.
-Each custom URL scheme defined should then be individually tested, these URL schemes can be interacted with by using the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to send intents within the Android device that call the custom URL schemes:
+For each of those deep links you should be able to determine which data they receive, if any. Remember that you might need to perform some reverse engineering first to find out if there are any input parameters that you might apply to the deep link. Sometimes you can even take advantage of other applications which you know that interact with your target app. You can reverse engineer them or use them as triggers, while hooking the data handler methods on the target app side. This way you can discover which ones are triggered and inspect _valid_ or legitimate input parameters.
+
+Depending on the situation, the length of the link and the provided data you can use several methods call deep links. For very short deep links, probably the easiest method is to simply open your mobile browser and type it in the search bar. Another convenient method is to use the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to send intents within the Android device. 
 
 ```bash
 $ adb shell am start
