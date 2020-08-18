@@ -628,7 +628,7 @@ $ adb shell am start
         -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
 ```
 
-Alternatively you can use the Drozer `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
+Alternatively you can use the Drozer's `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
 
 ```bash
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
