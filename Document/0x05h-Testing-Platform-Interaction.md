@@ -550,7 +550,7 @@ Since Android 6.0 (API Level 23) a developer can opt to define [**Android App Li
 
 There are some key differences from _regular_ deep links to consider:
 
-- App Links only use `http://` and `https://` schemes, custom schemes are not allowed.
+- App Links only use `http://` and `https://` schemes, any other custom URL schemes are not allowed.
 - App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
 - Verified App links will not show a disambiguation dialog when a user opens a link.
 
