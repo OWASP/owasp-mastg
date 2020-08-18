@@ -554,7 +554,7 @@ There are some key differences from _regular_ deep links to consider:
 - App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
 - App links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
 
-For every application, each of these custom defined URL schemes must be enumerated and the actions they perform must be tested. User data and parameters that are provided from a URL Scheme should always be deemed to be untrustworthy input and thus should be validated as any user content typically is:
+For every application, all existing deep links (including App Links) can potentially increase the app attack surface. All deep links must be enumerated and the actions they perform must be well tested, especially all input data which should be deemed to be untrustworthy and thus should be always validated. In addition, also consider the following:
 
 - When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
 - Using the data for queries? Make sure you make parameterized queries.
