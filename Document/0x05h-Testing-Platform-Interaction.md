@@ -640,7 +640,7 @@ Package: com.google.android.apps.messaging
     com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
 ```
 
-Furthermore Drozer can then be used to call custom URL schemes with the `app.activity.start` module:
+Furthermore, Drozer can then be used to call deep links using the `app.activity.start` module:
 
 ```bash
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
