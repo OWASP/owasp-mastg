@@ -611,7 +611,7 @@ The usage of the [`getIntent`](https://developer.android.com/reference/android/c
 
 ### Dynamic Analysis
 
-To test these URL schemes a list of custom URL schemes should be built up by analyzing the AndroidManifest.xml file as aforementioned in the Static Analysis section.
+When testing deep links it's very useful to first build a list of all <intent-filter> elements from the AndroidManifest.xml and any custom URL schemes that they might define.
 Each custom URL scheme defined should then be individually tested, these URL schemes can be interacted with by using the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to send intents within the Android device that call the custom URL schemes:
 
 ```bash
