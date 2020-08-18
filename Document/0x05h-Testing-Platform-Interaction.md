@@ -528,7 +528,7 @@ Android allows you to create two different types of links for your apps: deep li
 
 This method of defining URL schemes is commonly used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links") and [App links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), both being a widespread and convenient way to launch a native mobile app via a link. It is important to understand that these features can be programmed by a developer in a way that increases the application attack surface.
 
-Consider the following example of an Email application and it's deep link:
+Consider the following example of a deep link to an email application:
 
 ```default
 emailapp://composeEmail/to=your.boss@company.com&message=SEND%20MONEY%20TO%20HERE!&sendImmediately=true
