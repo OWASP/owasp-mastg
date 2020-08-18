@@ -524,9 +524,9 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 ### Overview
 
-Android allows you to create two different types of links for your apps: deep links and Android App Links. According to the [Android Developer Documentation](https://developer.android.com/training/app-links#app-links-vs-deep-links "Deep linking and Android App Links"), **deep links** are URLs that take users directly to specific content in your app. You can set up deep links by adding _intent filters_ and extracting data from incoming intents to drive users to the right activity. You can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". This kind of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
+Android allows you to create two different types of links for your apps: deep links and Android App Links. According to the [Android Developer Documentation](https://developer.android.com/training/app-links#app-links-vs-deep-links "Deep linking and Android App Links"), **deep links** are URLs that take users directly to specific content in your app. You can set up deep links by adding _intent filters_ and extracting data from incoming intents to drive users to the right activity. You can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". These kind of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
 
-This method of defining deep links via intent filters has an important issue: any other apps installed on a user's device can declare and try to handle the same intent (typically a custom URL scheme). This will cause unintended behaviour as users might not go directly to your app. In recent versions of Android this results in a so-called disambiguation dialog, where the user has to choose the app that should open the link. 
+This method of defining deep links via intent filters has an important issue: any other apps installed on a user's device can declare and try to handle the same intent (typically a custom URL scheme). This is known as **deep link collision** where by arbitrary applications can declare control over the exact same URL custom scheme as another application. In recent versions of Android this results in a so-called _disambiguation dialog_ being shown to the user and asking them to select the application that should handle the link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
 
 Consider the following example of a deep link to an email application:
 
@@ -543,8 +543,6 @@ myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAge
 ```
 
 This deep link could be used in order to abuse some known vulnerabilities already identified within an application (e.g. via reverse engineering). For instance, consider an application running a WebView with JavaScript enabled and rendering the `Whatismyname` parameter. In this concrete case, the deep link payload would trigger reflected cross site scripting within the context of the WebView.
-
-Deep links are also inherently susceptible to **deep link collision** where arbitrary applications can declare control over the exact same URL custom scheme. This results in the so-called _disambiguation dialog_ being shown to the user and asking to select the application that should handle the link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
 
 Since Android 6.0 (API Level 23) a developer can opt to define [**Android App Links**](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), which are verified deep links based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed and most importantly, **the disambiguation dialog won't be prompted** and therefore collisions are not possible anymore.
 
@@ -611,10 +609,10 @@ The usage of the [`getIntent`](https://developer.android.com/reference/android/c
 
 ### Dynamic Analysis
 
-When testing deep links it's very useful to first build a list of all <intent-filter> elements from the AndroidManifest.xml and any custom URL schemes that they might define.
+When testing deep links it's very useful to first build a list of all `<intent-filter>` elements from the AndroidManifest.xml and any custom URL schemes that they might define.
 For each of those deep links you should be able to determine which data they receive, if any. Remember that you might need to perform some reverse engineering first to find out if there are any input parameters that you might apply to the deep link. Sometimes you can even take advantage of other applications which you know that interact with your target app. You can reverse engineer them or use them as triggers, while hooking the data handler methods on the target app side. This way you can discover which ones are triggered and inspect _valid_ or legitimate input parameters.
 
-Depending on the situation, the length of the link and the provided data you can use several methods call deep links. For very short deep links, probably the easiest method is to simply open your mobile browser and type it in the search bar. Another convenient method is to use the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to send intents within the Android device. 
+Depending on the situation, the length of the link and the provided data you can use several methods call deep links. For very short deep links, probably the easiest method is to simply open your mobile browser and type it in the search bar. Another convenient method is to use the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to send intents within the Android device.
 
 ```bash
 $ adb shell am start
@@ -628,7 +626,7 @@ $ adb shell am start
         -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
 ```
 
-Alternatively you can use the Drozer's `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
+Alternatively you can use Drozer's `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
 
 ```bash
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
