@@ -561,24 +561,35 @@ While the default value of `EnableSafeBrowsing` is `true`, some applications mig
 
 ### Overview
 
-Both Android and iOS allow inter-app communication via custom URL schemes. These custom URLs allow other applications to perform specific actions within the application that offers the custom URL scheme. Custom URIs can begin with any scheme prefix, and they usually define an action to take within the application and parameters for that action.
+Android allows you to create two different types of links for your apps: deep links and Android App Links. According to the [Android Developer Documentation](https://developer.android.com/training/app-links#app-links-vs-deep-links "Deep linking and Android App Links"), **deep links** are URLs that take users directly to specific content in your app. You can set up deep links by adding _intent filters_ and extracting data from incoming intents to drive users to the right activity. You can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". These kind of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
 
-Consider this contrived example:
+This method of defining deep links via intent filters has an important issue: any other apps installed on a user's device can declare and try to handle the same intent (typically a custom URL scheme). This is known as **deep link collision** where any arbitrary application can declare control over the exact same URL custom scheme belonging to another application. In recent versions of Android this results in a so-called _disambiguation dialog_ being shown to the user and asking them to select the application that should handle the link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
+
+Consider the following example of a deep link to an email application:
 
 ```default
-sms://compose/to=your.boss@company.com&message=I%20QUIT!&sendImmediately=true
+emailapp://composeEmail/to=your.boss@company.com&message=SEND%20MONEY%20TO%20HERE!&sendImmediately=true
 ```
 
-When a victim clicks such a link on a mobile device, the vulnerable SMS application will send the SMS message with the maliciously crafted content. This could lead to
+When a victim clicks such a link on a mobile device, a potentially vulnerable application might send an email from the user's original address containing attacker-crafted content. This could lead to financial loss, information disclosure, social damage of the victim, to name a few.
 
-- financial loss for the victim if messages are sent to premium services or
-- disclosure of the victim's phone number if messages are sent to predefined addresses that collect phone numbers.
+Another application specific example of deep linking is shown below:
 
-Once a URL scheme has been defined, multiple apps can register for any available scheme. For every application, each of these custom URL schemes must be enumerated and the actions they perform must be tested.
+```default
+myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAgeIs=100
+```
 
-URL schemes can be used for [deep linking](https://developer.android.com/training/app-links/ "Handling Android App Links"), a widespread and convenient way to launch a native mobile app via a link, which isn't inherently risky. Alternatively, since Android 6.0 (API level 23) App links can be used. App lnks, in contrast to deep links, require the domain of which the link is served to have a [digital asset link](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") and will ask the app to verify the asset-link first by means of using `android:autoVerify="true"` in the intentfilter.
+This deep link could be used in order to abuse some known vulnerabilities already identified within an application (e.g. via reverse engineering). For instance, consider an application running a WebView with JavaScript enabled and rendering the `Whatismyname` parameter. In this concrete case, the deep link payload would trigger reflected cross site scripting within the context of the WebView.
 
-Nevertheless, data that's processed by the app and comes in through URL schemes should be validated as any content:
+Since Android 6.0 (API Level 23) a developer can opt to define [**Android App Links**](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), which are verified deep links based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed and most importantly, **the disambiguation dialog won't be prompted** and therefore collisions are not possible anymore.
+
+There are some key differences from _regular_ deep links to consider:
+
+- App Links only use `http://` and `https://` schemes, any other custom URL schemes are not allowed.
+- App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
+- App links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
+
+For every application, all existing deep links (including App Links) can potentially increase the app attack surface. All deep links must be enumerated and the actions they perform must be well tested, especially all input data which should be deemed to be untrustworthy and thus should be always validated. In addition, also consider the following:
 
 - When using reflection-based persistence type of data processing, check the section "Testing Object Persistence" for Android.
 - Using the data for queries? Make sure you make parameterized queries.
@@ -587,7 +598,9 @@ Nevertheless, data that's processed by the app and comes in through URL schemes 
 
 ### Static Analysis
 
-Determine whether custom URL schemes are defined. This can be done in the AndroidManifest.xml file, inside of an [intent-filter element](https://developer.android.com/guide/components/intents-filters.html#DataTest "Custom URL scheme").
+You can easily determine whether deep links (with or without custom URL schemes) are defined just by inspecting the Android Manifest file and looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
+
+The following example specifies a new deep link with a custom URL scheme called `myapp://`. You should pay special attention to the [attributes](https://developer.android.com/training/app-links/deep-linking "Deep Linking") as they give you clues about how the deep link is used. For example, the category `BROWSABLE` will allow the deep link to be opened within a browser.
 
 ```xml
 <activity android:name=".MyUriActivity">
@@ -601,9 +614,24 @@ Determine whether custom URL schemes are defined. This can be done in the Androi
 
 ```
 
-The example above specifies a new URL scheme called `myapp://`. The category `browsable` will allow the URI to be opened within a browser.
+The following example specifies a new App Link using both the `http://` and `https://` schemes, along with the host and path which will activate it (in this case, the full URL would be `https://www.myapp.com/my/app/path`):
 
-Data can then be transmitted through this new scheme with, for example, the following URI: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. Code like the following can be used to retrieve the data:
+```xml
+<activity android:name=".MyUriActivity">
+  <intent-filter android:autoVerify="true">
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:scheme="http" android:host="www.myapp.com" android:path="/my/app/path" />
+      <data android:scheme="https" android:host="www.myapp.com" android:path="/my/app/path" />
+  </intent-filter>
+</activity>
+
+```
+
+In this example, the `<intent-filter>` includes the flag `android:autoVerify="true"`, which makes it an App Link and causes the Android system to reach out to the declared `android:host` in an attempt to access the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the App Links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links").
+
+You must pay special attention to deep links being used to transmit data (which is controlled externally, e.g. by the user or any other app). For example, the following URI could be used to transmit two values `valueOne` and `valueTwo`: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. In order to retrieve the input data and potentially process it, the receiving app could implement a code block similar to the following acting as a data handler method. The way to handle data is the same for both deep links and App Links:
 
 ```java
 Intent intent = getIntent();
@@ -614,11 +642,28 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 }
 ```
 
-Verify the usage of [`toUri`](https://developer.android.com/reference/android/content/Intent.html#toUri%28int%29 "Intent.toUri()"), which may also be used in this context.
+The usage of the [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()")  and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()") should be verified in order to understand how the application handles deep link input data, and if it could be subject to any kind of abuse. This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data.
 
 ### Dynamic Analysis
 
-To enumerate URL schemes within an app that can be called by a web browser, use the Drozer module `scanner.activity.browsable`:
+When testing deep links it's very useful to first build a list of all `<intent-filter>` elements from the AndroidManifest.xml and any custom URL schemes that they might define.
+For each of those deep links you should be able to determine which data they receive, if any. Remember that you might need to perform some reverse engineering first to find out if there are any input parameters that you might apply to the deep link. Sometimes you can even take advantage of other applications which you know that interact with your target app. You can reverse engineer them or use them as triggers, while hooking the data handler methods on the target app side. This way you can discover which ones are triggered and inspect _valid_ or legitimate input parameters.
+
+Depending on the situation, the length of the link and the provided data you can use several methods call deep links. For very short deep links, probably the easiest method is to simply open your mobile browser and type it in the search bar. Another convenient method is to use the [Activity Manager (am) tool](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") to send intents within the Android device.
+
+```bash
+$ adb shell am start
+        -W -a android.intent.action.VIEW
+        -d "emailapp://composeEmail/to=your.boss@company.com&message=SEND%20MONEY%20TO%20HERE!&sendImmediately=true" com.emailapp.android
+```
+
+```bash
+$ adb shell am start
+        -W -a android.intent.action.VIEW
+        -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
+```
+
+Alternatively you can use Drozer's `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
 
 ```bash
 dz> run scanner.activity.browsable -a com.google.android.apps.messaging
@@ -630,24 +675,11 @@ Package: com.google.android.apps.messaging
     com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
 ```
 
-You can call custom URL schemes with the Drozer module `app.activity.start`:
+Furthermore, Drozer can then be used to call deep links using the `app.activity.start` module:
 
 ```bash
 dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
-
-When used to call a defined schema (myapp://someaction/?var0=string&var1=string), the module may also be used to send data to the app, as in the example below.
-
-```java
-Intent intent = getIntent();
-if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-  Uri uri = intent.getData();
-  String valueOne = uri.getQueryParameter("var0");
-  String valueTwo = uri.getQueryParameter("var1");
-}
-```
-
-Defining and using your own URL scheme can be risky in this situation if data is sent to the scheme from an external party and processed in the app. Therefore keep in mind that data should be validated as described in "Testing custom URL schemes".
 
 ## Testing for Insecure Configuration of Instant Apps (MSTG-ARCH-1, MSTG-ARCH-7)
 
@@ -1411,6 +1443,43 @@ There are several ways to perform dynamic analysis:
 1. For the actual persistence: Use the techniques described in the data storage chapter.
 2. For reflection-based approaches: Use Xposed to hook into the deserialization methods or add unprocessable information to the serialized objects to see how they are handled (e.g., whether the application crashes or extra information can be extracted by enriching the objects).
 
+## Testing for Overlay Attacks (MSTG-PLATFORM-9)
+
+### Overview
+
+Screen overlay attacks occur when a malicious application manages to put itself on top of another application which remains working normally as if it were on the foreground. The malicious app might create UI elements mimicking the look and feel and the original app or even the Android system UI. The intention is typically to make users believe that they keep interacting with the legitimate app and then try to elevate privileges (e.g by getting some permissions granted), stealthy phishing, capture user taps and keystrokes etc.
+
+There are several attacks affecting different Android versions including:
+
+- [**Tapjacking**](https://blog.devknox.io/tapjacking-android-prevent/ "What is Tapjacking in Android and How to Prevent It") (Android 6.0 (API level 23) and lower) abuses the screen overlay feature of Android listening for taps and intercepting any information being passed to the underlying activity.
+- [**Cloak & Dagger**](https://cloak-and-dagger.org/ "Cloak & Dagger") attacks affect apps targeting Android 5.0 (API level 21) to Android 7.1 (API level 25). They abuse one or both of the `SYSTEM_ALERT_WINDOW` ("draw on top") and `BIND_ACCESSIBILITY_SERVICE` ("a11y") permissions that, in case the app is installed from the Play Store, the users do not need to explicitly grant and for which they are not even notified.
+- [**Toast Overlay**](https://unit42.paloaltonetworks.com/unit42-android-toast-overlay-attack-cloak-and-dagger-with-no-permissions/ "Android Toast Overlay Attack: “Cloak and Dagger” with No Permissions") is quite similar to Cloak & Dagger but do not require specific Android permissions to be granted by users. It was closed with CVE-2017-0752 on Android 8.0 (API level 26).
+
+Usually, this kind of attacks are inherent to an Android system version having certain vulnerabilities or design issues. This makes them challenging and often virtually impossible to prevent unless the app is upgraded targeting a safe Android version (API level).
+
+Over the years many known malware like MazorBot, BankBot or MysteryBot have been abusing the screen overlay feature of Android to target business critical applications, namely in the banking sector. This [blog](https://www.infosecurity-magazine.com/opinions/overlay-attacks-safeguard-mobile/ "Dealing with Overlay Attacks: Adopting Built-in Security to Safeguard Mobile Experience") discusses more about this type of malware.
+
+### Static Analysis
+
+You can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
+
+To start your static analysis you can check the source code for the following methods and attributes (non-exhaustive list):
+
+- Override [`onFilterTouchEventForSecurity`](https://developer.android.com/reference/android/view/View#onFilterTouchEventForSecurity%28android.view.MotionEvent%29 "onFilterTouchEventForSecurity") for more fine-grained control and to implement a custom security policy for views.
+- Set the layout attribute [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View#attr_android:filterTouchesWhenObscured "android:filterTouchesWhenObscured") to true or call [`setFilterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "setFilterTouchesWhenObscured").
+- Check [FLAG_WINDOW_IS_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_OBSCURED "FLAG_WINDOW_IS_OBSCURED") (since API level 9) or [FLAG_WINDOW_IS_PARTIALLY_OBSCURED](https://developer.android.com/reference/android/view/MotionEvent.html#FLAG_WINDOW_IS_PARTIALLY_OBSCURED "FLAG_WINDOW_IS_PARTIALLY_OBSCURED") (starting on API level 29).
+
+Some attributes might affect the app as a whole, while others can be applied to specific components. The latter would be the case when, for example, there is a business need to specifically allow overlays while wanting to protect sensitive input UI elements. The developers might also take additional precautions to confirm the user's actual intent which might be legitimate and tell it apart from a potential attack.
+
+As a final note, always remember to properly check the API level that app is targeting and the implications that this has. For instance, [Android 8.0 (API level 26) introduced changes](https://developer.android.com/about/versions/oreo/android-8.0-changes#all-aw "Alert windows") to apps requiring `SYSTEM_ALERT_WINDOW` ("draw on top"). From this API level on, apps using `TYPE_APPLICATION_OVERLAY` will be always [shown above other windows](https://developer.android.com/about/versions/oreo/android-8.0-changes#all-aw "Alert Windows") having other types such as `TYPE_SYSTEM_OVERLAY` or `TYPE_SYSTEM_ALERT`. You can use this information to ensure that no overlay attacks may occur at least for this app in this concrete Android version.
+
+### Dynamic Analysis
+
+Abusing this kind of vulnerability on a dynamic manner can be pretty challenging and very specialized as it closely depends on the target Android version. For instance, for versions up to Android 7.0 (API level 24) you can use the following APKs as a proof of concept to identify the existence of the vulnerabilities.  
+
+- [Tapjacking POC](https://github.com/FSecureLABS/tapjacking-poc "Tapjacking POC"): This APK creates a simple overlay which sits on top of the testing application.
+- [Invisible Keyboard](https://github.com/DEVizzi/Invisible-Keyboard, "Invisible Keyboard"): This APK creates multiple overlays on the keyboard to capture keystrokes. This is one of the exploit demonstrated in Cloak and Dagger attacks.
+
 ## Testing enforced updating (MSTG-ARCH-9)
 
 Starting from Android 5.0 (API level 21), together with the Play Core Library, apps can be forced to be updated. This mechanism is based on using the `AppUpdateManager`. Before that, other mechanisms were used, such as doing http calls to the Google Play Store, which are not as reliable as the APIs of the Play Store might change. Alternatively, Firebase could be used to check for possible forced updates as well (see this [blog](https://medium.com/@sembozdemir/force-your-users-to-update-your-app-with-using-firebase-33f1e0bcec5a "Force users to update the app using Firebase")).
@@ -1540,6 +1609,14 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - <https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing>
 - <https://support.virustotal.com/hc/en-us/articles/115002146549-Mobile-Apps>
 
+### Android Custom URL Schemes
+
+- <https://developer.android.com/training/app-links/>
+- <https://developer.android.com/training/app-links/deep-linking>
+- <https://developer.android.com/training/app-links/verify-site-associations>
+- <https://developers.google.com/digital-asset-links/v1/getting-started>
+- <https://pdfs.semanticscholar.org/0415/59c01d5235f8cf38a3c69ccee7e1f1a98067.pdf>
+
 ### OWASP MASVS
 
 - MSTG-PLATFORM-1: "The app only requests the minimum set of permissions necessary."
@@ -1549,7 +1626,8 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-5: "JavaScript is disabled in WebViews unless explicitly required."
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
-- MSTG-PLATFORM-8: "Object deserialization, if any, is implemented using safe serialization APIs."
+- MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
+- MSTG-PLATFORM-9: "The app does not allow any other application to overlay on itself."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
 ### Tools
