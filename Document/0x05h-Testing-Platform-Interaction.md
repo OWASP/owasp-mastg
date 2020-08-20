@@ -528,6 +528,8 @@ WebViews are Android's embedded components which allow your app to open web page
 
 To give you control over the pages loaded by your WebView, Android provides `shouldOverrideUrlLoading` methods which allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`.
 
+#### SafeBrowsing API
+
 To provide a safer web browsing experience, Android 8.1 (API level 27) introduces the [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4), which allows your application to detect URLs that Google has classified as a known threat.
 
 By default, WebViews show a warning to users about the security risk with the option to load the URL or stop the page from loading. With the SafeBrowsing API you can customize your application's behavior by either reporting the threat to SafeBrowsing or performing a particular action such as returning back to safety each time it encounters a known threat. Please check the [Android Developers documentation](https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing) for usage examples.
