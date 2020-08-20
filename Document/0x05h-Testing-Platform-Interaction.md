@@ -536,7 +536,9 @@ By default, WebViews show a warning to users about the security risk with the op
 
 You can use the SafeBrowsing API independently from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes (e.g. http, file) since SafeBrowsing is agnostic to URL schemes, and against `TYPE_POTENTIALLY_HARMFUL_APPLICATION` and `TYPE_SOCIAL_ENGINEERING` threat types.
 
-[Virus Total API](https://support.virustotal.com/hc/en-us/articles/115002146469-API-Scripts) also provides an API for analyzing URLs and local files for known threats. A Java implementation for the API is available on Virus Total's documentation page.
+#### Virus Total API
+
+Virus Total provides an API for analyzing URLs and local files for known threats. The API Reference is available on [Virus Total developers page](https://developers.virustotal.com/reference#getting-started "Getting Started").
 
 > When sending URLs or files to be checked for known threats make sure they don't contain sensitive data which could compromise a user's privacy, or expose sensitive content from your application.
 
