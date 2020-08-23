@@ -571,7 +571,7 @@ While the default value of `EnableSafeBrowsing` is `true`, some applications mig
 
 ### Dynamic Analysis
 
-A convenient way to dynamically test deep linking is to use Frida or frida-trace and hook the `shouldOverrideUrlLoading `, `shouldInterceptRequest` methods while using the app and clicking on links within its WebView. Be sure to also hook other related [`Uri`](https://developer.android.com/reference/android/net/Uri ""Uri class") methods such as `getHost`, `getScheme` or `getPath` which are typically used to inspect the requests and match known patterns or deny lists.
+A convenient way to dynamically test deep linking is to use Frida or frida-trace and hook the `shouldOverrideUrlLoading`, `shouldInterceptRequest` methods while using the app and clicking on links within its WebView. Be sure to also hook other related [`Uri`](https://developer.android.com/reference/android/net/Uri "Uri class") methods such as `getHost`, `getScheme` or `getPath` which are typically used to inspect the requests and match known patterns or deny lists.
 
 ## Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
