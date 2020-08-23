@@ -544,6 +544,19 @@ Virus Total provides an API for analyzing URLs and local files for known threats
 
 ### Static Analysis
 
+As we mentioned before, [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation") should be analyzed carefully, especially when you suspect that the user might be able to open any external pages. The default and the safest behaviour on Android is to the default web browser open any link that the user might click. However, the developers might decide not to do this and handle the links within their own WebView by providing a `WebViewClient`. If this is the case, be sure to search for and inspect the following interception callback functions:
+
+- `shouldOverrideUrlLoading` allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`. Considerations:
+  - This method is not called for POST requests.
+  - This method is not called for XmlHttpRequests, iFrames, "src" attributes included in HTML or `<script>` tags. Instead, `shouldInterceptRequest` should take care of this.
+- `shouldInterceptRequest` allows the application to return the data from resource requests. If the return value is null, the WebView will continue to load the resource as usual. Otherwise, the return response and data will be used. Considerations:
+  - This callback is invoked for a variety of URL schemes (e.g., `http(s):`, `data:`, `file:`, etc.), not only those schemes which send requests over the network.
+  - This is not called for `javascript:` or `blob:` URLs, or for assets accessed via `file:///android_asset/` or `file:///android_res/` URLs.
+In the case of redirects, this is only called for the initial resource URL, not any subsequent redirect URLs.
+  - When Safe Browsing is enabled, these URLs still undergo Safe Browsing checks but the developer can allow the URL with `setSafeBrowsingWhitelist` or even ignore the warning via the `onSafeBrowsingHit` callback.
+  
+As you can see there are a lot of points to consider when testing the security of WebViews having a WebViewClient, be sure to carefully read and understand all of them by checking the [`WebViewClient` Documentation](https://developer.android.com/reference/android/webkit/WebViewClient "WebViewClient").
+
 While the default value of `EnableSafeBrowsing` is `true`, some applications might opt to disable it. To verify that SafeBrowsing is enabled, inspect the AndroidManifest.xml file and make sure that the configuration below is not present:
 
 ```xml
