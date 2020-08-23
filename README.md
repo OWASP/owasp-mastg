@@ -120,7 +120,7 @@ Contributors are added to the acknowledgments table based on their contributions
 
 Please ping us or create a pull request if you are missing from the table or in the wrong column (note that we update the table frequently, but not in realtime).
 
-If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *Sven*), Jeroen Willemsen (Slack: *jeroenwillemsen*), or Carlos Holguera (Slack: *Carlos*) for more information.
+If you are willing to write a large portion of the guide and help consistently drive the project forward, you can join as an author. Be aware that you'll be expected to invest lots of time over several months. Contact Sven Schleier (Slack: *Sven*) or Carlos Holguera (Slack: *Carlos*) for more information.
 
 ## Crackmes
 
