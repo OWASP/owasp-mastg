@@ -520,6 +520,43 @@ startActivity(i);
 
 The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [Exploit PoC App](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
 
+## Testing for URL Loading in WebViews (MSTG-PLATFORM-2)
+
+### Overview
+
+WebViews are Android's embedded components which allow your app to open web pages within your application. In addition to mobile apps realated threats, WebViews may expose your app to common web threats (e.g. XSS, Open Redirect, etc.).
+
+To give you control over the pages loaded by your WebView, Android provides `shouldOverrideUrlLoading` methods which allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`.
+
+#### SafeBrowsing API
+
+To provide a safer web browsing experience, Android 8.1 (API level 27) introduces the [`SafeBrowsing API`](https://developers.google.com/safe-browsing/v4), which allows your application to detect URLs that Google has classified as a known threat.
+
+By default, WebViews show a warning to users about the security risk with the option to load the URL or stop the page from loading. With the SafeBrowsing API you can customize your application's behavior by either reporting the threat to SafeBrowsing or performing a particular action such as returning back to safety each time it encounters a known threat. Please check the [Android Developers documentation](https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing) for usage examples.
+
+You can use the SafeBrowsing API independently from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes (e.g. http, file) since SafeBrowsing is agnostic to URL schemes, and against `TYPE_POTENTIALLY_HARMFUL_APPLICATION` and `TYPE_SOCIAL_ENGINEERING` threat types.
+
+#### Virus Total API
+
+Virus Total provides an API for analyzing URLs and local files for known threats. The API Reference is available on [Virus Total developers page](https://developers.virustotal.com/reference#getting-started "Getting Started").
+
+> When sending URLs or files to be checked for known threats make sure they don't contain sensitive data which could compromise a user's privacy, or expose sensitive content from your application.
+
+### Static Analysis
+
+While the default value of `EnableSafeBrowsing` is `true`, some applications might opt to disable it. To verify that SafeBrowsing is enabled, inspect the AndroidManifest.xml file and make sure that the configuration below is not present:
+
+```xml
+<manifest>
+    <application>
+        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
+                   android:value="false" />
+        ...
+    </application>
+</manifest>
+
+```
+
 ## Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
 ### Overview
@@ -1566,6 +1603,11 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 ### Android permissions changes in Android 8
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
+
+### SafeBrowsing
+
+- <https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing>
+- <https://support.virustotal.com/hc/en-us/articles/115002146549-Mobile-Apps>
 
 ### Android Custom URL Schemes
 
