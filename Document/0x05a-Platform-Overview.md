@@ -2,12 +2,12 @@
 
 This section introduces the Android platform from an architecture point of view. The following six key areas are discussed:
 
-1. Android Architecture
-2. Android Security: Defense-in-Depth Approach
-3. Android Application Structure
-4. Inter-process Communication (IPC)
-5. Android Application Publishing
-6. Android Application Attack Surface
+1. Android architecture
+2. Android security: defense-in-depth approach
+3. Android application structure
+4. Inter-process communication (IPC)
+5. Android application publishing
+6. Android application attack surface
 
 Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
 
@@ -29,7 +29,7 @@ Android apps are usually written in Java and compiled to Dalvik bytecode, which 
 
 The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine (DVM). The key difference between Dalvik and ART is the way the bytecode is executed.
 
-In the DVM, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. JIT compilation adversely affects performance: the compilation must be performed every time the app is executed. To improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of *ahead-of-time* (AOT) , JIT and profile-guided compilation. Apps are recompiled on the device. During this recompilation process device specific optimizations can be performed on the code. This recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
+In the DVM, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation. To further improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of *ahead-of-time* (AOT) , JIT and profile-guided compilation. Apps are recompiled on the device. While the code is being recompiled, device-specific and advanced code optimizations techniques can be applied. The final recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
 
 Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape it's own runtime and read the memory of a victim application on the same device. In the following section we take a closer look at the different defense layers in the Android operating system.
 
@@ -42,7 +42,7 @@ The Android architecture implements different security layers that, together, en
 - Network security
 - Anti-exploitation
 
-#### Domain 1: System-wide security
+#### System-wide security
 
 ##### Device encryption
 
@@ -50,7 +50,7 @@ Android supports device encryption from Android 2.3.4 (API level 10) and it has 
 
 - Full-Disk Encryption - Android 5.0 (API level 21) and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the user data partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter the password to unlock.
 
-- File-Based Encryption - Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
+- File-Based Encryption - Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices that support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
 
 - Adiantum - AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
 However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
@@ -65,7 +65,7 @@ Adiantum is a composition of other ciphers:
 - AES-256: A single invocation of AES.
 
 Adiantum is available for Android 9 (API level 28) and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching.
-Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications. It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
+Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
 
 ##### Trusted Execution Environment (TEE)
 
@@ -77,15 +77,15 @@ Android offers a trusted execution environment in dedicated hardware to solve th
 
     - [StrongBox](https://developer.android.com/training/articles/keystore#HardwareSecurityModule) - In Android 9 (Pie), StrongBox was introduced, another approach to implement a hardware-backed KeyStore. While previous to Android 9 Pie, a hardware-backed KeyStore would be any TEE implementation that lies outside of the Android OS kernel. StrongBox is an actual complete separate hardware chip that is added to the device on which the KeyStore is implemented and is clearly defined in the Android documentation. You can check whether a key resides in StrongBox. When a key resides in StrongBox, you can be sure that it is protected by a hardware security module that has its own CPU, secure storage, and True Random Generator (TRNG). All the sensitive cryptographic operations happen on this chip, in the secure boundaries of StrongBox.
 
-    - [GateKeeper](https://source.android.com/security/authentication/gatekeeper) - The GateKeeper module enables device pattern and password authentication. The security sensitive operations during the authentication process happen inside the TEE that is available on the device.
+    - [GateKeeper](https://source.android.com/security/authentication/gatekeeper) - The GateKeeper module enables device pattern and password authentication. The security sensitive operations during the authentication process happen inside the TEE that is available on the device. GateKeeper consists of three main components, (1) `gatekeeperd` which is the service that exposes GateKeeper, (2) GateKeeper HAL, which is the hardware interface and (3) the TEE implementation which is the actual software that implements the GateKeeper functionality in the TEE.
 
 ##### Verified Boot
 
-We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android introduced the concept of verified boot. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running. Passing through and verifying all the required boot phases. When the Android system is finally booted you can rest assure that the system is not tampered with. You have cryptographic proof that the code which is running, is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
+We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android introduced the concept of verified boot. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running, passing through and verifying all the required boot phases. When the Android system is finally booted you can rest assure that the system is not tampered with. You have cryptographic proof that the code which is running, is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
 
 Further information is available in the [Android documentation](https://source.android.com/security/verifiedboot).
 
-#### Domain 2: Software isolation
+#### Software isolation
 
 ##### Android Users and Groups
 
@@ -113,9 +113,9 @@ Further information is available on the [Android Security website](https://sourc
 
 ##### Permissions
 
-Android implements an extensive permissions system that is used as an access control mechanism. They are used to control access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
+Android implements an extensive permissions system that is used as an access control mechanism. It ensures controlled access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
 
-Protection Levels
+**Protection Levels**
 
 Android permissions are ranked on the basis of the protection level they offer and divided into four different categories:
 
@@ -128,7 +128,7 @@ Example: `android.permission.ACCESS_MOCK_LOCATION`
 - *SystemOrSignature*: This permission is granted only to apps embedded in the system image or signed with the same certificate that the app that declared the permission was signed with.
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
-Requesting Permissions
+**Requesting Permissions**
 
 Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags into their manifest.
 The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
@@ -142,7 +142,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 </manifest>
 ```
 
-Declaring Permissions
+**Declaring Permissions**
 
 Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html "predefined permissions") or define its own. A new permission is declared with the `<permission>` element.
 The example below shows an app declaring a permission:
@@ -160,7 +160,7 @@ The example below shows an app declaring a permission:
 
 The above code defines a new permission named `com.permissions.sample.ACCESS_USER_INFO` with the protection level `Signature`. Any components protected with this permission would be accessible only by apps signed with the same developer certificate.
 
-Enforcing Permissions on Android Components
+**Enforcing Permissions on Android Components**
 
 Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
 
@@ -179,7 +179,7 @@ Content Providers are a little different. They support a separate set of permiss
 - `android:permission`: general permission that will control reading and writing to the content provider.
 - `android:grantUriPermissions`: `"true"` if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and `"false"` otherwise.
 
-#### Domain 3: Network security
+#### Network security
 
 ##### TLS by Default
 
@@ -193,7 +193,7 @@ System-wide DNS over TLS support has been introduced since Android 9 (Pie). It a
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html).
 
-#### Domain 4: Anti-exploitation
+#### Anti-exploitation
 
 ##### ASLR, KASLR, PIE and DEP
 
@@ -268,7 +268,7 @@ The relationship between group IDs and permissions is defined in the following f
 
 #### The App Sandbox
 
-Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. As mentioned before. this separation adds a first layer of defense.
+Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. As mentioned before, this separation adds a first layer of defense.
 
 Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
