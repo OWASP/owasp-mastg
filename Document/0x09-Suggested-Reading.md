@@ -1,8 +1,8 @@
-## Suggested Reading
+# Suggested Reading
 
-### Mobile App Security
+## Mobile App Security
 
-#### Android
+### Android
 
 - Dominic Chell, Tyrone Erasmus, Shaun Colley, Ollie Whitehous (2015) *Mobile Application Hacker's Handbook*. Wiley. Available at: <https://www.wiley.com/en-us/The+Mobile+Application+Hacker%27s+Handbook-p-9781118958506>
 - Joshua J. Drake, Zach Lanier, Collin Mulliner, Pau Oliva, Stephen A. Ridley, Georg Wicherski (2014) *Android Hacker's Handbook*. Wiley. Available at: <https://www.wiley.com/en-us/Android+Hacker%27s+Handbook-p-9781118608647>
@@ -10,15 +10,13 @@
 - Nikolay Elenkov (2014) *Android Security Internals: An In-Depth Guide to Android's Security Architecture*. No Starch Press. Available at: <https://nostarch.com/androidsecurity>
 - Jonathan Levin (2015) *Android Internals :: A confectioners cookbook - Volume I: The power user's view*. Technologeeks.com. Available at: <http://newandroidbook.com/>
 
-#### iOS
+### iOS
 
 - Charlie Miller, Dionysus Blazakis, Dino Dai Zovi, Stefan Esser, Vincenzo Iozzo, Ralf-Philipp Weinmann (2012) *iOS Hacker's Handbook*. Wiley. Available at: <https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122>
 - David Thiel (2016) *iOS Application Security, The Definitive Guide for Hackers and Developers*. no starch press. Available at: <https://www.nostarch.com/iossecurity>
 - Jonathan Levin (2017), *Mac OS X and iOS Internals*, Wiley. Available at: <http://newosxbook.com/index.php>
 
-#### Misc
-
-### Reverse Engineering
+## Reverse Engineering
 
 - Bruce Dang, Alexandre Gazet, Elias Backaalany (2014) *Practical Reverse Engineering*. Wiley. Available at: <https://www.wiley.com/en-us/Practical+Reverse+Engineering%3A+x86%2C+x64%2C+ARM%2C+Windows+Kernel%2C+Reversing+Tools%2C+and+Obfuscation-p-9781118787311>
 - Skakenunny, Hangcom *iOS App Reverse Engineering*. Online. Available at: <https://github.com/iosre/iOSAppReverseEngineering/>

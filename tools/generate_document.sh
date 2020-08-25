@@ -9,8 +9,8 @@ type pandoc >/dev/null 2>&1 || { echo >&2 "I require pandoc but it's not install
 cd ../Document
 # ../tools/metadata.yml \
 pandoc -f gfm --toc -N --columns 10000 --self-contained -s --reference-doc ../tools/reference.docx -t docx  -o ../Generated/MSTG-EN.docx \
-0x00-Header.md \
-Foreword.md \
+# 0x00-Header.md \
+0x01-Foreword.md \
 0x02-Frontispiece.md \
 0x03-Overview.md \
 0x04-General-Testing-Guide.md \
@@ -89,7 +89,7 @@ SUMMARY.md
 #
 # pandoc -f gfm -N --columns 10000 --reference-doc ../tools/reference.docx -o ../Generated/MSTG_1-ru.docx \
 # 0x00-Header.md \
-# Foreword.md \
+# 0x01-Foreword.md \
 # 0x02-Frontispiece.md
 #
 # pandoc -f docx -N --columns 10000 --reference-doc ../tools/reference.docx -o ../Generated/MSTG-ru.docx \
