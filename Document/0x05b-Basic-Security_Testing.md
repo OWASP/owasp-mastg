@@ -325,7 +325,7 @@ This should copy `apkx` to `/usr/local/bin`. See section "[Decompiling Java Code
 
 Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
-Setting up Burp to proxy your traffic is pretty straightforward. We assume that you have an iOS device and workstation connected to a Wi-Fi network that permits client-to-client traffic.
+Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your iOS device and host computer are connected to a Wi-Fi network that permits client-to-client traffic.
 
 PortSwigger provides a good [tutorial on setting up an Android device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device").
 
@@ -1168,7 +1168,7 @@ bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 ```
 
-> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your workstation and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "[Host-Device Data Transfer](#host-device-data-transfer "Host-Device Data Transfer")" below.
+> Only if you're working with an emulator you may alternatively restart adb with root permissions with the command `adb root` so next time you enter `adb shell` you'll have root access already. This also allows to transfer data bidirectionally between your host computer and the Android file system, even with access to locations where only the root user has access to (via `adb push/pull`). See more about data transfer in section "[Host-Device Data Transfer](#host-device-data-transfer "Host-Device Data Transfer")" below.
 
 ##### Connect to Multiple Devices
 
@@ -1215,7 +1215,7 @@ You can copy files to and from a device by using the commands `adb pull <remote>
 $ adb push foo.txt /sdcard/foo.txt
 ```
 
-This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your workstation.
+This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your host computer.
 
 ```bash
 $ adb pull /sdcard
@@ -1387,7 +1387,7 @@ Note that if you have the original source code and use Android Studio, you do no
 
 ### Information Gathering
 
-One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your workstation or remotely by accessing the app data on the device. You'll find more advanced techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
+One fundamental step when analyzing apps is information gathering. This can be done by inspecting the app package on your host computer or remotely by accessing the app data on the device. You'll find more advanced techniques in the subsequent chapters but, for now, we will focus on the basics: getting a list of all installed apps, exploring the app package and accessing the app data directories on the device itself. This should give you a bit of context about what the app is all about without even having to reverse engineer it or perform more advanced analysis. We will be answering questions such as:
 
 - Which files are included in the package?
 - Which native libraries does the app use?
@@ -1679,7 +1679,7 @@ The tcpdump command above involves
 
 By using the pipe (`|`), we sent all output from tcpdump to netcat, which opens a listener on port 11111. You'll usually want to monitor the wlan0 interface. If you need another interface, list the available options with the command `$ ip addr`.
 
-To access port 11111, you need to forward the port to your machine via adb.
+To access port 11111, you need to forward the port to your host computer via adb.
 
 ```bash
 $ adb forward tcp:11111 tcp:11111
@@ -1780,7 +1780,7 @@ The following procedure, which works on the Android emulator that ships with And
 
 <img src="Images/Chapters/0x05b/emulator-proxy.png" alt="Emulator proxy" width="600px" />
 
-HTTP and HTTPS requests should now be routed over the proxy on the host machine. If not, try toggling airplane mode off and on.
+HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 
 A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
 
@@ -1809,9 +1809,9 @@ For Android 7.0 (API level 24) and above follow the same procedure described in 
 
 #### Interception Proxy for a Physical Device
 
-The available network setup options must be evaluated first. The mobile device used for testing and the machine running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
+The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
 
-Once you've configured the network and established a connection between the testing machine and the mobile device, several steps remain.
+Once you've configured the network and established a connection between the testing host computer and the mobile device, several steps remain.
 
 - The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
 - The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
@@ -1982,13 +1982,13 @@ Once you have setup an interception proxy and have a MITM position you might sti
 
 What to do if the Wi-Fi we need for testing has client isolation?
 
-You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your laptop and use adb to make a reverse port forwarding:
+You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your host computer and use adb to make a reverse port forwarding:
 
 ```bash
 $ adb reverse tcp:8080 tcp:8080
 ```
 
-Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your laptop and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wi-Fis that have client isolation.
+Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your host computer and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wi-Fis that have client isolation.
 
 #### Non-Proxy Aware Apps
 
@@ -2045,7 +2045,7 @@ $ iptables -t nat -F
 
 Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running bettercap.
 
-The machine where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
+The host computer where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
 
 ```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"

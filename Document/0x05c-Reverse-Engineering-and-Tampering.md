@@ -681,7 +681,7 @@ In the following section, we'll show how to solve the UnCrackable App for Androi
 
 #### Debugging with jdb
 
-The `adb` command line tool was introduced in the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" chapter. You can use its `adb jdwp` command to list the process IDs of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host machine and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
+The `adb` command line tool was introduced in the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" chapter. You can use its `adb jdwp` command to list the process IDs of all debuggable processes running on the connected device (i.e., processes hosting a JDWP transport). With the `adb forward` command, you can open a listening socket on your host computer and forward this socket's incoming TCP connections to the JDWP transport of a chosen process.
 
 ```bash
 $ adb jdwp

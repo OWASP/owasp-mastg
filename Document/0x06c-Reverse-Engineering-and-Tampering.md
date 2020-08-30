@@ -559,7 +559,7 @@ For the second address, we need to determine the _ASLR shift offset_ for a given
 
 In the output, the first column contains the sequence number of the image ([X]), the second column contains the randomly generated ASLR offset, while 3rd column contains the full path of the image and towards the end, content in the bracket shows the image base address after adding ASLR offset to the original image base address (0x100000000 + 0x70000 = 0x100070000). You will notice the image base address of 0x100000000 is same as in Ghidra. Now, to obtain the effective memory address for a code location we only need to add ASLR offset to the address identified in Ghidra. The effective address to set the breakpoint will be 0x100004520 + 0x70000 = 0x100074520. The breakpoint can be set using command `b 0x100074520`.
 
-> In the above output, you may also notice that many of the paths listed as images do not point to the file system on the iOS device. Instead, they point to a certain location on the machine on which LLDB is running. These images are system libraries for which debug symbols are available on the machine to aid in application development and debugging (as part of the Xcode iOS SDK). Therefore, you may set breakpoints to these libraries directly by using function names.
+> In the above output, you may also notice that many of the paths listed as images do not point to the file system on the iOS device. Instead, they point to a certain location on the host computer on which LLDB is running. These images are system libraries for which debug symbols are available on the host computer to aid in application development and debugging (as part of the Xcode iOS SDK). Therefore, you may set breakpoints to these libraries directly by using function names.
 
 After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In LLDB you can print Objective-C objects using the `po` (_print object_) command.
 
@@ -775,7 +775,7 @@ Use the following approach to patch the JavaScript file:
 
 [Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
 
-If you haven't already done so, install the Frida Python package on your host machine:
+If you haven't already done so, install the Frida Python package on your host computer:
 
 ```bash
 $ pip install frida

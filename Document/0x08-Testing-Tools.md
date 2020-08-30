@@ -9,7 +9,7 @@ To perform security testing different tools are available in order to be able to
 
 - Androl4b: A virtual machine for assessing Android applications, perform reverse engineering and malware analysis - <https://github.com/sh4hin/Androl4b>
 - Android Tamer: A Debian-based Virtual/Live Platform for Android Security professionals - <https://androidtamer.com/>
-- Mobile Security Toolchain: A project used to install many of the tools mentioned in this section, both for Android and iOS at a machine running macOS. The project installs the tools via Ansible - <https://github.com/xebia/mobilehacktools>
+- Mobile Security Toolchain: A project used to install many of the tools mentioned in this section, both for Android and iOS at a host computer running macOS. The project installs the tools via Ansible - <https://github.com/xebia/mobilehacktools>
 
 ## All-in-One Mobile Security Frameworks
 
@@ -132,7 +132,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 ## Interception Proxies
 
 - Burp Suite: An integrated platform for performing security testing of applications - <https://portswigger.net/burp/download.html>
-- Charles Proxy: HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet - <https://www.charlesproxy.com>
+- Charles Proxy: HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their host computer and the Internet - <https://www.charlesproxy.com>
 - Fiddler: An HTTP debugging proxy server application which captures HTTP and HTTPS traffic and logs it for the user to review - <https://www.telerik.com/fiddler>
 - OWASP Zed Attack Proxy (ZAP): A free security tool which helps to automatically find security vulnerabilities in web applications and web services - <https://github.com/zaproxy/zaproxy>
 - Proxydroid: Global Proxy App for Android System - <https://github.com/madeye/proxydroid>

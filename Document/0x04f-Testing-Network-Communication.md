@@ -4,7 +4,7 @@ Practically every network-connected mobile app uses the Hypertext Transfer Proto
 
 ## Intercepting HTTP(S) Traffic
 
-In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host machine. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
+In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
@@ -12,7 +12,7 @@ Several free and commercial proxy tools are available. Here are some of the most
 - [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project "OWASP ZAP")
 - [Charles Proxy](https://www.charlesproxy.com "Charles Proxy")
 
-To use the interception proxy, you'll need run it on your machine and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
+To use the interception proxy, you'll need run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
 <img src="Images/Chapters/0x04f/BURP.png" width="550px" />
 
@@ -40,9 +40,9 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host machine. You can set up your machine as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org "Wireshark") to sniff any traffic from the mobile device;
+- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org "Wireshark") to sniff any traffic from the mobile device;
 
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") or use your own access point to redirect network traffic from the mobile device to your host machine (see below);
+- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") or use your own access point to redirect network traffic from the mobile device to your host computer (see below);
 
 > bettercap is a powerful tool to execute MITM attacks and should be preferred nowadays, instead of ettercap. See also [Why another MITM tool?](https://www.bettercap.org/legacy/#why-another-mitm-tool "Why another MITM tool?") on the bettercap site.
 
@@ -54,15 +54,15 @@ In these cases you need to monitor and analyze the network traffic first in orde
 
 #### Network Setup
 
-To be able to get a man-in-the-middle position your machine should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of your mobile phone.
+To be able to get a man-in-the-middle position your host computer should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of your mobile phone.
 
-[bettercap](https://github.com/bettercap/bettercap "bettercap") can be used during network penetration tests in order to simulate a man-in-the-middle (MITM) attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target machines. When such an attack is successful, all packets between two machines are redirected to a third machine that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
+[bettercap](https://github.com/bettercap/bettercap "bettercap") can be used during network penetration tests in order to simulate a man-in-the-middle (MITM) attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target computers. When such an attack is successful, all packets between two computers are redirected to a third computer that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
 
 For a full dynamic analysis of a mobile app, all network traffic should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
 
 #### bettercap Installation
 
-bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your machine that will act as the MITM. On macOS it can be installed by using brew.
+bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your host computer that will act as the MITM. On macOS it can be installed by using brew.
 
 ```bash
 $ brew install bettercap
@@ -103,13 +103,13 @@ If that's the case, you are now able to see the complete network traffic that is
 
 #### Network Setup
 
-A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your machine. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your machine are connected to. Your machine is then becoming a router and an access point.
+A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your host computer are connected to. Your host computer is then becoming a router and an access point.
 
 Following scenarios are possible:
 
-- Use your machine's built-in WiFi card as an access point and use your wired connection to connect to the target network.
-- Use an external USB WiFi card as an access point and user your machine built-in WiFi to connect to the target network (can be vice-versa).
-- Use a separate access point and redirect the traffic to your machine.
+- Use your host computer's built-in WiFi card as an access point and use your wired connection to connect to the target network.
+- Use an external USB WiFi card as an access point and user your host computer built-in WiFi to connect to the target network (can be vice-versa).
+- Use a separate access point and redirect the traffic to your host computer.
 
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
@@ -122,7 +122,7 @@ The scenario with a separate access point requires access to the configuration o
 - port forwarding or
 - has a span or mirror port.
 
-In both cases the AP needs to be configured to point to your machines IP. Your machine must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be the same connection as to the AP). Some additional configuration may be required on your machine to route traffic to the target network.
+In both cases the AP needs to be configured to point to your host computer's IP. Your host computer must be connected to the AP (via wired connection or WiFi) and you need to have connection to the target network (can be the same connection as to the AP). Some additional configuration may be required on your host computer to route traffic to the target network.
 
 > If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
@@ -132,7 +132,7 @@ In both cases the AP needs to be configured to point to your machines IP. Your m
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
 
-Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your machine.
+Create a WiFi network either through a separate access point or through an external USB WiFi card or through the built-in card of your host computer.
 
 This can be done by using the built-in utilities on macOS. You can use [share the internet connection on Mac with other network users](https://support.apple.com/en-ke/guide/mac-help/mchlp1540/mac "Share the internet connection on Mac with other network users").
 
@@ -153,7 +153,7 @@ $ apt-get install hostapd dnsmasq aircrack-ng
 
 > iptables and wpa_supplicant are installed by default on Kali Linux.
 
-In case of a separate access point, route the traffic to your machine. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your machine.
+In case of a separate access point, route the traffic to your host computer. In case of an external USB WiFi card or built-in WiFi card the traffic is already available on your host computer.
 
 Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
@@ -239,7 +239,7 @@ Now you can connect your mobile devices to the access point.
 
 ### Network Analyzer Tool
 
-Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your machine. The two most common network monitoring (or capturing) tools are:
+Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your host computer. The two most common network monitoring (or capturing) tools are:
 
 - [Wireshark](https://www.wireshark.org "Wireshark") (CLI pendant: [TShark](https://www.wireshark.org/docs/man-pages/tshark.html "TShark"))
 - [tcpdump](https://www.tcpdump.org/tcpdump_man.html "tcpdump")

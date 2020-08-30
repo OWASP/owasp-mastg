@@ -258,7 +258,7 @@ The following steps can be used to determine how the application stores data loc
 You can analyze the app's data directory on a non-jailbroken iOS device by using third-party applications, such as [iMazing](https://imazing.com "iMazing").
 
 1. Trigger the functionality that stores potentially sensitive data.
-2. Connect the iOS device to your workstation and launch iMazing.
+2. Connect the iOS device to your host computer and launch iMazing.
 3. Select "Apps", right-click the desired iOS application, and select "Extract App".
 4. Navigate to the output directory and locate `$APP_NAME.imazing`. Rename it to `$APP_NAME.zip`.
 5. Unpack the ZIP file. You can then analyze the application data.
