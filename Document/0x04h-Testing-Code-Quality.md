@@ -236,7 +236,7 @@ The following code snippet shows a simple example for a condition resulting in a
  }  
 ```
 
-To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the “str” prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
+To identify potential buffer overflows, look for uses of unsafe string functions (`strcpy`, `strcat`, other functions beginning with the "str" prefix, etc.) and potentially vulnerable programming constructs, such as copying user input into a limited-size buffer. The following should be considered red flags for unsafe string functions:
 
 - `strcat`
 - `strcpy`
@@ -248,12 +248,12 @@ To identify potential buffer overflows, look for uses of unsafe string functions
 - `snprintf`
 - `gets`
 
-Also, look for instances of copy operations implemented as “for” or “while” loops and verify length checks are performed correctly.
+Also, look for instances of copy operations implemented as "for" or "while" loops and verify length checks are performed correctly.
 
 Verify that the following best practices have been followed:
 
 - When using integer variables for array indexing, buffer length calculations, or any other security-critical operation, verify that unsigned integer types are used and perform precondition tests are performed to prevent the possibility of integer wrapping.
-- The app does not use unsafe string functions such as `strcpy`, most other functions beginning with the “str” prefix, `sprint`, `vsprintf`, `gets`, etc.;
+- The app does not use unsafe string functions such as `strcpy`, most other functions beginning with the "str" prefix, `sprint`, `vsprintf`, `gets`, etc.;
 - If the app contains C++ code, ANSI C++ string classes are used;
 - In case of `memcpy`, make sure you check that the target buffer is at least of equal size as the source and that both buffers are not overlapping.
 - iOS apps written in Objective-C use NSString class. C apps on iOS should use CFString, the Core Foundation representation of a string.

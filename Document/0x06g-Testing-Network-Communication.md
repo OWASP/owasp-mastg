@@ -104,8 +104,6 @@ Starting from January 1 2017, Apple App Store review requires justification if o
 - `NSExceptionAllowsInsecureHTTPLoads`
 - `NSExceptionMinimumTLSVersion`
 
-However this decline is extended later by Apple stating [“To give you additional time to prepare, this deadline has been extended and we will provide another update when a new deadline is confirmed”](https://developer.apple.com/news/?id=12212016b "Apple Developer Portal Announcement - Supporting App Transport Security")
-
 ### Analyzing the ATS Configuration
 
 If the source code is available, open then `Info.plist` file in the application bundle directory and look for any exceptions that the application developer has configured. This file should be examined taking the applications context into consideration.
