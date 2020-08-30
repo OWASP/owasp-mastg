@@ -876,7 +876,7 @@ application:continueUserActivity:restorationHandler:
 
 - Like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the Apple App Site Association File" above for an example.
 
-Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser–to–Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser–to–Native App"):
+Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser-to-Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser-to-Native App"):
 
 > If the user is using a web browser on the originating device, and the receiving device is an iOS device with a native app that claims the domain portion of the `webpageURL` property, then iOS launches the native app and sends it an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The `webpageURL` property contains the URL the user was visiting, while the `userInfo` dictionary is empty.
 

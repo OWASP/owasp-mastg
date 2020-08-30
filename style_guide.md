@@ -91,7 +91,7 @@ When presenting your content in a list format:
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
-- Punctuate and capitalize list items consistently (CMOS 6.124–6.126).
+- Punctuate and capitalize list items consistently (CMOS 6.124-6.126).
   - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
   - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
   - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
@@ -263,7 +263,7 @@ Basic Format:
 ```markdown
 - [shortname] \[Author(s)\], \[Title\], \[Published\], \[Year\]
 
-- [examplebook] J. K. Author, “Title of chapter in the book,” in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx–xxx.
+- [examplebook] J. K. Author, “Title of chapter in the book,” in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx-xxx.
 ```
 
 NOTE: Use et al. when three or more names are given

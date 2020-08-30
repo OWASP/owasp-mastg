@@ -780,6 +780,7 @@ The package for libimobiledevice will be available in your Linux package manager
 
 ```bash
 $ brew install libimobiledevice
+$ brew install ideviceinstaller
 ```
 
 After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
@@ -789,22 +790,7 @@ After the installation you have several new command line tools available, such a
 $ ideviceinfo
 # The following command will install the IPA to your iOS device.
 $ ideviceinstaller -i iGoat-Swift_v1.0-frida-codesigned.ipa
-WARNING: could not locate iTunesMetadata.plist in archive!
-WARNING: could not locate Payload/iGoat-Swift.app/SC_Info/iGoat-Swift.sinf in archive!
-Copying 'iGoat-Swift_v1.0-frida-codesigned.ipa' to device... DONE.
-Installing 'OWASP.iGoat-Swift'
-Install: CreatingStagingDirectory (5%)
-Install: ExtractingPackage (15%)
-Install: InspectingPackage (20%)
-Install: TakingInstallLock (20%)
-Install: PreflightingApplication (30%)
-Install: InstallingEmbeddedProfile (30%)
-Install: VerifyingApplication (40%)
-Install: CreatingContainer (50%)
-Install: InstallingApplication (60%)
-Install: PostflightingApplication (70%)
-Install: SandboxingApplication (80%)
-Install: GeneratingApplicationMap (90%)
+...
 Install: Complete
 # The following command will start the app in debug mode, by providing the bundle name. The bundle name can be found in the previous command after "Installing".
 $ idevicedebug -d run OWASP.iGoat-Swift
@@ -812,7 +798,7 @@ $ idevicedebug -d run OWASP.iGoat-Swift
 
 #### ipainstaller
 
-The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute the ipainstaller with the IPA's filename:
+The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute ipainstaller with the IPA's filename:
 
 ```bash
 $ ipainstaller App_name.ipa
@@ -820,20 +806,20 @@ $ ipainstaller App_name.ipa
 
 #### ios-deploy
 
-On macOS one more tool can be used on the command line called [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), to allow installation and debugging of iOS apps from the command line. It can be installed via brew:
+On macOS you can also use the [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") tool to install and debug iOS apps from the command line. It can be installed via brew:
 
 ```bash
 $ brew install ios-deploy
 ```
 
-After the installation, go into the directory of the IPA you want to install and unzip it as ios-deploy installs an app by using the bundle.
+You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 $ unzip Name.ipa
 $ ios-deploy --bundle 'Payload/Name.app' -W -d -v
 ```
 
-After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the application again.
+After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the app again.
 
 ```bash
 $ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
