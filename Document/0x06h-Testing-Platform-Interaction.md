@@ -479,7 +479,7 @@ Remember that universal links verification occurs at installation time. iOS retr
 
 - The AASA file is not served over HTTPS.
 - The AASA is not available.
-- The `appID`s do not math (this would be the case of a *malicious* app. iOS would successfully prevent any possible hijacking attacks
+- The `appID`s do not math (this would be the case of a *malicious* app). iOS would successfully prevent any possible hijacking attacks.
 
 ##### Checking the Link Receiver Method
 
