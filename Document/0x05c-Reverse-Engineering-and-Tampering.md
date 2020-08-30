@@ -1023,7 +1023,7 @@ The stock Android kernel comes without loadable module support, which is a probl
 
 In contrast to method profiling, which tells you how frequently a method is being called, method tracing helps you to also determine its input and output values. This technique can prove to be very useful when dealing with applications that have a big codebase and/or are obfuscated.
 
-As we will discuss shortly in the next section, `frida-trace` offers out-of-the-box support for Android/iOS native code tracing and iOS high level method tracing. While it [doesn't support Java method tracing yet](https://github.com/frida/frida-python/issues/70 "Support for tracing high-level methods of Java Classes via patterns"), you can still use regular Frida scripting and hooking in order to perform Java method tracing.
+As we will discuss shortly in the next section, `frida-trace` offers out-of-the-box support for Android/iOS native code tracing and iOS high level method tracing.
 
 #### Native Code Tracing
 
@@ -1079,7 +1079,12 @@ Many binaries are stripped and don't have function name symbols available with t
 $ frida-trace -p 1372 -a "libjpeg.so!0x4793c"
 ```
 
-To learn more about all options for advanced usage, check the [documentation in the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
+Frida 12.10 introduces a new useful syntax to query Java classes and methods as well as Java method tracing support for frida-trace via `-j` ((starting on frida-tools 8.0).
+
+- In Frida scripts: e.g. `Java.enumerateMethods('*youtube*!on*')` uses globs to take all classes that include "youtube" as part of their name and enumerate all methods starting with "on".
+- In frida-trace: e.g. `-j '*!*certificate*/isu'` triggers a case-insensitive query (`i`), including method signatures (`s`) and excluding system classes (`u`).
+
+Refer to the [Release Notes](https://frida.re/news/2020/06/29/frida-12-10-released/ "Frida 12.10") for more details. To learn more about all options for advanced usage, check the [documentation in the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
 
 #### JNI Tracing
 
