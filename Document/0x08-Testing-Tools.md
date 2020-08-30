@@ -107,7 +107,7 @@ Once you are able to SSH into your jailbroken iPhone you can use an FTP client l
 - Cycript: A tool that allows developers to explore and modify running applications on either iOS or macOS using a hybrid of Objective-C and JavaScript syntax through an interactive console that features syntax highlighting and tab completion - <http://www.cycript.org>
 - Frida-cycript: A fork of Cycript including a brand new runtime called Mjølner powered by Frida. This enables frida-cycript to run on all the platforms and architectures maintained by frida-core - <https://github.com/nowsecure/frida-cycript>
 - Fridpa: An automated wrapper script for patching iOS applications (IPA files) and work on non-jailbroken device - <https://github.com/tanprathan/Fridpa>
-- gdb: A tool to perform runtime analysis of iOS applications - <http://cydia.radare.org/debs/>
+- gdb: A tool to perform runtime analysis of iOS applications - <https://cydia.radare.org/pool/main/g/gdb/>
 - idb: A tool to simplify some common tasks for iOS pentesting and research - <https://github.com/dmayer/idb>
 - Introspy-iOS: Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
 - keychaindumper: A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken - <https://github.com/ptoomey3/Keychain-Dumper>
