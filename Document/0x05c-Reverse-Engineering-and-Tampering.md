@@ -1084,7 +1084,7 @@ Frida 12.10 introduces a new useful syntax to query Java classes and methods as 
 - In Frida scripts: e.g. `Java.enumerateMethods('*youtube*!on*')` uses globs to take all classes that include "youtube" as part of their name and enumerate all methods starting with "on".
 - In frida-trace: e.g. `-j '*!*certificate*/isu'` triggers a case-insensitive query (`i`), including method signatures (`s`) and excluding system classes (`u`).
 
-Refer to the [Release Notes](https://frida.re/news/2020/06/29/frida-12-10-released/ "Frida 12.10") for more details. To learn more about all options for advanced usage, check the [documentation in the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
+Refer to the [Release Notes](https://frida.re/news/2020/06/29/frida-12-10-released/ "Frida 12.10") for more details. To learn more about all options for advanced usage, check the [documentation on the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
 
 #### JNI Tracing
 
