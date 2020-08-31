@@ -544,7 +544,7 @@ Virus Total provides an API for analyzing URLs and local files for known threats
 
 ### Static Analysis
 
-As we mentioned before, [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation") should be analyzed carefully, especially when you suspect that the user might be able to open any external pages. The default and the safest behaviour on Android is to the default web browser open any link that the user might click. However, the developers might decide not to do this and handle the links within their own WebView by providing a `WebViewClient`. If this is the case, be sure to search for and inspect the following interception callback functions:
+As we mentioned before, [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation") should be analyzed carefully, especially when users might be able to navigate away from a trusted environment. The default and safest behavior on Android is to let the default web browser open any link that the user might click inside the WebView. However, this default logic can be modified by configuring a `WebViewClient` which allows navigation requests to be handled by the app itself. If this is the case, be sure to search for and inspect the following interception callback functions:
 
 - `shouldOverrideUrlLoading` allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`. Considerations:
   - This method is not called for POST requests.
