@@ -258,7 +258,7 @@ The following steps can be used to determine how the application stores data loc
 You can analyze the app's data directory on a non-jailbroken iOS device by using third-party applications, such as [iMazing](https://imazing.com "iMazing").
 
 1. Trigger the functionality that stores potentially sensitive data.
-2. Connect the iOS device to your workstation and launch iMazing.
+2. Connect the iOS device to your host computer and launch iMazing.
 3. Select "Apps", right-click the desired iOS application, and select "Extract App".
 4. Navigate to the output directory and locate `$APP_NAME.imazing`. Rename it to `$APP_NAME.zip`.
 5. Unpack the ZIP file. You can then analyze the application data.
@@ -734,7 +734,7 @@ $ ls -alh MobileSync
 ls: MobileSync: Operation not permitted
 ```
 
-This is not a permission issue of the backup folder, but a new feature in macOS Mojave. You can solve this problem by granting full disk access to your terminal application by following the explanation on [OSXDaily](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal “Operation not permitted” Error in MacOS Mojave").
+This is not a permission issue of the backup folder, but a new feature in macOS Mojave. You can solve this problem by granting full disk access to your terminal application by following the explanation on [OSXDaily](http://osxdaily.com/2018/10/09/fix-operation-not-permitted-terminal-error-macos/ "Fix Terminal -Operation not permitted- Error in MacOS Mojave").
 
 Before you can access the directory you need to select the folder with the UDID of your device. Check the section "Getting the UDID of an iOS device" in the "iOS Basic Security Testing" chapter on how to retrieve the UDID.
 

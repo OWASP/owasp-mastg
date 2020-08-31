@@ -1050,7 +1050,7 @@ ADB should respond now with "Now unlock your device and confirm the backup opera
 $ adb backup "-apk -nosystem <package-name>"
 ```
 
-The problem happens when your device has an adb version prior to 1.0.31. If that's the case you must use an adb version of 1.0.31 also on your host machine. Versions of adb after 1.0.32 [broke the backwards compatibility.](https://issuetracker.google.com/issues/37096097 "adb backup is broken since ADB version 1.0.32")
+The problem happens when your device has an adb version prior to 1.0.31. If that's the case you must use an adb version of 1.0.31 also on your host computer. Versions of adb after 1.0.32 [broke the backwards compatibility.](https://issuetracker.google.com/issues/37096097 "adb backup is broken since ADB version 1.0.32")
 
 Approve the backup from your device by selecting the _Back up my data_ option. After the backup process is finished, the file _.ab_ will be in your working directory.
 Run the following command to convert the .ab file to tar.

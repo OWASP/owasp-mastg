@@ -139,7 +139,7 @@ The following procedure can be used to start a debug session with `jdb`:
     16346  <== last launched, corresponds to our application
     ```
 
-2. Create a communication channel by using `adb` between the application process (with the PID) and the analysis workstation by using a specific local port:
+2. Create a communication channel by using `adb` between the application process (with the PID) and your host computer by using a specific local port:
 
     ```bash
     # adb forward tcp:[LOCAL_PORT] jdwp:[APPLICATION_PID]

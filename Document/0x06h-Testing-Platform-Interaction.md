@@ -471,7 +471,7 @@ You can retrieve it yourself with your browser or use the [Apple App Site Associ
 }
 ```
 
-The "details" key inside "applinks" contains a JSON representation of an array that might contain one or more apps. The "appID" should match the “application-identifier” key from the app’s entitlements. Next, using the "paths" key, the developers can specify certain paths to be handled on a per app basis. Some apps, like Telegram use a standalone * (`"paths": ["*"]`) in order to allow all possible paths. Only if specific areas of the website should **not** be handled by some app, the developer can restrict access by excluding them by prepending a `"NOT "` (note the whitespace after the T) to the corresponding path. Also remember that the system will look for matches by following the order of the dictionaries in the array (first match wins).
+The "details" key inside "applinks" contains a JSON representation of an array that might contain one or more apps. The "appID" should match the "application-identifier" key from the app’s entitlements. Next, using the "paths" key, the developers can specify certain paths to be handled on a per app basis. Some apps, like Telegram use a standalone * (`"paths": ["*"]`) in order to allow all possible paths. Only if specific areas of the website should **not** be handled by some app, the developer can restrict access by excluding them by prepending a `"NOT "` (note the whitespace after the T) to the corresponding path. Also remember that the system will look for matches by following the order of the dictionaries in the array (first match wins).
 
 This path exclusion mechanism is not to be seen as a security feature but rather as a filter that developer might use to specify which apps open which links. By default, iOS does not open any unverified links.
 
@@ -479,7 +479,7 @@ Remember that universal links verification occurs at installation time. iOS retr
 
 - The AASA file is not served over HTTPS.
 - The AASA is not available.
-- The `appID`s do not math (this would be the case of a *malicious* app. iOS would successfully prevent any possible hijacking attacks
+- The `appID`s do not match (this would be the case of a *malicious* app). iOS would successfully prevent any possible hijacking attacks.
 
 ##### Checking the Link Receiver Method
 
@@ -876,7 +876,7 @@ application:continueUserActivity:restorationHandler:
 
 - Like universal links, the Handoff's Activity Continuation must be declared in the `com.apple.developer.associated-domains` entitlement and in the server's `apple-app-site-association` file (in both cases via the keyword `"activitycontinuation":`). See "Retrieving the Apple App Site Association File" above for an example.
 
-Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser–to–Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser–to–Native App"):
+Actually, the previous example in "Checking How the Links Are Opened" is very similar to the "Web Browser-to-Native App Handoff" scenario described in the ["Handoff Programming Guide"](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/Handoff/AdoptingHandoff/AdoptingHandoff.html#//apple_ref/doc/uid/TP40014338-CH2-SW10 "Adopting Handoff: Web Browser-to-Native App"):
 
 > If the user is using a web browser on the originating device, and the receiving device is an iOS device with a native app that claims the domain portion of the `webpageURL` property, then iOS launches the native app and sends it an `NSUserActivity` object with an `activityType` value of `NSUserActivityTypeBrowsingWeb`. The `webpageURL` property contains the URL the user was visiting, while the `userInfo` dictionary is empty.
 

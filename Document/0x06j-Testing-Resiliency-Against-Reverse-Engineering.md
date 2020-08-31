@@ -135,9 +135,9 @@ Now, imagine that the application is closing immediately after detecting that th
 One feature of Frida that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
 
 1. Make sure that `frida-server` is running on your iOS Device.
-2. Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
+2. Make sure that `Frida` is [installed](https://www.frida.re/docs/installation/ "Frida Installation") on your host computer.
 3. The iOS device must be connected via USB cable.
-4. Use `frida-trace` on your workstation:
+4. Use `frida-trace` on your host computer:
 
 ```bash
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
@@ -184,7 +184,7 @@ try:
     session = frida.get_usb_device().attach("Target Process")
 except frida.ProcessNotFoundError:
     print "Failed to attach to the target process. Did you launch the app?"
-    sys.exit(0);
+    sys.exit(0)
 
 script = session.create_script("""
 
