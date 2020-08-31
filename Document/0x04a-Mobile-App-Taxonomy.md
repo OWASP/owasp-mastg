@@ -50,6 +50,6 @@ PWAs are supported by Android and iOS, but not all hardware features are yet ava
 
 ## What's Covered in the Mobile Testing Guide
 
-Throughout this guide, we will focus on apps for the two platforms dominating the market: Android and iOS. Mobile devices are currently the most common device class running these platforms. However, the same platforms (or adapted versions of them) run on other devices, such as smartwatches, tablets, TVs, car navigation/audio systems, and other embedded systems.
+Throughout this guide, we will focus on apps for Android and iOS running on smartphones. These platforms are currently dominating the market and also run on other device classes including tablets, smartwatches, smart TVs, automotive infotainment units, and other embedded systems. Even if these additional device classes are out of scope, you can still apply most of the knowledge and testing techniques described in this guide with some deviance depending on the target device.
 
 Given the vast amount of mobile app frameworks available it would be impossible to cover all of them exhaustively. Therefore, we focus on *native* apps on each operating system. However, the same techniques are also useful when dealing with web or hybrid apps (ultimately, no matter the framework, every app is based on native components).
