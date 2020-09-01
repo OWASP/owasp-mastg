@@ -21,6 +21,7 @@ To perform security testing different tools are available in order to be able to
 
 - Checkmarx: Static Source Code Scanner that also scans source code for Android and iOS - <https://www.checkmarx.com/technology/static-code-analysis-sca/>
 - Fortify: Static source code scanner that also scans source code for Android and iOS - <https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security>
+- Oversecured: A static SaaS-based vulnerability scanner for Android apps (APK files). Supports apps written on Java and Kotlin. Contains 90+ vulnerability categories - <https://oversecured.com/>
 - Veracode: Static source code scanner that also scans binaries for Android and iOS - <https://www.veracode.com/products/binary-static-analysis-sast>
 
 ## Dynamic and Runtime Analysis
