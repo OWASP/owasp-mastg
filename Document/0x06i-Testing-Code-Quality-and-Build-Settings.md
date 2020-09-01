@@ -251,7 +251,7 @@ $ carthage update --platform iOS
 
 Next, check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
 
-> Note, at the time of writing this chapter, there is no automated support for Carthage based dependency analysis known to the authors.
+> Note, at the time of writing this chapter, there is no automated support for Carthage based dependency analysis known to the authors. At least, this feature was already requested for the OWASP DependencyCheck tool but not yet implemented (see the [GitHub issue](https://github.com/jeremylong/DependencyCheck/issues/962 "Add Carthage Analyze for Swift")).
 
 ##### Discovered library vulnerabilities
 
