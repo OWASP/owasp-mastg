@@ -524,9 +524,9 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 ### Overview
 
-WebViews are Android's embedded components which allow your app to open web pages within your application. In addition to mobile apps realated threats, WebViews may expose your app to common web threats (e.g. XSS, Open Redirect, etc.).
+WebViews are Android's embedded components which allow your app to open web pages within your application. In addition to mobile apps related threats, WebViews may expose your app to common web threats (e.g. XSS, Open Redirect, etc.).
 
-To give you control over the pages loaded by your WebView, Android provides `shouldOverrideUrlLoading` methods which allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`.
+One of the most important things to do when testing WebViews is to make sure that only trusted content can be loaded in it. Any newly loaded page could be potentially malicious, try to exploit any WebView bindings or try to phish the user. Unless you're developing a browser app, usually you'd like to restrict the pages being loaded to the domain of your app. A good practice is to prevent the user from even having the chance to input any URLs inside WebViews (which is the default on Android) nor navigate outside the trusted domains. Even when navigating on trusted domains there's still the risk that the user might encounter and click on other links to untrustworthy content (e.g. if the page allows for other users to post comments). In addition, some developers might even override some default behavior which can be potentially dangerous for the user. See the Static Analysis section below for more details.
 
 #### SafeBrowsing API
 
@@ -544,6 +544,19 @@ Virus Total provides an API for analyzing URLs and local files for known threats
 
 ### Static Analysis
 
+As we mentioned before, [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation") should be analyzed carefully, especially when users might be able to navigate away from a trusted environment. The default and safest behavior on Android is to let the default web browser open any link that the user might click inside the WebView. However, this default logic can be modified by configuring a `WebViewClient` which allows navigation requests to be handled by the app itself. If this is the case, be sure to search for and inspect the following interception callback functions:
+
+- `shouldOverrideUrlLoading` allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`. Considerations:
+  - This method is not called for POST requests.
+  - This method is not called for XmlHttpRequests, iFrames, "src" attributes included in HTML or `<script>` tags. Instead, `shouldInterceptRequest` should take care of this.
+- `shouldInterceptRequest` allows the application to return the data from resource requests. If the return value is null, the WebView will continue to load the resource as usual. Otherwise, the data returned by the `shouldInterceptRequest` method is used. Considerations:
+  - This callback is invoked for a variety of URL schemes (e.g., `http(s):`, `data:`, `file:`, etc.), not only those schemes which send requests over the network.
+  - This is not called for `javascript:` or `blob:` URLs, or for assets accessed via `file:///android_asset/` or `file:///android_res/` URLs.
+In the case of redirects, this is only called for the initial resource URL, not any subsequent redirect URLs.
+  - When Safe Browsing is enabled, these URLs still undergo Safe Browsing checks but the developer can allow the URL with `setSafeBrowsingWhitelist` or even ignore the warning via the `onSafeBrowsingHit` callback.
+  
+As you can see there are a lot of points to consider when testing the security of WebViews that have a WebViewClient configured, so be sure to carefully read and understand all of them by checking the [`WebViewClient` Documentation](https://developer.android.com/reference/android/webkit/WebViewClient "WebViewClient").
+
 While the default value of `EnableSafeBrowsing` is `true`, some applications might opt to disable it. To verify that SafeBrowsing is enabled, inspect the AndroidManifest.xml file and make sure that the configuration below is not present:
 
 ```xml
@@ -554,8 +567,11 @@ While the default value of `EnableSafeBrowsing` is `true`, some applications mig
         ...
     </application>
 </manifest>
-
 ```
+
+### Dynamic Analysis
+
+A convenient way to dynamically test deep linking is to use Frida or frida-trace and hook the `shouldOverrideUrlLoading`, `shouldInterceptRequest` methods while using the app and clicking on links within the WebView. Be sure to also hook other related [`Uri`](https://developer.android.com/reference/android/net/Uri "Uri class") methods such as `getHost`, `getScheme` or `getPath` which are typically used to inspect the requests and match known patterns or deny lists.
 
 ## Testing Custom URL Schemes (MSTG-PLATFORM-3)
 
@@ -1604,8 +1620,10 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
-### SafeBrowsing
+### Android WebViews and SafeBrowsing
 
+- <https://developer.android.com/training/articles/security-tips#WebView>
+- <https://developer.android.com/guide/webapps/managing-webview#safe-browsing>
 - <https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing>
 - <https://support.virustotal.com/hc/en-us/articles/115002146549-Mobile-Apps>
 
