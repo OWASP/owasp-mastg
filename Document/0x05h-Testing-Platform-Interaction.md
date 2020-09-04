@@ -1597,7 +1597,9 @@ It is important to understand that notifications should never be considered priv
 
 There are many known malware examples such as Joker, and Terracotta which abuse the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Furthermore there are a number of apps on the Google Play Store that provide notification logging; locally logging any notifications on the Android system. This highlights that notifications are in no way private on Android.  
 
-Consider a hypothetical application that features a two-factor authentication (2FA) function built into the application. When a user goes to sign in to the application on a web browser they are prompted for a 2FA code from their mobile device, the application creates a notification that contains this code for ease of access. A malicious application listening for notifications could obtain this 2FA code from the notification and send it to the attacker for use. The application should instead use the notification to prompt the user to go into the application its self to obtain the 2fa code.
+Consider a hypothetical application that features a two-factor authentication (2FA) function built into the application. When a user goes to sign in to the application on a web browser they are prompted for a 2FA code from their mobile device, the application creates a notification that contains this code for ease of access.
+
+A malicious application listening for notifications could obtain this 2FA code from the notification and send it to the attacker for use. The application should instead use the notification to prompt the user to go into the application its self to obtain the 2fa code.
 
 For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
 
@@ -1605,6 +1607,7 @@ For this reason all notification usage should be inspected for confidential or h
 
 Notifications require the usage of the `NotificationManager` class, thus when assessing an application statically it is recommended to explore the application for any usage of this class as this will likely indicate the usage of some form of notifications.
 From here code will have to be statically analyzed in order to understand how the application is [generating the notification](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification").
+
 These code locations can feed into the Dynamic Analysis section below, providing the tester an idea of where in the application they should be interacting with to dynamically generate the notifications.
 
 ### Dynamic Analysis
@@ -1662,6 +1665,7 @@ To identify the usage of notifications run through the entire application and al
 ### Android App Notifcations
 
 - <https://developer.android.com/guide/topics/ui/notifiers/notifications>
+- <https://developer.android.com/training/notify-user/build-notification>
 - <https://developer.android.com/reference/android/service/notification/NotificationListenerService>
 - <https://medium.com/csis-techblog/analysis-of-joker-a-spy-premium-subscription-bot-on-googleplay-9ad24f044451>
 
