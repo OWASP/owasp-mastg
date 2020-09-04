@@ -1593,15 +1593,19 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 Android allows for applications to create [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview"), a form of message that is displayed by the Android system outside of the application's UI. This is useful for applications to display small messages to the user while they use other applications on their device.
 
-It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService") can listen for these notifications in order to recive them in full. From here the Listener application can handle these notifications however it wants.
+It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService") can listen for these notifications to receive them in full. From here the Listener application can handle these notifications however it wants.
 
-There are many known malware examples such as Joker, and Terracotta which abuse the `NotificationListenerService` in order to listen for notifications on the device and then send them to attacker controler C2 infrastructure.
+There are many known malware examples such as Joker, and Terracotta which abuse the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Furthermore there are a number of apps on the Google Play Store that provide notification logging; locally logging any notifications on the Android system. This highlights that notifications are in no way private on Android.  
 
-Consider a hypothetical application that features a two factor authentication (2FA) function built into the application. When a user goes to sign in to the application on a web browser they are prompted for a 2FA code from their mobile device, the application creates a notification that contains this code for ease of access. This notification could then be picked up by a malicious app and sent to the attacker for use. The application should have instead created a notification that prompted the user to the go into the application to obtain the 2FA code, rather then including the code its self within the notification.
+Consider a hypothetical application that features a two-factor authentication (2FA) function built into the application. When a user goes to sign in to the application on a web browser they are prompted for a 2FA code from their mobile device, the application creates a notification that contains this code for ease of access. A malicious application listening for notifications could obtain this 2FA code from the notification and send it to the attacker for use. The application should instead use the notification to prompt the user to go into the application its self to obtain the 2fa code.
 
 For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
 
 ### Static Analysis
+
+### Dynamic Analysis
+
+To identify the usage of notifications run through the entire application and all its available functions looking for ways to trigger any notifications. Take note of any notifications that appear while using the application and examine if they contain any confidential information. Consider that you may need to perform actions outside of the application in order to trigger certain notifications.
 
 ## References
 
@@ -1650,6 +1654,12 @@ For this reason all notification usage should be inspected for confidential or h
 - <https://developer.android.com/training/app-links/verify-site-associations>
 - <https://developers.google.com/digital-asset-links/v1/getting-started>
 - <https://pdfs.semanticscholar.org/0415/59c01d5235f8cf38a3c69ccee7e1f1a98067.pdf>
+
+### Android App Notifcations
+
+- <https://developer.android.com/guide/topics/ui/notifiers/notifications>
+- <https://developer.android.com/reference/android/service/notification/NotificationListenerService>
+- <https://medium.com/csis-techblog/analysis-of-joker-a-spy-premium-subscription-bot-on-googleplay-9ad24f044451>
 
 ### OWASP MASVS
 
