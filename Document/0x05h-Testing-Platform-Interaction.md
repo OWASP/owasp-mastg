@@ -1587,6 +1587,22 @@ In order to test for proper updating: try downloading an older version of the ap
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the backend will stop calls to vulnerable backends and/or whether the vulnerable app-version itself is blocked by the backend.
 Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
+## Testing App Notifications (MSTG-PLATFORM-12)
+
+### Overview
+
+Android allows for applications to create [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview"), a form of message that is displayed by the Android system outside of the application's UI. This is useful for applications to display small messages to the user while they use other applications on their device.
+
+It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService") can listen for these notifications in order to recive them in full. From here the Listener application can handle these notifications however it wants.
+
+There are many known malware examples such as Joker, and Terracotta which abuse the `NotificationListenerService` in order to listen for notifications on the device and then send them to attacker controler C2 infrastructure.
+
+Consider a hypothetical application that features a two factor authentication (2FA) function built into the application. When a user goes to sign in to the application on a web browser they are prompted for a 2FA code from their mobile device, the application creates a notification that contains this code for ease of access. This notification could then be picked up by a malicious app and sent to the attacker for use. The application should have instead created a notification that prompted the user to the go into the application to obtain the 2FA code, rather then including the code its self within the notification.
+
+For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
+
+### Static Analysis
+
 ## References
 
 ### Android App Bundles and updates
@@ -1646,6 +1662,9 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
 - MSTG-PLATFORM-9: "The app does not allow any other application to overlay on itself."
+- MSTG-PLATFORM-10: "A WebView's cache, storage, and loaded resources (JavaScript, etc.) should be cleared before the WebView is destroyed."
+- MSTG-PLATFORM-11: "Verify that the app prevents usage of custom third-party keyboards whenever sensitive data is entered."
+- MSTG-PLATFORM-12: "High confidentiality information is not parsed into notifications."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
 ### Tools
