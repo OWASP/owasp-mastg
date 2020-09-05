@@ -169,7 +169,7 @@ From here on you can use this information to derive more insights which might be
 
 The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation.
 
-Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-basic-security-testing#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing)" in the "iOS Basic Security Testing" chapter and also check the test cases in the chapter "[iOS Network APIs](0x06g-testing-network-communication "iOS Network APIs")".
+Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-Basic-Security-Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing)" in the "iOS Basic Security Testing" chapter and also check the test cases in the chapter "[iOS Network APIs](0x06g-testing-network-communication "iOS Network APIs")".
 
 ### Manual (Reversed) Code Review
 
