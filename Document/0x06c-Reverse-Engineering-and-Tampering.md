@@ -149,7 +149,7 @@ Strings can be extracted from an iOS binary using a GUI tools like Ghidra or Cut
 
 #### Cross References
 
-Ghidra can be used for analyzing the iOS binaries and obtain cross references by right clicking the desired function and selecting **Show References to**. This has been previously discussed in section "[Using Disassembler and Decompilers](0x04c-tampering-and-reverse-engineering#static-and-dynamic-binary-analysis "Using Disassembler and Decompilers)".
+Ghidra can be used for analyzing the iOS binaries and obtain cross references by right clicking the desired function and selecting **Show References to**.
 
 #### API Usage
 
