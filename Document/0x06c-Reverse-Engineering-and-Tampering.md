@@ -86,6 +86,10 @@ Black box analysis of iOS apps without access to the original source code requir
 
 ### Basic Information Gathering
 
+In this section, we will learn about some approaches and tools for collecting basic information about a given application using static analysis.
+
+#### Application Binary
+
 You can use class-dump to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
 
 ```bash
@@ -136,6 +140,36 @@ The following command is listing shared libraries:
 ```bash
 $ otool -L <binary>
 ```
+
+#### Retrieving Strings
+
+Strings are always a good starting point while analyzing a binary, as it provides a context to the associated code. For instance, an error log string "Cryptogram generation failed." gives us a hint that the adjoining code might be responsible for generation of a cryptogram.
+
+Strings can be extracted from an iOS binary using a GUI tools like Ghidra or Cutter, or using a CLI-based tool such as *strings* Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based tools, one can use it in conjunction with other tools like *grep* or *sort* to further filter and analyze the results.
+
+#### Cross References
+
+Ghidra can be used for analyzing the iOS binaries and obtain cross references by right clicking the desired function and selecting **Show References to**. This has been previously discussed in section "[Using Disassembler and Decompilers](0x04c-tampering-and-reverse-engineering#static-and-dynamic-binary-analysis "Using Disassembler and Decompilers)".
+
+#### API Usage
+
+The iOS platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Determining the presence of these libraries in an application can give us valuable information about its underlying working. 
+
+For instance, if an application is importing `CC_SHA256` function, it indicates the application will be performing some kind of hashing operation using SHA256. Further information on how to analyze iOS's cryptographic APIs is discussed in the section "[iOS Cryptographic APIs](0x06e-testing-cryptography "iOS Cryptographic APIs")".
+
+Similarly, the above approach can be used to determine where and how an application is using Bluetooth. For instance, an application performing communication using Bluetooth channel must use functions from Core Bluetooth framework like `CBCentralManager` or `connect`. Using the [iOS Bluetooth documentation](https://developer.apple.com/documentation/corebluetooth "iOS Bluetooth documenation") one can determine the critical functions and start analysis around such function imports.
+
+#### Network Communication
+
+Most of the apps you might encounter connect to remote endpoints. Even before you perform any dynamic analysis (e.g. traffic capture and analysis), you can obtain some initial inputs or entry points by enumerating the domains to which the application is supposed to communicate to.
+
+Typically these domains will be present as strings within the binary of the application. One can extract domains by dumping the strings using unix utility *strings* and *grep* for domains using regular expressions or checking the strings using tools like Ghidra. The latter option has a clear advantage: it can provide you with context, as you'll be able to see in which context each domain is being used by checking the cross-references. 
+
+From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or perform further reconnaissance on domain names to know more about the target environment. 
+
+The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation. 
+
+Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-basic-security-testing#basic-network-monitoring-sniffing "Basic Network Monitoring/Sniffing)" in the "iOS Basic Security Testing" chapter and also check the test cases in the chapter "[iOS Network APIs](0x06g-testing-network-communication "iOS Network APIs")".
 
 ### Manual (Reversed) Code Review
 
