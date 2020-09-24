@@ -152,7 +152,7 @@ In Swift 3 (with Xcode 8), you can set Active Compilation Conditions in Build se
 Dynamic analysis should be executed on both a simulator and a device because developers sometimes use target-based functions (instead of functions based on a release/debug-mode) to execute the debugging code.
 
 1. Run the application on a simulator and check for output in the console during the app's execution.
-2. Attach a device to your Mac, run the application on the device via Xcode, and check for output in the console during the app's execution in the console.
+2. Attach a device to your Mac, run the application on the device via Xcode, and check for output in the console during the app's execution.
 
 For the other "manager-based" debug code: click through the application on both a simulator and a device to see if you can find any functionality that allows an app's profiles to be pre-set, allows the actual server to be selected or allows responses from the API to be selected.
 
