@@ -1680,7 +1680,6 @@ To identify the usage of notifications run through the entire application and al
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
 - MSTG-PLATFORM-9: "The app protects itself against screen overlay attacks. (Android only)"
-- MSTG-PLATFORM-10: "A WebView's cache, storage, and loaded resources (JavaScript, etc.) should be cleared before the WebView is destroyed."
 - MSTG-PLATFORM-11: "Verify that the app prevents usage of custom third-party keyboards whenever sensitive data is entered."
 - MSTG-PLATFORM-12: "High confidentiality information is not parsed into notifications."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
