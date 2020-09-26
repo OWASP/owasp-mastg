@@ -1595,11 +1595,9 @@ Android allows for applications to create [notifications](https://developer.andr
 
 It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
 
-There are many known malware examples such as Joker, and Terracotta which abuse the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Furthermore there are a number of apps on the Google Play Store that provide notification logging; locally logging any notifications on the Android system. This highlights that notifications are in no way private on Android.  
+There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuse the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done in order to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacer. A safer alterntive for the user would be to use a 2FA application that does not generate notifications.
 
-Consider a hypothetical application that features a two-factor authentication (2FA) function built into the application. When a user goes to sign in to the application on a web browser they are prompted for a 2FA code from their mobile device, the application creates a notification that contains this code for ease of access.
-
-A malicious application listening for notifications could obtain this 2FA code from the notification and send it to the attacker for use. The application should instead use the notification to prompt the user to go into the application its self to obtain the 2fa code.
+Furthermore there are a number of apps on the Google Play Store that provide notification logging; locally logging any notifications on the Android system. This highlights that notifications are in no way private on Android.  
 
 For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
 
@@ -1678,8 +1676,6 @@ To identify the usage of notifications run through the entire application and al
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
-- MSTG-PLATFORM-9: "The app protects itself against screen overlay attacks. (Android only)"
-- MSTG-PLATFORM-11: "Verify that the app prevents usage of custom third-party keyboards whenever sensitive data is entered."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
 ### Tools
