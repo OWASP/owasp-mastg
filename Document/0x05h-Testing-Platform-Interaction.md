@@ -1662,7 +1662,7 @@ To identify the usage of notifications run through the entire application and al
 - <https://developers.google.com/digital-asset-links/v1/getting-started>
 - <https://pdfs.semanticscholar.org/0415/59c01d5235f8cf38a3c69ccee7e1f1a98067.pdf>
 
-### Android App Notifcations
+### Android App Notifications
 
 - <https://developer.android.com/guide/topics/ui/notifiers/notifications>
 - <https://developer.android.com/training/notify-user/build-notification>
