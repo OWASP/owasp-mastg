@@ -1595,11 +1595,7 @@ Android allows for applications to create [notifications](https://developer.andr
 
 It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
 
-<<<<<<< HEAD
 There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuse the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done in order to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacer. A safer alterntive for the user would be to use a 2FA application that does not generate notifications.
-=======
-There are many known malware examples such as Joker, and Terracotta which abuse the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled Command and Control (C2) infrastructure. Furthermore there are a number of apps on the Google Play Store that provide notification logging, meaning logging any notifications coming from apps on the Android system. This highlights that notifications are not private on Android.  
->>>>>>> c2c0052427f6c1587189adf8c9bea55cc542d362
 
 Furthermore there are a number of apps on the Google Play Store that provide notification logging; locally logging any notifications on the Android system. This highlights that notifications are in no way private on Android.  
 
