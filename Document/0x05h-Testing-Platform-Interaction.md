@@ -1605,8 +1605,7 @@ For this reason all notification usage should be inspected for confidential or h
 
 ### Static Analysis
 
-Notifications require the usage of the `NotificationManager` class, thus when assessing an application statically it is recommended to explore the application for any usage of this class as this will likely indicate the usage of some form of notifications.
-From here code will have to be statically analyzed in order to understand how the application is [generating the notification](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification").
+When statically assessing an application, it is recommended to search for any usage of the `NotificationManager` class which might be an indication of some form of notification management. If the class is being used, the next step would be to understand how the application is [generating the notifications](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification").
 
 These code locations can be fed into the Dynamic Analysis section below, providing an idea of where in the application notifications may be dynamically generated.
 
