@@ -1030,6 +1030,20 @@ This is only a selection of some radare2 commands to start getting some basic in
 
 Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more detailed use of radare2 on Android, especially when analyzing native libraries. You may also want to read the [official radare2 book](https://radare.gitbooks.io/radare2book/content/ "Radare2 book").
 
+#### RMS - Runtime Mobile Security
+
+[RMS Runtime Mobile Security](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "RMS Runtime Mobile Security") is a runtime mobile application analysis toolkit for Android apps through web GUI and it is written in Python.
+
+It's leveraging a running Frida server on a rooted device with the following out-of-box functionalities:
+
+- Execute popular FRIDA scripts
+- Execute custom FRIDA scripts
+- Dump all the loaded classes and relative methods
+- Hook methods on the fly
+- Monitor Android API and use of native API
+
+The installation instructions and "how-to guide" of RMS can be found in the [Readme of the Github repo](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "Github Repo of RMS").
+
 #### r2frida
 
 [r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. R2frida allows you to:

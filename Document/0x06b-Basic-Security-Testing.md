@@ -444,6 +444,19 @@ With Passionfruit it's possible to explore different kinds of information concer
 
 [Radare2](https://github.com/radare/radare2 "Radare2") is a complete framework for reverse-engineering and analyzing binaries. The installation instructions can be found in the GitHub repository. To learn more on radare2 you may want to read the [official radare2 book](https://radare.gitbooks.io/radare2book/content/ "Radare2 book").
 
+#### RMS - Runtime Mobile Security
+
+[RMS Runtime Mobile Security](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "RMS Runtime Mobile Security") is a runtime mobile application analysis toolkit for iOS apps through web GUI and it is written in Python.
+
+It's leveraging a running Frida server on a jailbroken device with the following out-of-box functionalities:
+
+- Execute popular FRIDA scripts
+- Execute custom FRIDA scripts
+- Dump all the loaded classes and relative methods
+- Hook methods on the fly
+
+The installation instructions and "how-to guide" of RMS can be found in the [Readme of the Github repo](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "Github Repo of RMS").
+
 #### TablePlus
 
 [TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analyzing the content of them with a GUI tool.
