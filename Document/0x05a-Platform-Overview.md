@@ -190,7 +190,8 @@ Further information is available in the [Android documentation](https://develope
 
 #### DNS over TLS
 
-System-wide DNS over TLS support has been introduced since Android 9 (Pie). It allows you to perform queries to DNS servers using the TLS protocol.  A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
+System-wide DNS over TLS support has been introduced since Android 9 (API level 28). It allows you to perform queries to DNS servers using the TLS protocol.  A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
+
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html).
 
