@@ -51,7 +51,8 @@ Android supports device encryption from Android 2.3.4 (API level 10) and it has 
 - File-Based Encryption - Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices that support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
 
 - Adiantum - AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
-However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
+However, not all devices are capable of using AES for storage encryption in a timely fashion, especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
+
 
 Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES. Adiantum is secure, as long as ChaCha12 and AES-256 are considered secure.
 
