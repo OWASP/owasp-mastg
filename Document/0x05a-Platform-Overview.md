@@ -147,7 +147,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 
 **Declaring Permissions**
 
-Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html "predefined permissions") or define its own. A new permission is declared with the `<permission>` element.
+Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [Manifest.permission](https://developer.android.com/reference/android/Manifest.permission.html "Manifest.permission") or define its own. A new permission is declared with the `<permission>` element.
 The example below shows an app declaring a permission:
 
 ```xml
