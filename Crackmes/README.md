@@ -151,4 +151,4 @@ Did you enjoy working with the Crackmes? There is more! Go to [the MSTG Hacking 
 
 ## Issues with the Crackmes
 
-Currently, the code is being maintained by [@commjoen](https://github.com/commjoen "Jeroen Willemsen"). If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to](https://github.com/commjoen/uncrackable_app "uncrackable_app repo").
+If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to](https://github.com/OWASP/mstg-crackmes "OWASP MSTG Crackme").
