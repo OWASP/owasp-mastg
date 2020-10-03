@@ -1032,7 +1032,7 @@ Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05
 
 #### RMS - Runtime Mobile Security
 
-[RMS Runtime Mobile Security](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "RMS Runtime Mobile Security") is a runtime mobile application analysis toolkit for Android apps through web GUI and it is written in Python.
+[Runtime Mobile Security (RMS)](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "Runtime Mobile Security (RMS)") is a runtime mobile application analysis toolkit, supporting Android and iOS Apps. It offers a web GUI and is written in Python.
 
 It's leveraging a running Frida server on a rooted device with the following out-of-box functionalities:
 
