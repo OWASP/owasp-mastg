@@ -1040,7 +1040,7 @@ It's leveraging a running Frida server on a rooted device with the following out
 - Execute custom Frida scripts
 - Dump all the loaded classes and relative methods
 - Hook methods on the fly
-- Monitor Android API and use of native API
+- Monitor Android APIs and usage of native APIs
 
 The installation instructions and "how-to guide" of RMS can be found in the [Readme of the Github repo](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security "Github Repo of RMS").
 
