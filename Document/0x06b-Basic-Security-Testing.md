@@ -450,8 +450,8 @@ With Passionfruit it's possible to explore different kinds of information concer
 
 It's leveraging a running Frida server on a jailbroken device with the following out-of-box functionalities:
 
-- Execute popular FRIDA scripts
-- Execute custom FRIDA scripts
+- Execute popular Frida scripts
+- Execute custom Frida scripts
 - Dump all the loaded classes and relative methods
 - Hook methods on the fly
 
