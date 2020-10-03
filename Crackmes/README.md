@@ -29,7 +29,7 @@ This app is compatible with Android 4.4 and up.
 - [Solution using jdb](../Document/0x05c-Reverse-Engineering-and-Tampering.md#debugging-with-jdb "Solution using jdb")
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html "Solution by Eduardo Novella")
 - [Solution using Xposed by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level1/ "Solution by sh3llc0d3r")
-- [Solution using RMS by @mobilesecurity_ (VIDEO)](https://youtu.be/P6rNPkM2DdY "Solution by @mobilesecurity_")
+- [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/P6rNPkM2DdY "Solution by @mobilesecurity_")
 
 ## [UnCrackable App for Android Level 2](Android/Level_02 "Android level 2")
 
