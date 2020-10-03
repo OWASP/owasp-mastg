@@ -53,7 +53,7 @@ This app is compatible with Android 4.4 and up.
 - [Solution using Frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/ "Solution by c0dmtr1x")
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html "Solution by Eduardo Novella")
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level2/ "Solution by sh3llc0d3r")
-- [Solution using RMS by @mobilesecurity_ (VIDEO)](https://youtu.be/xRQVljerl0A "Solution by @mobilesecurity_")
+- [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/xRQVljerl0A "Solution by @mobilesecurity_")
 
 ## [UnCrackable App for Android Level 3](Android/Level_03 "Android level 3")
 
