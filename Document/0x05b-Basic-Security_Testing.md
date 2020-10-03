@@ -1037,7 +1037,7 @@ Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05
 It's leveraging a running Frida server on a rooted device with the following out-of-box functionalities:
 
 - Execute popular Frida scripts
-- Execute custom FRIDA scripts
+- Execute custom Frida scripts
 - Dump all the loaded classes and relative methods
 - Hook methods on the fly
 - Monitor Android API and use of native API
