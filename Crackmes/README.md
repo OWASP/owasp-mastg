@@ -77,6 +77,32 @@ This app is compatible with Android 4.4 and up.
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html "Solution by Eduardo Novella")
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level3/ "Solution by sh3llc0d3r")
 
+## [UnCrackable App for Android Level 4: Radare2 Pay v1.0](Android/Level_04 "Android level 4")
+
+The Radare2 community always dreamed with its decentralized and free currency to allow r2 fans to make payments in places and transfer money between r2 users. A debug version has been developed and it will be supported very soon in many stores and websites. Can you verify that this is cryptographically unbreakable?
+
+Hint: Run the APK in a non-tampered device to play a bit with the app.
+
+- Objectives:
+  - 1: There is a master PIN code that generates green tokens (aka r2coins) on the screen. If you see a red r2coin, then this token won't be validated by the community. You need to find out the 4 digits PIN code and the salt employed as well. Flag: `r2con{PIN_NUMERIC:SALT_LOWERCASE}`
+  - 2: There is a "r2pay master key" buried in layers of obfuscation and protections. Can you break the whitebox? Flag: `r2con{ascii(key)}`
+- Author: [Eduardo Novella](https://github.com/enovella "Eduardo Novella") & [Gautam Arvind](https://github.com/darvincisec "Gautam Arvind").
+- Special thanks to [NowSecure](https://www.nowsecure.com "NowSecure") for supporting this crackme.
+- Maintained by [Eduardo Novella](https://github.com/enovella "Eduardo Novella") & [Gautam Arvind](https://github.com/darvincisec "Gautam Arvind").
+
+### Installation
+
+This app is compatible with Android 4.4 and up.
+
+```shell
+  $ adb install UnCrackable-Level4.apk
+```
+
+### Solutions
+
+- [Solution bypassing protections using Frida/QBDI by Romain Thomas](https://www.romainthomas.fr/post/20-09-r2con-obfuscated-whitebox-part1/ "Solution by Romain Thomas")
+- [Solution whitebox key recovery using SCAMarvels by Romain Thomas](https://www.romainthomas.fr/post/20-09-r2con-obfuscated-whitebox-part2/ "Solution by Romain Thomas")
+
 ## [Android License Validator](Android/License_01 "Android License Validator")
 
 A brand new Android app sparks your interest. Of course, you are planning to purchase a license for the app eventually, but you'd still appreciate a test run before shelling out $1. Unfortunately no keygen is available!
