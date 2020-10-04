@@ -1587,7 +1587,7 @@ In order to test for proper updating: try downloading an older version of the ap
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the backend will stop calls to vulnerable backends and/or whether the vulnerable app-version itself is blocked by the backend.
 Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
-## Testing App Notifications
+## Testing App Notifications (MSTG-STORAGE-4 and MSTG-STORAGE-7)
 
 ### Overview
 
