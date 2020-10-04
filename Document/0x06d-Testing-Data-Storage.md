@@ -426,7 +426,7 @@ You can just call it by:
 
 `URLCache.shared.removeAllCachedResponses()`
 
-And It will remove all cached requests and responses from URLCache.
+It will remove all cached requests and responses from Cache.db file.
 
 2. If you don't need to use the advantage of cookies it would be recommended to just use the [.ephemeral](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1410529-ephemeral "urlsessionconfiguration ephemeral") configuration property of URLSession, which will disable saving cookies and Caches.
 
