@@ -86,7 +86,7 @@ Hint: Run the APK in a non-tampered device to play a bit with the app.
   - 2: There is a "r2pay master key" buried in layers of obfuscation and protections. Can you break the whitebox? flag: r2con{ascii(key)}
 - Author: [Eduardo Novella](https://github.com/enovella "Eduardo Novella") & [Gautam Arvind](https://github.com/darvincisec "Gautam Arvind")
 - Special thanks to [NowSecure](https://www.nowsecure.com "NowSecure") for supporting this crackme.
-- Maintained by [Eduardo Novella](https://github.com/enovella "Eduardo Novella") & [Gautam Arvind](https://github.com/darvincisec "Gautam Arvind")
+- Maintained by [Eduardo Novella](https://github.com/enovella "Eduardo Novella") & [Gautam Arvind](https://github.com/darvincisec "Gautam Arvind").
 
 ### Installation
 
