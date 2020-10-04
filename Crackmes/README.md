@@ -177,4 +177,4 @@ Did you enjoy working with the Crackmes? There is more! Go to [the MSTG Hacking 
 
 ## Issues with the Crackmes
 
-If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to](https://github.com/OWASP/mstg-crackmes "OWASP MSTG Crackme").
+If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to (SPOILER ALERT!)](https://github.com/OWASP/mstg-crackmes "OWASP MSTG Crackmes").
