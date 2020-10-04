@@ -79,7 +79,7 @@ This app is compatible with Android 4.4 and up.
 
 The Radare2 community always dreamed with its decentralized and free currency to allow r2 fans to make payments in places and transfer money between r2 users. A debug version has been developed and it will be supported very soon in many stores and websites. Can you verify that this is cryptographically unbreakable?
 
-Hint: Run the APK in a non-tampered device to play a bit with the app
+Hint: Run the APK in a non-tampered device to play a bit with the app.
 
 - Objectives:
   - 1: There is a master PIN code that generates green tokens (aka r2coins) on the screen. If you see a red r2coin, then this token won't be validated by the community. You need to find out the 4 digits PIN code and the salt employed as well. flag: r2con{PIN_NUMERIC:SALT_LOWERCASE}
