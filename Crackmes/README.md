@@ -77,7 +77,7 @@ This app is compatible with Android 4.4 and up.
 
 ## [UnCrackable App for Android Level 4: Radare2 Pay v1.0](Android/Level_04 "Android level 4")
 
-The Radare2 community always dreamed with its decentralized and free currency to allow r2 fans to make payments in places and transfer money between r2 users. A debug version has been  developed and it will be supported very soon in many stores and websites. Can you verify that this is cryptographically unbreakable?
+The Radare2 community always dreamed with its decentralized and free currency to allow r2 fans to make payments in places and transfer money between r2 users. A debug version has been developed and it will be supported very soon in many stores and websites. Can you verify that this is cryptographically unbreakable?
 
 Hint: Run the APK in a non-tampered device to play a bit with the app
 
