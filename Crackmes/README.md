@@ -82,7 +82,7 @@ The Radare2 community always dreamed with its decentralized and free currency to
 Hint: Run the APK in a non-tampered device to play a bit with the app.
 
 - Objectives:
-  - 1: There is a master PIN code that generates green tokens (aka r2coins) on the screen. If you see a red r2coin, then this token won't be validated by the community. You need to find out the 4 digits PIN code and the salt employed as well. flag: r2con{PIN_NUMERIC:SALT_LOWERCASE}
+  - 1: There is a master PIN code that generates green tokens (aka r2coins) on the screen. If you see a red r2coin, then this token won't be validated by the community. You need to find out the 4 digits PIN code and the salt employed as well. Flag: `r2con{PIN_NUMERIC:SALT_LOWERCASE}`
   - 2: There is a "r2pay master key" buried in layers of obfuscation and protections. Can you break the whitebox? flag: r2con{ascii(key)}
 - Author: [Eduardo Novella](https://github.com/enovella "Eduardo Novella") & [Gautam Arvind](https://github.com/darvincisec "Gautam Arvind")
 - Special thanks to [NowSecure](https://www.nowsecure.com "NowSecure") for supporting this crackme.
