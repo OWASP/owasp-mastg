@@ -415,7 +415,7 @@ Time: 0.013s
 
 ##### Searching for Cache Databases
 
-By Default NSURLSession stores data in Cache.db database. This database contain data such as API requests and responses. This database can contain sensitive data, if tokens, usernames or any other sensitive information has been cached. To find the cache files go to the app path and go to `/Library/Caches/{Bundle Identifier}`. The WebKit cache is also being stored in the Cache.db file. Objection can interact with it, as it is a normal SQLite database.
+By default NSURLSession stores data, such as HTTP requests and responses in the Cache.db database. This database can contain sensitive data, if tokens, usernames or any other sensitive information has been cached. To find the cached information open the data directory of the app (`/var/mobile/Containers/Data/Application/<UUID>`) and go to  `/Library/Caches/<Bundle Identifier>`. The WebKit cache is also being stored in the Cache.db file. Objection can open and interact with the database with the command `sqlite connect Cache.db`, as it is a normal SQLite database.
 
 ###### Recommendations
 
