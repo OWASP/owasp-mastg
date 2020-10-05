@@ -426,7 +426,7 @@ It is recommended to disable Caching this data, as it may contain sensitive info
 
    `URLCache.shared.removeAllCachedResponses()`
 
-   It will remove all cached requests and responses from Cache.db file.
+   This method will remove all cached requests and responses from Cache.db file.
 
 2. If you don't need to use the advantage of cookies it would be recommended to just use the [.ephemeral](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1410529-ephemeral "urlsessionconfiguration ephemeral") configuration property of URLSession, which will disable saving cookies and Caches.
 
