@@ -419,7 +419,7 @@ By default NSURLSession stores data, such as HTTP requests and responses in the 
 
 ###### Recommendations
 
-It is recommended to disable Caching this data as it may contain sensitive data in the URL parameters or request response. It may cause the violation of the [MSTG-Storage-1](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x07-V2-Data_Storage_and_Privacy_requirements.md "OWASP MASVS").
+It is recommended to disable Caching this data, as it may contain sensitive information in the request or response. The following list below shows different ways of achieving this: 
 
 1. It is recommended to remove Cached responses after logout. It can be done with the provided function by Apple [removeAllCachedResponses](https://developer.apple.com/documentation/foundation/urlcache/1417802-removeallcachedresponses "URLCache removeAllCachedResponses")
    You can just call it by:
