@@ -571,7 +571,9 @@ Officially Apple recommends use of LLDB for debugging purposes, but GDB can be a
 
 ### Tracing
 
-#### Execution Tracing
+Tracing involves recording the information about a program's execution. In case of iOS, unlike Android, there are limited options available for tracing various aspects of a program. In this section we will be heavily relying on tools like Frida for performing tracing.
+
+#### Method Tracing
 
 Intercepting Objective-C methods is a useful iOS security testing technique. For example, you may be interested in data storage operations or network requests. In the following example, we'll write a simple tracer for logging HTTP(S) requests made via iOS standard HTTP APIs. We'll also show you how to inject the tracer into the Safari web browser.
 
@@ -600,6 +602,18 @@ Next, navigate to a new website in Safari. You should see traced function calls 
  21324 ms  -[NSURLRequest initWithURL:0x106388b00 ]
  21324 ms     | -[NSURLRequest initWithURL:0x106388b00 cachePolicy:0x0 timeoutInterval:0x106388b80
 ```
+
+#### Native Libraries Tracing
+
+As discussed earlier in this chapter, iOS applications can also contain native code (C/C++ code) and it can be traced using the `frida-trace` CLI as well. For example, to trace calls for `open` function, following command can be used:
+
+```
+$ frida-trace -U -i "open" sg.vp.UnCrackable1
+```
+
+The overall approach and further improvisation for tracing native code using Frida is similar to Android, discussed in "[Tracing](0x05c-Reverse-Engineering-and-Tampering.md#tracing "Tracing")" section.
+
+On iOS, there are no tools like `strace` or `ftrace` available to trace syscalls or function calls of a program. While `DTrace`, a very powerful and versatile tracing tool, is available for MacOS, but not for iOS.
 
 ### Emulation-based Analysis
 
