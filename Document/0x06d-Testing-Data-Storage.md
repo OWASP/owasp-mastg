@@ -421,7 +421,7 @@ By default NSURLSession stores data, such as HTTP requests and responses in the 
 
 It is recommended to disable Caching this data, as it may contain sensitive information in the request or response. The following list below shows different ways of achieving this: 
 
-1. It is recommended to remove Cached responses after logout. It can be done with the provided function by Apple [removeAllCachedResponses](https://developer.apple.com/documentation/foundation/urlcache/1417802-removeallcachedresponses "URLCache removeAllCachedResponses")
+1. It is recommended to remove Cached responses after logout. This can be done with the provided method by Apple called [`removeAllCachedResponses`](https://developer.apple.com/documentation/foundation/urlcache/1417802-removeallcachedresponses "URLCache removeAllCachedResponses")
    You can just call it by:
 
    `URLCache.shared.removeAllCachedResponses()`
