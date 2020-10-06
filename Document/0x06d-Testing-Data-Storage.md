@@ -415,7 +415,26 @@ Time: 0.013s
 
 ##### Searching for Cache Databases
 
-iOS applications can store data in cache databases. These databases contain data such as web requests and responses. This data can be sensitive, if tokens, usernames or other information is cached. To display the cache go to the app path and go to `/Library/Caches/{Bundle Identifier}`. The WebKit cache is being stored in the Cache.db file. Objection can interact with it, as it is a normal SQLite database.
+By default NSURLSession stores data, such as HTTP requests and responses in the Cache.db database. This database can contain sensitive data, if tokens, usernames or any other sensitive information has been cached. To find the cached information open the data directory of the app (`/var/mobile/Containers/Data/Application/<UUID>`) and go to  `/Library/Caches/<Bundle Identifier>`. The WebKit cache is also being stored in the Cache.db file. Objection can open and interact with the database with the command `sqlite connect Cache.db`, as it is a normal SQLite database.
+
+###### Recommendations
+
+It is recommended to disable Caching this data, as it may contain sensitive information in the request or response. The following list below shows different ways of achieving this:
+
+1. It is recommended to remove Cached responses after logout. This can be done with the provided method by Apple called [`removeAllCachedResponses`](https://developer.apple.com/documentation/foundation/urlcache/1417802-removeallcachedresponses "URLCache removeAllCachedResponses")
+   You can call this method as follows:
+
+   `URLCache.shared.removeAllCachedResponses()`
+
+   This method will remove all cached requests and responses from Cache.db file.
+
+2. If you don't need to use the advantage of cookies it would be recommended to just use the [.ephemeral](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1410529-ephemeral "urlsessionconfiguration ephemeral") configuration property of URLSession, which will disable saving cookies and Caches.
+
+   [Apple documentation](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1410529-ephemeral "urlsessionconfiguration ephemeral"):
+
+   ```An ephemeral session configuration object is similar to a default session configuration (see default), except that the corresponding session object doesn’t store caches, credential stores, or any session-related data to disk. Instead, session-related data is stored in RAM. The only time an ephemeral session writes data to disk is when you tell it to write the contents of a URL to a file.```
+
+3. Cache can be also disabled by setting the Cache Policy to [.notAllowed](https://developer.apple.com/documentation/foundation/urlcache/storagepolicy/notallowed "URLCachePolicy notAllowed"). It will disable storing Cache in any fashion, either in memory or on disk.
 
 ## Checking Logs for Sensitive Data (MSTG-STORAGE-3)
 
