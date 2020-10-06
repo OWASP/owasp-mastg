@@ -1552,6 +1552,18 @@ $ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 
 ### Dynamic Instrumentation
 
+#### Tooling
+
+##### Frida
+
+[Frida](https://www.frida.re "Frida") is a dynamic instrumentation framework which lets you inject scripts into black box processes. Given the versatility and ease of use, Frida is often the go to tool for reverse engineering on Android.
+
+For setup and basic usage of Frida on Android, refer to "[Frida](0x05b-Basic-Security_Testing.md#frida "Frida")" section. We will demonstrate a few more uses for Frida throughout the chapter.
+
+##### Xposed
+
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is another instrumentation framework which enables to change behaviour of the system and the apps. Unlike Frida, with Xposed you cannot instrument native code, only Java code can be instrumented. An introduction to Xposed is presented in "[Xposed](0x05b-Basic-Security_Testing.md#xposed "Xposed")" section. Later in this chapter we will discuss how Xposed can be used for hooking Java classes and methods.
+
 #### Information Gathering
 
 In this section we will learn about how to use Frida to obtain information about a running application.
