@@ -314,16 +314,11 @@ You can look into the [pinning.ts](https://github.com/sensepost/objection/blob/m
 
 See also [Objection's documentation on Disabling SSL Pinning for iOS](https://github.com/sensepost/objection#ssl-pinning-bypass-running-for-an-ios-application "Disable SSL Pinning in iOS" ) for further information.
 
-In new iOS versions objection bypass might not work because some new techniques have not been implemented yet, like when objection says: `Called nw_tls_create_peer_trust(), no working bypass implemented yet.`.
+However, technologies and systems change over time, and this bypass technique might not work eventually. Hence, it is part of the tester work to do some research, as not every tool keeps up OS versions quickly enough.
 
-However it is possible to make it work with Frida, in this case:
+For instance, at the time of this writing objection bypass is not working for iOS 10 and above. However, looking in repositories like Frida CodeShare it is possible to find scripts to bypass specific versions, like [this one for iOS 10 and 11](https://codeshare.frida.re/@dki/ios10-ssl-bypass/).
 
-```bash
-$ frida --codeshare dki/ios10-ssl-bypass -f YOUR_BINARY
-$ [Apple iPhone::AppName]->bypassSSL();
-```
-
-This Frida script hooks into the `nw_tls_create_peer_trust` and `tls_helper_create_peer_trust` and should work for iOS 10 and 11. See also the full code in the [Frida CodeShare repository](https://codeshare.frida.re/@dki/ios10-ssl-bypass/)
+Some apps might implement custom SSL pinning methods, so the tester could also develope new bypass scripts making use of [Frida](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md#frida) and the techniques explained in the [reverse engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06c-Reverse-Engineering-and-Tampering.md#ios-tampering-and-reverse-engineering) section.
 
 If you want to get more details about white box testing and typical code patterns, refer to [#thiel]. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
