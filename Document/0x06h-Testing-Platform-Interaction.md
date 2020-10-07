@@ -2369,7 +2369,7 @@ If user scripts were defined, they will continue running as the `javaScriptEnabl
 
 #### Testing for Mixed Content
 
-In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#thiel2] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
+In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](http://web.archive.org/web/20201004041858if_/https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#thiel2] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
 
 In the compiled binary:
 
@@ -2381,7 +2381,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 In this case, the app does not make use of this.
 
-In addition, if you have the original source code or the IPA, you can inspect the embedded HTML files and verify that they do not include mixed content. Search for `http://` in the source and inside tag attributes, but remember that this might give false positives as, for example, finding an anchor tag `<a>` that includes a `http://` inside its `href` attribute does not always present a mixed content issue. Learn more about mixed content in [Google's Web Developers guide](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content?hl=en "What Is Mixed Content?").
+In addition, if you have the original source code or the IPA, you can inspect the embedded HTML files and verify that they do not include mixed content. Search for `http://` in the source and inside tag attributes, but remember that this might give false positives as, for example, finding an anchor tag `<a>` that includes a `http://` inside its `href` attribute does not always present a mixed content issue. Learn more about mixed content in [Google's Web Developers guide](http://web.archive.org/web/20201004094457/https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content "What Is Mixed Content?").
 
 ### Dynamic Analysis
 
