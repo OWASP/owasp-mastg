@@ -318,7 +318,7 @@ However, technologies and systems change over time, and this bypass technique mi
 
 For instance, at the time of this writing objection bypass is not working for iOS 10 and above. However, looking in repositories like Frida CodeShare it is possible to find scripts to bypass specific versions, like [this one for iOS 10 and 11](https://codeshare.frida.re/@dki/ios10-ssl-bypass/).
 
-Some apps might implement custom SSL pinning methods, so the tester could also develope new bypass scripts making use of [Frida](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md#frida) and the techniques explained in the [reverse engineering](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06c-Reverse-Engineering-and-Tampering.md#ios-tampering-and-reverse-engineering) section.
+Some apps might implement custom SSL pinning methods, so the tester could also develop new bypass scripts making use of [Frida](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md#frida) and the techniques explained in the ["iOS Reverse Engineering"](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06c-Reverse-Engineering-and-Tampering.md) chapter.
 
 If you want to get more details about white box testing and typical code patterns, refer to [#thiel]. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
