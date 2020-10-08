@@ -316,7 +316,7 @@ See also [Objection's documentation on Disabling SSL Pinning for iOS](https://gi
 
 However, technologies and systems change over time, and this bypass technique might not work eventually. Hence, it is part of the tester work to do some research, as not every tool keeps up OS versions quickly enough.
 
-For instance, at the time of this writing objection bypass is not working for iOS 10 and above. However, looking in repositories like Frida CodeShare it is possible to find scripts to bypass specific versions, like [this one for iOS 10 and 11](https://codeshare.frida.re/@dki/ios10-ssl-bypass/).
+For instance, at the time of this writing objection bypass is not working for iOS 10 and above. However, looking in repositories like Frida CodeShare it's possible to find scripts to bypass specific versions, such as ["ios10-ssl-bypass"](https://codeshare.frida.re/@dki/ios10-ssl-bypass/) by @dki which actually works for iOS 10 and 11.
 
 Some apps might implement custom SSL pinning methods, so the tester could also develop new bypass scripts making use of [Frida](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06b-Basic-Security-Testing.md#frida) and the techniques explained in the ["iOS Reverse Engineering"](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x06c-Reverse-Engineering-and-Tampering.md) chapter.
 
