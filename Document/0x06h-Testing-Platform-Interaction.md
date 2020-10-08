@@ -2381,7 +2381,7 @@ $ rabin2 -zz ./WheresMyBrowser | grep -i "hasonlysecurecontent"
 
 In this case, the app does not make use of this.
 
-In addition, if you have the original source code or the IPA, you can inspect the embedded HTML files and verify that they do not include mixed content. Search for `http://` in the source and inside tag attributes, but remember that this might give false positives as, for example, finding an anchor tag `<a>` that includes a `http://` inside its `href` attribute does not always present a mixed content issue. Learn more about mixed content in [Google's Web Developers guide](http://web.archive.org/web/20201004094457/https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content "What Is Mixed Content?").
+In addition, if you have the original source code or the IPA, you can inspect the embedded HTML files and verify that they do not include mixed content. Search for `http://` in the source and inside tag attributes, but remember that this might give false positives as, for example, finding an anchor tag `<a>` that includes a `http://` inside its `href` attribute does not always present a mixed content issue. Learn more about mixed content in the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content "Mixed Content").
 
 ### Dynamic Analysis
 
