@@ -258,7 +258,7 @@ If server code is available, make sure logout functionality terminates the sessi
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 - [PHP](https://php.net/manual/en/function.session-destroy.php "PHP")
 
-If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/blacklist-json-web-token-api-keys/ "Invalidating JSON Web Token API Keys").
+If access and refresh tokens are used with stateless authentication, they should be deleted from the mobile device. The [refresh token should be invalidated on the server](https://auth0.com/blog/denylist-json-web-token-api-keys/ "Invalidating JSON Web Token API Keys").
 
 ### Dynamic Analysis
 
