@@ -287,7 +287,13 @@ For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are lis
 
 ### Permission Analysis
 
-Always check whether the application is requesting permissions it actually needs. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+Always check whether the application is requesting permissions it actually requires. Make sure that no permissions are requested which are not related to the goal of the app.
+
+In particular, care should be taken around `DANGEROUS` and `SIGNATURE` permissions as these can affect both the user and the application if mishandled. Take for instance a single-player game that requires access to `android.permission.WRITE_SMS`, this goes against what one would commonly expect from such an application and may indicate potentially malicious usage of the permission.
+
+Furthermore declaring the usage of `DANGEROUS` permissions can affect the ability of the application to be hosted on the Google Play Store. The usage of [SMS or Call Log permission groups](https://support.google.com/googleplay/android-developer/answer/9047303?hl=en) are strictly handled when submitting an application to the Play Store, with the application owner having to submit a [Declaration Form](https://support.google.com/googleplay/android-developer/answer/9214102?hl=en) that details the use case for these permissions or risk having their app taken off the Play Store.
+
+Certain `DANGEROUS` permissions also have replacement APIs aimed at streamlining the security and usage of such permissions. One such example is the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) which streamlines the usage of SMS permissions when performing SMS-based user verification. By using this API an application does not have to declare `DANGEROUS` permissions which is a benefit to both the user and application. When analyzing permissions investigate the use case and check to see if there are replacement APIs for the permission in use.
 
 ### Dynamic Analysis
 
