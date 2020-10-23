@@ -2372,7 +2372,6 @@ If user scripts were defined, they will continue running as the `javaScriptEnabl
 
 #### Testing for Mixed Content
 
-
 In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#thiel2] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.
 
 In the compiled binary:
