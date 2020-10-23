@@ -605,7 +605,7 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 
 #### Native Libraries Tracing
 
-As discussed earlier in this chapter, iOS applications can also contain native code (C/C++ code) and it can be traced using the `frida-trace` CLI as well. For example, to trace calls for `open` function, following command can be used:
+As discussed earlier in this chapter, iOS applications can also contain native code (C/C++ code) and it can be traced using the `frida-trace` CLI as well. For example, you can trace calls to the `open` function by running the following command:
 
 ```
 $ frida-trace -U -i "open" sg.vp.UnCrackable1
