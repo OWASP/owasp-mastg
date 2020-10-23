@@ -611,7 +611,7 @@ As discussed earlier in this chapter, iOS applications can also contain native c
 $ frida-trace -U -i "open" sg.vp.UnCrackable1
 ```
 
-The overall approach and further improvisation for tracing native code using Frida is similar to Android, discussed in "[Tracing](0x05c-Reverse-Engineering-and-Tampering.md#tracing "Tracing")" section.
+The overall approach and further improvisation for tracing native code using Frida is similar to the one discussed in the Android "[Tracing](0x05c-Reverse-Engineering-and-Tampering.md#tracing "Tracing")" section.
 
 On iOS, there are no tools like `strace` or `ftrace` available to trace syscalls or function calls of a program. While `DTrace`, a very powerful and versatile tracing tool, is available for MacOS, but not for iOS.
 
