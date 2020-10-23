@@ -571,7 +571,7 @@ Officially Apple recommends use of LLDB for debugging purposes, but GDB can be a
 
 ### Tracing
 
-Tracing involves recording the information about a program's execution. In case of iOS, unlike Android, there are limited options available for tracing various aspects of a program. In this section we will be heavily relying on tools like Frida for performing tracing.
+Tracing involves recording the information about a program's execution. In contrast to Android, there are limited options available for tracing various aspects of an iOS app. In this section we will be heavily relying on tools such as Frida for performing tracing.
 
 #### Method Tracing
 
