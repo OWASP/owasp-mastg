@@ -8,6 +8,31 @@ Note that the meaning of "sensitive data" depends on the app that handles it. Da
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
 
+## Android Data Storage Overview
+
+Intro to Local Storage, including mention of Logs, Backups, Process Memory.
+Next, put the most relevant ones as subsections (those which have big descriptions already).
+
+### Shared Preferences
+
+We could merge shared prefs, databases, storage etc all into a Local Storage section
+
+### Databases
+
+Sqlite, firebase, etc
+
+### Internal Storage
+
+### External Storage
+
+### Keystore
+
+### Logs
+
+### Backups
+
+### Process Memory
+
 ## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 ### Overview
