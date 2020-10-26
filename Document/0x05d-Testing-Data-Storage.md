@@ -418,6 +418,21 @@ You can create log files in several ways. The following list includes two classe
 
 ### Backups
 
+Android provides users with an auto-backup feature. The backups usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
+
+- Stock Android has built-in USB backup facilities. When USB debugging is enabled, you can use the `adb backup` command to create full data backups and backups of an app's data directory.
+
+- Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
+
+- Two Backup APIs are available to app developers:
+  - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
+
+  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (API level 23) and above, Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
+
+- OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
+
+Apps must be careful to ensure that sensitive user data stored by the application is not placed within these backups as this may allow an attacker to extract app data from the backup if obtained.
+
 ### Process Memory
 
 ## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
@@ -997,21 +1012,9 @@ If the information is masked by, for example, replacing input with asterisks or 
 
 ### Overview
 
-Like other modern mobile operating systems, Android offers auto-backup features. The backups usually include copies of data and settings for all installed apps. Whether sensitive user data stored by the app may leak to those data backups is an obvious concern.
+Users can perform device backups on Android using both manual and auto-backup features as previously explained in the Data Storage Methods Overview.
 
-Given its diverse ecosystem, Android supports many backup options:
-
-- Stock Android has built-in USB backup facilities. When USB debugging is enabled, you can use the `adb backup` command to create full data backups and backups of an app's data directory.
-
-- Google provides a "Back Up My Data" feature that backs up all app data to Google's servers.
-
-- Two Backup APIs are available to app developers:
-
-  - [Key/Value Backup](https://developer.android.com/guide/topics/data/keyvaluebackup.html "Key/Value Backup") (Backup API or Android Backup Service) uploads to the Android Backup Service cloud.
-
-  - [Auto Backup for Apps](https://developer.android.com/guide/topics/data/autobackup.html "Auto Backup for Apps"): With Android 6.0 (API level 23) and above, Google added the "Auto Backup for Apps feature". This feature automatically syncs at most 25MB of app data with the user's Google Drive account.
-
-- OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
+As these backups can also contain application specific data it is important to ensure that the application does not allow for the storage of sensitive data into these backups as an attacker may be able to take the backup and extract said sensitive data.
 
 ### Static Analysis
 
