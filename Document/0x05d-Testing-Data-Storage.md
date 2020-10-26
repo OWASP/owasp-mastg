@@ -410,6 +410,12 @@ There are several different open-source libraries that offer encryption capabili
 
 ### Logs
 
+There are many legitimate reasons to create log files on a mobile device, such as keeping track of crashes, errors, and usage statistics. Log files can be stored locally when the app is offline and sent to the endpoint once the app is online. However, logging sensitive data may expose the data to attackers or malicious applications, and it violates user confidentiality.
+You can create log files in several ways. The following list includes two classes that are available for Android:
+
+- [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class")
+- [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class")
+
 ### Backups
 
 ### Process Memory
@@ -570,17 +576,13 @@ In case other public storage mechanisms (than the `SharedPreferences.Editor`) ar
 
 ### Overview
 
-There are many legitimate reasons to create log files on a mobile device, such as keeping track of crashes, errors, and usage statistics. Log files can be stored locally when the app is offline and sent to the endpoint once the app is online. However, logging sensitive data may expose the data to attackers or malicious applications, and it violates user confidentiality.
-You can create log files in several ways. The following list includes two classes that are available for Android:
+Logs are often used by applications in order to track crashes, errors, and usage statistics as aforementioned in the Data Storage Methods Overview. As with any data storage method there is the potential for sensitive data to be stored in logs and as such logs should be audited for any such sensitive data.
 
-- [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class")
-- [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class")
-
-Use a centralized logging class and mechanism and remove logging statements from the production release because other applications may be able to read them.
+Furthermore, any logging statements should be removed from the production release unless deemed necessary to the application as these may leak sensitive application data.
 
 ### Static Analysis
 
-You should check the apps' source code for logging mechanisms by searching for the following keywords:
+Applications will often use the [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class") and [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class") to create logs. To discover this you should audit the application's source code for any such logging classes. These can often by found by searching for the following keywords:
 
 - Functions and classes, such as:
   - `android.util.Log`
