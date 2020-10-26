@@ -143,7 +143,7 @@ $ otool -L <binary>
 
 #### Retrieving Strings
 
-Strings are always a good starting point while analyzing a binary, as it provides a context to the associated code. For instance, an error log string "Cryptogram generation failed." gives us a hint that the adjoining code might be responsible for generation of a cryptogram.
+Strings are always a good starting point while analyzing a binary, as it provides a context to the associated code. For instance, an error log string "Cryptogram generation failed." gives us a hint that the code might be responsible for generation of a cryptogram.
 
 Strings can be extracted from an iOS binary using a GUI tools like Ghidra or Cutter, or using a CLI-based tool such as *strings* Unix utility (`strings <path_to_binary>`) or radare2's rabin2 (`rabin2 -zz <path_to_binary>`). When using the CLI-based tools, one can use it in conjunction with other tools like *grep* or *sort* to further filter and analyze the results.
 
