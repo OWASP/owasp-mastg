@@ -153,7 +153,7 @@ Ghidra can be used for analyzing the iOS binaries and obtaining cross references
 
 #### API Usage
 
-The iOS platform provides many in-built libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network or location libraries. Determining the presence of these libraries in an application can give us valuable information about its underlying working.
+The iOS platform provides many built-in libraries for frequently used functionalities in applications, for example cryptography, Bluetooth, NFC, network and location libraries. Determining the presence of these libraries in an application can give us valuable information about its underlying working.
 
 For instance, if an application is importing `CC_SHA256` function, it indicates the application will be performing some kind of hashing operation using SHA256 algorithm. Further information on how to analyze iOS's cryptographic APIs is discussed in the section "[iOS Cryptographic APIs](0x06e-testing-cryptography "iOS Cryptographic APIs")".
 
