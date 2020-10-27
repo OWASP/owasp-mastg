@@ -20,7 +20,7 @@ The most obvious downside of *native apps* is that they target only one specific
 - [Flutter](https://flutter.dev/ "Flutter")
 - [React Native](https://reactnative.dev/ "React Native")
 
-Applications developed using these frameworks internally uses the APIs native to the system and offer performance equivalent to native applications. These apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed *native apps*, apps developed using these frameworks can also be considered *native*.
+Applications developed using these frameworks internally use the APIs native to the system and offer performance equivalent to native applications. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed *native apps*, apps developed using these frameworks can also be considered as *native apps*.
 
 ## Web App
 
