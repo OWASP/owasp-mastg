@@ -17,7 +17,7 @@ Some ambiguity exists when discussing *native apps* for Android as the platform 
 The most obvious downside of *native apps* is that they target only one specific platform. To build the same app for both Android and iOS, one needs to maintain two independent code bases, or introduce often complex development tools to port a single code base to two platforms. Currently there are following frameworks which offer such functionality:
 
 - [Xamarin](https://www.xamarin.com/ "Xamarin")
-- [Flutter](https://flutter.dev/ "Flutter")
+- [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [React Native](https://reactnative.dev/ "React Native")
 
 Applications developed using these frameworks internally use the APIs native to the system and offer performance equivalent to native applications. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed *native apps*, apps developed using these frameworks can also be considered as *native apps*.
@@ -40,7 +40,6 @@ Following is a non-exhaustive list of more popular frameworks for developing *hy
 - [Framework 7](https://framework7.io/ "Framework 7")
 - [Ionic](https://ionicframework.com/ "Ionic")
 - [jQuery Mobile](https://jquerymobile.com/ "jQuery Mobile")
-- [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [Native Script](https://www.nativescript.org/ "Native Script")
 - [Onsen UI](https://onsen.io/ "Onsen UI")
 - [Sencha Touch](https://www.sencha.com/products/touch/ "Sencha Touch")
