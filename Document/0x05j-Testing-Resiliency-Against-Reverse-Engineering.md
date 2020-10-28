@@ -617,7 +617,7 @@ If anti-debugging mechanisms are missing or too easily bypassed, make suggestion
 
 There are two topics related to file integrity:
 
- 1. _Code integrity checks:_ In the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app byte-code, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
+ 1. _Code integrity checks:_ In the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter, we discussed Android's APK code signature check. We also saw that determined reverse engineers can easily bypass this check by re-packaging and re-signing an app. To make this bypassing process more involved, a protection scheme can be augmented with CRC checks on the app bytecode, native libraries, and important data files. These checks can be implemented on both the Java and the native layer. The idea is to have additional controls in place so that the app only runs correctly in its unmodified state, even if the code signature is valid.
  2. _The file storage integrity checks:_ The integrity of files that the application stores on the SD card or public storage and the integrity of key-value pairs that are stored in `SharedPreferences` should be protected.
 
 #### Sample Implementation - Application Source Code
@@ -662,7 +662,7 @@ Complete the following procedure when generating an HMAC with BouncyCastle:
 1. Make sure BouncyCastle or SpongyCastle is registered as a security provider.
 2. Initialize the HMAC with a key (which can be stored in a keystore).
 3. Get the byte array of the content that needs an HMAC.
-4. Call `doFinal` on the HMAC with the byte-code.
+4. Call `doFinal` on the HMAC with the bytecode.
 5. Append the HMAC to the bytearray obtained in step 3.
 6. Store the result of step 5.
 
@@ -756,7 +756,7 @@ Another way to provide integrity is to sign the byte array you obtained and add 
 
 ##### Bypassing the application-source integrity checks
 
-1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
+1. Patch the anti-debugging functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file instead of the modified file.
 3. Use the kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
@@ -852,7 +852,7 @@ Next, work on bypassing the detection of the reverse engineering tools and answe
 
 The following steps should guide you when bypassing detection of reverse engineering tools:
 
-1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
+1. Patch the anti reverse engineering functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
 2. Use Frida or Xposed to hook file system APIs on the Java and native layers. Return a handle to the original file, not the modified file.
 3. Use a kernel module to intercept file-related system calls. When the process attempts to open the modified file, return a file descriptor for the unmodified version of the file.
 
@@ -912,7 +912,7 @@ Keep in mind that a hooking framework, such as Xposed or Frida, can hook this AP
 
 ### Bypassing Emulator Detection
 
-1. Patch the emulator detection functionality. Disable the unwanted behavior by simply overwriting the associated byte-code or native code with NOP instructions.
+1. Patch the emulator detection functionality. Disable the unwanted behavior by simply overwriting the associated bytecode or native code with NOP instructions.
 2. Use Frida or Xposed APIs to hook file system APIs on the Java and native layers. Return innocent-looking values (preferably taken from a real device) instead of the telltale emulator values. For example, you can override the `TelephonyManager.getDeviceID` method to return an IMEI value.
 
 Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
@@ -932,7 +932,7 @@ Work on bypassing the defenses and answer the following questions:
 
 ### Overview
 
-Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, byte-code, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
+Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, bytecode, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
 
 1. comparing the contents of memory or a checksum over the contents to good values,
 2. searching memory for the signatures of unwanted modifications.
@@ -991,7 +991,7 @@ Make sure that all file-based detection of reverse engineering tools is disabled
 
 Work on bypassing the checks with the following techniques:
 
-1. Patch the integrity checks. Disable the unwanted behavior by overwriting the respective byte-code or native code with NOP instructions.
+1. Patch the integrity checks. Disable the unwanted behavior by overwriting the respective bytecode or native code with NOP instructions.
 2. Use Frida or Xposed to hook the APIs used for detection and return fake values.
 
 Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" chapter for examples of patching, code injection, and kernel modules.
@@ -1006,7 +1006,7 @@ In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE
 
 ### Effectiveness Assessment
 
-Attempt to decompile the byte-code, disassemble any included library files, and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
+Attempt to decompile the bytecode, disassemble any included library files, and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
 
 - meaningful identifiers, such as class names, method names, and variable names, have been discarded,
 - string resources and strings in binaries are encrypted,
