@@ -1143,7 +1143,7 @@ You can find more examples on [how to use r2frida](https://github.com/enovella/r
 
 #### Bytecode Viewer
 
-Bytecode Viewer (BCV) is a free and open source Java decompiler framework running on all Operating Systems. It is a versatile tool which can be used to decompile Android apps, view APK Resources (via apktool) and easily edit APKs (via Smali/Baksmali). Apart from APK, DEX, Java Class files and Java Jars can be viewed using BCV. One of the major feature of BCV is support for multiple Java bytecode decompilers under one GUI. Currently BCV includes JD-GUI/Core, Procyon, CFR, Fernflower, Krakatau, and JADX-Core decompilers. These decompilers have different strengths and can be easily leveraged while using BCV, especially when dealing with obfuscated programs.
+[Bytecode Viewer](https://bytecodeviewer.com/ "Bytecode Viewer") (BCV) is a free and open source Java decompiler framework running on all Operating Systems. It is a versatile tool which can be used to decompile Android apps, view APK Resources (via apktool) and easily edit APKs (via Smali/Baksmali). Apart from APK, DEX, Java Class files and Java Jars can be viewed using BCV. One of the major feature of BCV is support for multiple Java bytecode decompilers under one GUI. Currently BCV includes Procyon, CFR, Fernflower, Krakatau, and JADX-Core decompilers. These decompilers have different strengths and can be easily leveraged while using BCV, especially when dealing with obfuscated programs.
 
 ## Basic Testing Operations
 
