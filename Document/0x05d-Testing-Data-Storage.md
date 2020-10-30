@@ -435,6 +435,14 @@ Apps must be careful to ensure that sensitive user data stored by the applicatio
 
 ### Process Memory
 
+All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive data and sensitive operations will be held and performed within process memory.
+
+For this reason it is important for applications to expose sensitive information as briefly as possible in memory. Once the relevant sensitive data has been used it should be disposed of from process memory.
+
+The investigation of an application's memory can be done from memory dumps, and from analyzing the memory in real time via a debugger. Its important to note that the analyse of memory is quite error prone and that any approach to analyse of memory takes this into account.
+
+This is further explained in the 'Checking Memory for Sensitive Data' section.
+
 ## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 ### Overview
