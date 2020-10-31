@@ -4,6 +4,20 @@ Protecting authentication tokens, private information, and other sensitive data 
 
 The guidelines for saving data can be summarized quite easily: Public data should be available to everyone, but sensitive and private data must be protected, or, better yet, kept out of device storage.
 
+This chapter is broken into two sections, the first of which focuses on the theory of data storage from a security perspective as well as a brief explanation and example of the various methods of data storage on Android.
+
+The second section focuses on the testing of these data storage solutions through the usage of test cases that utilize both static and dynamic analysis.
+
+## Theory Overview
+
+To expand on the previous guidelines with more detail; conventional wisdom suggests that as little sensitive data as possible should be stored on permanent local storage. In most practical scenarios, however, some type of user data must be stored. For example, asking the user to enter a very complex password every time the app starts isn't a great idea in terms of usability. Most apps must locally cache some kind of authentication token to avoid this. Personally identifiable information (PII) and other types of sensitive data may also be saved if a given scenario calls for it.
+
+Sensitive data is vulnerable when it is not properly protected by the app that is persistently storing it. The app may be able to store the data in several places, for example, on the device or on an external SD card. When you're trying to exploit these kinds of issues, consider that a lot of information may be processed and stored in different locations. Identifying at the outset the kind of information processed by the mobile application and input by the user is important. Identifying information that may be valuable to attackers (e.g., passwords, credit card information, PII) is also important.
+
+Disclosing sensitive information has several consequences, including decrypted information. In general, an attacker may identify this information and use it for additional attacks, such as social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), and gathering information from apps that have a payment option (to attack and abuse them).
+
+Ultimately [storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential to many mobile apps. For this reason testing data storage of sensitive information is of great importance. It's also important to be able to make the distinction between what is and isn't sensitive data for an application as this will define what type of data storage is often used. For more information on Data Storage Security, refer to the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
+
 Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section of the chapter "Mobile App Security Testing".
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
@@ -447,19 +461,19 @@ This is further explained in the 'Checking Memory for Sensitive Data' section.
 
 ### Overview
 
-Conventional wisdom suggests that as little sensitive data as possible should be stored on permanent local storage. In most practical scenarios, however, some type of user data must be stored. For example, asking the user to enter a very complex password every time the app starts isn't a great idea in terms of usability. Most apps must locally cache some kind of authentication token to avoid this. Personally identifiable information (PII) and other types of sensitive data may also be saved if a given scenario calls for it.
+This test case focuses on identifying stored sensitive data on a device from an application. The following checks should be performed:
 
-Sensitive data is vulnerable when it is not properly protected by the app that is persistently storing it. The app may be able to store the data in several places, for example, on the device or on an external SD card. When you're trying to exploit these kinds of issues, consider that a lot of information may be processed and stored in different locations. Identifying at the outset the kind of information processed by the mobile application and input by the user is important. Identifying information that may be valuable to attackers (e.g., passwords, credit card information, PII) is also important.
-
-Disclosing sensitive information has several consequences, including decrypted information. In general, an attacker may identify this information and use it for additional attacks, such as social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), and gathering information from apps that have a payment option (to attack and abuse them).
-
-Ultimately [storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential to many mobile apps. For this reason testing data storage of sensitive information is of great importance. It's also important to be able to make the distinction between what is and isn't sensitive data for an application as this will define what type of data storage is often used. For more information on Data Storage Security, refer to the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
+- Verify all functionality has been executed in application to ensure data generation.
+- Check all application specific files for sensitive data.
+  - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
+  - Anything that can store data for the application should be checked.
+- Analyze source code for any sensitive data.
 
 ### Static Analysis
 
 #### Local Storage
 
-As previously mentioned, there are several ways to store information on an Android device. You should therefore check several sources to determine the kind of storage used by the Android app and to find out whether the app processes sensitive data insecurely.
+As aforementioned, there are several ways to store information on an Android device. You should therefore check several sources to determine the kind of storage used by the Android app and to find out whether the app processes sensitive data insecurely.
 
 - Check `AndroidManifest.xml` for read/write external storage permissions, for example, `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`.
 - Check the source code for keywords and API calls that are used to store data:
