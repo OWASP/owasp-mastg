@@ -193,7 +193,6 @@ FileManager.default.createFile(
     contents: Data(base64Encoded: "secret text"),
     attributes: [FileAttributeKey.protectionKey: FileProtectionType.complete]
 )
-
 ```
 
 Objective-C:
