@@ -3,6 +3,7 @@
 To perform security testing different tools are available in order to be able to manipulate requests and responses, decompile apps, investigate the behavior of running apps and other test cases and automate them.
 
 > The MSTG project has no preference in any of the tools below, or in promoting or selling any of the tools. All tools below have been verified if they are "alive", meaning that updates have been pushed recently. Nevertheless, not all tools have been used/tested by the authors, but they might still be useful when analyzing a mobile app. The listing is sorted in alphabetical order. The list is also pointing out commercial tools.
+>
 > Disclaimer: At the time of writing, we ensure that the tools being used in the MSTG examples are properly working. However, the tools might be broken or not work properly depending on your OS version of both your host computer and your test device. The functioning of the tooling can be further impeded by whether you're using a rooted/jailbroken device, the specific version of the rooting/jailbreak method and/or the version of the tool. The MSTG does not take any responsibility over the working status of the tools. If you find a broken tool or example, please search or file an issue in the tool original page, e.g. in the GitHub issues page.
 
 ## Mobile Application Security Testing Distributions
@@ -1365,7 +1366,7 @@ Please note that Xposed, at the time of this writing, does not work on Android 9
 
 #### DroidScope
 
-DroidScope (an extension to the [DECAF dynamic analysis framework](https://github.com/sycurelab/DECAF "DECAF dynamic analysis framework"))is a malware analysis engine based on QEMU. It instruments the emulated environment on several context levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java levels.
+DroidScope (an extension to the [DECAF dynamic analysis framework](https://github.com/sycurelab/DECAF "DECAF dynamic analysis framework")) is a malware analysis engine based on QEMU. It instruments the emulated environment on several context levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java levels.
 
 DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS, and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls, and Java method calls.
 
