@@ -183,9 +183,22 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 - `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`: used to manage file paths
 - `NSFileManager`: lets you examine and change the contents of the file system. You can use `createFileAtPath` to create a file and write to it.
 
-The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
+The following example shows how to create a securely encrypted file using the `FileManager` class.
 
-```objectivec
+Swift:
+
+```swift
+FileManager.default.createFile(
+    atPath: filePath,
+    contents: Data(base64Encoded: "secret text"),
+    attributes: [FileAttributeKey.protectionKey: FileProtectionType.complete]
+)
+
+```
+
+Objective-C:
+
+```objc
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
