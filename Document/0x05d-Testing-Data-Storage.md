@@ -46,7 +46,7 @@ It is important to understand each relevant data storage function in order to co
 
 ### Shared Preferences
 
-The SharedPreferences API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
+The [SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
 
 Example for Java:
@@ -96,8 +96,8 @@ The Android platform provides a number of database options as aforementioned in 
 
 #### SQLite Database (Unencrypted)
 
-SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has built-in support for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
-You may use the following code to store sensitive information within an activity:
+SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has [built-in support](https://developer.android.com/training/data-storage/sqlite "SQLite Documentation") for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
+For example you may use the following code to store sensitive information within an activity:
 
 Example in Java:
 
@@ -148,8 +148,7 @@ secureDB.execSQL("INSERT INTO Accounts VALUES('admin','AdminPassEnc');")
 secureDB.close()
 ```
 
-If encrypted SQLite databases are used, determine whether the password is hard-coded in the source, stored in shared preferences, or hidden somewhere else in the code or filesystem.
-Secure ways to retrieve the key include:
+Secure ways to retrieve the database key include:
 
 - Asking the user to decrypt the database with a PIN or password once the app is opened (weak passwords and PINs are vulnerable to brute force attacks)
 - Storing the key on the server and allowing it to be accessed from a web service only (so that the app can be used only when the device is online)
@@ -461,19 +460,20 @@ This is further explained in the 'Checking Memory for Sensitive Data' section.
 
 ### Overview
 
-This test case focuses on identifying stored sensitive data on a device from an application. The following checks should be performed:
+This test case focuses on identifying stored data from an application and identifying if it is sensitive data. As well as furthermore identifying if the sensitive data is securely stored. The following checks should be performed:
 
 - Verify all functionality has been executed in application to ensure data generation.
-- Check all application specific files for sensitive data.
+- Analyze source code for any sensitive data.
+- Check all application specific files for data.
   - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
   - Anything that can store data for the application should be checked.
-- Analyze source code for any sensitive data.
+- Check the previously identified files to see if the storage method is sufficiently secure for the data stored.
 
 ### Static Analysis
 
 #### Local Storage
 
-As aforementioned, there are several ways to store information on an Android device. You should therefore check several sources to determine the kind of storage used by the Android app and to find out whether the app processes sensitive data insecurely.
+As aforementioned in the Theory Overview, there are several ways to store information on an Android device. You should therefore check several sources to determine the kind of storage used by the Android app and to find out whether the app processes sensitive data insecurely.
 
 - Check `AndroidManifest.xml` for read/write external storage permissions, for example, `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`.
 - Check the source code for keywords and API calls that are used to store data:
@@ -580,14 +580,19 @@ Verify common locations of secrets:
 
 Install and use the app, executing all functions at least once. Data can be generated when entered by the user, sent by the endpoint, or shipped with the app. Then complete the following:
 
+- Check local internal storage for any files created by the application that contain sensitive data. Both Internal and External storage should be checked.
 - Identify development files, backup files, and old files that shouldn't be included with a production release.
 - Determine whether SQLite databases are available and whether they contain sensitive information. SQLite databases are stored in `/data/data/<package-name>/databases`.
-- Check Shared Preferences that are stored as XML files (in `/data/data/<package-name>/shared_prefs`) for sensitive information. Avoid using Shared Preferences and other mechanisms that can't protect data when you are storing sensitive information. Shared Preferences is insecure and unencrypted by default. You can use [secure-preferences](https://github.com/scottyab/secure-preferences "Secure-preferences encrypts the values of Shared Preferences") to encrypt the values stored in Shared Preferences, but the Android KeyStore should be your first choice for storing data securely.
+- Identify if SQLite databases are encrypted. If so determine how the database password is generated and stored and if this is sufficiently protected as described in the 'Storing a Key' of the Keystore overview.
+- Check Shared Preferences that are stored as XML files (in `/data/data/<package-name>/shared_prefs`) for sensitive information. Avoid using Shared Preferences and other mechanisms that can't protect data when you are storing sensitive information. Shared Preferences is insecure and unencrypted by default. You can use [secure-preferences](https://github.com/scottyab/secure-preferences "Secure-preferences encrypts the values of Shared Preferences") to encrypt the values stored in Shared Preferences, but the Android KeyStore should be your first choice for storing data locally securely.
 - Check the permissions of the files in `/data/data/<package-name>`. Only the user and group created when you installed the app (e.g., u0_a82) should have user read, write, and execute permissions (`rwx`). Other users should not have permission to access files, but they may have execute permissions for directories.
+- Check for the usage of any Firebase Real-time databases and attempt to identify if misconfigured by making the following network call:
+  - `https://_firebaseProjectName_.firebaseio.com/.json`
 - Determine whether a Realm database is available in `/data/data/<package-name>/files/`, whether it is unencrypted, and whether it contains sensitive information. By default, the file extension is `realm` and the file name is `default`. Inspect the Realm database with the [Realm Browser](https://github.com/realm/realm-browser-osx "Realm Browser for macOS").
-- Check external storage for data. Don't use external storage for sensitive data because it is readable and writeable system-wide.
 
-Files saved to internal storage are by default private to your application; neither the user nor other applications can access them. When users uninstall your application, these files are removed.
+In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox.
+
+Even more ideally, if achievable, sensitive data shouldn't be stored on the device at all and instead should be stored off device.
 
 ## Testing Local Storage for Input Validation (MSTG-PLATFORM-2)
 
