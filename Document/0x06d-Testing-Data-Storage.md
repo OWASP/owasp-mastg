@@ -848,9 +848,23 @@ Manufacturers want to provide device users with an aesthetically pleasing effect
 
 While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView") to determine whether the application sanitizes the screen before being backgrounded.
 
-The following is a sample remediation method that will set a default screenshot:
+The following is a sample remediation method that will set a default screenshot.
 
-```objectivec
+Swift:
+
+```swift
+private var backgroundImage: UIImageView?
+
+func applicationDidEnterBackground(_ application: UIApplication) {
+    let myBanner = UIImageView(image: #imageLiteral(resourceName: "overlayImage"))
+    backgroundImage = myBanner
+    window?.addSubview(myBanner)
+}
+```
+
+Objective-C:
+
+```objc
 @property (UIImageView *)backgroundImage;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
