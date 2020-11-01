@@ -6,19 +6,9 @@ To perform security testing different tools are available in order to be able to
 >
 > Disclaimer: At the time of writing, we ensure that the tools being used in the MSTG examples are properly working. However, the tools might be broken or not work properly depending on your OS version of both your host computer and your test device. The functioning of the tooling can be further impeded by whether you're using a rooted/jailbroken device, the specific version of the rooting/jailbreak method and/or the version of the tool. The MSTG does not take any responsibility over the working status of the tools. If you find a broken tool or example, please search or file an issue in the tool original page, e.g. in the GitHub issues page.
 
-## Mobile Application Security Testing Distributions
-
-- Androl4b: A virtual machine for assessing Android applications, perform reverse engineering and malware analysis - <https://github.com/sh4hin/Androl4b>
-- Android Tamer: A Debian-based Virtual/Live Platform for Android Security professionals - <https://androidtamer.com/>
-- Mobile Security Toolchain: A project used to install many of the tools mentioned in this section, both for Android and iOS at a host computer running macOS. The project installs the tools via Ansible - <https://github.com/xebia/mobilehacktools>
-
-## All-in-One Mobile Security Frameworks
-
-- AppMon: An automated framework for monitoring and tampering system API calls of native macOS, iOS and Android apps - <https://github.com/dpnishant/appmon/>
+## Tools for all Platforms
 
 ### MobSF
-
-#### MobSF (Android)
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.
 
@@ -43,6 +33,8 @@ run.bat # For Windows
 
 Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the APK you want to analyze into the upload area and MobSF will start its job.
 
+#### MobSF for Android
+
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
 
 <img src="Images/Chapters/0x05b/mobsf_android.png" alt="MobSF for Android" />
@@ -61,30 +53,9 @@ The following is displayed:
 
 Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
 
-#### MobSF (iOS)
+#### MobSF for iOS
 
-[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") is an automated, all-in-one mobile application pentesting framework that also supports iOS IPA files. The easiest way of getting MobSF started is via Docker.
-
-```bash
-$ docker pull opensecurity/mobile-security-framework-mobsf
-$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
-```
-
-Or install and start it locally on your host computer by running:
-
-```bash
-# Setup
-git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
-cd Mobile-Security-Framework-MobSF
-./setup.sh # For Linux and Mac
-setup.bat # For Windows
-
-# Installation process
-./run.sh # For Linux and Mac
-run.bat # For Windows
-```
-
-> By running it locally on a macOS host you'll benefit from a slightly better class-dump output.
+By running MobSF locally on a macOS host you'll benefit from a slightly better class-dump output.
 
 Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the IPA you want to analyze into the upload area and MobSF will start its job.
 
@@ -110,15 +81,19 @@ Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation
 
 ### Objection
 
-- objection: A runtime mobile security assessment framework that does not require a jailbroken or rooted device for both iOS and Android, due to the usage of Frida - <https://github.com/sensepost/objection>
-
-#### Objection (Android)
-
 [Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
 
-Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted device by sideloading it and interact with the application as explained in the previous section.
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted/non-jailbroken device by sideloading it. Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform.
 
-However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```bash
+$ pip3 install objection
+```
+
+#### Objection for Android
+
+Objection offers several features specific to Android. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
 
 - Repackage applications to include the Frida gadget
 - Disable SSL pinning for popular methods
@@ -129,19 +104,7 @@ However, Objection also provides a REPL that allows you to interact with the app
 
 The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
 
-Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
-
-##### Installing Objection
-
-Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
-
-```bash
-$ pip3 install objection
-```
-
-If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
-
-However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
+Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
 
 ```bash
 $ objection patchapk --source app-release.apk
@@ -149,7 +112,7 @@ $ objection patchapk --source app-release.apk
 
 The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
 
-##### Using Objection
+##### Using Objection on Android
 
 Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
@@ -184,13 +147,9 @@ $ android root disable
 
 More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
-#### Objection (iOS)
+#### Objection for iOS
 
-[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted or jailbroken devices through an intuitive interface.
-
-Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-jailbroken device by sideloading it and interact with the application as explained in the previous section.
-
-However, Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+Objection offers several features specific to iOS. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
 
 - Repackage applications to include the Frida gadget
 - Disable SSL pinning for popular methods
@@ -209,19 +168,7 @@ OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
 
 The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
 
-Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application.
-
-##### Installing Objection
-
-Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
-
-```bash
-$ pip3 install objection
-```
-
-If your device is jailbroken, you are now ready to interact with any application running on the device and you can skip to the "Using Objection" section below.
-
-However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
+Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
 
 ```bash
 $ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
@@ -233,9 +180,9 @@ Finally, the application needs to be sideloaded and run with debugging communica
 $ ios-deploy --bundle Payload/my-app.app -W -d
 ```
 
-##### Using Objection
+##### Using Objection on iOS
 
-Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
 
 ```bash
 # Connecting to a patched IPA
@@ -271,19 +218,17 @@ $ ios plist cat <myfile.plist>
 
 More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
 
-## Static Source Code Analysis (Commercial Tools)
-
-- Checkmarx: Static Source Code Scanner that also scans source code for Android and iOS - <https://www.checkmarx.com/technology/static-code-analysis-sca/>
-- Fortify: Static source code scanner that also scans source code for Android and iOS - <https://saas.hpe.com/en-us/software/fortify-on-demand/mobile-security>
-- Veracode: Static source code scanner that also scans binaries for Android and iOS - <https://www.veracode.com/products/binary-static-analysis-sast>
-
-## Dynamic and Runtime Analysis
-
 ### Frida
 
-A dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. It works using a client-server model and allows to inject code into running processes on Android and iOS - <https://www.frida.re>
+[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written in Vala by Ole André Vadla Ravnås that works by injecting the [QuickJS](https://bellard.org/quickjs/) JavaScript engine (previously [Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
 
-[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written in Vala by Ole André Vadla Ravnås that works by injecting a JavaScript engine ([Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
+To install Frida locally, simply run:
+
+```bash
+$ pip install frida-tools
+```
+
+Or refer to the [installation page](https://www.frida.re/docs/installation/ "Frida Installation") for more details.
 
 Code can be injected in several ways. For example, Xposed permanently modifies the Android app loader, providing hooks for running your own code every time a new process is started.
 In contrast, Frida implements code injection by writing code directly into process memory. When attached to a running app:
@@ -331,8 +276,6 @@ You can use these tools as-is, tweak them to your needs, or take as excellent ex
 
 #### Frida for Android
 
-[Frida](https://www.frida.re "Frida") is a free and open-source dynamic code instrumentation toolkit that lets you execute snippets of JavaScript into your native apps. It was already introduced in the chapter "[Testing Tools](0x08-Testing-Tools.md#frida "Frida")".
-
 Frida supports interaction with the Android Java runtime though the [Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API"). You'll be able to hook and call both Java and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
 
 Here are some tasks that Frida APIs offers and are relevant or exclusive on Android:
@@ -354,17 +297,9 @@ Frida is often compared to Xposed, however this comparison is far from fair as b
 
 > Note that Xposed, as of early 2019, does not work on Android 9 (API level 28) yet.
 
-##### Installing Frida
+##### Installing Frida on Android
 
-To install Frida locally, simply run:
-
-```bash
-$ pip install frida-tools
-```
-
-Or refer to the [installation page](https://www.frida.re/docs/installation/ "Frida Installation") for more details.
-
-The next step is to set up Frida on your Android device:
+In order to set up Frida on your Android device:
 
 - If your device is not rooted, you can also use Frida, please refer to section "[Dynamic Analysis on Non-Rooted Devices](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-rooted-devices "Dynamic Analysis on Non-Rooted Devices")" of the "Reverse Engineering and Tampering" chapter.
 - If you have a rooted device, simply follow the [official instructions](https://www.frida.re/docs/android/ "Frida - Setting up your Android device") or follow the hints below.
@@ -521,7 +456,55 @@ public final void android.view.View.cancelPendingInputEvents()
 ...
 ```
 
-##### Frida Bindings
+
+#### Frida for iOS
+
+Frida supports interaction with the Objective-C runtime through the [ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API"). You'll be able to hook and call both Objective-C and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
+
+Here are some tasks that Frida APIs offers and are relevant or exclusive on iOS:
+
+- Instantiate Objective-C objects and call static and non-static class methods ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
+- Trace Objective-C method calls and/or replace their implementations ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
+- Enumerate live instances of specific classes by scanning the heap ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
+- Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
+- Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
+
+Remember that on iOS, you can also benefit from the built-in tools provided when installing Frida, which include the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name a few.
+
+There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in their name and belonging to any class whose name starts with "NSURL" is as easy as running:
+
+```bash
+$ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
+```
+
+For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
+
+##### Installing Frida on iOS
+
+To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
+
+Start Cydia and add Frida's repository by navigating to **Manage** -> **Sources** -> **Edit** -> **Add** and entering <https://build.frida.re>. You should then be able to find and install the Frida package.
+
+##### Using Frida on iOS
+
+Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
+
+```bash
+$ frida-ps -U
+PID  Name
+---  ----------------
+963  Mail
+952  Safari
+416  BTServer
+422  BlueTool
+791  CalendarWidget
+451  CloudKeychainPro
+239  CommCenter
+764  ContactsCoreSpot
+(...)
+```
+
+#### Frida Bindings
 
 In order to extend the scripting experience, Frida offers bindings to programming languages such as Python, C, NodeJS, and Swift.
 
@@ -603,69 +586,9 @@ public void android.view.View.setTooltipText(java.lang.CharSequence)
 
 In the end, it is up to you to decide where would you like to work with the data. Sometimes it will be more convenient to do it from JavaScript and in other cases Python will be the best choice. Of course you can also send messages from Python to JavaScript by using `script.post`. Refer to the Frida docs for more information about [sending](https://www.frida.re/docs/messages/#sending-messages-from-a-target-process "Sending messages from a target process") and [receiving](https://www.frida.re/docs/messages/#receiving-messages-in-a-target-process "Receiving messages in a target process") messages.
 
-#### Frida for iOS
-
-[Frida](https://www.frida.re "Frida") is a free and open-source dynamic code instrumentation toolkit that lets you execute snippets of JavaScript into your native apps. It was already introduced in the chapter "[Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md#frida "Frida")" of the general testing guide. Frida is used in several of the following sections and chapters.
-
-Frida supports interaction with the Objective-C runtime through the [ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API"). You'll be able to hook and call both Objective-C and native functions inside the process and its native libraries. Your JavaScript snippets have full access to memory, e.g. to read and/or write any structured data.
-
-Here are some tasks that Frida APIs offers and are relevant or exclusive on iOS:
-
-- Instantiate Objective-C objects and call static and non-static class methods ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
-- Trace Objective-C method calls and/or replace their implementations ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
-- Enumerate live instances of specific classes by scanning the heap ([ObjC API](https://www.frida.re/docs/javascript-api/#objc "Frida - ObjC API")).
-- Scan process memory for occurrences of a string ([Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida - Memory API")).
-- Intercept native function calls to run your own code at function entry and exit ([Interceptor API](https://www.frida.re/docs/javascript-api/#interceptor "Frida - Interceptor API")).
-
-Remember that on iOS, you can also benefit from the built-in tools provided when installing Frida, which include the Frida CLI (`frida`), `frida-ps`, `frida-ls-devices` and `frida-trace`, to name a few.
-
-There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in their name and belonging to any class whose name starts with "NSURL" is as easy as running:
-
-```bash
-$ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
-```
-
-For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
-
-##### Frida (iOS 2)
-
-[Frida](https://www.frida.re "Frida") is a runtime instrumentation framework that lets you inject JavaScript snippets or portions of your own library into native Android and iOS apps. If you've already read the Android section of this guide, you should be quite familiar with this tool.
-
-If you haven't already done so, install the Frida Python package on your host computer:
-
-```bash
-$ pip install frida
-$ pip install frida-tools
-```
-
-To connect Frida to an iOS app, you need a way to inject the Frida runtime into that app. This is easy to do on a jailbroken device: just install `frida-server` through Cydia. Once it has been installed, the Frida server will automatically run with root privileges, allowing you to easily inject code into any process.
-
-Start Cydia and add Frida's repository by navigating to **Manage** -> **Sources** -> **Edit** -> **Add** and entering <https://build.frida.re>. You should then be able to find and install the Frida package.
-
-Connect your device via USB and make sure that Frida works by running the `frida-ps` command and the flag '-U'. This should return the list of processes running on the device:
-
-```bash
-$ frida-ps -U
-PID  Name
----  ----------------
-963  Mail
-952  Safari
-416  BTServer
-422  BlueTool
-791  CalendarWidget
-451  CloudKeychainPro
-239  CommCenter
-764  ContactsCoreSpot
-(...)
-```
-
-We will demonstrate a few more uses for Frida throughout the chapter.
-
 ### Frida CodeShare
 
-URL: <https://codeshare.frida.re/>
-
-It contains a collection of ready-to-run Frida scripts which can enormously help when performing concrete tasks both on Android as on iOS as well as also serve as inspiration to build your own scripts. Two representative examples are:
+[Frida CodeShare](https://codeshare.frida.re/ "Frida CodeShare") contains a collection of ready-to-run Frida scripts which can enormously help when performing concrete tasks both on Android as on iOS as well as also serve as inspiration to build your own scripts. Two representative examples are:
 
 - Universal Android SSL Pinning Bypass with Frida - <https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/>
 - ObjC method observer - <https://codeshare.frida.re/@mrmacete/objc-method-observer/>
@@ -678,22 +601,14 @@ $ frida --codeshare mrmacete/objc-method-observer -f YOUR_BINARY
 
 ### r2frida
 
-A project merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida <https://github.com/nowsecure/r2frida>
-
-#### r2frida (Android)
-
-[r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. R2frida allows you to:
+[r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. r2frida can be used in both on Android and iOS, allowing you to:
 
 - Attach radare2 to any local process or remote frida-server via USB or TCP.
 - Read/Write memory from the target process.
 - Load Frida information such as maps, symbols, imports, classes and methods into radare2.
 - Call r2 commands from Frida as it exposes the r2pipe interface into the Frida Javascript API.
 
-##### Installing r2frida
-
 Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions").
-
-##### Using r2frida
 
 With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
 
@@ -703,7 +618,11 @@ $ r2 frida://1234
 
 For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage").
 
-Once attached, you should see the r2 prompt with the device-id. r2frida commands must start with `\` or `=!`. For example, you may retrieve target information with the command `\i`:
+> The following examples were executed using an Android app but also apply to iOS apps.
+
+Once in the r2frida session, all commands start with `\` or `=!`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `\i`.
+
+> See all options with `r2 frida://?`.
 
 ```bash
 [0x00000000]> \i
@@ -810,10 +729,6 @@ $ pip install angr
 Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
 You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the "[Symbolic Execution](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution")" section of the "Reverse Engineering and Tampering" chapter as a great example on how this can work.
-
-## Reverse Engineering and Static Analysis
-
-- Binary ninja: A multi-platform software disassembler that can be used against several executable file formats. It is capable of IR (intermediate representation) lifting - <https://binary.ninja/>
 
 ### Ghidra
 
@@ -1081,59 +996,11 @@ Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05
 
 ## Tools for Android
 
-### Recommended Tools - Android device
+### Busybox
 
-There are many tools and frameworks used throughout this guide to assess the security of Android applications. In the next sections, you will learn more about some of the commands and interesting use cases. Please check the official documentation for installation instructions of the following tools/APKs:
+Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
 
-- APK Extractor: App to extract APKs without root.
-- Frida server: Server for Frida, the dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers. See [Frida](#frida "Frida section") section below for more information.
-- Drozer agent: Agent for drozer, the framework that allows you to search for security vulnerabilities in apps and devices. See [Drozer](#drozer "Drozer section") section below for more information.
-- Busybox:  Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
-
-### Recommended Tools - Host computer
-
-In order to analyze Android apps, you should install the following tools on your host computer. Please check the official documentation for installation instructions of the following tools/frameworks. We'll be referring to them throughout the guide.
-
-### Reverse Engineering and Static Analysis
-
-#### Tooling
-
-Make sure that the following is installed on your system (see the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md)" chapter for installation instructions):
-
-- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform.
-- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. You'll need it if you plan to deal with native code, e.g. to inspect it or to be able to debug or trace it (the NDK contains useful prebuilt versions of such as gdbserver or strace for various architectures).
-
-In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon](https://github.com/mstrobel/procyon "Procyon"), and [CFR](https://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
-
-Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist. We'll be covering some of them in this chapter.
-
-##### Building a Reverse Engineering Environment for Free
-
-With a little effort, you can build a reasonable GUI-based reverse engineering environment for free.
-
-For navigating the decompiled sources, we recommend [IntelliJ](https://www.jetbrains.com/idea/ "IntelliJ IDEA"), a relatively lightweight IDE that works great for browsing code and allows basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow, and complicated to use, [Eclipse](https://eclipse.org/ide/ "Eclipse") is the right IDE for you (based on the author's personal bias).
-
-If you don't mind looking at Smali instead of Java, you can use the [smalidea plugin for IntelliJ](https://github.com/JesusFreke/smalidea "Smalidea") for debugging. Smalidea supports single-stepping through the bytecode and identifier renaming, and it watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
-
-[apktool](https://github.com/iBotPeaches/Apktool "apktool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). apktool allows you to reassemble the package, which is useful for patching and applying changes to the Android Manifest.
-
-You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2"), [Ghidra](https://ghidra-sre.org/ "Ghidra") and [Angr](https://angr.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
-
-##### Commercial Tools
-
-Building a reverse engineering environment for free is possible. However, there are some commercial alternatives. The most commonly used are:
-
-- [JEB](https://www.pnfsoftware.com "JEB Decompiler"), a commercial decompiler, packs all the functionality necessary for static and dynamic analysis of Android apps into an all-in-one package. It is reasonably reliable and includes prompt support. It has a built-in debugger, which allows for an efficient workflow. Setting breakpoints directly in the decompiled (and annotated) sources is invaluable, especially with ProGuard-obfuscated bytecode. Of course, convenience like this doesn't come cheap, and now that JEB is provided via a subscription-based license, you'll have to pay a monthly fee to use it.
-
-- [IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") in its paid version is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro usually works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic: you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't be performed, which can make working with more complex Java apps tedious. In addition, unless you can afford the paid version, it won't be of help when reversing native code as the freeware version does not support the ARM processor type.
-
-- Androguard: A python based tool, which can use to disassemble and decompile Android apps - <https://github.com/androguard/androguard>
-- Android Backup Extractor: Utility to extract and repack Android backups created with adb backup (ICS+). Largely based on BackupManagerService.java from AOSP - <https://github.com/nelenkov/android-backup-extractor>
-
-#### Adb
-
-- Android Debug Bridge (adb): A versatile command line tool used to communicate with an emulator instance or connected Android device - <https://developer.android.com/studio/command-line/adb.html>
-
+### Adb
 
 [adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or Wi-Fi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
@@ -1162,42 +1029,13 @@ config
 
 You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
 
-#### Apktool
-
-- apktool: A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications - <https://github.com/iBotPeaches/Apktool>
+### Apktool
 
 [Apktool](https://github.com/iBotPeaches/Apktool) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
 
 When run with default command line flags, apktool automatically decodes the Android Manifest file to text-based XML format and extracts the file resources (it also disassembles the .DEX files to smali code - a feature that we’ll revisit later in this book).
 
-```bash
-$ apktool d base.apk
-I: Using Apktool 2.1.0 on base.apk
-I: Loading resource table...
-I: Decoding AndroidManifest.xml with resources...
-I: Loading resource table from file: /Users/sven/Library/apktool/framework/1.apk
-I: Regular manifest package...
-I: Decoding file-resources...
-I: Decoding values */* XMLs...
-I: Baksmaling classes.dex...
-I: Copying assets and libs...
-I: Copying unknown files...
-I: Copying original files...
-$ cd base
-$ ls -alh
-total 32
-drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 .
-drwxr-xr-x    5 sven  staff   170B Dec  5 16:29 ..
--rw-r--r--    1 sven  staff    10K Dec  5 16:29 AndroidManifest.xml
--rw-r--r--    1 sven  staff   401B Dec  5 16:29 apktool.yml
-drwxr-xr-x    6 sven  staff   204B Dec  5 16:29 assets
-drwxr-xr-x    3 sven  staff   102B Dec  5 16:29 lib
-drwxr-xr-x    4 sven  staff   136B Dec  5 16:29 original
-drwxr-xr-x  131 sven  staff   4.3K Dec  5 16:29 res
-drwxr-xr-x    9 sven  staff   306B Dec  5 16:29 smali
-```
-
-The unpacked files are:
+Among the unpacked files you can usually find (after running `apktool d base.apk`):
 
 - AndroidManifest.xml: The decoded Android Manifest file, which can be opened and edited in a text editor.
 - apktool.yml: file containing information about the output of apktool
@@ -1207,21 +1045,17 @@ The unpacked files are:
 
 You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
 
-- android-classyshark: A standalone binary inspection tool for Android developers - <https://github.com/google/android-classyshark>
-- ByteCodeViewer: Java 8 Jar and Android APK Reverse Engineering Suite (e.g. Decompiler, Editor and Debugger) - <https://bytecodeviewer.com/>
-- ClassNameDeobfuscator: Simple script to parse through the .smali files produced by apktool and extract the .source annotation lines - <https://github.com/HamiltonianCycle/ClassNameDeobfuscator>
-- FindSecurityBugs: FindSecurityBugs is a extension for SpotBugs which includes security rules for Java applications - <https://find-sec-bugs.github.io>
-- Jadx (Dex to Java Decompiler): Command line and GUI tools for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>
-- Oat2dex: A tool for converting .oat file to .dex files - <https://github.com/testwhat/SmaliEx>
-- Qark: A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
-- Sign: A Java JAR executable (Sign.jar) which automatically signs an APK with the Android test certificate - <https://github.com/appium/sign>
-- Simplify: A tool for de-obfuscating android package into Classes.dex which can be use Dex2jar and JD-GUI to extract contents of DEX file - <https://github.com/CalebFenton/simplify>
-- SUPER: A command-line application that can be used in Windows, macOS and Linux, that analyzes APK files in search for vulnerabilities - <https://github.com/SUPERAndroidAnalyzer/super>
-- SpotBugs: Static analysis tool for Java - <https://spotbugs.github.io/>
+### jadx
 
-#### Apkx
+jadx (Dex to Java Decompiler) is a command line and [GUI tool](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview "jadx gui features overview") for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>
 
-`Apkx` is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
+### QARK
+
+A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
+
+### apkx
+
+apkx is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
 
 ```bash
 $ git clone https://github.com/b-mueller/apkx
@@ -1229,14 +1063,9 @@ $ cd apkx
 $ sudo ./install.sh
 ```
 
-This should copy `apkx` to `/usr/local/bin`. See section "[Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code")" of the "Reverse Engineering and Tampering" chapter for more information about usage.
+This should copy apkx to `/usr/local/bin`. See section "[Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code")" of the "Reverse Engineering and Tampering" chapter for more information about usage.
 
-### Dynamic and Runtime Analysis
-
-- Android Tcpdump: A command line packet capture utility for Android - <https://www.androidtcpdump.com>
-- Drozer: A tool that allows to search for security vulnerabilities in apps and devices by assuming the role of an app and interacting with the Dalvik VM, other apps' IPC endpoints and the underlying OS - <https://www.mwrinfosecurity.com/products/drozer/>
-
-#### House
+### House
 
 [House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android apps, developed and maintained by the NCC Group and is written in Python.
 
@@ -1244,17 +1073,17 @@ It's leveraging a running Frida server on a rooted device or the Frida gadget in
 
 The installation instructions and "how-to guide" of House can be found in the [Readme of the Github repo](https://github.com/nccgroup/house "Github Repo of House").
 
-#### Drozer
+### Drozer
 
 [Drozer](https://github.com/FSecureLABS/drozer "Drozer on GitHub") is an Android security assessment framework that allows you to search for security vulnerabilities in apps and devices by assuming the role of a third-party app interacting with the other application's IPC endpoints and the underlying OS.
 
 The advantage of using drozer consists on its ability to automate several tasks and that it can be expanded through modules. The modules are very helpful and they cover different categories including a scanner category that allows you to scan for known defects with a simple command such as the module `scanner.provider.injection` which detects SQL injections in content providers in all the apps installed in the system. Without drozer, simple tasks such as listing the app's permissions require several steps that include decompiling the APK and manually analyzing the results.
 
-##### Installing Drozer
+#### Installing Drozer
 
 You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://fi5t.xyz/en/posts/drozer-on-mac/ "(not)Unique experience blog - Installing Drozer on macOS Catalina")) and the [drozer website](https://labs.f-secure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
-##### Using Drozer
+#### Using Drozer
 
 Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the GitHub releases page](https://github.com/FSecureLABS/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
@@ -1276,7 +1105,7 @@ $ dz> run app.activity.start --component <package> <component name>
 
 This previous command will start the activity, hopefully leaking some sensitive information. Drozer has modules for every type of IPC mechanism. Download [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "InsecureBankv2 APK") if you would like to try the modules with an intentionally vulnerable application that illustrates common problems related to IPC endpoints. Pay close attention to the modules in the scanner category as they are very helpful automatically detecting vulnerabilities even in system packages, specially if you are using a ROM provided by your cellphone company. Even [SQL injection vulnerabilities in system packages by Google](https://issuetracker.google.com/u/0/issues/36965126 "SQL injection in Android") have been identified in the past with drozer.
 
-##### Other Drozer commands
+#### Other Drozer commands
 
 Here's a non-exhaustive list of commands you can use to start exploring on Android:
 
@@ -1309,7 +1138,7 @@ $ dz> run app.broadcast.send --action (broadcast receiver name) -- extra (number
 $ dz> run scanner.provider.injection -a (package name)
 ```
 
-##### Other Drozer resources
+#### Other Drozer resources
 
 Other resources where you might find useful information are:
 
@@ -1322,11 +1151,9 @@ Other resources where you might find useful information are:
 - logcat-color: A colorful and highly configurable alternative to the adb logcat command from the Android SDK - <https://github.com/marshall/logcat-color>
 - VirtualHook: A hooking tool for applications on Android ART (>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks - <https://github.com/rk700/VirtualHook>
 
-#### Xposed
+### Xposed
 
-- Xposed Framework: A framework that allows to modify the system or application aspect and behavior at runtime, without modifying any Android application package (APK) or re-flashing - <https://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053>
-
-[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a "framework for modules that can change the behavior of the system and apps without touching any APKs.". Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
+[Xposed](http://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer") is a framework that allows to modify the system or application aspect and behavior at runtime, without modifying any Android application package (APK) or re-flashing. Technically, it is an extended version of Zygote that exports APIs for running Java code when a new process is started. Running Java code in the context of the newly instantiated app makes it possible to resolve, hook, and override Java methods belonging to the app. Xposed uses [reflection](https://docs.oracle.com/javase/tutorial/reflect/ "Reflection Tutorial") to examine and modify the running app. Changes are applied in memory and persist only during the process' runtime since the application binaries are not modified.
 
 To use Xposed, you need to first install the Xposed framework on a rooted device as explained on [XDA-Developers Xposed framework hub](https://www.xda-developers.com/xposed-framework-hub/ "Xposed framework hub from XDA"). Modules can be installed through the Xposed Installer app, and they can be toggled on and off through the GUI.
 
@@ -1364,40 +1191,23 @@ echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.
 
 Please note that Xposed, at the time of this writing, does not work on Android 9 (API level 28). However, it was unofficially ported in 2019 under the name EdXposed, supporting Android 8-10 (API level 26 till 29). You can find the code and usage examples at [EdXposed](https://github.com/ElderDrivers/EdXposed "EdXposed") Github repo.
 
-#### DroidScope
+### Android-SSL-TrustKiller
 
-DroidScope (an extension to the [DECAF dynamic analysis framework](https://github.com/sycurelab/DECAF "DECAF dynamic analysis framework")) is a malware analysis engine based on QEMU. It instruments the emulated environment on several context levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java levels.
+Android-SSL-TrustKiller is a Cydia Substrate Module acting as a blackbox tool to bypass SSL certificate pinning for most applications running on a device - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
 
-DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS, and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls, and Java method calls.
+### JustTrustMe
 
-All of this makes it possible to build tracers that are practically transparent to the target application (as long as we can hide the fact that it is running in an emulator). One limitation is that DroidScope is compatible with the Dalvik VM only.
+An Xposed Module to bypass SSL certificate pinning - <https://github.com/Fuzion24/JustTrustMe>
 
-#### PANDA
+### RootCloak Plus
 
-[PANDA](https://github.com/moyix/panda/blob/master/docs/ "PANDA Docs") is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered by certain QEMU events. The twist PANDA adds is its record/replay feature. This allows an iterative workflow: the reverse engineer records an execution trace of the target app (or some part of it), then replays it repeatedly, refining the analysis plugins with each iteration.
+A Cydia Substrate Module used to check for commonly known indications of root - <https://github.com/devadvance/rootcloakplus>
 
-PANDA comes with pre-made plugins, including a string search tool and a syscall tracer. Most importantly, it supports Android guests, and some of the DroidScope code has even been ported. Building and running PANDA for Android ("PANDROID") is relatively straightforward. To test it, clone Moiyx's git repository and build PANDA:
+### SSLUnpinning
 
-```bash
-$ cd qemu
-$ ./configure --target-list=arm-softmmu --enable-android
-$ make
-```
+An Xposed Module to bypass SSL certificate pinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 
-As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 (API level 9) Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
-
-#### VxStripper
-
-Another very useful tool built on QEMU is [VxStripper by Sébastien Josse](http://vxstripper.pagesperso-orange.fr "VxStripper"). VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation and recompiles the simplified binary with LLVM. This is a very powerful way of normalizing obfuscated programs. See [Sébastien's paper](http://ieeexplore.ieee.org/document/6759227/ "Dynamic Malware Recompilation") for more information [#josse].
-
-### Bypassing Root Detection and Certificate Pinning
-
-- Android SSL Trust Killer (Cydia Substrate Module): Blackbox tool to bypass SSL certificate pinning for most applications running on a device - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
-- JustTrustMe (Xposed Module): An Xposed Module to bypass SSL certificate pinning - <https://github.com/Fuzion24/JustTrustMe>
-- RootCloak Plus (Cydia Substrate Module): Patch root checking for commonly known indications of root - <https://github.com/devadvance/rootcloakplus>
-- SSLUnpinning (Xposed Module): An Xposed Module to bypass SSL certificate pinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
-
-#### Magisk
+### Magisk
 
 `Magisk` ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
 
@@ -1725,35 +1535,63 @@ With Passionfruit it's possible to explore different kinds of information concer
 
 ## Tools for Network Interception and Monitoring
 
-- bettercap: A powerful framework which aims to offer to security researchers and reverse engineers an easy to use, all-in-one solution for Wi-Fi, Bluetooth Low Energy, wireless HID hijacking and Ethernet networks reconnaissance and MITM attacks - <https://www.bettercap.org/>
-- Canape: A network testing tool for arbitrary protocols - <https://github.com/ctxis/canape>
-- Mallory: A Man in The Middle Tool (MiTM) that is used to monitor and manipulate traffic on mobile devices and applications - <https://github.com/intrepidusgroup/mallory>
-- MITM Relay: A script to intercept and modify non-HTTP protocols through Burp and others with support for SSL and STARTTLS interception - <https://github.com/jrmdev/mitm_relay>
-- tcpdump: A command line packet capture utility - <https://www.tcpdump.org/>
-- Wireshark: An open-source packet analyzer - <https://www.wireshark.org/download.html>
+### bettercap
 
-## Interception Proxies
+A powerful framework which aims to offer to security researchers and reverse engineers an easy to use, all-in-one solution for Wi-Fi, Bluetooth Low Energy, wireless HID hijacking and Ethernet networks reconnaissance. It can be used during network penetration tests in order to simulate a man-in-the-middle (MITM) attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target computers. When such an attack is successful, all packets between two computers are redirected to a third computer that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
+
+> bettercap is a powerful tool to execute MITM attacks and should be preferred nowadays, instead of ettercap. See also [Why another MITM tool?](https://www.bettercap.org/legacy/#why-another-mitm-tool "Why another MITM tool?") on the bettercap site.
+
+bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your host computer that will act as the MITM. On macOS it can be installed by using brew.
+
+```bash
+$ brew install bettercap
+```
+
+For Kali Linux you can install bettercap with `apt-get`:
+
+```bash
+$ apt-get update
+$ apt-get install bettercap
+```
+
+There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
+
+### MITM Relay
+
+A script to intercept and modify non-HTTP protocols through Burp and others with support for SSL and STARTTLS interception - <https://github.com/jrmdev/mitm_relay>
+
+### tcpdump
+
+A command line packet capture utility - <https://www.tcpdump.org/>
+
+### Android tcpdump
+
+A command line packet capture utility for Android - <https://www.androidtcpdump.com>
+
+### Wireshark
+
+An open-source packet analyzer - <https://www.wireshark.org/download.html>
 
 ### Burp Suite
 
-- Burp Suite: An integrated platform for performing security testing of applications - <https://portswigger.net/burp/download.html>
+Burp Suite is an integrated platform for performing security testing mobile and web applications - <https://portswigger.net/burp/download.html>
 
-#### Burp Suite (Android)
+Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
-Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your device and host computer are connected to a Wi-Fi network that permits client-to-client traffic.
 
-Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your iOS device and host computer are connected to a Wi-Fi network that permits client-to-client traffic.
+PortSwigger provides good tutorials on setting up both Android as iOS devices to work with Burp:
 
-PortSwigger provides a good [tutorial on setting up an Android device to work with Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp") and a [tutorial on installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device").
+- [Configuring an Android Device to Work With Burp](https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp").
+- [Installing Burp's CA certificate to an Android device](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device").
+- [Configuring an iOS Device to Work With Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
+- [Installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device").
 
-#### Burp Suite (iOS)
+Please refer to the section "Setting up an Interception Proxy" in the [Android](0x05b-basic-security-testing#setting-up-an-interception-proxy "Setting up an Interception Proxy") and [iOS](0x06b-basic-security-testing#setting-up-an-interception-proxy "Setting up an Interception Proxy") "Basic Security Testing" chapters for more information.
 
-[Burp Suite](https://portswigger.net/burp "Burp Suite") is an interception proxy that can be used to analyze the traffic between the app and the API it's talking to. Please refer to the section below "[Setting up an Interception Proxy](#setting-up-an-interception-proxy "Setting up an Interception Proxy")" for detailed instructions on how to set it up in an iOS environment.
+### OWASP Zed Attack Proxy (ZAP)
 
-- Charles Proxy: HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their host computer and the Internet - <https://www.charlesproxy.com>
-- Fiddler: An HTTP debugging proxy server application which captures HTTP and HTTPS traffic and logs it for the user to review - <https://www.telerik.com/fiddler>
-- OWASP Zed Attack Proxy (ZAP): A free security tool which helps to automatically find security vulnerabilities in web applications and web services - <https://github.com/zaproxy/zaproxy>
-- Proxydroid: Global Proxy App for Android System - <https://github.com/madeye/proxydroid>
+A free security tool which helps to automatically find security vulnerabilities in web applications and web services - <https://github.com/zaproxy/zaproxy>
 
 ## IDEs
 

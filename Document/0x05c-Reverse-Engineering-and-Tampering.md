@@ -477,12 +477,10 @@ Configure the static analyzer properly to reduce the likelihood of false positiv
 
 There are several open source tools for automated security analysis of an APK.
 
-- [QARK](https://github.com/linkedin/qark/ "QARK")
+- [QARK](0x08-Testing-Tools#qark)
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
-- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
-
-For commercial tools, see the section "[Static Source Code Analysis (Commercial Tools)](0x08-Testing-Tools.md#static-source-code-analysis-commercial-tools "Static Source Code Analysis (Commercial Tools)")" in the chapter "Testing Tools".
+- [MobSF](0x08-Testing-Tools#mobsf)
 
 ## Dynamic Analysis
 
