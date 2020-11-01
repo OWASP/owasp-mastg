@@ -8,215 +8,25 @@ To perform security testing different tools are available in order to be able to
 
 ## Tools for all Platforms
 
-### MobSF
+### Angr
 
-[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.
+#### Angr (Android)
 
-```bash
-$ docker pull opensecurity/mobile-security-framework-mobsf
-$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
-```
+Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. In other words: given a binary and a requested state, Angr will try to get to that state, using formal methods (a technique used for static code analysis) to find a path, as well as brute forcing. Using angr to get to the requested state is often much faster than taking manual steps for debugging and searching the path towards the required state. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native code, such as native Android binaries.
 
-Or install and start it locally on your host computer by running:
+Angr allows for disassembly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, decompilation and more, given a large set of plugins.
 
-```bash
-# Setup
-git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
-cd Mobile-Security-Framework-MobSF
-./setup.sh # For Linux and Mac
-setup.bat # For Windows
-
-# Installation process
-./run.sh # For Linux and Mac
-run.bat # For Windows
-```
-
-Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the APK you want to analyze into the upload area and MobSF will start its job.
-
-#### MobSF for Android
-
-After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
-
-<img src="Images/Chapters/0x05b/mobsf_android.png" alt="MobSF for Android" />
-
-The following is displayed:
-
-- Basic information about the app and its binary file.
-- Some options to:
-  - View the `AndroidManifest.xml` file.
-  - View the IPC components of the app.
-- Signer certificate.
-- App permissions.
-- A security analysis showing known defects e.g. if the app backups are enabled.
-- List of libraries used by the app binary and list of all files inside the unzipped APK.
-- Malware analysis that checks for malicious URLs.
-
-Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
-
-#### MobSF for iOS
-
-By running MobSF locally on a macOS host you'll benefit from a slightly better class-dump output.
-
-Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the IPA you want to analyze into the upload area and MobSF will start its job.
-
-After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
-
-<img src="Images/Chapters/0x06b/mobsf_ios.png" alt="MobSF for iOS" />
-
-The following is displayed:
-
-- Basic information about the app and its binary file.
-- Some options to:
-  - View the `Info.plist` file.
-  - View the strings contained in the app binary.
-  - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
-- List all Purpose Strings extracted from the `Info.plist` which give some hints on the app's permissions.
-- Exceptions in the App Transport Security (ATS) configuration will be listed.
-- A brief binary analysis showing if free binary security features are activated or e.g. if the binary makes use of banned APIs.
-- List of libraries used by the app binary and list of all files inside the unzipped IPA.
-
-> In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
-
-Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation") for more details.
-
-### Objection
-
-[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
-
-Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted/non-jailbroken device by sideloading it. Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform.
-
-Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
 
 ```bash
-$ pip3 install objection
+$ pip install angr
 ```
 
-#### Objection for Android
+> Some of angr's dependencies contain forked versions of the Python modules Z3 and PyVEX, which would overwrite the original versions. If you're using those modules for anything else, you should create a dedicated virtual environment with [Virtualenv](https://docs.python.org/3/tutorial/venv.html "Virtualenv documentation"). Alternatively, you can always use the provided docker container. See the [installation guide](https://docs.angr.io/introductory-errata/install "angr Installation Guide") for more details.
 
-Objection offers several features specific to Android. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
 
-- Repackage applications to include the Frida gadget
-- Disable SSL pinning for popular methods
-- Access application storage to download or upload files
-- Execute custom Frida scripts
-- List the Activities, Services and Broadcast receivers
-- Start Activities
-
-The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
-
-Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
-
-```bash
-$ objection patchapk --source app-release.apk
-```
-
-The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
-
-##### Using Objection on Android
-
-Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
-
-```bash
-# Connecting to a patched APK
-objection explore
-
-# Find the correct name using frida-ps
-$ frida-ps -Ua | grep -i telegram
-30268  Telegram                               org.telegram.messenger
-
-# Connecting to the Telegram app through Frida-server
-$ objection --gadget="org.telegram.messenger" explore
-```
-
-Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
-
-```bash
-# Show the different storage locations belonging to the app
-$ env
-
-# Disable popular ssl pinning methods
-$ android sslpinning disable
-
-# List items in the keystore
-$ android keystore list
-
-# Try to circumvent root detection
-$ android root disable
-
-```
-
-More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
-
-#### Objection for iOS
-
-Objection offers several features specific to iOS. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
-
-- Repackage applications to include the Frida gadget
-- Disable SSL pinning for popular methods
-- Access application storage to download or upload files
-- Execute custom Frida scripts
-- Dump the Keychain
-- Read plist files
-
-All these tasks and more can be easily done by using the commands in objection's REPL. For example, you can obtain the classes used in an app, functions of classes or information about the bundles of an app by running:
-
-```bash
-OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list classes
-OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <ClassName>
-OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
-```
-
-The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
-
-Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
-
-```bash
-$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
-```
-
-Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
-
-```bash
-$ ios-deploy --bundle Payload/my-app.app -W -d
-```
-
-##### Using Objection on iOS
-
-Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
-
-```bash
-# Connecting to a patched IPA
-$ objection explore
-
-# Using frida-ps to get the correct application name
-$ frida-ps -Ua | grep -i Telegram
-983  Telegram
-
-# Connecting to the Telegram app through Frida-server
-$ objection --gadget="Telegram" explore
-```
-
-Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
-
-```bash
-# Show the different storage locations belonging to the app
-$ env
-
-# Disable popular ssl pinning methods
-$ ios sslpinning disable
-
-# Dump the Keychain
-$ ios keychain dump
-
-# Dump the Keychain, including access modifiers. The result will be written to the host in myfile.json
-$ ios keychain dump --json <myfile.json>
-
-# Show the content of a plist file
-$ ios plist cat <myfile.plist>
-
-```
-
-More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
+You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the "[Symbolic Execution](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution")" section of the "Reverse Engineering and Tampering" chapter as a great example on how this can work.
 
 ### Frida
 
@@ -599,6 +409,244 @@ Using them is as simple as including the `--codeshare <handler>` flag and a hand
 $ frida --codeshare mrmacete/objc-method-observer -f YOUR_BINARY
 ```
 
+### Ghidra
+
+Ghidra is an open source software reverse engineering (SRE) suite of tools developed by the United State of America's National Security Agency's (NSA) Research Directorate. Ghidra is a versatile tool which comprises of a disassembler, decompiler and a built-in scripting engine for advanced usage. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and also look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts. In this section, we will have walk-through on how to create a project, view disassembly and decompiled code for a binary.
+
+Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:
+
+<img src="Images/Chapters/0x04c/Ghidra_new_project.png" alt="Ghidra New Project" width="450" />
+
+In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
+
+<img src="Images/Chapters/0x04c/Ghidra_import_binary.png" alt="Ghidra import binary" width="450" />
+
+If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
+
+<img src="Images/Chapters/0x04c/Ghidra_elf_import.png" alt="Ghidra ELF file import" width="300" />
+
+To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.
+
+<img src="Images/Chapters/0x04c/Ghidra_main_window.png" alt="Ghidra Main Window" />
+
+The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function.
+
+<img src="Images/Chapters/0x04c/Ghidra_function_graph.png" alt="Ghidra Function Graph View" />
+
+There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters.
+
+<img src="Images/Chapters/0x04c/Ghidra_string_window.png" alt="Ghidra strings window" />
+
+### MobSF
+
+[MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.
+
+```bash
+$ docker pull opensecurity/mobile-security-framework-mobsf
+$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+```
+
+Or install and start it locally on your host computer by running:
+
+```bash
+# Setup
+git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
+cd Mobile-Security-Framework-MobSF
+./setup.sh # For Linux and Mac
+setup.bat # For Windows
+
+# Installation process
+./run.sh # For Linux and Mac
+run.bat # For Windows
+```
+
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the APK you want to analyze into the upload area and MobSF will start its job.
+
+#### MobSF for Android
+
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
+
+<img src="Images/Chapters/0x05b/mobsf_android.png" alt="MobSF for Android" />
+
+The following is displayed:
+
+- Basic information about the app and its binary file.
+- Some options to:
+  - View the `AndroidManifest.xml` file.
+  - View the IPC components of the app.
+- Signer certificate.
+- App permissions.
+- A security analysis showing known defects e.g. if the app backups are enabled.
+- List of libraries used by the app binary and list of all files inside the unzipped APK.
+- Malware analysis that checks for malicious URLs.
+
+Refer to [MobSF documentation](https://github.com/MobSF/Mobile-Security-Framework-MobSF/wiki/1.-Documentation "MobSF documentation") for more details.
+
+#### MobSF for iOS
+
+By running MobSF locally on a macOS host you'll benefit from a slightly better class-dump output.
+
+Once you have MobSF up and running you can open it in your browser by navigating to <http://127.0.0.1:8000>. Simply drag the IPA you want to analyze into the upload area and MobSF will start its job.
+
+After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
+
+<img src="Images/Chapters/0x06b/mobsf_ios.png" alt="MobSF for iOS" />
+
+The following is displayed:
+
+- Basic information about the app and its binary file.
+- Some options to:
+  - View the `Info.plist` file.
+  - View the strings contained in the app binary.
+  - Download a class-dump, if the app was written in Objective-C; if it is written in Swift no class-dump can be created.
+- List all Purpose Strings extracted from the `Info.plist` which give some hints on the app's permissions.
+- Exceptions in the App Transport Security (ATS) configuration will be listed.
+- A brief binary analysis showing if free binary security features are activated or e.g. if the binary makes use of banned APIs.
+- List of libraries used by the app binary and list of all files inside the unzipped IPA.
+
+> In contrast to the Android use case, MobSF does not offer any dynamic analysis features for iOS apps.
+
+Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation") for more details.
+
+### Objection
+
+[Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
+
+Objection achieves this goal by providing you with the tools to easily inject the Frida gadget into an application by repackaging it. This way, you can deploy the repackaged app to the non-rooted/non-jailbroken device by sideloading it. Objection also provides a REPL that allows you to interact with the application, giving you the ability to perform any action that the application can perform.
+
+Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
+
+```bash
+$ pip3 install objection
+```
+
+#### Objection for Android
+
+Objection offers several features specific to Android. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- List the Activities, Services and Broadcast receivers
+- Start Activities
+
+The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
+
+```bash
+$ objection patchapk --source app-release.apk
+```
+
+The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
+
+##### Using Objection on Android
+
+Starting up Objection depends on whether you've patched the APK or whether you are using a rooted device running Frida-server. For running a patched APK, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
+
+```bash
+# Connecting to a patched APK
+objection explore
+
+# Find the correct name using frida-ps
+$ frida-ps -Ua | grep -i telegram
+30268  Telegram                               org.telegram.messenger
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="org.telegram.messenger" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```bash
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ android sslpinning disable
+
+# List items in the keystore
+$ android keystore list
+
+# Try to circumvent root detection
+$ android root disable
+
+```
+
+More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
+
+#### Objection for iOS
+
+Objection offers several features specific to iOS. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+
+- Repackage applications to include the Frida gadget
+- Disable SSL pinning for popular methods
+- Access application storage to download or upload files
+- Execute custom Frida scripts
+- Dump the Keychain
+- Read plist files
+
+All these tasks and more can be easily done by using the commands in objection's REPL. For example, you can obtain the classes used in an app, functions of classes or information about the bundles of an app by running:
+
+```bash
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list classes
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <ClassName>
+OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
+```
+
+The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+
+Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
+
+```bash
+$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+```
+
+Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
+
+```bash
+$ ios-deploy --bundle Payload/my-app.app -W -d
+```
+
+##### Using Objection on iOS
+
+Starting up Objection depends on whether you've patched the IPA or whether you are using a jailbroken device running Frida-server. For running a patched IPA, objection will automatically find any attached devices and search for a listening Frida gadget. However, when using frida-server, you need to explicitly tell frida-server which application you want to analyze.
+
+```bash
+# Connecting to a patched IPA
+$ objection explore
+
+# Using frida-ps to get the correct application name
+$ frida-ps -Ua | grep -i Telegram
+983  Telegram
+
+# Connecting to the Telegram app through Frida-server
+$ objection --gadget="Telegram" explore
+```
+
+Once you are in the Objection REPL, you can execute any of the available commands. Below is an overview of some of the most useful ones:
+
+```bash
+# Show the different storage locations belonging to the app
+$ env
+
+# Disable popular ssl pinning methods
+$ ios sslpinning disable
+
+# Dump the Keychain
+$ ios keychain dump
+
+# Dump the Keychain, including access modifiers. The result will be written to the host in myfile.json
+$ ios keychain dump --json <myfile.json>
+
+# Show the content of a plist file
+$ ios plist cat <myfile.plist>
+
+```
+
+More information on using the Objection REPL can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Using-objection "Using Objection")
+
 ### r2frida
 
 [r2frida](https://github.com/nowsecure/r2frida "r2frida on Github") is a project that allows radare2 to connect to Frida, effectively merging the powerful reverse engineering capabilities of radare2 with the dynamic instrumentation toolkit of Frida. r2frida can be used in both on Android and iOS, allowing you to:
@@ -709,54 +757,6 @@ Finally, remember that you can also run Frida JavaScript code with `\.` plus the
 ```
 
 You can find more examples on [how to use r2frida](https://github.com/enovella/r2frida-wiki "Using r2frida") on their Wiki project.
-
-### Angr
-
-#### Angr (Android)
-
-Angr is a Python framework for analyzing binaries. It is useful for both static and dynamic symbolic ("concolic") analysis. In other words: given a binary and a requested state, Angr will try to get to that state, using formal methods (a technique used for static code analysis) to find a path, as well as brute forcing. Using angr to get to the requested state is often much faster than taking manual steps for debugging and searching the path towards the required state. Angr operates on the VEX intermediate language and comes with a loader for ELF/ARM binaries, so it is perfect for dealing with native code, such as native Android binaries.
-
-Angr allows for disassembly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, decompilation and more, given a large set of plugins.
-
-Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
-
-```bash
-$ pip install angr
-```
-
-> Some of angr's dependencies contain forked versions of the Python modules Z3 and PyVEX, which would overwrite the original versions. If you're using those modules for anything else, you should create a dedicated virtual environment with [Virtualenv](https://docs.python.org/3/tutorial/venv.html "Virtualenv documentation"). Alternatively, you can always use the provided docker container. See the [installation guide](https://docs.angr.io/introductory-errata/install "angr Installation Guide") for more details.
-
-Comprehensive documentation, including an installation guide, tutorials, and usage examples are available on [Angr's Gitbooks page](https://docs.angr.io/ "angr"). A complete [API reference](https://angr.io/api-doc/ "angr API") is also available.
-
-You can use angr from a Python REPL - such as iPython - or script your approaches. Although angr has a bit of a steep learning curve, we do recommend using it when you want to brute force your way to a given state of an executable. Please see the "[Symbolic Execution](0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Symbolic Execution")" section of the "Reverse Engineering and Tampering" chapter as a great example on how this can work.
-
-### Ghidra
-
-Ghidra is an open source software reverse engineering (SRE) suite of tools developed by the United State of America's National Security Agency's (NSA) Research Directorate. Ghidra is a versatile tool which comprises of a disassembler, decompiler and a built-in scripting engine for advanced usage. Please refer to the [installation guide](https://ghidra-sre.org/InstallationGuide.html "Ghidra Installation Guide") on how to install it and also look at the [cheat sheet](https://ghidra-sre.org/CheatSheet.html "Cheat Sheet") for a first overview of available commands and shortcuts. In this section, we will have walk-through on how to create a project, view disassembly and decompiled code for a binary.
-
-Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:
-
-<img src="Images/Chapters/0x04c/Ghidra_new_project.png" alt="Ghidra New Project" width="450" />
-
-In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
-
-<img src="Images/Chapters/0x04c/Ghidra_import_binary.png" alt="Ghidra import binary" width="450" />
-
-If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
-
-<img src="Images/Chapters/0x04c/Ghidra_elf_import.png" alt="Ghidra ELF file import" width="300" />
-
-To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.
-
-<img src="Images/Chapters/0x04c/Ghidra_main_window.png" alt="Ghidra Main Window" />
-
-The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function.
-
-<img src="Images/Chapters/0x04c/Ghidra_function_graph.png" alt="Ghidra Function Graph View" />
-
-There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters.
-
-<img src="Images/Chapters/0x04c/Ghidra_string_window.png" alt="Ghidra strings window" />
 
 ### radare2
 
@@ -989,38 +989,34 @@ Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05
 
 ## Tools for Android
 
-### Android Studio
+### Adb
 
-The official IDE for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development - <https://developer.android.com/studio/index.html>
-
-### Android SDK
-
-Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
-
-- Android 10.0 (API level 29)
-- Android 9.0 (API level 28)
-- Android 8.1 (API level 27)
-- Android 8.0 (API level 26)
-
-An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
-
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager" />
-
-Installed SDKs are on the following paths:
-
-Windows:
+[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or Wi-Fi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
 
 ```bash
-C:\Users\<username>\AppData\Local\Android\sdk
+$ adb devices -l
+List of devices attached
+090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
+emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
 ```
 
-MacOS:
+adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
 
 ```bash
-/Users/<username>/Library/Android/sdk
+$ adb forward tcp:<host port> tcp:<device port>
 ```
 
-Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
+```bash
+$ adb -s emulator-5554 shell
+root@generic_x86:/ # ls
+acct
+cache
+charger
+config
+...
+```
+
+You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
 
 ### Android NDK
 
@@ -1051,38 +1047,42 @@ This creates a standalone toolchain for Android 7.0 (API level 24) in the direct
 $  export TOOLCHAIN=/tmp/android-7-toolchain
 ```
 
-### Busybox
+### Android SDK
 
-Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
+Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
 
-### Adb
+- Android 10.0 (API level 29)
+- Android 9.0 (API level 28)
+- Android 8.1 (API level 27)
+- Android 8.0 (API level 26)
 
-[adb](https://developer.android.com/studio/command-line/adb "Android Debug Bridge") (Android Debug Bridge), shipped with the Android SDK, bridges the gap between your local development environment and a connected Android device. You'll usually leverage it to test apps on the emulator or a connected device via USB or Wi-Fi. Use the `adb devices` command to list the connected devices and execute it with the `-l` argument to retrieve more details on them.
+An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
-```bash
-$ adb devices -l
-List of devices attached
-090c285c0b97f748 device usb:1-1 product:razor model:Nexus_7 device:flo
-emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for_x86 device:generic_x86 transport_id:1
-```
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager" />
 
-adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
+Installed SDKs are on the following paths:
 
-```bash
-$ adb forward tcp:<host port> tcp:<device port>
-```
+Windows:
 
 ```bash
-$ adb -s emulator-5554 shell
-root@generic_x86:/ # ls
-acct
-cache
-charger
-config
-...
+C:\Users\<username>\AppData\Local\Android\sdk
 ```
 
-You'll come across different use cases on how you can use adb commands when testing later in this book. Note that you must define the serialnummer of the target device with the `-s` argument (as shown by the previous code snippet) in case you have multiple devices connected.
+MacOS:
+
+```bash
+/Users/<username>/Library/Android/sdk
+```
+
+Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
+
+### Android Studio
+
+The official IDE for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development - <https://developer.android.com/studio/index.html>
+
+### Android-SSL-TrustKiller
+
+Android-SSL-TrustKiller is a Cydia Substrate Module acting as a blackbox tool to bypass SSL certificate pinning for most applications running on a device - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
 
 ### Apktool
 
@@ -1100,14 +1100,6 @@ Among the unpacked files you can usually find (after running `apktool d base.apk
 
 You can also use apktool to repackage decoded resources back to binary APK/JAR. See the section "[Exploring the App Package](#exploring-the-app-package "Exploring the App Package")" later on this chapter and section "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" in the chapter [Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md) for more information and practical examples.
 
-### jadx
-
-jadx (Dex to Java Decompiler) is a command line and [GUI tool](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview "jadx gui features overview") for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>
-
-### QARK
-
-A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
-
 ### apkx
 
 apkx is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
@@ -1120,13 +1112,9 @@ $ sudo ./install.sh
 
 This should copy apkx to `/usr/local/bin`. See section "[Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code")" of the "Reverse Engineering and Tampering" chapter for more information about usage.
 
-### House
+### Busybox
 
-[House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android apps, developed and maintained by the NCC Group and is written in Python.
-
-It's leveraging a running Frida server on a rooted device or the Frida gadget in a repackaged Android app. The intention of House is to allow an easy way of prototyping Frida scripts via its convenient web GUI.
-
-The installation instructions and "how-to guide" of House can be found in the [Readme of the Github repo](https://github.com/nccgroup/house "Github Repo of House").
+Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
 
 ### Drozer
 
@@ -1201,13 +1189,49 @@ Other resources where you might find useful information are:
 - [drozer GitHub page](https://github.com/FSecureLABS/drozer "GitHub repo")
 - [drozer Wiki](https://github.com/FSecureLABS/drozer/wiki "drozer Wiki")
 
+### House
+
+[House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android apps, developed and maintained by the NCC Group and is written in Python.
+
+It's leveraging a running Frida server on a rooted device or the Frida gadget in a repackaged Android app. The intention of House is to allow an easy way of prototyping Frida scripts via its convenient web GUI.
+
+The installation instructions and "how-to guide" of House can be found in the [Readme of the Github repo](https://github.com/nccgroup/house "Github Repo of House").
+
 ### Inspeckage
 
 A tool developed to offer dynamic analysis of Android apps. By applying hooks to functions of the Android API, Inspeckage helps to understand what an Android application is doing at runtime - <https://github.com/ac-pm/Inspeckage>
 
+### jadx
+
+jadx (Dex to Java Decompiler) is a command line and [GUI tool](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview "jadx gui features overview") for producing Java source code from Android DEX and APK files - <https://github.com/skylot/jadx>
+
 ### jdb
 
 A Java Debugger which allows to set breakpoints and print application variables. jdb uses the JDWP protocol - <https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jdb.html>
+
+### JustTrustMe
+
+An Xposed Module to bypass SSL certificate pinning - <https://github.com/Fuzion24/JustTrustMe>
+
+### Magisk
+
+`Magisk` ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
+
+You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/ota.html "OTA Installation").
+
+Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting with Magisk").
+
+### QARK
+
+A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
+
+### RootCloak Plus
+
+A Cydia Substrate Module used to check for commonly known indications of root - <https://github.com/devadvance/rootcloakplus>
+
+### SSLUnpinning
+
+An Xposed Module to bypass SSL certificate pinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 
 ### Xposed
 
@@ -1249,103 +1273,19 @@ echo "Want to use it again? Start your emulator with 'emulator -avd NAMEOFX86A8.
 
 Please note that Xposed, at the time of this writing, does not work on Android 9 (API level 28). However, it was unofficially ported in 2019 under the name EdXposed, supporting Android 8-10 (API level 26 till 29). You can find the code and usage examples at [EdXposed](https://github.com/ElderDrivers/EdXposed "EdXposed") Github repo.
 
-### Android-SSL-TrustKiller
-
-Android-SSL-TrustKiller is a Cydia Substrate Module acting as a blackbox tool to bypass SSL certificate pinning for most applications running on a device - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
-
-### JustTrustMe
-
-An Xposed Module to bypass SSL certificate pinning - <https://github.com/Fuzion24/JustTrustMe>
-
-### RootCloak Plus
-
-A Cydia Substrate Module used to check for commonly known indications of root - <https://github.com/devadvance/rootcloakplus>
-
-### SSLUnpinning
-
-An Xposed Module to bypass SSL certificate pinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
-
-### Magisk
-
-`Magisk` ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
-
-You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/install.html "Magisk Installation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/ota.html "OTA Installation").
-
-Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting with Magisk").
-
 ## Tools for iOS
 
-### Cydia
+### bfinject
 
-Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
+A tool that loads arbitrary dylibs into running App Store apps. It has built-in support for decrypting App Store apps, and comes bundled with iSpy and Cycript - <https://github.com/BishopFox/bfinject>
 
-Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
+### BinaryCookieReader
 
-- <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
-- <https://cydia.akemi.ai/>: Add "Karen's Repo" to get the AppSync package.
-- <https://build.frida.re>: Install Frida by adding the repository to Cydia.
-- <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
-- <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
+A tool to dump all the cookies from the binary Cookies.binarycookies file - <https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py>
 
-> In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
+### Burp Suite Mobile Assistant
 
-After adding all the suggested repositories above you can install the following useful packages from Cydia to get started:
-
-- adv-cmds: Advanced command line, which includes tools such as finger, fingerd, last, lsvfs, md, and ps.
-- AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
-- Apt: Advanced Package Tool, which you can use to manage the installed packages similarly to DPKG, but in a more friendly way. This allows you to install, uninstall, upgrade, and downgrade packages from your Cydia repositories. Comes from Elucubratus.
-- AppSync Unified: Allows you to sync and install unsigned iOS applications.
-- BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
-- class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generating header files with class interfaces.
-- class-dump-z: A command line tool for examining the Swift runtime information stored in Mach-O files and generating header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "class-dump-z installation steps") in order to get class-dump-z running on your iOS device. Note that class-dump-z is not maintained and does not work well with Swift. It is recommended to use [dsdump](#dsdump "dsdump") instead.
-- Clutch: Used to decrypt an app executable.
-- Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
-- Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
-- cURL: Is a well known http client which you can use to download packages faster to your device. This can be a great help when you need to install different versions of Frida-server on your device for instance.
-- Darwin CC Tools: A useful set of tools like nm, and strip that are capable of auditing mach-o files.
-- IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
-- Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
-- Grep: Handy tool to filter lines.
-- Gzip: A well known ZIP utility.
-- PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
-- SOcket CAT: a utility with which you can connect to sockets to read and write messages. This can come in handy if you want to trace the syslog on iOS 12 devices.
-
-Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
-
-Besides Cydia you can also ssh into your iOS device and you can install the packages directly via apt-get, like for example adv-cmds.
-
-```bash
-$ apt-get update
-$ apt-get install adv-cmds
-```
-
-### Sileo
-
-Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
-
-### iFunBox
-
-[iFunBox](http://www.i-funbox.com/ "iFunBox") is a file and app management tool that supports iOS. You can [download it for Windows and macOS](http://www.i-funbox.com/en_download.html "iFunBox").
-
-It has several features, like app installation, access the app sandbox without jailbreak and others.
-
-### iProxy
-
-A tool used to connect via SSH to a jailbroken iPhone via USB - <https://github.com/tcurdt/iProxy>
-
-### itunnel
-
-A tool used to forward SSH via USB - <https://code.google.com/p/iphonetunnel-usbmuxconnectbyport/downloads/list>
-
-### Cyberduck
-
-Libre FTP, SFTP, WebDAV, S3, Azure & OpenStack Swift browser for Mac and Windows - <https://cyberduck.io>
-
-### FileZilla
-
-A solution supporting FTP, SFTP, and FTPS (FTP over SSL/TLS) - <https://filezilla-project.org/download.php?show_all=1>
-
-Make sure that the following is installed on your system:
+A tool to bypass certificate pinning and is able to inject into apps - <https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html>
 
 ### class-dump
 
@@ -1359,109 +1299,13 @@ Make sure that the following is installed on your system:
 
 [class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
 
-### MachoOView
-
-[MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
-
-### Xcode Command Line Tools
-
-After installing [Xcode](#xcode), in order to make all development tools available systemwide, it is recommended to install the Xcode Command Line Tools package. This will be handy during testing of iOS apps as some of the tools (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
-
-```bash
-$ xcode-select --install
-```
-
-### xcrun
-
-[`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page") can be used invoke Xcode developer tools from the command-line, without having them in the path. For example you may want to use it to locate and run swift-demangle or simctl.
-
-### swift-demangle
-
-swift-demangle is an Xcode tool that demangles Swift symbols. For more information run `xcrun swift-demangle -help` once installed.
-
-### simctl
-
-simctl is an Xcode tool that allows you to interact with iOS simulators via the command line to e.g. manage simulators, launch apps, take screenshots or collect their logs.
-
-### nm
-
-[nm](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm") is a tool that displays the name list (symbol table) of the given binary.
-
 ### Clutch
 
 Clutch decrypts iOS applications and dumps specified bundleID into binary or IPA file - <https://github.com/KJCracks/Clutch>
 
-### Dumpdecrypted
+### Cyberduck
 
-Dumpdecrypted dumps decrypted mach-o files from encrypted iPhone applications from memory to disk - <https://github.com/stefanesser/dumpdecrypted>
-
-### otool
-
-[otool](http://www.manpagez.com/man/1/otool/ "otool") is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
-
-### Plutil
-
-A program that can convert .plist files between a binary version and an XML version - <https://www.theiphonewiki.com/wiki/Plutil>
-
-### Weak Classdump
-
-A Cycript script that generates a header file for the class passed to the function. Most useful when classdump or dumpdecrypted cannot be used, when binaries are encrypted etc - <https://github.com/limneos/weak_classdump>
-
-### ios-deploy
-
-With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
-
-```bash
-$ brew install ios-deploy
-```
-
-For the usage please refer to the section "ios-deploy" below which is part of "[Installing Apps](#installing-apps "Installing Apps")".
-
-### Frida-ios-dump
-
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
-
-### dsdump
-
-[dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
-
-The following example shows how you can dump Objective-C classes and Swift type descriptors of an iOS application.
-
-First verify if the app's main binary is a FAT binary containing ARM64:
-
-```bash
-$ otool -hv [APP_MAIN_BINARY_FILE]
-Mach header
-      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-   MH_MAGIC     ARM         V7  0x00     EXECUTE    39       5016   NOUNDEFS DYLDLINK TWOLEVEL PIE
-Mach header
-      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       5728   NOUNDEFS DYLDLINK TWOLEVEL PIE
-```
-
-If yes, then we specify the "--arch" parameter to "arm64", otherwise it is not needed if the binary only contains an ARM64 binary.
-
-```bash
-# Dump the Objective-C classes to a temporary file
-$ dsdump --objc --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/OBJC.txt
-
-# Dump the Swift type descriptors to a temporary file if the app is implemented in Swift
-$ dsdump --swift --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/SWIFT.txt
-```
-
-You can find more information about the inner workings of dsdump and how to programmatically inspect a Mach-O binary to display the compiled Swift types and Objective-C classes in [this article](https://derekselander.github.io/dsdump/ "Building a class-dump in 2020").
-
-### bfinject
-
-A tool that loads arbitrary dylibs into running App Store apps. It has built-in support for decrypting App Store apps, and comes bundled with iSpy and Cycript - <https://github.com/BishopFox/bfinject>
-
-### BinaryCookieReader
-
-A tool to dump all the cookies from the binary Cookies.binarycookies file - <https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py>
-
-### Burp Suite Mobile Assistant
-
-A tool to bypass certificate pinning and is able to inject into apps - <https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html>
+Libre FTP, SFTP, WebDAV, S3, Azure & OpenStack Swift browser for Mac and Windows - <https://cyberduck.io>
 
 ### Cycript
 
@@ -1550,9 +1394,97 @@ cy# choose(SBIconModel)
 
 Learn more in the [Cycript Manual](http://www.cycript.org/manual/ "Cycript Manual").
 
+### Cydia
+
+Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
+
+Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
+
+- <http://apt.thebigboss.org/repofiles/cydia/>: One of the most popular repositories is BigBoss, which contains various packages, such as the BigBoss Recommended Tools package.
+- <https://cydia.akemi.ai/>: Add "Karen's Repo" to get the AppSync package.
+- <https://build.frida.re>: Install Frida by adding the repository to Cydia.
+- <https://repo.chariz.io>: Useful when managing your jailbreak on iOS 11.
+- <https://apt.bingner.com/>: Another repository, with quiet a few good tools, is Elucubratus, which gets installed when you install Cydia on iOS 12 using Unc0ver.
+
+> In case you are using the Sileo App Store, please keep in mind that the Sileo Compatibility Layer shares your sources between Cydia and Sileo, however, Cydia is unable to remove sources added in Sileo, and [Sileo is unable to remove sources added in Cydia](https://www.idownloadblog.com/2019/01/11/install-sileo-package-manager-on-unc0ver-jailbreak/ "You can now install the Sileo package manager on the unc0ver jailbreak"). Keep this in mind when you’re trying to remove sources.
+
+After adding all the suggested repositories above you can install the following useful packages from Cydia to get started:
+
+- adv-cmds: Advanced command line, which includes tools such as finger, fingerd, last, lsvfs, md, and ps.
+- AppList: Allows developers to query the list of installed apps and provides a preference pane based on the list.
+- Apt: Advanced Package Tool, which you can use to manage the installed packages similarly to DPKG, but in a more friendly way. This allows you to install, uninstall, upgrade, and downgrade packages from your Cydia repositories. Comes from Elucubratus.
+- AppSync Unified: Allows you to sync and install unsigned iOS applications.
+- BigBoss Recommended Tools: Installs many useful command line tools for security testing including standard Unix utilities that are missing from iOS, including wget, unrar, less, and sqlite3 client.
+- class-dump: A command line tool for examining the Objective-C runtime information stored in Mach-O files and generating header files with class interfaces.
+- class-dump-z: A command line tool for examining the Swift runtime information stored in Mach-O files and generating header files with class interfaces. This is not available via Cydia, therefore please refer to [installation steps](https://iosgods.com/topic/6706-how-to-install-class-dump-z-on-any-64bit-idevices-how-to-use-it/ "class-dump-z installation steps") in order to get class-dump-z running on your iOS device. Note that class-dump-z is not maintained and does not work well with Swift. It is recommended to use [dsdump](#dsdump "dsdump") instead.
+- Clutch: Used to decrypt an app executable.
+- Cycript: Is an inlining, optimizing, Cycript-to-JavaScript compiler and immediate-mode console environment that can be injected into running processes (associated to Substrate).
+- Cydia Substrate: A platform that makes developing third-party iOS add-ons easier via dynamic app manipulation or introspection.
+- cURL: Is a well known http client which you can use to download packages faster to your device. This can be a great help when you need to install different versions of Frida-server on your device for instance.
+- Darwin CC Tools: A useful set of tools like nm, and strip that are capable of auditing mach-o files.
+- IPA Installer Console: Tool for installing IPA application packages from the command line. After installing two commands will be available `installipa` and `ipainstaller` which are both the same.
+- Frida: An app you can use for dynamic instrumentation. Please note that Frida has changed its implementation of its APIs over time, which means that some scripts might only work with specific versions of the Frida-server (which forces you to update/downgrade the version also on macOS). Running Frida Server installed via APT or Cydia is recommended. Upgrading/downgrading afterwards can be done, by following the instructions of [this Github issue](https://github.com/AloneMonkey/frida-ios-dump/issues/65#issuecomment-490790602 "Resolving Frida version").
+- Grep: Handy tool to filter lines.
+- Gzip: A well known ZIP utility.
+- PreferenceLoader: A Substrate-based utility that allows developers to add entries to the Settings application, similar to the SettingsBundles that App Store apps use.
+- SOcket CAT: a utility with which you can connect to sockets to read and write messages. This can come in handy if you want to trace the syslog on iOS 12 devices.
+
+Besides Cydia there are several other open source tools available and should be installed, such as [Introspy](https://github.com/iSECPartners/Introspy-iOS "Introspy-iOS").
+
+Besides Cydia you can also ssh into your iOS device and you can install the packages directly via apt-get, like for example adv-cmds.
+
+```bash
+$ apt-get update
+$ apt-get install adv-cmds
+```
+
+### dsdump
+
+[dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
+
+The following example shows how you can dump Objective-C classes and Swift type descriptors of an iOS application.
+
+First verify if the app's main binary is a FAT binary containing ARM64:
+
+```bash
+$ otool -hv [APP_MAIN_BINARY_FILE]
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC     ARM         V7  0x00     EXECUTE    39       5016   NOUNDEFS DYLDLINK TWOLEVEL PIE
+Mach header
+      magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       5728   NOUNDEFS DYLDLINK TWOLEVEL PIE
+```
+
+If yes, then we specify the "--arch" parameter to "arm64", otherwise it is not needed if the binary only contains an ARM64 binary.
+
+```bash
+# Dump the Objective-C classes to a temporary file
+$ dsdump --objc --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/OBJC.txt
+
+# Dump the Swift type descriptors to a temporary file if the app is implemented in Swift
+$ dsdump --swift --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FILE] > /tmp/SWIFT.txt
+```
+
+You can find more information about the inner workings of dsdump and how to programmatically inspect a Mach-O binary to display the compiled Swift types and Objective-C classes in [this article](https://derekselander.github.io/dsdump/ "Building a class-dump in 2020").
+
+### Dumpdecrypted
+
+Dumpdecrypted dumps decrypted mach-o files from encrypted iPhone applications from memory to disk - <https://github.com/stefanesser/dumpdecrypted>
+
+### FileZilla
+
+A solution supporting FTP, SFTP, and FTPS (FTP over SSL/TLS) - <https://filezilla-project.org/download.php?show_all=1>
+
+Make sure that the following is installed on your system:
+
 ### Frida-cycript
 
 A fork of Cycript including a brand new runtime called Mjølner powered by Frida. This enables frida-cycript to run on all the platforms and architectures maintained by frida-core - <https://github.com/nowsecure/frida-cycript>
+
+### Frida-ios-dump
+
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
 ### Fridpa
 
@@ -1561,6 +1493,16 @@ An automated wrapper script for patching iOS applications (IPA files) and work o
 ### gdb
 
 A tool to perform runtime analysis of iOS applications - <https://cydia.radare.org/pool/main/g/gdb/>
+
+### ios-deploy
+
+With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
+
+```bash
+$ brew install ios-deploy
+```
+
+For the usage please refer to the section "ios-deploy" below which is part of "[Installing Apps](#installing-apps "Installing Apps")".
 
 ### IDB
 
@@ -1574,17 +1516,39 @@ Please keep in mind that IDB might be unstable and crash after selecting the app
 
 Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
 
+### iFunBox
+
+[iFunBox](http://www.i-funbox.com/ "iFunBox") is a file and app management tool that supports iOS. You can [download it for Windows and macOS](http://www.i-funbox.com/en_download.html "iFunBox").
+
+It has several features, like app installation, access the app sandbox without jailbreak and others.
+
+### iProxy
+
+A tool used to connect via SSH to a jailbroken iPhone via USB - <https://github.com/tcurdt/iProxy>
+
+### itunnel
+
+A tool used to forward SSH via USB - <https://code.google.com/p/iphonetunnel-usbmuxconnectbyport/downloads/list>
+
 ### Keychain-Dumper
 
 [Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
 
-#### TablePlus
-
-[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analyzing the content of them with a GUI tool.
-
 ### lldb
 
 A debugger by Apple’s Xcode used for debugging iOS applications - <https://lldb.llvm.org/>
+
+### MachoOView
+
+[MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
+
+### nm
+
+[nm](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm") is a tool that displays the name list (symbol table) of the given binary.
+
+### otool
+
+[otool](http://www.manpagez.com/man/1/otool/ "otool") is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
 
 ### Passionfruit
 
@@ -1611,19 +1575,59 @@ With Passionfruit it's possible to explore different kinds of information concer
 - Dump keychain items
 - Access to NSLog traces
 
+### Plutil
+
+A program that can convert .plist files between a binary version and an XML version - <https://www.theiphonewiki.com/wiki/Plutil>
+
+### Sileo
+
+Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
+
+### simctl
+
+simctl is an Xcode tool that allows you to interact with iOS simulators via the command line to e.g. manage simulators, launch apps, take screenshots or collect their logs.
+
 ### SSL Kill Switch 2
 
 Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and macOS Apps - <https://github.com/nabla-c0d3/ssl-kill-switch2>
+
+### swift-demangle
+
+swift-demangle is an Xcode tool that demangles Swift symbols. For more information run `xcrun swift-demangle -help` once installed.
+
+### TablePlus
+
+[TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analyzing the content of them with a GUI tool.
 
 ### Usbmuxd
 
 [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host computer. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
 
+### Weak Classdump
+
+A Cycript script that generates a header file for the class passed to the function. Most useful when classdump or dumpdecrypted cannot be used, when binaries are encrypted etc - <https://github.com/limneos/weak_classdump>
+
 ### Xcode
 
 Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools for developing software for macOS, iOS, watchOS, and tvOS. You can [download Xcode for free from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). Xcode will offer you different tools and functions to interact with an iOS device that can be helpful during a penetration test, such as analyzing logs or sideloading of apps.
 
+### Xcode Command Line Tools
+
+After installing [Xcode](#xcode), in order to make all development tools available systemwide, it is recommended to install the Xcode Command Line Tools package. This will be handy during testing of iOS apps as some of the tools (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
+
+```bash
+$ xcode-select --install
+```
+
+### xcrun
+
+[`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page") can be used invoke Xcode developer tools from the command-line, without having them in the path. For example you may want to use it to locate and run swift-demangle or simctl.
+
 ## Tools for Network Interception and Monitoring
+
+### Android tcpdump
+
+A command line packet capture utility for Android - <https://www.androidtcpdump.com>
 
 ### bettercap
 
@@ -1646,22 +1650,6 @@ $ apt-get install bettercap
 
 There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
 
-### MITM Relay
-
-A script to intercept and modify non-HTTP protocols through Burp and others with support for SSL and STARTTLS interception - <https://github.com/jrmdev/mitm_relay>
-
-### tcpdump
-
-A command line packet capture utility - <https://www.tcpdump.org/>
-
-### Android tcpdump
-
-A command line packet capture utility for Android - <https://www.androidtcpdump.com>
-
-### Wireshark
-
-An open-source packet analyzer - <https://www.wireshark.org/download.html>
-
 ### Burp Suite
 
 Burp Suite is an integrated platform for performing security testing mobile and web applications - <https://portswigger.net/burp/download.html>
@@ -1679,9 +1667,21 @@ PortSwigger provides good tutorials on setting up both Android as iOS devices to
 
 Please refer to the section "Setting up an Interception Proxy" in the [Android](0x05b-basic-security-testing#setting-up-an-interception-proxy "Setting up an Interception Proxy") and [iOS](0x06b-basic-security-testing#setting-up-an-interception-proxy "Setting up an Interception Proxy") "Basic Security Testing" chapters for more information.
 
+### MITM Relay
+
+A script to intercept and modify non-HTTP protocols through Burp and others with support for SSL and STARTTLS interception - <https://github.com/jrmdev/mitm_relay>
+
 ### OWASP Zed Attack Proxy (ZAP)
 
 A free security tool which helps to automatically find security vulnerabilities in web applications and web services - <https://github.com/zaproxy/zaproxy>
+
+### tcpdump
+
+A command line packet capture utility - <https://www.tcpdump.org/>
+
+### Wireshark
+
+An open-source packet analyzer - <https://www.wireshark.org/download.html>
 
 ## Vulnerable applications
 
