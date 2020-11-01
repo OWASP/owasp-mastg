@@ -22,63 +22,35 @@ Nevertheless, if the code has been purposefully obfuscated (or some tool-breakin
 
 #### Decompiling Java Code
 
-The process of decompilation consists of converting Java bytecode back into Java source code. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
+If you don't mind looking at Smali instead of Java, you can simply [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the Welcome screen (even if you don't intend to debug it you can take a look at the smali code).
 
-```bash
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
-$ adb install UnCrackable-Level1.apk
-```
+Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali. apktool allows you to reassemble the package, which is useful for patching and applying changes to e.g. the Android Manifest.
+
+If you want to look directly into Java source code on a GUI, simply open your APK using [jadx](0x08-Testing-Tools.md#jadx) or [Bytecode Viewer](0x08-Testing-Tools.md#bytecode-viewer).
+
+Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
+
+- [JD](http://jd.benow.ca/ "JD")
+- [JAD](http://www.javadecompilers.com/jad "JAD")
+- [jadx](https://github.com/skylot/jadx "jadx")
+- [Procyon](https://github.com/mstrobel/procyon "Procyon")
+- [CFR](https://www.benf.org/other/cfr/ "CFR")
+
+Alternatively run [apkx](0x08-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such an IDE.
+
+In the following example we'll be using [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk "UnCrackable App for Android Level 1"). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 <img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400" />
 
 Seems like we're expected to find some kind of secret code!
 
-We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file and look at the content.
-
-```bash
-$ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
-Archive:  UnCrackable-Level1.apk
-  inflating: UnCrackable-Level1/AndroidManifest.xml
-  inflating: UnCrackable-Level1/res/layout/activity_main.xml
-  inflating: UnCrackable-Level1/res/menu/menu_main.xml
- extracting: UnCrackable-Level1/res/mipmap-hdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-mdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-xhdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-xxhdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-xxxhdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/resources.arsc
-  inflating: UnCrackable-Level1/classes.dex
-  inflating: UnCrackable-Level1/META-INF/MANIFEST.MF
-  inflating: UnCrackable-Level1/META-INF/CERT.SF
-  inflating: UnCrackable-Level1/META-INF/CERT.RSA
-
-```
-
-In the standard setup, all the Java bytecode and app data is in the file `classes.dex` in the app root directory. This file conforms to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers take plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. You can do this with `dex2jar` or `enjarify`.
+We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file (`unzip UnCrackable-Level1.apk -d UnCrackable-Level1`) and look at the content. In the standard setup, all the Java bytecode and app data is in the file `classes.dex` in the app root directory (`UnCrackable-Level1/`). This file conforms to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers take plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. You can do this with `dex2jar` or `enjarify`.
 
 Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the [CFR decompiler](https://www.benf.org/other/cfr/ "CFR decompiler"). CFR is under active development, and brand-new releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
 
-The easiest way to run CFR is through `apkx`, which also packages `dex2jar` and automates extraction, conversion, and decompilation. Install it:
+The easiest way to run CFR is through [apkx](0x08-Testing-Tools.md#apkx), which also packages `dex2jar` and automates extraction, conversion, and decompilation. Run it on the APK and you should find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
 
-```bash
-$ git clone https://github.com/b-mueller/apkx
-$ cd apkx
-$ sudo ./install.sh
-```
-
-This should copy `apkx` to `/usr/local/bin`. Run it on `UnCrackable-Level1.apk`:
-
-```bash
-$ apkx UnCrackable-Level1.apk
-Extracting UnCrackable-Level1.apk to UnCrackable-Level1
-Converting: classes.dex -> classes.jar (dex2jar)
-dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
-Decompiling to UnCrackable-Level1/src (cfr)
-```
-
-You should now find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
-
-Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because Intellij uses the package name to identify the correct process.
+Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because IntelliJ uses the package name to identify the correct process.
 
 <img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px" />
 
