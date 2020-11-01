@@ -8,7 +8,7 @@ In many cases, it is most practical to configure a system proxy on the mobile de
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
-- [Burp Suite](https://portswigger.net/burp "Burp Suite")
+- [Burp Suite](0x08-Testing-Tools.md#burp-suite)
 - [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap)
 
 To use the interception proxy, you'll need run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
@@ -409,7 +409,7 @@ Verify that the server or termination proxy at which the HTTPS connection termin
 
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) or Burp Suite and make sure all requests are made via HTTPS instead of HTTP.
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
 > Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and Certificate Pinning".
@@ -457,8 +457,6 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 ### Tools
 
 - bettercap - <https://www.bettercap.org>
-- Burp Suite - <https://portswigger.net/burp/>
-- OWASP ZAP - <https://www.owasp.org/index.php/>
 - tcpdump - <https://www.androidtcpdump.com/>
 - Testssl.sh - <https://github.com/drwetter/testssl.sh>
 - Wireshark - <https://www.wireshark.org/>

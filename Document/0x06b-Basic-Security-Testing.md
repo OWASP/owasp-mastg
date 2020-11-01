@@ -14,7 +14,7 @@ The following is the most basic iOS app testing setup:
 - [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools) installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
-- Burp Suite or other interception proxy tool.
+- [Burp Suite](0x08-Testing-Tools.md#burp-suite) or other interception proxy tool.
 
 ### Testing Device
 
@@ -976,7 +976,7 @@ The documentation of Wireshark offers many examples for [Capture Filters](https:
 
 ### Setting up an Interception Proxy
 
-Burp Suite is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+[Burp Suite](0x08-Testing-Tools.md#burp-suite) is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your iOS device and host computer are connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 

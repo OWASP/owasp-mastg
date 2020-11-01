@@ -727,7 +727,7 @@ As an additional layer of security, push notifications can be encrypted by using
 
 ### Setting Up an Interception Proxy
 
-Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) and Burp Suite Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
+Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) and [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
 
 #### Interception Proxy for a Virtual Device
 
@@ -1083,7 +1083,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - APKMirror - <https://apkmirror.com>
 - APKPure - <https://apkpure.com>
 - apktool - <https://github.com/iBotPeaches/Apktool>
-- Burp Suite Professional - <https://portswigger.net/burp/>
 - Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
 - Capillary - <https://github.com/google/capillary>
 - Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
