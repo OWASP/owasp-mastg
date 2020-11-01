@@ -1054,7 +1054,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - libimobiledevice - <https://www.libimobiledevice.org/>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Objection - <https://github.com/sensepost/objection>
-- Radare2 - <https://github.com/radare/radare2>
 - Sileo - <https://cydia-app.com/sileo/>
 - SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
 - TablePlus - <https://tableplus.io/>

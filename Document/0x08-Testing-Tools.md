@@ -987,9 +987,6 @@ Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05
 
 [Radare2](https://github.com/radare/radare2 "Radare2") is a complete framework for reverse-engineering and analyzing binaries. The installation instructions can be found in the GitHub repository. To learn more on radare2 you may want to read the [official radare2 book](https://radare.gitbooks.io/radare2book/content/ "Radare2 book".
 
-
-- Retargetable Decompiler (RetDec): An open source machine-code decompiler based on LLVM. It can be used as a standalone program or as a plugin for IDA Pro or radare2 - <https://retdec.com/>
-
 ## Tools for Android
 
 ### Android Studio
@@ -1204,10 +1201,13 @@ Other resources where you might find useful information are:
 - [drozer GitHub page](https://github.com/FSecureLABS/drozer "GitHub repo")
 - [drozer Wiki](https://github.com/FSecureLABS/drozer/wiki "drozer Wiki")
 
-- Inspeckage: A tool developed to offer dynamic analysis of Android apps. By applying hooks to functions of the Android API, Inspeckage helps to understand what an Android application is doing at runtime - <https://github.com/ac-pm/Inspeckage>
-- jdb: A Java Debugger which allows to set breakpoints and print application variables. jdb uses the JDWP protocol - <https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jdb.html>
-- logcat-color: A colorful and highly configurable alternative to the adb logcat command from the Android SDK - <https://github.com/marshall/logcat-color>
-- VirtualHook: A hooking tool for applications on Android ART (>=5.0). It's based on VirtualApp and therefore does not require root permission to inject hooks - <https://github.com/rk700/VirtualHook>
+### Inspeckage
+
+A tool developed to offer dynamic analysis of Android apps. By applying hooks to functions of the Android API, Inspeckage helps to understand what an Android application is doing at runtime - <https://github.com/ac-pm/Inspeckage>
+
+### jdb
+
+A Java Debugger which allows to set breakpoints and print application variables. jdb uses the JDWP protocol - <https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jdb.html>
 
 ### Xposed
 
