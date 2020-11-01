@@ -992,7 +992,6 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 - Fridump - <https://github.com/Nightbringer21/fridump>
 - Objection - <https://github.com/sensepost/objection>
-- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - Burp Suite - <https://portswigger.net/burp>
 - Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
 

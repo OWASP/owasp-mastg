@@ -153,7 +153,7 @@ Additional brute force mitigation techniques are described on the OWASP page [Bl
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
-> Please keep in mind that the Burp Suite Community Edition has significant limitations apart from not being able to save projects. For example, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or OWASP ZAP.
+> Please keep in mind that the Burp Suite Community Edition has significant limitations apart from not being able to save projects. For example, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either Burp Suite Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap).
 
 Execute the following steps for a wordlist based brute force attack with Burp Intruder:
 
@@ -596,7 +596,6 @@ Note: in case of an application which requires L2 protection, it can be a good i
 
 - Burp Suite - <https://portswigger.net/burp/>
 - Using Burp Intruder - <https://portswigger.net/burp/documentation/desktop/tools/intruder/using>
-- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - jwtbrute - <https://github.com/jmaxxz/jwtbrute>
 - crackjwt - <https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py>
 - John the ripper - <https://github.com/magnumripper/JohnTheRipper>

@@ -727,7 +727,7 @@ As an additional layer of security, push notifications can be encrypted by using
 
 ### Setting Up an Interception Proxy
 
-Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; OWASP ZAP and Burp Suite Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
+Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) and Burp Suite Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
 
 #### Interception Proxy for a Virtual Device
 
@@ -786,7 +786,7 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
-> A video of setting up OWASP ZAP with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
+> A video of setting up [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
 
 A few other differences: from Android 8.0 (API level 26) onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 (API level 28) onward, the SSLSocket and SSLEngine will behave a little bit different in terms of error handling when something goes wrong during the handshakes.
 
@@ -1100,7 +1100,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Nathan - <https://github.com/mseclab/nathan>
 - Objection - <https://github.com/sensepost/objection>
-- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>

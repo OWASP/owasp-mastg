@@ -668,7 +668,7 @@ All data sent to third-party services should be anonymized. Data (such as applic
 ### Dynamic Analysis
 
 Check all requests to external services for embedded sensitive information.
-To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with _Burp Suite Professional_ or _OWASP ZAP_. Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with _Burp Suite Professional_ or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
 ## Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
 
@@ -1588,7 +1588,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - LiME - <https://github.com/504ensicsLabs/LiME>
 - Logcat - <http://developer.android.com/tools/help/logcat.html>
 - Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
-- OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
 - ProGuard - <http://proguard.sourceforge.net/>
 - Realm Browser - Realm Browser - <https://github.com/realm/realm-browser-osx>
 - Sqlite3 - <http://www.sqlite.org/cli.html>
