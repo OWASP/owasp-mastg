@@ -311,7 +311,7 @@ bash: # . ~/.bashrc
 
 On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via *procfs*. Thus, any information about a target process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command line tools for exploring process information, for instance lsof and vmmap, are removed to reduce the firmware size.
 
-In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using Cydia (the executable is not the latest version available, but nevertheless addresses our purpose).
+In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using [Cydia](0x08-Testing-Tools.md#cydia) (the executable is not the latest version available, but nevertheless addresses our purpose).
 
 #### Open Files
 
@@ -906,15 +906,11 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
 
-In the following sections you will be using r2frida to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. iGoat-Swift) that should be running on your iPhone (connected per USB). Use the following command:
+In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. iGoat-Swift) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
 $ r2 frida://usb//iGoat-Swift
 ```
-
-> See all options with `r2 frida://?`.
-
-Once in the r2frida session, all commands start with `\`. For example, in radare2 you'd run `i` to display the binary information, but in r2frida you'd use `\i`.
 
 ##### Memory Maps and Inspection
 
@@ -1065,7 +1061,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ##### Memory Dump
 
-You can dump the app's process memory with [objection](https://github.com/sensepost/objection "Objection") and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices"). To use these tools on a jailbroken phone, simply have frida-server installed and running.
+You can dump the app's process memory with [objection](0x08-Testing-Tools.md#objection) and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices"). To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 
@@ -1291,7 +1287,6 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 - Objection - <https://github.com/sensepost/objection>
 - Optool - <https://github.com/alexzielenski/optool>
 - OWASP UnCrackable Apps for iOS - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios>
-- r2frida - <https://github.com/nowsecure/r2frida>
 - Radare2 - <https://rada.re/r/>
 - Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
 - Swizzler project - <https://github.com/vtky/Swizzler2/>

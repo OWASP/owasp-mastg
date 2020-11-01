@@ -1,74 +1,16 @@
 # Android Basic Security Testing
 
-## Basic Android Testing Setup
+In the previous chapter, we provided an overview of the Android platform and described the structure of its apps. In this chapter, we'll talk about setting up a security testing environment and introduce basic processes and techniques you can use to test Android apps for security flaws. These basic processes are the foundation for the test cases outlined in the following chapters.
 
-By now, you should have a basic understanding of the way Android apps are structured and deployed. In this chapter, we'll talk about setting up a security testing environment and describe basic testing processes you'll be using. This chapter is the foundation for the more detailed testing methods discussed in later chapters.
+## Android Testing Setup
 
-You can set up a fully functioning test environment on almost any machine running Windows, Linux, or Mac OS.
+You can set up a fully functioning test environment on almost any machine running Windows, Linux, or macOS.
 
 ### Host Device
 
-At the very least, you'll need [Android Studio](https://developer.android.com/studio/index.html "Android Studio") (which comes with the Android SDK) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
+At the very least, you'll need [Android Studio](0x08-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08-Testing-Tools.md#android-sdk)) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
 
-In addition, you may want to complete your host setup by installing the [Android NDK](https://developer.android.com/ndk "Android NDK") if you're planing to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
-
-#### Setting up the Android SDK
-
-Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
-
-- Android 10.0 (API level 29)
-- Android 9.0 (API level 28)
-- Android 8.1 (API level 27)
-- Android 8.0 (API level 26)
-
-An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
-
-<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager" />
-
-Installed SDKs are on the following paths:
-
-Windows:
-
-```bash
-C:\Users\<username>\AppData\Local\Android\sdk
-```
-
-MacOS:
-
-```bash
-/Users/<username>/Library/Android/sdk
-```
-
-Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
-
-#### Setting up the Android NDK
-
-The Android NDK contains prebuilt versions of the native compiler and toolchain. Both the GCC and Clang compilers have traditionally been supported, but active support for GCC ended with NDK revision 14. The device architecture and host OS determine the appropriate version. The prebuilt toolchains are in the `toolchains` directory of the NDK, which contains one subdirectory for each architecture.
-
-|Architecture | Toolchain name|
-|------------ | --------------|
-|ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
-|x86-based|x86-&lt;gcc-version&gt;|
-|MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
-|ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
-|X86-64-based|x86_64-&lt;gcc-version&gt;|
-|MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
-
-Besides picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Native APIs vary by Android API level. Available sysroot directories for each Android API level can be found in `$NDK/platforms/`. Each API level directory contains subdirectories for the various CPUs and architectures.
-
-One possibility for setting up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier, however, the NDK allows you to create a so-called standalone toolchain, which is a temporary toolchain that incorporates the required settings.
-
-To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
-
-```bash
-$ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
-```
-
-This creates a standalone toolchain for Android 7.0 (API level 24) in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
-
-```bash
-$  export TOOLCHAIN=/tmp/android-7-toolchain
-```
+In addition, you may want to complete your host setup by installing the [Android NDK](0x08-Testing-Tools.md#android-ndk) if you're planing to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
 
 ### Testing Device
 
@@ -649,7 +591,7 @@ $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 ### Basic Network Monitoring/Sniffing
 
-[Remotely sniffing all Android traffic in real-time is possible with tcpdump, netcat (nc), and Wireshark](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark"). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+[Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with [tcpdump](0x08-Testing-Tools.md#tcpdump), netcat (nc), and [Wireshark](0x08-Testing-Tools.md#wireshark). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
 ```bash
 $ adb root
@@ -1153,15 +1095,12 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - frida-ps - <https://www.frida.re/docs/frida-ps/>
 - frida-trace - <https://www.frida.re/docs/frida-trace/>
 - gplaycli - <https://github.com/matlink/gplaycli>
-- House - <https://github.com/nccgroup/house>
 - Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
 - Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Nathan - <https://github.com/mseclab/nathan>
 - Objection - <https://github.com/sensepost/objection>
 - OWASP ZAP - <https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project>
-- R2frida - <https://github.com/nowsecure/r2frida/>
-- Radare2 - <https://rada.re/r/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
 - Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>

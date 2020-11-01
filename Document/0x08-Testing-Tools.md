@@ -220,7 +220,7 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 ### Frida
 
-[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written in Vala by Ole André Vadla Ravnås that works by injecting the [QuickJS](https://bellard.org/quickjs/) JavaScript engine (previously [Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
+[Frida](https://www.frida.re "Frida") is a free and open source dynamic code instrumentation toolkit written by Ole André Vadla Ravnås that works by injecting the [QuickJS](https://bellard.org/quickjs/) JavaScript engine (previously [Duktape](https://duktape.org/ "Duktape JavaScript Engine") and [V8](https://v8.dev/docs "V8 JavaScript Engine")) into the instrumented process. Frida lets you execute snippets of JavaScript into native apps on Android and iOS (as well as on [other platforms](https://www.frida.re/docs/home/ "So what is Frida, exactly?")).
 
 To install Frida locally, simply run:
 
@@ -758,10 +758,6 @@ There are many other functionalities available in Ghidra and most of them can be
 
 <img src="Images/Chapters/0x04c/Ghidra_string_window.png" alt="Ghidra strings window" />
 
-- HopperApp (Commercial Tool): A reverse engineering tool for macOS and Linux used to disassemble, decompile and debug 32/64bits Intel Mac, Linux, Windows and iOS executables - <https://www.hopperapp.com/>
-- IDA Pro (Commercial Tool): A Windows, Linux or macOS hosted multi-processor disassembler and debugger - <https://www.hex-rays.com/products/ida/index.shtml>
-- radare2: radare2 is a unix-like reverse engineering framework and command line tools - <https://www.radare.org/r/>
-
 ### radare2
 
 #### radare2 (Android)
@@ -996,6 +992,68 @@ Please refer to the chapter "[Tampering and Reverse Engineering on Android](0x05
 
 ## Tools for Android
 
+### Android Studio
+
+The official IDE for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development - <https://developer.android.com/studio/index.html>
+
+### Android SDK
+
+Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
+
+- Android 10.0 (API level 29)
+- Android 9.0 (API level 28)
+- Android 8.1 (API level 27)
+- Android 8.0 (API level 26)
+
+An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
+
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" alt="SDK Manager" />
+
+Installed SDKs are on the following paths:
+
+Windows:
+
+```bash
+C:\Users\<username>\AppData\Local\Android\sdk
+```
+
+MacOS:
+
+```bash
+/Users/<username>/Library/Android/sdk
+```
+
+Note: On Linux, you need to choose an SDK directory. `/opt`, `/srv`, and `/usr/local` are common choices.
+
+### Android NDK
+
+The Android NDK contains prebuilt versions of the native compiler and toolchain. Both the GCC and Clang compilers have traditionally been supported, but active support for GCC ended with NDK revision 14. The device architecture and host OS determine the appropriate version. The prebuilt toolchains are in the `toolchains` directory of the NDK, which contains one subdirectory for each architecture.
+
+|Architecture | Toolchain name|
+|------------ | --------------|
+|ARM-based|arm-linux-androideabi-&lt;gcc-version&gt;|
+|x86-based|x86-&lt;gcc-version&gt;|
+|MIPS-based|mipsel-linux-android-&lt;gcc-version&gt;|
+|ARM64-based|aarch64-linux-android-&lt;gcc-version&gt;|
+|X86-64-based|x86_64-&lt;gcc-version&gt;|
+|MIPS64-based|mips64el-linux-android-&lt;gcc-version&gt;|
+
+Besides picking the right architecture, you need to specify the correct sysroot for the native API level you want to target. The sysroot is a directory that contains the system headers and libraries for your target. Native APIs vary by Android API level. Available sysroot directories for each Android API level can be found in `$NDK/platforms/`. Each API level directory contains subdirectories for the various CPUs and architectures.
+
+One possibility for setting up the build system is exporting the compiler path and necessary flags as environment variables. To make things easier, however, the NDK allows you to create a so-called standalone toolchain, which is a temporary toolchain that incorporates the required settings.
+
+To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
+
+```bash
+$ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
+```
+
+This creates a standalone toolchain for Android 7.0 (API level 24) in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
+
+```bash
+$  export TOOLCHAIN=/tmp/android-7-toolchain
+```
+
 ### Busybox
 
 Busybox combines multiple common Unix utilities into a small single executable. The utilities included generally have fewer options than their full-featured GNU counterparts, but are sufficient enough to provide a complete environment on a small or embedded system. Busybox can be installed on a rooted device by downloading the Busybox application from Google Play Store. You can also download the binary directly from the [Busybox website](https://busybox.net "Busybox Website"). Once downloaded, make an `adb push busybox /data/local/tmp` to have the executable available on your phone. A quick overview of how to install and use Busybox can be found in the [Busybox FAQ](https://busybox.net/FAQ.html#getting_started "Busybox FAQ").
@@ -1217,7 +1275,9 @@ Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting
 
 ## Tools for iOS
 
-### Recommended Tools - iOS Device
+### Cydia
+
+Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
 
 Many tools on a jailbroken device can be installed by using Cydia, which is the unofficial AppStore for iOS devices and allows you to manage repositories. In Cydia you should add (if not already done by default) the following repositories by navigating to **Sources** -> **Edit**, then clicking **Add** in the top left:
 
@@ -1259,81 +1319,95 @@ $ apt-get update
 $ apt-get install adv-cmds
 ```
 
-### Recommended Tools - Host Computer
+### Sileo
 
-In order to analyze iOS apps, you should install the following tools on your host computer. We'll be referring to them throughout the guide. Please note that a great number of them will require macOS in order to run and therefore using a macOS computer is normally the recommendation when dealing with iOS apps.
+Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
 
-### Access Filesystem on iDevice
-
-#### iFunBox
-
-- iFunbox: The File and App Management Tool for iPhone, iPad & iPod Touch - <http://www.i-funbox.com>
+### iFunBox
 
 [iFunBox](http://www.i-funbox.com/ "iFunBox") is a file and app management tool that supports iOS. You can [download it for Windows and macOS](http://www.i-funbox.com/en_download.html "iFunBox").
 
 It has several features, like app installation, access the app sandbox without jailbreak and others.
 
-- iProxy: A tool used to connect via SSH to a jailbroken iPhone via USB - <https://github.com/tcurdt/iProxy>
-- itunnel: A tool used to forward SSH via USB - <https://code.google.com/p/iphonetunnel-usbmuxconnectbyport/downloads/list>
+### iProxy
 
-Once you are able to SSH into your jailbroken iPhone you can use an FTP client like the following to browse the file system:
+A tool used to connect via SSH to a jailbroken iPhone via USB - <https://github.com/tcurdt/iProxy>
 
-- Cyberduck: Libre FTP, SFTP, WebDAV, S3, Azure & OpenStack Swift browser for Mac and Windows - <https://cyberduck.io>
-- FileZilla: A solution supporting FTP, SFTP, and FTPS (FTP over SSL/TLS) - <https://filezilla-project.org/download.php?show_all=1>
+### itunnel
 
-### Reverse Engineering and Static Analysis
+A tool used to forward SSH via USB - <https://code.google.com/p/iphonetunnel-usbmuxconnectbyport/downloads/list>
 
-#### Tooling
+### Cyberduck
+
+Libre FTP, SFTP, WebDAV, S3, Azure & OpenStack Swift browser for Mac and Windows - <https://cyberduck.io>
+
+### FileZilla
+
+A solution supporting FTP, SFTP, and FTPS (FTP over SSL/TLS) - <https://filezilla-project.org/download.php?show_all=1>
 
 Make sure that the following is installed on your system:
 
-- [class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
+### class-dump
 
-- [class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
+[class-dump by Steve Nygard](http://stevenygard.com/projects/class-dump/ "class-dump") is a command line utility for examining the Objective-C runtime information stored in Mach-O (Mach object) files. It generates declarations for the classes, categories, and protocols.
 
-- [class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
+### class-dump-z
 
-- [dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
+[class-dump-z](https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki "class-dump-z") is class-dump re-written from scratch in C++, avoiding the use of dynamic calls. Removing these unnecessary calls makes class-dump-z nearly 10 times faster than its predecessor.
 
-- [MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
+### class-dump-dyld
 
-- [otool](http://www.manpagez.com/man/1/otool/ "otool") is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
+[class-dump-dyld by Elias Limneos](https://github.com/limneos/classdump-dyld/ "class-dump-dyld") allows symbols to be dumped and retrieved directly from the shared cache, eliminating the necessity of extracting the files first. It can generate header files from app binaries, libraries, frameworks, bundles, or the whole dyld_shared_cache. Directories or the entirety of dyld_shared_cache can be recursively mass-dumped.
 
-- [nm](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm") is a tool that displays the name list (symbol table) of the given binary.
+### MachoOView
 
-- [Radare2](https://rada.re/r/ "Radare2") is a complete framework for reverse engineering and analyzing. It is built with the Capstone disassembler engine, Keystone assembler, and Unicorn CPU emulation engine. Radare2 supports iOS binaries and many useful iOS-specific features, such as a native Objective-C parser and an iOS debugger.
+[MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
-- [Ghidra](https://ghidra-sre.org/ "Ghidra") is a software reverse engineering (SRE) suite of tools developed by NSA's Research Directorate. This tool has been discussed in "[Ghidra](0x04c-Tampering-and-Reverse-Engineering.md#ghidra "Ghidra")" section.
+### Xcode Command Line Tools
 
-##### Building a Reverse Engineering Environment for Free
-
-Be sure to follow the instructions from the section "Setting up Xcode and Command Line Tools" of chapter "iOS Basic Security Testing". This way you'll have properly installed [Xcode](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). We'll be using standard tools that come with macOS and Xcode in addition to the tools mentioned above. Make sure you have the [Xcode command line developer tools](https://railsapps.github.io/xcode-command-line-tools.html "Xcode Command Line Tools") properly installed or install them straight away from your terminal:
+After installing [Xcode](#xcode), in order to make all development tools available systemwide, it is recommended to install the Xcode Command Line Tools package. This will be handy during testing of iOS apps as some of the tools (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
 
 ```bash
 $ xcode-select --install
 ```
 
-- [`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page") can be used invoke Xcode developer tools from the command-line, without having them in the path. For example you may want to use it to locate and run swift-demangle or simctl.
-- swift-demangle is an Xcode tool that demangles Swift symbols. For more information run `xcrun swift-demangle -help` once installed.
-- simctl is an Xcode tool that allows you to interact with iOS simulators via the command line to e.g. manage simulators, launch apps, take screenshots or collect their logs.
+### xcrun
 
-##### Commercial Tools
+[`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page") can be used invoke Xcode developer tools from the command-line, without having them in the path. For example you may want to use it to locate and run swift-demangle or simctl.
 
-Building a reverse engineering environment for free is possible. However, there are some commercial alternatives. The most commonly used are:
+### swift-demangle
 
-- [IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") can deal with iOS binaries. It has a built-in iOS debugger. IDA is widely seen as the gold standard for GUI-based interactive static analysis, but it isn't cheap. For the more budget-minded reverse engineer, [Hopper](https://www.hopperapp.com/ "Hopper") offers similar static analysis features.
+swift-demangle is an Xcode tool that demangles Swift symbols. For more information run `xcrun swift-demangle -help` once installed.
 
-- [Hopper](https://www.hopperapp.com/ "Hopper") is a reverse engineering tool for macOS and Linux used to disassemble, decompile and debug 32/64bits Intel Mac, Linux, Windows and iOS executables.
+### simctl
 
-- class-dump: A command-line utility for examining the Objective-C runtime information stored in Mach-O files - <http://stevenygard.com/projects/class-dump/>
-- Clutch: Decrypt the application and dump specified bundleID into binary or IPA file - <https://github.com/KJCracks/Clutch>
-- Dumpdecrypted: Dumps decrypted mach-o files from encrypted iPhone applications from memory to disk - <https://github.com/stefanesser/dumpdecrypted>
-- hopperscripts: Collection of scripts that can be used to demangle Swift function names in HopperApp - <https://github.com/Januzellij/hopperscripts>
-- otool: A tool that displays specified parts of object files or libraries - <https://www.unix.com/man-page/osx/1/otool/>
-- Plutil: A program that can convert .plist files between a binary version and an XML version - <https://www.theiphonewiki.com/wiki/Plutil>
-- Weak Classdump: A Cycript script that generates a header file for the class passed to the function. Most useful when classdump or dumpdecrypted cannot be used, when binaries are encrypted etc - <https://github.com/limneos/weak_classdump>
+simctl is an Xcode tool that allows you to interact with iOS simulators via the command line to e.g. manage simulators, launch apps, take screenshots or collect their logs.
 
-#### ios-deploy
+### nm
+
+[nm](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm") is a tool that displays the name list (symbol table) of the given binary.
+
+### Clutch
+
+Clutch decrypts iOS applications and dumps specified bundleID into binary or IPA file - <https://github.com/KJCracks/Clutch>
+
+### Dumpdecrypted
+
+Dumpdecrypted dumps decrypted mach-o files from encrypted iPhone applications from memory to disk - <https://github.com/stefanesser/dumpdecrypted>
+
+### otool
+
+[otool](http://www.manpagez.com/man/1/otool/ "otool") is a tool for displaying specific parts of object files or libraries. It works with Mach-O files and universal file formats.
+
+### Plutil
+
+A program that can convert .plist files between a binary version and an XML version - <https://www.theiphonewiki.com/wiki/Plutil>
+
+### Weak Classdump
+
+A Cycript script that generates a header file for the class passed to the function. Most useful when classdump or dumpdecrypted cannot be used, when binaries are encrypted etc - <https://github.com/limneos/weak_classdump>
+
+### ios-deploy
 
 With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
@@ -1343,11 +1417,11 @@ $ brew install ios-deploy
 
 For the usage please refer to the section "ios-deploy" below which is part of "[Installing Apps](#installing-apps "Installing Apps")".
 
-#### Frida-ios-dump
+### Frida-ios-dump
 
 [Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
-#### dsdump
+### dsdump
 
 [dsdump](https://github.com/DerekSelander/dsdump "dsdump") is a tool to dump Objective-C classes and Swift type descriptors (classes, structs, enums). It only supports Swift version 5 or higher and does not support ARM 32-bit binaries.
 
@@ -1377,15 +1451,19 @@ $ dsdump --swift --color --verbose=5 --arch arm64 --defined [APP_MAIN_BINARY_FIL
 
 You can find more information about the inner workings of dsdump and how to programmatically inspect a Mach-O binary to display the compiled Swift types and Objective-C classes in [this article](https://derekselander.github.io/dsdump/ "Building a class-dump in 2020").
 
-### Dynamic and Runtime Analysis
+### bfinject
 
-- bfinject: A tool that loads arbitrary dylibs into running App Store apps. It has built-in support for decrypting App Store apps, and comes bundled with iSpy and Cycript - <https://github.com/BishopFox/bfinject>
-- BinaryCookieReader: A tool to dump all the cookies from the binary Cookies.binarycookies file - <https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py>
-- Burp Suite Mobile Assistant: A tool to bypass certificate pinning and is able to inject into apps - <https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html>
+A tool that loads arbitrary dylibs into running App Store apps. It has built-in support for decrypting App Store apps, and comes bundled with iSpy and Cycript - <https://github.com/BishopFox/bfinject>
 
-#### Cycript
+### BinaryCookieReader
 
-- Cycript: A tool that allows developers to explore and modify running applications on either iOS or macOS using a hybrid of Objective-C and JavaScript syntax through an interactive console that features syntax highlighting and tab completion - <http://www.cycript.org>
+A tool to dump all the cookies from the binary Cookies.binarycookies file - <https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py>
+
+### Burp Suite Mobile Assistant
+
+A tool to bypass certificate pinning and is able to inject into apps - <https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html>
+
+### Cycript
 
 Cydia Substrate (formerly called MobileSubstrate) is the standard framework for developing Cydia runtime patches (the so-called "Cydia Substrate Extensions") on iOS. It comes with Cynject, a tool that provides code injection support for C.
 
@@ -1472,13 +1550,19 @@ cy# choose(SBIconModel)
 
 Learn more in the [Cycript Manual](http://www.cycript.org/manual/ "Cycript Manual").
 
-- Frida-cycript: A fork of Cycript including a brand new runtime called Mjølner powered by Frida. This enables frida-cycript to run on all the platforms and architectures maintained by frida-core - <https://github.com/nowsecure/frida-cycript>
-- Fridpa: An automated wrapper script for patching iOS applications (IPA files) and work on non-jailbroken device - <https://github.com/tanprathan/Fridpa>
-- gdb: A tool to perform runtime analysis of iOS applications - <https://cydia.radare.org/pool/main/g/gdb/>
+### Frida-cycript
 
-#### IDB
+A fork of Cycript including a brand new runtime called Mjølner powered by Frida. This enables frida-cycript to run on all the platforms and architectures maintained by frida-core - <https://github.com/nowsecure/frida-cycript>
 
-- idb: A tool to simplify some common tasks for iOS pentesting and research - <https://github.com/dmayer/idb>
+### Fridpa
+
+An automated wrapper script for patching iOS applications (IPA files) and work on non-jailbroken device - <https://github.com/tanprathan/Fridpa>
+
+### gdb
+
+A tool to perform runtime analysis of iOS applications - <https://cydia.radare.org/pool/main/g/gdb/>
+
+### IDB
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
 
@@ -1486,11 +1570,11 @@ Once you click on the button **Connect to USB/SSH device** in IDB and key in the
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
-- Introspy-iOS: Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
+### Introspy-iOS
 
-#### Keychain-Dumper
+Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
 
-- keychaindumper: A tool to check which keychain items are available to an attacker once an iOS device has been jailbroken - <https://github.com/ptoomey3/Keychain-Dumper>
+### Keychain-Dumper
 
 [Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
 
@@ -1498,11 +1582,11 @@ Please keep in mind that IDB might be unstable and crash after selecting the app
 
 [TablePlus](https://tableplus.io/ "TablePlus") is a tool for Windows and macOS to inspect database files, like Sqlite and others. This can be very useful during iOS engagements when dumping the database files from the iOS device and analyzing the content of them with a GUI tool.
 
-- lldb: A debugger by Apple’s Xcode used for debugging iOS applications - <https://lldb.llvm.org/>
+### lldb
 
-#### Passionfruit
+A debugger by Apple’s Xcode used for debugging iOS applications - <https://lldb.llvm.org/>
 
-- Passionfruit: Simple iOS app blackbox assessment tool with Fully web based GUI. Powered by frida.re and vuejs - <https://github.com/chaitin/passionfruit>
+### Passionfruit
 
 [Passionfruit](https://github.com/chaitin/passionfruit/ "Passionfruit") is an iOS app blackbox assessment tool that is using the Frida server on the iOS device and visualizes many standard app data via Vue.js-based GUI. It can be installed with npm.
 
@@ -1527,11 +1611,17 @@ With Passionfruit it's possible to explore different kinds of information concer
 - Dump keychain items
 - Access to NSLog traces
 
-### Bypassing Jailbreak Detection and SSL Pinning
+### SSL Kill Switch 2
 
-- SSL Kill Switch 2: Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and macOS Apps - <https://github.com/nabla-c0d3/ssl-kill-switch2>
-- tsProtector: A tool for bypassing Jailbreak detection - <http://cydia.saurik.com/package/kr.typostudio.tsprotector8>
-- Xcon: A tool for bypassing Jailbreak detection - <http://cydia.saurik.com/package/com.n00neimp0rtant.xcon/>
+Blackbox tool to disable SSL certificate validation - including certificate pinning - within iOS and macOS Apps - <https://github.com/nabla-c0d3/ssl-kill-switch2>
+
+### Usbmuxd
+
+[usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host computer. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
+
+### Xcode
+
+Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools for developing software for macOS, iOS, watchOS, and tvOS. You can [download Xcode for free from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). Xcode will offer you different tools and functions to interact with an iOS device that can be helpful during a penetration test, such as analyzing logs or sideloading of apps.
 
 ## Tools for Network Interception and Monitoring
 
@@ -1592,13 +1682,6 @@ Please refer to the section "Setting up an Interception Proxy" in the [Android](
 ### OWASP Zed Attack Proxy (ZAP)
 
 A free security tool which helps to automatically find security vulnerabilities in web applications and web services - <https://github.com/zaproxy/zaproxy>
-
-## IDEs
-
-- Android Studio: The official IDE for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development - <https://developer.android.com/studio/index.html>
-- IntelliJ IDEA: A Java IDE for developing computer software - <https://www.jetbrains.com/idea/download/>
-- Eclipse: Eclipse is an IDE used in computer programming, and is the most widely used Java IDE - <https://eclipse.org/>
-- Xcode: The official IDE to create apps for iOS, watchOS, tvOS and macOS. It's only available for macOS - <https://developer.apple.com/xcode/>
 
 ## Vulnerable applications
 

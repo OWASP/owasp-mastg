@@ -69,7 +69,7 @@ if(error==nil){
 
 #### Checking Protocol Handlers
 
-You can check protocol handlers by attempting to open a Cydia URL. The Cydia app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
+You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0x08-Testing-Tools.md#cydia) app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
 ```objectivec
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){

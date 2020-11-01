@@ -1,29 +1,20 @@
 # iOS Basic Security Testing
 
-In the previous chapter, we provided an overview of the iOS platform and described the structure of iOS apps. In this chapter, we'll introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes are the foundation for the test cases outlined in the following chapters.
+In the previous chapter, we provided an overview of the iOS platform and described the structure of its apps. In this chapter, we'll talk about setting up a security testing environment and introduce basic processes and techniques you can use to test iOS apps for security flaws. These basic processes are the foundation for the test cases outlined in the following chapters.
 
 ## iOS Testing Setup
 
-### Host Device
-
 Although you can use a Linux or Windows host computer for testing, you'll find that many tasks are difficult or impossible on these platforms. In addition, the Xcode development environment and the iOS SDK are only available for macOS. This means that you'll definitely want to work on macOS for source code analysis and debugging (it also makes black box testing easier).
+
+### Host Device
 
 The following is the most basic iOS app testing setup:
 
-- Ideally macOS host computer with admin rights.
+- Ideally macOS host computer with admin rights
+- [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools) installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
 - Burp Suite or other interception proxy tool.
-
-#### Setting up Xcode and Command Line Tools
-
-Xcode is an Integrated Development Environment (IDE) for macOS that contains a suite of tools for developing software for macOS, iOS, watchOS, and tvOS. You can [download Xcode for free from the official Apple website](https://developer.apple.com/xcode/ide/ "Apple Xcode IDE"). Xcode will offer you different tools and functions to interact with an iOS device that can be helpful during a penetration test, such as analyzing logs or sideloading of apps.
-
-All development tools are already included within Xcode, but they are not available within your terminal. In order to make them available systemwide, it is recommended to install the Command Line Tools package. This will be handy during testing of iOS apps as some of the tools you will be using later (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
-
-```bash
-$ xcode-select --install
-```
 
 ### Testing Device
 
@@ -87,11 +78,7 @@ iOS jailbreaking is often compared to Android rooting, but the process is actual
 
 On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
 
-The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device. The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
-
-Cydia is an alternative app store developed by Jay Freeman (aka "saurik") for jailbroken devices. It provides a graphical user interface and a version of the Advanced Packaging Tool (APT). You can easily access many "unsanctioned" app packages through Cydia. Most jailbreaks install Cydia automatically.
-
-Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
+The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08-Testing-Tools.md#cydia) or [Sileo](0x08-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
 
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
@@ -149,11 +136,11 @@ One of the most common things you do when testing an app is accessing the device
 
 #### Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either Cydia (see screenshot above) or Sileo installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08-Testing-Tools.md#cydia) (see screenshot above) or [Sileo](0x08-Testing-Tools.md#sileo) installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250" />
 
-In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the Settings -> Wi-Fi menu and tapping once on the info icon of the network you're connected to.
+In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the **Settings -> Wi-Fi** menu and tapping once on the info icon of the network you're connected to.
 
 You can now access the remote device's shell by running `ssh root@<device_ip_address>`, which will log you in as the root user:
 
@@ -187,11 +174,9 @@ If you forget your password and want to reset it to the default `alpine`:
 
 ##### Connect to a Device via SSH over USB
 
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](https://github.com/libimobiledevice/usbmuxd "usbmuxd") to connect to your device's SSH server via USB.
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](0x08-Testing-Tools.md#usbmuxd) to connect to your device's SSH server via USB.
 
-Usbmuxd is a socket daemon that monitors USB iPhone connections. You can use it to map the mobile device's localhost listening sockets to TCP ports on your host computer. This allows you to conveniently SSH into your iOS device without setting up an actual network connection. When usbmuxd detects an iPhone running in normal mode, it connects to the phone and begins relaying requests that it receives via `/var/run/usbmuxd`.
-
-Connect macOS to an iOS device by installing and starting iproxy:
+Connect macOS to an iOS device by installing and starting [iproxy](0x08-Testing-Tools.md#iproxy):
 
 ```bash
 $ brew install libimobiledevice
@@ -247,7 +232,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 #### Passionfruit
 
-After starting Passionfruit you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
+After starting [Passionfruit](0x08-Testing-Tools.md#passionfruit) you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory" />
 
@@ -925,7 +910,7 @@ Finally, since the keychain dumper is executed from within the application conte
 
 ##### Passionfruit (Jailbroken / non-Jailbroken)
 
-With Passionfruit it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
+With [Passionfruit](0x08-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="450" />
 
@@ -968,7 +953,7 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 
 ### Basic Network Monitoring/Sniffing
 
-You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have Wireshark installed on your macOS host computer.
+You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have [Wireshark](0x08-Testing-Tools.md#wireshark) installed on your macOS host computer.
 
 1. Connect your iOS device to your macOS host computer via USB.
 2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
@@ -1069,7 +1054,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - libimobiledevice - <https://www.libimobiledevice.org/>
 - MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
 - Objection - <https://github.com/sensepost/objection>
-- Passionfruit - <https://github.com/chaitin/passionfruit/>
 - Radare2 - <https://github.com/radare/radare2>
 - Sileo - <https://cydia-app.com/sileo/>
 - SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
