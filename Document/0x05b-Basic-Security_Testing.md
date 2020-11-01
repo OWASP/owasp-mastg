@@ -1132,19 +1132,15 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 ### Tools
 
 - adb - <https://developer.android.com/studio/command-line/adb>
-- Androbugs - <https://github.com/AndroBugs/AndroBugs_Framework>
 - Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
 - Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
 - Android Studio - <https://developer.android.com/studio/index.html>
 - Android tcpdump - <https://www.androidtcpdump.com/>
 - Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
-- Android-SSL-TrustKiller - <https://github.com/iSECPartners/Android-SSL-TrustKiller>
-- angr - <https://github.com/angr/angr>
 - APK Extractor - <https://play.google.com/store/apps/details?id=com.ext.ui>
 - APKMirror - <https://apkmirror.com>
 - APKPure - <https://apkpure.com>
 - apktool - <https://github.com/iBotPeaches/Apktool>
-- apkx - <https://github.com/b-mueller/apkx>
 - Burp Suite Professional - <https://portswigger.net/burp/>
 - Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
 - Capillary - <https://github.com/google/capillary>
@@ -1158,10 +1154,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - frida-trace - <https://www.frida.re/docs/frida-trace/>
 - gplaycli - <https://github.com/matlink/gplaycli>
 - House - <https://github.com/nccgroup/house>
-- InsecureBankv2 - <https://github.com/dineshshetty/Android-InsecureBankv2>
-- Inspeckage - <https://github.com/ac-pm/Inspeckage>
-- JAADAS - <https://github.com/flankerhqd/JAADAS>
-- JustTrustMe - <https://github.com/Fuzion24/JustTrustMe>
 - Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
 - Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
 - Mitm-relay - <https://github.com/jrmdev/mitm_relay>
@@ -1173,7 +1165,6 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - R2frida - <https://github.com/nowsecure/r2frida/>
 - Radare2 - <https://rada.re/r/>
 - SDK tools - <https://developer.android.com/studio/index.html#downloads>
-- SSLUnpinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
 - Termux - <https://play.google.com/store/apps/details?id=com.termux>
 - Wireshark - <https://www.wireshark.org/>
 - Xposed - <https://www.xda-developers.com/xposed-framework-hub/>

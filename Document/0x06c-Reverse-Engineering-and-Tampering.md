@@ -581,7 +581,7 @@ For Android, we used Angr's symbolic execution engine to solve a challenge. In t
 
 ### Angr
 
-Angr is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
+[Angr](0x08-Testing-Tools.md#angr) is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
 
 > The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case.
 

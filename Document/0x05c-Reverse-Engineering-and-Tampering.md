@@ -268,7 +268,7 @@ In order to extract strings from native code used in an Android application, you
 
 ##### Java and Kotlin
 
-There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage** in jadx](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx").
+There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage**](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx - find-usage") in [jadx](0x08-Testing-Tools.md#jadx).
 
 ##### Native Code
 
@@ -520,7 +520,7 @@ $ objection explore
 
 As mentioned previously, Android runs on top of a modified Linux kernel and retains the [proc filesystem](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") (procfs) from Linux, which is mounted at `/proc`. Procfs provides a directory-based view of a process running on the system, providing detailed information about the process itself, its threads, and other system-wide diagnostics. Procfs is arguably one of the most important filesystems on Android, where many OS native tools depend on it as their source of information.
 
-Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using BusyBox. We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
+Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using [BusyBox](0x08-Testing-Tools.md#busybox). We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
 
 In this section, we will be using information from procfs directly or indirectly to gather information about a running process.
 
@@ -1061,7 +1061,7 @@ $ emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-
 
 Unfortunately, generating a complete guest instruction trace with QEMU is impossible because code blocks are written to the log only at the time they are translated, not when they're taken from the cache. For example, if a block is repeatedly executed in a loop, only the first iteration will be printed to the log. There's no way to disable TB caching in QEMU (besides hacking the source code). Nevertheless, the functionality is sufficient for basic tasks, such as reconstructing the disassembly of a natively executed cryptographic algorithm.
 
-Dynamic analysis frameworks, such as [PANDA](0x08-Testing-Tools.md#panda) and [DroidScope](0x08-Testing-Tools.md#droidscope), build on QEMU's tracing functionality. PANDA/PANDROID is the best choice if you're going for a CPU-trace based analysis because it allows you to easily record and replay a full trace and is relatively easy to set up if you follow the build instructions for Ubuntu.
+Dynamic analysis frameworks, such as [PANDA](https://github.com/moyix/panda/blob/master/docs/ "PANDA Docs") and DroidScope (an extension to the [DECAF dynamic analysis framework](https://github.com/sycurelab/DECAF "DECAF dynamic analysis framework")), build on QEMU's tracing functionality. PANDA/PANDROID is the best choice if you're going for a CPU-trace based analysis because it allows you to easily record and replay a full trace and is relatively easy to set up if you follow the build instructions for Ubuntu.
 
 ### Binary Analysis
 
@@ -2598,5 +2598,3 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
 - Procyon Decompiler - <https://bitbucket.org/mstrobel/procyon/overview>
 - Radare2 - <https://www.radare.org>
-- smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smalidea>
-- VxStripper - <http://vxstripper.pagesperso-orange.fr>
