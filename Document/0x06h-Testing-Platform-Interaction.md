@@ -3151,17 +3151,6 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object deserialization, if any, is implemented using safe serialization APIs."
 
-### Tools
-
-- Apple App Site Association (AASA) Validator - <https://branch.io/resources/aasa-validator>
-- Frida - <https://www.frida.re/>
-- frida-trace - <https://www.frida.re/docs/frida-trace/>
-- IDB - <https://www.idbtool.com/>
-- Needle - <https://github.com/mwrlabs/needle>
-- Objection - <https://github.com/sensepost/objection>
-- ObjC Method Observer - <https://codeshare.frida.re/@mrmacete/objc-method-observer/>
-- Radare2 - <https://rada.re>
-
 ### Regarding Object Persistence in iOS
 
 - <https://developer.apple.com/documentation/foundation/NSSecureCoding>

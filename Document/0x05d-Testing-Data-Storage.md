@@ -569,9 +569,7 @@ You should check the apps' source code for logging mechanisms by searching for t
   - logging
   - logs
 
-While preparing the production release, you can use tools like `ProGuard` (included in Android Studio). [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
-
-To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s exmaple of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
+While preparing the production release, you can use tools like [ProGuard](0x08-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
 ```java
 -assumenosideeffects class android.util.Log
@@ -1481,7 +1479,7 @@ To navigate through class instances that were saved in the memory dump, select t
 
 <img src="Images/Chapters/0x05d/Package_Tree_View.png" width="550px" />
 
-For more advanced analysis of the memory dump, use the Eclipse Memory Analyzer Tool (MAT). It is available as an Eclipse plugin and as a standalone application.
+For more advanced analysis of the memory dump, use the [Eclipse Memory Analyzer Tool (MAT)](https://eclipse.org/mat/downloads.php "Eclipse Memory Analyzer Tool"). It is available as an Eclipse plugin and as a standalone application.
 
 To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with the Android SDK.
 
@@ -1576,21 +1574,6 @@ The dynamic analysis depends on the checks enforced by the app and their expecte
 - MSTG-STORAGE-10: "The app does not hold sensitive data in memory longer than necessary, and memory is cleared explicitly after use."
 - MSTG-STORAGE-11: "The app enforces a minimum device-access-security policy, such as requiring the user to set a device passcode."
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
-
-### Tools
-
-- Android Backup Extractor - <https://github.com/nelenkov/android-backup-extractor>
-- Burp Suite Professional - <https://portswigger.net/burp/>
-- Drozer - <https://labs.mwrinfosecurity.com/tools/drozer/>
-- Eclipse Memory Analyzer (MAT) - <https://eclipse.org/mat/downloads.php>
-- Firebase Scanner - <https://github.com/shivsahni/FireBaseScanner>
-- Fridump - <https://github.com/Nightbringer21/fridump>
-- LiME - <https://github.com/504ensicsLabs/LiME>
-- Logcat - <http://developer.android.com/tools/help/logcat.html>
-- Memory Monitor - <http://developer.android.com/tools/debugging/debugging-memory.html#ViewHeap>
-- ProGuard - <http://proguard.sourceforge.net/>
-- Realm Browser - Realm Browser - <https://github.com/realm/realm-browser-osx>
-- Sqlite3 - <http://www.sqlite.org/cli.html>
 
 ### Libraries
 

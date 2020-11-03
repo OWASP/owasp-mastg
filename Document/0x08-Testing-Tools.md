@@ -508,6 +508,10 @@ The following is displayed:
 
 Refer to [MobSF documentation](https://mobsf.github.io/docs "MobSF documentation") for more details.
 
+### nm
+
+nm is a tool that displays the name list (symbol table) of the given binary. You can find more information for the [Android (GNU)](<https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html> "nm -binutils") version and [for iOS](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm").
+
 ### Objection
 
 [Objection](https://github.com/sensepost/objection "Objection on GitHub") is a "runtime mobile exploration toolkit, powered by Frida". Its main goal is to allow security testing on non-rooted devices through an intuitive interface.
@@ -1189,6 +1193,24 @@ Other resources where you might find useful information are:
 - [drozer GitHub page](https://github.com/FSecureLABS/drozer "GitHub repo")
 - [drozer Wiki](https://github.com/FSecureLABS/drozer/wiki "drozer Wiki")
 
+### gplaycli
+
+[gplaycli](https://github.com/matlink/gplaycli "gplaycli") is a Python based CLI tool to search, install and update Android applications from the Google Play Store. Follow the [installation steps](https://github.com/matlink/gplaycli#installation "gplaycli Installation") and you're ready to run it. gplaycli offers several options, please refer to its help (`-h`) for more information.
+
+If you're unsure about the package name (or AppID) of an app, you may perform a keyword based search for APKs (`-s`):
+
+```bash
+$ gplaycli -s "google keep"
+
+Title                          Creator     Size      Last Update  AppID                                    Version
+
+Google Keep - notes and lists  Google LLC  15.78MB   4 Sep 2019   com.google.android.keep                  193510330
+Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.android.apps.maps             1016200134
+Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
+```
+
+> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](#alternative-app-stores "Alternative App Stores")".
+
 ### House
 
 [House](https://github.com/nccgroup/house "House") is a runtime mobile application analysis toolkit for Android apps, developed and maintained by the NCC Group and is written in Python.
@@ -1221,6 +1243,10 @@ You can get familiar with Magisk reading the official [documentation on GitHub](
 
 Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting with Magisk").
 
+### Proguard
+
+[ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
+
 ### QARK
 
 A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
@@ -1232,6 +1258,10 @@ A Cydia Substrate Module used to check for commonly known indications of root - 
 ### SSLUnpinning
 
 An Xposed Module to bypass SSL certificate pinning - <https://github.com/ac-pm/SSLUnpinning_Xposed>
+
+### Termux
+
+Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
 
 ### Xposed
 
@@ -1484,7 +1514,7 @@ A fork of Cycript including a brand new runtime called Mjølner powered by Frida
 
 ### Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") allows you to pull a decrypted IPA from an iOS device. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
+[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") is a Python script that helps you retrieve the decrypted version of an iOS app (IPA) from an iOS device. It supports both Python 2 and Python 3 and requires Frida running on your iOS device (jailbroken or not). This tool uses Frida's [Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida Memory API") to dump the memory of the running app and recreate an IPA file. Because the code is extracted from memory, it is automatically decrypted. Please refer to the section ["Using Frida-ios-dump"](#using-frida-ios-dump "Using Frida-ios-dump") for detailed instructions on how to use it.
 
 ### Fridpa
 
@@ -1494,16 +1524,6 @@ An automated wrapper script for patching iOS applications (IPA files) and work o
 
 A tool to perform runtime analysis of iOS applications - <https://cydia.radare.org/pool/main/g/gdb/>
 
-### ios-deploy
-
-With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
-
-```bash
-$ brew install ios-deploy
-```
-
-For the usage please refer to the section "ios-deploy" below which is part of "[Installing Apps](#installing-apps "Installing Apps")".
-
 ### IDB
 
 [IDB](https://www.idbtool.com "IDBTool") is an open source tool to simplify some common tasks for iOS app security assessments and research. The [installation instructions for IDB](https://www.idbtool.com/installation/ "IDB Installation") are available in the documentation.
@@ -1512,15 +1532,41 @@ Once you click on the button **Connect to USB/SSH device** in IDB and key in the
 
 Please keep in mind that IDB might be unstable and crash after selecting the app.
 
-### Introspy-iOS
-
-Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
-
 ### iFunBox
 
 [iFunBox](http://www.i-funbox.com/ "iFunBox") is a file and app management tool that supports iOS. You can [download it for Windows and macOS](http://www.i-funbox.com/en_download.html "iFunBox").
 
 It has several features, like app installation, access the app sandbox without jailbreak and others.
+
+### Introspy-iOS
+
+Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
+
+### ios-deploy
+
+With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
+
+```bash
+$ brew install ios-deploy
+```
+
+Alternatively:
+
+```bash
+$ git clone https://github.com/ios-control/ios-deploy.git
+$ cd ios-deploy/
+$ xcodebuild
+$ cd build/Release
+$ ./ios-deploy
+$ ln -s <your-path-to-ios-deploy>/build/Release/ios-deploy /usr/local/bin/ios-deploy
+```
+
+The last line creates a symbolic link and makes the executable available system-wide. Reload your shell to make the new commands available:
+
+```bash
+zsh: # . ~/.zshrc
+bash: # . ~/.bashrc
+```
 
 ### iProxy
 
@@ -1532,7 +1578,17 @@ A tool used to forward SSH via USB - <https://code.google.com/p/iphonetunnel-usb
 
 ### Keychain-Dumper
 
-[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. Please refer to the section "[Keychain-dumper (Jailbroken)](#keychain-dumper-jailbroken "Keychain-dumper (Jailbroken)")" for detailed instructions on how to use it.
+[Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") is an iOS tool to check which keychain items are available to an attacker once an iOS device has been jailbroken. The easiest way to get the tool is to download the binary from its GitHub repo and run it from your device:
+
+```bash
+$ git clone https://github.com/ptoomey3/Keychain-Dumper
+$ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
+$ ssh -p 2222 root@localhost
+iPhone:~ root# chmod +x /tmp/keychain_dumper
+iPhone:~ root# /tmp/keychain_dumper
+```
+
+For usage instructions please refer to the [Keychain-dumper](https://github.com/mechanico/Keychain-Dumper "keychain-dumper") GitHub page.
 
 ### lldb
 
@@ -1542,9 +1598,26 @@ A debugger by Apple’s Xcode used for debugging iOS applications - <https://lld
 
 [MachoOView](https://sourceforge.net/projects/machoview/ "MachOView") is a useful visual Mach-O file browser that also allows in-file editing of ARM binaries.
 
-### nm
+### optool
 
-[nm](http://www.manpagez.com/man/1/nm/osx-10.12.6.php "nm") is a tool that displays the name list (symbol table) of the given binary.
+[optool](https://github.com/alexzielenski/optool) is a tool which interfaces with MachO binaries in order to insert/remove load commands, strip code signatures, resign, and remove aslr.
+
+To install it:
+
+```bash
+$ git clone https://github.com/alexzielenski/optool.git
+$ cd optool/
+$ git submodule update --init --recursive
+$ xcodebuild
+$ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
+```
+
+The last line creates a symbolic link and makes the executable available system-wide. Reload your shell to make the new commands available:
+
+```bash
+zsh: # . ~/.zshrc
+bash: # . ~/.bashrc
+```
 
 ### otool
 

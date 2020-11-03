@@ -792,7 +792,7 @@ Take the following steps when you want to verify app-binding with two jailbroken
 3. Retrieve the data from the jailbroken device:
     - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
     - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
-    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
+    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using [Keychain-dumper](0x08-Testing-Tools.md#keychain-dumper).
 4. Install the application on the second jailbroken device.
 5. Overwrite the application data extracted during step 3. The Keychain data must be added manually.
 6. Can you continue in an authenticated state? If so, then binding may not be working properly.
@@ -822,9 +822,3 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 - MSTG-RESILIENCE-9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
 - MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 - MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-
-### Tools
-
-- Appsync Unified - <https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified>
-- Frida - <http://frida.re/>
-- Keychain Dumper - <https://github.com/ptoomey3/Keychain-Dumper>

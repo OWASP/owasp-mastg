@@ -164,13 +164,11 @@ See the full instructions and considerations in the [Android Developers Document
 
 ##### Connect to a Device via SSH
 
-If you prefer, you can also enable SSH access. A convenient option is to use Termux, which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
+If you prefer, you can also enable SSH access. A convenient option is to use [Termux](0x08-Testing-Tools.md#termux), which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
 #### On-device Shell App
 
-While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
-
-Termux is a terminal emulator for Android that provides a Linux environment that works directly with or without rooting and with no setup required. The installation of additional packages is a trivial task thanks to its own APT package manager (which makes a difference in comparison to other terminal emulator apps). You can search for specific packages by using the command `pkg search <pkg_name>` and install packages with `pkg install <pkg_name>`. You can install Termux straight from [Google Play](https://play.google.com/store/apps/details?id=com.termux "Install Termux").
+While usually using an on-device shell (terminal emulator) such as [Termux](0x08-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
 
 ### Host-Device Data Transfer
 
@@ -248,7 +246,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 #### Using Termux
 
-If you have a rooted device and have [Termux](https://play.google.com/store/apps/details?id=com.termux "Termux on Google Play") installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
+If you have a rooted device, have [Termux](0x08-Testing-Tools.md#termux) installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
 ```bash
 $ sftp -P 8022 root@localhost
@@ -282,23 +280,7 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 
 #### Using gplaycli
 
-[gplaycli](https://github.com/matlink/gplaycli "gplaycli") is a Python based CLI tool to search, install and update Android applications from the Google Play Store. Follow the [installation steps](https://github.com/matlink/gplaycli#installation "gplaycli Installation") and you're ready to run it. gplaycli offers several options, please refer to its help (`-h`) for more information.
-
-If you're unsure about the package name (or AppID) of an app, you may perform a keyword based search for APKs (`-s`):
-
-```bash
-$ gplaycli -s "google keep"
-
-Title                          Creator     Size      Last Update  AppID                                    Version
-
-Google Keep - notes and lists  Google LLC  15.78MB   4 Sep 2019   com.google.android.keep                  193510330
-Maps - Navigate & Explore      Google LLC  35.25MB   16 May 2019  com.google.android.apps.maps             1016200134
-Google                         Google LLC  82.57MB   30 Aug 2019  com.google.android.googlequicksearchbox  301008048
-```
-
-> Note that regional (Google Play) restrictions apply when using gplaycli. In order to access apps that are restricted in your country you can use alternative app stores such as the ones described in "[Alternative App Stores](#alternative-app-stores "Alternative App Stores")".
-
-Next, you can download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
+You can use [gplaycli](0x08-Testing-Tools.md#gplaycli) to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
 
 ```bash
 $ gplaycli -p -v -d com.google.android.keep
@@ -1070,36 +1052,3 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
-
-### Tools
-
-- adb - <https://developer.android.com/studio/command-line/adb>
-- Android NDK Downloads - <https://developer.android.com/ndk/downloads/index.html#stable-downloads>
-- Android Platform Tools - <https://developer.android.com/studio/releases/platform-tools.html>
-- Android Studio - <https://developer.android.com/studio/index.html>
-- Android tcpdump - <https://www.androidtcpdump.com/>
-- Android-CertKiller - <https://github.com/51j0/Android-CertKiller>
-- APK Extractor - <https://play.google.com/store/apps/details?id=com.ext.ui>
-- APKMirror - <https://apkmirror.com>
-- APKPure - <https://apkpure.com>
-- apktool - <https://github.com/iBotPeaches/Apktool>
-- Burp-non-HTTP-Extension - <https://github.com/summitt/Burp-Non-HTTP-Extension>
-- Capillary - <https://github.com/google/capillary>
-- Device File Explorer - <https://developer.android.com/studio/debug/device-file-explorer>
-- Drozer - <https://labs.f-secure.com/tools/drozer/>
-- FileZilla - <https://filezilla-project.org/download.php>
-- Frida - <https://www.frida.re/docs/android/>
-- Frida CLI - <https://www.frida.re/docs/frida-cli/>
-- frida-ls-devices - <https://www.frida.re/docs/frida-ls-devices/>
-- frida-ps - <https://www.frida.re/docs/frida-ps/>
-- frida-trace - <https://www.frida.re/docs/frida-trace/>
-- gplaycli - <https://github.com/matlink/gplaycli>
-- Magisk Modules repository - <https://github.com/Magisk-Modules-Repo>
-- Magisk Trust User Certs module - <https://github.com/NVISO-BE/MagiskTrustUserCerts/releases>
-- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Nathan - <https://github.com/mseclab/nathan>
-- Objection - <https://github.com/sensepost/objection>
-- SDK tools - <https://developer.android.com/studio/index.html#downloads>
-- Termux - <https://play.google.com/store/apps/details?id=com.termux>
-- Wireshark - <https://www.wireshark.org/>
-- Xposed - <https://www.xda-developers.com/xposed-framework-hub/>

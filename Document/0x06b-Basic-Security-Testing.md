@@ -308,7 +308,7 @@ Save the IPA file locally with the following command:
 
     If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from memory and rebuild the IPA file. Because of DRM, the app binary file is encrypted when it is stored on the iOS device, so simply pulling it from the Bundle (either through SSH or Objection) will not be sufficient to reverse engineer it.
 
-The following shows the output of running class-dump on the Telegram app, which was directly pulled from the installation directory of the iPhone:
+The following shows the output of running [class-dump](0x08-Testing-Tools.md#class-dump) on the Telegram app, which was directly pulled from the installation directory of the iPhone:
 
 ```bash
 $ class-dump Telegram
@@ -340,11 +340,11 @@ $ class-dump Telegram
 //
 ```
 
-In order to retrieve the unencrypted version, you can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") (all iOS versions) or [Clutch](https://github.com/KJCracks/Clutch "Clutch") (only up to iOS 11; for iOS 12 and above, it requires a patch). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and frida-ios-dump can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary.
+In order to retrieve the unencrypted version, you can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") (all iOS versions) or [Clutch](0x08-Testing-Tools.md#clutch) (only up to iOS 11; for iOS 12 and above, it requires a patch). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and frida-ios-dump can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary.
 
 ##### Using Clutch
 
-Build Clutch as explained on the Clutch GitHub page and push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
+Build [Clutch](0x08-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
 
 ```bash
 root# ./Clutch -i
@@ -375,7 +375,7 @@ DONE: /private/var/mobile/Documents/Dumped/ph.telegra.Telegraph-iOS9.0-(Clutch-(
 Finished dumping ph.telegra.Telegraph in 20.5 seconds
 ```
 
-After copying the IPA file over to the host system and unzipping it, you can see that the Telegram app binary can now be parsed by class-dump, indicating that it is no longer encrypted:
+After copying the IPA file over to the host system and unzipping it, you can see that the Telegram app binary can now be parsed by [class-dump](0x08-Testing-Tools.md#class-dump), indicating that it is no longer encrypted:
 
 ```bash
 $ class-dump Telegram
@@ -399,13 +399,11 @@ struct CGPoint {
 ...
 ```
 
-Note: when you use Clutch on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
+Note: when you use [Clutch](0x08-Testing-Tools.md#clutch) on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
 
 ##### Using Frida-ios-dump
 
-[Frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "Frida-ios-dump") is a Python script that helps you retrieve the decrypted version of an iOS app from an iOS device. It supports both Python 2 and Python 3 and requires Frida running on your iOS device (jailbroken or not). This tool uses Frida's [Memory API](https://www.frida.re/docs/javascript-api/#memory "Frida Memory API") to dump the memory of the running app and recreate an IPA file. Because the code is extracted from memory, it is automatically decrypted.
-
-First, make sure that the configuration in `dump.py` is set to either localhost with port 2222 when using iProxy, or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
+First, make sure that the configuration in [Frida-ios-dump](0x08-Testing-Tools.md#frida-ios-dump) `dump.py` is set to either localhost with port 2222 when using [iproxy](0x08-Testing-Tools.md#iproxy), or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
 
 Now you can safely use the tool to enumerate the apps installed:
 
@@ -440,7 +438,7 @@ libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00
 0.00B [00:00, ?B/s]Generating "Telegram.ipa"
 ```
 
-After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
+After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using [ios-deploy](0x08-Testing-Tools.md#ios-deploy) `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 ### Installing Apps
 
@@ -488,13 +486,7 @@ $ ipainstaller App_name.ipa
 
 #### ios-deploy
 
-On macOS you can also use the [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") tool to install and debug iOS apps from the command line. It can be installed via brew:
-
-```bash
-$ brew install ios-deploy
-```
-
-You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
+On macOS you can also use the [ios-deploy](0x08-Testing-Tools.md#ios-deploy) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 $ unzip Name.ipa
@@ -916,13 +908,9 @@ With [Passionfruit](0x08-Testing-Tools.md#passionfruit) it's possible to access 
 
 ##### Keychain-dumper (Jailbroken)
 
-[Keychain-dumper](https://github.com/ptoomey3/Keychain-Dumper/ "Keychain-dumper") lets you dump a jailbroken device's KeyChain contents. The easiest way to get the tool is to download the binary from its GitHub repo:
+You can use [Keychain-dumper](0x08-Testing-Tools.md#keychain-dumper) dump the jailbroken device's KeyChain contents. Once you have it running on your device:
 
 ```bash
-$ git clone https://github.com/ptoomey3/Keychain-Dumper
-$ scp -P 2222 Keychain-Dumper/keychain_dumper root@localhost:/tmp/
-$ ssh -p 2222 root@localhost
-iPhone:~ root# chmod +x /tmp/keychain_dumper
 iPhone:~ root# /tmp/keychain_dumper
 
 (...)
@@ -984,7 +972,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 
 #### Using Burp via USB on a Jailbroken Device
 
-In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use iproxy to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use [iproxy](0x08-Testing-Tools.md#iproxy) to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
@@ -1029,34 +1017,3 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 - Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
 - Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
 - UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>
-
-### Tools
-
-- Apple iOS SDK - <https://developer.apple.com/download/more/>
-- AppSync - <http://repo.hackyouriphone.org/appsyncunified>
-- Burp Suite - <https://portswigger.net/burp/communitydownload>
-- Chimera - <https://chimera.sh/>
-- class-dump - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump>
-- class-dump-z - <https://github.com/interference-security/ios-pentest-tools/blob/master/class-dump-z>
-- Clutch - <https://github.com/KJCracks/Clutch>
-- Cydia Impactor - <http://www.cydiaimpactor.com/>
-- Frida - <https://www.frida.re>
-- Frida-ios-dump - <https://github.com/AloneMonkey/frida-ios-dump>
-- IDB - <https://www.idbtool.com>
-- iFunBox - <http://www.i-funbox.com/>
-- Introspy - <https://github.com/iSECPartners/Introspy-iOS>
-- ios-deploy - <https://github.com/ios-control/ios-deploy>
-- IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa>
-- ipainstaller - <https://github.com/autopear/ipainstaller>
-- iProxy - <https://iphonedevwiki.net/index.php/SSH_Over_USB>
-- ITMS services asset downloader - <https://www.npmjs.com/package/itms-services>
-- Keychain-dumper - <https://github.com/ptoomey3/Keychain-Dumper/>
-- libimobiledevice - <https://www.libimobiledevice.org/>
-- MobSF - <https://github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Objection - <https://github.com/sensepost/objection>
-- Sileo - <https://cydia-app.com/sileo/>
-- SSL Kill Switch 2 - <https://github.com/nabla-c0d3/ssl-kill-switch2>
-- TablePlus - <https://tableplus.io/>
-- Usbmuxd - <https://github.com/libimobiledevice/usbmuxd>
-- Wireshark - <https://www.wireshark.org/download.html>
-- Xcode - <https://developer.apple.com/xcode/>

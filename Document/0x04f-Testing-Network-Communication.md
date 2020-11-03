@@ -454,13 +454,6 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-5: "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
 
-### Tools
-
-- bettercap - <https://www.bettercap.org>
-- tcpdump - <https://www.androidtcpdump.com/>
-- Testssl.sh - <https://github.com/drwetter/testssl.sh>
-- Wireshark - <https://www.wireshark.org/>
-
 ### Android
 
 - Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>

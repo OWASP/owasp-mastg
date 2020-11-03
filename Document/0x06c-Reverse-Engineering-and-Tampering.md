@@ -44,7 +44,7 @@ Black box analysis of iOS apps without access to the original source code requir
 
 ### Basic Information Gathering
 
-You can use class-dump to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
+You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
 
 ```bash
 $ unzip DamnVulnerableiOSApp.ipa
@@ -274,38 +274,6 @@ $ cat entitlements.plist
 ```
 
 Note the application identifier, which is a combination of the Team ID (LRUD9L355Y) and Bundle ID (sg.vantagepoint.repackage). This provisioning profile is only valid for the app that has this App ID. The `get-task-allow` key is also important: when set to `true`, other processes, such as the debugging server, are allowed to attach to the app (consequently, this would be set to `false` in a distribution profile).
-
-#### Other Preparations
-
-To make our app load an additional library at startup, we need some way of inserting an additional load command into the main executable's Mach-O header. [Optool](https://github.com/alexzielenski/optool "Optool") can be used to automate this process:
-
-```bash
-$ git clone https://github.com/alexzielenski/optool.git
-$ cd optool/
-$ git submodule update --init --recursive
-$ xcodebuild
-$ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
-```
-
-We'll also use [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy"), a tool that allows iOS apps to be deployed and debugged without Xcode:
-
-```bash
-$ git clone https://github.com/ios-control/ios-deploy.git
-$ cd ios-deploy/
-$ xcodebuild
-$ cd build/Release
-$ ./ios-deploy
-$ ln -s <your-path-to-ios-deploy>/build/Release/ios-deploy /usr/local/bin/ios-deploy
-```
-
-The last line in both the optool and ios-deploy code snippets creates a symbolic link and makes the executable available system-wide.
-
-Reload your shell to make the new commands available:
-
-```bash
-zsh: # . ~/.zshrc
-bash: # . ~/.bashrc
-```
 
 ### Basic Information Gathering
 
@@ -685,7 +653,7 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --en
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
-Now you should be ready to run the modified app. Deploy and run the app on the device:
+Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](0x08-Testing-Tools.md#ios-deploy):
 
 ```bash
 $ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
@@ -1269,25 +1237,3 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 - [#miller] - Charlie Miller, Dino Dai Zovi. The iOS Hacker's Handbook. Wiley, 2012 - <https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122>
 - [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - <http://newosxbook.com/MOXiI.pdf>
 
-### Tools
-
-- class-dump - <http://stevenygard.com/projects/class-dump/>
-- class-dump-dyld - <https://github.com/limneos/classdump-dyld/>
-- class-dump-z - <https://code.google.com/archive/p/networkpx/wikis/class_dump_z.wiki>
-- Cycript - <http://www.cycript.org/>
-- Damn Vulnerable iOS App - <http://damnvulnerableiosapp.com/>
-- dsdump - <https://github.com/DerekSelander/dsdump>
-- Frida - <https://www.frida.re>
-- Ghidra - <https://ghidra-sre.org/>
-- Hopper - <https://www.hopperapp.com/>
-- ios-deploy - <https://github.com/phonegap/ios-deploy>
-- IPA Installer Console - <https://cydia.saurik.com/package/com.autopear.installipa/>
-- ipainstaller - <https://cydia.saurik.com/package/com.slugrail.ipainstaller/>
-- MachoOView - <https://sourceforge.net/projects/machoview/>
-- Objection - <https://github.com/sensepost/objection>
-- Optool - <https://github.com/alexzielenski/optool>
-- OWASP UnCrackable Apps for iOS - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#ios>
-- Radare2 - <https://rada.re/r/>
-- Reverse Engineering tools for iOS Apps - <http://iphonedevwiki.net/index.php/Reverse_Engineering_Tools>
-- Swizzler project - <https://github.com/vtky/Swizzler2/>
-- Xcode command line developer tools - <https://railsapps.github.io/xcode-command-line-tools.html>
