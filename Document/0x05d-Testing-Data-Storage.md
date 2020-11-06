@@ -1041,7 +1041,7 @@ If the information is masked by, for example, replacing input with asterisks or 
 
 Users can perform device backups on Android using both manual and auto-backup features as previously explained in the Data Storage Methods Overview.
 
-As these backups can also contain application specific data it is important to ensure that the application does not allow for the storage of sensitive data into these backups as an attacker may be able to take the backup and extract said sensitive data.
+Android backups may contain application specific data. Assuming that an attacker may be able to obtain and extract them, it is important to ensure that the application does not back up any sensitive data.
 
 ### Static Analysis
 
