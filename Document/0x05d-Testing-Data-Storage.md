@@ -471,8 +471,6 @@ This test case focuses on identifying stored data from an application and identi
 
 ### Static Analysis
 
-#### Local Storage
-
 As aforementioned in the Theory Overview, there are several ways to store information on an Android device. You should therefore check several sources to determine the kind of storage used by the Android app and to find out whether the app processes sensitive data insecurely.
 
 - Check `AndroidManifest.xml` for read/write external storage permissions, for example, `uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"`.
