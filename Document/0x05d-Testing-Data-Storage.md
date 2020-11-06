@@ -578,7 +578,7 @@ Verify common locations of secrets:
 
 Install and use the app, executing all functions at least once. Data can be generated when entered by the user, sent by the endpoint, or shipped with the app. Then complete the following:
 
-- Check local internal storage for any files created by the application that contain sensitive data. Both Internal and External storage should be checked.
+- Check both internal and external local storage for any files created by the application that contain sensitive data.
 - Identify development files, backup files, and old files that shouldn't be included with a production release.
 - Determine whether SQLite databases are available and whether they contain sensitive information. SQLite databases are stored in `/data/data/<package-name>/databases`.
 - Identify if SQLite databases are encrypted. If so determine how the database password is generated and stored and if this is sufficiently protected as described in the 'Storing a Key' of the Keystore overview.
