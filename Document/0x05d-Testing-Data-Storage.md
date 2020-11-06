@@ -624,7 +624,7 @@ Furthermore, any logging statements should be removed from the production releas
 
 ### Static Analysis
 
-Applications will often use the [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class") and [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class") to create logs. To discover this you should audit the application's source code for any such logging classes. These can often by found by searching for the following keywords:
+Applications will often use the [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class") and [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class") to create logs. To discover this, you should audit the application's source code for any such logging classes. These can often be found by searching for the following keywords:
 
 - Functions and classes, such as:
   - `android.util.Log`
