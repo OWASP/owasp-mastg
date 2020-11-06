@@ -618,9 +618,13 @@ In case other public storage mechanisms (than the `SharedPreferences.Editor`) ar
 
 ### Overview
 
-Logs are often used by applications in order to track crashes, errors, and usage statistics as aforementioned in the Data Storage Methods Overview. As with any data storage method there is the potential for sensitive data to be stored in logs and as such logs should be audited for any such sensitive data.
+This test case focuses on identifying the storage of any sensitive application within both device and applications logs. All logs may potentially store sensitive data and as such should be audited. The following checks should be performed:
 
-Furthermore, any logging statements should be removed from the production release unless deemed necessary to the application as these may leak sensitive application data.
+- Analyze source code for logging related code.
+- Check application data directory for log files.
+- Gather system messages and logs and analyze for any sensitive data.
+
+Any logging statements should be removed from the production release unless deemed necessary to the application as these may leak sensitive application data.
 
 ### Static Analysis
 
