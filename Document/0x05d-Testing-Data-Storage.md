@@ -594,6 +594,8 @@ Even more ideally, if achievable, sensitive data shouldn't be stored on the devi
 
 ## Testing Local Storage for Input Validation (MSTG-PLATFORM-2)
 
+### Overview
+
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
 
 > Note: Similar holds for private accessible data on a rooted device
