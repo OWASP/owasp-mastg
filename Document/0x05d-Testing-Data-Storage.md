@@ -1043,9 +1043,11 @@ If the information is masked by, for example, replacing input with asterisks or 
 
 ### Overview
 
-Users can perform device backups on Android using both manual and auto-backup features as previously explained in the Data Storage Methods Overview.
+This test case focuses on ensuring that backups do not store sensitive application specific data. The following checks should be performed:
 
-Android backups may contain application specific data. Assuming that an attacker may be able to obtain and extract them, it is important to ensure that the application does not back up any sensitive data.
+- Check `AndroidManifest.xml` for relevant backup flags.
+- Attempt to backup the application and inspect the backup for sensitive data.
+
 
 ### Static Analysis
 
