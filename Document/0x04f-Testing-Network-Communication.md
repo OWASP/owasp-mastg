@@ -8,9 +8,8 @@ In many cases, it is most practical to configure a system proxy on the mobile de
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
-- [Burp Suite](https://portswigger.net/burp "Burp Suite")
-- [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project "OWASP ZAP")
-- [Charles Proxy](https://www.charlesproxy.com "Charles Proxy")
+- [Burp Suite](0x08-Testing-Tools.md#burp-suite)
+- [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap)
 
 To use the interception proxy, you'll need run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
@@ -40,46 +39,20 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](https://www.wireshark.org "Wireshark") to sniff any traffic from the mobile device;
-
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](https://github.com/bettercap/bettercap "bettercap") or use your own access point to redirect network traffic from the mobile device to your host computer (see below);
-
-> bettercap is a powerful tool to execute MITM attacks and should be preferred nowadays, instead of ettercap. See also [Why another MITM tool?](https://www.bettercap.org/legacy/#why-another-mitm-tool "Why another MITM tool?") on the bettercap site.
-
-- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters;
-
+- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](0x08-Testing-Tools.md#wireshark) to sniff any traffic from the mobile device.
+- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](0x08-Testing-Tools.md#bettercap) or use your own access point to redirect network traffic from the mobile device to your host computer (see below).
+- On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
 - On macOS, you can create a "Remote Virtual Interface" for sniffing all traffic on an iOS device. We'll describe this method in the chapter "Basic Security Testing on iOS".
 
 ### Simulating a Man-in-the-Middle Attack with bettercap
 
 #### Network Setup
 
-To be able to get a man-in-the-middle position your host computer should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of your mobile phone.
+To be able to get a man-in-the-middle position your host computer should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of your mobile phone. For a full dynamic analysis of a mobile app, all network traffic should be intercepted.
 
-[bettercap](https://github.com/bettercap/bettercap "bettercap") can be used during network penetration tests in order to simulate a man-in-the-middle (MITM) attack. This is achieved by executing [ARP poisoning or spoofing](https://en.wikipedia.org/wiki/ARP_spoofing "ARP poisoning/spoofing") to the target computers. When such an attack is successful, all packets between two computers are redirected to a third computer that acts as the man-in-the-middle and is able to intercept the traffic for analysis.
+#### MITM Attack
 
-For a full dynamic analysis of a mobile app, all network traffic should be intercepted. To be able to intercept the messages several steps should be considered for preparation.
-
-#### bettercap Installation
-
-bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your host computer that will act as the MITM. On macOS it can be installed by using brew.
-
-```bash
-$ brew install bettercap
-```
-
-For Kali Linux you can install bettercap with `apt-get`:
-
-```bash
-$ apt-get update
-$ apt-get install bettercap
-```
-
-There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").
-
-### ARP Poisoning with bettercap
-
-Start your preferred network analyzer tool first, then start bettercap with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
+Start your preferred network analyzer tool first, then start [bettercap](0x08-Testing-Tools.md#bettercap) with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
 ```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
@@ -436,15 +409,15 @@ Verify that the server or termination proxy at which the HTTPS connection termin
 
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP(S) and Websocket traffic with an interception proxy like OWASP ZAP or Burp Suite and make sure all requests are made via HTTPS instead of HTTP.
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
-> Some applications may not work with proxies like Burp and ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and Certificate Pinning".
+> Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and Certificate Pinning".
 
 If you want to verify whether your server supports the right cipher suites, there are various tools you can use:
 
 - nscurl - see Testing Network Communication for iOS for more details.
-- [testssl.sh](https://github.com/drwetter/testssl.sh "mitm-relay") which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
+- [testssl.sh](https://github.com/drwetter/testssl.sh "testssl.sh") which "is a free command line tool which checks a server's service on any port for the support of TLS/SSL ciphers, protocols as well as some cryptographic flaws".
 
 ## Making Sure that Critical Operations Use Secure Communication Channels (MSTG-NETWORK-5)
 
@@ -480,15 +453,6 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 - MSTG-NETWORK-1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-5: "The app doesn't rely on a single insecure communication channel (email or SMS) for critical operations, such as enrollments and account recovery."
-
-### Tools
-
-- bettercap - <https://www.bettercap.org>
-- Burp Suite - <https://portswigger.net/burp/>
-- OWASP ZAP - <https://www.owasp.org/index.php/>
-- tcpdump - <https://www.androidtcpdump.com/>
-- Testssl.sh - <https://github.com/drwetter/testssl.sh>
-- Wireshark - <https://www.wireshark.org/>
 
 ### Android
 

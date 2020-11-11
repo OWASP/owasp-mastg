@@ -1682,7 +1682,3 @@ To identify the usage of notifications run through the entire application and al
 
 - MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 - MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-
-### Tools
-
-- Drozer - <https://github.com/mwrlabs/drozer>
