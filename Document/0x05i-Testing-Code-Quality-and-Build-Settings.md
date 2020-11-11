@@ -320,7 +320,7 @@ The report will be in `build/reports` unless otherwise configured. Use the repor
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
 
-Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as [Sourceclear](https://www.sourceclear.com/ "Sourceclear") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck"). The actual result of using either the OWASP Dependency Checker or another tool varies on the type of (NDK related or SDK related) libraries.
+Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as [Sonatype Nexus IQ](https://www.sonatype.com/nexus/iqserver "Nexus IQ"), [Sourceclear](https://www.sourceclear.com/ "Sourceclear"), [Snyk](https://snyk.io/ "Snyk") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck"). The actual result of using either the OWASP Dependency Checker or another tool varies on the type of (NDK related or SDK related) libraries.
 
 Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
