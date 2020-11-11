@@ -52,7 +52,7 @@ To be able to get a man-in-the-middle position your host computer should be in t
 
 #### MITM Attack
 
-Start your preferred network analyzer tool first, then start bettercap with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
+Start your preferred network analyzer tool first, then start [bettercap](0x08-Testing-Tools.md#bettercap) with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
 ```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"

@@ -1067,6 +1067,7 @@ $  export TOOLCHAIN=/tmp/android-7-toolchain
 
 Local Android SDK installations are managed via Android Studio. Create an empty project in Android Studio and select **Tools** -> **SDK Manager** to open the SDK Manager GUI. The **SDK Platforms** tab is where you install SDKs for multiple API levels. Recent API levels are:
 
+- Android 11.0 (API level 30)
 - Android 10.0 (API level 29)
 - Android 9.0 (API level 28)
 - Android 8.1 (API level 27)

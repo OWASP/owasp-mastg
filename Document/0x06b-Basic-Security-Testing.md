@@ -136,7 +136,7 @@ One of the most common things you do when testing an app is accessing the device
 
 #### Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08-Testing-Tools.md#cydia) (see screenshot above) or [Sileo](0x08-Testing-Tools.md#sileo) installed as explained in "Getting Privileged Access". In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08-Testing-Tools.md#cydia) (see screenshot below) or [Sileo](0x08-Testing-Tools.md#sileo) installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 <img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250" />
 
@@ -344,7 +344,7 @@ In order to retrieve the unencrypted version, you can use tools such as [frida-i
 
 ##### Using Clutch
 
-Build [Clutch](0x08-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
+Build [Clutch](0x08-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through `scp`. Run Clutch with the `-i` flag to list all installed applications:
 
 ```bash
 root# ./Clutch -i
