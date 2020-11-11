@@ -354,7 +354,7 @@ $ gradle downloadLicenses
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreements to see whether a copyright notice needs to be included into the app and whether the license type requires to open-source the code of the application.
 
-Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as [Sourceclear](https://www.sourceclear.com/ "Sourceclear"), [Snyk](https://snyk.io/ "Snyk") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck").
+Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as Sonatype Nexus IQ](https://www.sonatype.com/nexus/iqserver "Nexus IQ"), [Sourceclear](https://www.sourceclear.com/ "Sourceclear"), [Snyk](https://snyk.io/ "Snyk") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck").
 
 > Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist.
 
