@@ -36,7 +36,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 - [Procyon](https://github.com/mstrobel/procyon "Procyon")
 - [CFR](https://www.benf.org/other/cfr/ "CFR")
 
-Alternatively run [apkx](0x08-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such an IDE.
+Alternatively run [apkx](0x08-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such as an IDE.
 
 In the following example we'll be using [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk "UnCrackable App for Android Level 1"). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
