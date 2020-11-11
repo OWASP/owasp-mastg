@@ -437,6 +437,14 @@ There are many other functionalities available in Ghidra and most of them can be
 
 <img src="Images/Chapters/0x04c/Ghidra_string_window.png" alt="Ghidra strings window" />
 
+### Hopper (Commercial Tool)
+
+A reverse engineering tool for macOS and Linux used to disassemble, decompile and debug 32/64bits Intel Mac, Linux, Windows and iOS executables - <https://www.hopperapp.com/>
+
+### IDA Pro (Commercial Tool)
+
+A Windows, Linux or macOS hosted multi-processor disassembler and debugger - <https://www.hex-rays.com/products/ida/index.shtml>
+
 ### MobSF
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.
