@@ -344,7 +344,7 @@ In order to retrieve the unencrypted version, you can use tools such as [frida-i
 
 ##### Using Clutch
 
-Build [Clutch](0x08-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through SCP. Run Clutch with the `-i` flag to list all installed applications:
+Build [Clutch](0x08-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through `scp`. Run Clutch with the `-i` flag to list all installed applications:
 
 ```bash
 root# ./Clutch -i
