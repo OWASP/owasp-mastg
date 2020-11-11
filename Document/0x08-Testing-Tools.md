@@ -445,6 +445,10 @@ A reverse engineering tool for macOS and Linux used to disassemble, decompile an
 
 A Windows, Linux or macOS hosted multi-processor disassembler and debugger - <https://www.hex-rays.com/products/ida/index.shtml>
 
+### LIEF
+
+The purpose of LIEF is to provide a cross platform library to parse, modify and abstract ELF, PE and MachO formats. With it you can, for instance, inject a certain library as a dependency of a native library, which an application already loads by default. - <https://lief.quarkslab.com/>
+
 ### MobSF
 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.
@@ -1254,10 +1258,6 @@ Learn more about [rooting your device with Magisk](#rooting-with-magisk "Rooting
 ### Proguard
 
 [ProGuard](https://www.guardsquare.com/en/products/proguard "ProGuard") is a free Java class file shrinker, optimizer, obfuscator, and preverifier. It detects and removes unused classes, fields, methods, and attributes and can also be used to delete logging-related code.
-
-### QARK
-
-A tool designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs - <https://github.com/linkedin/qark>
 
 ### RootCloak Plus
 
