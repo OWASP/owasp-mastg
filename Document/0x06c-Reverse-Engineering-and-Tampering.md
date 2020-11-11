@@ -1236,4 +1236,3 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 - r2frida Wiki - <https://github.com/enovella/r2frida-wiki/blob/master/README.md>
 - [#miller] - Charlie Miller, Dino Dai Zovi. The iOS Hacker's Handbook. Wiley, 2012 - <https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122>
 - [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - <http://newosxbook.com/MOXiI.pdf>
-
