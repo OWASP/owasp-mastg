@@ -14,7 +14,13 @@ Native apps inherently have the capability to provide the fastest performance wi
 
 Some ambiguity exists when discussing *native apps* for Android as the platform provides two development kits - the Android SDK and the Android NDK. The SDK, which is based on the Java and Kotlin programming language, is the default for developing apps. The NDK (or Native Development Kit) is a C/C++ development kit used for developing binary libraries that can directly access lower level APIs (such as OpenGL). These libraries can be included in regular apps built with the SDK. Therefore, we say that Android *native apps* (i.e. built with the SDK) may have *native* code built with the NDK.
 
-The most obvious downside of *native apps* is that they target only one specific platform. To build the same app for both Android and iOS, one needs to maintain two independent code bases, or introduce often complex development tools to port a single code base to two platforms (e.g. [Xamarin](https://www.xamarin.com/ "Xamarin")).
+The most obvious downside of *native apps* is that they target only one specific platform. To build the same app for both Android and iOS, one needs to maintain two independent code bases, or introduce often complex development tools to port a single code base to two platforms. The following frameworks are an example of the latter and allow you to compile a single codebase for both Android and iOS.
+
+- [Xamarin](https://www.xamarin.com/ "Xamarin")
+- [Google Flutter](https://flutter.dev/ "Google Flutter")
+- [React Native](https://reactnative.dev/ "React Native")
+
+Applications developed using these frameworks internally use the APIs native to the system and offer performance equivalent to native applications. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed *native apps*, apps developed using these frameworks can also be considered as *native apps*.
 
 ## Web App
 
@@ -34,10 +40,8 @@ Following is a non-exhaustive list of more popular frameworks for developing *hy
 - [Framework 7](https://framework7.io/ "Framework 7")
 - [Ionic](https://ionicframework.com/ "Ionic")
 - [jQuery Mobile](https://jquerymobile.com/ "jQuery Mobile")
-- [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [Native Script](https://www.nativescript.org/ "Native Script")
 - [Onsen UI](https://onsen.io/ "Onsen UI")
-- [React Native](https://www.reactnative.com/ "React Native")
 - [Sencha Touch](https://www.sencha.com/products/touch/ "Sencha Touch")
 
 ## Progressive Web App

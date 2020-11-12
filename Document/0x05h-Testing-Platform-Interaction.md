@@ -287,7 +287,9 @@ For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are lis
 
 ### Permission Analysis
 
-Always check whether the application is requesting permissions it actually needs. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+Always check whether the application is requesting permissions it actually requires. Make sure that no permissions are requested which are not related to the goal of the app, especially `DANGEROUS` and `SIGNATURE` permissions, since they can affect both the user and the application if mishandled. For instance, it should be suspicious if a single-player game app requires access to `android.permission.WRITE_SMS`.
+
+When analyzing permissions, you should investigate the concrete use case scenarios of the app and always check if there are replacement APIs for any `DANGEROUS` permissions in use. A good example is the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) which streamlines the usage of SMS permissions when performing SMS-based user verification. By using this API an application does not have to declare `DANGEROUS` permissions which is a benefit to both the user and developers of the application, who doesn't have to submit the [Permissions Declaration Form](https://support.google.com/googleplay/android-developer/answer/9214102?hl=en).
 
 ### Dynamic Analysis
 
@@ -1680,7 +1682,3 @@ To identify the usage of notifications run through the entire application and al
 
 - MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
 - MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
-
-### Tools
-
-- Drozer - <https://github.com/mwrlabs/drozer>
