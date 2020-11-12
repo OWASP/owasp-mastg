@@ -27,7 +27,10 @@ Some permissions can be configured by the app's developers (e.g. Data Protection
 
 Even though Apple urges to protect the privacy of the user and to be [very clear on how to ask permissions](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/ "Requesting Permissions"), it can still be the case that an app requests too many of them for non-obvious reasons.
 
-Some permissions like camera, photos, calendar data, motion, contacts or speech recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. For example, a QR Code scanning app [requires the camera](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_ios "Requesting Authorization for Media Capture on iOS") to function but might be [requesting the photos permission](https://developer.apple.com/documentation/photokit/requesting_authorization_to_access_photos "Requesting Authorization to Access Photos") as well which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos). A malicious app could use this to leak the user pictures. For this reason, apps using the camera permission might rather want to avoid requesting the photos permission and store the taken pictures inside the app sandbox to avoid other apps (having the photos permission) to access them. Additional steps might be required if the pictures are considered sensitive, e.g. corporate data, passwords or credit cards. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information.
+Some permissions such as Camera, Photos, Calendar Data, Motion, Contacts or Speech Recognition should be pretty straightforward to verify as it should be obvious if the app requires them to fulfill its tasks. Let's consider the following examples ragarding the Photos permission, which, if granted, gives the app access to all user photos in the "Camera Roll" (the iOS default system-wide location for storing photos):
+
+- The typical QR Code scanning app obviously requires the camera to function but might be [requesting the photos permission](https://developer.apple.com/documentation/photokit/requesting_authorization_to_access_photos "Requesting Authorization to Access Photos") as well. If storage is explicitly required, and depending on the sensitivity of the pictures being taken, these apps might better opt to use the app sandbox storage to avoid other apps (having the photos permission) to access them. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more information reagarding storage of sensitive data.
+- Some apps require photo uploads (e.g. for profile pictures). Recent versions of iOS introduce new APIs such as [`UIImagePickerController`](https://developer.apple.com/documentation/uikit/uiimagepickercontroller "UIImagePickerController") (iOS 11+) and its modern [replacement](https://developer.apple.com/videos/play/wwdc2020/10652/ "replacement") [`PHPickerViewController`](https://developer.apple.com/documentation/photokit/phpickerviewcontroller "PHPickerViewController") (iOS 14+). These APIs run on a separate process from your app and by using them, the app gets read-only access exclusively to the images selected by the user instead of to the whole "Camera Roll". This is considered a best practice to avoid requesting unnecessary permissions.
 
 Other permissions like Bluetooth or Location require deeper verification steps. They may be required for the app to properly function but the data being handled by those tasks might not be properly protected. For more information and some examples please refer to the "[Source Code Inspection](#source-code-inspection "Source Code Inspection")" in the "Static Analysis" section below and to the "Dynamic Analysis" section.
 
@@ -2369,7 +2372,7 @@ If user scripts were defined, they will continue running as the `javaScriptEnabl
 
 #### Testing for Mixed Content
 
-In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect mixed content (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#thiel2] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.  
+In contrast to `UIWebView`s, when using `WKWebView`s it is possible to detect [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=en "Preventing Mixed Content") (HTTP content loaded from a HTTPS page). By using the method [`hasOnlySecureContent`](https://developer.apple.com/documentation/webkit/wkwebview/1415002-hasonlysecurecontent "WKWebView hasOnlySecureContent") it can be verified whether all resources on the page have been loaded through securely encrypted connections. This example from [#thiel2] (see page 159 and 160) uses this to ensure that only content loaded via HTTPS is shown to the user, otherwise an alert is displayed telling the user that mixed content was detected.
 
 In the compiled binary:
 
@@ -3150,17 +3153,6 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object deserialization, if any, is implemented using safe serialization APIs."
-
-### Tools
-
-- Apple App Site Association (AASA) Validator - <https://branch.io/resources/aasa-validator>
-- Frida - <https://www.frida.re/>
-- frida-trace - <https://www.frida.re/docs/frida-trace/>
-- IDB - <https://www.idbtool.com/>
-- Needle - <https://github.com/mwrlabs/needle>
-- Objection - <https://github.com/sensepost/objection>
-- ObjC Method Observer - <https://codeshare.frida.re/@mrmacete/objc-method-observer/>
-- Radare2 - <https://rada.re>
 
 ### Regarding Object Persistence in iOS
 

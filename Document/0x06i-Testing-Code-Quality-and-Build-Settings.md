@@ -267,7 +267,7 @@ In case frameworks are added manually as linked libraries:
 
 In the case of copy-pasted sources: search the header files (in case of using Objective-C) and otherwise the Swift files for known method names for known libraries.
 
-Next, note that for hybrid applications, you will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, you will have to check the C# dependencies.
+Next, note that for hybrid applications, you will have to check the JavaScript dependencies with [RetireJS](https://retirejs.github.io/retire.js/ "RetireJS"). Similarly for Xamarin, you will have to check the C# dependencies.
 
 Last, if the application is a high-risk application, you will end up vetting the library manually. In that case there are specific requirements for native code, which are similar to the requirements established by the MASVS for the application as a whole. Next to that, it is good to vet whether all best practices for software engineering are applied.
 
@@ -697,7 +697,7 @@ Below are procedures for checking the binary security features described above. 
 
 #### With idb
 
-IDB automates the processes of checking for stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
+[IDB](0x08-Testing-Tools.md#idb) automates the processes of checking for stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
 
 <img src="Images/Chapters/0x06i/idb.png" alt="IDB Analyze Binary" width="350px" />
 
@@ -706,6 +706,8 @@ IDB automates the processes of checking for stack canary and PIE support. Select
 Dynamic analysis is not applicable for finding security features offered by the toolchain.
 
 ## References
+
+- Codesign - <https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html>
 
 ### Memory management - dynamic analysis examples
 
@@ -723,15 +725,3 @@ Dynamic analysis is not applicable for finding security features offered by the 
 - MSTG-CODE-6: "The app catches and handles possible exceptions."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 - MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-#### Tools
-
-- Swift Package Manager - <https://swift.org/package-manager/>
-- Carthage - <https://github.com/carthage/carthage>
-- CocoaPods - <https://CocoaPods.org>
-- OWASP Dependency Check - <https://jeremylong.github.io/DependencyCheck/>
-- Sourceclear - <https://sourceclear.com>
-- class-dump - <https://github.com/nygard/class-dump>
-- RetireJS - <https://retirejs.github.io/retire.js/>
-- idb - <https://github.com/dmayer/idb>
-- Codesign - <https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html>

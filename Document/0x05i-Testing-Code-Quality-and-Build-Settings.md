@@ -292,7 +292,7 @@ Please note that this issue can hold on multiple levels: When you use webviews w
 
 #### Detecting vulnerabilities of third party libraries
 
-Detecting vulnerabilities in third party dependencies can be done by means of the OWASP Dependency checker. This is best done by using a gradle plugin, such as `dependency-check-gradle`.
+Detecting vulnerabilities in third party dependencies can be done by means of the OWASP Dependency checker. This is best done by using a gradle plugin, such as [`dependency-check-gradle`](https://github.com/jeremylong/dependency-check-gradle "dependency-check-gradle").
 In order to use the plugin, the following steps need to be applied:
 Install the plugin from the Maven central repository by adding the following script to your build.gradle:
 
@@ -320,7 +320,7 @@ The report will be in `build/reports` unless otherwise configured. Use the repor
 
 Please be advised that the plugin requires to download a vulnerability feed. Consult the documentation in case issues arise with the plugin.
 
-Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as SourceClear or Blackduck. The actual result of using either the OWASP Dependency Checker or another tool varies on the type of (NDK related or SDK related) libraries.
+Alternatively there are commercial tools which might have a better coverage of the dependencies found for the libraries being used, such as [Sonatype Nexus IQ](https://www.sonatype.com/nexus/iqserver "Nexus IQ"), [Sourceclear](https://www.sourceclear.com/ "Sourceclear"), [Snyk](https://snyk.io/ "Snyk") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck"). The actual result of using either the OWASP Dependency Checker or another tool varies on the type of (NDK related or SDK related) libraries.
 
 Lastly, please note that for hybrid applications, one will have to check the JavaScript dependencies with RetireJS. Similarly for Xamarin, one will have to check the C# dependencies.
 
@@ -329,7 +329,7 @@ When a library is found to contain vulnerabilities, then the following reasoning
 - Is the library packaged with the application? Then check whether the library has a version in which the vulnerability is patched. If not, check whether the vulnerability actually affects the application. If that is the case or might be the case in the future, then look for an alternative which provides similar functionality, but without the vulnerabilities.
 - Is the library not packaged with the application? See if there is a patched version in which the vulnerability is fixed. If this is not the case, check if the implications of the vulnerability for the build-process. Could the vulnerability impede a build or weaken the security of the build-pipeline? Then try looking for an alternative in which the vulnerability is fixed.
 
-When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or Proguard are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
+When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or [ProGuard](0x08-Testing-Tools.md#proguard) are applied properly, then version information about the library is often obfuscated and therefore gone. Otherwise you can still find the information very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for CVEs by hand.
 
 If the application is a high-risk application, you will end up vetting the library manually. In that case, there are specific requirements for native code, which you can find in the chapter "[Testing Code Quality](0x04h-Testing-Code-Quality.md)". Next to that, it is good to vet whether all best practices for software engineering are applied.
 
@@ -354,7 +354,7 @@ $ gradle downloadLicenses
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreements to see whether a copyright notice needs to be included into the app and whether the license type requires to open-source the code of the application.
 
-Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as SourceClear, Snyk or Blackduck.
+Similar to dependency checking, there are commercial tools which are able to check the licenses as well, such as [Sonatype Nexus IQ](https://www.sonatype.com/nexus/iqserver "Nexus IQ"), [Sourceclear](https://www.sourceclear.com/ "Sourceclear"), [Snyk](https://snyk.io/ "Snyk") or [Blackduck](https://www.blackducksoftware.com/ "Blackduck").
 
 > Note: If in doubt about the implications of a license model used by a third party library, then consult with a legal specialist.
 
@@ -362,7 +362,7 @@ When a library contains a license in which the application IP needs to be open-s
 
 Note: In case of a hybrid app, please check the build tools used: most of them do have a license enumeration plugin to find the licenses being used.
 
-When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or Proguard are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
+When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or [ProGuard](0x08-Testing-Tools.md#proguard) are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 
 ### Dynamic Analysis
 
@@ -486,7 +486,7 @@ There are various steps to take:
 
 ### Overview
 
-Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. ProGuard offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
+Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. [ProGuard](0x08-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
 
 Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://owasp.org/www-community/vulnerabilities/Buffer_Overflow "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
 
@@ -581,23 +581,6 @@ class a$b
 - MSTG-CODE-7: "Error handling logic in security controls denies access by default."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 - MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
-
-### Tools
-
-- ProGuard - <https://www.guardsquare.com/en/proguard>
-- jarsigner - <http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html>
-- Xposed - <http://repo.xposed.info/>
-- Drozer - <https://labs.mwrinfosecurity.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf>
-- GNU nm - <https://ftp.gnu.org/old-gnu/Manuals/binutils-2.12/html_node/binutils_4.html>
-- Black Duck - <https://www.blackducksoftware.com/>
-- Sourceclear - <https://www.sourceclear.com/>
-- Snyk - <https://snyk.io/>
-- Gradle license plugn - <https://github.com/hierynomus/license-gradle-plugin>
-- Dependency-check-gradle - <https://github.com/jeremylong/dependency-check-gradle>
-- MobSF - <https://www.github.com/MobSF/Mobile-Security-Framework-MobSF>
-- Squares leak canary - <https://github.com/square/leakcanary>
-- Memory Profiler from Android Studio - <https://developer.android.com/studio/profile/memory-profiler>
-- Android Java Deserialization Vulnerability Tester - <https://github.com/modzero/modjoda>
 
 ### Memory Analysis References
 
