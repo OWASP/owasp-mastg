@@ -580,7 +580,7 @@ class a$b
 - MSTG-CODE-6: "The app catches and handles possible exceptions."
 - MSTG-CODE-7: "Error handling logic in security controls denies access by default."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
-- MSTG-CODE-9: "Free security features offered by the toolchain, such as bytecode minification, stack protection, PIE support and automatic reference counting, are activated."
+- MSTG-CODE-9: "Free security features offered by the toolchain, such as byte-code minification, stack protection, PIE support and automatic reference counting, are activated."
 
 ### Memory Analysis References
 
