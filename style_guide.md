@@ -329,7 +329,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 |  Base64    |    Base64-      |
 | black box  |     *same*      |
 | Bundle ID  |      NA        |
-| byte-code  |       NA        |
+| bytecode  |       NA        |
 |client side |  client-side    |
 |  codebase  |     *same*      |
 |code signing|     *same*      |
