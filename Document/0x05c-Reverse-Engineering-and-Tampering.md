@@ -14,37 +14,6 @@ Note that we'll use the [OWASP Mobile Testing Guide Crackmes](https://github.com
 
 Reverse engineering is the process of taking an app apart to find out how it works. You can do this by examining the compiled app (static analysis), observing the app during runtime (dynamic analysis), or a combination of both.
 
-### Tooling
-
-Make sure that the following is installed on your system (see the "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md)" chapter for installation instructions):
-
-- The newest SDK Tools and SDK Platform-Tools packages. These packages include the Android Debugging Bridge (ADB) client and other tools that interface with the Android platform.
-- The Android NDK. This is the Native Development Kit that contains prebuilt toolchains for cross-compiling native code for different architectures. You'll need it if you plan to deal with native code, e.g. to inspect it or to be able to debug or trace it (the NDK contains useful prebuilt versions of such as gdbserver or strace for various architectures).
-
-In addition to the SDK and NDK, you'll also need something to make Java bytecode more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. Popular free decompilers include [JD](http://jd.benow.ca/ "JD"), [JAD](http://www.javadecompilers.com/jad "JAD"), [Procyon](https://bitbucket.org/mstrobel/procyon/overview "Procyon"), and [CFR](https://www.benf.org/other/cfr/ "CFR"). For convenience, we have packed some of these decompilers into our [apkx wrapper script](https://github.com/b-mueller/apkx "apkx - APK Decompilation for the Lazy"). This script completely automates the process of extracting Java code from release APK files and makes it easy to experiment with different backends (we'll also use it in some of the following examples).
-
-Other tools are really a matter of preference and budget. A ton of free and commercial disassemblers, decompilers, and frameworks with different strengths and weaknesses exist. We'll be covering some of them in this chapter.
-
-#### Building a Reverse Engineering Environment for Free
-
-With a little effort, you can build a reasonable GUI-based reverse engineering environment for free.
-
-For navigating the decompiled sources, we recommend [IntelliJ](https://www.jetbrains.com/idea/ "IntelliJ IDEA"), a relatively lightweight IDE that works great for browsing code and allows basic on-device debugging of the decompiled apps. However, if you prefer something that's clunky, slow, and complicated to use, [Eclipse](https://eclipse.org/ide/ "Eclipse") is the right IDE for you (based on the author's personal bias).
-
-If you don't mind looking at Smali instead of Java, you can use the [smalidea plugin for IntelliJ](https://github.com/JesusFreke/smalidea "Smalidea") for debugging. Smalidea supports single-stepping through the bytecode and identifier renaming, and it watches for non-named registers, which makes it much more powerful than a JD + IntelliJ setup.
-
-[apktool](https://github.com/iBotPeaches/Apktool "apktool") is a popular free tool that can extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali format (Smali/Baksmali is an assembler/disassembler for the Dex format. It's also Icelandic for "Assembler/Disassembler"). apktool allows you to reassemble the package, which is useful for patching and applying changes to the Android Manifest.
-
-You can accomplish more elaborate tasks (such as program analysis and automated de-obfuscation) with open source reverse engineering frameworks such as [Radare2](https://www.radare.org "Radare2"), [Ghidra](https://ghidra-sre.org/ "Ghidra") and [Angr](https://angr.io/ "Angr"). You'll find usage examples for many of these free tools and frameworks throughout the guide.
-
-#### Commercial Tools
-
-Building a reverse engineering environment for free is possible. However, there are some commercial alternatives. The most commonly used are:
-
-- [JEB](https://www.pnfsoftware.com "JEB Decompiler"), a commercial decompiler, packs all the functionality necessary for static and dynamic analysis of Android apps into an all-in-one package. It is reasonably reliable and includes prompt support. It has a built-in debugger, which allows for an efficient workflow. Setting breakpoints directly in the decompiled (and annotated) sources is invaluable, especially with ProGuard-obfuscated bytecode. Of course, convenience like this doesn't come cheap, and now that JEB is provided via a subscription-based license, you'll have to pay a monthly fee to use it.
-
-- [IDA Pro](https://www.hex-rays.com/products/ida/ "IDA Pro") in its paid version is compatible with ARM, MIPS, Java bytecode, and, of course, Intel ELF binaries. It also comes with debuggers for both Java applications and native processes. With its powerful scripting, disassembling, and extension capabilities, IDA Pro usually works great for static analysis of native programs and libraries. However, the static analysis facilities it offers for Java code are rather basic: you get the Smali disassembly but not much more. You can't navigate the package and class structure, and some actions (such as renaming classes) can't be performed, which can make working with more complex Java apps tedious. In addition, unless you can afford the paid version, it won't be of help when reversing native code as the freeware version does not support the ARM processor type.
-
 ### Disassembling and Decompiling
 
 In Android app security testing, if the application is based solely on Java and doesn't have any native code (C/C++ code), the reverse engineering process is relatively easy and recovers (decompiles) almost all the source code. In those cases, black-box testing (with access to the compiled binary, but not the original source code) can get pretty close to white-box testing.
@@ -53,63 +22,35 @@ Nevertheless, if the code has been purposefully obfuscated (or some tool-breakin
 
 #### Decompiling Java Code
 
-The process of decompilation consists of converting Java bytecode back into Java source code. We'll be using UnCrackable App for Android Level 1 in the following examples, so download it if you haven't already. First, let's install the app on a device or emulator and run it to see what the crackme is about.
+If you don't mind looking at Smali instead of Java, you can simply [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the Welcome screen (even if you don't intend to debug it you can take a look at the smali code).
 
-```bash
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
-$ adb install UnCrackable-Level1.apk
-```
+Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali. apktool allows you to reassemble the package, which is useful for patching and applying changes to e.g. the Android Manifest.
+
+If you want to look directly into Java source code on a GUI, simply open your APK using [jadx](0x08-Testing-Tools.md#jadx) or [Bytecode Viewer](0x08-Testing-Tools.md#bytecode-viewer).
+
+Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
+
+- [JD](http://jd.benow.ca/ "JD")
+- [JAD](http://www.javadecompilers.com/jad "JAD")
+- [jadx](https://github.com/skylot/jadx "jadx")
+- [Procyon](https://github.com/mstrobel/procyon "Procyon")
+- [CFR](https://www.benf.org/other/cfr/ "CFR")
+
+Alternatively run [apkx](0x08-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such as an IDE.
+
+In the following example we'll be using [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk "UnCrackable App for Android Level 1"). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 <img src="Images/Chapters/0x05c/crackme-1.png" alt="Crackme" width="400" />
 
 Seems like we're expected to find some kind of secret code!
 
-We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file and look at the content.
-
-```bash
-$ unzip UnCrackable-Level1.apk -d UnCrackable-Level1
-Archive:  UnCrackable-Level1.apk
-  inflating: UnCrackable-Level1/AndroidManifest.xml
-  inflating: UnCrackable-Level1/res/layout/activity_main.xml
-  inflating: UnCrackable-Level1/res/menu/menu_main.xml
- extracting: UnCrackable-Level1/res/mipmap-hdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-mdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-xhdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-xxhdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/res/mipmap-xxxhdpi-v4/ic_launcher.png
- extracting: UnCrackable-Level1/resources.arsc
-  inflating: UnCrackable-Level1/classes.dex
-  inflating: UnCrackable-Level1/META-INF/MANIFEST.MF
-  inflating: UnCrackable-Level1/META-INF/CERT.SF
-  inflating: UnCrackable-Level1/META-INF/CERT.RSA
-
-```
-
-In the standard setup, all the Java bytecode and app data is in the file `classes.dex` in the app root directory. This file conforms to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers take plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. You can do this with `dex2jar` or `enjarify`.
+We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file (`unzip UnCrackable-Level1.apk -d UnCrackable-Level1`) and look at the content. In the standard setup, all the Java bytecode and app data is in the file `classes.dex` in the app root directory (`UnCrackable-Level1/`). This file conforms to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers take plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. You can do this with `dex2jar` or `enjarify`.
 
 Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the [CFR decompiler](https://www.benf.org/other/cfr/ "CFR decompiler"). CFR is under active development, and brand-new releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
 
-The easiest way to run CFR is through `apkx`, which also packages `dex2jar` and automates extraction, conversion, and decompilation. Install it:
+The easiest way to run CFR is through [apkx](0x08-Testing-Tools.md#apkx), which also packages `dex2jar` and automates extraction, conversion, and decompilation. Run it on the APK and you should find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
 
-```bash
-$ git clone https://github.com/b-mueller/apkx
-$ cd apkx
-$ sudo ./install.sh
-```
-
-This should copy `apkx` to `/usr/local/bin`. Run it on `UnCrackable-Level1.apk`:
-
-```bash
-$ apkx UnCrackable-Level1.apk
-Extracting UnCrackable-Level1.apk to UnCrackable-Level1
-Converting: classes.dex -> classes.jar (dex2jar)
-dex2jar UnCrackable-Level1/classes.dex -> UnCrackable-Level1/classes.jar
-Decompiling to UnCrackable-Level1/src (cfr)
-```
-
-You should now find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
-
-Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because Intellij uses the package name to identify the correct process.
+Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because IntelliJ uses the package name to identify the correct process.
 
 <img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="500px" />
 
@@ -191,7 +132,7 @@ So where is the native implementation of this function? If you look into the "li
 
 <img src="Images/Chapters/0x05c/archs.jpg" alt="Architectures" width="200" />
 
-Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on Mac OS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
+Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on macOS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
 ```bash
 $ greadelf -W -s libnative-lib.so | grep Java
@@ -327,7 +268,7 @@ In order to extract strings from native code used in an Android application, you
 
 ##### Java and Kotlin
 
-There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage** in jadx](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx").
+There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage**](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx - find-usage") in [jadx](0x08-Testing-Tools.md#jadx).
 
 ##### Native Code
 
@@ -536,12 +477,10 @@ Configure the static analyzer properly to reduce the likelihood of false positiv
 
 There are several open source tools for automated security analysis of an APK.
 
-- [QARK](https://github.com/linkedin/qark/ "QARK")
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
-- [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
-
-For commercial tools, see the section "[Static Source Code Analysis (Commercial Tools)](0x08-Testing-Tools.md#static-source-code-analysis-commercial-tools "Static Source Code Analysis (Commercial Tools)")" in the chapter "Testing Tools".
+- [MobSF](0x08-Testing-Tools#mobsf)
+- [QARK](https://github.com/linkedin/qark/ "QARK")
 
 ## Dynamic Analysis
 
@@ -579,7 +518,7 @@ $ objection explore
 
 As mentioned previously, Android runs on top of a modified Linux kernel and retains the [proc filesystem](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") (procfs) from Linux, which is mounted at `/proc`. Procfs provides a directory-based view of a process running on the system, providing detailed information about the process itself, its threads, and other system-wide diagnostics. Procfs is arguably one of the most important filesystems on Android, where many OS native tools depend on it as their source of information.
 
-Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using BusyBox. We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
+Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using [BusyBox](0x08-Testing-Tools.md#busybox). We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
 
 In this section, we will be using information from procfs directly or indirectly to gather information about a running process.
 
@@ -1120,41 +1059,13 @@ $ emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-
 
 Unfortunately, generating a complete guest instruction trace with QEMU is impossible because code blocks are written to the log only at the time they are translated, not when they're taken from the cache. For example, if a block is repeatedly executed in a loop, only the first iteration will be printed to the log. There's no way to disable TB caching in QEMU (besides hacking the source code). Nevertheless, the functionality is sufficient for basic tasks, such as reconstructing the disassembly of a natively executed cryptographic algorithm.
 
-Dynamic analysis frameworks, such as PANDA and DroidScope, build on QEMU's tracing functionality. PANDA/PANDROID is the best choice if you're going for a CPU-trace based analysis because it allows you to easily record and replay a full trace and is relatively easy to set up if you follow the build instructions for Ubuntu.
-
-#### DroidScope
-
-DroidScope (an extension to the [DECAF dynamic analysis framework](https://github.com/sycurelab/DECAF "DECAF dynamic analysis framework"))is a malware analysis engine based on QEMU. It instruments the emulated environment on several context levels, making it possible to fully reconstruct the semantics on the hardware, Linux and Java levels.
-
-DroidScope exports instrumentation APIs that mirror the different context levels (hardware, OS, and Java) of a real Android device. Analysis tools can use these APIs to query or set information and register callbacks for various events. For example, a plugin can register callbacks for native instruction start and end, memory reads and writes, register reads and writes, system calls, and Java method calls.
-
-All of this makes it possible to build tracers that are practically transparent to the target application (as long as we can hide the fact that it is running in an emulator). One limitation is that DroidScope is compatible with the Dalvik VM only.
-
-#### PANDA
-
-[PANDA](https://github.com/moyix/panda/blob/master/docs/ "PANDA Docs") is another QEMU-based dynamic analysis platform. Similar to DroidScope, PANDA can be extended by registering callbacks that are triggered by certain QEMU events. The twist PANDA adds is its record/replay feature. This allows an iterative workflow: the reverse engineer records an execution trace of the target app (or some part of it), then replays it repeatedly, refining the analysis plugins with each iteration.
-
-PANDA comes with pre-made plugins, including a string search tool and a syscall tracer. Most importantly, it supports Android guests, and some of the DroidScope code has even been ported. Building and running PANDA for Android ("PANDROID") is relatively straightforward. To test it, clone Moiyx's git repository and build PANDA:
-
-```bash
-$ cd qemu
-$ ./configure --target-list=arm-softmmu --enable-android
-$ make
-```
-
-As of this writing, Android versions up to 4.4.1 run fine in PANDROID, but anything newer than that won't boot. Also, the Java level introspection code only works on the Android 2.3 (API level 9) Dalvik runtime. Older versions of Android seem to run much faster in the emulator, so sticking with Gingerbread is probably best if you plan to use PANDA. For more information, check out the extensive documentation in the PANDA git repository.
-
-#### VxStripper
-
-Another very useful tool built on QEMU is [VxStripper by Sébastien Josse](http://vxstripper.pagesperso-orange.fr "VxStripper"). VXStripper is specifically designed for de-obfuscating binaries. By instrumenting QEMU's dynamic binary translation mechanisms, it dynamically extracts an intermediate representation of a binary. It then applies simplifications to the extracted intermediate representation and recompiles the simplified binary with LLVM. This is a very powerful way of normalizing obfuscated programs. See [Sébastien's paper](http://ieeexplore.ieee.org/document/6759227/ "Dynamic Malware Recompilation") for more information [#josse].
-
 ### Binary Analysis
 
 Binary analysis frameworks give you powerful ways to automate tasks that would be almost impossible to do manually. Binary analysis frameworks typically use a technique called symbolic execution, which allow to determine the conditions necessary to reach a specific target. It translates the program's semantics into a logical formula in which some variables are represented by symbols with specific constraints. By resolving the constraints, you can find the conditions necessary for the execution of some branch of the program.
 
 #### Symbolic Execution
 
-Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the Angr binary analysis framework as our symbolic execution engine. An overview of Angr and its installation instructions has been covered previously in "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" chapter.
+Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.
 
 The target crackme is a simple [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code, and hence, critical business logic is often written in native. The current sample application may not represent a real world problem, but nevertheless it helps getting some basic notions about symbolic execution that you can use in a real situation. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
@@ -1524,7 +1435,7 @@ A well-known use case of this technique is loading the Frida gadget to an applic
 
 Many Android applications use native code in addition to Java code for various performance and security reasons. The native code is present in the form of ELF shared libraries. An ELF executable includes a list of shared libraries (dependencies) that are linked to the executable for it to function optimally. This list can be modified to insert an additional library to be injected into the process.
 
-Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](https://lief.quarkslab.com/ "LIEF") (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
+Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](0x08-Testing-Tools#lief) (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
 
 ```python
 import lief
@@ -1915,7 +1826,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these passive tasks help us collect information. This Information is often used for other techniques, such as method hooking.
 
-In the following sections you will be using r2frida to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
+In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
 $ r2 frida://usb//sg.vantagepoint.helloworldjni
@@ -2666,22 +2577,3 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 - Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
 - Android Platform based Linux kernel rootkit (4 April 2011 - Phrack Magazine)
 - [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
-
-### Tools
-
-- Angr - <https://angr.io/>
-- APKEnum - <https://github.com/shivsahni/APKEnum>
-- apktool - <https://github.com/iBotPeaches/Apktool>
-- apkx - <https://github.com/b-mueller/apkx>
-- CFR Decompiler - <https://www.benf.org/other/cfr/>
-- Dextra - <http://newandroidbook.com/tools/dextra.html>
-- IDA Pro - <https://www.hex-rays.com/products/ida/>
-- JAD Decompiler - <http://www.javadecompilers.com/jad>
-- jadx - <https://github.com/skylot/jadx>
-- JD (Java Decompiler) - <http://jd.benow.ca/>
-- JEB Decompiler - <https://www.pnfsoftware.com>
-- OWASP Mobile Testing Guide Crackmes - <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/>
-- Procyon Decompiler - <https://bitbucket.org/mstrobel/procyon/overview>
-- Radare2 - <https://www.radare.org>
-- smalidea plugin for IntelliJ - <https://github.com/JesusFreke/smalidea>
-- VxStripper - <http://vxstripper.pagesperso-orange.fr>

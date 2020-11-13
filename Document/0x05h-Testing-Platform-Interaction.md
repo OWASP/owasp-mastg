@@ -287,7 +287,9 @@ For example if both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` are lis
 
 ### Permission Analysis
 
-Always check whether the application is requesting permissions it actually needs. Make sure that no permissions are requested which are not related to the goal of the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+Always check whether the application is requesting permissions it actually requires. Make sure that no permissions are requested which are not related to the goal of the app, especially `DANGEROUS` and `SIGNATURE` permissions, since they can affect both the user and the application if mishandled. For instance, it should be suspicious if a single-player game app requires access to `android.permission.WRITE_SMS`.
+
+When analyzing permissions, you should investigate the concrete use case scenarios of the app and always check if there are replacement APIs for any `DANGEROUS` permissions in use. A good example is the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview) which streamlines the usage of SMS permissions when performing SMS-based user verification. By using this API an application does not have to declare `DANGEROUS` permissions which is a benefit to both the user and developers of the application, who doesn't have to submit the [Permissions Declaration Form](https://support.google.com/googleplay/android-developer/answer/9214102?hl=en).
 
 ### Dynamic Analysis
 
@@ -1587,6 +1589,30 @@ In order to test for proper updating: try downloading an older version of the ap
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the backend will stop calls to vulnerable backends and/or whether the vulnerable app-version itself is blocked by the backend.
 Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
 
+## Testing App Notifications (MSTG-STORAGE-4 and MSTG-STORAGE-7)
+
+### Overview
+
+Android allows for applications to create [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview"), a form of message that is displayed by the Android system outside of the application's UI. This is useful for applications to display small messages to the user while they use other applications on their device.
+
+It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
+
+There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuses the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done in order to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacker. A safer alternative for the user would be to use a 2FA application that does not generate notifications.
+
+Furthermore there are a number of apps on the Google Play Store that provide notification logging, which basically logs locally any notifications on the Android system. This highlights that notifications are in no way private on Android and accessible by any other app on the device.
+
+For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
+
+### Static Analysis
+
+When statically assessing an application, it is recommended to search for any usage of the `NotificationManager` class which might be an indication of some form of notification management. If the class is being used, the next step would be to understand how the application is [generating the notifications](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification").
+
+These code locations can be fed into the Dynamic Analysis section below, providing an idea of where in the application notifications may be dynamically generated.
+
+### Dynamic Analysis
+
+To identify the usage of notifications run through the entire application and all its available functions looking for ways to trigger any notifications. Take note of any notifications that appear while using the application and examine if they contain any confidential information. Consider that you may need to perform actions outside of the application in order to trigger certain notifications.
+
 ## References
 
 ### Android App Bundles and updates
@@ -1635,6 +1661,13 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - <https://developers.google.com/digital-asset-links/v1/getting-started>
 - <https://pdfs.semanticscholar.org/0415/59c01d5235f8cf38a3c69ccee7e1f1a98067.pdf>
 
+### Android App Notifications
+
+- <https://developer.android.com/guide/topics/ui/notifiers/notifications>
+- <https://developer.android.com/training/notify-user/build-notification>
+- <https://developer.android.com/reference/android/service/notification/NotificationListenerService>
+- <https://medium.com/csis-techblog/analysis-of-joker-a-spy-premium-subscription-bot-on-googleplay-9ad24f044451>
+
 ### OWASP MASVS
 
 - MSTG-PLATFORM-1: "The app only requests the minimum set of permissions necessary."
@@ -1645,9 +1678,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - MSTG-PLATFORM-6: "WebViews are configured to allow only the minimum set of protocol handlers required (ideally, only https is supported). Potentially dangerous handlers, such as file, tel and app-id, are disabled."
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
-- MSTG-PLATFORM-9: "The app does not allow any other application to overlay on itself."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
 
-### Tools
-
-- Drozer - <https://github.com/mwrlabs/drozer>
+- MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
+- MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."
