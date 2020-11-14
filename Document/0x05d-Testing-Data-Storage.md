@@ -447,9 +447,7 @@ Apps must carefully ensure that sensitive user data doesn't end within these bac
 
 ### Process Memory
 
-All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive data and sensitive operations will be held and performed within process memory.
-
-For this reason it is important for applications to expose sensitive information as briefly as possible in memory. Once the relevant sensitive data has been used it should be disposed of from process memory.
+All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible. 
 
 The investigation of an application's memory can be done from memory dumps, and from analyzing the memory in real time via a debugger. Its important to note that the analyse of memory is quite error prone and that any approach to analyse of memory takes this into account.
 
