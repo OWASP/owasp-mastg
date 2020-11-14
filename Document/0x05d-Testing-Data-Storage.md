@@ -96,7 +96,7 @@ The Android platform provides a number of database options as aforementioned in 
 #### SQLite Database (Unencrypted)
 
 SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has [built-in support](https://developer.android.com/training/data-storage/sqlite "SQLite Documentation") for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
-For example you may use the following code to store sensitive information within an activity:
+For example, you may use the following code to store sensitive information within an activity:
 
 Example in Java:
 
