@@ -443,7 +443,7 @@ Android provides users with an auto-backup feature. The backups usually include 
 
 - OEMs may provide additional options. For example, HTC devices have a "HTC Backup" option that performs daily backups to the cloud when activated.
 
-Apps must be careful to ensure that sensitive user data stored by the application is not placed within these backups as this may allow an attacker to extract app data from the backup if obtained.
+Apps must carefully ensure that sensitive user data doesn't end within these backups as this may allow an attacker to extract it.
 
 ### Process Memory
 
