@@ -446,7 +446,7 @@ Apps must carefully ensure that sensitive user data doesn't end within these bac
 
 ### Process Memory
 
-All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible. 
+All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible.
 
 The investigation of an application's memory can be done from memory dumps, and from analyzing the memory in real time via a debugger. It's important to note that memory analysis is quite error prone and that any approach to analyze memory takes this into account.
 
@@ -1039,7 +1039,6 @@ This test case focuses on ensuring that backups do not store sensitive applicati
 
 - Check `AndroidManifest.xml` for relevant backup flags.
 - Attempt to backup the application and inspect the backup for sensitive data.
-
 
 ### Static Analysis
 
