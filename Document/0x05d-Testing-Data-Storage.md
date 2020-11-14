@@ -461,12 +461,10 @@ This is further explained in the 'Checking Memory for Sensitive Data' section.
 
 This test case focuses on identifying potentially sensitive data stored by an application and verifying if it is securely stored. The following checks should be performed:
 
-- Verify all functionality has been executed in application to ensure data generation.
-- Analyze source code for any sensitive data.
-- Check all application specific files for data.
+- Analyze data storage in the source code.
+- Be sure to trigger all possible functionality in the application (e.g. by clicking everywhere possible) in order to ensure data generation.
+- Check all application generated and modified files and ensure that the storage method is sufficiently secure.
   - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
-  - Anything that can store data for the application should be checked.
-- Check the previously identified files to see if the storage method is sufficiently secure for the data stored.
 
 ### Static Analysis
 
