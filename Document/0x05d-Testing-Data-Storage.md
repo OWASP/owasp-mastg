@@ -21,12 +21,6 @@ Disclosing sensitive information has several consequences, including decrypted i
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation usually ranges from checking for the correct data types to using additional cryptographic controls, such as an HMAC, you can validate the integrity of the data.
 
-Ultimately [storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential to many mobile apps. For this reason testing data storage of sensitive information is of great importance. It's also important to be able to make the distinction between what is and isn't sensitive data for an application as this will define what type of data storage is often used. For more information on Data Storage Security, refer to the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
-
-Note that the meaning of "sensitive data" depends on the app that handles it. Data classification is described in detail in the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section of the chapter "Mobile App Security Testing".
-
-Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation often does not go beyond ensuring that the data presented is of the type requested, but with using additional cryptographic controls, such as an HMAC, you can validate the correctness of the data.
-
 ## Data Storage Methods Overview
 
 Android provides a number of methods for data storage depending on the needs of the user, developer, and application. [Storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential for many mobile apps. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently for this use case in several ways. The following list of persistent storage techniques are widely used on the Android platform to provide user level storage:
