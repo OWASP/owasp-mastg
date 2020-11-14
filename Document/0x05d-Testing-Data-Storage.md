@@ -618,7 +618,7 @@ In case other public storage mechanisms (than the `SharedPreferences.Editor`) ar
 
 ### Overview
 
-This test case focuses on identifying the storage of any sensitive application within both device and applications logs. All logs may potentially store sensitive data and as such should be audited. The following checks should be performed:
+This test case focuses on identifying any sensitive application data within both system and application logs. The following checks should be performed:
 
 - Analyze source code for logging related code.
 - Check application data directory for log files.
