@@ -16,7 +16,6 @@ Sensitive data is vulnerable when it is not properly protected by the app that i
 
 First, it is important to identify the kind of information processed by the mobile application and input by the user. Next, determining what can be considered sensitive data that may be valuable to attackers (e.g., passwords, credit card information, PII) is not always a trivial task and it strongly depends on the context of the target application. You can find more details regarding data classification in the "[Identifying Sensitive Data](0x04b-Mobile-App-Security-Testing.md#identifying-sensitive-data "Identifying Sensitive Data")" section of the chapter "Mobile App Security Testing". For general information on Android Data Storage Security, refer to the [Security Tips for Storing Data](https://developer.android.com/training/articles/security-tips.html#StoringData "Security Tips for Storing Data") in the Android developer's guide.
 
-
 Disclosing sensitive information has several consequences, including decrypted information. In general, an attacker may identify this information and use it for additional attacks, such as social engineering (if PII has been disclosed), account hijacking (if session information or an authentication token has been disclosed), and gathering information from apps that have a payment option (to attack and abuse them).
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation usually ranges from checking for the correct data types to using additional cryptographic controls, such as an HMAC, you can validate the integrity of the data.
@@ -463,6 +462,8 @@ This test case focuses on identifying potentially sensitive data stored by an ap
 - Be sure to trigger all possible functionality in the application (e.g. by clicking everywhere possible) in order to ensure data generation.
 - Check all application generated and modified files and ensure that the storage method is sufficiently secure.
   - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
+  
+In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox. If achievable for the application, sensitive data should be stored off device.
 
 ### Static Analysis
 
@@ -582,10 +583,6 @@ Install and use the app, executing all functions at least once. Data can be gene
 - Check for the usage of any Firebase Real-time databases and attempt to identify if they are misconfigured by making the following network call:
   - `https://_firebaseProjectName_.firebaseio.com/.json`
 - Determine whether a Realm database is available in `/data/data/<package-name>/files/`, whether it is unencrypted, and whether it contains sensitive information. By default, the file extension is `realm` and the file name is `default`. Inspect the Realm database with the [Realm Browser](https://github.com/realm/realm-browser-osx "Realm Browser for macOS").
-
-In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox.
-
-Even more ideally, if achievable, sensitive data shouldn't be stored on the device at all and instead should be stored off device.
 
 ## Testing Local Storage for Input Validation (MSTG-PLATFORM-2)
 
