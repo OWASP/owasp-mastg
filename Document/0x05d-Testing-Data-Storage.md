@@ -624,7 +624,7 @@ This test case focuses on identifying any sensitive application data within both
 - Check application data directory for log files.
 - Gather system messages and logs and analyze for any sensitive data.
 
-Any logging statements should be removed from the production release unless deemed necessary to the application as these may leak sensitive application data.
+As a general recommendation to avoid potential sensitive application data leakage, logging statements should be removed from production releases unless deemed necessary to the application or explicitly identified as safe, e.g. as a result of a security audit.
 
 ### Static Analysis
 
