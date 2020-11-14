@@ -460,7 +460,7 @@ This is further explained in the 'Checking Memory for Sensitive Data' section.
 
 ### Overview
 
-This test case focuses on identifying stored data from an application and identifying if it is sensitive data. As well as furthermore identifying if the sensitive data is securely stored. The following checks should be performed:
+This test case focuses on identifying potentially sensitive data stored by an application and verifying if it is securely stored. The following checks should be performed:
 
 - Verify all functionality has been executed in application to ensure data generation.
 - Analyze source code for any sensitive data.
