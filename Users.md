@@ -26,7 +26,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Stingray Technologies](https://stingray.appsec.global/  "Stingray Technologies")
 - [STM Solutions](https://stmsolutions.pl/ "STM Solutions")
 - [Toreon](https://www.toreon.com/ "Toreon")
-- [Trustwave](https://www.trustwave.com "Trustwave")
+- [Trustwave](https://www.trustwave.com/ "Trustwave")
 - [VantagePoint](https://www.vantagepoint.sg "VantagePoint")
 - [Vertical Structure](https://www.verticalstructure.com "Vertical Structure Ltd")
 - [Xebia](https://xebia.com "Xebia")
