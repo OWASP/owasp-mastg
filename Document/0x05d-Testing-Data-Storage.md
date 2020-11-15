@@ -22,7 +22,7 @@ Next to protecting sensitive data, you need to ensure that data read from any st
 
 ## Data Storage Methods Overview
 
-Android provides a number of methods for data storage depending on the needs of the user, developer, and application. [Storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential for many mobile apps. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently for this use case in several ways. The following list of persistent storage techniques are widely used on the Android platform to provide user level storage:
+Android provides a number of methods for [data storage](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") depending on the needs of the user, developer, and application. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently for this use case in several ways. The following list of persistent storage techniques are widely used on the Android platform:
 
 - Shared Preferences
 - SQLite Databases
