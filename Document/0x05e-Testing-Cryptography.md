@@ -282,6 +282,8 @@ This will highlight all the classes that use the `SecretKeySpec` class, we now e
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
 
+You can use [RMS - Runtime Mobile Security](0x08-Testing-Tools.md#RMS-Runtime-Mobile-Security) to monitor usage of cryptographic functions and / or monitor access to file system. You can use [tracing methods](Document\0x05c-Reverse-Engineering-and-Tampering.md#tracing) to determine input / output values from methods.
+
 ## Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
 
 ### Overview
@@ -309,6 +311,8 @@ Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0
 ### Dynamic Analysis
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
+
+You can use [RMS - Runtime Mobile Security](0x08-Testing-Tools.md#RMS-Runtime-Mobile-Security) to monitor usage of cryptographic functions and / or monitor access to file system. You can use [tracing methods](Document\0x05c-Reverse-Engineering-and-Tampering.md#tracing) to determine input / output values from methods.
 
 ## Testing the Purposes of Keys (MSTG-CRYPTO-5)
 
@@ -349,6 +353,8 @@ During verification take the following checks should be performed:
 ### Dynamic Analysis
 
 Hook cryptographic methods and analyze the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from.
+
+You can use [RMS - Runtime Mobile Security](0x08-Testing-Tools.md#RMS-Runtime-Mobile-Security) to monitor usage of cryptographic functions and / or monitor access to file system. You can use [tracing methods](Document\0x05c-Reverse-Engineering-and-Tampering.md#tracing) to determine input / output values from methods.
 
 ## Testing Random Number Generation (MSTG-CRYPTO-6)
 
