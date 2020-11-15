@@ -32,7 +32,7 @@ Android provides a number of methods for [data storage](https://developer.androi
 - External Storage
 - Keystore
 
-Furthermore to this there are a number of other functions in Android built for various use cases that can also result in the storage of data and respectively should also be tested, such as:
+In addition to this, there are a number of other functions in Android built for various use cases that can also result in the storage of data and respectively should also be tested, such as:
 
 - Logging Functions
 - Android Backups
