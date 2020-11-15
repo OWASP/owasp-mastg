@@ -463,7 +463,7 @@ This test case focuses on identifying potentially sensitive data stored by an ap
 - Check all application generated and modified files and ensure that the storage method is sufficiently secure.
   - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
   
-In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox. If achievable for the application, sensitive data should be stored off device.
+In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox. If achievable for the application, sensitive data should be stored off device or, even better, not stored at all.
 
 ### Static Analysis
 
