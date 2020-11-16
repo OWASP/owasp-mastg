@@ -307,7 +307,7 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 
 <img src="Images/Chapters/0x06j/ptracePatched.png" width="500px" />
 
-[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between byte-code and instruction mnemonics.
+[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
 
 Bypasses for other ptrace-based anti-debugging techniques can be found in ["Defeating Anti-Debug Techniques: macOS ptrace variants" by Alexander O'Mara](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
 
@@ -362,7 +362,7 @@ One way to bypass this check is by patching the binary. When the code above is c
 
 <img src="Images/Chapters/0x06j/sysctlOriginal.png" width="550px" />
 
-After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in byte-code), the patched code is similar to the following:
+After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
 
 <img src="Images/Chapters/0x06j/sysctlPatched.png" width="550px" />
 
