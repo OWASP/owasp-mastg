@@ -856,8 +856,13 @@ private var backgroundImage: UIImageView?
 
 func applicationDidEnterBackground(_ application: UIApplication) {
     let myBanner = UIImageView(image: #imageLiteral(resourceName: "overlayImage"))
+    myBanner.frame = UIScreen.main.bounds
     backgroundImage = myBanner
     window?.addSubview(myBanner)
+}
+
+func applicationWillEnterForeground(_ application: UIApplication) {
+    backgroundImage?.removeFromSuperview()
 }
 ```
 
@@ -869,7 +874,12 @@ Objective-C:
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
     self.backgroundImage = myBanner;
+    self.backgroundImage.bounds = UIScreen.mainScreen.bounds;
     [self.window addSubview:myBanner];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [self.backgroundImage removeFromSuperview];
 }
 ```
 
