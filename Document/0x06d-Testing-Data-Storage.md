@@ -190,7 +190,7 @@ Swift:
 ```swift
 FileManager.default.createFile(
     atPath: filePath,
-    contents: Data(base64Encoded: "secret text"),
+    contents: "secret text".data(using: .utf8),
     attributes: [FileAttributeKey.protectionKey: FileProtectionType.complete]
 )
 ```
