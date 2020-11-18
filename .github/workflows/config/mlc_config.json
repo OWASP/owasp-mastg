@@ -36,5 +36,7 @@
             }
         }
     ],
+    "retryOn429": true,
+    "fallbackRetryDelay": "30s",
     "see": "https://github.com/tcort/markdown-link-check#config-file-format"
 }
