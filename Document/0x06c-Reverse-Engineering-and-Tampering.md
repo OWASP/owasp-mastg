@@ -612,19 +612,17 @@ To solve the challenge using Unicorn we will broadly perform the following steps
 - Execute the binary by providing the start and end address.
 - Finally, dump the return value from the function, which in this case is our secret string.
 
-In the present scenario, apart from the `__text` section (which contains the instructions) we also need to load `__data` section. The program is accessing some hardcoded values, for instance at address 0x100008198, a value from address 0x10000d8f6 is being accessed. These hardcoded values are typically stored in `__data` section and can be cross verified using Ghidra, Radare2 or IDA Pro.
+In the present scenario, apart from the `__text` section (which contains the instructions) we also need to load `__data` section. The program is accessing some hard coded values, which are typically stored in `__data` section of a Mach-O binary. In function at 0x100008158, at address 0x100008198 a value from address 0x10000d8f6 is being accessed. The address 0x10000d8f6 maps to `__data` section of the binary.
 
-To extract the content of `__text` and `__data` section we will use [Lief](https://lief.quarkslab.com/ "Lief") library, as it provides convenient to use abstractions to manipulate multiple executable file formats.
-
-Before writing the actual script we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra.
+To extract the content of `__text` and `__data` section from the Mach-O binary we will use [Lief](https://lief.quarkslab.com/ "Lief") library. LIEF provides a convenient abstractions to manipulate multiple executable file formats, including Mach-O files. But before this content into the memory, we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra, Radare2 or IDA Pro.
 
 <img src="Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
 
-From above above table, we will use the base address 0x10000432c for `__text` and 0x10000d3e8 for `__data` section to load at in the memory.
+From the above table, we will use the base address 0x10000432c for `__text` and 0x10000d3e8 for `__data` section to load them at in the memory.
 
 > While allocating memory for Unicorn, the memory addresses should be 4k page aligned and also the allocated size should be a multiple of 1024.
 
-The Unicorn script to emulate the function at 0x1000080d4 is following:
+The final Unicorn script to emulate the function at 0x1000080d4 and dump the secret string value, is following:
 
 ```python
 
@@ -675,9 +673,9 @@ ret_value = emu.reg_read(UC_ARM64_REG_X0)
 print(emu.mem_read(ret_value, 11))
 ```
 
-You may notice that there is an additional memory allocation at address 0x0, this is a hack around `stack_chk_guard` check. Without this, there will be a invalid memory read error and binary cannot be executed. With this hack, the program will access the value at 0x0 and use it for `stack_chk_guard` check.
+You may notice that there is an additional memory allocation at address 0x0, this is a simple hack around `stack_chk_guard` check. Without this, there will be a invalid memory read error and binary cannot be executed. With this hack, the program will access the value at 0x0 and use it for `stack_chk_guard` check.
 
-Using Unicorn do require some additional setup before executing the binary, but once done, this tool can help to provide deep insights into the binary. It provides the flexibility to execute full binary or a limited part of it. Unicorn also exposes APIs to attach hooks to the execution. Using these hooks you can observe the state of the program at any point during the execution or even manipulate the register or variable values and forcefully explore other execution branches in a program. On running a binary in Unicorn you don't need to worry about various checks like root/jailbreak detection or hook detection etc.
+To summarise, using Unicorn do require some additional setup before executing the binary, but once done, this tool can help to provide deep insights into the binary. It provides the flexibility to execute full binary or a limited part of it. Unicorn also exposes APIs to attach hooks to the execution. Using these hooks you can observe the state of the program at any point during the execution or even manipulate the register or variable values and forcefully explore other execution branches in a program. On running a binary in Unicorn you don't need to worry about various checks like root/jailbreak detection or hook detection etc.
 
 ### Angr
 
