@@ -601,7 +601,7 @@ Unicorn is a lightweight, multi-architecture CPU emulator framework. Unicorn pro
 
 To use Unicorn, we need to implement all necessary infrastructure which generally is readily available to us in an Operating System, which includes binary loader, linker and other dependency libraries. Writing a complete binary loader is superfluous for our current goal,  instead we will write our own crude binary loader and execute a small part of the binary in Unicorn to solve the challenge.
 
-While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at offset `0x1000080d4` is responsible for dynamically generating the secret string. If we analyze this function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither its performing any system calls. All the necessary code is self-contained in the binary and this is a perfect scenario to use a CPU emulator like Unicorn.
+While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at offset 0x1000080d4 is responsible for dynamically generating the secret string. If we analyze this function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither its performing any system calls. All the necessary code is self-contained in the binary and this is a perfect scenario to use a CPU emulator like Unicorn.
 
 To solve the challenge using Unicorn we will broadly perform the following steps:
 
@@ -612,21 +612,21 @@ To solve the challenge using Unicorn we will broadly perform the following steps
 - Execute the binary by providing the start and end address.
 - Finally, dump the return value from the function, which in this case is our secret string.
 
-In the present scenario, apart from the `__text` section (which contains the instructions) we also need to load `__data` section. The program is accessing some hardcoded values, for instance at address `0x100008198`, a value from address `0x10000d8f6` is being accessed. These hardcoded values are typically stored in `__data` section and can be cross verified using Ghidra, Radare2 or IDA Pro.
+In the present scenario, apart from the `__text` section (which contains the instructions) we also need to load `__data` section. The program is accessing some hardcoded values, for instance at address 0x100008198, a value from address 0x10000d8f6 is being accessed. These hardcoded values are typically stored in `__data` section and can be cross verified using Ghidra, Radare2 or IDA Pro.
 
 To extract the content of `__text` and `__data` section we will use [Lief](https://lief.quarkslab.com/ "Lief") library, as it provides convenient to use abstractions to manipulate multiple executable file formats.
 
 Before writing the actual script we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra.
 
 
-![Uncrackable Level 1 Sections](Images/Chapters/0x06c/uncrackable_sections.png "Uncrackable Level 1 Sections")
+<img src="Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
+- *UnCrackable Level 1 Mach-O Sections*
 
-
-From above above table, we will use the base address `0x10000432c` for `__text` and `0x10000d3e8` for `__data` section to load at in the memory.
+From above above table, we will use the base address 0x10000432c for `__text` and 0x10000d3e8 for `__data` section to load at in the memory.
 
 > While allocating memory for Unicorn, the memory addresses should be 4k page aligned and also the allocated size should be a multiple of 1024.
 
-The Unicorn script to emulate the function at `0x1000080d4` is following:
+The Unicorn script to emulate the function at 0x1000080d4 is following:
 
 ```python
 
@@ -677,7 +677,7 @@ ret_value = emu.reg_read(UC_ARM64_REG_X0)
 print(emu.mem_read(ret_value, 11))
 ```
 
-You may notice that there is an additional memory allocation at address `0x0`, this is a hack around `stack_chk_guard` check. Without this, there will be a invalid memory read error and binary cannot be executed. With this hack, the program will access the value at `0x0` and use it for `stack_chk_guard` check.
+You may notice that there is an additional memory allocation at address 0x0, this is a hack around `stack_chk_guard` check. Without this, there will be a invalid memory read error and binary cannot be executed. With this hack, the program will access the value at 0x0 and use it for `stack_chk_guard` check.
 
 Using Unicorn do require some additional setup before executing the binary, but once done, this tool can help to provide deep insights into the binary. It provides the flexibility to execute full binary or a limited part of it. Unicorn also exposes APIs to attach hooks to the execution. Using these hooks you can observe the state of the program at any point during the execution or even manipulate the register or variable values and forcefully explore other execution branches in a program. On running a binary in Unicorn you don't need to worry about various checks like root/jailbreak detection or hook detection etc.
 
