@@ -618,9 +618,7 @@ To extract the content of `__text` and `__data` section we will use [Lief](https
 
 Before writing the actual script we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra.
 
-
 <img src="Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
-- *UnCrackable Level 1 Mach-O Sections*
 
 From above above table, we will use the base address 0x10000432c for `__text` and 0x10000d3e8 for `__data` section to load at in the memory.
 
