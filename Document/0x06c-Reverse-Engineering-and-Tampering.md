@@ -614,7 +614,7 @@ To solve the challenge using Unicorn we will broadly perform the following steps
 
 In the present scenario, apart from the `__text` section (which contains the instructions) we also need to load `__data` section. The program is accessing some hard coded values, which are typically stored in `__data` section of a Mach-O binary. In function at 0x100008158, at address 0x100008198 a value from address 0x10000d8f6 is being accessed. The address 0x10000d8f6 maps to `__data` section of the binary.
 
-To extract the content of `__text` and `__data` section from the Mach-O binary we will use [Lief](https://lief.quarkslab.com/ "Lief") library. LIEF provides a convenient abstractions to manipulate multiple executable file formats, including Mach-O files. But before this content into the memory, we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra, Radare2 or IDA Pro.
+To extract the content of `__text` and `__data` section from the Mach-O binary we will use [LIEF](https://lief.quarkslab.com/ "Lief") library. LIEF provides a convenient abstractions to manipulate multiple executable file formats, including Mach-O files. But before this content into the memory, we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra, Radare2 or IDA Pro.
 
 <img src="Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
 
