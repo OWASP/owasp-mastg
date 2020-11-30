@@ -77,7 +77,7 @@ $ adb install UnCrackable-Level3.apk
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html "Solution by Eduardo Novella").
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level3/ "Solution by sh3llc0d3r").
 
-### [UnCrackable App for Android Level 4: Radare2 Pay v1.0](Android/Level_04 "Android level 4")
+### [UnCrackable App for Android Level 4: Radare2 Pay v0.9](Android/Level_04 "Android level 4")
 
 The Radare2 community always dreamed with its decentralized and free currency to allow r2 fans to make payments in places and transfer money between r2 users. A debug version has been developed and it will be supported very soon in many stores and websites. Can you verify that this is cryptographically unbreakable?
 
@@ -95,10 +95,19 @@ Hint: Run the APK in a non-tampered device to play a bit with the app.
 This app is compatible with Android 4.4 and up.
 
 ```shell
-$ adb install UnCrackable-Level4.apk
+$ adb install r2pay-v0.9.apk
 ```
 
-#### Solutions
+#### Versions
+- `v0.9` - Release for `OWASP MSTG`.
+  - Source code is available and the compilation has been softened in many ways to make the challenge easier and more enjoyable for newcomers.
+- `v1.0` - Release for `R2con CTF 2020`.
+  - No source code is available and many extra protections are in place.
+
+#### Solutions R2pay v0.9
+- Not yet
+
+#### Solutions R2pay v1.0
 
 - [Solution bypassing protections using Frida/QBDI by Romain Thomas](https://www.romainthomas.fr/post/20-09-r2con-obfuscated-whitebox-part1/ "Solution by Romain Thomas").
 - [Solution whitebox key recovery using SCAMarvels by Romain Thomas](https://www.romainthomas.fr/post/20-09-r2con-obfuscated-whitebox-part2/ "Solution by Romain Thomas").
