@@ -705,7 +705,7 @@ dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms:
 
 With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview "Google Play Instant") you can now create Instant apps. An instant apps can be instantly launched from a browser or the "try now" button from the app store from Android 5.0 (API level 21) onward. They do not require any form of installation. There are a few challenges with an instant app:
 
-- There is a limited amount of size you can have with an instant app (max 15 mb).
+- There is a limited amount of size you can have with an instant app.
 - Only a reduced number of permissions can be used, which are documented at [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions "Permission documentation for Android Instant Apps").
 
 The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
