@@ -30,8 +30,3 @@
 
 - CWE-XXX - Title
 - CWE-312 - Cleartext Storage of Sensitive Information
-
-##### Tools
-
-- Tool - Link
-- [Enjarify](https://github.com/google/enjarify "Enjarify")

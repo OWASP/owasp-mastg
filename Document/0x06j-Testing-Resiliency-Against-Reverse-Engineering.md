@@ -1,12 +1,12 @@
-## iOS Anti-Reversing Defenses
+# iOS Anti-Reversing Defenses
 
-### Jailbreak Detection (MSTG-RESILIENCE-1)
+## Jailbreak Detection (MSTG-RESILIENCE-1)
 
-#### Overview
+### Overview
 
 Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. A [list of typical jailbreak detection techniques for iOS was published by Trustwave](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods on the Trustware Spiderlabs Blog").
 
-##### File-based Checks
+#### File-based Checks
 
 Check for files and directories typically associated with jailbreaks, such as:
 
@@ -49,7 +49,7 @@ Check for files and directories typically associated with jailbreaks, such as:
 /var/log/syslog
 ```
 
-##### Checking File Permissions
+#### Checking File Permissions
 
 Another way to check for jailbreaking mechanisms is to try to write to a location that's outside the application's sandbox. You can do this by having the application attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the device has been jailbroken.
 
@@ -67,19 +67,15 @@ if(error==nil){
  }
 ```
 
-##### Checking Protocol Handlers
+#### Checking Protocol Handlers
 
-You can check protocol handlers by attempting to open a Cydia URL. The Cydia app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
+You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0x08-Testing-Tools.md#cydia) app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
 ```objectivec
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
 ```
 
-##### Calling System APIs
-
-Calling the `system` function with a "NULL" argument on a non-jailbroken device will return "0"; doing the same thing on a jailbroken device will return "1". This difference is due to the function's checking for access to `/bin/sh` on jailbroken devices only.
-
-#### Bypassing Jailbreak Detection
+### Bypassing Jailbreak Detection
 
 Once you start an application that has jailbreak detection enabled on a jailbroken device, you'll notice one of the following things:
 
@@ -139,9 +135,9 @@ Now, imagine that the application is closing immediately after detecting that th
 One feature of Frida that we will use to bypass jailbreak detection is so-called early instrumentation, that is, we will replace function implementation at startup.
 
 1. Make sure that `frida-server` is running on your iOS Device.
-2. Make sure that `Frida` is [installed]( https://www.frida.re/docs/installation/ "Frida Installation") on your workstation.
+2. Make sure that `Frida` is [installed](https://www.frida.re/docs/installation/ "Frida Installation") on your host computer.
 3. The iOS device must be connected via USB cable.
-4. Use `frida-trace` on your workstation:
+4. Use `frida-trace` on your host computer:
 
 ```bash
 $ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
@@ -188,7 +184,7 @@ try:
     session = frida.get_usb_device().attach("Target Process")
 except frida.ProcessNotFoundError:
     print "Failed to attach to the target process. Did you launch the app?"
-    sys.exit(0);
+    sys.exit(0)
 
 script = session.create_script("""
 
@@ -270,9 +266,9 @@ script.load()
 sys.stdin.read()
 ```
 
-### Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
+## Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
 
-#### Overview
+### Overview
 
 Exploring applications using a debugger is a very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
 
@@ -282,7 +278,7 @@ Application developers of apps processing highly sensitive data should be aware 
 
 According to Apple, you should "[restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
 
-##### Using ptrace
+#### Using ptrace
 
 As seen in chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
 
@@ -311,11 +307,11 @@ Let's break down what's happening in the binary. `dlsym` is called with `ptrace`
 
 <img src="Images/Chapters/0x06j/ptracePatched.png" width="500px" />
 
-[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between byte-code and instruction mnemonics.
+[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
 
 Bypasses for other ptrace-based anti-debugging techniques can be found in ["Defeating Anti-Debug Techniques: macOS ptrace variants" by Alexander O'Mara](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
 
-##### Using sysctl
+#### Using sysctl
 
 Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation, it allows processes to set system information (if having the appropriate privileges) or simply to retrieve system information (such as whether or not the process is being debugged). However, note that just the fact that an app uses `sysctl` might be an indicator of anti-debugging controls, though this [won't be always be the case](http://www.cocoawithlove.com/blog/2016/03/08/swift-wrapper-for-sysctl.html "Gathering system information in Swift with sysctl").
 
@@ -366,13 +362,13 @@ One way to bypass this check is by patching the binary. When the code above is c
 
 <img src="Images/Chapters/0x06j/sysctlOriginal.png" width="550px" />
 
-After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in byte-code), the patched code is similar to the following:
+After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
 
 <img src="Images/Chapters/0x06j/sysctlPatched.png" width="550px" />
 
 You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
-#### Using getppid
+### Using getppid
 
 Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in native code (via syscalls), using Objective-C or Swift as shown here:
 
@@ -384,9 +380,9 @@ func AmIBeingDebugged() -> Bool {
 
 Similarly to the other techniques, this has also a trivial bypass (e.g. by patching the binary or by using Frida hooks).
 
-### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
+## File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
-#### Overview
+### Overview
 
 There are two topics related to file integrity:
 
@@ -394,7 +390,7 @@ There are two topics related to file integrity:
 
  2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the Keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
 
-##### Sample Implementation - Application Source Code
+#### Sample Implementation - Application Source Code
 
 Apple takes care of integrity checks with DRM. However, additional controls (such as in the example below) are possible. The `mach_header` is parsed to calculate the start of the instruction data, which is used to generate the signature. Next, the signature is compared to the given signature. Make sure that the generated signature is stored or coded somewhere else.
 
@@ -454,7 +450,7 @@ int xyz(char *dst) {
 }
 ```
 
-##### Sample Implementation - Storage
+#### Sample Implementation - Storage
 
 When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device. The CommonCrypto implementation is best for creating an HMAC.
 If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
@@ -494,20 +490,20 @@ When verifying the HMAC with CC, follow these steps:
 
 ```
 
-##### Bypassing File Integrity Checks
+#### Bypassing File Integrity Checks
 
-###### When you're trying to bypass the application-source integrity checks
+##### When you're trying to bypass the application-source integrity checks
 
 1. Patch the anti-debugging functionality and disable the unwanted behavior by overwriting the associated code with NOP instructions.
 2. Patch any stored hash that's used to evaluate the integrity of the code.
 3. Use Frida to hook file system APIs and return a handle to the original file instead of the modified file.
 
-###### When you're trying to bypass the storage integrity checks
+##### When you're trying to bypass the storage integrity checks
 
 1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
 2. Alter the retrieved data and return it to storage.
 
-#### Effectiveness Assessment
+### Effectiveness Assessment
 
 *For the application source code integrity checks*
 Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter "Basic Security Testing", and run it.
@@ -526,13 +522,13 @@ A similar approach works. Answer the following questions:
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms??
 
-### Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
+## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
 
-#### Overview
+### Overview
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a jailbroken device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-#### Detection Methods
+### Detection Methods
 
 You can detect popular reverse engineering tools that have been installed in an unmodified form by looking for associated application packages, files, processes, or other tool-specific modifications and artifacts. In the following examples, we'll discuss different ways to detect the Frida instrumentation framework, which is used extensively in this guide and also in the real world. Other tools, such as Cydia Substrate or Cycript, can be detected similarly. Note that injection, hooking and DBI (Dynamic Binary Instrumentation) tools can often be detected implicitly, through runtime integrity checks, which are discussed below.
 
@@ -580,7 +576,7 @@ Both would _help_ to detect Substrate or Frida's Interceptor but, for example, w
 
 > It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
-#### Effectiveness Assessment
+### Effectiveness Assessment
 
 Launch the app with various reverse engineering tools and frameworks installed on your test device. Include at least the following: Frida, Cydia Substrate, Cycript and SSL Kill Switch.
 
@@ -605,17 +601,17 @@ The following steps should guide you when bypassing detection of reverse enginee
 
 Refer to the chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md)" for examples of patching and code injection.
 
-### Testing Emulator Detection (MSTG-RESILIENCE-5)
+## Testing Emulator Detection (MSTG-RESILIENCE-5)
 
-#### Overview
+### Overview
 
 The goal of emulator detection is to increase the difficulty of running the app on an emulated device. This forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
 
 However, this is not a concern on iOS. As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator. This makes the simulator useless for black box analysis and reverse engineering.
 
-### Testing Obfuscation (MSTG-RESILIENCE-9)
+## Testing Obfuscation (MSTG-RESILIENCE-9)
 
-#### Overview
+### Overview
 
 Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
@@ -629,7 +625,7 @@ The following techniques can be used to obfuscate an application:
 - Dead code injection
 - String encryption
 
-#### Name Obfuscation
+### Name Obfuscation
 
 The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the Damn Vulnerable iOS App (DVIA-v2).
 
@@ -649,11 +645,11 @@ mov        rbp, rsp
 
 Nevertheless, this only applies to the names of functions, classes and fields. The actual code remains unmodified, so an attacker can still read the disassembled version of the function and try to understand its purpose (e.g. to retrieve the logic of a security algorithm).
 
-#### Instruction Substitution
+### Instruction Substitution
 
 This technique replaces standard binary operators like addition or subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. This technique is vulnerable to deobfuscation, but depending on the complexity and depth of the substitutions, applying it can still be time consuming.
 
-#### Control Flow Flattening
+### Control Flow Flattening
 
 Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
 
@@ -661,20 +657,20 @@ Control flow flattening replaces original code with a more complex representatio
 
 The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
 
-#### Dead Code Injection
+### Dead Code Injection
 
 This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
 
-#### String Encryption
+### String Encryption
 
 Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
 
-#### Recommended Tools
+### Recommended Tools
 
 - [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
-#### How to use SwiftShield
+### How to use SwiftShield
 
 > Warning: SwiftShield irreversibly overwrites all your source files. Ideally, you should have it run only on your CI server, and on release builds.
 
@@ -740,7 +736,7 @@ This is needed for [deobfuscating encrypted crash logs](https://github.com/rockb
 
 Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
-#### Effectiveness Assessment
+### Effectiveness Assessment
 
 Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
 
@@ -750,15 +746,15 @@ Attempt to disassemble the Mach-O in the IPA and any included library files in t
 
 For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
 
-### Device Binding (MSTG-RESILIENCE-10)
+## Device Binding (MSTG-RESILIENCE-10)
 
-#### Overview
+### Overview
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
 [Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "[Remediation](#remediation "Remediation")" section for more details.
 
-#### Static Analysis
+### Static Analysis
 
 When the source code is available, there are a few bad coding practices you can look for, such as
 
@@ -766,11 +762,11 @@ When the source code is available, there are a few bad coding practices you can 
 - using the UDID: `[[[UIDevice currentDevice] identifierForVendor] UUIDString];` and `UIDevice.current.identifierForVendor?.uuidString` in Swift3.
 - Any Keychain- or filesystem-based binding, which isn't protected by `SecAccessControlCreateFlags` or and doesn't use protection classes, such as `kSecAttrAccessibleAlways` and `kSecAttrAccessibleAlwaysThisDeviceOnly`.
 
-#### Dynamic Analysis
+### Dynamic Analysis
 
 There are several ways to test the application binding.
 
-##### Dynamic Analysis with A Simulator
+#### Dynamic Analysis with A Simulator
 
 Take the following steps when you want to verify app-binding in a simulator:
 
@@ -787,7 +783,7 @@ Take the following steps when you want to verify app-binding in a simulator:
 
 We are saying that the binding "may" not be working because not everything is unique in simulators.
 
-##### Dynamic Analysis Using Two Jailbroken Devices
+#### Dynamic Analysis Using Two Jailbroken Devices
 
 Take the following steps when you want to verify app-binding with two jailbroken devices:
 
@@ -796,12 +792,12 @@ Take the following steps when you want to verify app-binding with two jailbroken
 3. Retrieve the data from the jailbroken device:
     - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
     - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
-    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using the [keychain dumper](https://github.com/ptoomey3/Keychain-Dumper "Keychain Dumper"). First make the keychain world-readable (`chmod +r /private/var/Keychains/keychain-2.db`), then execute it (`./keychain_dumper -a`).
+    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using [Keychain-dumper](0x08-Testing-Tools.md#keychain-dumper).
 4. Install the application on the second jailbroken device.
 5. Overwrite the application data extracted during step 3. The Keychain data must be added manually.
 6. Can you continue in an authenticated state? If so, then binding may not be working properly.
 
-#### Remediation
+### Remediation
 
 Before we describe the usable identifiers, let's quickly discuss how they can be used for binding. There are three methods for device binding in iOS:
 
@@ -811,12 +807,12 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
 
 Any scheme based on these methods will be more secure the moment a passcode and/or Touch ID is enabled, the materials stored in the Keychain or filesystem are protected with protection classes (such as `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` and `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`), and the `SecAccessControlCreateFlags` is set either with `kSecAccessControlDevicePasscode` (for passcodes), `kSecAccessControlUserPresence` (passcode, Face ID or Touch ID), `kSecAccessControlBiometryAny` (Face ID or Touch ID) or `kSecAccessControlBiometryCurrentSet` (Face ID / Touch ID: but current enrolled biometrics only).
 
-### References
+## References
 
 - [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf>
 - Jan Seredynski. A security review of 1,300 AppStore applications (5 April 2020) - <https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html>
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-RESILIENCE-1: "The app detects, and responds to, the presence of a rooted or jailbroken device either by alerting the user or terminating the app."
 - MSTG-RESILIENCE-2: "The app prevents debugging and/or detects, and responds to, a debugger being attached. All available debugging protocols must be covered."
@@ -826,9 +822,3 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 - MSTG-RESILIENCE-9: "Obfuscation is applied to programmatic defenses, which in turn impede de-obfuscation via dynamic analysis."
 - MSTG-RESILIENCE-10: "The app implements a 'device binding' functionality using a device fingerprint derived from multiple properties unique to the device."
 - MSTG-RESILIENCE-11: "All executable files and libraries belonging to the app are either encrypted on the file level and/or important code and data segments inside the executables are encrypted or packed. Trivial static analysis does not reveal important code or data."
-
-#### Tools
-
-- Appsync Unified - <https://cydia.angelxwind.net/?page/net.angelxwind.appsyncunified>
-- Frida - <http://frida.re/>
-- Keychain Dumper - <https://github.com/ptoomey3/Keychain-Dumper>
