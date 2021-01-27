@@ -28,6 +28,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Toreon](https://www.toreon.com/ "Toreon")
 - [VantagePoint](https://www.vantagepoint.sg "VantagePoint")
 - [Vertical Structure](https://www.verticalstructure.com "Vertical Structure Ltd")
+- [Websec Canada](https://www.websec.ca/mobile-application-security "Websec Canada")
 - [Xebia](https://xebia.com "Xebia")
 
 > Note: the quality of the application of the MASVS/MSTG by these companies has not been vetted by the MSTG team. It is just an indicator of adoption reported publicly.
