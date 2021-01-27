@@ -203,7 +203,7 @@ KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size).
 
-A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate a cryptographic keys, which can be used for cryptography purpose. Input parameters for the algorithm are adjusted according to [weak key generation function](0x04g-Testing-Cryptography.md#weak-key-generation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
+A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate cryptographic keys, which can be used for cryptography purpose. Input parameters for the algorithm are adjusted according to [weak key generation function](0x04g-Testing-Cryptography.md#weak-key-generation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
 
 ```java
 public static SecretKey generateStrongAESKey(char[] password, int keyLength)
@@ -226,7 +226,7 @@ The above method requires a character array containing the password and the need
 
 > Note that if you take a rooted device or a patched (e.g. repackaged) application into account as a threat to the data, it might be better to encrypt the salt with a key that is placed in the `AndroidKeystore`. The Password-Based Encryption (PBE) key is generated using the recommended `PBKDF2WithHmacSHA1` algorithm, till Android 8.0 (API level 26). For higher API levels, it is best to use `PBKDF2withHmacSHA256`, which will end up with a longer hash value.
 
-Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanisms is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: [r2frida](0x08-Testing-Tools.md#r2frida) (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
+Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanism is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: [r2frida](0x08-Testing-Tools.md#r2frida) (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
 
 ### Random number generation
 
@@ -302,7 +302,7 @@ Identify all the instances of the cryptographic primitives in code. Identify all
 - exceptions `KeyStoreException`, `CertificateException`, `NoSuchAlgorithmException`
 - classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
 
-Identify that all calls to getInstance use default `provider` of security services by not specifing it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
+Identify that all calls to getInstance use default `provider` of security services by not specifying it (it means AndroidOpenSSL aka Conscrypt). `Provider` can only be specified in `KeyStore` related code (in that situation `KeyStore` should be provided as `provider`). If other `provider` is specified it should be verified according to situation and business case (i.e. Android API version), and `provider` should be examined against potential vulnerabilities.  
 
 Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0x04g-Testing-Cryptography.md)" chapter are followed. Look at [insecure and deprecated algorithms](0x04g-Testing-Cryptography.md#identifying-insecure-and/or-deprecated-cryptographic-algorithms) and [common configuration issues](0x04g-Testing-Cryptography.md#common-configuration-issues).
 
@@ -316,14 +316,14 @@ You can use [method tracing](Document\0x05c-Reverse-Engineering-and-Tampering.md
 
 This test case focuses on verification of purpose and reusage of the same cryptographic keys. Following checks should be performed:
 
-- identify all instanaces where cryptography is used
+- identify all instances where cryptography is used
 - identify purpose why cryptography is used (to protect data in use, in transit or at rest)
 - identify type of cryptography
 - verify if cryptography is used according to its purpose
 
 ### Static Analysis
 
-Identify all instanaces where cryptography is used. You can look for:
+Identify all instances where cryptography is used. You can look for:
 
 - classes `Cipher`, `Mac`, `MessageDigest`, `Signature`
 - interfaces `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
@@ -335,7 +335,7 @@ For all identified instance, identify purpose of using cryptography and its type
 
 - to encrypt/decrypt - that ensures confidentiality of data
 - to sign/verify - that ensures integrity of data (as well as accountability in some cases)
-- to maintance - that protects key during an operation (like import to KeyStore)
+- to maintenance - that protects key during an operation (like import to KeyStore)
 
 Additionally, you should identify business logic which uses identified instances of cryptography. That should give you explanation why cryptography is used from business perspective (i.e. to protect confidentiality of data at rest, to confirm that file was signed from device X which belongs to Y).
 
@@ -357,7 +357,7 @@ You can use [method tracing](Document\0x05c-Reverse-Engineering-and-Tampering.md
 This test case focuses on random values used by application. Following checks should be performed:
 
 - identify all instances where random values are used and all instances of random number generators are of `Securerandom`
-- verify if random number generators are not consider as being cryptographically secure
+- verify if random number generators are not considered as being cryptographically secure
 - verify how random number generators were used
 - verify randomness of random values generated by application
 
