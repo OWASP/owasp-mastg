@@ -183,9 +183,21 @@ The [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsus
 - `NSSearchPathForDirectoriesInDomains, NSTemporaryDirectory`: used to manage file paths
 - `NSFileManager`: lets you examine and change the contents of the file system. You can use `createFileAtPath` to create a file and write to it.
 
-The following example shows how to create a securely encrypted file using the `createFileAtPath` method:
+The following example shows how to create a `complete` encrypted file using the `FileManager` class. You can find more information in the Apple Developer Documentation ["Encrypting Your App’s Files"](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/encrypting_your_app_s_files "Encrypting Your App’s Files")
 
-```objectivec
+Swift:
+
+```swift
+FileManager.default.createFile(
+    atPath: filePath,
+    contents: "secret text".data(using: .utf8),
+    attributes: [FileAttributeKey.protectionKey: FileProtectionType.complete]
+)
+```
+
+Objective-C:
+
+```objc
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -835,15 +847,39 @@ Manufacturers want to provide device users with an aesthetically pleasing effect
 
 While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView") to determine whether the application sanitizes the screen before being backgrounded.
 
-The following is a sample remediation method that will set a default screenshot:
+The following is a sample remediation method that will set a default screenshot.
 
-```objectivec
+Swift:
+
+```swift
+private var backgroundImage: UIImageView?
+
+func applicationDidEnterBackground(_ application: UIApplication) {
+    let myBanner = UIImageView(image: #imageLiteral(resourceName: "overlayImage"))
+    myBanner.frame = UIScreen.main.bounds
+    backgroundImage = myBanner
+    window?.addSubview(myBanner)
+}
+
+func applicationWillEnterForeground(_ application: UIApplication) {
+    backgroundImage?.removeFromSuperview()
+}
+```
+
+Objective-C:
+
+```objc
 @property (UIImageView *)backgroundImage;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
     self.backgroundImage = myBanner;
+    self.backgroundImage.bounds = UIScreen.mainScreen.bounds;
     [self.window addSubview:myBanner];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [self.backgroundImage removeFromSuperview];
 }
 ```
 

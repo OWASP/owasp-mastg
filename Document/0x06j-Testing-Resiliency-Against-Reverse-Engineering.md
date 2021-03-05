@@ -53,7 +53,22 @@ Check for files and directories typically associated with jailbreaks, such as:
 
 Another way to check for jailbreaking mechanisms is to try to write to a location that's outside the application's sandbox. You can do this by having the application attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the device has been jailbroken.
 
-```objectivec
+Swift:
+
+```swift
+do {
+    let pathToFileInRestrictedDirectory = "/private/jailbreak.txt"
+    try "This is a test.".write(toFile: pathToFileInRestrictedDirectory, atomically: true, encoding: String.Encoding.utf8)
+    try FileManager.default.removeItem(atPath: pathToFileInRestrictedDirectory)
+    // Device is jailbroken
+} catch {
+    // Device is not jailbroken
+}
+```
+
+Objective-C:
+
+```objc
 NSError *error;
 NSString *stringToBeWritten = @"This is a test.";
 [stringToBeWritten writeToFile:@"/private/jailbreak.txt" atomically:YES
@@ -61,18 +76,30 @@ NSString *stringToBeWritten = @"This is a test.";
 if(error==nil){
    //Device is jailbroken
    return YES;
- } else {
+} else {
    //Device is not jailbroken
    [[NSFileManager defaultManager] removeItemAtPath:@"/private/jailbreak.txt" error:nil];
- }
+}
 ```
 
 #### Checking Protocol Handlers
 
 You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0x08-Testing-Tools.md#cydia) app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
-```objectivec
+Swift:
+
+```swift
+if let url = URL(string: "cydia://package/com.example.package"), UIApplication.shared.canOpenURL(url) {
+    // Device is jailbroken
+}
+```
+
+Objective-C:
+
+```objc
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
+    // Device is jailbroken
+}
 ```
 
 ### Bypassing Jailbreak Detection
