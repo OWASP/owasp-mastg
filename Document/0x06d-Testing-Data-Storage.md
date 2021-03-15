@@ -800,10 +800,10 @@ To identify if a backup is encrypted, you can check the key named "IsEncrypted" 
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 ...
-	<key>Date</key>
-	<date>2021-03-12T17:43:33Z</date>
-	<key>IsEncrypted</key>
-	<true/>    
+ <key>Date</key>
+ <date>2021-03-12T17:43:33Z</date>
+ <key>IsEncrypted</key>
+ <true/>
 ...
 </plist>
 ```
