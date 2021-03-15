@@ -793,7 +793,7 @@ $ grep -iRn "password" .
 
 As described in the Static Analysis section, any sensitive data that you're able to find should be excluded from the backup, encrypted properly by using the Keychain or not stored on the device in the first place.
 
-To identify if a backup is encrypted, the key named "IsEncrypted" from the file "Manifest.plist", located at the root of the backup directory, can be checked. The following example shows a configuration indicating that the backup is encrypted:
+To identify if a backup is encrypted, you can check the key named "IsEncrypted" from the file "Manifest.plist", located at the root of the backup directory. The following example shows a configuration indicating that the backup is encrypted:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
