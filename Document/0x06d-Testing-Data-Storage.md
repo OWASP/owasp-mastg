@@ -810,6 +810,8 @@ To identify if a backup is encrypted, you can check the key named "IsEncrypted" 
 
 In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes/Finder versions and might need to be tweaked.
 
+You can use the tool [iOSbackup](0x08-Testing-Tools.md#iosbackup) also to reads and extracts files from a password-encrypted iOS backup.
+
 #### Proof of Concept: Removing UI Lock with Tampered Backup
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
