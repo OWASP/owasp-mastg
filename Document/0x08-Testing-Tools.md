@@ -1568,6 +1568,10 @@ It has several features, like app installation, access the app sandbox without j
 
 Blackbox tool to help understand what an iOS application is doing at runtime and assist in the identification of potential security issues - <https://github.com/iSECPartners/Introspy-iOS>
 
+### iOSbackup
+
+[`iOSbackup`](https://github.com/avibrazil/iOSbackup) is a Python 3 class that reads and extracts files from a password-encrypted iOS backup created by iTunes on Mac and Windows.
+
 ### ios-deploy
 
 With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
@@ -1721,10 +1725,6 @@ $ xcode-select --install
 ### xcrun
 
 [`xcrun`](http://www.manpagez.com/man/1/xcrun/ "xcrun man page") can be used invoke Xcode developer tools from the command-line, without having them in the path. For example you may want to use it to locate and run swift-demangle or simctl.
-
-### iOSbackup
-
-[`iOSbackup`](https://github.com/avibrazil/iOSbackup) is a Python 3 class that reads and extracts files from a password-encrypted iOS backup created by iTunes on Mac and Windows.
 
 ## Tools for Network Interception and Monitoring
 
