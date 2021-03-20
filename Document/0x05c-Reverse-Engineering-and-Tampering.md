@@ -479,7 +479,7 @@ There are several open source tools for automated security analysis of an APK.
 
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
-- [MobSF](0x08-Testing-Tools#mobsf)
+- [MobSF](0x08-Testing-Tools.md#mobsf)
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 
 ## Dynamic Analysis
@@ -1435,7 +1435,7 @@ A well-known use case of this technique is loading the Frida gadget to an applic
 
 Many Android applications use native code in addition to Java code for various performance and security reasons. The native code is present in the form of ELF shared libraries. An ELF executable includes a list of shared libraries (dependencies) that are linked to the executable for it to function optimally. This list can be modified to insert an additional library to be injected into the process.
 
-Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](0x08-Testing-Tools#lief) (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
+Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](0x08-Testing-Tools.md#LIEF) (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
 
 ```python
 import lief

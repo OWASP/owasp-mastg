@@ -226,7 +226,7 @@ In most popular frameworks, you can set the session timeout via configuration op
 - [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
 - [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
-- [ASP.Net](https://goo.gl/qToQuL "ASP.NET")
+- [ASP.Net](https://docs.microsoft.com/en-us/dotnet/api/system.web.sessionstate.httpsessionstate.timeout "ASP.NET")
 
 ### Dynamic Analysis
 
@@ -442,7 +442,7 @@ There are two different Burp Plugins that can help you for testing the vulnerabi
 - [JSON Web Token Attacker](https://portswigger.net/bappstore/82d6c60490b540369d6d5d01822bdf61 "JSON Web Token Attacker")
 - [JSON Web Tokens](https://portswigger.net/bappstore/f923cbf91698420890354c1d8958fee6 "JSON Web Tokens")
 
-Also, make sure to check out the [OWASP JWT Cheat Sheet](https://goo.gl/TGzA5z "JSON Web Token (JWT) Cheat Sheet for Java") for additional information.
+Also, make sure to check out the [OWASP JWT Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html "JSON Web Token (JWT) Cheat Sheet for Java") for additional information.
 
 ## Testing OAuth 2.0 Flows (MSTG-AUTH-1 and MSTG-AUTH-3)
 
