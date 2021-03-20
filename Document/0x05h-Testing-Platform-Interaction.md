@@ -1079,7 +1079,7 @@ setContentView(webview);
 webview.loadUrl("https://www.owasp.org/");
 ```
 
-Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://goo.gl/G9spo2 "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
+Various settings can be applied to the WebView (activating/deactivating JavaScript is one example). JavaScript is disabled by default for WebViews and must be explicitly enabled. Look for the method [`setJavaScriptEnabled`](https://developer.android.com/reference/android/webkit/WebSettings#setJavaScriptEnabled%28boolean%29 "setJavaScriptEnabled in WebViews") to check for JavaScript activation.
 
 ```java
 webview.getSettings().setJavaScriptEnabled(true);
@@ -1091,7 +1091,7 @@ This allows the WebView to interpret JavaScript. It should be enabled only if ne
 - JavaScript and HTML are loaded locally, from within the app data directory or from trusted web servers only.
 - The user cannot define which sources to load by means of loading different resources based on a user provided input.
 
-To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache`](https://goo.gl/7dnhdi "clearCache in WebViews") when the app closes.
+To remove all JavaScript source code and locally stored data, clear the WebView's cache with [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache%28boolean%29 "clearCache in WebViews") when the app closes.
 
 Devices running platforms older than Android 4.4 (API level 19) use a version of WebKit that has several security issues. As a workaround, the app must confirm that WebView objects [display only trusted content](https://developer.android.com/training/articles/security-tips.html#WebView "WebView Best Practices") if the app runs on these devices.
 
@@ -1105,7 +1105,7 @@ Dynamic Analysis depends on operating conditions. There are several ways to inje
 
 To address these attack vectors, check the following:
 
-- All functions offered by the endpoint should be free of [stored XSS](https://goo.gl/6MWZkb "Stored Cross-Site Scripting").
+- All functions offered by the endpoint should be free of [stored XSS](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/02-Testing_for_Stored_Cross_Site_Scripting "Stored Cross-Site Scripting").
 - Only files that are in the app data directory should be rendered in a WebView (see test case "Testing for Local File Inclusion in WebViews").
 
 - The HTTPS communication must be implemented according to best practices to avoid MITM attacks. This means:
@@ -1136,7 +1136,7 @@ Check the source code for WebView usage. The following [WebView settings](https:
 
 If one or more of the above methods is/are activated, you should determine whether the method(s) is/are really necessary for the app to work properly.
 
-If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL`](https://goo.gl/4vdSQM "loadURL in WebView") method.
+If a WebView instance can be identified, find out whether local files are loaded with the [`loadURL`](https://developer.android.com/reference/android/webkit/WebView.html#loadUrl%28java.lang.String%29 "loadURL in WebView") method.
 
 ```java
 WebView = new WebView(this);
