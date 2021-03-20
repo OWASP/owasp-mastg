@@ -1764,7 +1764,7 @@ PortSwigger provides good tutorials on setting up both Android as iOS devices to
 - [Configuring an iOS Device to Work With Burp](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp").
 - [Installing Burp's CA certificate to an iOS device](https://support.portswigger.net/customer/portal/articles/1841109-installing-burp-s-ca-certificate-in-an-ios-device "Installing Burp\'s CA Certificate in an iOS Device").
 
-Please refer to the section "Setting up an Interception Proxy" in the [Android](0x05b-basic-security-testing#setting-up-an-interception-proxy "Setting up an Interception Proxy") and [iOS](0x06b-basic-security-testing#setting-up-an-interception-proxy "Setting up an Interception Proxy") "Basic Security Testing" chapters for more information.
+Please refer to the section "Setting up an Interception Proxy" in the [Android](0x05b-Basic-Security_Testing.md#setting-up-an-interception-proxy "Setting up an Interception Proxy") and [iOS](0x06b-Basic-Security-Testing.md#setting-up-an-interception-proxy "Setting up an Interception Proxy") "Basic Security Testing" chapters for more information.
 
 ### MITM Relay
 
