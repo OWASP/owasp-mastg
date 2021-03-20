@@ -160,6 +160,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 - [Multiple solutions by David Weinstein](https://www.nowsecure.com/blog/2017/04/27/owasp-ios-crackme-tutorial-frida/ "Solutions by David Weinstein").
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html "Solution by Ryan Teoh").
 - [Solution with Angr by Vikas Gupta](https://serializethoughts.com/2019/10/28/solving-mstg-crackme-angr "Solving iOS UnCrackable 1 Crackme Without Using an iOS Device").
+- [Solution by Pietro Oliva](https://0xsysenter.github.io/ios/reversing/arm64/mobile/ipa/frida/instrumentation/crackme/2021/01/09/ios-apps-reverse-engineering-solving-crackmes-part-1.html "Solution by Pietro Oliva").
 
 ### [UnCrackable App for iOS Level 2](iOS/Level_02 "iOS level 2")
 
@@ -180,6 +181,7 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 #### Solutions
 
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html "Solution by Ryan Teoh").
+- [Solution by Pietro Oliva](https://0xsysenter.github.io/ios/reversing/arm64/mobile/ipa/frida/instrumentation/crackme/2021/02/08/ios-apps-reverse-engineering-solving-crackmes-part-2.html "Solution by Pietro Oliva").
 
 ## MSTG Hacking Playground
 
