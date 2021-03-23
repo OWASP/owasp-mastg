@@ -55,6 +55,7 @@ This app is compatible with Android 4.4 and up.
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html "Solution by Eduardo Novella").
 - [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level2/ "Solution by sh3llc0d3r").
 - [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/xRQVljerl0A "Solution by @mobilesecurity_").
+- [Solution using static analysis and Ghidra by Eduardo Vasconcelos](https://tereresecurity.wordpress.com/2021/03/23/write-up-uncrackable-level-2/ "Solution by Eduardo Vasconcelos").
 
 ### [UnCrackable App for Android Level 3](Android/Level_03 "Android level 3")
 
