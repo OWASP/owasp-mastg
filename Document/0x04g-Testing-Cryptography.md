@@ -52,7 +52,7 @@ Please make sure that:
 The following algorithms are recommended:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
-- Integrity algorithms: SHA-256, SHA-384, SHA-512, Blake3, the SHA-3 family
+- Integrity algorithms: SHA-256, SHA-384, SHA-512, BLAKE3, the SHA-3 family
 - Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
