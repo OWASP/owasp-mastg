@@ -52,7 +52,7 @@ Please make sure that:
 The following algorithms are recommended:
 
 - Confidentiality algorithms: AES-GCM-256 or ChaCha20-Poly1305
-- Integrity algorithms: SHA-256, SHA-384, SHA-512, Blake2, the SHA-3 family
+- Integrity algorithms: SHA-256, SHA-384, SHA-512, Blake3, the SHA-3 family
 - Digital signature algorithms: RSA (3072 bits and higher), ECDSA with NIST P-384
 - Key establishment algorithms: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
 
@@ -116,7 +116,7 @@ Carefully inspect all the cryptographic methods used within the source code, esp
 
 At all implementations of cryptography, you need to ensure that the following always takes place:
 
-- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption.
+- Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption or in case of error.
 - The inner state of a cipher should be removed from memory as soon as possible.
 
 ### Inadequate AES Configuration
@@ -141,7 +141,9 @@ For more information on effective block modes, see the [NIST guidelines on block
 
 #### Predictable Initialization Vector
 
-CBC, OFB, CFB, PCBC mode require an initialization vector (IV) as an initial input to the cipher. The IV doesn't have to be kept secret, but it shouldn't be predictable. Make sure that IVs are generated using a cryptographically secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors "Crypto Noobs #1: Initialization Vectors").
+CBC, OFB, CFB, PCBC, GCM mode require an initialization vector (IV) as an initial input to the cipher. The IV doesn't have to be kept secret, but it shouldn't be predictable: it should be random and unique/non-repeatable for each encrypted message. Make sure that IVs are generated using a cryptographically secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors "Crypto Noobs #1: Initialization Vectors").
+
+Pay attention on cryptographic libraries used in code: many open source libraries provide examples in documentations that follow bad practices (i.e. using a hardcoded IV). A popular mistake is copy-pasting example code without changing IV value.
 
 #### Initialization Vectors in stateful operation modes
 
@@ -158,8 +160,10 @@ Note: AES-CBC with PKCS #5 has shown to be vulnerable to padding oracle attacks 
 When memory dumping is part of your threat model, then keys can be accessed the moment they are actively used. Memory dumping either requires root-access (e.g. a rooted device or jailbroken device) or it requires a patched application with Frida (so you can use tools like Fridump).
 Therefore it is best to consider the following, if keys are still needed at the device:
 
-- make sure that all cryptographic actions and the keys itself remain in the Trusted Execution Environment (e.g. use Android Keystore) or Secure Enclave (e.g. use the Keychain and when you sign, use ECDHE).
-- If keys are necessary which are outside of the TEE / SE, make sure you obfuscate/encrypt them and only de-obfuscate them during use. Always zero out keys before the memory is released, whether using native code or not. This means: overwrite the memory structure (e.g. nullify the array) and know that most of the Immutable types in Android (such as `BigInteger` and `String`) stay in the heap.
+- Make sure that all cryptographic actions and the keys itself remain in the Trusted Execution Environment (e.g. use Android Keystore) or Secure Enclave (e.g. use the Keychain and when you sign, use ECDHE).
+- If keys are necessary which are outside of the TEE / SE, make sure keys are protected using multi-layered approach. For example, data encryption key (DEK) can be encrypted with key encryption key (KEK) stored in Keychain / Keystore, thus DEK is stored encrypted. This key wrapping technique requires reading KEK first and then decrypting DEK before usage. Another approach is obfuscation: obfuscate DEK and de-obfuscate before usage.
+- Make sure that keys live in memory for the shortest time possible. Ideally, keys should be read/allocated right before usage and clean up after usage or in case of error. Never store keys in constants.
+- Always zero out keys before the memory is released, whether using native code or not. This means: overwrite the memory structure (e.g. nullify the array) and know that most of the Immutable types in Android (such as `BigInteger` and `String`) stay in the heap. See [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "Cryptocoding guidelines by @veorq: Clean memory of secret data") for reference.
 
 Note: given the ease of memory dumping, never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
 
@@ -191,6 +195,7 @@ In larger organizations, or when high-risk applications are created, it can ofte
 - [PKCS #7: Cryptographic Message Syntax Version 1.5](https://tools.ietf.org/html/rfc2315 "PKCS #7")
 - [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack "The Padding Oracle Attack")
 - [The CBC Padding Oracle Problem](https://eklitzke.org/the-cbc-padding-oracle-problem "The CBC Padding Oracle Problem")
+- [@veorq's Cryptocoding Guidelines](https://github.com/veorq/cryptocoding)
 
 #### OWASP MASVS
 
