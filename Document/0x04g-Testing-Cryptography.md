@@ -163,7 +163,7 @@ Therefore it is best to consider the following, if keys are still needed at the 
 - Make sure that all cryptographic actions and the keys itself remain in the Trusted Execution Environment (e.g. use Android Keystore) or Secure Enclave (e.g. use the Keychain and when you sign, use ECDHE).
 - If keys are necessary which are outside of the TEE / SE, make sure keys are protected using multi-layered approach. For example, data encryption key (DEK) can be encrypted with key encryption key (KEK) stored in Keychain / Keystore, thus DEK is stored encrypted. This key wrapping technique requires reading KEK first and then decrypting DEK before usage. Another approach is obfuscation: obfuscate DEK and de-obfuscate before usage.
 - Make sure that keys live in memory for the shortest time possible. Ideally, keys should be read/allocated right before usage and clean up after usage or in case of error. Never store keys in constants.
-- Always zero out keys before the memory is released, whether using native code or not. This means: overwrite the memory structure (e.g. nullify the array) and know that most of the Immutable types in Android (such as `BigInteger` and `String`) stay in the heap. See [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "Cryptocoding guidelines by @veorq: Clean memory of secret data") for reference.
+- Always zero out keys before the memory is released, whether using native code or not. This means: overwrite the memory structure (e.g. nullify the array) and know that most of the Immutable types in Android (such as `BigInteger` and `String`) stay in the heap. See [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data") for reference.
 
 Note: given the ease of memory dumping, never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
 
@@ -186,7 +186,7 @@ In larger organizations, or when high-risk applications are created, it can ofte
 - [Argon2](https://github.com/p-h-c/phc-winner-argon2 "Argon2")
 - [Breaking RSA with Mangers Attack](https://research.kudelskisecurity.com/2018/04/05/breaking-rsa-oaep-with-mangers-attack/ "Mangers attack")
 - [NIST 800-38d](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf "NIST 800-38d")
-- [NIST 800-57Rev4](https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-4/final "NIST 800-57Rev4")
+- [NIST 800-57Rev5](https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final "NIST 800-57Rev5")
 - [NIST 800-63b](https://pages.nist.gov/800-63-3/sp800-63b.html "NIST 800-63b")
 - [NIST 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf "NIST 800-132")
 - [Password Hashing Competition(PHC)](https://password-hashing.net "PHC")
@@ -195,7 +195,7 @@ In larger organizations, or when high-risk applications are created, it can ofte
 - [PKCS #7: Cryptographic Message Syntax Version 1.5](https://tools.ietf.org/html/rfc2315 "PKCS #7")
 - [The Padding Oracle Attack](https://robertheaton.com/2013/07/29/padding-oracle-attack "The Padding Oracle Attack")
 - [The CBC Padding Oracle Problem](https://eklitzke.org/the-cbc-padding-oracle-problem "The CBC Padding Oracle Problem")
-- [@veorq's Cryptocoding Guidelines](https://github.com/veorq/cryptocoding)
+- [@veorq's Cryptocoding Guidelines](https://github.com/veorq/cryptocoding "The Cryptocoding Guidelines by @veorq")
 
 #### OWASP MASVS
 
