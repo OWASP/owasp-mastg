@@ -229,6 +229,7 @@ Another common approach is to use the [`connection:willSendRequestForAuthenticat
 Note that if you compare local and remote certificates, you will have to update the app when the remote certificate changes. A fallback certificate can be stored in the app to make the transition more smooth. Alternatively, the pin can be based on public-key comparison. Thus if the remote certificate changes, the public key stays the same.
 
 The following third-party libraries include pinning functionality:
+
 - [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
 - [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
