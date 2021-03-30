@@ -143,7 +143,7 @@ For more information on effective block modes, see the [NIST guidelines on block
 
 CBC, OFB, CFB, PCBC, GCM mode require an initialization vector (IV) as an initial input to the cipher. The IV doesn't have to be kept secret, but it shouldn't be predictable: it should be random and unique/non-repeatable for each encrypted message. Make sure that IVs are generated using a cryptographically secure random number generator. For more information on IVs, see [Crypto Fail's initialization vectors article](http://www.cryptofails.com/post/70059609995/crypto-noobs-1-initialization-vectors "Crypto Noobs #1: Initialization Vectors").
 
-Pay attention on cryptographic libraries used in code: many open source libraries provide examples in documentations that follow bad practices (i.e. using a hardcoded IV). A popular mistake is copy-pasting example code without changing IV value.
+Pay attention to cryptographic libraries used in the code: many open source libraries provide examples in their documentations that might follow bad practices (e.g. using a hardcoded IV). A popular mistake is copy-pasting example code without changing the IV value.
 
 #### Initialization Vectors in stateful operation modes
 
