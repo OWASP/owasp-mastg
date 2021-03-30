@@ -222,7 +222,9 @@ Verify that the server certificate is pinned. Pinning can be implemented on vari
 2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
 3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
-The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
+The latest approach recommended by Apple is to specify a pinned CA public key in the `Info.plist` file under App Transport Security Settings. You can find an example in their article [Identity Pinning: How to configure server certificates for your app](https://developer.apple.com/news/?id=g9ejcf8y "Identity Pinning: How to configure server certificates for your app").
+
+Another common approach is to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
 
 The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.
 
