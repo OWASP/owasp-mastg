@@ -206,6 +206,7 @@ When you upload the app to the App Store or Google Play, your application is typ
 
 ### References
 
+- MSTG-ARCH-12: "The app should comply with privacy laws and regulations."
 - [Complying with Encryption Export Regulations (Apple)](https://developer.apple.com/documentation/security/complying_with_encryption_export_regulations "Complying with Encryption Export Regulations")
 - [Export compliance overview (Apple)](https://help.apple.com/app-store-connect/#/dev88f5c7bf9 "Export compliance overview")
 - [Export compliance (Google)](https://support.google.com/googleplay/android-developer/answer/113770?hl=en "Export compliance")
