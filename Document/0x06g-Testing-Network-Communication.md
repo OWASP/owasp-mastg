@@ -224,40 +224,14 @@ Verify that the server certificate is pinned. Pinning can be implemented on vari
 
 The latest approach recommended by Apple is to specify a pinned CA public key in the `Info.plist` file under App Transport Security Settings. You can find an example in their article [Identity Pinning: How to configure server certificates for your app](https://developer.apple.com/news/?id=g9ejcf8y "Identity Pinning: How to configure server certificates for your app").
 
-Another common approach is to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
+Another common approach is to use the [`connection:willSendRequestForAuthenticationChallenge:`](https://developer.apple.com/documentation/foundation/nsurlconnectiondelegate/1414078-connection?language=objc "connection:willSendRequestForAuthenticationChallenge:") method of `NSURLConnectionDelegate` to check if the certificate provided by the server is valid and matches the certificate stored in the app. You can find more details in the [HTTPS Server Trust Evaluation](https://developer.apple.com/library/archive/technotes/tn2232/_index.html#//apple_ref/doc/uid/DTS40012884-CH1-SECNSURLCONNECTION "HTTPS Server Trust Evaluation") technical note.
 
-The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.
+Note that if you compare local and remote certificates, you will have to update the app when the remote certificate changes. A fallback certificate can be stored in the app to make the transition more smooth. Alternatively, the pin can be based on public-key comparison. Thus if the remote certificate changes, the public key stays the same.
 
-```objectivec
-
-(void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
-  SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, 0);
-  NSData *remoteCertificateData = CFBridgingRelease(SecCertificateCopyData(certificate));
-  NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"MyLocalCertificate" ofType:@"cer"];
-  NSData *localCertData = [NSData dataWithContentsOfFile:cerPath];
-  The control below can verify if the certificate received by the server is matching the one pinned in the client.
-  if ([remoteCertificateData isEqualToData:localCertData]) {
-  NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
-  [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-}
-else {
-  [[challenge sender] cancelAuthenticationChallenge:challenge];
-}
-```
-
-Note that the certificate pinning example above has a major drawback when you use certificate pinning and the certificate changes, then the pin is invalidated. If you can reuse the public key of the server, then you can create a new certificate with that same public key, which will ease the maintenance. There are various ways in which you can do this:
-
-- Implement your own pin based on the public key: Change the comparison the following comparision in our example to a comparison of the key-bytes or the certificate-thumb:
-
-```objectivec
-if ([remoteCertificateData isEqualToData:localCertData]) {
-```
-
-- Use [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
-- Use [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
-- Use [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
+The following third-party libraries include pinning functionality:
+- [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
+- [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
+- [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
 
 ### Dynamic Analysis
 
