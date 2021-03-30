@@ -226,7 +226,7 @@ The latest approach recommended by Apple is to specify a pinned CA public key in
 
 Another common approach is to use the [`connection:willSendRequestForAuthenticationChallenge:`](https://developer.apple.com/documentation/foundation/nsurlconnectiondelegate/1414078-connection?language=objc "connection:willSendRequestForAuthenticationChallenge:") method of `NSURLConnectionDelegate` to check if the certificate provided by the server is valid and matches the certificate stored in the app. You can find more details in the [HTTPS Server Trust Evaluation](https://developer.apple.com/library/archive/technotes/tn2232/_index.html#//apple_ref/doc/uid/DTS40012884-CH1-SECNSURLCONNECTION "HTTPS Server Trust Evaluation") technical note.
 
-Note that if you compare local and remote certificates, you will have to update the app when the remote certificate changes. A fallback certificate can be stored in the app to make the transition more smooth. Alternatively, the pin can be based on public-key comparison. Thus if the remote certificate changes, the public key stays the same.
+Note that if you compare local and remote certificates, you will have to update the app when the remote certificate changes. A fallback certificate can be stored in the app to make the transition smoother. Alternatively, the pin can be based on public-key comparison. Thus if the remote certificate changes, the public key stays the same.
 
 The following third-party libraries include pinning functionality:
 
