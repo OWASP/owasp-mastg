@@ -622,7 +622,7 @@ From the above table, we will use the base address 0x10000432c for `__text` and 
 
 > While allocating memory for Unicorn, the memory addresses should be 4k page aligned and also the allocated size should be a multiple of 1024.
 
-The final Unicorn script to emulate the function at 0x1000080d4 and dump the secret string value, is following:
+The following script emulates the function at 0x1000080d4 and dumps the secret string:
 
 ```python
 
