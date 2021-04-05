@@ -597,7 +597,7 @@ For Android, we used Angr's symbolic execution engine to solve a challenge. In t
 
 ### Unicorn
 
-Unicorn is a lightweight, multi-architecture CPU emulator framework. Unicorn provides us the basic infrastructure needed to execute processor instructions. In this section we will use Unicorn to solve UnCrackable Level 1 iOS App.
+[Unicorn](http://www.unicorn-engine.org/ "Unicorn") is a lightweight, multi-architecture CPU emulator framework based on [QEMU](https://www.qemu.org/ "QEMU") and [goes beyond it](https://www.unicorn-engine.org/docs/beyond_qemu.html "Beyond QEMU") by adding useful features especially made for CPU emulation. Unicorn provides the basic infrastructure needed to execute processor instructions. In this section we will use [Unicorn's Python bindings](https://github.com/unicorn-engine/unicorn/tree/master/bindings/python "Unicorn Python bindings") to solve the [UnCrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "UnCrackable App for iOS Level 1").
 
 To use Unicorn, we need to implement all necessary infrastructure which generally is readily available to us in an Operating System, which includes binary loader, linker and other dependency libraries. Writing a complete binary loader is superfluous for our current goal,  instead we will write our own crude binary loader and execute a small part of the binary in Unicorn to solve the challenge.
 
