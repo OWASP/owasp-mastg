@@ -612,7 +612,7 @@ To solve the challenge using Unicorn we will perform the following steps:
 - Execute the binary by providing the start and end address.
 - Finally, dump the return value from the function, which in this case is our secret string.
 
-To extract the content of `__text` and `__data` section from the Mach-O binary we will use [LIEF](https://lief.quarkslab.com/ "Lief") library. LIEF provides a convenient abstraction to manipulate multiple executable file formats, including Mach-O files. But before this content into the memory, we also need to determine the load address for `__text` and `__data` section. This can be easily determined using any binary analysis tool like Ghidra, Radare2 or IDA Pro.
+To extract the content of `__text` and `__data` section from the Mach-O binary we will use [LIEF](https://lief.quarkslab.com/ "Lief"), which provides a convenient abstraction to manipulate multiple executable file formats. Before loading these sections to memory, we need to determine their base addresses, e.g. by using Ghidra, Radare2 or IDA Pro.
 
 <img src="Images/Chapters/0x06c/uncrackable_sections.png" width="500px"/>
 
