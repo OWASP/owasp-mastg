@@ -603,7 +603,7 @@ To use Unicorn, we need to implement all necessary infrastructure which generall
 
 While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at offset 0x1000080d4 is responsible for dynamically generating the secret string. If we analyze this function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither its performing any system calls. All the necessary code is self-contained in the binary and this is a perfect scenario to use a CPU emulator like Unicorn.
 
-To solve the challenge using Unicorn we will broadly perform the following steps:
+To solve the challenge using Unicorn we will perform the following steps:
 
 - Get the ARM64 version of the binary by running `lipo -thin arm64 <app_binary> -output uncrackable.arm64` (ARMv7 can be used as well).
 - Extract the `__text` and `__data` section from the binary.
