@@ -601,7 +601,11 @@ For Android, we used Angr's symbolic execution engine to solve a challenge. In t
 
 To use Unicorn's _full power_, we would need to implement all the necessary infrastructure which generally is readily available from the operating system, e.g. binary loader, linker and other dependencies or use another higher level frameworks such as [Qiling](https://qiling.io "Qiling") which leverages Unicorn to emulate CPU instructions, but understands the OS context. However, this is superfluous for this very localized challenge where only executing a small part of the binary will suffice.
 
-While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at offset 0x1000080d4 is responsible for dynamically generating the secret string. If we analyze this function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither its performing any system calls. All the necessary code is self-contained in the binary and this is a perfect scenario to use a CPU emulator like Unicorn.
+While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at address 0x1000080d4 is responsible for dynamically generating the secret string. As we're about to see, all the necessary code is pretty much self-contained in the binary, making this a perfect scenario to use a CPU emulator like Unicorn.
+
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" alt="Disassembly of the native function" width="500" />
+
+If we analyze that function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither its performing any system calls. The only access external to the functions occurs for instance at address 0x100008198, where a value from address 0x10000d8f6 is accessed, which maps to the `__data` section. Therefore, in order to correctly emulate this section of the code, apart from the `__text` section (which contains the instructions) we also need to load the `__data` section.
 
 To solve the challenge using Unicorn we will perform the following steps:
 
