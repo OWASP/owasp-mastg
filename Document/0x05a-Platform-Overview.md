@@ -2,15 +2,15 @@
 
 This chapter introduces the Android platform from an architecture point of view. The following five key areas are discussed:
 
-1. Android security architecture
-2. Android application structure
-3. Inter-process Communication (IPC)
+1. Android architecture
+2. Android security: defense-in-depth approach
+3. Android application structure
 4. Android application publishing
 5. Android application attack surface
 
 Visit the official [Android developer documentation website](https://developer.android.com/index.html "Android Developer Guide") for more details about the Android platform.
 
-## Android Security Architecture
+## Android Architecture
 
 Android is a Linux-based open source platform developed by Google, which serves as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other "smart" devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
 
@@ -20,17 +20,77 @@ Android's software stack is composed of several different layers. Each layer def
 
 At the lowest level, Android is based on a variation of the Linux Kernel. On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware. For example, it allows a stock phone application to use a device's microphone and speaker.
 
-Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, then converting the JVM bytecode to the Dalvik .dex format with the `dx` tool.
+Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, then converting the JVM bytecode to the Dalvik .dex format with the `d8` tool.
 
 <img src="Images/Chapters/0x05a/java_vs_dalvik.png" alt="Java vs Dalvik" width="350" />
 
-The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine. The key difference between Dalvik and ART is the way the bytecode is executed.
+The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine (DVM). The key difference between Dalvik and ART is the way the bytecode is executed.
 
-In Dalvik, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. JIT compilation adversely affects performance: the compilation must be performed every time the app is executed. To improve performance, ART introduced *ahead-of-time* (AOT) compilation. As the name implies, apps are precompiled before they are executed for the first time. This precompiled machine code is used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption.
+In the DVM, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation. To further improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of *ahead-of-time* (AOT), JIT and profile-guided compilation. Apps are recompiled on the device when they are installed, or when the OS undergoes a major update. While the code is being recompiled, device-specific and advanced code optimizations techniques can be applied. The final recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
 
-Android apps don't have direct access to hardware resources, and each app runs in its own sandbox. This allows precise control over resources and apps: for instance, a crashing app doesn't affect other apps running on the device. At the same time, the Android runtime controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources.
+Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape its own runtime and read the memory of a victim application on the same device. In the following section we take a closer look at the different defense layers in the Android operating system.
 
-### Android Users and Groups
+
+## Android Security: Defense-in-Depth Approach
+
+The Android architecture implements different security layers that, together, enable a defense-in-depth approach. This means that the confidentiality, integrity or availability of sensitive user-data or applications doesn't hinge on one single security measure. This section brings an overview of the different layers of defense that the Android system provides. The security strategy can be roughly categorized into four distinct domains, each focusing on protecting against certain attack models.
+
+- System-wide security
+- Software isolation
+- Network security
+- Anti-exploitation
+
+### System-wide security
+
+#### Device encryption
+
+Android supports device encryption from Android 2.3.4 (API level 10) and it has undergone some big changes since then. Google imposed that all devices running Android 6.0 (API level 23) or higher had to support storage encryption, although some low-end devices were exempt because it would significantly impact their performance. In the following sections you can find information about device encryption and its algorithms.
+
+
+- Full-Disk Encryption - Android 5.0 (API level 21) and above support full-disk encryption. This encryption uses a single key protected by the user's device password to encrypt and decrypt the user data partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter the password to unlock.
+
+
+- File-Based Encryption - Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices that support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
+
+- Adiantum - AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
+However, not all devices are capable of using AES for storage encryption in a timely fashion, especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
+
+
+Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES. Adiantum is secure, as long as ChaCha12 and AES-256 are considered secure.
+
+Adiantum is a composition of other ciphers:
+
+- NH: A hashing function.
+- Poly1305: A message authentication code (MAC).
+- XChaCha12: A stream cipher.
+- AES-256: A single invocation of AES.
+
+Adiantum is available for Android 9 (API level 28) and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching.
+Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
+
+#### Trusted Execution Environment (TEE)
+
+In order for the Android system to perform encryption it needs a way to securely generate, import and store cryptographic keys. We are essentially shifting the problem of keeping sensitive data secure towards keeping a cryptographic key secure. If the attacker can dump or guess the cryptographic key, the sensitive encrypted data can be retrieved.
+
+Android offers a trusted execution environment in dedicated hardware to solve the problem of securely generating and protecting cryptographic keys. This means that a dedicated hardware component in the Android system is responsible for handling cryptographic key material. Three main modules are responsible for this:
+
+    - [Hardware-backed KeyStore](https://source.android.com/security/keystore) - This module offers cryptographic services to the Android OS and third-party apps. It enables apps to perform cryptographic sensitive operations in an TEE without exposing the cryptographic key material.
+
+    - [StrongBox](https://developer.android.com/training/articles/keystore#HardwareSecurityModule) - In Android 9 (Pie), StrongBox was introduced, another approach to implement a hardware-backed KeyStore. While previous to Android 9 Pie, a hardware-backed KeyStore would be any TEE implementation that lies outside of the Android OS kernel. StrongBox is an actual complete separate hardware chip that is added to the device on which the KeyStore is implemented and is clearly defined in the Android documentation. You can check programmatically whether a key resides in StrongBox and if it does, you can be sure that it is protected by a hardware security module that has its own CPU, secure storage, and True Random Generator (TRNG). All the sensitive cryptographic operations happen on this chip, in the secure boundaries of StrongBox.
+
+
+    - [GateKeeper](https://source.android.com/security/authentication/gatekeeper) - The GateKeeper module enables device pattern and password authentication. The security sensitive operations during the authentication process happen inside the TEE that is available on the device. GateKeeper consists of three main components, (1) `gatekeeperd` which is the service that exposes GateKeeper, (2) GateKeeper HAL, which is the hardware interface and (3) the TEE implementation which is the actual software that implements the GateKeeper functionality in the TEE.
+
+#### Verified Boot
+
+We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android introduced the concept of verified boot. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running, passing through and verifying all the required boot phases. When the Android system is finally booted you can rest assure that the system is not tampered with. You have cryptographic proof that the code which is running is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
+
+
+Further information is available in the [Android documentation](https://source.android.com/security/verifiedboot).
+
+### Software Isolation
+
+#### Android Users and Groups
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel is used to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
@@ -48,50 +108,97 @@ For example, Android 7.0 (API level 24) defines the following system users:
     ...
 ```
 
-<br/>
-<br/>
-
-### Android Device Encryption
-
-Android supports device encryption from Android 2.3.4 (API level 10) and it has undergone some big changes since then. Google imposed that all devices running Android 6.0 (API level 23) or higher had to support storage encryption. Although some low-end devices were exempt because it would significantly impact performance. In the following sections you can find information about device encryption and its algorithms.
-
-#### Full-Disk Encryption
-
-Android 5.0 (API level 21) and above support full-disk encryption. This encryption uses a single key protected by the users' device password to encrypt and decrypt the userdata partition. This kind of encryption is now considered deprecated and file-based encryption should be used whenever possible. Full-disk encryption has drawbacks, such as not being able to receive calls or not having operative alarms after a reboot if the user does not enter the password to unlock.
-
-#### File-Based Encryption
-
-Android 7.0 (API level 24) supports file-based encryption. File-based encryption allows different files to be encrypted with different keys so they can be deciphered independently. Devices which support this type of encryption support Direct Boot as well. Direct Boot enables the device to have access to features such as alarms or accessibility services even if the user didn't unlock the device.
-
-#### Adiantum
-
-AES is used on most modern Android devices for storage encryption. Actually, AES has become such a widely used algorithm that the most recent processor implementations have a dedicated set of instructions to provide hardware accelerated encryption and decryption operations, such as ARMv8 with its Cryptography Extensions or x86 with AES-NI extension.
-However, not all devices are capable of using AES for storage encryption in a timely fashion. Especially low-end devices running Android Go. These devices usually use low-end processors, such as the ARM Cortex-A7 which don't have hardware accelerated AES.
-
-Adiantum is a cipher construction designed by Paul Crowley and Eric Biggers at Google to fill the gap for that set of devices which are not able to run AES at least at 50 MiB/s. Adiantum relies only on additions, rotations and XORs; these operations are natively supported on all processors. Therefore, the low-end processors can encrypt 4 times faster and decrypt 5 times faster than they would if they were using AES.
-
-Adiantum is a composition of other ciphers:
-
-- NH: A hashing function.
-- Poly1305: A message authentication code (MAC).
-- XChaCha12: A stream cipher.
-- AES-256: A single invocation of AES.
-
-Adiantum is a new cipher but it is secure, as long as ChaCha12 and AES-256 are considered secure. Its designers didn't create any new cryptographic primitive, instead they relied on other well-known and thoroughly studied primitives to create a new performant algorithm.
-
-Adiantum is available for Android 9 (API level 28) and higher versions. It is natively supported in Linux kernel 5.0 and onwards, while kernel 4.19, 4.14 & 4.9 need patching.
-Android does not provide an API to application developers to use Adiantum; this cipher is to be taken into account and implemented by ROM developers or device vendors, which want to provide full disk encryption without sacrificing performance on low-end devices. At the moment of writing there is no public cryptographic library that implements this cipher to use it on Android applications.
-It should be noted that AES runs faster on devices having the AES instruction set. In that case the use of Adiantum is highly discouraged.
-
-### Android Security Hardening
-
-Android contains many different features that attempt to make it more difficult for a malicious application to break out of its sandbox. Since applications are effectively running code on your device, it is important that this can be done securely, even if the application itself can not be trusted. The following sections explain which mitigations are in place to prevent applications from abusing vulnerabilities. Note that an OS is never 100% secure and new vulnerabilities are still discovered on a regular basis, even with these mitigations in place.
-
 #### SELinux
 
 Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, by working on a least-privilege principle, vulnerable processes are more difficult to exploit via privilege escalation or lateral movement.
 
 Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
+
+#### Permissions
+
+Android implements an extensive permissions system that is used as an access control mechanism. It ensures controlled access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
+
+**Protection Levels**
+
+Android permissions are ranked on the basis of the protection level they offer and divided into four different categories:
+
+- *Normal*: the lower level of protection. It gives the apps access to isolated application-level features with minimal risk to other apps, the user, or the system. It is granted during app installation and is the default protection level:
+Example: `android.permission.INTERNET`
+- *Dangerous*: This permission allows the app to perform actions that might affect the user’s privacy or the normal operation of the user’s device. This level of permission may not be granted during installation; the user must decide whether the app should have this permission.
+Example: `android.permission.RECORD_AUDIO`
+- *Signature*: This permission is granted only if the requesting app has been signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted.
+Example: `android.permission.ACCESS_MOCK_LOCATION`
+- *SystemOrSignature*: This permission is granted only to apps embedded in the system image or signed with the same certificate that the app that declared the permission was signed with.
+Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
+
+**Requesting Permissions**
+
+Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags into their manifest.
+The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.permissions.sample" ...>
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <application>...</application>
+</manifest>
+```
+
+**Declaring Permissions**
+
+Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [Manifest.permission](https://developer.android.com/reference/android/Manifest.permission.html "Manifest.permission") or define its own. A new permission is declared with the `<permission>` element.
+The example below shows an app declaring a permission:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.permissions.sample" ...>
+
+    <permission
+    android:name="com.permissions.sample.ACCESS_USER_INFO"
+    android:protectionLevel="signature" />
+    <application>...</application>
+</manifest>
+```
+
+The above code defines a new permission named `com.permissions.sample.ACCESS_USER_INFO` with the protection level `Signature`. Any components protected with this permission would be accessible only by apps signed with the same developer certificate.
+
+**Enforcing Permissions on Android Components**
+
+Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
+
+```xml
+<receiver
+    android:name="com.permissions.sample.AnalyticsReceiver"
+    android:enabled="true"
+    android:permission="com.permissions.sample.ACCESS_USER_INFO">
+    ...
+</receiver>
+```
+
+Content Providers are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
+
+- `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
+- `android:permission`: general permission that will control reading and writing to the content provider.
+- `android:grantUriPermissions`: `"true"` if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and `"false"` otherwise.
+
+### Network security
+
+#### TLS by Default
+
+By default, since Android 9 (API level 28), all network activity is treated as being executed in a hostile environment. This means that the Android system will allow apps only to communicate over a network channel that is established using the Transport Layer Security (TLS) protocol. This protocol effectively encrypts all network traffic and creates a secure channel to a server. It may be the case that you would want to use clear traffic connections for legacy reasons. This can be achieved by adapting the `res/xml/network_security_config.xml` file in the application.
+
+
+Further information is available in the [Android documentation](https://developer.android.com/training/articles/security-config.html).
+
+#### DNS over TLS
+
+System-wide DNS over TLS support has been introduced since Android 9 (API level 28). It allows you to perform queries to DNS servers using the TLS protocol.  A secure channel is established with the DNS server through which the DNS query is sent. This assures that no sensitive data is exposed during a DNS lookup.
+
+
+Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html).
+
+### Anti-exploitation
 
 #### ASLR, KASLR, PIE and DEP
 
@@ -99,13 +206,13 @@ Address Space Layout Randomization (ASLR), which has been part of Android since 
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2016/07/protecting-android-with-more-linux.html "Protecting Android with more Linux kernel defenses").
 
-#### SECCOMP
+#### SECCOMP Filter
 
 Android applications can contain native code written in C or C++. These compiled binaries can communicate both with the Android Runtime through Java Native Interface (JNI) bindings, and with the OS through system calls. Some system calls are either not implemented, or are not supposed to be called by normal applications. As these system calls communicate directly with the kernel, they are a prime target for exploit developers. With Android 8 (API level 26), Android has introduced the support for Secure Computing (SECCOMP) filters for all Zygote based processes (i.e. user applications). These filters restrict the available syscalls to those exposed through bionic.
 
 Further information is available on the [Android Developers blog](https://android-developers.googleblog.com/2017/07/seccomp-filter-in-android-o.html "Seccomp filter in Android O").
 
-## Apps on Android
+## Android Application Structure
 
 ### Communication with the Operating System
 
@@ -133,7 +240,30 @@ Noteworthy API versions:
 - Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
 - Android 10 (API level 29) in September 2019 (notification bubbles, project Mainline)
 
-### Linux UID/GID for Normal Applications
+### The App Sandbox
+
+Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. As mentioned before, this separation adds a first layer of defense.
+
+Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
+
+<img src="Images/Chapters/0x05a/Selection_003.png" alt="Sandbox" width="400" />
+
+We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
+
+```bash
+drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
+drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
+```
+
+Developers who want their apps to share a common sandbox can sidestep sandboxing. When two apps are signed with the same certificate and explicitly share the same user ID (having the _sharedUserId_ in their _AndroidManifest.xml_ files), each can access the other's data directory. See the following example to achieve this in the NFC app:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.android.nfc"
+  android:sharedUserId="android.uid.nfc">
+```
+
+#### Linux User Management
 
 Android leverages Linux user management to isolate apps. This approach is different from user management usage in traditional Linux environments, where multiple apps are often run by the same user. Android creates a unique UID for each Android app and runs the app in a separate process. Consequently, each app can access its own resources only. This protection is enforced by the Linux kernel.
 
@@ -164,34 +294,11 @@ The relationship between group IDs and permissions is defined in the following f
 </permission>
 ```
 
-### The App Sandbox
-
-Apps are executed in the Android Application Sandbox, which separates the app data and code execution from other apps on the device. This separation adds a layer of security.
-
-Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
-
-<img src="Images/Chapters/0x05a/Selection_003.png" alt="Sandbox" width="400" />
-
-We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
-
-```bash
-drwx------  4 u0_a97              u0_a97              4096 2017-01-18 14:27 com.android.calendar
-drwx------  6 u0_a120             u0_a120             4096 2017-01-19 12:54 com.android.chrome
-```
-
-Developers who want their apps to share a common sandbox can sidestep sandboxing. When two apps are signed with the same certificate and explicitly share the same user ID (having the _sharedUserId_ in their _AndroidManifest.xml_ files), each can access the other's data directory. See the following example to achieve this in the NFC app:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.android.nfc"
-  android:sharedUserId="android.uid.nfc">
-```
-
 #### Zygote
 
 The process `Zygote` starts up during [Android initialization](https://github.com/dogriffiths/HeadFirstAndroid/wiki/How-Android-Apps-are-Built-and-Run "How Android Apps are run"). Zygote is a system service for launching apps. The Zygote process is a "base" process that contains all the core libraries the app needs. Upon launch, Zygote opens the socket `/dev/socket/zygote` and listens for connections from local clients. When it receives a connection, it forks a new process, which then loads and executes the app-specific code.
 
-#### App Lifeycle
+#### App Lifecycle
 
 In Android, the lifetime of an app process is controlled by the operating system. A new Linux process is created when an app component is started and the same app doesn’t yet have any other components running. Android may kill this process when the latter is no longer necessary or when reclaiming memory is necessary to run more important apps. The decision to kill a process is primarily related to the state of the user's interaction with the process. In general, processes can be in one of four states.
 
@@ -202,7 +309,7 @@ In Android, the lifetime of an app process is controlled by the operating system
 - A cached process is a process that's not currently needed, so the system is free to kill it when memory is needed.
 Apps must implement callback methods that react to a number of events; for example, the `onCreate` handler is called when the app process is first created. Other callback methods include `onLowMemory`, `onTrimMemory` and `onConfigurationChanged`.
 
-#### App Bundles
+### App Bundles
 
 Android applications can be shipped in two forms: the Android Package Kit (APK) file or an [Android App Bundle](https://developer.android.com/guide/app-bundle "Android App Bundle") (.aab). Android App Bundles provide all the resources necessary for an app, but defer the generation of the APK and its signing to Google Play. App Bundles are signed binaries which contain the code of the app in several modules. The base module contains the core of the application. The base module can be extended with various modules which contain new enrichments/functionalities for the app as further explained on the [developer documentation for app bundle](https://developer.android.com/guide/app-bundle "Documentation on App Bundle").
 If you have an Android App Bundle, you can best use the [bundletool](https://developer.android.com/studio/command-line/bundletool "bundletool") command line tool from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
@@ -223,7 +330,7 @@ $ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 
 We recommend that you test both the APK with and without the additional modules, so that it becomes clear whether the additional modules introduce and/or fix security issues for the base module.
 
-#### Android Manifest
+### Android Manifest
 
 Every app has an Android Manifest file, which embeds content in binary XML format. The standard name of this file is AndroidManifest.xml. It is located in the root directory of the app’s Android Package Kit (APK) file.
 
@@ -353,7 +460,19 @@ var fm = fragmentManager
 
 Fragments don't necessarily have a user interface; they can be a convenient and efficient way to manage background operations pertaining to the app's user interface. A fragment may be declared persistent so that if the system preserves its state even if its Activity is destroyed.
 
-#### Inter-Process Communication
+#### Content Providers
+
+Android uses SQLite to store data permanently: as with Linux, data is stored in files. SQLite is a light, efficient, open source relational data storage technology that does not require much processing power, which makes it ideal for mobile use. An entire API with specific classes (Cursor, ContentValues, SQLiteOpenHelper, ContentProvider, ContentResolver, etc.) is available.
+SQLite is not run as a separate process; it is part of the app.
+By default, a database belonging to a given app is accessible to this app only. However, content providers offer a great mechanism for abstracting data sources (including databases and flat files); they also provide a standard and efficient mechanism to share data between apps, including native apps. To be accessible to other apps, a content provider needs to be explicitly declared in the manifest file of the app that will share it. As long as content providers aren't declared, they won't be exported and can only be called by the app that creates them.
+
+Content providers are implemented through a URI addressing scheme: they all use the content:// model. Regardless of the type of sources (SQLite database, flat file, etc.), the addressing scheme is always the same, thereby abstracting the sources and offering the developer a unique scheme. Content providers offer all regular database operations: create, read, update, delete. That means that any app with proper rights in its manifest file can manipulate the data from other apps.
+
+#### Services
+
+Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. This makes services a great candidate for running  background tasks. Please note that Services, like Activities, are executed in the main app thread. A service does not create its own thread and does not run in a separate process unless you specify otherwise.
+
+### Inter-Process Communication
 
 As we've already learned, every Android process has its own sandboxed address space. Inter-process communication facilities allow apps to exchange signals and data securely. Instead of relying on the default Linux IPC facilities, Android's IPC is based on Binder, a custom implementation of OpenBinder. Most Android system services and all high-level IPC services depend on Binder.
 
@@ -422,7 +541,7 @@ Found 99 services:
 3 iphonesubinfo: [com.android.internal.telephony.IPhoneSubInfo]
 ```
 
-### Intents
+#### Intents
 
 *Intent messaging* is an asynchronous communication framework built on top of Binder. This framework allows both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate inter-component communication in several ways, there are three fundamental use cases:
 
@@ -543,7 +662,7 @@ If your app is not supposed to send broadcasts across apps, use a Local Broadcas
 
 For more security considerations regarding Broadcast Receiver, see [Security Considerations and Best Practices](https://developer.android.com/guide/components/broadcasts.html#security-and-best-practices "Security Considerations and Best Practices").
 
-##### Implicit Broadcast Receiver Limitiation
+#### Implicit Broadcast Receiver Limitation
 
 According to [Background Optimizations](https://developer.android.com/topic/performance/background-optimization "Background Optimizations"), apps targeting Android 7.0 (API level 24) or higher no longer receive `CONNECTIVITY_ACTION` broadcast unless they register their Broadcast Receivers with `Context.registerReceiver()`. The system does not send `ACTION_NEW_PICTURE` and `ACTION_NEW_VIDEO` broadcasts as well.
 
@@ -551,89 +670,7 @@ According to [Background Execution Limits](https://developer.android.com/about/v
 
 According to [Changes to System Broadcasts](https://developer.android.com/guide/components/broadcasts#changes-system-broadcasts "Changes to System Broadcasts"), beginning with Android 9 (API level 28), the `NETWORK_STATE_CHANGED_ACTION` broadcast doesn't receive information about the user's location or personally identifiable data.
 
-#### Content Providers
-
-Android uses SQLite to store data permanently: as with Linux, data is stored in files. SQLite is a light, efficient, open source relational data storage technology that does not require much processing power, which makes it ideal for mobile use. An entire API with specific classes (Cursor, ContentValues, SQLiteOpenHelper, ContentProvider, ContentResolver, etc.) is available.
-SQLite is not run as a separate process; it is part of the app.
-By default, a database belonging to a given app is accessible to this app only. However, content providers offer a great mechanism for abstracting data sources (including databases and flat files); they also provide a standard and efficient mechanism to share data between apps, including native apps. To be accessible to other apps, a content provider needs to be explicitly declared in the manifest file of the app that will share it. As long as content providers aren't declared, they won't be exported and can only be called by the app that creates them.
-
-Content providers are implemented through a URI addressing scheme: they all use the content:// model. Regardless of the type of sources (SQLite database, flat file, etc.), the addressing scheme is always the same, thereby abstracting the sources and offering the developer a unique scheme. Content providers offer all regular database operations: create, read, update, delete. That means that any app with proper rights in its manifest file can manipulate the data from other apps.
-
-#### Services
-
-Services are Android OS components (based on the Service class) that perform tasks in the background (data processing, starting intents, and notifications, etc.) without presenting a user interface. Services are meant to run processes long-term. Their system priorities are lower than those of active apps and higher than those of inactive apps. Therefore, they are less likely to be killed when the system needs resources, and they can be configured to automatically restart when enough resources become available. This makes services a great candidate for running  background tasks. Please note that Services, like Activities, are executed in the main app thread. A service does not create its own thread and does not run in a separate process unless you specify otherwise.
-
-#### Permissions
-
-Because Android apps are installed in a sandbox and initially can't access user information and system components (such as the camera and the microphone), Android provides a system with a predefined set of permissions for certain tasks that the app can request.
-For example, if you want your app to use a phone's camera, you have to request the `android.permission.CAMERA` permission.
-Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during app execution.
-
-##### Protection Levels
-
-Android permissions are ranked on the basis of the protection level they offer and divided into four different categories:
-
-- *Normal*: the lower level of protection. It gives the apps access to isolated application-level features with minimal risk to other apps, the user, or the system. It is granted during app installation and is the default protection level:
-Example: `android.permission.INTERNET`
-- *Dangerous*: This permission allows the app to perform actions that might affect the user’s privacy or the normal operation of the user’s device. This level of permission may not be granted during installation; the user must decide whether the app should have this permission.
-Example: `android.permission.RECORD_AUDIO`
-- *Signature*: This permission is granted only if the requesting app has been signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted.
-Example: `android.permission.ACCESS_MOCK_LOCATION`
-- *SystemOrSignature*: This permission is granted only to apps embedded in the system image or signed with the same certificate that the app that declared the permission was signed with.
-Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
-
-##### Requesting Permissions
-
-Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags into their manifest.
-The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.permissions.sample" ...>
-
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <application>...</application>
-</manifest>
-```
-
-##### Declaring Permissions
-
-Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [predefined permissions](https://developer.android.com/reference/android/Manifest.permission.html "predefined permissions") or define its own. A new permission is declared with the `<permission>` element.
-The example below shows an app declaring a permission:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.permissions.sample" ...>
-
-    <permission
-    android:name="com.permissions.sample.ACCESS_USER_INFO"
-    android:protectionLevel="signature" />
-    <application>...</application>
-</manifest>
-```
-
-The above code defines a new permission named `com.permissions.sample.ACCESS_USER_INFO` with the protection level `Signature`. Any components protected with this permission would be accessible only by apps signed with the same developer certificate.
-
-##### Enforcing Permissions on Android Components
-
-Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
-
-```xml
-<receiver
-    android:name="com.permissions.sample.AnalyticsReceiver"
-    android:enabled="true"
-    android:permission="com.permissions.sample.ACCESS_USER_INFO">
-    ...
-</receiver>
-```
-
-Content Providers are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
-
-- `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
-- `android:permission`: general permission that will control reading and writing to the content provider.
-- `android:grantUriPermissions`: `"true"` if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and `"false"` otherwise.
-
-## Signing and Publishing Process
+## Android Application Publishing
 
 Once an app has been successfully developed, the next step is to publish and share it with others. However, apps can't simply be added to a store and shared, they must be first signed. The cryptographic signature serves as a verifiable mark placed by the developer of the app. It identifies the app’s author and ensures that the app has not been modified since its initial distribution.
 
@@ -656,7 +693,7 @@ With the APK signature scheme, the complete APK is hashed and signed, and an APK
 
 <img src="Images/Chapters/0x05a/apk-validation-process.png" alt="Android Software Stack" width="450" />
 
-### APK Signature Scheme (v3 Scheme)
+#### APK Signature Scheme (v3 Scheme)
 
 The v3 APK Signing Block format is the same as v2. V3 adds information about the supported SDK versions and a proof-of-rotation struct to the APK signing block. In Android 9 (API level 28) and higher, APKs can be verified according to APK Signature Scheme v3, v2 or v1 scheme. Older platforms ignore v3 signatures and try to verify v2 then v1 signature.
 
@@ -707,7 +744,7 @@ Whereas other vendors may review and approve apps before they are actually publi
 
 Publishing an app is quite straightforward; the main operation is making the signed APK file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://developer.android.com/distribute/googleplay/start.html "Review the checklists to plan your launch").
 
-## Android Application Attack surface
+## Android Application Attack Surface
 
 The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
 
