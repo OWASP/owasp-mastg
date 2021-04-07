@@ -112,7 +112,7 @@ Further information is available on the [Android Security website](https://sourc
 
 Android implements an extensive permissions system that is used as an access control mechanism. It ensures controlled access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
 
-**Protection Levels**
+##### Protection Levels
 
 Android permissions are ranked on the basis of the protection level they offer and divided into four different categories:
 
@@ -125,7 +125,7 @@ Example: `android.permission.ACCESS_MOCK_LOCATION`
 - *SystemOrSignature*: This permission is granted only to apps embedded in the system image or signed with the same certificate that the app that declared the permission was signed with.
 Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
 
-**Requesting Permissions**
+##### Requesting Permissions
 
 Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags into their manifest.
 The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
@@ -139,7 +139,7 @@ The example below shows an AndroidManifest.xml sample requesting permission to r
 </manifest>
 ```
 
-**Declaring Permissions**
+##### Declaring Permissions
 
 Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [Manifest.permission](https://developer.android.com/reference/android/Manifest.permission.html "Manifest.permission") or define its own. A new permission is declared with the `<permission>` element.
 The example below shows an app declaring a permission:
@@ -157,7 +157,7 @@ The example below shows an app declaring a permission:
 
 The above code defines a new permission named `com.permissions.sample.ACCESS_USER_INFO` with the protection level `Signature`. Any components protected with this permission would be accessible only by apps signed with the same developer certificate.
 
-**Enforcing Permissions on Android Components**
+##### Enforcing Permissions on Android Components
 
 Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
 
