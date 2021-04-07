@@ -605,7 +605,7 @@ While performing manual analysis in "[Reviewing Disassembled Native Code](#revie
 
 <img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" alt="Disassembly of the native function" width="500" />
 
-If we analyze that function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither its performing any system calls. The only access external to the functions occurs for instance at address 0x1000080f4, where a value is being stored to address 0x10000dbf0, which maps to the `__data` section.
+If we analyze that function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither it's performing any system calls. The only access external to the functions occurs for instance at address 0x1000080f4, where a value is being stored to address 0x10000dbf0, which maps to the `__data` section.
 
 Therefore, in order to correctly emulate this section of the code, apart from the `__text` section (which contains the instructions) we also need to load the `__data` section.
 
