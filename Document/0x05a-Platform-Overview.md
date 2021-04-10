@@ -95,75 +95,17 @@ For example, Android 7.0 (API level 24) defines the following system users:
 
 Security-Enhanced Linux (SELinux) uses a Mandatory Access Control (MAC) system to further lock down which processes should have access to which resources. Each resource is given a label in the form of `user:role:type:mls_level` which defines which users are able to execute which types of actions on it. For example, one process may only be able to read a file, while another process may be able to edit or delete the file. This way, by working on a least-privilege principle, vulnerable processes are more difficult to exploit via privilege escalation or lateral movement.
 
-Further information is available on the [Android Security website](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
+Further information is available on the [Android documentation](https://source.android.com/security/selinux "Security-Enhanced Linux in Android").
 
 #### Permissions
 
-Android implements an extensive permissions system that is used as an access control mechanism. It ensures controlled access to sensitive user data and device resources. Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation. From API level 23 onwards, the user must approve some permissions requests during runtime.
+Android implements an extensive permissions system that is used as an access control mechanism. It ensures controlled access to sensitive user data and device resources. Android categorizes permissions into different [types](https://developer.android.com/guide/topics/permissions/overview#types) offering various protection levels.
 
-##### Protection Levels
+> Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation (Install-time permissions). From API level 23 onwards, the user must approve some permissions requests during runtime (Runtime permissions).
 
-Android permissions are ranked on the basis of the protection level they offer and divided into four different categories:
+Further information is available on the [Android documentation](https://developer.android.com/guide/topics/permissions/overview) including several [considerations](https://developer.android.com/training/permissions/evaluating) and [best practices](https://developer.android.com/training/permissions/usage-notes)
 
-- *Normal*: the lower level of protection. It gives the apps access to isolated application-level features with minimal risk to other apps, the user, or the system. It is granted during app installation and is the default protection level:
-Example: `android.permission.INTERNET`
-- *Dangerous*: This permission allows the app to perform actions that might affect the user’s privacy or the normal operation of the user’s device. This level of permission may not be granted during installation; the user must decide whether the app should have this permission.
-Example: `android.permission.RECORD_AUDIO`
-- *Signature*: This permission is granted only if the requesting app has been signed with the same certificate as the app that declared the permission. If the signature matches, the permission is automatically granted.
-Example: `android.permission.ACCESS_MOCK_LOCATION`
-- *SystemOrSignature*: This permission is granted only to apps embedded in the system image or signed with the same certificate that the app that declared the permission was signed with.
-Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`
-
-##### Requesting Permissions
-
-Apps can request permissions for the protection levels Normal, Dangerous, and Signature by including `<uses-permission />` tags into their manifest.
-The example below shows an AndroidManifest.xml sample requesting permission to read SMS messages:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.permissions.sample" ...>
-
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <application>...</application>
-</manifest>
-```
-
-##### Declaring Permissions
-
-Apps can expose features and content to other apps installed on the system. To restrict access to its own components, it can either use any of Android’s [Manifest.permission](https://developer.android.com/reference/android/Manifest.permission.html "Manifest.permission") or define its own. A new permission is declared with the `<permission>` element.
-The example below shows an app declaring a permission:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.permissions.sample" ...>
-
-    <permission
-    android:name="com.permissions.sample.ACCESS_USER_INFO"
-    android:protectionLevel="signature" />
-    <application>...</application>
-</manifest>
-```
-
-The above code defines a new permission named `com.permissions.sample.ACCESS_USER_INFO` with the protection level `Signature`. Any components protected with this permission would be accessible only by apps signed with the same developer certificate.
-
-##### Enforcing Permissions on Android Components
-
-Android components can use the permission mechanism to protect their interfaces. Permissions can be enforced on Activities, Services, and Broadcast Receivers by adding the attribute `android:permission` to the respective component tag in AndroidManifest.xml:
-
-```xml
-<receiver
-    android:name="com.permissions.sample.AnalyticsReceiver"
-    android:enabled="true"
-    android:permission="com.permissions.sample.ACCESS_USER_INFO">
-    ...
-</receiver>
-```
-
-Content Providers are a little different. They support a separate set of permissions for reading, writing, and accessing the content provider with a content URI.
-
-- `android:writePermission`, `android:readPermission`: the developer can set separate permissions for reading or writing.
-- `android:permission`: general permission that will control reading and writing to the content provider.
-- `android:grantUriPermissions`: `"true"` if the content provider can be accessed with a content URI (the access temporarily bypasses the restrictions of other permissions), and `"false"` otherwise.
+To learn how to test app permissions refer to the [Testing App Permissions](0x05h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) section in the "Android Platform APIs" chapter.
 
 ### Network security
 
