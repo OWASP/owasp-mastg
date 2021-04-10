@@ -201,29 +201,29 @@ Throughout the guide, you may want to address the readers in order to tell them 
 
 ### Web Links
 
-Special characters such as apostrophe (\') or single quote (\`) need to be escaped when using them in link descriptions, as otherwise the link is broken in Gitbook.
+Use markdown's in-line link format (A) `[TEXT](URL "TITLE")` or (B) `[TEXT](URL)`.
 
-Wrong usage, see "iPhone's":
-
-```markdown
-[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID")
-```
-
-Right usage, see "iPhone\'s":
-
-```markdown
-[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID")
-```
-
-For web links, use the normal markdown in-line link format: `[TEXT](URL "NAME")`. For example:
+For example:
 
 ```markdown
 The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
 ```
 
-These links will be converted to numbered references in the print version.
+When using (A), be sure to escape special characters such as apostrophe (\') or single quote (\`), as otherwise the link will be broken in Gitbook.
 
-When adding them to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
+**Wrong** usage, see "iPhone's":
+
+```markdown
+[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID")
+```
+
+**Right** usage, see "iPhone\'s":
+
+```markdown
+[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID")
+```
+
+When adding links to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
 
 ```markdown
 - adb - <https://developer.android.com/studio/command-line/adb>
