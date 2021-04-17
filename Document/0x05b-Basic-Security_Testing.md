@@ -12,6 +12,8 @@ At the very least, you'll need [Android Studio](0x08-Testing-Tools.md#android-st
 
 In addition, you may want to complete your host setup by installing the [Android NDK](0x08-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
 
+Sometimes it can be useful to display or control devices from the computer. In this case [Scrcpy](0x08-Testing-Tools.md#scrcpy) tool can be used.
+
 ### Testing Device
 
 For dynamic analysis, you'll need an Android device to run the target app on. In principle, you can test without a real Android device and use only the emulator. However, apps execute quite slowly on a emulator, and simulators may not give realistic results. Testing on a real device makes for a smoother process and a more realistic environment. On the other hand, emulators allow you to easily change SDK versions or create multiple devices. A full overview of the pros and cons of each approach is listed in the table below.
