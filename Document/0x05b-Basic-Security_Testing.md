@@ -12,7 +12,7 @@ At the very least, you'll need [Android Studio](0x08-Testing-Tools.md#android-st
 
 In addition, you may want to complete your host setup by installing the [Android NDK](0x08-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
 
-Sometimes it can be useful to display or control devices from the computer. In this case [Scrcpy](0x08-Testing-Tools.md#scrcpy) tool can be used.
+Sometimes it can be useful to display or control devices from the computer. To achieve this, you can use [Scrcpy](0x08-Testing-Tools.md#scrcpy).
 
 ### Testing Device
 
