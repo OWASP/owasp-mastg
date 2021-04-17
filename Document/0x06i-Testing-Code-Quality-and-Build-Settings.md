@@ -695,12 +695,6 @@ Below are procedures for checking the binary security features described above. 
     [SNIP]
     ```
 
-#### With idb
-
-[IDB](0x08-Testing-Tools.md#idb) automates the processes of checking for stack canary and PIE support. Select the target binary in the IDB GUI and click the "Analyze Binary…" button.
-
-<img src="Images/Chapters/0x06i/idb.png" alt="IDB Analyze Binary" width="350px" />
-
 ### Dynamic Analysis
 
 Dynamic analysis is not applicable for finding security features offered by the toolchain.

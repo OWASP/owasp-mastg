@@ -1863,13 +1863,6 @@ function openURL(url) {
 
 > Note that the use of non-public APIs is not permitted on the App Store, that's why we don't even test these but we are allowed to use them for our dynamic analysis.
 
-##### Using IDB
-
-For this you can also use [IDB](https://www.idbtool.com/ "IDB"):
-
-- Start IDB, connect to your device and select the target app. You can find details in the [IDB documentation](https://www.idbtool.com/documentation/setup.html "IDB Setup").
-- Go to the **URL Handlers** section. In **URL schemes**, click **Refresh**, and on the left you'll find a list of all custom schemes defined in the app being tested. You can load these schemes by clicking **Open**, on the right side. By simply opening a blank URI scheme (e.g., opening `myURLscheme://`), you can discover hidden functionality (e.g., a debug window) and bypass local authentication.
-
 ##### Using Needle
 
 Needle can be used to test custom URL schemes, the following module can be used to open the URLs (URIs):
