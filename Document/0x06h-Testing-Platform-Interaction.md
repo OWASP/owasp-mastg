@@ -2237,15 +2237,7 @@ OK!
 
 The script will detect if a crash occurred. On this run it did not detect any crashed but for other apps this could be the case. We would be able to inspect the crash reports in `/private/var/mobile/Library/Logs/CrashReporter` or in `/tmp` if it was moved by the script.
 
-##### Using IDB
-
-In the **URL Handlers** section, go to the **Fuzzer** tab. On the left side default IDB payloads are listed. Once you have generated your payload list (e.g. using FuzzDB), go to the **Fuzz Template** section in the left bottom panel and define a template. Use `$@$` to define an injection point, for example:
-
-```bash
-myURLscheme://$@$
-```
-
-While the URL scheme is being fuzzed, watch the logs (see the section "[Monitoring System Logs](0x06b-Basic-Security-Testing.md#monitoring-system-logs "Monitoring System Logs")" of the chapter "iOS Basic Security Testing" to observe the impact of each payload. The history of used payloads is on the right side of the IDB "Fuzzer" tab.
+While the URL scheme is being fuzzed, watch the logs (see the section "[Monitoring System Logs](0x06b-Basic-Security-Testing.md#monitoring-system-logs "Monitoring System Logs")" of the chapter "iOS Basic Security Testing" to observe the impact of each payload.
 
 ## Testing iOS WebViews (MSTG-PLATFORM-5)
 
