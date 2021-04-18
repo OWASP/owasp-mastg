@@ -2237,7 +2237,6 @@ OK!
 
 The script will detect if a crash occurred. On this run it did not detect any crashed but for other apps this could be the case. We would be able to inspect the crash reports in `/private/var/mobile/Library/Logs/CrashReporter` or in `/tmp` if it was moved by the script.
 
-
 ## Testing iOS WebViews (MSTG-PLATFORM-5)
 
 ### Overview
