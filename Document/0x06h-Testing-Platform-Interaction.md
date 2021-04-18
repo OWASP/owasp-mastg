@@ -2237,7 +2237,6 @@ OK!
 
 The script will detect if a crash occurred. On this run it did not detect any crashed but for other apps this could be the case. We would be able to inspect the crash reports in `/private/var/mobile/Library/Logs/CrashReporter` or in `/tmp` if it was moved by the script.
 
-While the URL scheme is being fuzzed, watch the logs (see the section "[Monitoring System Logs](0x06b-Basic-Security-Testing.md#monitoring-system-logs "Monitoring System Logs")" of the chapter "iOS Basic Security Testing" to observe the impact of each payload.
 
 ## Testing iOS WebViews (MSTG-PLATFORM-5)
 
