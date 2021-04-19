@@ -540,43 +540,11 @@ textField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 If a jailbroken iPhone is available, execute the following steps:
 
-1. Reset your iOS device keyboard cache by navigating to Settings > General > Reset > Reset Keyboard Dictionary.
+1. Reset your iOS device keyboard cache by navigating to `Settings > General > Reset > Reset Keyboard Dictionary`.
 2. Use the application and identify the functionalities that allow users to enter sensitive data.
 3. Dump the keyboard cache file `dynamic-text.dat` into the following directory (which might be different for iOS versions before 8.0):
 `/private/var/mobile/Library/Keyboard/`
 4. Look for sensitive data, such as username, passwords, email addresses, and credit card numbers. If the sensitive data can be obtained via the keyboard cache file, the app fails this test.
-
-With Needle:
-
-```bash
-[needle] > use storage/caching/keyboard_autocomplete
-[needle] > run
-
-[*] Checking connection with device...
-[+] Already connected to: 142.16.24.31
-[*] Running strings over keyboard autocomplete databases...
-[+] The following content has been found:
-    DynamicDictionary-5
-    check
-    darw
-    Frida
-    frid
-    gawk
-    iasdasdt11
-    installdeopbear
-    Minh
-    mter
-    needle
-    openssl
-    openss
-    produce
-    python
-    truchq
-    wallpaper
-    DynamicDictionary-5
-[*] Saving output to file: /home/phanvanloc/.needle/output/keyboard_autocomplete.txt
-
-```
 
 ```objectivec
 UITextField *textField = [ [ UITextField alloc ] initWithFrame: frame ];
@@ -907,22 +875,6 @@ This sets the background image to `overlayImage.png` whenever the application is
 Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and navigate to the following directory (which may be different for iOS versions below 8.0):
 
 `/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
-
-Screenshot caching vulnerabilities can also be detected with Needle. This is demonstrated in the following Needle excerpt:
-
-```bash
-[needle] > use storage/caching/screenshot
-[needle][screenshot] > run
-[V] Creating timestamp file...
-[*] Launching the app...
-[*] Background the app by hitting the home button, then press enter:
-
-[*] Checking for new screenshots...
-[+] Screenshots found:
-[+]   /private/var/mobile/Containers/Data/Application/APP_ID/Library/Caches/Snapshots/app_name/B75DD942-76D1-4B86-8466-B79F7A78B437@2x.png
-[+]   /private/var/mobile/Containers/Data/Application/APP_ID/Library/Caches/Snapshots/app_name/downscaled/12B93BCB-610B-44DA-A171-AF205BA71269@2x.png
-[+] Retrieving screenshots and saving them in: /home/user/.needle/output
-```
 
 If the application caches the sensitive information in a screenshot, the app fails this test.
 
