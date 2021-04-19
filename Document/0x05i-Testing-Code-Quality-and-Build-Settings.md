@@ -88,34 +88,32 @@ Check `AndroidManifest.xml` to determine whether the `android:debuggable` attrib
     ...
 ```
 
+You can use `aapt` tool from the Android SDK with the following command line to quickly check if the `android:debuggable="true"` directive is present:
+
+```bash
+# If the command print 1 then the directive is present
+# The regex search for this line: android:debuggable(0x0101000f)=(type 0x12)0xffffffff
+$ aapt d xmltree sieve.apk AndroidManifest.xml | grep -Ec "android:debuggable\(0x[0-9a-f]+\)=\(type\s0x[0-9a-f]+\)0xffffffff"
+1
+```
+
 For a release build, this attribute should always be set to `"false"` (the default value).
 
 ### Dynamic Analysis
 
-Drozer can be used to determine whether an application is debuggable. The Drozer module `app.package.attacksurface` also displays information about IPC components exported by the application.
+`adb` can be used to determine whether an application is debuggable.
+
+Use the following command:
 
 ```bash
-dz> run app.package.attacksurface com.mwr.dz
-Attack Surface:
-  1 activities exported
-  1 broadcast receivers exported
-  0 content providers exported
-  0 services exported
-    is debuggable
-```
-
-To scan for all debuggable applications on a device, use the `app.package.debuggable` module:
-
-```bash
-dz> run app.package.debuggable
-Package: com.mwr.dz
-  UID: 10083
-  Permissions:
-   - android.permission.INTERNET
-Package: com.vulnerable.app
-  UID: 10084
-  Permissions:
-   - android.permission.INTERNET
+# If the command print a number superior to zero then the application have the debug flag
+# The regex search for these lines:
+# flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+# pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+$ adb shell dumpsys package com.mwr.example.sieve | grep -c "DEBUGGABLE"
+2
+$ adb shell dumpsys package com.nondebuggableapp | grep -c "DEBUGGABLE"
+0
 ```
 
 If an application is debuggable, executing application commands is trivial. In the `adb` shell, execute `run-as` by appending the package name and application command to the binary name:
