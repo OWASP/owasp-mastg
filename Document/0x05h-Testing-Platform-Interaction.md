@@ -897,17 +897,9 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 ### Dynamic Analysis
 
-You can enumerate IPC components with Drozer. To list all exported IPC components, use the module `app.package.attacksurface`:
+You can enumerate IPC components with [MobSF](0x08-Testing-Tools.md#mobsf "MobSF"). To list all exported IPC components, upload the APK file and the components collection will be displayed in the following screen:
 
-```bash
-dz> run app.package.attacksurface com.mwr.example.sieve
-Attack Surface:
-  3 activities exported
-  0 broadcast receivers exported
-  2 content providers exported
-  2 services exported
-    is debuggable
-```
+<img src="Images/Chapters/0x05h/MobSF_Show_Components.png" alt="MobSF components display" />
 
 #### Content Providers
 
