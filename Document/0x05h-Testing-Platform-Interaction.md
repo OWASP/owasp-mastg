@@ -315,7 +315,7 @@ User 11: ceDataInode=0 installed=true hidden=false suspended=false stopped=false
   gids=[3003]
   runtime permissions:
   enabledComponents:
-    com.google.android.youtube.ManageNetworkUsageActivity     
+  com.google.android.youtube.ManageNetworkUsageActivity     
 ...
 ```
 
