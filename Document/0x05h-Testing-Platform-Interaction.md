@@ -297,41 +297,38 @@ When analyzing permissions, you should investigate the concrete use case scenari
 
 ### Dynamic Analysis
 
-Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
+Permissions for installed applications can be retrieved with `adb`. The following extract demonstrates how to examine the permissions used by an application.
 
 ```bash
-dz> run app.package.info -a com.android.mms.service
-Package: com.android.mms.service
-  Application Label: MmsService
-  Process Name: com.android.phone
-  Version: 6.0.1
-  Data Directory: /data/user/0/com.android.mms.service
-  APK Path: /system/priv-app/MmsService/MmsService.apk
-  UID: 1001
-  GID: [2001, 3002, 3003, 3001]
-  Shared Libraries: null
-  Shared User ID: android.uid.phone
-  Uses Permissions:
-  - android.permission.RECEIVE_BOOT_COMPLETED
-  - android.permission.READ_SMS
-  - android.permission.WRITE_SMS
-  - android.permission.BROADCAST_WAP_PUSH
-  - android.permission.BIND_CARRIER_SERVICES
-  - android.permission.BIND_CARRIER_MESSAGING_SERVICE
-  - android.permission.INTERACT_ACROSS_USERS
-  Defines Permissions:
-  - None
+$ adb shell dumpsys package com.google.android.youtube
+...
+    declared permissions:
+      com.google.android.youtube.permission.C2D_MESSAGE: prot=signature, INSTALLED
+    requested permissions:
+      android.permission.INTERNET
+      android.permission.ACCESS_NETWORK_STATE
+    install permissions:
+      com.google.android.c2dm.permission.RECEIVE: granted=true
+      android.permission.USE_CREDENTIALS: granted=true
+      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+    User 11: ceDataInode=0 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0 instant=false virtual=false
+      gids=[3003]
+      runtime permissions:
+      enabledComponents:
+        com.google.android.youtube.ManageNetworkUsageActivity     
+...
 ```
 
-When Android applications expose IPC components to other applications, they can define permissions to control which applications can access the components. For communication with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt so that it includes the required permission:
+From the command above, the following bloc are interesting, the information below are based on this [blog post](https://www.programmersought.com/article/47364329867/ "See Android permissions from dumpsys package"):
 
-```bash
-$ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
-```
-
-Note that this method can't be used for `signature` level permissions because Drozer would need to be signed by the certificate used to sign the target application.
+- **declared permissions**: Collection of custom permissions defined.
+- **requested permissions**: Collection of permissions required by the application including *declared* and *install* permissions.
+- **install permissions**: All the permission statements contained in the manifest before Android 6.0 can be regarded as *install* permissions, and the Android 6.0 and later manifests belong to *install* permissions except for `dangerous` permissions or `runtime` permissions.
+- **runtime permissions**: Collection of permissions for which authorization will be requested when the app is running.
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+
+To obtains detail about a permission, you can use the site [androidpermissions.com](http://androidpermissions.com/ "Android Permissions"). You can find additional information about permissions model on the [Android documentation](https://developer.android.com/guide/topics/permissions/overview "Permissions on Android").
 
 ## Testing for Injection Flaws (MSTG-PLATFORM-2)
 
@@ -431,8 +428,6 @@ SQL injection can be exploited with the following command. Instead of getting th
 ```bash
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
-
-Drozer can also be used for dynamic testing.
 
 ## Testing for Fragment Injection (MSTG-PLATFORM-2)
 
@@ -683,24 +678,6 @@ $ adb shell am start
 $ adb shell am start
         -W -a android.intent.action.VIEW
         -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
-```
-
-Alternatively you can use Drozer's `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
-
-```bash
-dz> run scanner.activity.browsable -a com.google.android.apps.messaging
-Package: com.google.android.apps.messaging
-  Invocable URIs:
-    sms://
-    mms://
-  Classes:
-    com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
-```
-
-Furthermore, Drozer can then be used to call deep links using the `app.activity.start` module:
-
-```bash
-dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
 ```
 
 ## Testing for Insecure Configuration of Instant Apps (MSTG-ARCH-1, MSTG-ARCH-7)

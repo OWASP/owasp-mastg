@@ -388,7 +388,6 @@ $ frida-ps -Uai
 21228  Attack me if u can                        sg.vp.owasp_mobile.omtg_android
  4281  Termux                                    com.termux
     -  Uncrackable1                              sg.vantagepoint.uncrackable1
-    -  drozer Agent                              com.mwr.dz
 ```
 
 Note that this also shows the PID of the apps that are running at the moment. Take a note of the "Identifier" and the PID if any as you'll need them afterwards.
