@@ -310,12 +310,7 @@ requested permissions:
 install permissions:
   com.google.android.c2dm.permission.RECEIVE: granted=true
   android.permission.USE_CREDENTIALS: granted=true
-  com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
-User 11: ceDataInode=0 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0 instant=false virtual=false
-  gids=[3003]
-  runtime permissions:
-  enabledComponents:
-  com.google.android.youtube.ManageNetworkUsageActivity     
+  com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true  
 ...
 ```
 
