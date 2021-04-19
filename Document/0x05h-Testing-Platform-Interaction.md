@@ -302,20 +302,20 @@ Permissions for installed applications can be retrieved with `adb`. The followin
 ```bash
 $ adb shell dumpsys package com.google.android.youtube
 ...
-    declared permissions:
-      com.google.android.youtube.permission.C2D_MESSAGE: prot=signature, INSTALLED
-    requested permissions:
-      android.permission.INTERNET
-      android.permission.ACCESS_NETWORK_STATE
-    install permissions:
-      com.google.android.c2dm.permission.RECEIVE: granted=true
-      android.permission.USE_CREDENTIALS: granted=true
-      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
-    User 11: ceDataInode=0 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0 instant=false virtual=false
-      gids=[3003]
-      runtime permissions:
-      enabledComponents:
-        com.google.android.youtube.ManageNetworkUsageActivity     
+declared permissions:
+  com.google.android.youtube.permission.C2D_MESSAGE: prot=signature, INSTALLED
+requested permissions:
+  android.permission.INTERNET
+  android.permission.ACCESS_NETWORK_STATE
+install permissions:
+  com.google.android.c2dm.permission.RECEIVE: granted=true
+  android.permission.USE_CREDENTIALS: granted=true
+  com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+User 11: ceDataInode=0 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0 instant=false virtual=false
+  gids=[3003]
+  runtime permissions:
+  enabledComponents:
+    com.google.android.youtube.ManageNetworkUsageActivity     
 ...
 ```
 
