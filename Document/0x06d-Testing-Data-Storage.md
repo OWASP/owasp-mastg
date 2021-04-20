@@ -125,7 +125,7 @@ if userDefaults.bool(forKey: "hasRunBefore") == false {
 
 ### Static Analysis
 
-When you have access to the source code of an iOS app, try to spot sensitive data that's saved and processed throughout the app. This includes passwords, secret keys, and personally identifiable information (PII), but it may as well include other data identified as sensitive by industry regulations, laws, and company policies. Look for this data being saved via any of the local storage APIs listed below. 
+When you have access to the source code of an iOS app, try to spot sensitive data that's saved and processed throughout the app. This includes passwords, secret keys, and personally identifiable information (PII), but it may as well include other data identified as sensitive by industry regulations, laws, and company policies. Look for this data being saved via any of the local storage APIs listed below.
 
 Make sure that sensitive data is never stored without appropriate protection. For example, authentication tokens should not be saved in `NSUserDefaults` without additional encryption. Also avoid storing encryption keys in `.plist` files, hardcoded as strings in code, or generated using predictable obfuscation function or key derivation function based on stable attributes.
 
