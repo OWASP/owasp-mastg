@@ -450,7 +450,7 @@ All applications on Android use memory to perform normal computational operation
 
 The investigation of an application's memory can be done from memory dumps, and from analyzing the memory in real time via a debugger.
 
-This is further explained in the 'Checking Memory for Sensitive Data' section.
+This is further explained in the 'Testing Memory for Sensitive Data' section.
 
 ## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
@@ -1185,7 +1185,7 @@ On devices supporting [file-based encryption (FBE)](https://source.android.com/s
 
 > Accessing these folders and the snapshots requires root.
 
-## Checking Memory for Sensitive Data (MSTG-STORAGE-10)
+## Testing Memory for Sensitive Data (MSTG-STORAGE-10)
 
 ### Overview
 
