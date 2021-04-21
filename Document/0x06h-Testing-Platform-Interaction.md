@@ -1863,26 +1863,6 @@ function openURL(url) {
 
 > Note that the use of non-public APIs is not permitted on the App Store, that's why we don't even test these but we are allowed to use them for our dynamic analysis.
 
-##### Using Needle
-
-Needle can be used to test custom URL schemes, the following module can be used to open the URLs (URIs):
-
-```bash
-[needle] >
-[needle] > use dynamic/ipc/open_uri
-[needle][open_uri] > show options
-
-  Name  Current Value  Required  Description
-  ----  -------------  --------  -----------
-  URI                  yes       URI to launch, eg tel://123456789 or http://www.google.com/
-
-[needle][open_uri] > set URI "myapp://testpayload'"
-URI => "myapp://testpayload'"
-[needle][open_uri] > run
-```
-
-Manual fuzzing can be performed against the URL scheme to identify input validation and memory corruption bugs.
-
 #### Identifying and Hooking the URL Handler Method
 
 If you can't look into the original source code you will have to find out yourself which method does the app use to handle the URL scheme requests that it receives. You cannot know if it is an Objective-C method or a Swift one, or even if the app is using a deprecated one.
