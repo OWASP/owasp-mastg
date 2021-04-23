@@ -323,7 +323,7 @@ From the command above, the following bloc are interesting, the information belo
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
-To obtains detail about a permission, you can use the site [androidpermissions.com](http://androidpermissions.com/ "Android Permissions"). You can find additional information about permissions model on the [Android documentation](https://developer.android.com/guide/topics/permissions/overview "Permissions on Android").
+To obtain detail about a specific permission you can refer to the [Android Documentation](https://developer.android.com/reference/android/Manifest.permission "Android Permissions").
 
 ## Testing for Injection Flaws (MSTG-PLATFORM-2)
 
