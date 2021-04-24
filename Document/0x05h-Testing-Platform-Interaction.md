@@ -1183,6 +1183,20 @@ Extra: phonenumber=07123456789 (java.lang.String)
 Extra: newpass=12345 (java.lang.String)`
 ```
 
+You can also use the following command to sniff the intents. However, the content of the extras passed will not be displayed:
+
+```bash
+$ adb shell dumpsys activity broadcasts | grep "theBroadcast"
+BroadcastRecord{fc2f46f u0 theBroadcast} to user 0
+Intent { act=theBroadcast flg=0x400010 (has extras) }
+BroadcastRecord{7d4f24d u0 theBroadcast} to user 0
+Intent { act=theBroadcast flg=0x400010 (has extras) }
+45: act=theBroadcast flg=0x400010 (has extras)
+46: act=theBroadcast flg=0x400010 (has extras)
+121: act=theBroadcast flg=0x400010 (has extras)
+144: act=theBroadcast flg=0x400010 (has extras)
+```
+
 ## Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)
 
 ### Overview
