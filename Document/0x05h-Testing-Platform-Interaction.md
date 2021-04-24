@@ -946,26 +946,96 @@ Row: 0 email=user@tedt.com, username=owasp, password=BLOB
 
 #### Activities
 
-To list activities exported by an application, use the module `app.activity.info`. Specify the target package with `-a` or omit the option to target all apps on the device:
+To list activities exported by an application, you can use the following command and focus on `activity` elements:
 
 ```bash
-dz> run app.activity.info -a com.mwr.example.sieve
-Package: com.mwr.example.sieve
-  com.mwr.example.sieve.FileSelectActivity
-    Permission: null
-  com.mwr.example.sieve.MainLoginActivity
-    Permission: null
-  com.mwr.example.sieve.PWList
-    Permission: null  
+$ aapt d xmltree sieve.apk AndroidManifest.xml
+...
+E: activity (line=32)
+  A: android:label(0x01010001)=@0x7f05000f
+  A: android:name(0x01010003)=".FileSelectActivity" (Raw: ".FileSelectActivity")
+  A: android:exported(0x01010010)=(type 0x12)0xffffffff
+  A: android:finishOnTaskLaunch(0x01010014)=(type 0x12)0xffffffff
+  A: android:clearTaskOnLaunch(0x01010015)=(type 0x12)0xffffffff
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+E: activity (line=40)
+  A: android:label(0x01010001)=@0x7f050000
+  A: android:name(0x01010003)=".MainLoginActivity" (Raw: ".MainLoginActivity")
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+  A: android:launchMode(0x0101001d)=(type 0x10)0x2
+  A: android:windowSoftInputMode(0x0101022b)=(type 0x11)0x14
+  E: intent-filter (line=46)
+    E: action (line=47)
+      A: android:name(0x01010003)="android.intent.action.MAIN" (Raw: "android.intent.action.MAIN")
+    E: category (line=49)
+      A: android:name(0x01010003)="android.intent.category.LAUNCHER" (Raw: "android.intent.category.LAUNCHER")
+E: activity (line=52)
+  A: android:label(0x01010001)=@0x7f050009
+  A: android:name(0x01010003)=".PWList" (Raw: ".PWList")
+  A: android:exported(0x01010010)=(type 0x12)0xffffffff
+  A: android:finishOnTaskLaunch(0x01010014)=(type 0x12)0xffffffff
+  A: android:clearTaskOnLaunch(0x01010015)=(type 0x12)0xffffffff
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+E: activity (line=60)
+  A: android:label(0x01010001)=@0x7f05000a
+  A: android:name(0x01010003)=".SettingsActivity" (Raw: ".SettingsActivity")
+  A: android:finishOnTaskLaunch(0x01010014)=(type 0x12)0xffffffff
+  A: android:clearTaskOnLaunch(0x01010015)=(type 0x12)0xffffffff
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+...
 ```
 
-Enumerating activities in the vulnerable password manager "Sieve" shows that the activity `com.mwr.example.sieve.PWList` is exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
+You can identify an exported activity using one of the following properties:
+
+- It have an `intent-filter` sub declaration.
+- It have the attribute `android:exported` to `0xffffffff`.
+
+You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported activities in the file `AndroidManifest.xml` using the criteria described above:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mwr.example.sieve">
+...
+  <!-- This activity is exported via the attribute "exported" -->
+  <activity android:name=".FileSelectActivity" android:exported="true" />
+   <!-- This activity is exported via the "intent-filter" declaration  -->
+  <activity android:name=".MainLoginActivity">
+    <intent-filter>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
+  </activity>
+  <!-- This activity is exported via the attribute "exported" -->
+  <activity android:name=".PWList" android:exported="true" />
+  <!-- Activites below are not exported -->
+  <activity android:name=".SettingsActivity" />
+  <activity android:name=".AddEntryActivity"/>
+  <activity android:name=".ShortLoginActivity" />
+  <activity android:name=".WelcomeActivity" />
+  <activity android:name=".PINActivity" />
+...
+</manifest>
+```
+
+Enumerating activities in the vulnerable password manager "Sieve" shows that the following activities are exported:
+
+- `.MainLoginActivity`
+- `.PWList`
+- `.FileSelectActivity`
+
+Use the command below to launch an activity:
 
 ```bash
-dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
+# Start the activity without specifying an action or an category
+$ adb shell am start -n com.mwr.example.sieve/.PWList
+Starting: Intent { cmp=com.mwr.example.sieve/.PWList }
+
+# Start the activity indicating an action (-a) and an category (-c)
+$ adb shell am start -n "com.mwr.example.sieve/.MainLoginActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
+Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.mwr.example.sieve/.MainLoginActivity }
 ```
 
-Since the activity is called directly in this example, the login form protecting the password manager would be bypassed, and the data contained within the password manager could be accessed.
+Since the activity `.PWList` is called directly in this example, the login form protecting the password manager would be bypassed, and the data contained within the password manager could be accessed.
 
 #### Services
 
