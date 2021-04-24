@@ -314,7 +314,7 @@ install permissions:
 ...
 ```
 
-From the command above, the following bloc are interesting, the information below are based on this [blog post](https://www.programmersought.com/article/47364329867/ "See Android permissions from dumpsys package"):
+From the command above, the following block are interesting, the information below are based on this [blog post](https://www.programmersought.com/article/47364329867/ "See Android permissions from dumpsys package"):
 
 - **declared permissions**: Collection of custom permissions defined.
 - **requested permissions**: Collection of permissions required by the application including *declared* and *install* permissions.
