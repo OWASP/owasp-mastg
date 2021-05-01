@@ -1012,7 +1012,7 @@ Attempt to decompile the bytecode, disassemble any included library files, and p
 - string resources and strings in binaries are encrypted,
 - code and data related to the protected functionality is encrypted, packed, or otherwise concealed,
 - for native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
-- additional obfuscation tool is used to alter the original control flow graph, like [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM").
+- additional obfuscation techniques such as ["Control Flow Flattening"](https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening) or ["Bogus Control Flow"](https://github.com/obfuscator-llvm/obfuscator/wiki/Bogus-Control-Flow) might have been applied using e.g. [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM").
 
 For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
 
