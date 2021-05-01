@@ -1331,3 +1331,4 @@ See section "[Dynamic Analysis with an Emulator](#dynamic-analysis-with-an-emula
 - Do's & Don'ts of SafetyNet Attestation - <https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html>
 - SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
 - SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
+- Obfuscator-LLVM - <https://github.com/obfuscator-llvm/obfuscator>
