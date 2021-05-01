@@ -1006,8 +1006,9 @@ In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE
 
 ### Effectiveness Assessment
 
-Attempt to decompile the bytecode, disassemble any included library files, and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
+Attempt to decompile the bytecode, disassemble any included library files and try to understand it. When doing so, consider the following:
 
+- Obfuscation often carries a cost in runtime performance, therefore it might have been only applied to certain very specific parts of the code, typically those dealing with security and runtime protection.
 - Meaningful identifiers, such as class names, method names, and variable names, might have been discarded.
 - String resources and strings in binaries might have been encrypted.
 - Code and data related to the protected functionality might be encrypted, packed, or otherwise concealed.
