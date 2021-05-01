@@ -1011,7 +1011,7 @@ Attempt to decompile the bytecode, disassemble any included library files, and p
 - meaningful identifiers, such as class names, method names, and variable names, have been discarded,
 - string resources and strings in binaries are encrypted,
 - code and data related to the protected functionality is encrypted, packed, or otherwise concealed,
-- for native code, OS syscalls is used, instead of corresponding LibC APIs (e.g open, read),
+- for native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
 - additional obfuscation tool is used to alter the original control flow graph, like [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM").
 
 For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
