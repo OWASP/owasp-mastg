@@ -1014,7 +1014,9 @@ Attempt to decompile the bytecode, disassemble any included library files, and p
 - for native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
 - additional obfuscation techniques such as ["Control Flow Flattening"](https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening) or ["Bogus Control Flow"](https://github.com/obfuscator-llvm/obfuscator/wiki/Bogus-Control-Flow) might have been applied using e.g. [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM").
 
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
+Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind.
+
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. There are some tools such as [APKiD](https://github.com/rednaga/APKiD) that might be able to give you some indications about the kind of obfuscators being used.
 
 ## Testing Device Binding (MSTG-RESILIENCE-10)
 
