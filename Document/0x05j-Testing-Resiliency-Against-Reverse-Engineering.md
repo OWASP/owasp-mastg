@@ -1012,7 +1012,7 @@ Attempt to decompile the bytecode, disassemble any included library files and tr
 - Meaningful identifiers, such as class names, method names, and variable names, might have been discarded.
 - String resources and strings in binaries might have been encrypted.
 - Code and data related to the protected functionality might be encrypted, packed, or otherwise concealed.
-- for native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
+- For native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
 - Additional obfuscation techniques such as ["Control Flow Flattening"](https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening) or ["Bogus Control Flow"](https://github.com/obfuscator-llvm/obfuscator/wiki/Bogus-Control-Flow) might have been applied using e.g. [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM").
 
 Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind.
