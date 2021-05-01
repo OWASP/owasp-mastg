@@ -1008,7 +1008,7 @@ In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE
 
 Attempt to decompile the bytecode, disassemble any included library files, and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
 
-- meaningful identifiers, such as class names, method names, and variable names, have been discarded,
+- Meaningful identifiers, such as class names, method names, and variable names, might have been discarded.
 - string resources and strings in binaries are encrypted,
 - code and data related to the protected functionality is encrypted, packed, or otherwise concealed,
 - for native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
