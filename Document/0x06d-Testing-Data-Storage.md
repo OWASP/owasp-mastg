@@ -858,7 +858,7 @@ Follow these steps using a jailbroken device or a non-jailbroken device after [r
 - Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details.
 - Background the application by hitting the **Home** button on your iOS device.
 - Verify that a default image is shown as the top view element instead of the view containing the sensitive information.
-- Connect to the iOS device [per SSH](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. On iOS 14:
+- Connect to the iOS device [per SSH](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. On iOS 14.5:
     `/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
 - The screenshots inside that folder should not contain any sensitive information.
 
