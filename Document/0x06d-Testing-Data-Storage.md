@@ -854,6 +854,7 @@ func applicationWillEnterForeground(_ application: UIApplication) {
 ### Dynamic Analysis
 
 Follow these steps using a jailbroken device or a non-jailbroken device after [repackaging the app with the Frida Gadget](0x06c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-jailbroken-devices):
+
 - Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details.
 - Background the application by hitting the **Home** button on your iOS device.
 - Verify that a default image is shown as the top view element instead of the view containing the sensitive information.
