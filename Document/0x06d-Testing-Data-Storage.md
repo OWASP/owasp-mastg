@@ -872,7 +872,11 @@ This sets the background image to `overlayImage.png` whenever the application is
 
 ### Dynamic Analysis
 
-Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and navigate to the following directory (which may be different for iOS versions below 8.0):
+Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and navigate to the following directory (which may be different for iOS versions below 14.2):
+
+`/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
+
+Older iOS versions may store the auto-generated screenshots under:
 
 `/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
 
