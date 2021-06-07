@@ -828,13 +828,13 @@ Again, remove the `pin_code` attribute from the plist and save your changes. Ren
 
 Manufacturers want to provide device users with an aesthetically pleasing effect when an application is started or exited, so they introduced the concept of saving a screenshot when the application goes into the background. This feature can pose a security risk because screenshots (which may display sensitive information such as an email or corporate documents) are written to local storage, where they can be recovered by a rogue application with a sandbox bypass exploit or someone who steals the device.
 
+This test case will fail if the app leaks any sensitive information via screenshots after entering the background.
+
 ### Static Analysis
 
-While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView") to determine whether the application sanitizes the screen before being backgrounded.
+If you have the source code, search for the [`applicationDidEnterBackground`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground) method to determine whether the application sanitizes the screen before being backgrounded.
 
-The following is a sample remediation method that will set a default screenshot.
-
-Swift:
+The following is a sample implementation using a default background image (`overlayImage.png`) whenever the application is backgrounded, overriding the current view:
 
 ```swift
 private var backgroundImage: UIImageView?
@@ -851,34 +851,15 @@ func applicationWillEnterForeground(_ application: UIApplication) {
 }
 ```
 
-Objective-C:
-
-```objc
-@property (UIImageView *)backgroundImage;
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
-    self.backgroundImage = myBanner;
-    self.backgroundImage.bounds = UIScreen.mainScreen.bounds;
-    [self.window addSubview:myBanner];
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    [self.backgroundImage removeFromSuperview];
-}
-```
-
-This sets the background image to `overlayImage.png` whenever the application is backgrounded. It prevents sensitive data leaks because `overlayImage.png` will always override the current view.
-
 ### Dynamic Analysis
 
-Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and navigate to the following directory (which may be different for iOS versions below 8.0):
-
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
-
-If the application caches the sensitive information in a screenshot, the app fails this test.
-
-The application should show a default image as the top view element when the application enters the background, so that the default image will be cached and not the sensitive information that was displayed.
+Follow these steps using a jailbroken device or a non-jailbroken device after [repackaging the app with the Frida Gadget](0x06c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-jailbroken-devices):
+- Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details.
+- Background the application by hitting the **Home** button on your iOS device.
+- Verify that a default image is shown as the top view element instead of the view containing the sensitive information.
+- Connect to the iOS device [per SSH](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. On iOS 14:
+    `/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
+- The screenshots inside that folder should not contain any sensitive information.
 
 ## Testing Memory for Sensitive Data (MSTG-STORAGE-10)
 
