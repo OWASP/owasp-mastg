@@ -116,9 +116,11 @@ Many other contributors have committed small amounts of content, such as a singl
 
 While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
 
-#### Honorable Benefactor
+### God Mode Donator
 
 [OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
+
+#### Honorable Benefactor
 
 <img src="Images/Donators/NowSecure_logo.png" width="250" />
 
