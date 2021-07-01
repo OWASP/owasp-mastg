@@ -126,7 +126,7 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 #### Good Samaritan Benefactor
 
-<img src="Images/Donators/Randorisec_logo.png" width="225" />
+<img src="Images/Donators/Randorisec_logo.png" width="150" />
 
 #### Other Donators
 
