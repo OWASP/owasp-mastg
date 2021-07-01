@@ -112,21 +112,25 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors "contributors").
 
-### Sponsors
+### Donators
 
-While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our sponsors for providing the funds to be able to hire technical editors. Note that their sponsorship does not influence the content of the MASVS or MSTG in any way. The sponsorship packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Sponsorship Packages").
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
 
-#### Honorable Benefactor
+### God Mode Donators
 
 [OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
 
-<img src="Images/Sponsors/NowSecure_logo.png" width="250" />
+#### Honorable Benefactor
+
+<img src="Images/Donators/NowSecure_logo.png" width="250" />
+
+<img src="Images/Donators/SEC_Consult_logo.png" width="205" />
 
 #### Good Samaritan Benefactor
 
-<img src="Images/Sponsors/Randorisec_logo.png" width="225" />
+<img src="Images/Donators/Randorisec_logo.png" width="150" />
 
-#### Donators
+#### Other Donators
 
 The following people and/or companies have donated more than $25 using Leanpub or other ways:
 
