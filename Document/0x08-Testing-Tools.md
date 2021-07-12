@@ -1345,7 +1345,7 @@ A tool to dump all the cookies from the binary Cookies.binarycookies file - <htt
 
 ### Burp Suite Mobile Assistant
 
-A tool to bypass certificate pinning and is able to inject into apps - <https://portswigger.net/burp/help/mobile_testing_using_mobile_assistant.html>
+A tool to bypass certificate pinning and is able to inject into apps - <https://portswigger.net/burp/documentation/desktop/tools/mobile-assistant>
 
 ### class-dump
 
@@ -1751,7 +1751,7 @@ There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint
 
 ### Burp Suite
 
-Burp Suite is an integrated platform for performing security testing mobile and web applications - <https://portswigger.net/burp/download.html>
+Burp Suite is an integrated platform for performing security testing mobile and web applications - <https://portswigger.net/burp/releases>
 
 Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
