@@ -25,10 +25,13 @@
             "pattern": "^https://source.android.com"
         },
         {
-            "pattern": "^https://www.infosecurity-magazine.com/"
+            "pattern": "^https://www.infosecurity-magazine.com"
         },
         {
-            "pattern": "^https://apkpure.com/"
+            "pattern": "^https://apkpure.com"
+        },
+        {
+            "pattern": "^https://manualzz.com"
         }
     ],
     "httpHeaders": [
