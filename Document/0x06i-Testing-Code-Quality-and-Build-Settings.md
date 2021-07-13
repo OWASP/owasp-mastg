@@ -709,15 +709,15 @@ Below are procedures for checking the binary security features described above. 
 
 Dynamically these checks can be performed using Objection tool. One such example is below:
 
-    ```bash
-    com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary
-    Name                  Type     Encrypted    PIE    ARC    Canary    Stack Exec    RootSafe
-    --------------------  -------  -----------  -----  -----  --------  ------------  ----------
-    PayPal                execute  True         True   True   True      False         False
-    CardinalMobile        dylib    False        False  True   True      False         False
-    FraudForce            dylib    False        False  True   True      False         False
-    ...
-    ```
+```bash
+com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary
+Name                  Type     Encrypted    PIE    ARC    Canary    Stack Exec    RootSafe
+--------------------  -------  -----------  -----  -----  --------  ------------  ----------
+PayPal                execute  True         True   True   True      False         False
+CardinalMobile        dylib    False        False  True   True      False         False
+FraudForce            dylib    False        False  True   True      False         False
+...
+```
 
 ## References
 
