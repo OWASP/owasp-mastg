@@ -16,13 +16,13 @@ Android is a Linux-based open source platform developed by Google, which serves 
 
 Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services.
 
-<img src="Images/Chapters/0x05a/android_software_stack.png" alt="Android Software Stack" width="400" />
+![OWASP MSTG](Images/Chapters/0x05a/android_software_stack.png)
 
 At the lowest level, Android is based on a variation of the Linux Kernel. On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware. For example, it allows a stock phone application to use a device's microphone and speaker.
 
 Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, then converting the JVM bytecode to the Dalvik .dex format with the `d8` tool.
 
-<img src="Images/Chapters/0x05a/java_vs_dalvik.png" alt="Java vs Dalvik" width="350" />
+![OWASP MSTG](Images/Chapters/0x05a/java_vs_dalvik.png)
 
 The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine (DVM). The key difference between Dalvik and ART is the way the bytecode is executed.
 
@@ -169,7 +169,7 @@ Apps are executed in the Android Application Sandbox, which separates the app da
 
 Installation of a new app creates a new directory named after the app package, which results in the following path: `/data/data/[package-name]`. This directory holds the app's data. Linux directory permissions are set such that the directory can be read from and written to only with the app's unique UID.
 
-<img src="Images/Chapters/0x05a/Selection_003.png" alt="Sandbox" width="400" />
+![OWASP MSTG](Images/Chapters/0x05a/Selection_003.png)
 
 We can confirm this by looking at the file system permissions in the `/data/data` folder. For example, we can see that Google Chrome and Calendar are assigned one directory each and run under different user accounts:
 
@@ -410,7 +410,7 @@ The term *Binder* stands for a lot of different things, including:
 
 The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently *marshall* the call parameters into a *parcel* and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call, all the heavy lifting is done by the Binder framework.
 
-<img src="Images/Chapters/0x05a/binder.jpg" alt="Binder Overview" width="400" />
+![OWASP MSTG](Images/Chapters/0x05a/binder.jpg)
 
 *Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf "Android Binder")*
 
@@ -614,7 +614,7 @@ The original version of app signing implements the signed APK as a standard sign
 
 With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification. You can see the [APK signature verification process for v2 Scheme](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process") below.
 
-<img src="Images/Chapters/0x05a/apk-validation-process.png" alt="Android Software Stack" width="450" />
+![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process.png)
 
 #### APK Signature Scheme (v3 Scheme)
 
@@ -623,7 +623,7 @@ The v3 APK Signing Block format is the same as v2. V3 adds information about the
 The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certificates sign the new set of certificates, thus providing each new key with evidence that it should be as trusted as the older key(s).
 It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certificates signing the new set of certificates, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
 
-<img src="Images/Chapters/0x05a/apk-validation-process-v3-scheme.png" alt="apk-validation-process-v3-scheme" width="450" />
+![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png)
 
 #### Creating Your Certificate
 

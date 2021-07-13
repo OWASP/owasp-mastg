@@ -1,12 +1,14 @@
 # Frontispiece
 
-<img src="Images/OWASP_logo.png" alt="OWASP Logo" width="350" />
+![OWASP Logo](images/OWASP_logo.png)
 
 ## About the OWASP Mobile Security Testing Guide
 
 The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#// "Slack channel sign up"). (Please open a Pull Request in our Github Repo if the invite has expired.)
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw# "Slack channel sign up").
+
+> Please open an issue in our Github Repo if the invite has expired.
 
 ## Disclaimer
 
@@ -16,13 +18,13 @@ Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CO
 
 ## Copyright and License
 
-Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
+Copyright © 2021 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-<img src="Images/CC-license.png" alt="drawing" width="200" />
+![OWASP Logo](Images/CC-license.png)
 
 ## ISBN
 
-Our ISBN Number is 978-0-359-47489-9.
+Our ISBN Number is 978-0-359-47489-9 and a hard copy of the MSTG can be ordered at [lulu.com](https://www.lulu.com/en/en/shop/bernhard-müller-and-jeroen-willemsen-and-sven-schleier/owasp-mobile-security-testing-guide/paperback/product-1q2rerwp.html?page=1&pageSize=4).
 
 ## Acknowledgments
 
@@ -88,9 +90,15 @@ Top contributors have consistently contributed quality content and have at least
 
 ### Contributors
 
-Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
+Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository. Their Github handle is listed below:
 
-Jin Kung Ong, Sjoerd Langkemper, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, José Carlos Andreu, Dharshin De Silva, Anatoly Rosencrantz, Caitlin Andrews, Abhinav Sejpal, Anita Diamond, Raul Siles, Yogesh Sharma, Dominique RIGHETTO, Enrico Verzegnassi, Nick Epson, Anna Szkudlarek, Elie Saad, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Akanksha Bana, Dario Incalza, Murat Karaoz, Jason Doyle, Oguzhan Topgul, Ender IBL, Imani Sherman, magicansk, Sijo Abraham, Pishu Mahtani, Jay Mbolda, Anuruddha E., Oleg Surnin, Emil Tostrup
+kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher-ux, thec00n, ssecteam, jay0301, magicansk, jinkunong, nick-epson, caitlinandrews, dharshin, raulsiles, righettod, karolpiateknet, mkaraoz, Sjord, bugwrangler, jasondoyle, joscandreu, yog3shsharma, ryantzj, rylyade1, shivsahni, diamonddocumentation, 51j0, AnnaSzk, hlhodges, legik, abjurato, serek8, mhelwig, locpv-ibl and ThunderSon.
+
+### Mini Contributors
+
+Mini contributors have contributed quality content and have at least 1 addition logged in the GitHub repository. Their Github handle is listed below:
+
+jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya, anyashka
 
 ### Reviewers
 
@@ -122,13 +130,13 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 #### Honorable Benefactor
 
-<img src="Images/Donators/NowSecure_logo.png" width="250" />
+![OWASP MSTG](Images/Donators/NowSecure_logo.png)
 
-<img src="Images/Donators/SEC_Consult_logo.png" width="205" />
+![OWASP MSTG](Images/Donators/SEC_Consult_logo.png)
 
 #### Good Samaritan Benefactor
 
-<img src="Images/Donators/Randorisec_logo.png" width="150" />
+![OWASP MSTG](Images/Donators/Randorisec_logo.png)
 
 #### Other Donators
 

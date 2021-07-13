@@ -22,7 +22,7 @@ The following is the most basic iOS app testing setup:
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Just select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
-<img src="Images/Chapters/0x06b/UDID-Finder.png" alt="UDID in Finder" width="500" />
+![OWASP MSTG](Images/Chapters/0x06b/UDID-Finder.png)
 
 If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
 
@@ -138,7 +138,7 @@ One of the most common things you do when testing an app is accessing the device
 
 In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08-Testing-Tools.md#cydia) (see screenshot below) or [Sileo](0x08-Testing-Tools.md#sileo) installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
-<img src="Images/Chapters/0x06b/cydia.png" alt="iOS App Folder Structure" width="250" />
+![OWASP MSTG](Images/Chapters/0x06b/cydia.png)
 
 In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the **Settings -> Wi-Fi** menu and tapping once on the info icon of the network you're connected to.
 
@@ -234,7 +234,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 After starting [Passionfruit](0x08-Testing-Tools.md#passionfruit) you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passiofruit Data directory" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_data_dir.png)
 
 When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
@@ -244,7 +244,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-<img src="Images/Chapters/0x06b/passionfruit_file_download.png" alt="Passionfruit File Options" width="500px" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_file_download.png)
 
 #### Objection
 
@@ -564,7 +564,7 @@ It also shows which of them are currently running. Take a note of the "Identifie
 
 You can also directly open passionfruit and after selecting your iOS device you'll get the list of installed apps.
 
-<img src="Images/Chapters/0x06b/passionfruit_installed_apps.png" alt="Passionfruit Installed Apps" width="400" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_installed_apps.png)
 
 #### Exploring the App Package
 
@@ -657,11 +657,11 @@ iOS native libraries are known as Frameworks.
 
 You can easily visualize them from Passionfruit by clicking on "Modules":
 
-<img src="Images/Chapters/0x06b/passionfruit_modules.png" alt="Passionfruit Modules" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_modules.png)
 
 And get a more detailed view including their imports/exports:
 
-<img src="Images/Chapters/0x06b/passionfruit_modules_detail.png" alt="Passionfruit Modules Detail" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_modules_detail.png)
 
 They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
 
@@ -694,13 +694,13 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-<img src="Images/Chapters/0x06b/passionfruit_db_view.png" alt="Passionfruit Database View" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_db_view.png)
 
 #### Accessing App Data Directories
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
 
-<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" alt="iOS App Folder Structure" width="350" />
+![OWASP MSTG](Images/Chapters/0x06a/iOS_Folder_Structure.png)
 
 On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) assigned for its directory names.
 
@@ -821,15 +821,15 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
-<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" alt="Passionfruit Bundle Directory View" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_bundle_dir.png)
 
 Including the `Info.plist` file:
 
-<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" alt="Passionfruit Plist View" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_plist_view.png)
 
 As well as the Data directory in **Files** -> **Data**:
 
-<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" alt="Passionfruit Data Directory View" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_data_dir.png)
 
 Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
 
@@ -844,11 +844,11 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 5. Reproduce the problem.
 6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-<img src="Images/Chapters/0x06b/open_device_console.png" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/open_device_console.png)
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
-<img src="Images/Chapters/0x06b/device_console.png" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/device_console.png)
 
 You can also connect to the device shell as explained in [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell), install socat via apt-get and run the following command:
 
@@ -869,7 +869,7 @@ Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch
 
 Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the **Console** -> **Output** tab:
 
-<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" alt="Passionfruit Console Logs View" />
+![OWASP MSTG](Images/Chapters/0x06b/passionfruit_console_logs.png)
 
 #### Dumping KeyChain Data
 
@@ -904,7 +904,7 @@ Finally, since the keychain dumper is executed from within the application conte
 
 With [Passionfruit](0x08-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
-<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" alt="Passionfruit Keychain" width="450" />
+![OWASP MSTG](Images/Chapters/0x06b/Passionfruit_Keychain.png)
 
 ##### Keychain-dumper (Jailbroken)
 
@@ -958,7 +958,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 ip.addr == 192.168.1.1 && http
 ```
 
-<img src="Images/Chapters/0x06b/wireshark_filters.png" width="550px" />
+![OWASP MSTG](Images/Chapters/0x06b/wireshark_filters.png)
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 
