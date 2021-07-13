@@ -641,7 +641,7 @@ Steps for building an iOS application as PIE:
 
 - ARC protection
 
-Steps for enabling ACR protection for an iOS application:
+Steps for enabling ARC protection for an iOS application:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2. Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
@@ -709,7 +709,7 @@ Below are procedures for checking the binary security features described above. 
 
 Dynamically these checks can be performed using Objection tool. One such example is below:
 
-    ```
+    ```bash
     com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary
     Name                  Type     Encrypted    PIE    ARC    Canary    Stack Exec    RootSafe
     --------------------  -------  -----------  -----  -----  --------  ------------  ----------
