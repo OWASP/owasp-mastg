@@ -613,20 +613,24 @@ There are various well written explanations which can help with taking care of m
 Although Xcode enables all binary security features by default, it may be relevant to verify this for an old application or to check for the misconfiguration of compilation options. The following features are applicable:
 
 - **ARC** - Automatic Reference Counting - A memory management feature that adds retain and release messages when required
-- **Stack Canary** - Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
-- **PIE** - Position Independent Executable - enables full ASLR for binary
+- **Stack Canary** - Stack-smashing protection - Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
+- **PIE** - Position Independent Executable - enables full ASLR for executable binary (not applicable for a library)
+
+Tests to detect the presence of these protection mechanisms is heavily dependent on the language used for developing the application. For example, existing techniques for detecting presence of stack canary does not work for pure Swift apps. For more details on how to determine which language is used in the application, check [On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/ "On iOS Binary Protection").
 
 ### Static Analysis
 
 #### Xcode Project Settings
 
-- Stack-smashing protection
+##### Stack Canary protection
 
-Steps for enabling Stack-smashing protection in an iOS application:
+Steps for enabling stack canary protection in an iOS application:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2. Make sure that the "-fstack-protector-all" option is selected in the "Other C Flags" section.
 3. Make sure that Position Independent Executables (PIE) support is enabled.
+
+##### PIE protection
 
 Steps for building an iOS application as PIE:
 
@@ -635,9 +639,9 @@ Steps for building an iOS application as PIE:
 3. Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
 4. Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
 
-- ARC protection
+##### ARC protection
 
-Steps for enabling ACR protection for an iOS application:
+Steps for enabling ARC protection for an iOS application:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2. Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
@@ -666,7 +670,9 @@ Below are procedures for checking the binary security features described above. 
     WEAK_DEFINES BINDS_TO_WEAK PIE
     ```
 
-- stack canary:
+    Mach-O flag for `PIE` is set and can be observed in the above output. This check works for all - Objective-C, Swift and hybrid apps.
+
+- Stack canary:
 
     ```bash
     $ otool -Iv DamnVulnerableIOSApp | grep stack
@@ -682,7 +688,9 @@ Below are procedures for checking the binary security features described above. 
     0x0000000100593dc8 83414 _sigaltstack
     ```
 
-- Automatic Reference Counting:
+    In the above output, presence of `__stack_chk_fail` indicates stack canary is enabled. This check works for pure Objective-C and hybrid apps, but will not work for pure Swift apps.
+
+- ARC:
 
     ```bash
     $ otool -Iv DamnVulnerableIOSApp | grep release
@@ -695,9 +703,21 @@ Below are procedures for checking the binary security features described above. 
     [SNIP]
     ```
 
+    This check works for all cases, including pure Swift apps.
+
 ### Dynamic Analysis
 
-Dynamic analysis is not applicable for finding security features offered by the toolchain.
+Dynamically these checks can be performed using Objection tool. One such example is below:
+
+```bash
+com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary
+Name                  Type     Encrypted    PIE    ARC    Canary    Stack Exec    RootSafe
+--------------------  -------  -----------  -----  -----  --------  ------------  ----------
+PayPal                execute  True         True   True   True      False         False
+CardinalMobile        dylib    False        False  True   True      False         False
+FraudForce            dylib    False        False  True   True      False         False
+...
+```
 
 ## References
 
