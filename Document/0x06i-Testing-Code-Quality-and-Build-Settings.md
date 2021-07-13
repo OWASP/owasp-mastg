@@ -622,7 +622,7 @@ Tests to detect the presence of these protection mechanisms is heavily dependent
 
 #### Xcode Project Settings
 
-- Stack Canary protection
+##### Stack Canary protection
 
 Steps for enabling stack canary protection in an iOS application:
 
@@ -630,7 +630,7 @@ Steps for enabling stack canary protection in an iOS application:
 2. Make sure that the "-fstack-protector-all" option is selected in the "Other C Flags" section.
 3. Make sure that Position Independent Executables (PIE) support is enabled.
 
-- PIE protection
+##### PIE protection
 
 Steps for building an iOS application as PIE:
 
@@ -639,7 +639,7 @@ Steps for building an iOS application as PIE:
 3. Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
 4. Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
 
-- ARC protection
+##### ARC protection
 
 Steps for enabling ARC protection for an iOS application:
 
