@@ -78,7 +78,6 @@ As noted before: some wrapper-libraries exist for both in order to provide conve
 - [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto")
 - [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall")
 - [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA")
-- [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL")
 - [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor")
 - [Arcane](https://github.com/onmyway133/Arcane "Arcane")
 
@@ -285,7 +284,6 @@ If you want to test for randomness, you can try to capture a large set of number
 - IDZSwiftCommonCrypto - <https://github.com/iosdevzone/IDZSwiftCommonCrypto>
 - Heimdall - <https://github.com/henrinormak/Heimdall>
 - SwiftyRSA - <https://github.com/TakeScoop/SwiftyRSA>
-- SwiftSSL - <https://github.com/SwiftP2P/SwiftSSL>
 - RNCryptor - <https://github.com/RNCryptor/RNCryptor>
 - Arcane - <https://github.com/onmyway133/Arcane>
 - CJOSE - <https://github.com/cisco/cjose>
