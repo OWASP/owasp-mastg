@@ -17,11 +17,6 @@ and also new write-ups for the Crackmes.
 
 We removed all references to Needle and IDB tool, as both tools are outdated.
 
-c
-# WHAT ABOUT
-- Updated Acknowledgments, with 1 new co-author and contributor
-
-
 Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
 
 We thank you all contributors for the hard work and continuously improving the document and the OWASP MSTG project!
