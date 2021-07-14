@@ -704,33 +704,55 @@ $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 You may also want to apply further filters or regular expressions (using `logcat`'s regex flags `-e <expr>, --regex=<expr>` for example) if you expect certain strings or patterns to come up in the logs.
 
-## Determining Whether Sensitive Data is Sent to Third Parties (MSTG-STORAGE-4)
+## Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
 
 ### Overview
 
-You can embed third-party services in apps. These services can implement tracker services, monitor user behavior, sell banner advertisements, improve the user experience, and more.
+Sensitive information might be leaked to third parties by several means, which include but are not limited to the following:
 
-The downside is a lack of visibility: you can't know exactly what code third-party libraries execute. Consequently, you should make sure that only necessary, non-sensitive information will be sent to the service.
+### Third-party Services Embedded in the App
 
-Most third-party services are implemented in one of two ways:
+The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
 
-- With a standalone library, such as an Android project Jar that is included in the APK
-- With a full SDK
+The downside is that developers don't usually know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
+
+Most third-party services are implemented in two ways:
+
+- with a standalone library
+- with a full SDK
+
+### App Notifications
+
+It is important to understand that [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview") should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
+
+There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuses the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done in order to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacker. A safer alternative for the user would be to use a 2FA application that does not generate notifications.
+
+Furthermore there are a number of apps on the Google Play Store that provide notification logging, which basically logs locally any notifications on the Android system. This highlights that notifications are in no way private on Android and accessible by any other app on the device.
+
+For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
 
 ### Static Analysis
 
-You can automatically integrate third-party libraries into apps by using an IDE wizard or manually adding a library or SDK. In either case, review the permissions in the `AndroidManifest.xml`. In particular, you should determine whether permissions for accessing `SMS (READ_SMS)`, contacts (`READ_CONTACTS`), and location (`ACCESS_FINE_LOCATION`) are really necessary (see `Testing App Permissions`). Developers should check the source code for changes after the library has been added to the project.
+#### Third-party Services Embedded in the App
 
-Check the source code for API calls and third-party library functions or SDKs. Review code changes for security best practices.
+To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code, requested permissions and check for any known vulnerabilities (see ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries-mstg-code-5)).
 
-Review loaded libraries to determine whether they are necessary and whether they are out of date or contain known vulnerabilities.
+All data that's sent to third-party services should be anonymized to prevent exposure of PII (Personal Identifiable Information) that would allow the third party to identify the user account. No other data (such as IDs that can be mapped to a user account or session) should be sent to a third party.
 
-All data sent to third-party services should be anonymized. Data (such as application IDs) that can be traced to a user account or session should not be sent to a third party.
+#### App Notifications
+
+Search for any usage of the `NotificationManager` class which might be an indication of some form of notification management. If the class is being used, the next step would be to understand how the application is [generating the notifications](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification") and which data ends up being shown.
 
 ### Dynamic Analysis
 
+#### Third-party Services Embedded in the App
+
 Check all requests to external services for embedded sensitive information.
 To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+
+#### App Notifications
+
+Run the application and start tracing all calls to functions related to the notifications creation, e.g. `setContentTitle` or `setContentText` from [`NotificationCompat.Builder`](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). Observe the trace in the end and evaluate if it contains any sensitive information which another app might have eavesdropped.
 
 ## Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
 
@@ -1009,13 +1031,17 @@ Row: 1 id=2, username=test, password=test
 
 ### Overview
 
-Many apps require users to enter several kinds of data to, for example, register an account or make a payment. Sensitive data may be exposed if the app doesn't properly mask it, when displaying data in clear text.
+Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
-Masking of sensitive data, by showing asterisk or dots instead of clear text should be enforced within an app's activity to prevent disclosure and mitigate risks such as shoulder surfing.
+In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
+
+Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
 
 ### Static Analysis
 
-To make sure an application is masking sensitive user input, check for the following attribute in the definition of EditText:
+#### Text Fields
+
+To make sure an application is masking sensitive user input, check for the following attribute in the definition of `EditText`:
 
 ```xml
 android:inputType="textPassword"
@@ -1023,11 +1049,25 @@ android:inputType="textPassword"
 
 With this setting, dots (instead of the input characters) will be displayed in the text field, preventing the app from leaking passwords or pins to the user interface.
 
+#### App Notifications
+
+When statically assessing an application, it is recommended to search for any usage of the `NotificationManager` class which might be an indication of some form of notification management. If the class is being used, the next step would be to understand how the application is [generating the notifications](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification").
+
+These code locations can be fed into the Dynamic Analysis section below, providing an idea of where in the application notifications may be dynamically generated.
+
 ### Dynamic Analysis
 
-To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that either show such information or take it as input.
+To determine whether the application leaks any sensitive information to the user interface, run the application and identify components that could be disclosing information.
+
+#### Text Fields
 
 If the information is masked by, for example, replacing input with asterisks or dots, the app isn't leaking data to the user interface.
+
+#### App Notifications
+
+To identify the usage of notifications run through the entire application and all its available functions looking for ways to trigger any notifications. Consider that you may need to perform actions outside of the application in order to trigger certain notifications.
+
+While running the application you may want to start tracing all calls to functions related to the notifications creation, e.g. `setContentTitle` or `setContentText` from [`NotificationCompat.Builder`](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). Observe the trace in the end and evaluate if it contains any sensitive information.
 
 ## Testing Backups for Sensitive Data (MSTG-STORAGE-8)
 

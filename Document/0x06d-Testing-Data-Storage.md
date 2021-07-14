@@ -487,12 +487,15 @@ In the section "Monitoring System Logs" of the chapter "iOS Basic Security Testi
 
 After starting one of the methods, fill in the input fields. If sensitive data is displayed in the output, the app fails this test.
 
-## Determining Whether Sensitive Data Is Sent to Third Parties (MSTG-STORAGE-4)
+## Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
 
-Various third-party services can be embedded in the app. The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
-The downside to third-party services is that developers don't know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
+### Overview
 
-The downside is that a developer doesn’t know in detail what code is executed via 3rd party libraries and therefore giving up visibility. Consequently it should be ensured that not more than the information needed is sent to the service and that no sensitive information is disclosed.
+Sensitive information might be leaked to third parties by several means. On iOS typically via third-party services embedded in the app.
+
+The features these services provide can involve tracking services to monitor the user's behavior while using the app, selling banner advertisements, or improving the user experience.
+
+The downside is that developers don't usually know the details of the code executed via third-party libraries. Consequently, no more information than is necessary should be sent to a service, and no sensitive information should be disclosed.
 
 Most third-party services are implemented in two ways:
 
@@ -501,13 +504,14 @@ Most third-party services are implemented in two ways:
 
 ### Static Analysis
 
-To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code.
+To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code, requested permissions and check for any known vulnerabilities (see ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x06i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses in-third-party-libraries-mstg-code-5)).
 
 All data that's sent to third-party services should be anonymized to prevent exposure of PII (Personal Identifiable Information) that would allow the third party to identify the user account. No other data (such as IDs that can be mapped to a user account or session) should be sent to a third party.
 
 ### Dynamic Analysis
 
-All requests made to external services should be analyzed for embedded sensitive information. By using an interception proxy, you can investigate the traffic between the app and the third party's endpoints. When the app is in use, all requests that don't go directly to the server that hosts the main function should be checked for sensitive information that's sent to a third party. This information could be PII in a request to a tracking or ad service.
+Check all requests to external services for embedded sensitive information.
+To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
 ## Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
 
@@ -619,7 +623,9 @@ Verify IPC mechanisms with static analysis of the iOS source code. No iOS tool i
 
 Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
-Masking sensitive data (by showing asterisks or dots instead of clear text) should be enforced.
+In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
+
+Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
 
 ### Static Analysis
 
@@ -629,7 +635,7 @@ A text field that masks its input can be configured in two ways:
 In the iOS project's storyboard, navigate to the configuration options for the text field that takes sensitive data. Make sure that the option "Secure Text Entry" is selected. If this option is activated, dots are shown in the text field in place of the text input.
 
 **Source Code**
-If the text field is defined in the source code, make sure that the option [isSecureTextEntry](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true". This option obscures the text input by showing dots.
+If the text field is defined in the source code, make sure that the option [`isSecureTextEntry`](https://developer.apple.com/documentation/uikit/uitextinputtraits/1624427-issecuretextentry "isSecureTextEntry in Text Field") is set to "true". This option obscures the text input by showing dots.
 
 ```default
 sensitiveTextField.isSecureTextEntry = true
@@ -655,7 +661,7 @@ When users back up their iOS device, the Keychain data is backed up as well, but
 
 Keychain items for which the `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` attribute is set can be decrypted only if the backup is restored to the backed up device. Someone trying to extract this Keychain data from the backup couldn't decrypt it without access to the crypto hardware inside the originating device.
 
-One caveat to using the Keychain, however, is that it was only designed to store small bits of user data or short notes (according to Apple's documenation on [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services")). This means that apps with larger local secure storage needs (e.g., messaging apps, etc.) should encrypt the data within the app container, but use the Keychain to store key material. In cases where sensitive configuration settings (e.g., data loss prevention policies, password policies, compliance policies, etc) must remain unencrypted within the app container, you can consider storing a hash of the policies in the keychain for integrity checking. Without an integrity check, these settings could be modified within a backup and then restored back to the device to modify app behavior (e.g., change configured remote endpoints) or security settings (e.g., jailbreak detection, certificate pinning, maximum UI login attempts, etc.).
+One caveat to using the Keychain, however, is that it was only designed to store small bits of user data or short notes (according to Apple's documentation on [Keychain Services](https://developer.apple.com/documentation/security/keychain_services "Keychain Services")). This means that apps with larger local secure storage needs (e.g., messaging apps, etc.) should encrypt the data within the app container, but use the Keychain to store key material. In cases where sensitive configuration settings (e.g., data loss prevention policies, password policies, compliance policies, etc) must remain unencrypted within the app container, you can consider storing a hash of the policies in the keychain for integrity checking. Without an integrity check, these settings could be modified within a backup and then restored back to the device to modify app behavior (e.g., change configured remote endpoints) or security settings (e.g., jailbreak detection, certificate pinning, maximum UI login attempts, etc.).
 
 The takeaway: If sensitive data is handled as recommended earlier in this chapter (e.g., stored in the Keychain, with Keychain backed integrity checks, or encrypted with a key that's locked inside the Keychain), backups shouldn't be security issue.
 
@@ -828,11 +834,13 @@ Again, remove the `pin_code` attribute from the plist and save your changes. Ren
 
 Manufacturers want to provide device users with an aesthetically pleasing effect when an application is started or exited, so they introduced the concept of saving a screenshot when the application goes into the background. This feature can pose a security risk because screenshots (which may display sensitive information such as an email or corporate documents) are written to local storage, where they can be recovered by a rogue application with a sandbox bypass exploit or someone who steals the device.
 
+This test case will fail if the app leaks any sensitive information via screenshots after entering the background.
+
 ### Static Analysis
 
-While analyzing the source code, look for the fields or screens that take or display sensitive data. Use [UIImageView](https://developer.apple.com/documentation/uikit/uiimageview "UIImageView") to determine whether the application sanitizes the screen before being backgrounded.
+If you have the source code, search for the [`applicationDidEnterBackground`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground) method to determine whether the application sanitizes the screen before being backgrounded.
 
-The following is a sample remediation method that will set a default screenshot.
+The following is a sample implementation using a default background image (`overlayImage.png`) whenever the application is backgrounded, overriding the current view:
 
 Swift:
 
@@ -872,17 +880,16 @@ This sets the background image to `overlayImage.png` whenever the application is
 
 ### Dynamic Analysis
 
-Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details. Background the application by hitting the Home button on your iOS device. Connect to the iOS device and navigate to the following directory (which may be different for iOS versions below 14.2):
+You can use a _visual approach_ to quickly validate this test case using any iOS device (jailbroken or not):
 
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
+1. Navigate to an application screen that displays sensitive information, such as a username, an email address, or account details.
+2. Background the application by hitting the **Home** button on your iOS device.
+3. Verify that a default image is shown as the top view element instead of the view containing the sensitive information.
 
-Older iOS versions may store the auto-generated screenshots under:
+If required, you may also collect evidence by performing steps 1 to 3 on a jailbroken device or a non-jailbroken device after [repackaging the app with the Frida Gadget](0x06c-Reverse-Engineering-and-Tampering.md#dynamic-analysis-on-non-jailbroken-devices). After that, connect to the iOS device [per SSH](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) or [by other means](0x06b-Basic-Security-Testing.md#host-device-data-transfer) and navigate to the Snapshots directory. The location may differ on each iOS version but it's usually inside the app's Library directory. On iOS 14.5:
+    `/var/mobile/Containers/Data/Application/$APP_ID/Library/SplashBoard/Snapshots/sceneID:$APP_NAME-default/`
 
-`/var/mobile/Containers/Data/Application/$APP_ID/Library/Caches/Snapshots/`
-
-If the application caches the sensitive information in a screenshot, the app fails this test.
-
-The application should show a default image as the top view element when the application enters the background, so that the default image will be cached and not the sensitive information that was displayed.
+The screenshots inside that folder should not contain any sensitive information.
 
 ## Testing Memory for Sensitive Data (MSTG-STORAGE-10)
 
