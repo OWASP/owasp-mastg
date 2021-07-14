@@ -20,8 +20,8 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: OWASP_MASVS-${{env.VERSION}}-en
-        path: OWASP_MASVS-${{env.VERSION}}-en*
+        name: OWASP_MSTG-${{env.VERSION}}
+        path: OWASP_MSTG-${{env.VERSION}}*
 
   export:
     runs-on: ubuntu-latest
@@ -52,18 +52,18 @@ jobs:
       - name: List Downloaded document (sampling of download-artifact)
         run: ls -l OWASP_MSTG*
       # - name: Move all translations (pdf, epub and docx) to root
-      #   run: mv OWASP_MASVS-*-*/* .
+      #   run: mv OWASP_MSTG-*-*/* .
       - name: Listing of root directory
         run: ls -l
       # - name: Cleanup - Remove all downloaded documents
-      #   run: rm -rf OWASP_MASVS-*/
+      #   run: rm -rf OWASP_MSTG-*/
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
           files: |
-            OWASP_MASVS-*.pdf
-            OWASP_MASVS-*.epub
-            OWASP_MASVS-*.docx
+            OWASP_MSTG-*.pdf
+            OWASP_MSTG-*.epub
+            OWASP_MSTG-*.docx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
