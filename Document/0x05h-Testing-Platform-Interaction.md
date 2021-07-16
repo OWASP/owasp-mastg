@@ -520,7 +520,7 @@ Intent i = new Intent();
 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
 i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
-Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
+i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
