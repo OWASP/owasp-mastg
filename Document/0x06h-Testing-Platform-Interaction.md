@@ -1033,7 +1033,7 @@ There are three main things you can easily inspect by performing dynamic instrum
 
 To achieve this you can do two things:
 
-- Hook the method we have seen in the static analysis ([`init(activityItems:applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)")) to get the `activityItems` and `applicationActivities`.
+- Hook the method we have seen in the static analysis ([`init(activityItems: applicationActivities:)`](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622019-init "UIActivityViewController init(activityItems:applicationActivities:)")) to get the `activityItems` and `applicationActivities`.
 - Find out the excluded activities by hooking [`excludedActivityTypes` property](https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/1622009-excludedactivitytypes "UIActivityViewController excludedActivityTypes").
 
 Let's see an example using Telegram to share a picture and a text file. First prepare the hooks, we will use the Frida REPL and write a script for this:
@@ -1127,7 +1127,7 @@ RET @ 0x1c001b1d0:
 You can see that:
 
 - For the picture, the activity item is a `UIImage` and there are no excluded activities.
-- For the text file there are two different activity items and "com.apple.UIKit.activity.MarkupAsPDF" is excluded.
+- For the text file there are two different activity items and `com.apple.UIKit.activity. MarkupAsPDF` is excluded.
 
 In the previous example, there were no custom `applicationActivities` and only one excluded activity. However, to better illustrate what you can expect from other apps we have shared a picture using another app, here you can see a bunch of application activities and excluded activities (output was edited to hide the name of the originating app):
 
@@ -1461,7 +1461,7 @@ When monitoring the pasteboards, there is several details that may be dynamicall
 - Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275 "Getting and Setting Pasteboard Items of Standard Data Types").
 - Get the number of items with `numberOfItems`.
 - Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142 "Checking for Data Types on a Pasteboard"), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10).
-- Check for other data types (typically UTIs) with [`containsPasteboardTypes:inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](http://web.archive.org/web/20190616231857/https://developer.apple.com/documentation/mobilecoreservices/uttype "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#uiactivity-sharing "UIActivity Sharing")" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
+- Check for other data types (typically UTIs) with [`containsPasteboardTypes: inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](http://web.archive.org/web/20190616231857/https://developer.apple.com/documentation/mobilecoreservices/uttype "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#uiactivity-sharing "UIActivity Sharing")" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
 - Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`.
 
 If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
