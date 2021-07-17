@@ -54,13 +54,14 @@ jobs:
       # - name: Move all translations (pdf, epub and docx) to root
       #   run: mv OWASP_MSTG-*-*/* .
       - name: Listing of root directory
-        run: ls -l
+        run: ls -l 
       # - name: Cleanup - Remove all downloaded documents
       #   run: rm -rf OWASP_MSTG-*/
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
+          # body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
+          # body_path: RECENT_CHANGES.md
           files: |
             OWASP_MSTG-*.pdf
             OWASP_MSTG-*.epub
