@@ -41,7 +41,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
       with:
         name: RECENT_CHANGES.md
-        path: tools/RECENT_CHANGES.md
+        path: tools
 
   release:
     runs-on: ubuntu-latest
@@ -51,8 +51,8 @@ jobs:
       - uses: actions/download-artifact@v2
       - name: List Downloaded document (sampling of download-artifact)
         run: ls -l OWASP_MSTG*
-      # - name: Move all translations (pdf, epub and docx) to root
-      #   run: mv OWASP_MSTG-*-*/* .
+      - name: Move all documents (pdf, epub and docx) to root
+        run: mv OWASP_MSTG-*-*/* .
       - name: Listing of root directory
         run: ls -l 
       # - name: Cleanup - Remove all downloaded documents
