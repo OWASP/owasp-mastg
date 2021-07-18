@@ -30,8 +30,8 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: Pull the Docker image
-      run: docker pull owasp/masvs-docgenerator:0.2
+    # - name: Pull the Docker image
+    #   run: docker pull owasp/masvs-docgenerator:0.2
     # only use below when testing new container builds
     # - name: Build the Docker image
     #   run: docker build ./tools/docker --tag masvs-generator:latest
@@ -56,6 +56,8 @@ jobs:
       # Produces error: 
       #   mv: cannot stat 'OWASP_MSTG-*-*/*': No such file or directory
       #   Error: Process completed with exit code 1.
+      - name: print working directory
+        run: pwd 
       - name: Listing of root directory
         run: ls -l 
       # - name: Cleanup - Remove all downloaded documents
@@ -65,6 +67,7 @@ jobs:
         with:
           # body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
           # body_path: RECENT_CHANGES.md
+          body: 'MSTG test'
           files: |
             OWASP_MSTG-*.pdf
             OWASP_MSTG-*.epub
