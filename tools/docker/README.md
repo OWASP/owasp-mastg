@@ -9,7 +9,7 @@ The MSTG document generation is based on pandocker: [https://github.com/dalibo/p
 - Run the `pandoc_makedocs.sh` script with the language folder and an optional version number (**do not `cd` into `tools/docker` to run it**):
 
     ```sh
-    $ ./tools/docker/pandoc_makedocs.sh Document 1.3
+    $ ./tools/docker/pandoc_makedocs.sh Document MyVersion
     ```
 
 - You can set `VERBOSE=1` for a more detailed output
@@ -41,7 +41,7 @@ See the results in: <https://github.com/OWASP/owasp-mstg/actions>
     docker push owasp/masvs-docgenerator:<docker-container-image-version>
   ```
 
-- Create a new PR with the new version in the `docgenerator.yml`, `release.yml`, and `run_docker_mstg_generation_on_local.sh`.
+- Create a new PR with the new version in the `docgenerator.yml` and `pandoc_makedocs.sh`.
 
 ### In case of a new document
 
@@ -53,7 +53,3 @@ Given a new version:
   - Using that metadata creates the cover dynamically including language and version (no GIMP required anymore!)
   - For more details, read the inline comments in `pandoc_makedocs.sh`.
 - The PDFs will be generated in the MSTG root folder.
-
-## Open Points (REMOVE from here when DONE!)
-
-Finish items for [https://github.com/OWASP/owasp-masvs/issues/361](https://github.com/OWASP/owasp-masvs/issues/361):

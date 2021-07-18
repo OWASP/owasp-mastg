@@ -2,11 +2,11 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## v1.3 - 15th July 2021
+## v1.3 - 21st July 2021
 
-72 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2020-05-12..2021-07-15>.
+72 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2020-05-12..2021-07-20>.
 
-131 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Aissue+is%3Aclosed+closed%3A2020-05-12..2021-07-15>
+134 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Aissue+is%3Aclosed+closed%3A2020-05-12..2021-07-20>
 
 Major changes include:
 

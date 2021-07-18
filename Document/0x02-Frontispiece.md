@@ -96,7 +96,7 @@ kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher
 
 ### Mini Contributors
 
-Mini contributors have contributed quality content and have at least 1 addition logged in the GitHub repository. Their Github handle is listed below:
+Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). Their Github handle is listed below:
 
 jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya, anyashka
 
@@ -115,10 +115,6 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 - Nick Epson
 - Anita Diamond
 - Anna Szkudlarek
-
-### Others
-
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors "contributors").
 
 ### Donators
 
