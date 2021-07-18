@@ -69,8 +69,8 @@ jobs:
           # body_path: RECENT_CHANGES.md
           body: 'MSTG test'
           files: |
-            OWASP_MSTG-*.pdf
-            OWASP_MSTG-*.epub
-            OWASP_MSTG-*.docx
+            OWASP_MSTG-*/OWASP_MSTG-*.pdf
+            OWASP_MSTG-*/OWASP_MSTG-*.epub
+            OWASP_MSTG-*/OWASP_MSTG-*.docx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
