@@ -41,7 +41,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
       with:
         name: RECENT_CHANGES.md
-        path: tools/
+        path: tools/RECENT_CHANGES.md
 
   release:
     runs-on: ubuntu-latest
