@@ -36,6 +36,12 @@ jobs:
     # - name: Build the Docker image
     #   run: docker build ./tools/docker --tag masvs-generator:latest
 
+    - name: Listing of root directory
+      run: ls -l
+
+    - name: Listing of root directory
+      run: ls -l tools/
+
     - name: Upload RECENT Changes
       uses: actions/upload-artifact@v2
       if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
