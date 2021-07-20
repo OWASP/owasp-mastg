@@ -1,6 +1,6 @@
 # Frontispiece
 
-![OWASP Logo](images/OWASP_logo.png)
+![OWASP Logo](Images/OWASP_logo.png)
 
 ## About the OWASP Mobile Security Testing Guide
 
