@@ -63,28 +63,34 @@ Note: if the application is equipped with anti-reverse engineering controls, the
 
 ### Overview
 
-Generally, as little explanatory information as possible should be provided with the compiled code. Some metadata (such as debugging information, line numbers, and descriptive function or method names) makes the binary or bytecode easier for the reverse engineer to understand but isn't necessary in a release build. This metadata can therefore be discarded without impacting the app's functionality.
+When an iOS application is compiled, the compiler while converting source code into machine code generates a list of symbols for the app - class names, global variables, and method and function names. These symbols correspond to the file and line numbers where they're defined; this association creates a 'debug symbol'. Debug builds of an app place the debug symbols in a compiled binary by default, while release builds of an app place the debug symbols in a companion 'Debug Symbol file' (dSYM) to reduce the size of the distributed app. Each binary file in an app - the main app executable, frameworks, and app extensions - has its own dSYM file.
 
-These symbols can be saved in "Stabs" format or the DWARF format. In the Stabs format, debugging symbols, like other symbols, are stored in the regular symbol table. In the DWARF format, debugging symbols are stored in a special "\_\_DWARF" segment within the binary. DWARF debugging symbols can also be saved as a separate debug-information file. In this test case, you make sure that no debug symbols are contained in the release binary itself (in neither the symbol table nor the \_\_DWARF segment).
+As a good practice, as little explanatory information as possible should be provided with a compiled binary. Presence of this additional metadata in the form of debug symbols provides valuable information about the code, for instance function names leaking information about what possibly a function do. Importantly, this metadata is not required to execute a binary and thus it is safe to discard it while building the final release binary, using proper compiler configurations.
+
+When debug symbols are placed in a separate dSYM file, these symbols do not make to the final binary delivered to an end user. While the debug symbols embedded in the compiled binary, they can end up being present in the final binary and thus should be verified before the release.
 
 ### Static Analysis
 
-Use gobjdump to inspect the main binary and any included dylibs for Stabs and DWARF symbols.
+Use `objdump --syms` to inspect the main binary and other included dylibs, and look for symbols with 'd' (debug) flag associated with them. Check [objdump man page](https://www.unix.com/man-page/osx/1/objdump/ "objdump man page") for information about various other symbol's flag characters. A typical output for a binary containing debug symbols looks like following:
 
 ```bash
-$ gobjdump --stabs --dwarf TargetApp
-In archive MyTargetApp:
+$ objdump --syms TargetApp
 
-armv5te:     file format mach-o-arm
-
-aarch64:     file format mach-o-arm64
+0000000100007dc8 l    d  *UND* -[ViewController handleSubmitButton:]
+000000010000809c l    d  *UND* -[ViewController touchesBegan:withEvent:]
+0000000100008158 l    d  *UND* -[ViewController viewDidLoad]
+...
+000000010000916c l    d  *UND* _disable_gdb
+00000001000091d8 l    d  *UND* _detect_injected_dylds
+00000001000092a4 l    d  *UND* _isDebugged
+...
 ```
 
-Gobjdump is part of [binutils](https://www.gnu.org/s/binutils/ "Binutils") and can be installed on macOS via Homebrew.
+It is important to note, a binary without debug symbols will not have symbols with 'd' flag associated.
 
-Make sure that debugging symbols are stripped when the application is being built for production. Stripping debugging symbols will reduce the size of the binary and increase the difficulty of reverse engineering. To strip debugging symbols, set `Strip Debug Symbols During Copy` to `YES` via the project's build settings.
+`Objdump` from [binutils](https://www.gnu.org/s/binutils/ "Binutils") or [llvm-objdump](https://llvm.org/docs/CommandGuide/llvm-objdump.html "llvm-objdump") can be used. The output from the two may have subtle differences, but output from both will contain flag characters for symbols.
 
-A proper [Crash Reporter System](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html "Crash Reporter System") is possible because the system doesn't require any symbols in the application binary.
+To remove the embedded debugging symbols, ensure debug symbols stripping is enabled in Xcode configuration. To strip debugging symbols, set `Strip Debug Symbols During Copy` to `YES` via the project's build settings. Stripping debugging symbols will not only reduce the size of the binary and but also increase the difficulty of reverse engineering.
 
 ### Dynamic Analysis
 
