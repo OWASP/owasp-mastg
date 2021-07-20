@@ -708,6 +708,7 @@ Dynamic analysis is not applicable for finding security features offered by the 
 ## References
 
 - Codesign - <https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html>
+- Build iOS App to Include Debugging Information - <https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information>
 
 ### Memory management - dynamic analysis examples
 
