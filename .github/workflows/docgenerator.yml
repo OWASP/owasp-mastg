@@ -67,7 +67,7 @@ jobs:
         with:
           body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
           # body_path: RECENT_CHANGES.md
-          body: 'MSTG test'
+          # body: 'MSTG test'
           files: |
             OWASP_MSTG-*/OWASP_MSTG-*.pdf
             OWASP_MSTG-*/OWASP_MSTG-*.epub
