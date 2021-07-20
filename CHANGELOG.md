@@ -2,33 +2,17 @@
 
 This document is automatically generated at {{gitbook.time}}
 
-## v1.3 - 21st July 2021
+## v1.2 - 21 July 2021
 
-72 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2020-05-12..2021-07-20>.
+167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-21>.
 
-134 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Aissue+is%3Aclosed+closed%3A2020-05-12..2021-07-20>
+325 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2021-07-21>
 
 Major changes include:
 
 - Migrating the new document build pipeline from MASVS to MSTG. This allows us to build consistently the whole OWASP MSTG documents (PDF, docx etc.) in minutes, without any manual work.
-
-Besides numerous changes for the test cases we have a new Crackme - Android Level 4 <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_04>
-and also new write-ups for the Crackmes.
-
-We removed all references to Needle and IDB tool, as both tools are outdated.
-
-Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
-
-We thank you all contributors for the hard work and continuously improving the document and the OWASP MSTG project!
-
-## v1.2 - 12 May 2020
-
-95 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>.
-
-191 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>
-
-Major changes include:
-
+- Besides numerous changes for the test cases we have a new Crackme - Android Level 4 <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_04> and also new write-ups for the Crackmes.
+- We removed all references to Needle and IDB tool, as both tools are outdated.
 - References of OWASP Mobile Top 10 and MSTG-IDs are completely moved to MASVS
 - Reworking of information gathering (static analysis) for Android Apps
 - Update of Biometric Authentication for Android Apps
@@ -84,6 +68,8 @@ Major changes include:
 - Updated Broadcast Receiver section (Android)
 
 Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
+
+We thank you all contributors for the hard work and continuously improving the document and the OWASP MSTG project!
 
 ## v1.1.3 - 2 August 2019
 
