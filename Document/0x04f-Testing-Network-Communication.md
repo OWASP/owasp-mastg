@@ -379,7 +379,7 @@ Integrity Check Algorithms:
 - `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
 - `SHA384`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
 
-Note that The efficiency of a cipher suite depends on the efficiency of its algorithms.
+Note that the efficiency of a cipher suite depends on the efficiency of its algorithms.
 
 In the following, we’ll present the updated recommended cipher suites list to use with TLS. These cipher suites are recommended by both IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
 
