@@ -34,12 +34,12 @@ Major changes include:
 - Added test case for Emulator Detection - MSTG-RESILIENCE-5 (iOS)
 - Added an example with truststore to bypass cert pinning (Android)
 - Added content to information gathering using frida (Android)
-- Added RandoriSec and OWASP Bay area as sponsor
+- Added Sec Consult, RandoriSec and OWASP Bay area as donators
 - Added basic information gathering for Android and iOS
 - Added Simulating a Man-in-the-Middle Attack with an Access Point
 - Added gender neutrality to the MSTG
 - Extended section about dealing with Xamarin Apps
-- Updated all picture links to img tag
+- Updated all picture links (img tags) to be in markdown syntax
 - Updated iTunes limitations and usage since macOS Catalina
 - Added Emulation-based Analysis (iOS and Android)
 - Added Debugging iOS release applications using lldb
@@ -55,7 +55,7 @@ Major changes include:
 - Added gplaycli (Android)
 - Extended section on how to retrieve UDI (iOS)
 - Added new companies in the Users.md list with companies applying the MSTG/MASVS
-- Updated code samples to Swift 5
+- Updated partially code samples to Swift 5
 - Adding Process Exploration (Android and iOS)
 - Updated best practices for passwords, added "Have I Been Pwned"
 - Updated SSL Pinning fallback methods
