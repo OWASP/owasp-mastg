@@ -24,7 +24,7 @@ Copyright © 2021 The OWASP Foundation. This work is licensed under a [Creative 
 
 ## ISBN
 
-Our ISBN Number is 978-0-359-47489-9 and a hard copy of the MSTG can be ordered at [lulu.com](https://www.lulu.com/en/en/shop/bernhard-müller-and-jeroen-willemsen-and-sven-schleier/owasp-mobile-security-testing-guide/paperback/product-1q2rerwp.html?page=1&pageSize=4).
+Our ISBN Number is 978-1-257-96636-3 and a hard copy of the MSTG can be ordered at [lulu.com](https://www.lulu.com/search?adult_audience_rating=00&page=1&pageSize=10&q=mobile+security+testing+guide).
 
 ## Acknowledgments
 

@@ -33,7 +33,7 @@ PANDOC=${PANDOC:-${PANDOCKER}}
 
 
 METADATA="Document/metadata.md ${FOLDER}/metadata.md"
-CHAPTERS="${FOLDER}/0x*.md ${FOLDER}/CHANGELOG.md"
+CHAPTERS="${FOLDER}/0x*.md ${FOLDER}/CHANGELOG.md ${FOLDER}/ISBN.md"
 OUTPUT_BASE_NAME="OWASP_MSTG-${VERSION}"
 
 [ ! -z "${VERBOSE}" ] && echo "Create PDF"
@@ -67,6 +67,7 @@ ${PANDOC} \
   --include-before-body tmp_cover.latex \
   --include-before-body tmp_first_page.latex \
   --output ${OUTPUT_BASE_NAME}.pdf \
+  -V fontsize=10pt \
   ${METADATA} \
   ${CHAPTERS}
 
