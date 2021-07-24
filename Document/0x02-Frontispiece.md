@@ -1,6 +1,6 @@
 # Frontispiece
 
-![OWASP Logo](Images/OWASP_logo.png)
+![OWASP MSTG](Images/OWASP_logo.png) \
 
 ## About the OWASP Mobile Security Testing Guide
 
@@ -20,7 +20,7 @@ Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CO
 
 Copyright © 2021 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-![OWASP Logo](Images/CC-license.png)
+![OWASP MSTG](Images/CC-license.png) \
 
 ## ISBN
 
@@ -126,13 +126,13 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 #### Honorable Benefactor
 
-![OWASP MSTG](Images/Donators/NowSecure_logo.png)
+![OWASP MSTG](Images/Donators/NowSecure_logo.png) \
 
-![OWASP MSTG](Images/Donators/SEC_Consult_logo.png)
+![OWASP MSTG](Images/Donators/SEC_Consult_logo.png) \
 
 #### Good Samaritan Benefactor
 
-![OWASP MSTG](Images/Donators/Randorisec_logo.png)
+![OWASP MSTG](Images/Donators/Randorisec_logo.png) \
 
 #### Other Donators
 

@@ -193,7 +193,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-![OWASP MSTG](Images/Chapters/0x05b/android-studio-file-device-explorer.png)
+![OWASP MSTG](Images/Chapters/0x05b/android-studio-file-device-explorer.png) \
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
@@ -263,7 +263,7 @@ sg.vp.owasp_mobile.omtg_android
 
 Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-![OWASP MSTG](Images/Chapters/0x05b/sftp-with-filezilla.png)
+![OWASP MSTG](Images/Chapters/0x05b/sftp-with-filezilla.png) \
 
 Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
@@ -557,7 +557,7 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-![OWASP MSTG](Images/Chapters/0x05b/log_output_Android_Studio.png)
+![OWASP MSTG](Images/Chapters/0x05b/log_output_Android_Studio.png) \
 
 - You can execute Logcat with adb to store the log output permanently:
 
@@ -644,11 +644,11 @@ $ nc localhost 11111 | wireshark -k -S -i -
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-![OWASP MSTG](Images/Chapters/0x05b/Android_Wireshark.png)
+![OWASP MSTG](Images/Chapters/0x05b/Android_Wireshark.png) \
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-![OWASP MSTG](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png)
+![OWASP MSTG](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png) \
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -656,7 +656,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM-notifications-overview.png)
+![OWASP MSTG](Images/Chapters/0x05b/FCM-notifications-overview.png) \
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -703,7 +703,7 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM_Intercept.png)
+![OWASP MSTG](Images/Chapters/0x05b/FCM_Intercept.png) \
 
 ##### End-to-End Encryption for Push Notifications
 
@@ -729,7 +729,7 @@ The following procedure, which works on the Android emulator that ships with And
     - Enter "127.0.0.1" in the **Host Name** field and your proxy port in the **Port number** field (e.g., "8080")
     - Tap **Apply**
 
-![OWASP MSTG](Images/Chapters/0x05b/emulator-proxy.png)
+![OWASP MSTG](Images/Chapters/0x05b/emulator-proxy.png) \
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 

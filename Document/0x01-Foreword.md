@@ -16,4 +16,4 @@ Because this isn't a normal security book, the introduction doesn't list impress
 
 We do have a message to our readers however! The first rule of the OWASP Mobile Security Testing Guide is: Don't just follow the OWASP Mobile Security Testing Guide. True excellence at mobile application security requires a deep understanding of mobile operating systems, coding, network security, cryptography, and a whole lot of other things, many of which we can only touch on briefly in this book. Don't stop at security testing. Write your own apps, compile your own kernels, dissect mobile malware, learn how things tick. And as you keep learning new things, consider contributing to the MSTG yourself! Or, as they say: "Do a pull request".
 
-![Summit Team](Images/summit-team.jpg)
+![Summit Team](Images/summit-team.jpg) \

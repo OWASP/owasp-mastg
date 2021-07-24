@@ -9,3 +9,6 @@ tmp_*
 *-temp
 OWASP_MSTG-SNAPSHOT-*
 logs
+*.pdf
+*.docx
+*.epub
