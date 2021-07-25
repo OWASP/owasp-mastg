@@ -16,7 +16,7 @@ Every file stored on the iOS file system is encrypted with its own per-file key,
 
 The following illustration shows the [iOS Data Protection Key Hierarchy](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide").
 
-<img src="Images/Chapters/0x06d/key_hierarchy_apple.jpg" alt="Key Hierarchy iOS" width="550" />
+![OWASP MSTG](Images/Chapters/0x06d/key_hierarchy_apple.jpg) \
 
 Files can be assigned to one of four different protection classes, which are explained in more detail in the [iOS Security Guide](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"):
 
@@ -187,7 +187,7 @@ The following example shows how to create a `complete` encrypted file using the 
 
 Swift:
 
-```swift
+```objectivec
 FileManager.default.createFile(
     atPath: filePath,
     contents: "secret text".data(using: .utf8),
@@ -197,7 +197,7 @@ FileManager.default.createFile(
 
 Objective-C:
 
-```objc
+```objectivec
 [[NSFileManager defaultManager] createFileAtPath:[self filePath]
   contents:[@"secret text" dataUsingEncoding:NSUTF8StringEncoding]
   attributes:[NSDictionary dictionaryWithObject:NSFileProtectionComplete
@@ -790,9 +790,9 @@ You can also use the tool [iOSbackup](0x08-Testing-Tools.md#iosbackup) to easily
 
 As discussed earlier, sensitive data is not limited to just user data and PII. It can also be configuration or settings files that affect app behavior, restrict functionality, or enable security controls. If you take a look at the open source bitcoin wallet app, [Bither](https://github.com/bither/bither-ios "Bither for iOS"), you'll see that it's possible to configure a PIN to lock the UI. And after a few easy steps, you will see how to bypass this UI lock with a modified backup on a non-jailbroken device.
 
-<img src="Images/Chapters/0x06d/bither_demo_enable_pin.png" width="270" />
+![OWASP MSTG](Images/Chapters/0x06d/bither_demo_enable_pin.png) \
 
-<img src="Images/Chapters/0x06d/bither_demo_pin_screen.png" width="270" />
+![OWASP MSTG](Images/Chapters/0x06d/bither_demo_pin_screen.png) \
 
 After you enable the pin, use iMazing to perform a device backup:
 
@@ -808,7 +808,7 @@ Next you can open the backup to view app container files within your target app:
 
 At this point you can view all the backed up content for Bither.
 
-<img src="Images/Chapters/0x06d/bither_demo_imazing_1.png" alt="iMazing" width="550" />
+![OWASP MSTG](Images/Chapters/0x06d/bither_demo_imazing_1.png) \
 
 This is where you can begin parsing through the files looking for sensitive data. In the screenshot you'll see the `net.bither.plist` file which contains the `pin_code` attribute. To remove the UI lock restriction, simply delete the `pin_code` attribute and save the changes.
 
@@ -824,7 +824,7 @@ Binary file ./13/135416dd5f251f9251e0f07206277586b7eac6f6 matches
 
 You'll see there was a match on a binary file with an obfuscated name. This is your `net.bither.plist` file. Go ahead and rename the file giving it a plist extension so Xcode can easily open it up for you.
 
-<img src="Images/Chapters/0x06d/bither_demo_plist.png" alt="iMazing" width="550" />
+![OWASP MSTG](Images/Chapters/0x06d/bither_demo_plist.png) \
 
 Again, remove the `pin_code` attribute from the plist and save your changes. Rename the file back to the original name (i.e., without the plist extension) and perform your backup restore. When the restore is complete you'll see that Bither no longer prompts you for the PIN code when launched.
 
@@ -842,7 +842,9 @@ If you have the source code, search for the [`applicationDidEnterBackground`](ht
 
 The following is a sample implementation using a default background image (`overlayImage.png`) whenever the application is backgrounded, overriding the current view:
 
-```swift
+Swift:
+
+```objectivec
 private var backgroundImage: UIImageView?
 
 func applicationDidEnterBackground(_ application: UIApplication) {
@@ -856,6 +858,25 @@ func applicationWillEnterForeground(_ application: UIApplication) {
     backgroundImage?.removeFromSuperview()
 }
 ```
+
+Objective-C:
+
+```objectivec
+@property (UIImageView *)backgroundImage;
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    UIImageView *myBanner = [[UIImageView alloc] initWithImage:@"overlayImage.png"];
+    self.backgroundImage = myBanner;
+    self.backgroundImage.bounds = UIScreen.mainScreen.bounds;
+    [self.window addSubview:myBanner];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [self.backgroundImage removeFromSuperview];
+}
+```
+
+This sets the background image to `overlayImage.png` whenever the application is backgrounded. It prevents sensitive data leaks because `overlayImage.png` will always override the current view.
 
 ### Dynamic Analysis
 

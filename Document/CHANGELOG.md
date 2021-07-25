@@ -1,15 +1,16 @@
 # Changelog
 
-This document is automatically generated at {{gitbook.time}}
+## v1.2 - 25th July 2021
 
-## v1.2 - 14 May 2020
+167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-25>.
 
-95 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>.
-
-191 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2020-05-12+>
+326 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2021-07-25>
 
 Major changes include:
 
+- Migrating the new document build pipeline from MASVS to MSTG. This allows us to build consistently the whole OWASP MSTG documents (PDF, docx etc.) in minutes, without any manual work.
+- Besides numerous changes for the test cases we have a new Crackme - Android Level 4 <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_04> and also new write-ups for the Crackmes.
+- We removed all references to Needle and IDB tool, as both tools are outdated.
 - References of OWASP Mobile Top 10 and MSTG-IDs are completely moved to MASVS
 - Reworking of information gathering (static analysis) for Android Apps
 - Update of Biometric Authentication for Android Apps
@@ -35,12 +36,12 @@ Major changes include:
 - Added test case for Emulator Detection - MSTG-RESILIENCE-5 (iOS)
 - Added an example with truststore to bypass cert pinning (Android)
 - Added content to information gathering using frida (Android)
-- Added RandoriSec and OWASP Bay area as sponsor
+- Added Sec Consult, RandoriSec and OWASP Bay area as donators
 - Added basic information gathering for Android and iOS
 - Added Simulating a Man-in-the-Middle Attack with an Access Point
 - Added gender neutrality to the MSTG
 - Extended section about dealing with Xamarin Apps
-- Updated all picture links to img tag
+- Updated all picture links (img tags) to be in markdown syntax
 - Updated iTunes limitations and usage since macOS Catalina
 - Added Emulation-based Analysis (iOS and Android)
 - Added Debugging iOS release applications using lldb
@@ -56,7 +57,7 @@ Major changes include:
 - Added gplaycli (Android)
 - Extended section on how to retrieve UDI (iOS)
 - Added new companies in the Users.md list with companies applying the MSTG/MASVS
-- Updated code samples to Swift 5
+- Updated partially code samples to Swift 5
 - Adding Process Exploration (Android and iOS)
 - Updated best practices for passwords, added "Have I Been Pwned"
 - Updated SSL Pinning fallback methods
@@ -65,6 +66,8 @@ Major changes include:
 - Updated Broadcast Receiver section (Android)
 
 Several other minor updates include fixing typos and markdown lint errors and updating outdated links.
+
+We thank you all contributors for the hard work and continuously improving the document and the OWASP MSTG project!
 
 ## v1.1.3 - 2 August 2019
 
@@ -81,7 +84,7 @@ Several other minor updates include fixing typos and markdown lint errors and up
 - Updated many cryptography related parts.
 - Added testaces for upgrade-mechanism verification for apps.
 - Updated Readme, Code of Conduct, Contribution guidelines, verification, funding link, and generation scripts.
-- Added ISBN as the book is now available at Hulu.
+- Added ISBN as the book is now available at Lulu.
 - Added various fixes for the .epub format.
 - Added testcases on Android and iOS backup verification.
 - Improved key-attestation related explanation for Android.

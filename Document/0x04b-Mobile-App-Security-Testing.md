@@ -114,7 +114,7 @@ Organizations may have different regulatory and legal obligations in certain ter
 
 Security goals/controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or application.
 
-<img src="Images/Chapters/0x03/mstg-preparation.png" width="550" />
+![OWASP MSTG](Images/Chapters/0x03/mstg-preparation.png) \
 
 All involved parties must agree on the decisions and the scope in the checklist because these will define the baseline for all security testing.
 
@@ -248,7 +248,7 @@ You can use the [OWASP MASVS](https://mobile-security.gitbook.io/masvs/ "OWASP M
 
 The picture below illustrates all the phases and artifacts:
 
-<img src="Images/Chapters/0x04b/SDLCOverview.jpg" width="550" />
+![OWASP MSTG](Images/Chapters/0x04b/SDLCOverview.jpg) \
 
 Based on the project's general risk profile, you may simplify (or even skip) some artifacts, and you may add others (formal intermediary approvals, formal documentation of certain points, etc.). **Always remember two things: an SDLC is meant to reduce risks associated with software development, and it is a framework that helps you set up controls to that end.** This is a generic description of SDLC; always tailor this framework to your projects.
 
@@ -299,7 +299,7 @@ Security is just as critical to business success as the overall quality, perform
 
 However, DevSecOps is not just a linear process oriented towards delivering the best possible software to operations; it is also a mandate that operations closely monitor software that's in production to identify issues and fix them by forming a quick and efficient feedback loop with development. DevSecOps is a process through which Continuous Improvement is heavily emphasized.
 
-<img src="Images/Chapters/0x04b/DevSecOpsProcess.JPG" width="550" />
+![OWASP MSTG](Images/Chapters/0x04b/DevSecOpsProcess.JPG) \
 
 The human aspect of this emphasis is reflected in the creation of cross-functional teams that work together to achieve business outcomes. This section is focused on necessary interactions and integrating security into the development life cycle (which starts with project inception and ends with the delivery of value to users).
 
@@ -360,7 +360,7 @@ The security of an application developed with DevOps must be considered during o
 - Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
-<img src="Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg" width="500" />
+![OWASP MSTG](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg) \
 
 ## References
 

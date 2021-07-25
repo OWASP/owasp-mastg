@@ -157,7 +157,7 @@ Open the identified file. In this case, the file can be found at "res/xml/networ
   <?xml version="1.0" encoding="utf-8"?>
   <network-security-config>
       <domain-config>
-          <!-- Use certificate pinning for OWASP website access including sub domains -->
+          Use certificate pinning for OWASP website access including sub domains
           <domain includeSubdomains="true">owasp.org</domain>
           <pin-set expiration="2018/8/10">
               <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
