@@ -1,10 +1,10 @@
 # Changelog
 
-## v1.2 - 24th July 2021
+## v1.2 - 25th July 2021
 
-167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-24>.
+167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-25>.
 
-326 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2021-07-24>
+326 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2021-07-25>
 
 Major changes include:
 
@@ -84,7 +84,7 @@ We thank you all contributors for the hard work and continuously improving the d
 - Updated many cryptography related parts.
 - Added testaces for upgrade-mechanism verification for apps.
 - Updated Readme, Code of Conduct, Contribution guidelines, verification, funding link, and generation scripts.
-- Added ISBN as the book is now available at Hulu.
+- Added ISBN as the book is now available at Lulu.
 - Added various fixes for the .epub format.
 - Added testcases on Android and iOS backup verification.
 - Improved key-attestation related explanation for Android.
