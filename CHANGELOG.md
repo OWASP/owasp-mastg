@@ -84,7 +84,7 @@ We thank you all contributors for the hard work and continuously improving the d
 - Updated many cryptography related parts.
 - Added testaces for upgrade-mechanism verification for apps.
 - Updated Readme, Code of Conduct, Contribution guidelines, verification, funding link, and generation scripts.
-- Added ISBN as the book is now available at Hulu.
+- Added ISBN as the book is now available at Lulu.
 - Added various fixes for the .epub format.
 - Added testcases on Android and iOS backup verification.
 - Improved key-attestation related explanation for Android.
