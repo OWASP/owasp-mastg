@@ -19,7 +19,7 @@ jobs:
         path: Tools/scripts/owasp-masvs
 
     - name: Listing of scripts directory
-      run: ls -lR Tools/scripts/
+      run: ls -l Tools/scripts/
 
     - name: Install pip Requirements
       run: pip3 install -r Tools/scripts/requirements.txt
