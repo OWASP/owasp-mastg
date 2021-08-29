@@ -20,34 +20,34 @@ jobs:
         repository: "OWASP/owasp-masvs.git"
         ref: "master"
         fetch-depth: 1
-        path: Tools/scripts/owasp-masvs
+        path: tools/scripts/owasp-masvs
 
     - name: Listing of scripts directory
-      run: ls -l Tools/scripts/
+      run: ls -l tools/scripts/
 
     - name: Install pip Requirements
       run: pip3 install -r tools/scripts/requirements.txt
 
     - name: Convert MSTG Testing Chapters to HTML
-      run: . Tools/scripts/mstg_to_html.sh
+      run: . tools/scripts/mstg_to_html.sh
 
     - name: Export YAML, enhance with MSTG and generate Excel
-      run: cd Tools/scripts && ./gen_all_excel.sh
+      run: cd tools/scripts && ./gen_all_excel.sh
 
     - name: Upload MASVS YAML
       uses: actions/upload-artifact@v2
       with:
         name: MASVS YAML Files
-        path: Tools/scripts/masvs_*.yaml
+        path: tools/scripts/masvs_*.yaml
 
     - name: Upload Enhanced MASVS YAML
       uses: actions/upload-artifact@v2
       with:
         name: Enhanced MASVS YAML Files
-        path: Tools/scripts/masvs_full_*.yaml
+        path: tools/scripts/masvs_full_*.yaml
 
     - name: Upload Checklists
       uses: actions/upload-artifact@v2
       with:
         name: Checklists
-        path: Tools/scripts/checklist_*.xlsx
+        path: tools/scripts/checklist_*.xlsx
