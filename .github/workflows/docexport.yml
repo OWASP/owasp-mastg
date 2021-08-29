@@ -18,6 +18,9 @@ jobs:
         fetch-depth: 1
         path: Tools/scripts/owasp-masvs
 
+    - name: Listing of scripts directory
+      run: ls -lR Tools/scripts/
+
     - name: Install pip Requirements
       run: pip3 install -r Tools/scripts/requirements.txt
 
