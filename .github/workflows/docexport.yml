@@ -10,6 +10,7 @@ jobs:
 
     - uses: actions/checkout@v2
       with:
+        ref: "checklist-generation"
         fetch-depth: 1
     - uses: actions/checkout@v2
       with:
