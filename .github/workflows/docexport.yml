@@ -26,7 +26,7 @@ jobs:
       run: ls -l Tools/scripts/
 
     - name: Install pip Requirements
-      run: pip3 install -r Tools/scripts/requirements.txt
+      run: pip3 install -r tools/scripts/requirements.txt
 
     - name: Convert MSTG Testing Chapters to HTML
       run: . Tools/scripts/mstg_to_html.sh
