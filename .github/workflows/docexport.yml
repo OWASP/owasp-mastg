@@ -10,8 +10,11 @@ jobs:
 
     - uses: actions/checkout@v2
       with:
-        ref: "checklist-generation"
         fetch-depth: 1
+    
+    - name: Listing repo recursive
+      run: ls -lR
+    
     - uses: actions/checkout@v2
       with:
         repository: "OWASP/owasp-masvs.git"
