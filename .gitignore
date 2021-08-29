@@ -12,3 +12,4 @@ logs
 *.pdf
 *.docx
 *.epub
+Tools/scripts/generated

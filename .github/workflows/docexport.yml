@@ -1,0 +1,46 @@
+name: Document Export
+
+on: [push]
+
+jobs:
+  Generate-Checklists:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+    - uses: actions/checkout@v2
+      with:
+        repository: "OWASP/owasp-masvs.git"
+        ref: "master"
+        fetch-depth: 1
+        path: Tools/scripts/owasp-masvs
+
+    - name: Install pip Requirements
+      run: pip3 install -r Tools/scripts/requirements.txt
+
+    - name: Convert MSTG Testing Chapters to HTML
+      run: . Tools/scripts/mstg_to_html.sh
+
+    - name: Export YAML, enhance with MSTG and generate Excel
+      run: cd Tools/scripts && ./gen_all_excel.sh
+
+    - name: Upload MASVS YAML
+      uses: actions/upload-artifact@v2
+      with:
+        name: MASVS YAML Files
+        path: Tools/scripts/masvs_*.yaml
+
+    - name: Upload Enhanced MASVS YAML
+      uses: actions/upload-artifact@v2
+      with:
+        name: Enhanced MASVS YAML Files
+        path: Tools/scripts/masvs_full_*.yaml
+
+    - name: Upload Checklists
+      uses: actions/upload-artifact@v2
+      with:
+        name: Checklists
+        path: Tools/scripts/checklist_*.xlsx
