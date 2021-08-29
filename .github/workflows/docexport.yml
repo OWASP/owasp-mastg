@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         repository: "OWASP/owasp-masvs.git"
-        ref: "master"
+        ref: "add-yaml-export" # must be master
         fetch-depth: 1
         path: tools/scripts/owasp-masvs
 
