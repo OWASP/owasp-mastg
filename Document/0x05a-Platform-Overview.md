@@ -614,7 +614,8 @@ The original version of app signing implements the signed APK as a standard sign
 
 With the APK signature scheme, the complete APK is hashed and signed, and an APK Signing Block is created and inserted into the APK. During validation, the v2 scheme checks the signatures of the entire APK file. This form of APK verification is faster and offers more comprehensive protection against modification. You can see the [APK signature verification process for v2 Scheme](https://source.android.com/security/apksigning/v2#verification "APK Signature verification process") below.
 
-![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process.png) \
+![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process.png) 
+
 
 #### APK Signature Scheme (v3 Scheme)
 
@@ -623,7 +624,15 @@ The v3 APK Signing Block format is the same as v2. V3 adds information about the
 The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certificates sign the new set of certificates, thus providing each new key with evidence that it should be as trusted as the older key(s).
 It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certificates signing the new set of certificates, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
 
-![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png) \
+![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png) 
+
+#### APK Signature Scheme (v4 Scheme)
+
+APK Signature Scheme v4 is a streaming-compatible signing scheme. v4 is based on the Merkle hash tree calculated over all bytes of the APK. It follows the structure of the fs-verity hash tree exactly. fs-verity is a Linux kernel feature that allows the system to continuously verify APK files with trusted digital certificates. When the platform provides this on-access verification mechanism, with a trusted certificate from a supported store like Play, the store can install APK files with a fs-verity signature for continuous verification. Files protected by fs-verity are immutable and read requests only succeed if the content verifies.
+
+Once fs-verity is supported in the kernel, partners can put the new type of certificate from their trusted stores in the product partition /product/etc/security/fsverity, the certificates are loaded to kernel keyring during boot time. On a device supporting this feature, the trusted store can install an APK with their corresponding fs-verity signature.
+
+Android 11 stores the signature in a separate file, <apk name>.apk.idsig. The v4 signature requires a complementary v2 or v3 signature 
 
 #### Creating Your Certificate
 
