@@ -326,6 +326,10 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 > A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
 
+Whenever OTP Authentication is used , always check if the application is responding back with static responses like "message":"Success" or some default application related content.If that is the case , the attacker can easily bypass the 2FA implementation by manipulating the server response. For eg. If the app is giving "message":"OTP is not correct" , the attacker can change it to "message":"Success" and takeover the user account.
+
+> The application should always pass user token or some dynamic information related to the user to prevent the attack
+
 Consult the [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/01-Testing_for_Session_Management_Schema "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
 ## Testing Stateless (Token-Based) Authentication (MSTG-AUTH-3)
