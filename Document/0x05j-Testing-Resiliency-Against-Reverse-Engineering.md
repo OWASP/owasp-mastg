@@ -655,7 +655,7 @@ private void crcTest() throws IOException {
 
 When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
 
-When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 Complete the following procedure when generating an HMAC with BouncyCastle:
 
