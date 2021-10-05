@@ -428,13 +428,12 @@ app.post('/renew_access_token', function (req, res) {
 
 KID stands for “Key ID”. It is an optional header field in JWTs, and it allows developers to specify the key to be used for verifying the token. The proper usage of a KID parameter looks like this:
 
-```
+```json
 {
  "alg" : "HS256",
  "typ" : "JWT",
- "kid" : "1"       // use key number 1 to verify the token 
+ "kid" : "1" 
 }
-
 ```
 
 Since this field is controlled by the user, it can be manipulated by attackers and lead to dangerous consequences.
@@ -443,9 +442,8 @@ Since this field is controlled by the user, it can be manipulated by attackers a
 
 Since the KID is often used to retrieve a key file from the file system, if it is not sanitized before use, it can lead to a directory traversal attack. When this is the case, the attacker would be able to specify any file in the file system as the key to be used to verify the token.
 
-```
+```json
 “kid”: “../../public/css/main.css” // use the publicly available file main.css to verify the token
-
 ```
 
 For example, the attacker can force the application into using a publicly available file as the key, and sign an HMAC token using that file.
@@ -455,7 +453,7 @@ For example, the attacker can force the application into using a publicly availa
 The KID could also be used to retrieve the key from a database. In this case, it might be possible to utilize SQL injection to bypass JWT signing.
 If SQL injection is possible on the KID parameter, the attacker can use this injection to return any value she wants.
 
-```
+```json
 “kid”: "aaaaaaa' UNION SELECT 'key';--"// use the string "key" to verify the token
 ```
 
@@ -474,7 +472,7 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Tampering with the Hashing Algorithm:
   - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"). JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
   - Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
- - Improper Signature Verification :  While sending a request to the server , remove the signature part in the token after the ('.') and send the request , if the server is giving out the responses that shows that the signature is not verified properly by the server and hence a JWT token can be forged easily by the attacker.
+ - Improper Signature Verification : While sending a request to the server , remove the signature part in the token after the ('.') and send the request , if the server is giving out the responses that shows that the signature is not verified properly by the server and hence a JWT token can be forged easily by the attacker.
 
 There are two different Burp Plugins that can help you for testing the vulnerabilities listed above:
 
