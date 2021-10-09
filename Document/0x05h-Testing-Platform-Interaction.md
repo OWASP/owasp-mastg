@@ -917,7 +917,7 @@ To identify the corresponding class of a content provider, use the following inf
 - Package Name: `com.mwr.example.sieve`.
 - Content Provider Class Name: `DBContentProvider`.
 
-By analyzing the class `com.mwr.example.sieve.DBContentProvider`, the following URI were identified:
+When analyzing the class `com.mwr.example.sieve.DBContentProvider`, you'll see that it contains several URIs:
 
 ```java
 package com.mwr.example.sieve;
