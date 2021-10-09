@@ -943,6 +943,8 @@ $ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvide
 Row: 0 email=user@tedt.com, username=owasp, password=BLOB
 ```
 
+You are able now to retrieve all database entries (see all lines starting with "Row:" in the output).
+
 #### Activities
 
 To list activities exported by an application, you can use the following command and focus on `activity` elements:
