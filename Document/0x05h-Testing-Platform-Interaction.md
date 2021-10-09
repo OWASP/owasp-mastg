@@ -929,7 +929,7 @@ public class DBContentProvider extends ContentProvider {
 }
 ```
 
-Use the following commands to call a content provider:
+Use the following commands to call the content provider using the identified URIs:
 
 ```bash
 $ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Keys/
