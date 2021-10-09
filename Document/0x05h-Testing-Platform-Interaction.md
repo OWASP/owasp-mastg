@@ -316,10 +316,9 @@ install permissions:
 
 From the command above, the following block are interesting, the information below are based on this [blog post](https://www.programmersought.com/article/47364329867/ "See Android permissions from dumpsys package"):
 
-- **declared permissions**: Collection of custom permissions defined.
-- **requested permissions**: Collection of permissions required by the application including *declared* and *install* permissions.
-- **install permissions**: All the permission statements contained in the manifest before Android 6.0 can be regarded as *install* permissions, and the Android 6.0 and later manifests belong to *install* permissions except for `dangerous` permissions or `runtime` permissions.
-- **runtime permissions**: Collection of permissions for which authorization will be requested when the app is running.
+- **declared permissions**: list of all *custom* permissions.
+- **requested and install permissions**: list of all install-time permissions including *normal* and *signature* permissions.
+- **runtime permissions**: list of all *dangerous* permissions.
 
 When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
 
