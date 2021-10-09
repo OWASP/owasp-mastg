@@ -1036,7 +1036,7 @@ $ adb shell am start -n "com.mwr.example.sieve/.MainLoginActivity" -a android.in
 Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.mwr.example.sieve/.MainLoginActivity }
 ```
 
-Since the activity `.PWList` is called directly in this example, the login form protecting the password manager would be bypassed, and the data contained within the password manager could be accessed.
+Since the activity `.PWList` is called directly in this example, you can use it to bypass the login form protecting the password manager, and access the data contained within the password manager.
 
 #### Services
 
