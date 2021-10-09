@@ -910,7 +910,7 @@ Provider{34a20d5 com.mwr.example.sieve/.FileBackupProvider}
 Provider{64f10ea com.mwr.example.sieve/.DBContentProvider}
 ```
 
-Once identified, you can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to analyze the code of a content provider to identify potential vulnerabilities.
+Once identified, you can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to reverse engineer the app and analyze the source code of the exported content providers to identify potential vulnerabilities.
 
 To identify the corresponding class of a content provider, use the following information:
 
