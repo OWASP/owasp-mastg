@@ -834,7 +834,7 @@ Please remember that this table is far from exhaustive. We could start talking a
 
 ### Effectiveness Assessment
 
-Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, Drozer, RootCloak, Android SSL Trust Killer.
+Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, RootCloak, Android SSL Trust Killer.
 
 The app should respond in some way to the presence of those tools. For example by:
 
