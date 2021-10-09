@@ -1113,7 +1113,7 @@ You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported 
 </manifest>
 ```
 
-Enumerating broadcast receivers in the vulnerable banking application [InsecureBankv2](0x08-Testing-Tools.md#android "Vulnerable applications for Android") shows that only the broadcast receiver named `com.android.insecurebankv2.MyBroadCastReceiver` is exported.
+The above example from the vulnerable banking application [InsecureBankv2](0x08-Testing-Tools.md#android "Vulnerable applications for Android") shows that only the broadcast receiver named `com.android.insecurebankv2.MyBroadCastReceiver` is exported.
 
 You can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to analyze the code of a broadcast receiver to identify potential vulnerabilities. The code of the exported broadcast receiver is the following:
 
