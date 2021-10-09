@@ -914,8 +914,8 @@ Once identified, you can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to revers
 
 To identify the corresponding class of a content provider, use the following information:
 
-- `com.mwr.example.sieve` is the package.
-- `DBContentProvider` is the class to analyze in the package above.
+- Package Name: `com.mwr.example.sieve`.
+- Content Provider Class Name: `DBContentProvider`.
 
 By analyzing the class `com.mwr.example.sieve.DBContentProvider`, the following URI were identified:
 
