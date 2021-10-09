@@ -1147,9 +1147,7 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
 }
 ```
 
-The broadcast receiver take two parameters named `phonenumber` and `newpass`.
-
-Use the following command to send a event to this broadcast receiver:
+As you can see in the source code, this broadcast receiver expects two parameters named `phonenumber` and `newpass`. With this information you can now try to exploit this broadcast receiver by sending events to it using custom values:
 
 ```bash
 # Send an event with the following properties:
