@@ -314,7 +314,7 @@ install permissions:
 ...
 ```
 
-From the command above, the following block are interesting, the information below are based on this [blog post](https://www.programmersought.com/article/47364329867/ "See Android permissions from dumpsys package"):
+The output shows all permissions using the following categories:
 
 - **declared permissions**: list of all *custom* permissions.
 - **requested and install permissions**: list of all install-time permissions including *normal* and *signature* permissions.
