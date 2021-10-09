@@ -1088,8 +1088,8 @@ E: receiver (line=119)
 
 You can identify an exported broadcast receiver using one of the following properties:
 
-- It have an `intent-filter` sub declaration.
-- It have the attribute `android:exported` to `0xffffffff`.
+- It has an `intent-filter` sub declaration.
+- It has the attribute `android:exported` set to `0xffffffff`.
 
 You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported broadcast receivers in the file `AndroidManifest.xml` using the criteria described above:
 
