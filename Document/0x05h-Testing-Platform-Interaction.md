@@ -898,7 +898,7 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 You can enumerate IPC components with [MobSF](0x08-Testing-Tools.md#mobsf "MobSF"). To list all exported IPC components, upload the APK file and the components collection will be displayed in the following screen:
 
-<img src="Images/Chapters/0x05h/MobSF_Show_Components.png" alt="MobSF components display" />
+![MobSF components display](Images/Chapters/0x05h/MobSF_Show_Components.png) \
 
 #### Content Providers
 
