@@ -688,7 +688,7 @@ Below are procedures for checking the binary security features described above. 
     0x0000000100593dc8 83414 _sigaltstack
     ```
 
-    In the above output, the presence of `__stack_chk_fail` indicates that stack canaries are being used. This check works for pure Objective-C and hybrid apps, but will not work for pure Swift apps.
+    In the above output, the presence of `__stack_chk_fail` indicates that stack canaries are being used. This check is applicable to pure Objective-C and hybrid apps, but not necessarily to pure Swift apps (i.e. it is OK if it's shown as disabled because Swift is memory safe by design).
 
 - ARC:
 
