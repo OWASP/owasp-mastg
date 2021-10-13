@@ -641,7 +641,7 @@ Steps for building an iOS application as PIE:
 
 ##### ARC protection
 
-Steps for enabling ARC protection for an iOS application:
+ARC is automatically enabled for Swift apps by the `swiftc` compiler. However, for Objective-C apps you'll have ensure that it's enabled by following these steps:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2. Make sure that "Objective-C Automatic Reference Counting" is set to its default value ("YES").
