@@ -707,7 +707,7 @@ Below are procedures for checking the binary security features described above. 
 
 ### Dynamic Analysis
 
-Dynamically these checks can be performed using Objection tool. One such example is below:
+These checks can be performed dynamically using [objection](0x08-Testing-Tools.md#objection). Here's one example:
 
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary
