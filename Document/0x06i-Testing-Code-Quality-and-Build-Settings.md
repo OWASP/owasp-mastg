@@ -703,7 +703,7 @@ Below are procedures for checking the binary security features described above. 
     [SNIP]
     ```
 
-    This check is applicable to all cases, including pure Swift apps.
+    This check is applicable to all cases, including pure Swift apps where it's automatically enabled.
 
 ### Dynamic Analysis
 
