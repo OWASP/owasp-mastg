@@ -670,7 +670,7 @@ Below are procedures for checking the binary security features described above. 
     WEAK_DEFINES BINDS_TO_WEAK PIE
     ```
 
-    Mach-O flag for `PIE` is set and can be observed in the above output. This check works for all - Objective-C, Swift and hybrid apps.
+    The output shows that the Mach-O flag for `PIE` is set. This check is applicable to all - Objective-C, Swift and hybrid apps but only to the main executable.
 
 - Stack canary:
 
