@@ -616,7 +616,7 @@ Although Xcode enables all binary security features by default, it may be releva
 - **Stack Canary** - Stack-smashing protection - Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
 - **PIE** - Position Independent Executable - enables full ASLR for the executable binary (not applicable for libraries).
 
-Tests to detect the presence of these protection mechanisms is heavily dependent on the language used for developing the application. For example, existing techniques for detecting presence of stack canary does not work for pure Swift apps. For more details on how to determine which language is used in the application, check [On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/ "On iOS Binary Protection").
+Tests to detect the presence of these protection mechanisms heavily depend on the language used for developing the application. For example, existing techniques for detecting the presence of stack canaries do not work for pure Swift apps. For more details, please check the online article "[On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/ "On iOS Binary Protection")".
 
 ### Static Analysis
 
