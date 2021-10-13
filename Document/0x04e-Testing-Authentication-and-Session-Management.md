@@ -432,7 +432,7 @@ KID stands for “Key ID”. It is an optional header field in JWTs, and it allo
 {
  "alg" : "HS256",
  "typ" : "JWT",
- "kid" : "1" 
+ "kid" : "1"
 }
 ```
 
@@ -472,7 +472,7 @@ Investigate the following JWT vulnerabilities while performing dynamic analysis:
 - Tampering with the Hashing Algorithm:
   - Usage of [asymmetric algorithms](https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ "Critical Vulnerabilities in JSON Web Token"). JWT offers several asymmetric algorithms as RSA or ECDSA. When these algorithms are used, tokens are signed with the private key and the public key is used for verification. If a server is expecting a token to be signed with an asymmetric algorithm and receives a token signed with HMAC, it will treat the public key as an HMAC secret key. The public key can then be misused, employed as an HMAC secret key to sign the tokens.
   - Modify the `alg` attribute in the token header, then delete `HS256`, set it to `none`, and use an empty signature (e.g., signature = ""). Use this token and replay it in a request. Some libraries treat tokens signed with the none algorithm as a valid token with a verified signature. This allows attackers to create their own "signed" tokens.
- - Improper Signature Verification : While sending a request to the server , remove the signature part in the token after the ('.') and send the request , if the server is giving out the responses that shows that the signature is not verified properly by the server and hence a JWT token can be forged easily by the attacker.
+- Improper Signature Verification : While sending a request to the server , remove the signature part in the token after the ('.') and send the request , if the server is giving out the responses that shows that the signature is not verified properly by the server and hence a JWT token can be forged easily by the attacker.
 
 There are two different Burp Plugins that can help you for testing the vulnerabilities listed above:
 
