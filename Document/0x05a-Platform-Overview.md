@@ -625,6 +625,14 @@ It is no longer possible to sign APKs independently, because the proof-of-rotati
 
 ![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png) \
 
+#### APK Signature Scheme (v4 Scheme)
+
+The APK Signature Scheme v4 was introduced along with Android 11.0 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
+
+The v4 signature requires a complementary v2 or v3 signature and in contrast to previous signature schemes, the v4 signature is stored in a separate file `<apk name>.apk.idsig`. Remember to specify it using the `--v4-signature-file` flag when verifying a v4-signed APK with `apksigner verify`.
+
+You can find more detailed information in the [Android developer documentation](https://source.android.com/security/apksigning/v4).
+
 #### Creating Your Certificate
 
 Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
