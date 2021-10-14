@@ -67,8 +67,6 @@ When an iOS application is compiled, the compiler generates a list of debug symb
 
 As a good practice, as little explanatory information as possible should be provided with a compiled binary. Presence of this additional metadata in the form of debug symbols provides valuable information about the code, for instance function names leaking information about what possibly a function do. Importantly, this metadata is not required to execute a binary and thus it is safe to discard it while building the final release binary, using proper compiler configurations.
 
-When debug symbols are placed in a separate dSYM file, these symbols do not make to the final binary delivered to an end user. While the debug symbols embedded in the compiled binary, they can end up being present in the final binary and thus should be verified before the release.
-
 ### Static Analysis
 
 Use `objdump --syms` to inspect the main binary and other included dylibs, and look for symbols with 'd' (debug) flag associated with them. Check [objdump man page](https://www.unix.com/man-page/osx/1/objdump/ "objdump man page") for information about various other symbol's flag characters. A typical output for a binary containing debug symbols looks like following:
