@@ -69,7 +69,9 @@ As a good practice, as little explanatory information as possible should be prov
 
 ### Static Analysis
 
-Use `objdump --syms` to inspect the main binary and other included dylibs, and look for symbols with 'd' (debug) flag associated with them. Check [objdump man page](https://www.unix.com/man-page/osx/1/objdump/ "objdump man page") for information about various other symbol's flag characters. A typical output for a binary containing debug symbols looks like following:
+To verify the existence of debug symbols you can use objdump from [binutils](https://www.gnu.org/s/binutils/ "Binutils") or [llvm-objdump](https://llvm.org/docs/CommandGuide/llvm-objdump.html "llvm-objdump") to inspect all of the app binaries.
+
+In the following snippet we run objdump over `TargetApp` (the iOS main app executable) to show the typical output of a binary containing debug symbols which are marked with the `d` (debug) flag. Check the [objdump man page](https://www.unix.com/man-page/osx/1/objdump/ "objdump man page") for information about various other symbol flag characters.
 
 ```bash
 $ objdump --syms TargetApp
