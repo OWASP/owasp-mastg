@@ -758,7 +758,7 @@ Writing executable to Payload/UnCrackable Level 1.app/UnCrackable Level 1...
 
 #### Patching Example: Making an App Debuggable
 
-By default, an app available on Apple App Store is not debuggable. In order to debug an iOS application, it must have `get-task-allow` entitlement enabled. This entitlement allows other processes (like a debugger) to attach to the app. Apple does not allow `get-task-allow` entitlement to be enabled in a distribution provisioning profile; it is only allowed in a development provisioning profile.
+By default, an app available on the Apple App Store is not debuggable. In order to debug an iOS application, it must have the `get-task-allow` entitlement enabled. This entitlement allows other processes (like a debugger) to attach to the app. Xcode is not adding the `get-task-allow` entitlement in a distribution provisioning profile; it is only whitelisted and added in a development provisioning profile.
 
 Thus, to debug an iOS application obtained from the App Store, it needs to be re-signed with a development provisioning profile with `get-task-allow` entitlement. How to re-sign an application is discussed in the next section.
 
