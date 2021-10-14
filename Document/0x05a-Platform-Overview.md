@@ -625,7 +625,6 @@ It is no longer possible to sign APKs independently, because the proof-of-rotati
 
 ![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png) \
 
-
 #### APK Signature Scheme (v4 Scheme)
 
 The APK Signature Scheme v4 was introduced along with Android 11.0 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
