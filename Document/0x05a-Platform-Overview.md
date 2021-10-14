@@ -628,11 +628,11 @@ It is no longer possible to sign APKs independently, because the proof-of-rotati
 
 #### APK Signature Scheme (v4 Scheme)
 
-APK Signature Scheme v4 is a streaming-compatible signing scheme. v4 is based on the Merkle hash tree calculated over all bytes of the APK. It follows the structure of the fs-verity hash tree exactly. fs-verity is a Linux kernel feature that allows the system to continuously verify APK files with trusted digital certificates. When the platform provides this on-access verification mechanism, with a trusted certificate from a supported store like Play, the store can install APK files with a fs-verity signature for continuous verification. Files protected by fs-verity are immutable and read requests only succeed if the content verifies.
+The APK Signature Scheme v4 was introduced along with Android 11.0 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
 
-Once fs-verity is supported in the kernel, partners can put the new type of certificate from their trusted stores in the product partition /product/etc/security/fsverity, the certificates are loaded to kernel keyring during boot time. On a device supporting this feature, the trusted store can install an APK with their corresponding fs-verity signature.
+The v4 signature requires a complementary v2 or v3 signature and in contrast to previous signature schemes, the v4 signature is stored in a separate file `<apk name>.apk.idsig`. Remember to specify it using the `--v4-signature-file` flag when verifying a v4-signed APK with `apksigner verify`.
 
-Android 11 stores the signature in a separate file, <apk name>.apk.idsig. The v4 signature requires a complementary v2 or v3 signature 
+You can find more detailed information in the [Android developer documentation](https://source.android.com/security/apksigning/v4).
 
 #### Creating Your Certificate
 
