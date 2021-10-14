@@ -63,7 +63,7 @@ Note: if the application is equipped with anti-reverse engineering controls, the
 
 ### Overview
 
-When an iOS application is compiled, the compiler while converting source code into machine code generates a list of symbols for the app - class names, global variables, and method and function names. These symbols correspond to the file and line numbers where they're defined; this association creates a 'debug symbol'. Debug builds of an app place the debug symbols in a compiled binary by default, while release builds of an app place the debug symbols in a companion 'Debug Symbol file' (dSYM) to reduce the size of the distributed app. Each binary file in an app - the main app executable, frameworks, and app extensions - has its own dSYM file.
+When an iOS application is compiled, the compiler generates a list of debug symbols for each binary file in an app (the main app executable, frameworks, and app extensions). These symbols include class names, global variables, and method and function names and are mapped to specific files and line numbers where they're defined. Debug builds of an app place the debug symbols in a compiled binary by default, while release builds of an app place them in a companion _Debug Symbol file_ (dSYM) to reduce the size of the distributed app. 
 
 As a good practice, as little explanatory information as possible should be provided with a compiled binary. Presence of this additional metadata in the form of debug symbols provides valuable information about the code, for instance function names leaking information about what possibly a function do. Importantly, this metadata is not required to execute a binary and thus it is safe to discard it while building the final release binary, using proper compiler configurations.
 
