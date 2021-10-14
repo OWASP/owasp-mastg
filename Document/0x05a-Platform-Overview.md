@@ -623,7 +623,8 @@ The v3 APK Signing Block format is the same as v2. V3 adds information about the
 The proof-of-rotation attribute in the signed-data of the signing block consists of a singly-linked list, with each node containing a signing certificate used to sign previous versions of the app. To make backward compatibility work, the old signing certificates sign the new set of certificates, thus providing each new key with evidence that it should be as trusted as the older key(s).
 It is no longer possible to sign APKs independently, because the proof-of-rotation structure must have the old signing certificates signing the new set of certificates, rather than signing them one-by-one. You can see the [APK signature v3 scheme verification process](https://source.android.com/security/apksigning/v3 "APK Signature v3 scheme verification process") below.
 
-![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png) 
+![OWASP MSTG](Images/Chapters/0x05a/apk-validation-process-v3-scheme.png) \
+
 
 #### APK Signature Scheme (v4 Scheme)
 
