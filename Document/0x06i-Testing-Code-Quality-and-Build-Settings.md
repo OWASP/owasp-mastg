@@ -88,7 +88,6 @@ $ objdump --syms TargetApp
 
 It is important to note, a binary without debug symbols will not have symbols with 'd' flag associated.
 
-`Objdump` from [binutils](https://www.gnu.org/s/binutils/ "Binutils") or [llvm-objdump](https://llvm.org/docs/CommandGuide/llvm-objdump.html "llvm-objdump") can be used. The output from the two may have subtle differences, but output from both will contain flag characters for symbols.
 
 To remove the embedded debugging symbols, ensure debug symbols stripping is enabled in Xcode configuration. To strip debugging symbols, set `Strip Debug Symbols During Copy` to `YES` via the project's build settings. Stripping debugging symbols will not only reduce the size of the binary and but also increase the difficulty of reverse engineering.
 
