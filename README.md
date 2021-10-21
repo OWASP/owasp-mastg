@@ -87,6 +87,8 @@ The release 1.0 of the MSTG was published in June 2018. You can get intermediate
 
 6. Just check the latest build of the repository at [Github actions](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22 "Document build"). This offers you the latest SNAPSHOT version of the document to download.
 
+7. You can learn more about [OWASP](https://intellipaat.com/blog/owasp-top-10/) from this guide.
+
 ## Contributions, Feature Requests, and Feedback
 
 **We are searching for additional authors, reviewers, and editors.**
