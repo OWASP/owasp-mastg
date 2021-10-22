@@ -335,6 +335,7 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 ```
 
 #### Loaded Native Libraries
+
 The file `/proc/<pid>/maps` contains the currently mapped memory regions and their access permissions. Using this file we can get the list of the libraries loaded in the process.
      
 #### Open Connections
