@@ -130,6 +130,8 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 ![OWASP MSTG](Images/Donators/SEC_Consult_logo.png) \
 
+![OWASP MSTG](Images/Donators/ZIMPERIUM_logo.png) \
+
 #### Good Samaritan Benefactor
 
 ![OWASP MSTG](Images/Donators/Randorisec_logo.png) \
