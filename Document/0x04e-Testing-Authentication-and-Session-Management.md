@@ -424,41 +424,6 @@ app.post('/renew_access_token', function (req, res) {
 });
 ```
 
-### KID Misconfigurations
-
-KID stands for “Key ID”. It is an optional header field in JWTs, and it allows developers to specify the key to be used for verifying the token. The proper usage of a KID parameter looks like this:
-
-```json
-{
- "alg" : "HS256",
- "typ" : "JWT",
- "kid" : "1"
-}
-```
-
-Since this field is controlled by the user, it can be manipulated by attackers and lead to dangerous consequences.
-
-#### 1. Directory traversal
-
-Since the KID is often used to retrieve a key file from the file system, if it is not sanitized before use, it can lead to a directory traversal attack. When this is the case, the attacker would be able to specify any file in the file system as the key to be used to verify the token.
-
-```json
-“kid”: “../../public/css/main.css” // use the publicly available file main.css to verify the token
-```
-
-For example, the attacker can force the application into using a publicly available file as the key, and sign an HMAC token using that file.
-
-#### 2. SQL Injection
-
-The KID could also be used to retrieve the key from a database. In this case, it might be possible to utilize SQL injection to bypass JWT signing.
-If SQL injection is possible on the KID parameter, the attacker can use this injection to return any value she wants.
-
-```json
-“kid”: "aaaaaaa' UNION SELECT 'key';--"// use the string "key" to verify the token
-```
-
-For example, this above injection will cause the application to return the string “key” (since the key named “aaaaaaa” doesn’t exist in the database). The token will then be verified with the string “key” as the secret key.
-
 ### Dynamic Analysis
 
 Investigate the following JWT vulnerabilities while performing dynamic analysis:
