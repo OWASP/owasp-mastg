@@ -1,7 +1,5 @@
 name: Make a Donation
-description: | 
-  Donate to the OWASP Mobile Security Project using [this page](https://owasp.org/donate/?reponame=www-project-mobile-security-testing-guide&title=OWASP+Mobile+Security+Testing+Guide "Donate to the OWASP MSTG") 
-  and be sure to PUT A CHECK on the line "Publicly list me as a supporter of OWASP Mobile Security Testing Guide"
+description: Donate to the OWASP Mobile Security Project.
 title: "[Donation]: "
 labels: ["org", "donation"]
 assignees:
