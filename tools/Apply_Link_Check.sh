@@ -6,7 +6,7 @@ cd ../Document
 if test -f "../link-check-result.out"; then
         rm ../link-check-result.out
 fi
-find . -name \*.md -exec markdown-link-check -q -c ../.markdownlinkcheck.json {} \; 1>../link-check-result.out 2>&1
+find . -name \*.md -exec markdown-link-check -q -c ../.github/workflows/config/mlc_config.json {} \; 1>../link-check-result.out 2>&1
 errors=`grep -c "ERROR:" ../link-check-result.out`
 content=`cat ../link-check-result.out`
 if [[ $errors != "0" ]]
