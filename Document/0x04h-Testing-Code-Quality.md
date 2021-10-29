@@ -279,6 +279,10 @@ For more information on fuzzing, refer to the [OWASP Fuzzing Guide](https://www.
 - MSTG-PLATFORM-2: "All inputs from external sources and the user are validated and if necessary sanitized. This includes data received via the UI, IPC mechanisms such as intents, custom URLs, and network sources."
 - MSTG-CODE-8: "In unmanaged code, memory is allocated, freed and used securely."
 
+### Android security checklist: WebView
+
+- <https://blog.oversecured.com/Android-security-checklist-webview/>
+
 ### XSS via start ContentActivity
 
 - <https://hackerone.com/reports/189793>
