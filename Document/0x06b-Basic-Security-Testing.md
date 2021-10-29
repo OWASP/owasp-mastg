@@ -24,7 +24,7 @@ The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS
 
 ![OWASP MSTG](Images/Chapters/0x06b/UDID-Finder.png) \
 
-If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](https://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
+If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
 
 It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
 

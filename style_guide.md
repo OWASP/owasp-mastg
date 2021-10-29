@@ -214,13 +214,13 @@ When using (A), be sure to escape special characters such as apostrophe (\') or 
 **Wrong** usage, see "iPhone's":
 
 ```markdown
-[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID")
+[UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone's UDID")
 ```
 
 **Right** usage, see "iPhone\'s":
 
 ```markdown
-[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID")
+[UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID")
 ```
 
 When adding links to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
