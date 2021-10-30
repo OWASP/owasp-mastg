@@ -334,6 +334,19 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 ...
 ```
 
+#### Loaded Native Libraries
+
+You can use the `list_frameworks` command in [objection](0x08-Testing-Tools.md#objection) to list all the application's bundles that represent Frameworks.
+
+```bash
+...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
+Executable      Bundle                                     Version    Path
+--------------  -----------------------------------------  ---------  -------------------------------------------
+Bolts           org.cocoapods.Bolts                        1.9.0      ...8/DVIA-v2.app/Frameworks/Bolts.framework
+RealmSwift      org.cocoapods.RealmSwift                   4.1.1      ...A-v2.app/Frameworks/RealmSwift.framework
+                                                                      ...ystem/Library/Frameworks/IOKit.framework
+...
+
 #### Open Connections
 
 `lsof` command when invoked with option `-i`, it gives the list of open network ports for all active processes on the device. To get a list of open network ports for a specific process, the `lsof -i -a -p <pid>` command can be used, where `-a` (AND) option is used for filtering. Below a filtered output for PID 1 is shown.
