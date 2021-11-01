@@ -763,7 +763,6 @@ Once you identify a list of IPC mechanisms, review the source code to see whethe
 
 In the following, we use two example apps and give examples of identifying vulnerable IPC components:
 
-- ["OVAA"](https://github.com/oversecured/ovaa "Oversecured Vulnerable Android App")
 - ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve: Vulnerable Password Manager")
 - ["Android Insecure Bank"](https://github.com/dineshshetty/Android-InsecureBankv2 "Android Insecure Bank V2")
 

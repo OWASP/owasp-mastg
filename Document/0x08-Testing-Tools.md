@@ -1788,6 +1788,7 @@ The applications listed below can be used as training materials. Note: only the 
 
 ### Android
 
+- OVAA: An Android app that aggregates all the platform's known and popular security vulnerabilities <https://github.com/oversecured/ovaa>
 - Crackmes: A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
 - AndroGoat: An open source vulnerable/insecure app using Kotlin. This app has a wide range of vulnerabilities related to certificate pinning, custom URL schemes, Android Network Security Configuration, WebViews, root detection and over 20 other vulnerabilities - <https://github.com/satishpatnayak/AndroGoat>
 - DVHMA: A hybrid mobile app (for Android) that intentionally contains vulnerabilities - <https://github.com/logicalhacking/DVHMA>
@@ -1800,6 +1801,7 @@ The applications listed below can be used as training materials. Note: only the 
 
 ### iOS
 
+- OVIA: An iOS app that aggregates all the platform's known and popular security vulnerabilities <https://github.com/oversecured/ovia>
 - Crackmes: A set of applications to test your iOS application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
 - Myriam: A vulnerable iOS app with iOS security challenges - <https://github.com/GeoSn0w/Myriam>
 - DVIA: A vulnerable iOS app written in Objective-C which provides a platform to mobile security enthusiasts/professionals or students to test their iOS penetration testing skills - <http://damnvulnerableiosapp.com/>
