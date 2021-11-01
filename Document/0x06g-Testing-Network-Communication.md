@@ -165,7 +165,7 @@ The output above only shows the first few results of nscurl. A permutation of di
 
 > If there are any fails in the nscurl output, please change the server side configuration of TLS to make the serverside more secure, instead of weakening the configuration in ATS on the client.
 
-For more information on this topic please consult the [blog post by NowSecure on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
+For more information on ATS please consult this [blog post](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
 
 In general it can be summarized:
 
