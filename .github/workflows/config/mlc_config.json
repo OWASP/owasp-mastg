@@ -32,6 +32,12 @@
         },
         {
             "pattern": "^https://manualzz.com"
+        },
+        {
+            "pattern": "^https://www.verticalstructure.com"
+        },
+        {
+            "pattern": "^https://support.virustotal.com"
         }
     ],
     "httpHeaders": [
