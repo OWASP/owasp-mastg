@@ -214,7 +214,7 @@ In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing 
 First, at the root of the project, where the Podfile is located, execute the following commands:
 
 ```bash
-$ sudo gem install CocoaPods
+$ sudo gem install cocoapods
 $ pod install
 ```
 
