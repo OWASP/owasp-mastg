@@ -35,7 +35,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 
 ## Standards, frameworks and guidelines recommending the MASVS and MSTG
 
- Currently, the MASVS and MSTG are recommended by:
+Currently, the MASVS and MSTG are recommended by:
 
 - [Egov standards for India](http://egovstandards.gov.in/notified-standards-0 "Egov standards for India")
 - [Finish Transport and Communication Agency (TRAFICOM) - Assessment guideline for electronic identification services (Draft)](https://www.traficom.fi/sites/default/files/media/file/DRAFT%20Traficom%20guideline%20211%202019%20conformity%20assessment%20of%20eID%20service.pdf "Finish Transport and Communication Agency (TRAFICOM)")
