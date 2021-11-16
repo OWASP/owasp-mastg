@@ -129,7 +129,7 @@ If having the original source code, you can verify the permissions included in t
 
 You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
-![OWASP MSTG](Images/Chapters/0x06h/purpose_strings_xcode.png) \
+![OWASP MSTG](Images/Chapters/0x06h/purpose_strings_xcode.png)
 
 If only having the IPA:
 
