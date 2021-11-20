@@ -20,7 +20,7 @@ PANDOC_PARAMS+="--metadata version=${VERSION} "
 
 PANDOCKER="docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} ${PANDOC_PARAMS}"
 
-docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} --entrypoint '/bin/sh' -c 'sed -i "s#<!-- \(.*\) -->#\1#g" Document/*.md'
+docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i "s#<!-- \(.*\) -->#\1#g" Document/*.md'
 
 # remove the HTML comment from \pagebreak
 # if [[ "$OSTYPE" == "darwin"* ]]; then
