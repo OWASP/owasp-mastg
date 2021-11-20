@@ -20,12 +20,14 @@ PANDOC_PARAMS+="--metadata version=${VERSION} "
 
 PANDOCKER="docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} ${PANDOC_PARAMS}"
 
+docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} --entrypoint '/bin/sh' -c 'sed -i "s#<!-- \(.*\) -->#\1#g" Document/*.md'
+
 # remove the HTML comment from \pagebreak
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  gsed -i 's#<!-- \(.*\) -->#\1#g' Document/*.md
-else
-  sed -i 's#<!-- \(.*\) -->#\1#g' Document/*.md
-fi
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#   gsed -i 's#<!-- \(.*\) -->#\1#g' Document/*.md
+# else
+#   sed -i 's#<!-- \(.*\) -->#\1#g' Document/*.md
+# fi
 
 # Use pandocker PANDOCKER by default, unless `export PANDOC=pandoc`
 # this is useful for CI, because we can run the script directly inside the container
