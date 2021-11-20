@@ -1,0 +1,13 @@
+name: MSTG Generic Issue
+description: What's wrong? 
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: input
+    id: sample-input
+    attributes:
+      label: Sample Input
+      description: What's wrong in the MSTG?
+      placeholder: Type here ...
+    validations:
+      required: true
