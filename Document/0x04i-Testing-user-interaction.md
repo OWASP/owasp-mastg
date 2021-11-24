@@ -43,12 +43,14 @@ You can use the following resources as a starting point for your analysis.
 
 **Android:**
 - [Review how the app collects and shares user data](https://developer.android.com/guide/topics/data/collect-share).
-- Verify if the app performs [Data Access Auditing](https://developer.android.com/guide/topics/data/audit-access) (available for Android 11 (API level 30) and higher) and list all the used attribution tags.
+- Verify if the app performs [Data Access Auditing](https://developer.android.com/guide/topics/data/audit-access) (available for Android 11 (API level 30) and higher) and list all the used attribution tags. You can use the [DataAccessAuditingKotlin sample app](https://github.com/android/permissions-samples/tree/master/DataAccessAuditingKotlin) as a reference.
+- Use the [Privacy Dashboard](https://developer.android.com/training/permissions/explaining-access#privacy-dashboard) from the Android settings (Android 12 (API level 31) and higher) to monitor app access to sensitive information.
 
 **iOS:**
 
 - Verify which [iOS Privacy Details](https://developer.apple.com/app-store/app-privacy-details/) does the app include on the App Store.
 - Verify if and how the app is using the [App Tracking Transparency Framework](https://developer.apple.com/documentation/apptrackingtransparency).
+- [Enable the App Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) from the iOS settings (iOS 15.2 and higher) to monitor app activity data. After using the app extensively, you can save the report as JSON file containing a collection of dictionaries of different types. Parse for the `type: "access"` to inspect all data access by category (camera, contacts, etc.) and the `type: "networkActivity"` to examine all network accesses.
 
 
 These are some examples of common violations that you should report:
