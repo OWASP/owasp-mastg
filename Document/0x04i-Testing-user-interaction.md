@@ -19,9 +19,43 @@ When you need personal information from a user for your business process, the us
 - **The right to correct data**: Users should be able to correct their personal information at any time, and be explained how to do so.
 - **The right to access user data**: Users should be able to request all information that the application has on them, and be explained how to request this information.
 
-Most of this can be covered in a privacy policy, but make sure that it is understandable by the user.
+Most of this is traditionally being covered in a privacy policy. However, this approach is not always optimal for users who would be require to read usually long and wordly policies. In order to address this and help users easily understand how their data is being collected, handled and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf)):
+- the App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
+- the Google Play [Data Safety Labels](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
+
+As a new requirement on both platforms, it's vital that these labels are accurate in order to provide user assurance and mitigate developer abuse.
+
 
 When additional data needs to be processed, you should ask the user for consent again. During that consent request it needs to be made clear how the user can revert from sharing the additional data. Similarly, when existing datasets of a user need to be linked, you should ask the user's consent about it.
+
+You can learn more about this and other privacy related topics here:
+
+- [iOS App Privacy Policy](https://developer.apple.com/documentation/healthkit/protecting_user_privacy#3705073)
+- [iOS Privacy Details Section on the App Store](https://developer.apple.com/app-store/app-privacy-details/)
+- [iOS Privacy Best Practices](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy)
+- [Android App Privacy Policy](https://support.google.com/googleplay/android-developer/answer/9859455#privacy_policy)
+- [Android Data Safety Section on Google Play](https://support.google.com/googleplay/android-developer/answer/10787469)
+- [Android Privacy Best Practices](https://developer.android.com/privacy/best-practices)
+
+#### Testing Data Privacy
+
+You can use the following resources as a starting point for your analysis.
+
+**Android:**
+- [Review how the app collects and shares user data](https://developer.android.com/guide/topics/data/collect-share).
+- Verify if the app performs [Data Access Auditing](https://developer.android.com/guide/topics/data/audit-access) (available for Android 11 (API level 30) and higher) and list all the used attribution tags.
+
+**iOS:**
+
+- Verify which [iOS Privacy Details](https://developer.apple.com/app-store/app-privacy-details/) does the app include on the App Store.
+- Verify if and how the app is using the [App Tracking Transparency Framework](https://developer.apple.com/documentation/apptrackingtransparency).
+
+
+These are some examples of common violations that you should report:
+- An app collects device location but does not have a prominent disclosure explaining which feature uses this data and/or indicates the app's usage in the background.
+- An app has a runtime permission requesting access to data before the prominent disclosure which specifies what the data is used for.
+- An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data subject to the above Privacy Policy, data handling, and Prominent Disclosure and Consent requirements.
+- An app that records a user’s screen and doesn't treat this data as personal or sensitive data subject to this policy.
 
 ### Informing the user on the best security practices
 
