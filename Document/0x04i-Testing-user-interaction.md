@@ -19,7 +19,7 @@ When you need personal information from a user for your business process, the us
 - **The right to correct data**: Users should be able to correct their personal information at any time, and be explained how to do so.
 - **The right to access user data**: Users should be able to request all information that the application has on them, and be explained how to request this information.
 
-Most of this is traditionally being covered in a privacy policy. However, this approach is not always optimal for users who would be require to read usually long and wordly policies. In order to address this and help users easily understand how their data is being collected, handled and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf)):
+Most of this is traditionally being covered in a privacy policy. However, this approach is not always optimal for users who would be required to read usually long and wordly policies. In order to address this and help users easily understand how their data is being collected, handled and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf)):
 - the App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
 - the Google Play [Data Safety Labels](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
 
