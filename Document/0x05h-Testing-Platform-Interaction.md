@@ -320,7 +320,14 @@ The output shows all permissions using the following categories:
 - **requested and install permissions**: list of all install-time permissions including *normal* and *signature* permissions.
 - **runtime permissions**: list of all *dangerous* permissions.
 
-When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+When doing the dynamic analysis:
+
+- [Evaluate](https://developer.android.com/training/permissions/evaluating) whether the app really needs the requested permissions. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+- In many cases the app could opt for [alternatives to declaring permissions](https://developer.android.com/training/permissions/evaluating#alternatives), such as:
+  - requesting the `ACCESS_COARSE_LOCATION` permission instead of `ACCESS_FINE_LOCATION`. Or even better not requesting the permission at all, and instead ask the user to enter a postal code.
+  - invoking the `ACTION_IMAGE_CAPTURE` or `ACTION_VIDEO_CAPTURE` intent action instead of requesting the `CAMERA` permission.
+  - usinging [Companion Device Pairing](https://developer.android.com/guide/topics/connectivity/companion-device-pairing) (Android 8.0 (API level 26) and higher) when pairing with a Bluetooth device instead of declaring the `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATIION`, or `BLUETOOTH_ADMIN` permissions.
+- Use the [Privacy Dashboard](https://developer.android.com/training/permissions/explaining-access#privacy-dashboard) (Android 12 (API level 31) and higher) to verify how the app [explains access to sensitive information](https://developer.android.com/training/permissions/explaining-access).
 
 To obtain detail about a specific permission you can refer to the [Android Documentation](https://developer.android.com/reference/android/Manifest.permission "Android Permissions").
 
