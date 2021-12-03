@@ -1,10 +1,8 @@
 name: 💲 Donate to the OWASP Mobile Security Project
 description: |
     Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
-    You can make your donation [here](https://owasp.org/donate?reponame=www-project-mobile-security-testing-guide&title=OWASP+Mobile+Security+Testing+Guide)
-    or as indicated on the **Donations page**.
     
-    🙏🏻 Thanks a lot for considering donating to the OWASP Mobile Security Project.
+    🙏🏻 Thanks a lot!
 title: "New Donation"
 labels: ["org", "donation"]
 assignees:
