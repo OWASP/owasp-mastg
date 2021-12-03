@@ -4,7 +4,6 @@ title: "[Donation]: "
 labels: ["org", "donation"]
 assignees:
   - cpholguera
-  - sushi2k
 body:
   - type: input
     id: name
@@ -77,3 +76,4 @@ body:
       options:
         - label: I agree to follow this project's Code of Conduct and Donation conditions.
           required: true
+
