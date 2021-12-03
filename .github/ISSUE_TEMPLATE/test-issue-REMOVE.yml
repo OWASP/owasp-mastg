@@ -1,62 +1,79 @@
-name: Bug Report
-description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
+name: Make a Donation
+description: Donate to the OWASP Mobile Security Project.
+title: "[Donation]: "
+labels: ["org", "donation"]
 assignees:
-  - octocat
+  - cpholguera
 body:
-  - type: markdown
+  - type: input
+    id: name
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
+      label: Your Name
+    validations:
+      required: true
+
+  - type: input
+    id: company
+    attributes:
+      label: Company Name
+      description: What's the name of your company?
+      placeholder: ex. Nice Security Ltd.
+    validations:
+      required: true
+      
   - type: input
     id: contact
     attributes:
-      label: Contact Details
+      label: E-Mail Address
       description: How can we get in touch with you if we need more info?
       placeholder: ex. email@example.com
     validations:
-      required: false
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
-    validations:
       required: true
+
+  - type: input
+    id: amount
+    attributes:
+      label: Donation Amount
+      description: How much would you like to donate?
+      placeholder: ex. USD 2000
+    validations:
+      required: false
+
   - type: dropdown
-    id: version
+    id: Donation Package
     attributes:
       label: Version
-      description: What version of our software are you running?
+      description: Which Donator Package would you like to request?
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+        - Standard Donation / No package (Donation < USD 500)
+        - Good Samaritan (USD 500; 1 year;  1 paperback MSTG)
+        - Honourable Benefactor (USD 2000 / 8 Available; 2 years; 3 paperback MSTGs)
+        - God Mode Donator (USD 4000 / 5 Available; 3 years; 5 paperback MSTGs)
     validations:
       required: true
+
   - type: dropdown
-    id: browsers
+    id: MSTG Paperback Copies
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
+      label: Version
+      description: Would you like to receive the paperback copie(s) of the MSTG as indicated in your Donation Package?
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
-  - type: textarea
-    id: logs
-    attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+        - No, please save the money for the project and contribute to the envorinment.
+        - Yes, please send them to me.
+    validations:
+      required: true
+
   - type: checkboxes
     id: terms
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      label: Code of Conduct and Donation Conditions
+      description: | 
+            By submitting this request, you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md) 
+            and have read and agree to the [conditions in our Project Page](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate).
+            > These types of public recognition shall be online no less than one year, or in the case of Project no less than the next major release, whichever is greater. 
+            > Some Donation Packages have a maximum duration, once reached the logos will be removed and the donator will still be listed as supporter on the project website, 
+            > GitHub and in the printed and digital versions. This can be renewed anytime.
       options:
-        - label: I agree to follow this project's Code of Conduct
+        - label: I agree to follow this project's Code of Conduct and Donation conditions.
           required: true
+
