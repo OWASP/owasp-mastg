@@ -1,4 +1,4 @@
-name: 🪲 Bug report / error in MSTG report
+name: 🪲📘 Bug report / error in MSTG report
 description: Create a report to help us improve the MSTG.
 title: "[Bug] "
 labels: ["bug"]
@@ -6,8 +6,7 @@ labels: ["bug"]
 body:
 
   - type: markdown
-    value: "## Welcome!"
-  - type: markdown
+    id: intro
     attributes:
       value: |
         Thanks for taking the time to fill out this bug! If you need real-time help, join us on our [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").

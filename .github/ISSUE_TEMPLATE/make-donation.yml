@@ -11,7 +11,7 @@ body:
     id: intro
     attributes:
       value: |
-          Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
+          **IMPORTANT**: Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
           
           🙏🏻 Thanks a lot!
         
