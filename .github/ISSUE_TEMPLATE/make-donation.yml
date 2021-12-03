@@ -1,14 +1,19 @@
 name: 💲 Donate to the OWASP Mobile Security Project
-description: |
-    Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
-    
-    🙏🏻 Thanks a lot!
-title: "New Donation"
+description: Thanks for donating to the MSTG project!
+title: "💲🎉 New Donation"
 labels: ["org", "donation"]
 assignees:
   - cpholguera
   - sushi2k
 body:
+
+- type: markdown
+  attributes:
+    value: |
+        Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
+        
+        🙏🏻 Thanks a lot!
+        
   - type: input
     id: name
     attributes:

@@ -1,0 +1,52 @@
+name: 🪲 Bug report / error in MSTG report
+description: Create a report to help us improve the MSTG.
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+
+- type: markdown
+  value: "## Welcome!"
+- type: markdown
+  attributes:
+    value: |
+      Thanks for taking the time to fill out this bug! If you need real-time help, join us on our [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
+
+  - type: input
+    id: name
+    attributes:
+      label: Describe the issue
+      description: A clear and concise description of what is missing/ wrongly formulated / misspelled (why not create a PR directly?) / lacks effectiveness (in terms of detection or remediation).
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: MSTG Chapter
+      description: Which chapter contains the bug?
+      placeholder: e.g. 0x05f-Testing-Local-Authentication.md line 30
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: File Line Number
+      description: Which line number?
+      placeholder: e.g. 30
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: File Line Number
+      description: |
+        Please give us context about the issue here. e.g.
+        - Example 1: there's a typo, it should be "through" not "thrugh".
+        - Example 2: this section says that you can do XXXX but since Android XX is not possible anymore.
+        - Example 3: this test requires the tester to do XXXX but that's not working anymore since iOS.
+      placeholder: explain here what happens
+    validations:
+      required: true
