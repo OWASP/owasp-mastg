@@ -23,7 +23,8 @@ body:
     id: where
     attributes:
       label: App Name
-      description: Name of crackme or challenge app that is broken.
+      description: Name of crackme or challenge app that is broken. See all apps [here](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes).
+      placeholder: e.g. UnCrackable App for Android Level 1
     validations:
       required: true
 
@@ -53,6 +54,6 @@ body:
     id: context
     attributes:
       label: Additional context
-      description: A clear and concise description of what you expected to happen.
+      description: More context that may help us understand the bug.
     validations:
-      required: true
+      required: false
