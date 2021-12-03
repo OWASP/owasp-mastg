@@ -38,3 +38,14 @@ body:
       placeholder: ex. USD 2000
     validations:
       required: false
+
+  - type: dropdown
+    id: MSTG Paperback Copies
+    attributes:
+      label: Version
+      description: Would you like to receive the paperback copie(s) of the MSTG as indicated in your Donation Package?
+      options:
+        - No, please save the money for the project and contribute to the envorinment.
+        - Yes, please send them to me.
+    validations:
+      required: true
