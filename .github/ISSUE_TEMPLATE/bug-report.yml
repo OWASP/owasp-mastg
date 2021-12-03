@@ -5,12 +5,12 @@ labels: ["bug"]
 
 body:
 
-- type: markdown
-  value: "## Welcome!"
-- type: markdown
-  attributes:
-    value: |
-      Thanks for taking the time to fill out this bug! If you need real-time help, join us on our [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
+  - type: markdown
+    value: "## Welcome!"
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug! If you need real-time help, join us on our [Slack channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "Come to our Slack!").
 
   - type: input
     id: name

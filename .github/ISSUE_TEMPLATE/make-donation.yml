@@ -7,11 +7,11 @@ assignees:
   - sushi2k
 body:
 
-- type: markdown
-  value: |
-        Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
-        
-        🙏🏻 Thanks a lot!
+  - type: markdown
+    value: |
+          Before opening this issue please go to our [**Donations page**](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) and read all the information.
+          
+          🙏🏻 Thanks a lot!
         
   - type: input
     id: name
