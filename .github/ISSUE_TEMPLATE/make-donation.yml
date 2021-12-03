@@ -40,12 +40,12 @@ body:
       required: false
 
   - type: dropdown
-    id: MSTG Paperback Copies
+    id: version
     attributes:
       label: Version
-      description: Would you like to receive the paperback copie(s) of the MSTG as indicated in your Donation Package?
+      description: What version of our software are you running?
       options:
-        - No, please save the money for the project and contribute to the envorinment.
-        - Yes, please send them to me.
+        - 1.0.2 (Default)
+        - 1.0.3 (Edge)
     validations:
       required: true
