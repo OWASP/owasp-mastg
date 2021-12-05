@@ -34,7 +34,7 @@ PANDOC=${PANDOC:-${PANDOCKER}}
 
 METADATA="Document/metadata.md ${FOLDER}/metadata.md"
 CHAPTERS="${FOLDER}/0x*.md ${FOLDER}/CHANGELOG.md"
-TESTS="${FOLDER}/Android/*.md"
+TESTS="`find ${FOLDER}/Android -type f -name '*.md'`"
 OUTPUT_BASE_NAME="OWASP_MSTG-${VERSION}"
 
 [ ! -z "${VERBOSE}" ] && echo "Create PDF"
