@@ -43,7 +43,7 @@ Surely you're already familiar with the  classic  triad  of  security  protectio
 
 Addressing both security and privacy protection goals at the same time is a very challenging task (if not impossible in many cases). There is an interesting visualization in IEEE's publication [Protection Goals for Privacy Engineering](https://ieeexplore.ieee.org/document/7163220) called ["The Three Axes"](https://ieeexplore.ieee.org/document/7163220#sec2e) representing the impossibility to ensure 100% of each of the six goals simultaneously.
 
-Most part of the processes derived from the protection goals are traditionally being covered in a privacy policy. However, this approach is not always optimal:
+Most parts of the processes derived from the protection goals are traditionally being covered in a privacy policy. However, this approach is not always optimal:
 
 - developers are not legal experts but still need to be compliant.
 - users would be require to read usually long and wordly policies.
