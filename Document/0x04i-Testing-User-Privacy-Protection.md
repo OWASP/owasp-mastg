@@ -46,7 +46,7 @@ Addressing both security and privacy protection goals at the same time is a very
 Most parts of the processes derived from the protection goals are traditionally being covered in a privacy policy. However, this approach is not always optimal:
 
 - developers are not legal experts but still need to be compliant.
-- users would be require to read usually long and wordly policies.
+- users would be required to read usually long and wordy policies.
 
 ### The New Approach (Google's and Apple's take on this)
 
