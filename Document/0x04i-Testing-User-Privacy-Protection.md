@@ -19,7 +19,7 @@ There are two main dimensions to consider here:
 - **Developer Compliance**: Developers need to comply with legal privacy principles since they are enforced by law. Developers need to better comprehend the legal principles in order to know what exactly they need to implement to remain compliant. Ideally, at least, the following must be fulfilled:
   - **Privacy-by-Design** approach (Art. 25 GDPR, "Data protection by design and by default").
   - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
-- **User Education**: users need to be educated on what is their sensitive data, be informed about how to use the application properly (to ensure a secure handling and processing of their information).
+- **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure a secure handling and processing of their information).
 
 > Note: More often than not apps will claim to handle certain data and in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://www.researchgate.net/publication/339349349_Engineering_Privacy_in_Smartphone_Apps_A_Technical_Guideline_Catalog_for_App_Developers) gives a very nice introduction to this topic.
 
