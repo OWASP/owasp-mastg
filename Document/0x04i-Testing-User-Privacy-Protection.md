@@ -36,7 +36,7 @@ Surely you're already familiar with the  classic  triad  of  security  protectio
   - Users should be able to request all information that the application has on them, and receive instructions on how to request this information.
   - Includes: privacy policies, user education, proper logging and auditing mechanisms, etc.
 - **Intervenability**:
-  - Users should be able to correct their personal information, request its deletion and withdraw any given consent at any time, and be explained how to do so.
+  - Users should be able to correct their personal information, request its deletion, withdraw any given consent at any time, and receive instructions on how to do so.
   - Includes: privacy settings directly in the app, single points of contact for individuals’ intervention requests (e.g. in-app chat, telephone number, e-mail), etc.
 
 > See Section 5.1.1 "Introduction to data protection goals" in ENISA's ["Privacy and data protection in mobile applications"](https%3A%2F%2Fwww.enisa.europa.eu%2Fpublications%2Fprivacy-and-data-protection-in-mobile-applications%2Fat_download%2FfullReport&usg=AOvVaw06m90YDUaLCeeD2r-Ompgn) for more detailed descriptions.
