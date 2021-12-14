@@ -21,7 +21,7 @@ There are two main dimensions to consider here:
   - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
 - **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure a secure handling and processing of their information).
 
-> Note: More often than not apps will claim to handle certain data and in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://www.researchgate.net/publication/339349349_Engineering_Privacy_in_Smartphone_Apps_A_Technical_Guideline_Catalog_for_App_Developers) gives a very nice introduction to this topic.
+> Note: More often than not apps will claim to handle certain data, but in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://www.researchgate.net/publication/339349349_Engineering_Privacy_in_Smartphone_Apps_A_Technical_Guideline_Catalog_for_App_Developers) gives a very nice introduction to this topic.
 
 ### Protection Goals for Data Protection
 
