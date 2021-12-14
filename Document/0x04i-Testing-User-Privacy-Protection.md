@@ -16,7 +16,7 @@ To ensure that users are properly protected, legislation such as the [General Da
 
 There are two main dimensions to consider here:
 
-- **Developer Compliance**: Developers need to comply with legal privacy princicples since they are enforced by law and therefore need to better comprehend the legal principles in order to know what exactly they need to implement to remain compliant. Ideally at least the following must be followed:
+- **Developer Compliance**: Developers need to comply with legal privacy principles since they are enforced by law. Developers need to better comprehend the legal principles in order to know what exactly they need to implement to remain compliant. Ideally, at least, the following must be fulfilled:
   - **Privacy-by-Design** approach (Art. 25 GDPR, "Data protection by design and by default").
   - **Principle of Least Privilege** ("every program and every user of the system should operate using the least set of privileges necessary to complete the job").
 - **User Education**: users need to be educated on what is their sensitive data, be informed about how to use the application properly (to ensure a secure handling and processing of their information).
