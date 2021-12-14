@@ -41,7 +41,7 @@ Surely you're already familiar with the  classic  triad  of  security  protectio
 
 > See Section 5.1.1 "Introduction to data protection goals" in ENISA's ["Privacy and data protection in mobile applications"](https%3A%2F%2Fwww.enisa.europa.eu%2Fpublications%2Fprivacy-and-data-protection-in-mobile-applications%2Fat_download%2FfullReport&usg=AOvVaw06m90YDUaLCeeD2r-Ompgn) for more detailed descriptions.
 
-Addressing both security and privacy protection goals at the same time is a very challenging task (if not impossible in many cases). There's even an interesting visualization in IEEE's publication [Protection Goals for Privacy Engineering](https://ieeexplore.ieee.org/document/7163220) called ["The Three Axes"](https://ieeexplore.ieee.org/document/7163220#sec2e) representing the impossibility to ensure 100% of each of the six goals simultaneously.
+Addressing both security and privacy protection goals at the same time is a very challenging task (if not impossible in many cases). There is an interesting visualization in IEEE's publication [Protection Goals for Privacy Engineering](https://ieeexplore.ieee.org/document/7163220) called ["The Three Axes"](https://ieeexplore.ieee.org/document/7163220#sec2e) representing the impossibility to ensure 100% of each of the six goals simultaneously.
 
 Most part of the processes derived from the protection goals are traditionally being covered in a privacy policy. However, this approach is not always optimal:
 
