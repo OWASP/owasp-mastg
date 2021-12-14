@@ -6,7 +6,7 @@
 
 ### The Main Problem
 
-Mobile apps handle all kinds of sensitive user data, from identification or banking information to health data. There's an understadable concern about how this data is handled and where it ends up. We can also talk about "benefits users get from using the apps" vs "the real price that they are paying for it" (usually and unfortunately without even being aware of it).
+Mobile apps handle all kinds of sensitive user data, from identification and banking information to health data. There is an understandable concern about how this data is handled and where it ends up. We can also talk about "benefits users get from using the apps" vs "the real price that they are paying for it" (usually and unfortunately without even being aware of it).
 
 ### The Solution (pre 2020)
 
