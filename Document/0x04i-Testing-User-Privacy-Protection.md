@@ -62,7 +62,7 @@ As a new requirement on both platforms, it's vital that these labels are accurat
 The following is a list of common violations that you as a security tester should report (although not an exhaustive list):
 
 - An app collects device location but does not have a prominent disclosure explaining which feature uses this data and/or indicates the app's usage in the background.
-- An app has a runtime permission requesting access to data before the prominent disclosure which specifies what the data is used for.
+- An app has a runtime permission requesting access to data before the prominent disclosure which specifies why the data is used.
 - An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data that is subject to the above Privacy Policy, data handling, and Prominent Disclosure and Consent requirements.
 - An app that records a user’s screen and doesn't treat this data as personal or sensitive data that is subject to this policy.
 
