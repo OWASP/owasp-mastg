@@ -59,7 +59,7 @@ As a new requirement on both platforms, it's vital that these labels are accurat
 
 ### Common Violations that Can Be Addressed with the New Approach
 
-This is a non-exhaustive list of common violations that you as as security tester should report:
+The following is a list of common violations that you as a security tester should report (although not an exhaustive list):
 
 - An app collects device location but does not have a prominent disclosure explaining which feature uses this data and/or indicates the app's usage in the background.
 - An app has a runtime permission requesting access to data before the prominent disclosure which specifies what the data is used for.
