@@ -120,7 +120,7 @@ Testing this might be especially challenging if you intend to automate it. We re
 
     _does the app manufacturer properly communicate the official way of distributing the app (e.g. from Google Play or the App Store)?_
 
-- **Prominent Disclosure**: on any case,
+- **Prominent Disclosure**: in any case,
 
     _does the app display prominent disclosure of data access, collection, use, and sharing? e.g. does the app use the [App Tracking Transparency Framework](https://developer.apple.com/documentation/apptrackingtransparency) to ask for permission on iOS?_
 
