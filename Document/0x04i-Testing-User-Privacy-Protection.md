@@ -33,7 +33,7 @@ Surely you're already familiar with the  classic  triad  of  security  protectio
   - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain.
   - Includes: data minimization, anonymization, pseudonymization, etc.
 - **Transparency**:
-  - Users should be able to request all information that the application has on them, and be explained how to request this information.
+  - Users should be able to request all information that the application has on them, and receive instructions on how to request this information.
   - Includes: privacy policies, user education, proper logging and auditing mechanisms, etc.
 - **Intervenability**:
   - Users should be able to correct their personal information, request its deletion and withdraw any given consent at any time, and be explained how to do so.
