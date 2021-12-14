@@ -30,7 +30,7 @@ When an app needs personal information from a user for its business process, the
 Surely you're already familiar with the  classic  triad  of  security  protection  goals:  confidentiality,  integrity,  and  availability. However, you might not be aware of the three protection goals that have been proposed to focus on data protection:
 
 - **Unlinkability**:
-  - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain
+  - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain.
   - Includes: data minimization, anonymisation, pseudonymisation, etc.
 - **Transparency**:
   - Users should be able to request all information that the application has on them, and be explained how to request this information.
