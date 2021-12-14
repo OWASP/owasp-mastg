@@ -87,7 +87,7 @@ You can learn more about this and other privacy related topics here:
 
 At this point we're only interested into knowing which privacy related information is being disclosed by the developers and try to evaluate if it seems reasonable (similarly as you'd do when testing for permissions).
 
-> It's possible that the developers are not declaring certain information that is indeed being collected and or shared, but that's a topic for a different test extending this one here.
+> It's possible that the developers are not declaring certain information that is indeed being collected and/or shared, but that's a topic for a different test extending this one here.
 
 ### Static Anaylsis
 
