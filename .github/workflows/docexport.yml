@@ -31,6 +31,9 @@ jobs:
     - name: Convert MSTG Testing Chapters to HTML
       run: . tools/scripts/mstg_to_html.sh
 
+    - name: List MSTG HTML
+      run: ls -l tools/scripts/generated/html/
+
     - name: Export YAML, enhance with MSTG and generate Excel
       run: cd tools/scripts && ./gen_all_excel.sh
 
