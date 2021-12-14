@@ -64,7 +64,7 @@ This is a non-exhaustive list of common violations that you as as security teste
 - An app collects device location but does not have a prominent disclosure explaining which feature uses this data and/or indicates the app's usage in the background.
 - An app has a runtime permission requesting access to data before the prominent disclosure which specifies what the data is used for.
 - An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data that is subject to the above Privacy Policy, data handling, and Prominent Disclosure and Consent requirements.
-- An app that records a user’s screen and doesn't treat this data as personal or sensitive data subject to this policy.
+- An app that records a user’s screen and doesn't treat this data as personal or sensitive data that is subject to this policy.
 
 Since we keep talking about location, contacts, screen recordings, etc., you probably have noticed that all of this is closely related to app permissions. App developers must explain the user why your app needs the permissions it requests. Both [iOS](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/) and [Android](https://developer.android.com/training/permissions/requesting.html#explain) have specific guidelines and best practices for that.
 
