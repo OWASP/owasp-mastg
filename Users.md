@@ -23,7 +23,7 @@ Currently the MASVS and MSTG are used by at least the following companies:
 - [Randorisec](https://randorisec.fr/ "Randorisec")
 - [Secarma](https://www.secarma.com/ "Secarma")
 - [SecuRing](https://securing.biz/ "SecuRing")
-- [Stingray Technologies](https://stingray.appsec.global/  "Stingray Technologies")
+- [Stingray Technologies](https://stingray-mobile.ru/  "Stingray Technologies")
 - [STM Solutions](https://stmsolutions.pl/ "STM Solutions")
 - [Toreon](https://www.toreon.com/ "Toreon")
 - [VantagePoint](https://www.vantagepoint.sg "VantagePoint")
