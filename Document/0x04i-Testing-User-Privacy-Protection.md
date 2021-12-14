@@ -106,7 +106,7 @@ Testing this might be especially challenging if you intend to automate it. We re
 
 - **Fingerprint usage**: when fingerprints are used for authentication providing access to high risk transactions/information,
 
-    _does the app inform the user about the issues there can be when having multiple fingerprints of other people registered to the device as well?_
+    _does the app inform the user about potential issues when having multiple fingerprints of other people registered to the device as well?_
 
 - **Rooting/Jailbreaking**: when root or jailbreak detection is implemented,
 
