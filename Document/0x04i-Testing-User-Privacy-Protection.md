@@ -31,7 +31,7 @@ Surely you're already familiar with the  classic  triad  of  security  protectio
 
 - **Unlinkability**:
   - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain.
-  - Includes: data minimization, anonymisation, pseudonymisation, etc.
+  - Includes: data minimization, anonymization, pseudonymization, etc.
 - **Transparency**:
   - Users should be able to request all information that the application has on them, and be explained how to request this information.
   - Includes: privacy policies, user education, proper logging and auditing mechanisms, etc.
