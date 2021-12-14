@@ -98,7 +98,7 @@ You can follow these steps:
 3. Verify if there's any infomation available at all.
 4. Compare the information available against the actual context of the app. Does everything make sense?
 
-Store the information you got from the app marketplace as evidence, if possible on a machine readable format that you can later use to verify potential violations of privacy or data protection by the developers (e.g. by comparing it to an exported [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) on iOS or your own measurements).
+Store the information you got from the app marketplace as evidence- if possible on a machine readable format that you can later use to verify potential violations of privacy or data protection by the developers (e.g. by comparing it to an exported [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) on iOS or your own measurements).
 
 ### Testing User Education on Security Best Practices
 
