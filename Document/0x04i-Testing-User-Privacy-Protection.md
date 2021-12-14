@@ -96,7 +96,7 @@ You can follow these steps:
 1. Search for the app in the corresponding app marketplace (e.g. Google Play, App Store).
 2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (Google Play).
 3. Verify if there's any infomation available at all.
-4. Compare the information available against the actual context of the app. Does everything makes sense?
+4. Compare the information available against the actual context of the app. Does everything make sense?
 
 Store the information you got from the app marketplace as evidence, if possible on a machine readable format that you can later use to verify potential violations of privacy or data protection by the developers (e.g. by comparing it to an exported [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) on iOS or your own measurements).
 
