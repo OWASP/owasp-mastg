@@ -27,7 +27,7 @@ There are two main dimensions to consider here:
 
 When an app needs personal information from a user for its business process, the user needs to be informed on what happens with the data and why the app needs it. If there is a third party doing the actual processing of the data, the app should inform the user about that too.
 
-Surely you're already familiar with the  classic  triad  of  security  protection  goals:  confidentiality,  integrity,  and  availability. However, you might not be aware of the three protection goals focusing on data protection have been proposed:
+Surely you're already familiar with the  classic  triad  of  security  protection  goals:  confidentiality,  integrity,  and  availability. However, you might not be aware of the three protection goals that have been proposed to focus on data protection:
 
 - **Unlinkability**:
   - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain
