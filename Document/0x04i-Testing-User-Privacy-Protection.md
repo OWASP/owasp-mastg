@@ -10,7 +10,7 @@ Mobile apps handle all kinds of sensitive user data, from identification and ban
 
 ### The Solution (pre 2020)
 
-To ensure that users are properly protected, legislations such as the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe have been developed and deployed (applicable since May 25th, 2018), forcing developers to be more transparent regarding the handling of sensitive user data. This has been mainly implemented using privacy policies.
+To ensure that users are properly protected, legislation such as the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe has been developed and deployed (applicable since May 25, 2018), forcing developers to be more transparent regarding the handling of sensitive user data. This has been mainly implemented using privacy policies.
 
 ### The Challenge
 
