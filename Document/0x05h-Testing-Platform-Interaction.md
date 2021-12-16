@@ -1432,7 +1432,7 @@ https://github.com/mozilla-mobile/focus-android/blob/master/app/src/main/java/or
 
 You can use:
 
-- [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData "")
+- [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData)
 
 #### Dynamic Analysis
 
