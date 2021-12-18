@@ -55,7 +55,7 @@ In order to address these challenges and help users easily understand how their 
 - the App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
 - the Google Play [Data Safety Labels](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
 
-As a new requirement on both platforms, it's vital that these labels are accurate in order to provide user assurance and mitigate developer abuse.
+As a new requirement on both platforms, it's vital that these labels are accurate in order to provide user assurance and mitigate abuse.
 
 ### Common Violations that Can Be Addressed with the New Approach
 
