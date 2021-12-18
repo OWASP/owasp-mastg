@@ -152,9 +152,9 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table['D2'].value = "Mobile Application Security Verification Standard"
     table['D2'].style = big_title
 
-    table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{mstg_version}", "{mstg_version} (git: {mstg_commit})")'
+    table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{mstg_version}", "OWASP MSTG {mstg_version} (commit: {mstg_commit})")'
     table['D3'].font = Font(name='Calibri', color="00C0C0C0")
-    table['D4'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{masvs_version}", "{masvs_version} (git: {masvs_commit})")'
+    table['D4'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{masvs_version}", "OWASP MASVS {masvs_version} (commit: {masvs_commit})")'
     table['D4'].font = Font(name='Calibri', color="00C0C0C0")
 
     table.column_dimensions['B'].width = 5
@@ -166,7 +166,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.column_dimensions['H'].width = 10
     table.column_dimensions['I'].width = 10
 
-    row=4
+    row=5
     col_id=2
     col_mstg_id=3
     col_text=4
