@@ -16,18 +16,15 @@ jobs:
       run: ls -lR
     
     - name: Get Latest MASVS Release Tag
-      id: latestrelease
-      run: |
-        echo "::set-output name=releasetag::$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
 
     - name: Confirm MASVS Release Tag
-      run: |
-        echo ${{ steps.latestrelease.outputs.releasetag }}
+      run: echo ${{env.MASVS_VERSION}}
 
     - uses: actions/checkout@v2
       with:
         repository: "OWASP/owasp-masvs.git"
-        ref: "${{ steps.latestrelease.outputs.releasetag }}"
+        ref: ${{env.MASVS_VERSION}}
         fetch-depth: 1
         path: tools/scripts/owasp-masvs
 
