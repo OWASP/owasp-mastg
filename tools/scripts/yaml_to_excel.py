@@ -86,7 +86,7 @@ def get_hyperlink(url):
 
 # CHECKMARK = "✓"
 
-def write_table(masvs_file, output_file):
+def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_version, masvs_commit):
 
     masvs_dict = yaml.safe_load(open(masvs_file))
 
@@ -152,8 +152,10 @@ def write_table(masvs_file, output_file):
     table['D2'].value = "Mobile Application Security Verification Standard"
     table['D2'].style = big_title
 
-    table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/v1.3", "v1.3 (git: 496d39821f17e92fca49eadb35eddb7468012b3c)")'
+    table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{mstg_version}", "{mstg_version} (git: {mstg_commit})")'
     table['D3'].font = Font(name='Calibri', color="00C0C0C0")
+    table['D4'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{masvs_version}", "{masvs_version} (git: {masvs_commit})")'
+    table['D4'].font = Font(name='Calibri', color="00C0C0C0")
 
     table.column_dimensions['B'].width = 5
     table.column_dimensions['C'].width = 23
@@ -298,7 +300,7 @@ def main():
 
     print(f"Generating Checklist for MSTG {args.mstgversion} ({args.mstgcommit}) and MASVS {args.masvsversion} ({args.masvscommit})")
 
-    write_table(args.masvs, args.outputfile)
+    write_table(args.masvs, args.outputfile, args.mstgversion, args.mstgcommit, args.masvsversion, args.masvscommit)
 
 
 if __name__ == '__main__':
