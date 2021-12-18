@@ -289,8 +289,14 @@ def main():
     parser = argparse.ArgumentParser(description='Export the MASVS requirements as Excel. Default language is en.')
     parser.add_argument('-m', '--masvs', required=True)
     parser.add_argument('-o', '--outputfile', required=True)
+    parser.add_argument('-v1', '--mstgversion', required=True)
+    parser.add_argument('-c1', '--mstgcommit', required=True)
+    parser.add_argument('-v2', '--masvsversion', required=True)
+    parser.add_argument('-c2', '--masvscommit', required=True)
 
     args = parser.parse_args()
+
+    print(f"Generating Checklist for MSTG {args.mstgversion} ({args.mstgcommit}) and MASVS {args.masvsversion} ({args.masvscommit})")
 
     write_table(args.masvs, args.outputfile)
 

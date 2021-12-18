@@ -40,7 +40,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         repository: "OWASP/owasp-masvs.git"
-        ref: ${{env.MASVS_VERSION}}
+        # ref: ${{env.MASVS_VERSION}}       # TODO RESTORE
+        ref: master
         fetch-depth: 1
         path: tools/scripts/owasp-masvs
 
@@ -62,7 +63,7 @@ jobs:
       run: ls -l tools/scripts/generated/html/
 
     - name: Export YAML, enhance with MSTG and generate Excel
-      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MSTG_VERSION}} ${{env.MASVS_VERSION}}
+      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MSTG_VERSION}} ${{env.MSTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
 
     - name: Upload MASVS YAML
       uses: actions/upload-artifact@v2
