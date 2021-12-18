@@ -15,10 +15,19 @@ jobs:
     - name: Listing repo recursive
       run: ls -lR
     
+    - name: Get Latest MASVS Release Tag
+      id: latestrelease
+      run: |
+        echo "::set-output name=releasetag::$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')"
+
+    - name: Confirm MASVS Release Tag
+      run: |
+        echo ${{ steps.latestrelease.outputs.releasetag }}
+
     - uses: actions/checkout@v2
       with:
         repository: "OWASP/owasp-masvs.git"
-        ref: "master"
+        ref: "${{ steps.latestrelease.outputs.releasetag }}"
         fetch-depth: 1
         path: tools/scripts/owasp-masvs
 
