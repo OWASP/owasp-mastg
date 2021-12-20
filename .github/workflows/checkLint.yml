@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 1
       - name: markdownlint-cli
-        uses: nosborn/github-action-markdown-cli@9fc95163471d6460c35cccad13645912aaa25d5f
+        uses: nosborn/github-action-markdown-cli@v3.0.0
         with:
           files: Document
           config_file: ".markdownlint.json"
