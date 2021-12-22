@@ -87,18 +87,25 @@ You can learn more about this and other privacy related topics here:
 
 At this point we're only interested into knowing which privacy related information is being disclosed by the developers and try to evaluate if it seems reasonable (similarly as you'd do when testing for permissions).
 
-> It's possible that the developers are not declaring certain information that is indeed being collected and/or shared, but that's a topic for a different test extending this one here.
+> It's possible that the developers are not declaring certain information that is indeed being collected and or shared, but that's a topic for a different test extending this one here. As part of this test you are not supposed to provide privacy violations assurance.
 
-### Static Anaylsis
+### Static Analysis
 
 You can follow these steps:
 
 1. Search for the app in the corresponding app marketplace (e.g. Google Play, App Store).
 2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (Google Play).
-3. Verify if there's any infomation available at all.
-4. Compare the information available against the actual context of the app. Does everything make sense?
+3. Verify if there's any information available at all.
 
-Store the information you got from the app marketplace as evidence- if possible on a machine readable format that you can later use to verify potential violations of privacy or data protection by the developers (e.g. by comparing it to an exported [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) on iOS or your own measurements).
+The test passes if the developer have complied with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
+
+### Dynamic analysis
+
+As an optional step, you can also provide some kind of evidence as part of this test. For instance, if you're testing an iOS app you can easily enable app activity recording and export a [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) containing detailed app accesses to different resources such as photos, contacts, camera, microphone, network connections, etc.
+
+Doing this has actually many advantages for testing other MASVS categories. It provides very useful information that you can use to [test network communication](0x06g-Testing-Network-Communication.md) in MASVS-NETWORK or when [testing app permissions](0x06h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) in MASVS-PLATFORM. While testing these other categories you might have taken similar measurements using other testing tools. You can also provide this as evidence for this test.
+
+> Ideally, the information available should be compared against what the app is actually meant to do. However, that's far from a trivial task that could take from several days to weeks to complete depending on your resources and support from automated tooling. It also heavily depends on the app functionality and context and should be ideally performed on a whitebox setup working very closely with the app developers.
 
 ### Testing User Education on Security Best Practices
 
