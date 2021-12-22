@@ -57,18 +57,18 @@ In order to address these challenges and help users easily understand how their 
 
 As a new requirement on both platforms, it's vital that these labels are accurate in order to provide user assurance and mitigate abuse.
 
-### Common Violations that Can Be Addressed with the New Approach
+### How this Relates to Testing Other MASVS Categories
 
-The following is a list of common violations that you as a security tester should report (although not an exhaustive list):
+The following is a list of [common privacy violations](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations) that you as a security tester should report (although not an exhaustive list):
 
-- An app collects device location but does not have a prominent disclosure explaining which feature uses this data and/or indicates the app's usage in the background.
-- An app has a runtime permission requesting access to data before the prominent disclosure which specifies why the data is used.
-- An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data that is subject to the above Privacy Policy, data handling, and Prominent Disclosure and Consent requirements.
-- An app that records a user’s screen and doesn't treat this data as personal or sensitive data that is subject to this policy.
+- Example 1: An app that accesses a user's inventory of installed apps and doesn't treat this data as personal or sensitive data by sending it over the network (violating MSTG-STORAGE-4) or to another app via IPC mechanisms (violating MSTG-STORAGE-6).
+- Example 2: An app displays sensitive data such as credit card details or user passwords without user authorization via e.g. biometrics (violating MSTG-AUTH-10).
+- Example 3: An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data, additionally sending it over an unsecured network connection (violating MSTG-NETWORK-1).
+- Example 4: An app collects device location (which is apparently not required for its proper functioning) and does not have a prominent disclosure explaining which feature uses this data (violating MSTG-PLATFORM-1).
 
-Since we keep talking about location, contacts, screen recordings, etc., you probably have noticed that all of this is closely related to app permissions. App developers must explain to the user why their app needs the permissions it requests. Both [iOS](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/) and [Android](https://developer.android.com/training/permissions/requesting.html#explain) have specific guidelines and best practices for that.
+> You can find more common violations in [Google Play Console Help (Policy Centre -> Privacy, deception and device abuse -> User data)](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations).
 
-> App Permissions have its own dedicated requirement in the OWASP MASVS, we suggest that you refer to the related test "Testing App Permissions (MSTG-PLATFORM-1)" for [Android](0x05h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) and [iOS](0x06h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1).
+As you can see this is deeply related to other testing categories. When you're testing them you're often indirectly testing for User Privacy Protection. Keep this in mind since it will help you provide better and more comprehensive reports. Often you'll also be able to reuse evidences from other tests in order to test for User Privacy Protection (see an example of this in ["Testing User Education"](#testing-user-education-mstg-storage-12)).
 
 ### Learn More
 
