@@ -12,7 +12,7 @@ jobs:
         fetch-depth: 1
 
     - name: Set VERSION to env 
-      run: echo "VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mstg/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+      run: echo "VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mstg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
 
     - name: Set DEV VERSION if it's not a tag
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
