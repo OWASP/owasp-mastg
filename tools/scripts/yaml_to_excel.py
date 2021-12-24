@@ -147,13 +147,13 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.merge_cells(start_row=2, end_row=4, start_column=2, end_column=3)
 
     img = Image('../../Document/Images/logo_circle.png')
-    img.height = img.height * 0.1
-    img.width = img.width * 0.1
-    table.add_image(img, 'B2')
+    img.height = img.height * 0.15
+    img.width = img.width * 0.15
+    table.add_image(img, 'C2')
 
     img = Image('owasp-masvs/Document/images/OWASP_logo.png')
-    img.height = img.height * 0.08
-    img.width = img.width * 0.08
+    img.height = img.height * 0.1
+    img.width = img.width * 0.1
     table.add_image(img, 'H2')
 
     table['D2'].value = "Mobile Application Security Verification Standard"
