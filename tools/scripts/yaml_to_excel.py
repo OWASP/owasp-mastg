@@ -172,6 +172,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.column_dimensions['G'].width = 5
     table.column_dimensions['H'].width = 10
     table.column_dimensions['I'].width = 10
+    table.column_dimensions['J'].width = 10
 
     row=6
     col_id=2
