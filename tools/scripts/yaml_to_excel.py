@@ -124,8 +124,8 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     [wb.add_named_style(create_style(style)) for style in table_config.get('styles')]
     
     underline = NamedStyle(name="underline")
-    underline.font = Font(name='Calibri', size=15, bold=True, color='00C0C0C0')
-    bd = Side(style='medium', color="00C0C0C0")
+    underline.font = Font(name='Calibri', size=15, bold=True, color='1CA4FC')
+    bd = Side(style='medium', color="1CA4FC")
     underline.border = Border(bottom=bd)
     # underline.alignment = align_center
     wb.add_named_style(underline)
@@ -173,7 +173,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.column_dimensions['H'].width = 10
     table.column_dimensions['I'].width = 10
 
-    row=5
+    row=6
     col_id=2
     col_mstg_id=3
     col_text=4
