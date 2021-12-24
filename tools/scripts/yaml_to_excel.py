@@ -146,7 +146,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.row_dimensions[2].height = 65
     table.merge_cells(start_row=2, end_row=4, start_column=2, end_column=3)
 
-    img = Image('Document/Images/logo_circle.png')
+    img = Image('../../Document/Images/logo_circle.png')
     img.height = img.height * 0.1
     img.width = img.width * 0.1
     table.add_image(img, 'B2')
