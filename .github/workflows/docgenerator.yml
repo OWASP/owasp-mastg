@@ -2,17 +2,21 @@ name: Documents Build
 
 on: [push, workflow_dispatch]
 
-env:
-  VERSION: "1.2"
-
 jobs:
 
   generate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         fetch-depth: 1
+
+    - name: Set VERSION to env 
+      run: echo "VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mstg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
+
+    - name: Set DEV VERSION if it's not a tag
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      run: echo "VERSION=${{env.VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Generate English PDF
       run: ./tools/docker/pandoc_makedocs.sh Document ${{env.VERSION}}
@@ -22,20 +26,6 @@ jobs:
       with:
         name: OWASP_MSTG-${{env.VERSION}}
         path: OWASP_MSTG-${{env.VERSION}}*
-
-  #   - name: Listing of root directory
-  #     run: ls -l
-
-  #   - name: Listing of root directory
-  #     run: ls -l tools/
-
-    - name: Upload RECENT Changes
-      uses: actions/upload-artifact@v2
-      if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
-      with:
-        name: RECENT_CHANGES.md
-        path: tools/RECENT_CHANGES.md
-
 
   release:
     runs-on: ubuntu-latest
@@ -54,14 +44,14 @@ jobs:
         run: pwd 
       - name: Listing of root directory
         run: ls -l 
-      # - name: Cleanup - Remove all downloaded documents
-      #   run: rm -rf OWASP_MSTG-*/
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
-          # body_path: RECENT_CHANGES.md
-          # body: 'MSTG test'
+          prerelease: false
+          draft: true
+          generate_release_notes: true
+          discussion_category_name: Announcements
           files: |
             OWASP_MSTG-*/OWASP_MSTG-*.pdf
             OWASP_MSTG-*/OWASP_MSTG-*.epub

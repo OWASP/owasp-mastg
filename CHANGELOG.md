@@ -1,5 +1,9 @@
 # Changelog
 
+## V1.2.1 and newer
+
+All our Changelogs are available online at the OWASP MSTG GitHub repository, see the [Releases page](https://github.com/OWASP/owasp-mstg/releases).
+
 ## v1.2 - 25th July 2021
 
 167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-25>.

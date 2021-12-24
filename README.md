@@ -32,7 +32,7 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 - [Cryptography in Mobile Apps](Document/0x04g-Testing-Cryptography.md)
 - [Testing Code Quality](Document/0x04h-Testing-Code-Quality.md)
 - [Tampering and Reverse Engineering](Document/0x04c-Tampering-and-Reverse-Engineering.md)
-- [Testing User Education](Document/0x04i-Testing-user-interaction.md)
+- [Testing User Privacy Protection](0x04i-Testing-User-Privacy-Protection.md)
 
 ### Android Testing Guide
 
