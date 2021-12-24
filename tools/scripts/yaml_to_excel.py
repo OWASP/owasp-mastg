@@ -9,6 +9,7 @@ Recommended LibreOffice
 
 align_center = Alignment(horizontal='center', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0)
 align_left = Alignment(horizontal='general', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0, justifyLastLine=True)
+FONT = 'Avenir'
 
 from openpyxl.styles import NamedStyle, Font, Border, Side
 
@@ -33,14 +34,14 @@ def create_style(params):
     return style
 
 # text = NamedStyle(name="text")
-# text.font = Font(name='Calibri')
+# text.font = Font(name=FONT)
 # bd = Side(style='thick', color="FFFFFF")
 # text.border = Border(left=bd, top=bd, right=bd, bottom=bd)
 # text.alignment = align_left
 # styles.append(text)
 
 # gray = NamedStyle(name="gray")
-# gray.font = Font(name='Calibri')
+# gray.font = Font(name=FONT)
 # gray.fill = PatternFill("solid", fgColor="00C0C0C0")
 # gray.alignment = align_center
 # styles.append(gray)
@@ -100,12 +101,12 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table_config = {
         'sheet': 'Security Requirements - Android',
         'styles': [
-            {'name': 'text', 'font': 'Calibri', 'alignment': 'left', 'background': ''},
-            {'name': 'center', 'font': 'Calibri', 'alignment': 'center', 'background': ''},
-            {'name': 'gray', 'font': 'Calibri', 'alignment': 'center', 'background': '00C0C0C0'},
-            {'name': 'blue', 'font': 'Calibri', 'alignment': 'center', 'background': '0033CCCC'},
-            {'name': 'green', 'font': 'Calibri', 'alignment': 'center', 'background': '0099CC00'},
-            {'name': 'orange', 'font': 'Calibri', 'alignment': 'center', 'background': '00FF9900'},
+            {'name': 'text', 'font': FONT, 'alignment': 'left', 'background': ''},
+            {'name': 'center', 'font': FONT, 'alignment': 'center', 'background': ''},
+            {'name': 'gray', 'font': FONT, 'alignment': 'center', 'background': '00C0C0C0'},
+            {'name': 'blue', 'font': FONT, 'alignment': 'center', 'background': '0033CCCC'},
+            {'name': 'green', 'font': FONT, 'alignment': 'center', 'background': '0099CC00'},
+            {'name': 'orange', 'font': FONT, 'alignment': 'center', 'background': '00FF9900'},
         ],
         'start_row': 5,
         'start_col': 2,
@@ -124,19 +125,19 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     [wb.add_named_style(create_style(style)) for style in table_config.get('styles')]
     
     underline = NamedStyle(name="underline")
-    underline.font = Font(name='Calibri', size=15, bold=True, color='1CA4FC')
+    underline.font = Font(name=FONT, size=15, bold=True, color='1CA4FC')
     bd = Side(style='medium', color="1CA4FC")
     underline.border = Border(bottom=bd)
     # underline.alignment = align_center
     wb.add_named_style(underline)
 
     big_title = NamedStyle(name="big_title")
-    big_title.font = Font(name='Calibri', size=25)
+    big_title.font = Font(name=FONT, size=25)
     big_title.alignment = align_left
     wb.add_named_style(big_title)
 
     gray_header = NamedStyle(name="gray_header")
-    gray_header.font = Font(name='Calibri', bold=True, color="00C0C0C0")
+    gray_header.font = Font(name=FONT, bold=True, color="00C0C0C0")
     # gray_header.fill = PatternFill("solid", fgColor="00C0C0C0")
     gray_header.alignment = align_center
     wb.add_named_style(gray_header)
@@ -160,9 +161,9 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table['D2'].style = big_title
 
     table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{mstg_version}", "OWASP MSTG {mstg_version} (commit: {mstg_commit})")'
-    table['D3'].font = Font(name='Calibri', color="00C0C0C0")
+    table['D3'].font = Font(name=FONT, color="00C0C0C0")
     table['D4'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{masvs_version}", "OWASP MASVS {masvs_version} (commit: {masvs_commit})")'
-    table['D4'].font = Font(name='Calibri', color="00C0C0C0")
+    table['D4'].font = Font(name=FONT, color="00C0C0C0")
 
     table.column_dimensions['B'].width = 5
     table.column_dimensions['C'].width = 23
