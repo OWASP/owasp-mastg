@@ -122,11 +122,11 @@ While both the MASVS and the MSTG are created and maintained by the community on
 
 ### God Mode Donators
 
+![OWASP MSTG](Images/Donators/NowSecure_logo.png) \
+
 [OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
 
 #### Honorable Benefactor
-
-![OWASP MSTG](Images/Donators/NowSecure_logo.png) \
 
 ![OWASP MSTG](Images/Donators/SEC_Consult_logo.png) \
 
@@ -135,15 +135,6 @@ While both the MASVS and the MSTG are created and maintained by the community on
 #### Good Samaritan Benefactor
 
 ![OWASP MSTG](Images/Donators/Randorisec_logo.png) \
-
-#### Other Donators
-
-The following people and/or companies have donated more than $25 using Leanpub or other ways:
-
-- eShard
-
-<br/>
-<br/>
 
 ### Older Versions
 
