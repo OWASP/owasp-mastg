@@ -65,11 +65,11 @@ jobs:
     - name: Export YAML, enhance with MSTG and generate Excel
       run: cd tools/scripts && ./gen_all_excel.sh ${{env.MSTG_VERSION}} ${{env.MSTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
 
-    - name: Upload MASVS YAML
-      uses: actions/upload-artifact@v2
-      with:
-        name: MASVS YAML Files
-        path: tools/scripts/masvs_*.yaml
+    # - name: Upload MASVS YAML
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: MASVS YAML Files
+    #     path: tools/scripts/masvs_*.yaml
 
     - name: Upload Enhanced MASVS YAML
       uses: actions/upload-artifact@v2
