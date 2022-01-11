@@ -71,12 +71,6 @@ If at any time you want to work on a different issue, you can simply switch to a
 
 > Tip: Don't try to work on too many issues at once though, as it will be a lot more difficult to merge branches the longer they are open.
 
-## Translating
-
-Our current goal is to publish one minor release every 6 months. Next, we will often create patch updates in order to provide intermediary updates in PDF and DocX format. Releases that have been tagged can then be translated into preferred languages.
-
-> Note we use semantic versioning: major.minor.patch
-
 ## What not to do
 
 Although we greatly appreciate any and all contributions to the project, there are a few things that you should take into consideration:
