@@ -1,6 +1,6 @@
 # Mobile App Taxonomy
 
-The term "mobile app" refers to a self-contained computer program designed to execute on a mobile device. Today, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os). Additionally, mobile Internet usage has surpassed desktop usage for the first time in history, making mobile browsing and apps the [most widespread kind of Internet-capable applications](https://www.idc.com/promo/smartphone-market-share/os "Smartphone Market Share").
+The term "mobile app" refers to a self-contained computer program designed to execute on a mobile device. Today, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os). Additionally, mobile Internet usage has surpassed desktop usage for the first time in history, making mobile browsing and apps the [most widespread kind of Internet-capable applications](https://www.idc.com/promo/smartphone-market-share/os).
 
 > In this guide, we'll use the term "app" as a general term for referring to any kind of application running on popular mobile OSes.
 
