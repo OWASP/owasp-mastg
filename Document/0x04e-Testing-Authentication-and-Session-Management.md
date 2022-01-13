@@ -380,7 +380,7 @@ Verify that the implementation adheres to JWT [best practices](https://stormpath
 
 #### Enforcing the Hashing Algorithm
 
-An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. Some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. [Some libraries](https://stormpath.com/blog/jwt-the-right-way) might treat tokens signed with the 'none' algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 
 For example, in Java applications, the expected algorithm should be requested explicitly when creating the verification context:
 
