@@ -317,11 +317,13 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     rule.formula = ['NOT(ISERROR(SEARCH("Pass",J11)))']
     table.conditional_formatting.add("J11:J1048576", rule)
 
-    gray_text = Font(color="c0c0c0")
-    dxf = DifferentialStyle(font=gray_text)
-    rule = Rule(type="expression", dxf=dxf, stopIfTrue=True)
+
+    gray_text = Font(color="666666")
+    gray_fill = PatternFill(bgColor="CCCCCC")
+    dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
+    rule = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf)
     rule.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
-    table.conditional_formatting.add("B11:J200", rule)
+    table.conditional_formatting.add("J11:J1048576", rule)
 
     wb.save(filename=output_file)
 
