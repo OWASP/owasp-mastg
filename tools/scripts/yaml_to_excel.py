@@ -212,8 +212,8 @@ def create_about_sheet(wb):
     row = row + 2
 
     ws.cell(row=row, column=first_col).value = "The OWASP Mobile Security Testing Guide is an OWASP flagship project led by Carlos Holguera and Sven Schleier which defines the industry standard for mobile application security."
-    ws.cell(row=row, column=first_col).style = "text"
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+    ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
     url = "https://owasp.org/www-project-mobile-security-testing-guide/"
@@ -222,8 +222,8 @@ def create_about_sheet(wb):
     row = row + 2
 
     ws.cell(row=row, column=first_col).value = "The OWASP MASVS (Mobile Application Security Verification Standard) is a standard that establishes the security requirements for mobile app security."
-    ws.cell(row=row, column=first_col).style = "text"
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+    ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
     url = "https://github.com/OWASP/owasp-mstg/"
@@ -232,8 +232,8 @@ def create_about_sheet(wb):
     row = row + 2
 
     ws.cell(row=row, column=first_col).value = "The OWASP MSTG (Mobile Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
-    ws.cell(row=row, column=first_col).style = "text"
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+    ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
     url = "https://github.com/OWASP/owasp-masvs/"
@@ -246,8 +246,8 @@ def create_about_sheet(wb):
     row = row + 2
 
     ws.cell(row=row, column=first_col).value = "If you have any comments or suggestions, please post them on our GitHub Discussions."
-    ws.cell(row=row, column=first_col).style = "text"
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+    ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
     url = "https://github.com/OWASP/owasp-mstg/discussions/categories/ideas"
@@ -260,8 +260,8 @@ def create_about_sheet(wb):
     row = row + 2
 
     ws.cell(row=row, column=first_col).value = "Copyright © 2022 The OWASP Foundation. This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. For any reuse or distribution, you must make clear to others the license terms of this work."
-    ws.cell(row=row, column=first_col).style = "text"
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+    ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
     url = "https://github.com/OWASP/owasp-mstg/blob/master/License.md"

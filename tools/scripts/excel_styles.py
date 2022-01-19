@@ -12,6 +12,7 @@ align_center = Alignment(
     wrap_text=True,
     shrink_to_fit=True,
     indent=0,
+    wrapText=True,
 )
 align_left = Alignment(
     horizontal="general",
@@ -21,16 +22,18 @@ align_left = Alignment(
     shrink_to_fit=True,
     indent=0,
     justifyLastLine=True,
+    wrapText=True,
 )
 FONT = "Avenir"
 
 styles_metadata = [
-    {"name": "text", "font": FONT, "alignment": "left", "background": ""},
-    {"name": "center", "font": FONT, "alignment": "center", "background": ""},
-    {"name": "gray", "font": FONT, "alignment": "center", "background": "00C0C0C0"},
-    {"name": "blue", "font": FONT, "alignment": "center", "background": "0033CCCC"},
-    {"name": "green", "font": FONT, "alignment": "center", "background": "0099CC00"},
-    {"name": "orange", "font": FONT, "alignment": "center", "background": "00FF9900"},
+    {"name": "text", "font": {'name': FONT}, "alignment": "left", "background": ""},
+    {"name": "center", "font": {'name': FONT}, "alignment": "center", "background": ""},
+    {"name": "blue_link", "font": {'name': FONT, 'underline': "single", 'color': "1CA4FC"}, "alignment": "center", "background": ""},
+    {"name": "gray", "font": {'name': FONT}, "alignment": "center", "background": "00C0C0C0"},
+    {"name": "blue", "font": {'name': FONT}, "alignment": "center", "background": "0033CCCC"},
+    {"name": "green", "font": {'name': FONT}, "alignment": "center", "background": "0099CC00"},
+    {"name": "orange", "font": {'name': FONT}, "alignment": "center", "background": "00FF9900"},
 ]
 
 
@@ -38,7 +41,7 @@ def create_style(params):
 
     style = NamedStyle(name=params.get("name"))
     if params.get("font"):
-        style.font = Font(name=params.get("font"))
+        style.font = Font(**params.get("font"))
     # bd = Side(style='thick', color="FFFFFF")
     # style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
     alignment = params.get("alignment")
