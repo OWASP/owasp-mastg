@@ -1,14 +1,36 @@
 import yaml
-from openpyxl import load_workbook, Workbook
+from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment, Border, Side, NamedStyle, Font
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.drawing.image import Image
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import Rule
 
-"""
-Recommended LibreOffice
-"""
+''' Tool for exporting the MASVS requirements as a checklist including MSTG coverage.
+
+    By Carlos Holguera
+
+    Copyright (c) 2022 OWASP Foundation
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+    '''
 
 align_center = Alignment(horizontal='center', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0)
 align_left = Alignment(horizontal='general', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0, justifyLastLine=True)
@@ -35,7 +57,6 @@ rule_na = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf
 rule_na.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
 
 
-
 def create_style(params):
 
     style = NamedStyle(name=params.get('name'))
@@ -56,36 +77,6 @@ def create_style(params):
 
     return style
 
-# text = NamedStyle(name="text")
-# text.font = Font(name=FONT)
-# bd = Side(style='thick', color="FFFFFF")
-# text.border = Border(left=bd, top=bd, right=bd, bottom=bd)
-# text.alignment = align_left
-# styles.append(text)
-
-# gray = NamedStyle(name="gray")
-# gray.font = Font(name=FONT)
-# gray.fill = PatternFill("solid", fgColor="00C0C0C0")
-# gray.alignment = align_center
-# styles.append(gray)
-
-# blue = NamedStyle(name="blue")
-# blue.fill = PatternFill("solid", fgColor="0033CCCC")
-# blue.alignment = align_center
-# styles.append(blue)
-
-
-# green = NamedStyle(name="green")
-# green.fill = PatternFill("solid", fgColor="0099CC00")
-# green.alignment = align_center
-# styles.append(green)
-
-
-# orange = NamedStyle(name="orange")
-# orange.fill = PatternFill("solid", fgColor="00FF9900")
-# orange.alignment = align_center
-# styles.append(orange)
-
 # TODO parametrize & create a function
 # TODO read sheet, col ids and cell styles (centered, left, colored, character if true, etc) from yaml
 
@@ -101,23 +92,20 @@ MASVS_TITLES = {
 }
 
 def get_hyperlink(url):
-    # title = url.split('#')[1].replace('-',' ').capitalize() 
+
     if '/0x05' in url:
         title = 'Android'
     elif '/0x06' in url:
         title = 'iOS'
     return f'=HYPERLINK("{url}", "{title}")'
 
-# CHECKMARK = "✓"
 
 def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_version, masvs_commit):
 
     masvs_dict = yaml.safe_load(open(masvs_file))
 
-    # wb = load_workbook(filename=input_file)
-
     wb = Workbook()
-    # output_file = 'checklist_new.xlsx'
+
     table = wb.active
     table.title = 'Security Requirements'
 
@@ -151,7 +139,6 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     underline.font = Font(name=FONT, size=15, bold=True, color='1CA4FC')
     bd = Side(style='medium', color="1CA4FC")
     underline.border = Border(bottom=bd)
-    # underline.alignment = align_center
     wb.add_named_style(underline)
 
     big_title = NamedStyle(name="big_title")
@@ -161,11 +148,8 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
 
     gray_header = NamedStyle(name="gray_header")
     gray_header.font = Font(name=FONT, bold=True, color="00C0C0C0")
-    # gray_header.fill = PatternFill("solid", fgColor="00C0C0C0")
     gray_header.alignment = align_center
     wb.add_named_style(gray_header)
-
-    # table = wb['Security Requirements']
 
     table.row_dimensions[2].height = 65
     table.merge_cells(start_row=2, end_row=4, start_column=2, end_column=3)
@@ -219,23 +203,11 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
 
             category_id = f"V{category}"
             category_title = MASVS_TITLES[category_id]
-
-            # category = f"{category_id} - {category_title}"
             
             category_cell = table.cell(row=row,column=col_id)
             category_cell.value = category_title
             category_cell.style = 'underline'
             category_cell.alignment = align_left
-
-            # title_cell_1 = table.cell(row=row,column=col_id+1)
-            # title_cell_1.style = 'underline'
-            # title_cell_1.alignment = align_left
-            # title_cell_1.value = category_title
-
-            # title_cell_2 = table.cell(row=row,column=col_id+2)
-            # title_cell_2.style = 'underline'
-            # title_cell_2.alignment = align_left
-            
 
             table.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_status)
 
@@ -267,12 +239,6 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
             table.add_data_validation(STATUS_VALIDATION)
 
             row = row + 2
-        
-        # l1 = CHECKMARK if req['L1'] else ""
-        # l2 = CHECKMARK if req['L2'] else ""
-        # r = CHECKMARK if req['R'] else ""
-
-
 
         # End header
 
@@ -286,13 +252,10 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
         table.cell(row=row,column=col_text).style = 'text'
         
         if req['L1']:
-            # table.cell(row=row,column=col_l1).value = l1
             table.cell(row=row,column=col_l1).style = 'blue'
         if req['L2']:
-            # table.cell(row=row,column=col_l2).value = l2
             table.cell(row=row,column=col_l2).style = 'green'
         if req['R']:
-            # table.cell(row=row,column=col_r).value = r
             table.cell(row=row,column=col_r).style = 'orange'
         if req.get('links'):
             table.cell(row=row,column=col_link_android).value = get_hyperlink(req['links'][0])
@@ -317,13 +280,6 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
         row = row+1
 
     table.sheet_view.showGridLines = False
-
-    # for row in table.iter_rows():
-    #     for cell in row:
-    #         cell.alignment = align_center
-
-    # for cell in table['D']:
-    #     cell.alignment = align_left
 
     wb.save(filename=output_file)
 
