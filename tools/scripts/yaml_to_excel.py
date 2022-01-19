@@ -50,13 +50,13 @@ MSTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
 
-def get_hyperlink(url):
+# def get_hyperlink(url):
 
-    if '/0x05' in url:
-        title = 'Android'
-    elif '/0x06' in url:
-        title = 'iOS'
-    return f'=HYPERLINK("{url}", "{title}")'
+#     if '/0x05' in url:
+#         title = 'Android'
+#     elif '/0x06' in url:
+#         title = 'iOS'
+#     return f'=HYPERLINK("{url}", "{title}")'
 
 def write_header(ws):
 
@@ -172,9 +172,10 @@ def write_table(masvs_file, output_file):
             ws.cell(row=row,column=col_r).value = 'R'
             ws.cell(row=row,column=col_r).style = 'gray_header'
 
-            ws.cell(row=row,column=col_link_android).value = 'MSTG Test Coverage'
+            ws.cell(row=row,column=col_link_android).value = 'Android'
             ws.cell(row=row,column=col_link_android).style = 'gray_header'
-            ws.merge_cells(start_row=row, end_row=row, start_column=col_link_android, end_column=col_link_ios)
+            ws.cell(row=row,column=col_link_ios).value = 'iOS'
+            ws.cell(row=row,column=col_link_ios).style = 'gray_header'
 
             ws.cell(row=row,column=col_status).value = 'Status'
             ws.cell(row=row,column=col_status).style = 'gray_header'
@@ -200,10 +201,10 @@ def write_table(masvs_file, output_file):
         if req['R']:
             ws.cell(row=row,column=col_r).style = 'orange'
         if req.get('links'):
-            ws.cell(row=row,column=col_link_android).value = get_hyperlink(req['links'][0])
+            ws.cell(row=row,column=col_link_android).value = f"=HYPERLINK('{req['links'][0]}', 'Open')"
             ws.cell(row=row,column=col_link_android).style = 'center'
             if len(req['links']) >= 2:
-                ws.cell(row=row,column=col_link_ios).value = get_hyperlink(req['links'][1])
+                ws.cell(row=row,column=col_link_ios).value = f"=HYPERLINK('{req['links'][1]}', 'Open')"
                 ws.cell(row=row,column=col_link_ios).style = 'center'
         else:
             ws.cell(row=row,column=col_link_android).value = 'N/A'
@@ -227,6 +228,7 @@ def write_table(masvs_file, output_file):
     wb.save(filename=output_file)
 
 def main():
+    global MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
     import argparse
     
     parser = argparse.ArgumentParser(description='Export the MASVS requirements as Excel. Default language is en.')
