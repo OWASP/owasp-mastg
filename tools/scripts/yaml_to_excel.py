@@ -3,7 +3,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.drawing.image import Image
 
-import excel_styles
+import excel_styles_and_validation
 
 """ Tool for exporting the MASVS requirements as a checklist including MSTG coverage.
 
@@ -88,9 +88,9 @@ def write_header(ws):
     ws["D2"].style = "big_title"
 
     ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{MSTGVERSION}", "OWASP MSTG {MSTGVERSION} (commit: {MSTGCOMMIT})")'
-    ws["D3"].font = Font(name=excel_styles.FONT, color="00C0C0C0")
+    ws["D3"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
     ws["D4"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
-    ws["D4"].font = Font(name=excel_styles.FONT, color="00C0C0C0")
+    ws["D4"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
 
 def set_columns_width(ws):
     for col in WS_BASE_CONFIG.get("columns"):
@@ -107,7 +107,7 @@ def write_title(ws, row, start_column, end_column, title):
     cell = ws.cell(row=row, column=start_column)
     cell.value = title
     cell.style = "underline"
-    cell.alignment = excel_styles.align_left
+    cell.alignment = excel_styles_and_validation.align_left
 
     ws.merge_cells(start_row=row, end_row=row, start_column=start_column, end_column=end_column)
 
@@ -149,7 +149,7 @@ def create_security_requirements_sheet(wb):
 
             set_table_headers(row, ws)
 
-            ws.add_data_validation(excel_styles.status_validation)
+            ws.add_data_validation(excel_styles_and_validation.status_validation)
 
             row = row + 2
 
@@ -187,10 +187,10 @@ def create_security_requirements_sheet(wb):
         ws.row_dimensions[row].height = 55  # points
 
         status_cell = ws.cell(row=row, column=col_status).coordinate
-        excel_styles.status_validation.add(status_cell)
-        ws.conditional_formatting.add(status_cell, excel_styles.rule_fail)
-        ws.conditional_formatting.add(status_cell, excel_styles.rule_pass)
-        ws.conditional_formatting.add(status_cell, excel_styles.rule_na)
+        excel_styles_and_validation.status_validation.add(status_cell)
+        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_fail)
+        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_pass)
+        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_na)
 
         row = row + 1
 
@@ -271,7 +271,7 @@ def create_about_sheet(wb):
 def generate_spreadsheet(output_file):
 
     wb = Workbook()
-    excel_styles.load_styles(wb)
+    excel_styles_and_validation.load_styles(wb)
 
     create_security_requirements_sheet(wb)
     create_about_sheet(wb)
