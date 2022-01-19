@@ -218,7 +218,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
             # title_cell_2.alignment = align_left
             
 
-            table.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_link_ios)
+            table.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_status)
 
             table.row_dimensions[row].height = 25 # points
             row = row+2
@@ -321,7 +321,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     dxf = DifferentialStyle(font=gray_text)
     rule = Rule(type="expression", dxf=dxf, stopIfTrue=True)
     rule.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
-    table.conditional_formatting.add("B11:J1048576", rule)
+    table.conditional_formatting.add("B11:J200", rule)
 
     wb.save(filename=output_file)
 
