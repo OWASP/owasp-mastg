@@ -2,6 +2,7 @@ import yaml
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import PatternFill, Alignment, Border, Side
 from openpyxl.drawing.image import Image
+from openpyxl.worksheet.datavalidation import DataValidation
 
 """
 Recommended LibreOffice
@@ -10,6 +11,7 @@ Recommended LibreOffice
 align_center = Alignment(horizontal='center', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0)
 align_left = Alignment(horizontal='general', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0, justifyLastLine=True)
 FONT = 'Avenir'
+STATUS_VALIDATION = DataValidation(type="list", formula1='"Pass,Fail,N/A"', allow_blank=True)
 
 from openpyxl.styles import NamedStyle, Font, Border, Side
 
@@ -184,6 +186,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     col_r=7
     col_link_android=8
     col_link_ios=9
+    col_status=10
 
     for mstg_id, req in masvs_dict.items():
         req_id = req['id'].split('.') 
@@ -237,6 +240,11 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
             table.cell(row=row,column=col_link_android).value = 'MSTG Test Coverage'
             table.cell(row=row,column=col_link_android).style = 'gray_header'
             table.merge_cells(start_row=row, end_row=row, start_column=col_link_android, end_column=col_link_ios)
+
+            table.cell(row=row,column=col_status).value = 'Status'
+            table.cell(row=row,column=col_status).style = 'gray_header'
+            table.add_data_validation(STATUS_VALIDATION)
+            STATUS_VALIDATION.add('J11:J1048576')
 
             row = row + 2
         
