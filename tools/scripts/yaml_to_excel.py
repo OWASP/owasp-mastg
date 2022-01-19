@@ -120,7 +120,7 @@ def create_about_sheet(wb):
 
     row = row+2
     url = "https://github.com/OWASP/owasp-mstg/"
-    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", {url})'
+    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", "{url}")'
 
     row = row+2
 
@@ -130,7 +130,7 @@ def create_about_sheet(wb):
 
     row = row+2
     url = "https://github.com/OWASP/owasp-masvs/"
-    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", {url})'
+    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", "{url}")'
 
     row = row+2
 
@@ -138,13 +138,13 @@ def create_about_sheet(wb):
 
     row = row+2
 
-    ws.cell(row=row,column=first_col).value = "If you have any comments or suggestions, please post them on our GitHub Discussions: https://github.com/OWASP/owasp-mstg/discussions/categories/ideas"
+    ws.cell(row=row,column=first_col).value = "If you have any comments or suggestions, please post them on our GitHub Discussions:"
     ws.cell(row=row,column=first_col).style = 'text'
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
 
     row = row+2
     url = "https://github.com/OWASP/owasp-mstg/discussions/categories/ideas"
-    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", {url})'
+    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", "{url}")'
 
     row = row+2
 
@@ -158,7 +158,7 @@ def create_about_sheet(wb):
 
     row = row+2
     url = "https://github.com/OWASP/owasp-mstg/blob/master/License.md"
-    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", {url})'
+    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", "{url}")'
     
 
 def set_columns_width(ws):
