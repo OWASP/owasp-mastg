@@ -41,11 +41,11 @@ styles_metadata = [
 def create_style(params):
 
     style = NamedStyle(name=params.get("name"))
-    if params.get("font"):
-        font_color = params.get("font").get('color')
-        if font_color:
-            params.get("font")['color'] = Color(rgb=params.get("font").get('color'))
-        style.font = Font(**params.get("font"))
+    # if params.get("font"):
+        # font_color = params.get("font").get('color')
+        # if font_color:
+        #     params.get("font")['color'] = Color(rgb=params.get("font").get('color'))
+    style.font = Font(**params.get("font"))
 
     # bd = Side(style='thick', color="FFFFFF")
     # style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
