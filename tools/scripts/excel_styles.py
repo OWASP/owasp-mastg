@@ -65,18 +65,18 @@ status_validation = DataValidation(type="list", formula1='"Pass,Fail,N/A"', allo
 
 red_text = Font(color="9C0006")
 red_fill = PatternFill(bgColor="FFC7CE")
-dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=excel_styles.align_center)
+dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=align_center)
 rule_fail = Rule(type="containsText", operator="containsText", text="Fail", dxf=dxf)
 rule_fail.formula = ['NOT(ISERROR(SEARCH("Fail",J11)))']
 
 green_text = Font(color="38761D")
 green_fill = PatternFill(bgColor="B6D7A8")
-dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=excel_styles.align_center)
+dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=align_center)
 rule_pass = Rule(type="containsText", operator="containsText", text="Pass", dxf=dxf)
 rule_pass.formula = ['NOT(ISERROR(SEARCH("Pass",J11)))']
 
 gray_text = Font(color="666666")
 gray_fill = PatternFill(bgColor="CCCCCC")
-dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=excel_styles.align_center)
+dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
 rule_na = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf)
 rule_na.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
