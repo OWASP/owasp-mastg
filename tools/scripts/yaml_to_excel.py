@@ -90,6 +90,7 @@ def write_table(masvs_file, output_file):
     masvs_dict = yaml.safe_load(open(masvs_file))
 
     wb = Workbook()
+    excel_styles.load_styles(wb)
 
     ws = wb.active
     ws.title = 'Security Requirements'
@@ -97,22 +98,21 @@ def write_table(masvs_file, output_file):
     write_header(ws)
 
     # ws_config = {
-    #     'start_row': 5,
+    #     'start_row': 6,
     #     'start_col': 2,
     #     'columns': [
-    #         {'name': 'ID', 'width': 10,},
-    #         {'name': 'MSTG-ID', 'width': 25,},
-    #         {'name': 'Detailed Verification Requirement',  'width': 80,},
-    #         {'name': 'L1', 'style': 'blue', 'width': 5,},
-    #         {'name': 'L2', 'style': 'green', 'width': 5,},
-    #         {'name': 'R', 'style': 'orange', 'width': 5,},
-    #         {'name': 'References', 'width': 70,},
+    #         {'col': 'B', position: 2, 'name': 'ID', 'width': 10,},
+    #         {'col': 'C', position: 3, 'name': 'MSTG-ID', 'width': 25,},
+    #         {'col': 'D', position: 4, 'name': 'Detailed Verification Requirement',  'width': 80,},
+    #         {'col': 'E', position: 5, 'name': 'L1', 'style': 'blue', 'width': 5,},
+    #         {'col': 'F', position: 6, 'name': 'L2', 'style': 'green', 'width': 5,},
+    #         {'col': 'G', position: 7, 'name': 'R', 'style': 'orange', 'width': 5,},
+    #         {'col': 'H', position: 8, 'name': 'Android', 'width': 10,},
+    #         {'col': 'I', position: 9, 'name': 'iOS', 'width': 10,},
+    #         {'col': 'J', position: 10, 'name': 'Status', 'width': 10,},
     #     ]
             
     # }
-
-    excel_styles.load_styles(wb)
-
 
     ws.column_dimensions['B'].width = 5
     ws.column_dimensions['C'].width = 23
