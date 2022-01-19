@@ -5,45 +5,62 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 styles = []
 
-align_center = Alignment(horizontal='center', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0)
-align_left = Alignment(horizontal='general', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0, justifyLastLine=True)
-FONT = 'Avenir'
+align_center = Alignment(
+    horizontal="center",
+    vertical="center",
+    text_rotation=0,
+    wrap_text=True,
+    shrink_to_fit=True,
+    indent=0,
+)
+align_left = Alignment(
+    horizontal="general",
+    vertical="center",
+    text_rotation=0,
+    wrap_text=True,
+    shrink_to_fit=True,
+    indent=0,
+    justifyLastLine=True,
+)
+FONT = "Avenir"
 
 styles_metadata = [
-    {'name': 'text', 'font': FONT, 'alignment': 'left', 'background': ''},
-    {'name': 'center', 'font': FONT, 'alignment': 'center', 'background': ''},
-    {'name': 'gray', 'font': FONT, 'alignment': 'center', 'background': '00C0C0C0'},
-    {'name': 'blue', 'font': FONT, 'alignment': 'center', 'background': '0033CCCC'},
-    {'name': 'green', 'font': FONT, 'alignment': 'center', 'background': '0099CC00'},
-    {'name': 'orange', 'font': FONT, 'alignment': 'center', 'background': '00FF9900'},
+    {"name": "text", "font": FONT, "alignment": "left", "background": ""},
+    {"name": "center", "font": FONT, "alignment": "center", "background": ""},
+    {"name": "gray", "font": FONT, "alignment": "center", "background": "00C0C0C0"},
+    {"name": "blue", "font": FONT, "alignment": "center", "background": "0033CCCC"},
+    {"name": "green", "font": FONT, "alignment": "center", "background": "0099CC00"},
+    {"name": "orange", "font": FONT, "alignment": "center", "background": "00FF9900"},
 ]
+
 
 def create_style(params):
 
-    style = NamedStyle(name=params.get('name'))
-    if params.get('font'):
-        style.font = Font(name=params.get('font'))
+    style = NamedStyle(name=params.get("name"))
+    if params.get("font"):
+        style.font = Font(name=params.get("font"))
     # bd = Side(style='thick', color="FFFFFF")
     # style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
-    alignment = params.get('alignment')
-    if alignment == 'center':
+    alignment = params.get("alignment")
+    if alignment == "center":
         style.alignment = align_center
     else:
         style.alignment = align_left
 
-    if params.get('background'):
-        style.fill = PatternFill("solid", fgColor=params.get('background'))
-        bd = Side(style='thick', color="FFFFFF")
+    if params.get("background"):
+        style.fill = PatternFill("solid", fgColor=params.get("background"))
+        bd = Side(style="thick", color="FFFFFF")
         style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
 
     return style
+
 
 def load_styles(wb):
     styles = [create_style(style) for style in styles_metadata]
 
     underline = NamedStyle(name="underline")
-    underline.font = Font(name=FONT, size=15, bold=True, color='1CA4FC')
-    bd = Side(style='medium', color="1CA4FC")
+    underline.font = Font(name=FONT, size=15, bold=True, color="1CA4FC")
+    bd = Side(style="medium", color="1CA4FC")
     underline.border = Border(bottom=bd)
     styles.append(underline)
 
