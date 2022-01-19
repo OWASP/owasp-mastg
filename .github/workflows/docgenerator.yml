@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
 
-  Generate MSTG Documents:
+  Generate-MSTG-Documents:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
         name: OWASP_MSTG-${{env.VERSION}}
         path: OWASP_MSTG-${{env.VERSION}}*
   
-  Generate Checklists:
+  Generate-Checklists:
     runs-on: ubuntu-latest
 
     steps:
