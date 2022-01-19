@@ -3,6 +3,8 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.styles import PatternFill, Alignment, Border, Side
 from openpyxl.drawing.image import Image
 from openpyxl.worksheet.datavalidation import DataValidation
+from openpyxl.styles.differential import DifferentialStyle
+from openpyxl.formatting.rule import Rule
 
 """
 Recommended LibreOffice
@@ -299,6 +301,20 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     # for cell in table['D']:
     #     cell.alignment = align_left
 
+    # 
+    # 	
+    red_text = Font(color="9C0006")
+    red_fill = PatternFill(bgColor="FFC7CE")
+    dxf = DifferentialStyle(font=red_text, fill=red_fill)
+    rule = Rule(type="containsText", operator="containsText", text="Fail", dxf=dxf)
+    rule.formula = ['NOT(ISERROR(SEARCH("Fail",J11)))']
+    table.conditional_formatting.add("J11:J1048576", rule)
+
+    # red_fill = PatternFill(bgColor="FFC7CE")
+    # dxf = DifferentialStyle(fill=red_fill)
+    # r = Rule(type="expression", dxf=dxf, stopIfTrue=True)
+    # r.formula = ['$J11="N/A"']
+    # table.conditional_formatting.add("J11:J1048576", r)
 
     wb.save(filename=output_file)
 
