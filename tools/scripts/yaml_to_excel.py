@@ -50,6 +50,23 @@ MSTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
 
+WS_BASE_CONFIG = {
+    'start_row': 6,
+    'start_col': 2,
+    'columns': [
+        {'col': 'B', 'position': 2, 'name': 'ID', 'width': 10, 'style': 'gray_header'},
+        {'col': 'C', 'position': 3, 'name': 'MSTG-ID', 'width': 25, 'style': 'gray_header'},
+        {'col': 'D', 'position': 4, 'name': 'Detailed Verification Requirement',  'width': 80, 'style': 'gray_header'},
+        {'col': 'E', 'position': 5, 'name': 'L1', 'style': 'blue', 'width': 5, 'style': 'gray_header'},
+        {'col': 'F', 'position': 6, 'name': 'L2', 'style': 'green', 'width': 5, 'style': 'gray_header'},
+        {'col': 'G', 'position': 7, 'name': 'R', 'style': 'orange', 'width': 5, 'style': 'gray_header'},
+        {'col': 'H', 'position': 8, 'name': 'Android', 'width': 10, 'style': 'gray_header'},
+        {'col': 'I', 'position': 9, 'name': 'iOS', 'width': 10, 'style': 'gray_header'},
+        {'col': 'J', 'position': 10, 'name': 'Status', 'width': 10, 'style': 'gray_header'},
+    ]
+        
+}
+
 # def get_hyperlink(url):
 
 #     if '/0x05' in url:
@@ -84,7 +101,38 @@ def write_header(ws):
 def create_about_sheet(wb):
     ws = wb.create_sheet("About")
     write_header(ws)
+    set_columns_width(ws, WS_BASE_CONFIG)
 
+    row = WS_BASE_CONFIG['start_row']
+    first_col = WS_BASE_CONFIG['columns'][0].get('position')
+    last_col = WS_BASE_CONFIG['columns'][-1].get('position')
+
+    write_title(ws, row, first_col, last_col, "About the Project")
+
+    row = row+2
+
+    ws.cell(row=row,column=first_col).value = "The OWASP MASVS (Mobile Application Security Verification Standard) is a standard that establishes the security requirements for mobile app security."
+    ws.cell(row=row,column=first_col).style = 'text'
+    
+
+def set_columns_width(ws, WS_BASE_CONFIG):
+    [ws.column_dimensions(col) for col in WS_BASE_CONFIG.get('columns')]
+
+def set_table_headers(row, ws, WS_BASE_CONFIG):
+    for col in WS_BASE_CONFIG['columns']:
+        ws.cell(row=row,column=col.get('position')).value = col.get('name')
+        ws.cell(row=row,column=col.get('position')).style = col.get('style')
+
+def write_title(ws, row, start_column, end_column, title):
+    cell = ws.cell(row=row,column=start_column)
+    cell.value = title
+    cell.style = 'underline'
+    cell.alignment = excel_styles.align_left
+
+    ws.merge_cells(start_row=row, end_row=row, start_column=start_column, end_column=end_column)
+
+    ws.row_dimensions[row].height = 25 # points
+    
 def write_table(masvs_file, output_file):
 
     masvs_dict = yaml.safe_load(open(masvs_file))
@@ -97,32 +145,7 @@ def write_table(masvs_file, output_file):
 
     write_header(ws)
 
-    # ws_config = {
-    #     'start_row': 6,
-    #     'start_col': 2,
-    #     'columns': [
-    #         {'col': 'B', position: 2, 'name': 'ID', 'width': 10,},
-    #         {'col': 'C', position: 3, 'name': 'MSTG-ID', 'width': 25,},
-    #         {'col': 'D', position: 4, 'name': 'Detailed Verification Requirement',  'width': 80,},
-    #         {'col': 'E', position: 5, 'name': 'L1', 'style': 'blue', 'width': 5,},
-    #         {'col': 'F', position: 6, 'name': 'L2', 'style': 'green', 'width': 5,},
-    #         {'col': 'G', position: 7, 'name': 'R', 'style': 'orange', 'width': 5,},
-    #         {'col': 'H', position: 8, 'name': 'Android', 'width': 10,},
-    #         {'col': 'I', position: 9, 'name': 'iOS', 'width': 10,},
-    #         {'col': 'J', position: 10, 'name': 'Status', 'width': 10,},
-    #     ]
-            
-    # }
-
-    ws.column_dimensions['B'].width = 5
-    ws.column_dimensions['C'].width = 23
-    ws.column_dimensions['D'].width = 80
-    ws.column_dimensions['E'].width = 5
-    ws.column_dimensions['F'].width = 5
-    ws.column_dimensions['G'].width = 5
-    ws.column_dimensions['H'].width = 10
-    ws.column_dimensions['I'].width = 10
-    ws.column_dimensions['J'].width = 10
+    set_columns_width(ws, WS_BASE_CONFIG)
 
     row=6
     col_id=2
@@ -146,39 +169,20 @@ def write_table(masvs_file, output_file):
             category_id = f"V{category}"
             category_title = MASVS_TITLES[category_id]
             
-            category_cell = ws.cell(row=row,column=col_id)
-            category_cell.value = category_title
-            category_cell.style = 'underline'
-            category_cell.alignment = excel_styles.align_left
+            write_title(ws, row, col_id, col_status, category_title)
 
-            ws.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_status)
+            # category_cell = ws.cell(row=row,column=col_id)
+            # category_cell.value = category_title
+            # category_cell.style = 'underline'
+            # category_cell.alignment = excel_styles.align_left
 
-            ws.row_dimensions[row].height = 25 # points
+            # ws.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_status)
+
+            # ws.row_dimensions[row].height = 25 # points
             row = row+2
 
-            ws.cell(row=row,column=col_id).value = 'ID'
-            ws.cell(row=row,column=col_id).style = 'gray_header'
+            set_table_headers(ws, WS_BASE_CONFIG)
 
-            ws.cell(row=row,column=col_mstg_id).value = 'MSTG-ID'
-            ws.cell(row=row,column=col_mstg_id).style = 'gray_header'
-            
-            ws.cell(row=row,column=col_text).value = 'Control'
-            ws.cell(row=row,column=col_text).style = 'gray_header'
-
-            ws.cell(row=row,column=col_l1).value = 'L1'
-            ws.cell(row=row,column=col_l1).style = 'gray_header'
-            ws.cell(row=row,column=col_l2).value = 'L2'
-            ws.cell(row=row,column=col_l2).style = 'gray_header'
-            ws.cell(row=row,column=col_r).value = 'R'
-            ws.cell(row=row,column=col_r).style = 'gray_header'
-
-            ws.cell(row=row,column=col_link_android).value = 'Android'
-            ws.cell(row=row,column=col_link_android).style = 'gray_header'
-            ws.cell(row=row,column=col_link_ios).value = 'iOS'
-            ws.cell(row=row,column=col_link_ios).style = 'gray_header'
-
-            ws.cell(row=row,column=col_status).value = 'Status'
-            ws.cell(row=row,column=col_status).style = 'gray_header'
             ws.add_data_validation(excel_styles.status_validation)
 
             row = row + 2
