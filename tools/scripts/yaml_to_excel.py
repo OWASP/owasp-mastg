@@ -320,7 +320,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     gray_text = Font(color="c0c0c0")
     dxf = DifferentialStyle(font=gray_text)
     rule = Rule(type="expression", dxf=dxf, stopIfTrue=True)
-    rule.formula = ['$J1="N/A"']
+    rule.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
     table.conditional_formatting.add("B11:J1048576", rule)
 
     wb.save(filename=output_file)
