@@ -45,6 +45,7 @@ MASVS_TITLES = {
     'V8': 'Resilience Requirements',
 }
 
+MASVS = None
 MSTGVERSION = ""
 MSTGCOMMIT = ""
 MASVSVERSION = ""
@@ -66,14 +67,6 @@ WS_BASE_CONFIG = {
     ]
         
 }
-
-# def get_hyperlink(url):
-
-#     if '/0x05' in url:
-#         title = 'Android'
-#     elif '/0x06' in url:
-#         title = 'iOS'
-#     return f'=HYPERLINK("{url}", "{title}")'
 
 def write_header(ws):
 
@@ -97,6 +90,104 @@ def write_header(ws):
     ws['D3'].font = Font(name=excel_styles.FONT, color="00C0C0C0")
     ws['D4'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
     ws['D4'].font = Font(name=excel_styles.FONT, color="00C0C0C0")
+
+def set_columns_width(ws):
+    for col in WS_BASE_CONFIG.get('columns'):
+        ws.column_dimensions[col.get('col')].width = col.get('width')
+
+def set_table_headers(row, ws):
+    for col in WS_BASE_CONFIG['columns']:
+        ws.cell(row=row,column=col.get('position')).value = col.get('name')
+        ws.cell(row=row,column=col.get('position')).style = col.get('style')
+
+def write_title(ws, row, start_column, end_column, title):
+    cell = ws.cell(row=row,column=start_column)
+    cell.value = title
+    cell.style = 'underline'
+    cell.alignment = excel_styles.align_left
+
+    ws.merge_cells(start_row=row, end_row=row, start_column=start_column, end_column=end_column)
+
+    ws.row_dimensions[row].height = 25 # points
+
+def create_security_requirements_sheet(wb):
+    ws = wb.create_sheet("Security Requirements")
+    ws.sheet_view.showGridLines = False
+    write_header(ws)
+    set_columns_width(ws)
+
+    row=6
+    col_id=2
+    col_mstg_id=3
+    col_text=4
+    col_l1=5
+    col_l2=6
+    col_r=7
+    col_link_android=8
+    col_link_ios=9
+    col_status=10
+
+    for mstg_id, req in MASVS.items():
+        req_id = req['id'].split('.') 
+        category = req_id[0]
+        subindex = req_id[1]
+
+        if subindex == '1':
+            row = row+1
+
+            category_id = f"V{category}"
+            category_title = MASVS_TITLES[category_id]
+            
+            write_title(ws, row, col_id, col_status, category_title)
+
+            row = row+2
+
+            set_table_headers(row, ws)
+
+            ws.add_data_validation(excel_styles.status_validation)
+
+            row = row + 2
+
+        # End header
+
+        ws.cell(row=row,column=col_id).value = req['id']
+        ws.cell(row=row,column=col_id).style = 'center'
+
+        ws.cell(row=row,column=col_mstg_id).value = mstg_id
+        ws.cell(row=row,column=col_mstg_id).style = 'center'
+        
+        ws.cell(row=row,column=col_text).value = req['text']
+        ws.cell(row=row,column=col_text).style = 'text'
+        
+        if req['L1']:
+            ws.cell(row=row,column=col_l1).style = 'blue'
+        if req['L2']:
+            ws.cell(row=row,column=col_l2).style = 'green'
+        if req['R']:
+            ws.cell(row=row,column=col_r).style = 'orange'
+        if req.get('links'):
+            link_0 = req['links'][0]
+            ws.cell(row=row,column=col_link_android).value = f'=HYPERLINK("{link_0}", "Open")'
+            ws.cell(row=row,column=col_link_android).style = 'center'
+            if len(req['links']) >= 2:
+                link_1 = req['links'][1]
+                ws.cell(row=row,column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Open")'
+                ws.cell(row=row,column=col_link_ios).style = 'center'
+        else:
+            ws.cell(row=row,column=col_link_android).value = 'N/A'
+            ws.cell(row=row,column=col_link_android).style = 'gray_header'
+            ws.cell(row=row,column=col_link_ios).value = 'N/A'
+            ws.cell(row=row,column=col_link_ios).style = 'gray_header'
+            
+        ws.row_dimensions[row].height = 55 # points
+
+        status_cell = ws.cell(row=row,column=col_status).coordinate
+        excel_styles.status_validation.add(status_cell)
+        ws.conditional_formatting.add(status_cell, excel_styles.rule_fail)
+        ws.conditional_formatting.add(status_cell, excel_styles.rule_pass)
+        ws.conditional_formatting.add(status_cell, excel_styles.rule_na)
+
+        row = row+1
 
 def create_about_sheet(wb):
     ws = wb.create_sheet("About")
@@ -169,129 +260,19 @@ def create_about_sheet(wb):
     row = row+2
     url = "https://github.com/OWASP/owasp-mstg/blob/master/License.md"
     ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", "{url}")'
-    
 
-def set_columns_width(ws):
-    for col in WS_BASE_CONFIG.get('columns'):
-        ws.column_dimensions[col.get('col')].width = col.get('width')
-
-def set_table_headers(row, ws):
-    for col in WS_BASE_CONFIG['columns']:
-        ws.cell(row=row,column=col.get('position')).value = col.get('name')
-        ws.cell(row=row,column=col.get('position')).style = col.get('style')
-
-def write_title(ws, row, start_column, end_column, title):
-    cell = ws.cell(row=row,column=start_column)
-    cell.value = title
-    cell.style = 'underline'
-    cell.alignment = excel_styles.align_left
-
-    ws.merge_cells(start_row=row, end_row=row, start_column=start_column, end_column=end_column)
-
-    ws.row_dimensions[row].height = 25 # points
-    
-def write_table(masvs_file, output_file):
-
-    masvs_dict = yaml.safe_load(open(masvs_file))
+def generate_spreadsheet(output_file):
 
     wb = Workbook()
     excel_styles.load_styles(wb)
 
-    ws = wb.active
-    ws.title = 'Security Requirements'
-
-    write_header(ws)
-
-    set_columns_width(ws)
-
-    row=6
-    col_id=2
-    col_mstg_id=3
-    col_text=4
-    col_l1=5
-    col_l2=6
-    col_r=7
-    col_link_android=8
-    col_link_ios=9
-    col_status=10
-
-    for mstg_id, req in masvs_dict.items():
-        req_id = req['id'].split('.') 
-        category = req_id[0]
-        subindex = req_id[1]
-
-        if subindex == '1':
-            row = row+1
-
-            category_id = f"V{category}"
-            category_title = MASVS_TITLES[category_id]
-            
-            write_title(ws, row, col_id, col_status, category_title)
-
-            # category_cell = ws.cell(row=row,column=col_id)
-            # category_cell.value = category_title
-            # category_cell.style = 'underline'
-            # category_cell.alignment = excel_styles.align_left
-
-            # ws.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_status)
-
-            # ws.row_dimensions[row].height = 25 # points
-            row = row+2
-
-            set_table_headers(row, ws)
-
-            ws.add_data_validation(excel_styles.status_validation)
-
-            row = row + 2
-
-        # End header
-
-        ws.cell(row=row,column=col_id).value = req['id']
-        ws.cell(row=row,column=col_id).style = 'center'
-
-        ws.cell(row=row,column=col_mstg_id).value = mstg_id
-        ws.cell(row=row,column=col_mstg_id).style = 'center'
-        
-        ws.cell(row=row,column=col_text).value = req['text']
-        ws.cell(row=row,column=col_text).style = 'text'
-        
-        if req['L1']:
-            ws.cell(row=row,column=col_l1).style = 'blue'
-        if req['L2']:
-            ws.cell(row=row,column=col_l2).style = 'green'
-        if req['R']:
-            ws.cell(row=row,column=col_r).style = 'orange'
-        if req.get('links'):
-            link_0 = req['links'][0]
-            ws.cell(row=row,column=col_link_android).value = f'=HYPERLINK("{link_0}", "Open")'
-            ws.cell(row=row,column=col_link_android).style = 'center'
-            if len(req['links']) >= 2:
-                link_1 = req['links'][1]
-                ws.cell(row=row,column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Open")'
-                ws.cell(row=row,column=col_link_ios).style = 'center'
-        else:
-            ws.cell(row=row,column=col_link_android).value = 'N/A'
-            ws.cell(row=row,column=col_link_android).style = 'gray_header'
-            ws.cell(row=row,column=col_link_ios).value = 'N/A'
-            ws.cell(row=row,column=col_link_ios).style = 'gray_header'
-            
-        ws.row_dimensions[row].height = 55 # points
-
-        status_cell = ws.cell(row=row,column=col_status).coordinate
-        excel_styles.status_validation.add(status_cell)
-        ws.conditional_formatting.add(status_cell, excel_styles.rule_fail)
-        ws.conditional_formatting.add(status_cell, excel_styles.rule_pass)
-        ws.conditional_formatting.add(status_cell, excel_styles.rule_na)
-
-        row = row+1
-
-    ws.sheet_view.showGridLines = False
-
+    create_security_requirements_sheet(wb)
     create_about_sheet(wb)
+
     wb.save(filename=output_file)
 
 def main():
-    global MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
+    global MASVS, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
     import argparse
     
     parser = argparse.ArgumentParser(description='Export the MASVS requirements as Excel. Default language is en.')
@@ -304,6 +285,8 @@ def main():
 
     args = parser.parse_args()
 
+    # set global vars
+    MASVS = yaml.safe_load(open(args.masvs))
     MSTGVERSION = args.mstgversion
     MSTGCOMMIT = args.mstgcommit
     MASVSVERSION = args.masvsversion
@@ -311,7 +294,7 @@ def main():
 
     print(f"Generating Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
-    write_table(args.masvs, args.outputfile)
+    generate_spreadsheet(args.outputfile)
 
 
 if __name__ == '__main__':
