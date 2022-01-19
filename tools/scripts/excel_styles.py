@@ -28,7 +28,7 @@ align_left = Alignment(
 FONT = "Avenir"
 
 styles_metadata = [
-    {"name": "text", "font": {'name': FONT}, "alignment": "left", "background": ""},
+    {"name": "text", "font": {'name': FONT, 'underline': "single", 'color': "1CA4FC"}, "alignment": "left", "background": ""},
     {"name": "center", "font": {'name': FONT}, "alignment": "center", "background": ""},
     {"name": "blue_link", "font": {'name': FONT, 'underline': "single", 'color': "1CA4FC"}, "alignment": "center", "background": ""},
     {"name": "gray", "font": {'name': FONT}, "alignment": "center", "background": "00C0C0C0"},
