@@ -114,6 +114,16 @@ def create_about_sheet(wb):
 
     row = row+2
 
+    ws.cell(row=row,column=first_col).value = "The OWASP Mobile Security Testing Guide is an OWASP flagship project led by Carlos Holguera and Sven Schleier which defines the industry standard for mobile application security."
+    ws.cell(row=row,column=first_col).style = 'text'
+    ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+
+    row = row+2
+    url = "https://owasp.org/www-project-mobile-security-testing-guide/"
+    ws.cell(row=row,column=first_col).value =f'=HYPERLINK("{url}", "{url}")'
+
+    row = row+2
+
     ws.cell(row=row,column=first_col).value = "The OWASP MASVS (Mobile Application Security Verification Standard) is a standard that establishes the security requirements for mobile app security."
     ws.cell(row=row,column=first_col).style = 'text'
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
