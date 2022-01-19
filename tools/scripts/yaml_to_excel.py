@@ -246,7 +246,7 @@ def main():
 
     print(f"Generating Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
-    write_table(masvs, outputfile)
+    write_table(args.masvs, args.outputfile)
 
 
 if __name__ == '__main__':
