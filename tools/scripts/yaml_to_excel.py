@@ -116,7 +116,8 @@ def create_about_sheet(wb):
     
 
 def set_columns_width(ws, WS_BASE_CONFIG):
-    [ws.column_dimensions[col.get('width')] for col in WS_BASE_CONFIG.get('columns')]
+    for col in WS_BASE_CONFIG.get('columns'):
+        ws.column_dimensions[col.get('col')].width = col.get('width')
 
 def set_table_headers(row, ws, WS_BASE_CONFIG):
     for col in WS_BASE_CONFIG['columns']:
