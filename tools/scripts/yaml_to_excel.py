@@ -118,7 +118,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.add_image(img, 'H2')
 
     table['D2'].value = "Mobile Application Security Verification Standard"
-    table['D2'].style = excel_styles.big_title
+    table['D2'].style = 'big_title'
 
     table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{mstg_version}", "OWASP MSTG {mstg_version} (commit: {mstg_commit})")'
     table['D3'].font = Font(name=excel_styles.FONT, color="00C0C0C0")
