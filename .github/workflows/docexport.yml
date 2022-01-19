@@ -56,6 +56,9 @@ jobs:
     - name: Install pip Requirements
       run: pip3 install -r tools/scripts/requirements.txt
 
+    - name: Show openpyxl Version
+      run: pip3 show openpyxl
+
     - name: Convert MSTG Testing Chapters to HTML
       run: . tools/scripts/mstg_to_html.sh
 
