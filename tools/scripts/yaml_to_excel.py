@@ -101,7 +101,7 @@ def write_header(ws):
 def create_about_sheet(wb):
     ws = wb.create_sheet("About")
     write_header(ws)
-    set_columns_width(ws, WS_BASE_CONFIG)
+    set_columns_width(ws)
 
     row = WS_BASE_CONFIG['start_row']
     first_col = WS_BASE_CONFIG['columns'][0].get('position')
@@ -115,11 +115,11 @@ def create_about_sheet(wb):
     ws.cell(row=row,column=first_col).style = 'text'
     
 
-def set_columns_width(ws, WS_BASE_CONFIG):
+def set_columns_width(ws):
     for col in WS_BASE_CONFIG.get('columns'):
         ws.column_dimensions[col.get('col')].width = col.get('width')
 
-def set_table_headers(row, ws, WS_BASE_CONFIG):
+def set_table_headers(row, ws):
     for col in WS_BASE_CONFIG['columns']:
         ws.cell(row=row,column=col.get('position')).value = col.get('name')
         ws.cell(row=row,column=col.get('position')).style = col.get('style')
@@ -146,7 +146,7 @@ def write_table(masvs_file, output_file):
 
     write_header(ws)
 
-    set_columns_width(ws, WS_BASE_CONFIG)
+    set_columns_width(ws)
 
     row=6
     col_id=2
@@ -182,7 +182,7 @@ def write_table(masvs_file, output_file):
             # ws.row_dimensions[row].height = 25 # points
             row = row+2
 
-            set_table_headers(ws, WS_BASE_CONFIG)
+            set_table_headers(row, ws)
 
             ws.add_data_validation(excel_styles.status_validation)
 
