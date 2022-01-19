@@ -1,9 +1,9 @@
 import yaml
 from openpyxl import load_workbook, Workbook
-from openpyxl.styles import PatternFill, Alignment, Border, Side
+from openpyxl.styles import PatternFill, Alignment, Border, Side, NamedStyle, Font
+from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.drawing.image import Image
 from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.formatting.rule import Rule
 
 """
@@ -34,7 +34,7 @@ dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
 rule_na = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf)
 rule_na.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
 
-from openpyxl.styles import NamedStyle, Font, Border, Side
+
 
 def create_style(params):
 
