@@ -206,10 +206,12 @@ def write_table(masvs_file, output_file):
         if req['R']:
             ws.cell(row=row,column=col_r).style = 'orange'
         if req.get('links'):
-            ws.cell(row=row,column=col_link_android).value = f"=HYPERLINK('{req['links'][0]}', 'Open')"
+            link_0 = req['links'][0]
+            link_1 = req['links'][1]
+            ws.cell(row=row,column=col_link_android).value = f'=HYPERLINK("{link_0}", "Open")'
             ws.cell(row=row,column=col_link_android).style = 'center'
             if len(req['links']) >= 2:
-                ws.cell(row=row,column=col_link_ios).value = f"=HYPERLINK('{req['links'][1]}', 'Open')"
+                ws.cell(row=row,column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Open")'
                 ws.cell(row=row,column=col_link_ios).style = 'center'
         else:
             ws.cell(row=row,column=col_link_android).value = 'N/A'
