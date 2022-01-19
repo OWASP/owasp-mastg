@@ -15,6 +15,25 @@ align_left = Alignment(horizontal='general', vertical='center', text_rotation=0,
 FONT = 'Avenir'
 STATUS_VALIDATION = DataValidation(type="list", formula1='"Pass,Fail,N/A"', allow_blank=True)
 
+# Conditional Formatting for STATUS
+red_text = Font(color="9C0006")
+red_fill = PatternFill(bgColor="FFC7CE")
+dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=align_center)
+rule_fail = Rule(type="containsText", operator="containsText", text="Fail", dxf=dxf)
+rule_fail.formula = ['NOT(ISERROR(SEARCH("Fail",J11)))']
+
+green_text = Font(color="38761D")
+green_fill = PatternFill(bgColor="B6D7A8")
+dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=align_center)
+rule_pass = Rule(type="containsText", operator="containsText", text="Pass", dxf=dxf)
+rule_pass.formula = ['NOT(ISERROR(SEARCH("Pass",J11)))']
+
+gray_text = Font(color="666666")
+gray_fill = PatternFill(bgColor="CCCCCC")
+dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
+rule_na = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf)
+rule_na.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
+
 from openpyxl.styles import NamedStyle, Font, Border, Side
 
 def create_style(params):
@@ -246,7 +265,6 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
             table.cell(row=row,column=col_status).value = 'Status'
             table.cell(row=row,column=col_status).style = 'gray_header'
             table.add_data_validation(STATUS_VALIDATION)
-            STATUS_VALIDATION.add('J11:J1048576')
 
             row = row + 2
         
@@ -284,11 +302,17 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
                 table.cell(row=row,column=col_link_ios).style = 'center'
         else:
             table.cell(row=row,column=col_link_android).value = 'N/A'
-            table.cell(row=row,column=col_link_android).style = 'center'
+            table.cell(row=row,column=col_link_android).style = 'gray_header'
             table.cell(row=row,column=col_link_ios).value = 'N/A'
-            table.cell(row=row,column=col_link_ios).style = 'center'
+            table.cell(row=row,column=col_link_ios).style = 'gray_header'
             
         table.row_dimensions[row].height = 55 # points
+
+        status_cell = table.cell(row=row,column=col_status).coordinate
+        STATUS_VALIDATION.add(status_cell)
+        table.conditional_formatting.add(status_cell, rule_fail)
+        table.conditional_formatting.add(status_cell, rule_pass)
+        table.conditional_formatting.add(status_cell, rule_na)
 
         row = row+1
 
@@ -300,30 +324,6 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
 
     # for cell in table['D']:
     #     cell.alignment = align_left
-
-
-    # Conditional Formatting for STATUS
-    red_text = Font(color="9C0006")
-    red_fill = PatternFill(bgColor="FFC7CE")
-    dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=align_center)
-    rule = Rule(type="containsText", operator="containsText", text="Fail", dxf=dxf)
-    rule.formula = ['NOT(ISERROR(SEARCH("Fail",J11)))']
-    table.conditional_formatting.add("J11:J1048576", rule)
-
-    green_text = Font(color="38761D")
-    green_fill = PatternFill(bgColor="B6D7A8")
-    dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=align_center)
-    rule = Rule(type="containsText", operator="containsText", text="Pass", dxf=dxf)
-    rule.formula = ['NOT(ISERROR(SEARCH("Pass",J11)))']
-    table.conditional_formatting.add("J11:J1048576", rule)
-
-
-    gray_text = Font(color="666666")
-    gray_fill = PatternFill(bgColor="CCCCCC")
-    dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
-    rule = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf)
-    rule.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
-    table.conditional_formatting.add("J11:J1048576", rule)
 
     wb.save(filename=output_file)
 
