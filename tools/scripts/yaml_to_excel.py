@@ -111,7 +111,8 @@ def write_title(ws, row, start_column, end_column, title):
     ws.row_dimensions[row].height = 25 # points
 
 def create_security_requirements_sheet(wb):
-    ws = wb.create_sheet("Security Requirements")
+    ws = wb.active
+    ws.title = 'Security Requirements'
     ws.sheet_view.showGridLines = False
     write_header(ws)
     set_columns_width(ws)
@@ -239,7 +240,7 @@ def create_about_sheet(wb):
 
     row = row+2
 
-    ws.cell(row=row,column=first_col).value = "If you have any comments or suggestions, please post them on our GitHub Discussions:"
+    ws.cell(row=row,column=first_col).value = "If you have any comments or suggestions, please post them on our GitHub Discussions."
     ws.cell(row=row,column=first_col).style = 'text'
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
 
