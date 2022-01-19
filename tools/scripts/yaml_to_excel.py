@@ -107,12 +107,38 @@ def create_about_sheet(wb):
     first_col = WS_BASE_CONFIG['columns'][0].get('position')
     last_col = WS_BASE_CONFIG['columns'][-1].get('position')
 
+    row = row+2
+
     write_title(ws, row, first_col, last_col, "About the Project")
 
     row = row+2
 
     ws.cell(row=row,column=first_col).value = "The OWASP MASVS (Mobile Application Security Verification Standard) is a standard that establishes the security requirements for mobile app security."
     ws.cell(row=row,column=first_col).style = 'text'
+
+    ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+
+    row = row+2
+
+    write_title(ws, row, first_col, last_col, "Feedback")
+
+    row = row+2
+
+    ws.cell(row=row,column=first_col).value = "If you have any comments or suggestions, please post them on our GitHub Discussions: https://github.com/OWASP/owasp-mstg/discussions/categories/ideas"
+    ws.cell(row=row,column=first_col).style = 'text'
+
+    ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
+
+    row = row+2
+
+    write_title(ws, row, first_col, last_col, "Licence")
+
+    row = row+2
+
+    ws.cell(row=row,column=first_col).value = "Copyright © 2022 The OWASP Foundation. This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. For any reuse or distribution, you must make clear to others the license terms of this work."
+    ws.cell(row=row,column=first_col).style = 'text'
+
+    ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     
 
 def set_columns_width(ws):
@@ -207,10 +233,10 @@ def write_table(masvs_file, output_file):
             ws.cell(row=row,column=col_r).style = 'orange'
         if req.get('links'):
             link_0 = req['links'][0]
-            link_1 = req['links'][1]
             ws.cell(row=row,column=col_link_android).value = f'=HYPERLINK("{link_0}", "Open")'
             ws.cell(row=row,column=col_link_android).style = 'center'
             if len(req['links']) >= 2:
+                link_1 = req['links'][1]
                 ws.cell(row=row,column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Open")'
                 ws.cell(row=row,column=col_link_ios).style = 'center'
         else:
