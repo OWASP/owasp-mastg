@@ -28,7 +28,7 @@ align_left = Alignment(
 FONT = "Avenir"
 
 styles_metadata = [
-    {"name": "text", "font": {'name': FONT, 'underline': "single", 'color': "1CA4FC"}, "alignment": "left", "background": ""},
+    {"name": "text", "font": {'name': FONT}, "alignment": "left", "background": ""},
     {"name": "center", "font": {'name': FONT}, "alignment": "center", "background": ""},
     {"name": "blue_link", "font": {'name': FONT, 'underline': "single", 'color': "1CA4FC"}, "alignment": "center", "background": ""},
     {"name": "gray", "font": {'name': FONT}, "alignment": "center", "background": "00C0C0C0"},
@@ -41,14 +41,8 @@ styles_metadata = [
 def create_style(params):
 
     style = NamedStyle(name=params.get("name"))
-    # if params.get("font"):
-        # font_color = params.get("font").get('color')
-        # if font_color:
-        #     params.get("font")['color'] = Color(rgb=params.get("font").get('color'))
     style.font = Font(**params.get("font"))
 
-    # bd = Side(style='thick', color="FFFFFF")
-    # style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
     alignment = params.get("alignment")
     if alignment == "center":
         style.alignment = align_center
