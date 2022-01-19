@@ -301,20 +301,27 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     # for cell in table['D']:
     #     cell.alignment = align_left
 
-    # 
-    # 	
+
+    # Conditional Formatting for STATUS
     red_text = Font(color="9C0006")
     red_fill = PatternFill(bgColor="FFC7CE")
-    dxf = DifferentialStyle(font=red_text, fill=red_fill)
+    dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=align_center)
     rule = Rule(type="containsText", operator="containsText", text="Fail", dxf=dxf)
     rule.formula = ['NOT(ISERROR(SEARCH("Fail",J11)))']
     table.conditional_formatting.add("J11:J1048576", rule)
 
-    # red_fill = PatternFill(bgColor="FFC7CE")
-    # dxf = DifferentialStyle(fill=red_fill)
-    # r = Rule(type="expression", dxf=dxf, stopIfTrue=True)
-    # r.formula = ['$J11="N/A"']
-    # table.conditional_formatting.add("J11:J1048576", r)
+    green_text = Font(color="38761D")
+    green_fill = PatternFill(bgColor="B6D7A8")
+    dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=align_center)
+    rule = Rule(type="containsText", operator="containsText", text="Pass", dxf=dxf)
+    rule.formula = ['NOT(ISERROR(SEARCH("Pass",J11)))']
+    table.conditional_formatting.add("J11:J1048576", rule)
+
+    gray_text = Font(color="c0c0c0")
+    dxf = DifferentialStyle(font=gray_text)
+    rule = Rule(type="expression", dxf=dxf, stopIfTrue=True)
+    rule.formula = ['$J11="N/A"']
+    table.conditional_formatting.add("J11:J1048576", rule)
 
     wb.save(filename=output_file)
 
