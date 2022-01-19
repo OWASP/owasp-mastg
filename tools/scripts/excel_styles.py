@@ -1,5 +1,6 @@
 from openpyxl.styles import PatternFill, Alignment, Border, Side, NamedStyle, Font
 from openpyxl.styles.differential import DifferentialStyle
+from openpyxl.styles.colors import Color
 from openpyxl.formatting.rule import Rule
 from openpyxl.worksheet.datavalidation import DataValidation
 
@@ -41,7 +42,11 @@ def create_style(params):
 
     style = NamedStyle(name=params.get("name"))
     if params.get("font"):
+        font_color = params.get("font").get('color')
+        if font_color:
+            params.get("font")['color'] = Color(rgb=params.get("font").get('color'))
         style.font = Font(**params.get("font"))
+
     # bd = Side(style='thick', color="FFFFFF")
     # style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
     alignment = params.get("alignment")
