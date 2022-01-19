@@ -256,6 +256,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
         
         table.cell(row=row,column=col_text).value = req['text']
         table.cell(row=row,column=col_text).style = 'text'
+        table.cell(row=row,column=col_text).alignment.wrap_text = True
         
         if req['L1']:
             # table.cell(row=row,column=col_l1).value = l1
