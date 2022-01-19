@@ -81,4 +81,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Checklists
-        path: tools/scripts/checklist_*.xlsx
+        path: tools/scripts/*.xlsx
