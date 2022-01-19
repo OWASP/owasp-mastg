@@ -1,10 +1,11 @@
 import yaml
 from openpyxl import Workbook
-from openpyxl.styles import PatternFill, Alignment, Border, Side, NamedStyle, Font
+from openpyxl.styles import PatternFill, Font
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.drawing.image import Image
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import Rule
+import excel_styles
 
 ''' Tool for exporting the MASVS requirements as a checklist including MSTG coverage.
 
@@ -30,55 +31,32 @@ from openpyxl.formatting.rule import Rule
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-    '''
+'''
 
-align_center = Alignment(horizontal='center', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0)
-align_left = Alignment(horizontal='general', vertical='center', text_rotation=0, wrap_text=True, shrink_to_fit=True, indent=0, justifyLastLine=True)
-FONT = 'Avenir'
+# TODO parametrize & create a function
+# TODO read sheet, col ids and cell styles (centered, left, colored, character if true, etc) from yaml
+
 STATUS_VALIDATION = DataValidation(type="list", formula1='"Pass,Fail,N/A"', allow_blank=True)
 
 # Conditional Formatting for STATUS
 red_text = Font(color="9C0006")
 red_fill = PatternFill(bgColor="FFC7CE")
-dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=align_center)
+dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=excel_styles.align_center)
 rule_fail = Rule(type="containsText", operator="containsText", text="Fail", dxf=dxf)
 rule_fail.formula = ['NOT(ISERROR(SEARCH("Fail",J11)))']
 
 green_text = Font(color="38761D")
 green_fill = PatternFill(bgColor="B6D7A8")
-dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=align_center)
+dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=excel_styles.align_center)
 rule_pass = Rule(type="containsText", operator="containsText", text="Pass", dxf=dxf)
 rule_pass.formula = ['NOT(ISERROR(SEARCH("Pass",J11)))']
 
 gray_text = Font(color="666666")
 gray_fill = PatternFill(bgColor="CCCCCC")
-dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
+dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=excel_styles.align_center)
 rule_na = Rule(type="containsText", operator="containsText", text="N/A", dxf=dxf)
 rule_na.formula = ['NOT(ISERROR(SEARCH("N/A",J11)))']
 
-
-def create_style(params):
-
-    style = NamedStyle(name=params.get('name'))
-    if params.get('font'):
-        style.font = Font(name=params.get('font'))
-    # bd = Side(style='thick', color="FFFFFF")
-    # style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
-    alignment = params.get('alignment')
-    if alignment == 'center':
-        style.alignment = align_center
-    else:
-        style.alignment = align_left
-
-    if params.get('background'):
-        style.fill = PatternFill("solid", fgColor=params.get('background'))
-        bd = Side(style='thick', color="FFFFFF")
-        style.border = Border(left=bd, top=bd, right=bd, bottom=bd)
-
-    return style
-
-# TODO parametrize & create a function
-# TODO read sheet, col ids and cell styles (centered, left, colored, character if true, etc) from yaml
 
 MASVS_TITLES = {
     'V1': 'Architecture, Design and Threat Modeling Requirements',
@@ -109,47 +87,22 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table = wb.active
     table.title = 'Security Requirements'
 
-    table_config = {
-        'sheet': 'Security Requirements - Android',
-        'styles': [
-            {'name': 'text', 'font': FONT, 'alignment': 'left', 'background': ''},
-            {'name': 'center', 'font': FONT, 'alignment': 'center', 'background': ''},
-            {'name': 'gray', 'font': FONT, 'alignment': 'center', 'background': '00C0C0C0'},
-            {'name': 'blue', 'font': FONT, 'alignment': 'center', 'background': '0033CCCC'},
-            {'name': 'green', 'font': FONT, 'alignment': 'center', 'background': '0099CC00'},
-            {'name': 'orange', 'font': FONT, 'alignment': 'center', 'background': '00FF9900'},
-        ],
-        'start_row': 5,
-        'start_col': 2,
-        'columns': [
-            {'name': 'ID', 'width': 10,},
-            {'name': 'MSTG-ID', 'width': 25,},
-            {'name': 'Detailed Verification Requirement',  'width': 80,},
-            {'name': 'L1', 'style': 'blue', 'width': 5,},
-            {'name': 'L2', 'style': 'green', 'width': 5,},
-            {'name': 'R', 'style': 'orange', 'width': 5,},
-            {'name': 'References', 'width': 70,},
-        ]
+    # table_config = {
+    #     'start_row': 5,
+    #     'start_col': 2,
+    #     'columns': [
+    #         {'name': 'ID', 'width': 10,},
+    #         {'name': 'MSTG-ID', 'width': 25,},
+    #         {'name': 'Detailed Verification Requirement',  'width': 80,},
+    #         {'name': 'L1', 'style': 'blue', 'width': 5,},
+    #         {'name': 'L2', 'style': 'green', 'width': 5,},
+    #         {'name': 'R', 'style': 'orange', 'width': 5,},
+    #         {'name': 'References', 'width': 70,},
+    #     ]
             
-    }
+    # }
 
-    [wb.add_named_style(create_style(style)) for style in table_config.get('styles')]
-    
-    underline = NamedStyle(name="underline")
-    underline.font = Font(name=FONT, size=15, bold=True, color='1CA4FC')
-    bd = Side(style='medium', color="1CA4FC")
-    underline.border = Border(bottom=bd)
-    wb.add_named_style(underline)
-
-    big_title = NamedStyle(name="big_title")
-    big_title.font = Font(name=FONT, size=25)
-    big_title.alignment = align_left
-    wb.add_named_style(big_title)
-
-    gray_header = NamedStyle(name="gray_header")
-    gray_header.font = Font(name=FONT, bold=True, color="00C0C0C0")
-    gray_header.alignment = align_center
-    wb.add_named_style(gray_header)
+    excel_styles.load_styles(wb)
 
     table.row_dimensions[2].height = 65
     table.merge_cells(start_row=2, end_row=4, start_column=2, end_column=3)
@@ -165,12 +118,12 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
     table.add_image(img, 'H2')
 
     table['D2'].value = "Mobile Application Security Verification Standard"
-    table['D2'].style = big_title
+    table['D2'].style = excel_styles.big_title
 
     table['D3'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{mstg_version}", "OWASP MSTG {mstg_version} (commit: {mstg_commit})")'
-    table['D3'].font = Font(name=FONT, color="00C0C0C0")
+    table['D3'].font = Font(name=excel_styles.FONT, color="00C0C0C0")
     table['D4'].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{masvs_version}", "OWASP MASVS {masvs_version} (commit: {masvs_commit})")'
-    table['D4'].font = Font(name=FONT, color="00C0C0C0")
+    table['D4'].font = Font(name=excel_styles.FONT, color="00C0C0C0")
 
     table.column_dimensions['B'].width = 5
     table.column_dimensions['C'].width = 23
@@ -207,7 +160,7 @@ def write_table(masvs_file, output_file, mstg_version, mstg_commit, masvs_versio
             category_cell = table.cell(row=row,column=col_id)
             category_cell.value = category_title
             category_cell.style = 'underline'
-            category_cell.alignment = align_left
+            category_cell.alignment = excel_styles.align_left
 
             table.merge_cells(start_row=row, end_row=row, start_column=col_id, end_column=col_status)
 
