@@ -121,7 +121,7 @@ def create_security_requirements_sheet(wb):
     write_header(ws)
     set_columns_width(ws)
 
-    status_cells = 'J:J'
+    status_cells = 'J1:J400'
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
