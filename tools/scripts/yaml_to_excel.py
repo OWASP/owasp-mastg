@@ -175,17 +175,20 @@ def create_security_requirements_sheet(wb):
             ws.cell(row=row, column=col_l2).style = "green"
         if req["R"]:
             ws.cell(row=row, column=col_r).style = "orange"
+        
+        ws.cell(row=row, column=col_link_android).alignment = excel_styles_and_validation.align_center
+        ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
+
         if req.get("links"):
-            link_0 = req["links"][0]
-            ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_0}", "Test Case")'
-            ws.cell(row=row, column=col_link_android).style = "center"
-            ws.cell(row=row, column=col_link_android).data_type = "s"
+            ws.cell(row=row, column=col_link_android).hyperlink = req["links"][0]
+            ws.cell(row=row, column=col_link_android).value = "Test Case"
+            ws.cell(row=row, column=col_link_android).style = "Hyperlink"
 
             if len(req["links"]) >= 2:
-                link_1 = req["links"][1]
-                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Test Case")'
-                ws.cell(row=row, column=col_link_ios).style = "center"
-                ws.cell(row=row, column=col_link_ios).data_type = "s"
+                ws.cell(row=row, column=col_link_ios).hyperlink = req["links"][1]
+                ws.cell(row=row, column=col_link_ios).value = "Test Case"
+                ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
+
         else:
             ws.cell(row=row, column=col_link_android).value = "N/A"
             ws.cell(row=row, column=col_link_android).style = "gray_header"
