@@ -113,6 +113,10 @@ def write_title(ws, row, start_column, end_column, title):
 
     ws.row_dimensions[row].height = 25  # points
 
+def get_link_for(links, type):
+	for link in links:
+		if type in link:
+			return link
 
 def create_security_requirements_sheet(wb):
     ws = wb.active
@@ -180,20 +184,25 @@ def create_security_requirements_sheet(wb):
         ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
 
         if req.get("links"):
-            ws.cell(row=row, column=col_link_android).hyperlink = req["links"][0]
-            ws.cell(row=row, column=col_link_android).value = "Test Case"
-            ws.cell(row=row, column=col_link_android).style = "Hyperlink"
+            # We only get the first link because there should be actually only one per platform.
+            link_android = get_link_for(req["links"], "0x05")
+            link_ios = get_link_for(req["links"], "0x06")
 
-            if len(req["links"]) >= 2:
-                ws.cell(row=row, column=col_link_ios).hyperlink = req["links"][1]
+            if link_android:
+                ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_android}", "Test Case")'
+                ws.cell(row=row, column=col_link_android).value = "Test Case"
+                ws.cell(row=row, column=col_link_android).style = "Hyperlink"
+            else:
+                ws.cell(row=row, column=col_link_android).value = "N/A"
+                ws.cell(row=row, column=col_link_android).style = "gray_header"
+            
+            if link_ios:
+                ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_ios}", "Test Case")'
                 ws.cell(row=row, column=col_link_ios).value = "Test Case"
                 ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
-
-        else:
-            ws.cell(row=row, column=col_link_android).value = "N/A"
-            ws.cell(row=row, column=col_link_android).style = "gray_header"
-            ws.cell(row=row, column=col_link_ios).value = "N/A"
-            ws.cell(row=row, column=col_link_ios).style = "gray_header"
+            else:
+                ws.cell(row=row, column=col_link_ios).value = "N/A"
+                ws.cell(row=row, column=col_link_ios).style = "gray_header"
 
         ws.row_dimensions[row].height = 55  # points
         
