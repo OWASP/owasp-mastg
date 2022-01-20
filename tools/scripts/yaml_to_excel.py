@@ -191,7 +191,6 @@ def create_security_requirements_sheet(wb):
 
             if link_android:
                 ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_android}", "Test Case")'
-                ws.cell(row=row, column=col_link_android).value = "Test Case"
                 ws.cell(row=row, column=col_link_android).style = "Hyperlink"
             else:
                 ws.cell(row=row, column=col_link_android).value = "N/A"
@@ -199,7 +198,6 @@ def create_security_requirements_sheet(wb):
             
             if link_ios:
                 ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_ios}", "Test Case")'
-                ws.cell(row=row, column=col_link_ios).value = "Test Case"
                 ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
             else:
                 ws.cell(row=row, column=col_link_ios).value = "N/A"
