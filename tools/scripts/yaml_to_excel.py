@@ -46,6 +46,7 @@ MASVS_TITLES = {
 }
 
 MASVS = None
+LANG = ""
 MSTGVERSION = ""
 MSTGCOMMIT = ""
 MASVSVERSION = ""
@@ -113,6 +114,11 @@ def write_title(ws, row, start_column, end_column, title):
 
     ws.row_dimensions[row].height = 25  # points
 
+def get_link_for(links, type):
+    for link in links:
+        if type in link:
+            return link
+    return None
 
 def create_security_requirements_sheet(wb):
     ws = wb.active
@@ -120,6 +126,11 @@ def create_security_requirements_sheet(wb):
     ws.sheet_view.showGridLines = False
     write_header(ws)
     set_columns_width(ws)
+
+    status_cells = 'J11:J400'
+    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
+    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
+    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
 
     row = 6
     col_id = 2
@@ -170,30 +181,35 @@ def create_security_requirements_sheet(wb):
             ws.cell(row=row, column=col_l2).style = "green"
         if req["R"]:
             ws.cell(row=row, column=col_r).style = "orange"
+        
         if req.get("links"):
-            link_0 = req["links"][0]
-            ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_0}", "Open")'
-            ws.cell(row=row, column=col_link_android).style = "center"
-            if len(req["links"]) >= 2:
-                link_1 = req["links"][1]
-                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Open")'
-                ws.cell(row=row, column=col_link_ios).style = "center"
-        else:
-            ws.cell(row=row, column=col_link_android).value = "N/A"
-            ws.cell(row=row, column=col_link_android).style = "gray_header"
-            ws.cell(row=row, column=col_link_ios).value = "N/A"
-            ws.cell(row=row, column=col_link_ios).style = "gray_header"
+            # We only get the first link because there should be actually only one per platform.
+            link_android = get_link_for(req["links"], "0x05")
+            link_ios = get_link_for(req["links"], "0x06")
+
+            if link_android:
+                ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_android}", "Test Case")'
+                ws.cell(row=row, column=col_link_android).style = "Hyperlink"
+                ws.cell(row=row, column=col_link_android).alignment = excel_styles_and_validation.align_center
+            else:
+                ws.cell(row=row, column=col_link_android).value = "N/A"
+                ws.cell(row=row, column=col_link_android).style = "gray_header"
+            
+            if link_ios:
+                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_ios}", "Test Case")'
+                ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
+                ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
+
+            else:
+                ws.cell(row=row, column=col_link_ios).value = "N/A"
+                ws.cell(row=row, column=col_link_ios).style = "gray_header"
 
         ws.row_dimensions[row].height = 55  # points
-
+        
         status_cell = ws.cell(row=row, column=col_status).coordinate
         excel_styles_and_validation.status_validation.add(status_cell)
-        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_fail)
-        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_pass)
-        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_na)
 
         row = row + 1
-
 
 def create_about_sheet(wb):
     ws = wb.create_sheet("About")
@@ -280,11 +296,12 @@ def generate_spreadsheet(output_file):
 
 
 def main():
-    global MASVS, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
+    global MASVS, LANG, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
     import argparse
 
     parser = argparse.ArgumentParser(description="Export the MASVS requirements as Excel. Default language is en.")
     parser.add_argument("-m", "--masvs", required=True)
+    parser.add_argument("-l", "--lang", required=True)
     parser.add_argument("-o", "--outputfile", required=True)
     parser.add_argument("-v1", "--mstgversion", required=True)
     parser.add_argument("-c1", "--mstgcommit", required=True)
@@ -295,12 +312,13 @@ def main():
 
     # set global vars
     MASVS = yaml.safe_load(open(args.masvs))
+    LANG = args.lang
     MSTGVERSION = args.mstgversion
     MSTGCOMMIT = args.mstgcommit
     MASVSVERSION = args.masvsversion
     MASVSCOMMIT = args.masvscommit
 
-    print(f"Generating Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
+    print(f"Generating {LANG.upper()} Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
     generate_spreadsheet(args.outputfile)
 

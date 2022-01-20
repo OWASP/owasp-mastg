@@ -79,8 +79,11 @@ def load_styles(wb):
     [wb.add_named_style(style) for style in styles]
 
 
-# Conditional Formatting for STATUS
+# Data Validation for STATUS
+
 status_validation = DataValidation(type="list", formula1='"Pass,Fail,N/A"', allow_blank=True)
+
+# Conditional Formatting for STATUS
 
 red_text = Font(color="9C0006")
 red_fill = PatternFill(bgColor="FFC7CE")
