@@ -181,9 +181,6 @@ def create_security_requirements_sheet(wb):
         if req["R"]:
             ws.cell(row=row, column=col_r).style = "orange"
         
-        ws.cell(row=row, column=col_link_android).alignment = excel_styles_and_validation.align_center
-        ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
-
         if req.get("links"):
             # We only get the first link because there should be actually only one per platform.
             link_android = get_link_for(req["links"], "0x05")
@@ -192,6 +189,7 @@ def create_security_requirements_sheet(wb):
             if link_android:
                 ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_android}", "Test Case")'
                 ws.cell(row=row, column=col_link_android).style = "Hyperlink"
+                ws.cell(row=row, column=col_link_android).alignment = excel_styles_and_validation.align_center
             else:
                 ws.cell(row=row, column=col_link_android).value = "N/A"
                 ws.cell(row=row, column=col_link_android).style = "gray_header"
@@ -199,6 +197,8 @@ def create_security_requirements_sheet(wb):
             if link_ios:
                 ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_ios}", "Test Case")'
                 ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
+                ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
+
             else:
                 ws.cell(row=row, column=col_link_ios).value = "N/A"
                 ws.cell(row=row, column=col_link_ios).style = "gray_header"
