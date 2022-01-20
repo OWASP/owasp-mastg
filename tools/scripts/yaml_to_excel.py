@@ -114,9 +114,10 @@ def write_title(ws, row, start_column, end_column, title):
     ws.row_dimensions[row].height = 25  # points
 
 def get_link_for(links, type):
-	for link in links:
-		if type in link:
-			return link
+    for link in links:
+        if type in link:
+            return link
+    return None
 
 def create_security_requirements_sheet(wb):
     ws = wb.active
@@ -197,7 +198,7 @@ def create_security_requirements_sheet(wb):
                 ws.cell(row=row, column=col_link_android).style = "gray_header"
             
             if link_ios:
-                ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_ios}", "Test Case")'
+                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_ios}", "Test Case")'
                 ws.cell(row=row, column=col_link_ios).value = "Test Case"
                 ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
             else:
