@@ -26,11 +26,12 @@ align_left = Alignment(
     wrapText=True,
 )
 FONT = "Avenir"
+MSTG_BLUE = "499FFF"
 
 styles_metadata = [
     {"name": "text", "font": {'name': FONT}, "alignment": "left", "background": ""},
     {"name": "center", "font": {'name': FONT}, "alignment": "center", "background": ""},
-    {"name": "blue_link", "font": {'name': FONT, 'underline': "single", 'color': "1CA4FC"}, "alignment": "center", "background": ""},
+    {"name": "blue_link", "font": {'name': FONT, 'underline': "single", 'color': MSTG_BLUE}, "alignment": "center", "background": ""},
     {"name": "gray", "font": {'name': FONT}, "alignment": "center", "background": "00C0C0C0"},
     {"name": "blue", "font": {'name': FONT}, "alignment": "center", "background": "0033CCCC"},
     {"name": "green", "font": {'name': FONT}, "alignment": "center", "background": "0099CC00"},
@@ -61,8 +62,8 @@ def load_styles(wb):
     styles = [create_style(style) for style in styles_metadata]
 
     underline = NamedStyle(name="underline")
-    underline.font = Font(name=FONT, size=15, bold=True, color="1CA4FC")
-    bd = Side(style="medium", color="1CA4FC")
+    underline.font = Font(name=FONT, size=15, bold=True, color=MSTG_BLUE)
+    bd = Side(style="medium", color=MSTG_BLUE)
     underline.border = Border(bottom=bd)
     styles.append(underline)
 

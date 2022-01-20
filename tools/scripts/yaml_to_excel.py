@@ -76,8 +76,8 @@ def write_header(ws):
     ws.merge_cells(start_row=2, end_row=4, start_column=2, end_column=3)
 
     img = Image("../../Document/Images/logo_circle.png")
-    img.height = img.height * 0.15
-    img.width = img.width * 0.15
+    img.height = 140
+    img.width = 140
     ws.add_image(img, "C2")
 
     img = Image("owasp-masvs/Document/images/OWASP_logo.png")
