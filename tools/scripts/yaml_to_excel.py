@@ -46,6 +46,7 @@ MASVS_TITLES = {
 }
 
 MASVS = None
+LANG = ""
 MSTGVERSION = ""
 MSTGCOMMIT = ""
 MASVSVERSION = ""
@@ -295,11 +296,12 @@ def generate_spreadsheet(output_file):
 
 
 def main():
-    global MASVS, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
+    global MASVS, LANG, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
     import argparse
 
     parser = argparse.ArgumentParser(description="Export the MASVS requirements as Excel. Default language is en.")
     parser.add_argument("-m", "--masvs", required=True)
+    parser.add_argument("-l", "--lang", required=True)
     parser.add_argument("-o", "--outputfile", required=True)
     parser.add_argument("-v1", "--mstgversion", required=True)
     parser.add_argument("-c1", "--mstgcommit", required=True)
@@ -310,12 +312,13 @@ def main():
 
     # set global vars
     MASVS = yaml.safe_load(open(args.masvs))
+    LANG = args.lang
     MSTGVERSION = args.mstgversion
     MSTGCOMMIT = args.mstgcommit
     MASVSVERSION = args.masvsversion
     MASVSCOMMIT = args.masvscommit
 
-    print(f"Generating Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
+    print(f"Generating {LANG.upper()} Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
     generate_spreadsheet(args.outputfile)
 
