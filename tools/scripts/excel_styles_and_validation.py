@@ -87,15 +87,12 @@ status_validation = DataValidation(type="list", formula1='"Pass,Fail,N/A"', allo
 
 red_text = Font(color="9C0006")
 red_fill = PatternFill(bgColor="FFC7CE")
-dxf = DifferentialStyle(font=red_text, fill=red_fill, alignment=align_center)
-rule_fail = CellIsRule(operator="containsText", text="Fail", fill=red_fill, font=red_text)
+rule_fail = CellIsRule(operator="containsText", formula=["Fail"], stopIfTrue=True, fill=red_fill, font=red_text)
 
 green_text = Font(color="38761D")
 green_fill = PatternFill(bgColor="B6D7A8")
-dxf = DifferentialStyle(font=green_text, fill=green_fill, alignment=align_center)
-rule_pass = CellIsRule(operator="containsText", text="Pass", fill=green_fill, font=green_text)
+rule_pass = CellIsRule(operator="containsText", formula=["Pass"], stopIfTrue=True, fill=green_fill, font=green_text)
 
 gray_text = Font(color="666666")
 gray_fill = PatternFill(bgColor="CCCCCC")
-dxf = DifferentialStyle(font=gray_text, fill=gray_fill, alignment=align_center)
-rule_na = CellIsRule(operator="containsText", text="N/A", fill=gray_fill, font=gray_text)
+rule_na = CellIsRule(operator="containsText", formula=["N/A"], stopIfTrue=True, fill=gray_fill, font=gray_text)
