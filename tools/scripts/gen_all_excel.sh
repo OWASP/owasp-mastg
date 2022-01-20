@@ -1,6 +1,6 @@
 #!/bin/bash
 echo $PWD
-LanguageArray=( $(ls -1 | grep Document | sed -r 's/Document-?//g' | sed 's/^$/en/g' | tr '\n' ' ') )
+LanguageArray=( $(cd owasp-masvs && ls -1 | grep Document | sed -r 's/Document-?//g' | sed 's/^$/en/g' | tr '\n' ' ') )
 for lang in ${LanguageArray[*]}; do
     echo lang
 done
