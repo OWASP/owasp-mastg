@@ -121,6 +121,11 @@ def create_security_requirements_sheet(wb):
     write_header(ws)
     set_columns_width(ws)
 
+    status_cells = 'J:J'
+    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
+    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
+    ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
+
     row = 6
     col_id = 2
     col_mstg_id = 3
@@ -172,12 +177,15 @@ def create_security_requirements_sheet(wb):
             ws.cell(row=row, column=col_r).style = "orange"
         if req.get("links"):
             link_0 = req["links"][0]
-            ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_0}", "Open")'
+            ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_0}", "Test Case")'
             ws.cell(row=row, column=col_link_android).style = "center"
+            ws.cell(row=row, column=col_link_android).data_type = "s"
+
             if len(req["links"]) >= 2:
                 link_1 = req["links"][1]
-                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Open")'
+                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_1}", "Test Case")'
                 ws.cell(row=row, column=col_link_ios).style = "center"
+                ws.cell(row=row, column=col_link_ios).data_type = "s"
         else:
             ws.cell(row=row, column=col_link_android).value = "N/A"
             ws.cell(row=row, column=col_link_android).style = "gray_header"
@@ -185,12 +193,9 @@ def create_security_requirements_sheet(wb):
             ws.cell(row=row, column=col_link_ios).style = "gray_header"
 
         ws.row_dimensions[row].height = 55  # points
-
+        
         status_cell = ws.cell(row=row, column=col_status).coordinate
         excel_styles_and_validation.status_validation.add(status_cell)
-        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_fail)
-        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_pass)
-        ws.conditional_formatting.add(status_cell, excel_styles_and_validation.rule_na)
 
         row = row + 1
 
