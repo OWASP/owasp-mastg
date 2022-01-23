@@ -339,7 +339,7 @@ During verification the following checks should be performed:
 
 - are all keys used according to the purpose defined during its creation? (it is relevant to KeyStore keys, which can have KeyProperties defined)
 - for asymmetric keys, is the private key being exclusively used for signing and the public key encryption?
-- are symmetric keys being used for multiple purposes? A new symmetric key should be generated if it's used in a different context.
+- are symmetric keys used for multiple purposes? A new symmetric key should be generated if it's used in a different context.
 - is cryptography used according to its business purpose?
 
 ### Dynamic Analysis
