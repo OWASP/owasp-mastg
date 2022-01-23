@@ -76,7 +76,7 @@ iOS upgrades are based on a challenge-response process (generating the so-called
 
 **Recommendation:** if you have a jailbroken device that you use for security testing, keep it as-is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version.
 
-Also consider getting one or multiple spare devices (which you will be updating with every major iOS release) and wait for new jailbreak software to be released publicly (see next section). Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade to the affected iOS version and apply the jailbreak.
+Also consider getting one or more spare devices (which you will be updating with every major iOS release) and wait for new jailbreak software to be released publicly (see next section). Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade to the affected iOS version and apply the jailbreak.
 
 ##### Jailbreak Software
 
