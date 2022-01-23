@@ -223,7 +223,7 @@ Minimizing the lifetime of session identifiers and tokens decreases the likeliho
 
 In most popular frameworks, you can set the session timeout via configuration options. This parameter should be set according to the best practices specified in the framework documentation. The recommended timeout may be between 10 minutes and two hours, depending on the app's sensitivity. Refer to the framework documentation for examples of session timeout configuration:
 
-- [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
+- [Spring (Java)](https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.spring-session "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
 - [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
 - [ASP.Net](https://docs.microsoft.com/en-us/dotnet/api/system.web.sessionstate.httpsessionstate.timeout "ASP.NET")
@@ -270,7 +270,7 @@ Use an interception proxy for dynamic application analysis and execute the follo
 4. Try to access the data again by resending the request from step 2.
 
 If the logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
+The OWASP Web Testing Guide ([WSTG-SESS-06](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/06-Testing_for_Logout_Functionality "WSTG-SESS-006")) includes a detailed explanation and more test cases.
 
 ## Testing Two-Factor Authentication and Step-up Authentication (MSTG-AUTH-9 and MSTG-AUTH-10)
 
