@@ -1,26 +1,30 @@
 # Frontispiece
 
+![OWASP MSTG](Images/OWASP_logo.png) \
+
 ## About the OWASP Mobile Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS"), and provides a baseline for complete and consistent security tests.
+The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this invite](https://join.slack.com/t/owasp/shared_invite/enQtNjExMTc3MTg0MzU4LWQ2Nzg3NGJiZGQ2MjRmNzkzN2Q4YzU1MWYyZTdjYjA2ZTA5M2RkNzE2ZjdkNzI5ZThhOWY5MjljYWZmYmY4ZjM "Slack channel sign up"). (Please open a PR if the invite has expired.)
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw# "Slack channel sign up").
+
+> Please open an issue in our Github Repo if the invite has expired.
 
 ## Disclaimer
 
 Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG.
 
-Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") has further details.
+Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md) has further details.
 
 ## Copyright and License
 
-Copyright © 2018 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
+Copyright © 2021 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-<img src="Images/CC-license.png" alt="drawing" width="150">
+![OWASP MSTG](Images/CC-license.png) \
 
 ## ISBN
 
-Our ISBN Number is 978-0-359-47489-9.
+Our ISBN Number is 978-1-257-96636-3 and a hard copy of the MSTG can be ordered at [lulu.com](https://www.lulu.com/search?adult_audience_rating=00&page=1&pageSize=10&q=mobile+security+testing+guide).
 
 ## Acknowledgments
 
@@ -56,11 +60,14 @@ Romuald is a passionate cyber security & privacy professional with over 15 years
 
 Jeroen is the mobile security lead at NVISO where he is responsible for quality assurance on mobile security projects and for R&D on all things mobile. He worked as a Flash developer during high school and college, but switched to a career in cybersecurity once he graduated and now has more than 5 years of experience in mobile security. He loves sharing his knowledge with other people, as is demonstrated by his many talks & trainings at colleges, universities, clients and conferences.
 
+#### Vikas Gupta
+
+Vikas is an experienced cyber security researcher, with expertise in mobile security. In his career he has worked to secure applications for various industries including fintech, banks and governments. He enjoys reverse engineering, especially obfuscated native code and cryptography. He holds masters in security and mobile computing, and an OSCP certification. He is always open to share his knowledge and exchange ideas.
+
 ### Top Contributors
 
 Top contributors have consistently contributed quality content and have at least 500 additions logged in the GitHub repository.
 
-- Vikas Gupta
 - Pawel Rzepa
 - Francesco Stillavato
 - Henry Hoggard
@@ -68,21 +75,30 @@ Top contributors have consistently contributed quality content and have at least
 - Kyle Benac
 - Paulino Calderon
 - Alexander Anthuk
+- Caleb Kinney
 - Abderrahmane Aftahi
+- Koki Takeyama
 - Wen Bin Kong
 - Abdessamad Temmar
 - Cláudio André
 - Slawomir Kosowski
 - Bolot Kerimbaev
+- Lukasz Wierzbicki
 
 <br/>
 <br/>
 
 ### Contributors
 
-Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository.
+Contributors have contributed quality content and have at least 50 additions logged in the GitHub repository. Their Github handle is listed below:
 
-Koki Takeyama, Jin Kung Ong, Sjoerd Langkemper, Caleb Kinney, Gerhard Wagner, Michael Helwig, Pece Milosev, Ryan Teoh, Denis Pilipchuk, José Carlos Andreu, Lukasz Wierzbicki, Dharshin De Silva, Anatoly Rosencrantz, Caitlin Andrews, Abhinav Sejpal, Anita Diamond, Raul Siles, Yogesh Sharma, Enrico Verzegnassi, Nick Epson, Anna Szkudlarek, Elie Saad, Prathan Phongthiproek, Tom Welch, Luander Ribeiro, Heaven L. Hodges, Shiv Sahni, Akanksha Bana, Dario Incalza, Jason Doyle, Oguzhan Topgul, Ender IBL, Imani Sherman, magicansk, Sijo Abraham, Dominique RIGHETTO, Pishu Mahtani, Jay Mbolda, Anuruddha E., Emil Tostrup
+kryptoknight13, DarioI, luander, oguzhantopgul, Osipion, mpishu, pmilosev, isher-ux, thec00n, ssecteam, jay0301, magicansk, jinkunong, nick-epson, caitlinandrews, dharshin, raulsiles, righettod, karolpiateknet, mkaraoz, Sjord, bugwrangler, jasondoyle, joscandreu, yog3shsharma, ryantzj, rylyade1, shivsahni, diamonddocumentation, 51j0, AnnaSzk, hlhodges, legik, abjurato, serek8, mhelwig, locpv-ibl and ThunderSon.
+
+### Mini Contributors
+
+Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). Their Github handle is listed below:
+
+jonasw234, zehuanli, jadeboer, Isopach, prabhant, jhscheer, meetinthemiddle-be, bet4it, aslamanver, juan-dambra, OWASP-Seoul, hduarte, TommyJ1994, forced-request, D00gs, vasconcedu, mehradn7, whoot, LucasParsy, DotDotSlashRepo, enovella, ionis111, vishalsodani, chame1eon, allRiceOnMe, crazykid95, Ralireza, Chan9390, tamariz-boop, abhaynayar, camgaertner, EhsanMashhadi, fujiokayu, decidedlygray, Ali-Yazdani, Fi5t, MatthiasGabriel, colman-mbuya and anyashka.
 
 ### Reviewers
 
@@ -100,32 +116,11 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 - Anita Diamond
 - Anna Szkudlarek
 
-### Others
+### Donators
 
-Many other contributors have committed small amounts of content, such as a single word or sentence (less than 50 additions). The full list of contributors is available on [GitHub](https://github.com/OWASP/owasp-mstg/graphs/contributors "contributors").
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
 
-### Sponsors
-
-While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our sponsors for providing the funds to be able to hire technical editors. Note that their sponsorship does not influence the content of the MASVS or MSTG in any way. The sponsorship packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Sponsorship Packages").
-
-#### Honorable Benefactor
-
-[![NowSecure](Images/Sponsors/NowSecure_logo.png)](https://www.nowsecure.com/ "NowSecure")
-
-[OWASP Bay Area Chapter](https://twitter.com/OWASPBayArea?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Twitter Bay Area")
-
-#### Good Samaritan Benefactor
-
-[![RandoriSec](Images/Sponsors/Randorisec_logo.png)](https://www.randorisec.fr/ "RandoriSec")
-
-#### Donators
-
-The following people and/or companies have donated more than $25 using Leanpub or other ways:
-
-- eShard
-
-<br/>
-<br/>
+![OWASP MSTG](Images/Donators/donators.png) \
 
 ### Older Versions
 

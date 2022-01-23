@@ -1,4 +1,4 @@
-## iOS Platform Overview
+# iOS Platform Overview
 
 iOS is a mobile operating system that powers Apple mobile devices, including the iPhone, iPad, and iPod Touch. It is also the basis for Apple tvOS, which inherits many functionalities from iOS. This section introduces the iOS platform from an architecture point of view. The following five key areas are discussed:
 
@@ -22,7 +22,7 @@ Uniform hardware and tight hardware/software integration create another security
 
 In spite of the numerous strengths of iOS, iOS app developers still need to worry about security. Data protection, Keychain, Touch ID/Face ID authentication, and network security still leave a large margin for errors. In the following chapters, we describe iOS security architecture, explain a basic security testing methodology, and provide reverse engineering how-tos.
 
-### iOS Security Architecture
+## iOS Security Architecture
 
 The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "Apple iOS Security Guide"), officially documented by Apple in the iOS Security Guide, consists of six core features. This security guide is updated by Apple for each major iOS version:
 
@@ -33,9 +33,9 @@ The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" alt="iOS Security Architecture" width="275">
+![OWASP MSTG](Images/Chapters/0x06a/iOS_Security_Architecture.png) \
 
-#### Hardware Security
+### Hardware Security
 
 The iOS security architecture makes good use of hardware-based security features that enhance overall performance. Each iOS device comes with two built-in Advanced Encryption Standard (AES) 256-bit keys. The device’s unique IDs (UIDs) and a device group IDs (GIDs) are AES 256-bit keys fused (UID) or compiled (GID) into the Application Processor (AP) and Secure Enclave Processor (SEP) during manufacturing. There's no direct way to read these keys with software or debugging interfaces such as JTAG. Encryption and decryption operations are performed by hardware AES crypto-engines that have exclusive access to these keys.
 
@@ -43,20 +43,20 @@ The GID is a value shared by all processors in a class of devices used to preven
 
 To allow secure deletion of sensitive data on flash memory, iOS devices include a feature called [Effaceable Storage](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide"). This feature provides direct low-level access to the storage technology, making it possible to securely erase selected blocks.
 
-#### Secure Boot
+### Secure Boot
 
 When an iOS device is powered on, it reads the initial instructions from the read-only memory known as Boot ROM, which bootstraps the system. The Boot ROM contains immutable code and the Apple Root CA, which is etched into the silicon chip during the fabrication process, thereby creating the root of trust. Next, the Boot ROM makes sure that the LLB's (Low Level Bootloader) signature is correct, and the LLB checks that the iBoot bootloader's signature is correct too. After the signature is validated, the iBoot checks the signature of the next boot stage, which is the iOS kernel. If any of these steps fail, the boot process will terminate immediately and the device will enter recovery mode and display the [restore screen](https://support.apple.com/en-us/HT203122 "If you see the Restore screen on your iPhone, iPad, or iPod touch"). However, if the Boot ROM fails to load, the device will enter a special low-level recovery mode called Device Firmware Upgrade (DFU). This is the last resort for restoring the device to its original state. In this mode, the device will show no sign of activity; i.e., its screen won't display anything.
 
 This entire process is called the "Secure Boot Chain". Its purpose is focused on verifying the boot process integrity, ensuring that the system and its components are written and distributed by Apple. The Secure Boot chain consists of the kernel, the bootloader, the kernel extension, and the baseband firmware.
 
-#### Code Signing
+### Code Signing
 
-Apple has implemented an elaborate DRM system to make sure that only Apple-approved code runs on their devices, that is, code signed by Apple. In other words, you won't be able to run any code on an iOS device that hasn't been jailbroken unless Apple explicitly allows it. End users are supposed to install apps through the official Apple's App Store only. For this reason (and others), iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple's Crystal Prison and the Future of Open Platforms").
+Apple has implemented an elaborate DRM system to make sure that only Apple-approved code runs on their devices, that is, code signed by Apple. In other words, you won't be able to run any code on an iOS device that hasn't been jailbroken unless Apple explicitly allows it. End users are supposed to install apps through the official Apple's App Store only. For this reason (and others), iOS has been [compared to a crystal prison](https://www.eff.org/deeplinks/2012/05/apples-crystal-prison-and-future-open-platforms "Apple\'s Crystal Prison and the Future of Open Platforms").
 
 A developer profile and an Apple-signed certificate are required to deploy and run an application.
 Developers need to register with Apple, join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription to get the full range of development and deployment possibilities. There's also a free developer account that allows you to compile and deploy apps (but not distribute them in the App Store) via sideloading.
 
-#### Encryption and Data Protection
+### Encryption and Data Protection
 
 _FairPlay Code Encryption_ is applied to apps downloaded from the App Store. FairPlay was developed as a DRM when purchasing multimedia content. Originally, FairPlay encryption was applied to MPEG and QuickTime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, or Apple ID, a public/private key pair will be created and assigned to your account. The private key is securely stored on your device. This means that FairPlay-encrypted code can be decrypted only on devices associated with your account. Reverse FairPlay encryption is usually obtained by running the app on the device, then dumping the decrypted code from memory (see also "Basic Security Testing on iOS").
 
@@ -66,18 +66,18 @@ Building encryption into the physical architecture makes it a default security f
 
 When data protection is enabled, by simply establishing a passcode in the mobile device, each data file is associated with a specific protection class. Each class supports a different level of accessibility and protects data on the basis of when the data needs to be accessed. The encryption and decryption operations associated with each class are based on multiple key mechanisms that utilize the device's UID and passcode, a class key, a file system key, and a per-file key. The per-file key is used to encrypt the file's contents. The class key is wrapped around the per-file key and stored in the file's metadata. The file system key is used to encrypt the metadata. The UID and passcode protect the class key. This operation is invisible to users. To enable data protection, the passcode must be used when accessing the device. The passcode unlocks the device. Combined with the UID, the passcode also creates iOS encryption keys that are more resistant to hacking and brute-force attacks. Enabling data protection is the main reason for users to use passcodes on their devices.
 
-#### Sandbox
+### Sandbox
 
 The [appsandbox](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html "File System Basics") is an iOS access control technology. It is enforced at the kernel level. Its purpose is limiting system and user data damage that may occur when an app is compromised.
 
 Sandboxing has been a core security feature since the first release of iOS. All third-party apps run under the same user (`mobile`), and only a few system applications and services run as `root` (or other specific system users). Regular iOS apps are confined to a *container* that restricts access to the app's own files and a very limited number of system APIs. Access to all resources (such as files, network sockets, IPCs, and shared memory) are controlled by the sandbox. These restrictions work as follows [#levin]:
 
-- The app process is restricted to its own directory (under /var/mobile/Containers/Bundle/Application/ or /var/containers/Bundle/Application/, depending on the iOS version) via a chroot-like process.
+- The app process is restricted to its own directory (under /var/mobile/Containers/ Bundle/Application/ or /var/containers/Bundle/Application/, depending on the iOS version) via a chroot-like process.
 - The `mmap` and `mmprotect` system calls are modified to prevent apps from making writable memory pages executable and stopping processes from executing dynamically generated code. In combination with code signing and FairPlay, this strictly limits what code can run under specific circumstances (e.g., all code in apps distributed via the App Store is approved by Apple).
 - Processes are isolated from each other, even if they are owned by the same UID at the operating system level.
 - Hardware drivers can't be accessed directly. Instead, they must be accessed through Apple's public frameworks.
 
-#### General Exploit Mitigations
+### General Exploit Mitigations
 
 iOS implements address space layout randomization (ASLR) and eXecute Never (XN) bit to mitigate code execution attacks.
 
@@ -85,7 +85,7 @@ ASLR randomizes the memory location of the program's executable file, data, heap
 
 The XN mechanism allows iOS to mark selected memory segments of a process as non-executable. On iOS, the process stack and heap of user-mode processes is marked non-executable. Pages that are writable cannot be marked executable at the same time. This prevents attackers to execute machine code injected into the stack or heap.
 
-### Software Development on iOS
+## Software Development on iOS
 
 Like other platforms, Apple provides a Software Development Kit (SDK) that helps developers to develop, install, run, and test native iOS Apps. Xcode is an Integrated Development Environment (IDE) for Apple software development. iOS applications are developed in Objective-C or Swift.
 
@@ -98,7 +98,7 @@ On a non-jailbroken device, there are two ways to install an application out of 
 1. via Enterprise Mobile Device Management. This requires a company-wide certificate signed by Apple.
 2. via sideloading, i.e., by signing an app with a developer's certificate and installing it on the device via Xcode (or Cydia Impactor). A limited number of devices can be installed to with the same certificate.
 
-### Apps on iOS
+## Apps on iOS
 
 iOS apps are distributed in IPA (iOS App Store Package) archives. The IPA file is a ZIP-compressed archive that contains all the code and resources required to execute the app.
 
@@ -110,7 +110,7 @@ IPA files have a built-in directory structure. The example below shows this stru
 - `/iTunesMetadata.plist` contains various bits of information, including the developer's name and ID, the bundle identifier, copyright information, genre, the name of the app, release date, purchase date, etc.
 - `/WatchKitSupport/WK` is an example of an extension bundle. This specific bundle contains the extension delegate and the controllers for managing the interfaces and responding to user interactions on an Apple Watch.
 
-#### IPA Payloads - A Closer Look
+### IPA Payloads - A Closer Look
 
 Let's take a closer look at the different files in the IPA container. Apple uses a relatively flat structure with few extraneous directories to save disk space and simplify file access. The top-level bundle directory contains the application's executable file and all the resources the application uses (for example, the application icon, other images, and localized content .
 
@@ -127,15 +127,15 @@ A language.lproj folder exists for each language that the application supports. 
 - A storyboard is a visual representation of the iOS application's user interface. It shows screens and the connections between those screens.
 - The strings file format consists of one or more key-value pairs and optional comments.
 
-<img src="Images/Chapters/0x06a/iOS_project_folder.png" alt="iOS App Folder Structure" width="500">
+![OWASP MSTG](Images/Chapters/0x06a/iOS_project_folder.png) \
 
-On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [TestFlight](https://developer.apple.com/testflight/ "TestFlight").
+On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g. [TestFlight](https://developer.apple.com/testflight/ "TestFlight") or [Visual Studio App Center](https://appcenter.ms/ "Visual Studio App Center").
 
-#### App Permissions
+### App Permissions
 
-In contrast to Android apps (before Android 6.0 (API level 23)), iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during run time, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
+In contrast to Android apps (before Android 6.0 (API level 23)), iOS apps don't have pre-assigned permissions. Instead, the user is asked to grant permission during runtime, when the app attempts to use a sensitive API for the first time. Apps that have been granted permissions are listed in the Settings > Privacy menu, allowing the user to modify the app-specific setting. Apple calls this permission concept [privacy controls](https://support.apple.com/en-sg/HT203033 "Apple - About privacy and Location Services in iOS 8 and later").
 
-iOS developers can't set requested permissions directly — they indirectly request them with sensitive APIs. For example, when accessing a user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of permissions they request and data they need to access (e.g., NSContactsUsageDescription).
+iOS developers can't set requested permissions directly, these will be requested indirectly when accessing sensitive APIs. For example, when accessing a user's contacts, any call to CNContactStore blocks the app while the user is being asked to grant or deny access. Starting with iOS 10.0, apps must include usage description keys for the types of permissions they request and data they need to access (e.g., NSContactsUsageDescription).
 
 The following APIs [require user permission](https://www.apple.com/business/docs/iOS_Security_Guide.pdf "iOS Security Guide. Page 62"):
 
@@ -154,7 +154,7 @@ The following APIs [require user permission](https://www.apple.com/business/docs
 - Media Library
 - Social media accounts
 
-### iOS Application Attack surface
+## iOS Application Attack surface
 
 The iOS application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The iOS application may be vulnerable to attack if it does not:
 

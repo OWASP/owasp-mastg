@@ -24,11 +24,12 @@ Consider creating a supporting document and linking to it from the page rather t
 
 The MSTG reaches all kind of people all over the world. To ensure inclusiveness and diversity, please refrain from using the following throughout the book:
 
-- she / her / hers
-- he / him / his
+- she / her / hers / herself
+- he / him / his / himself
 
 Or any other constructions like "he/she", "s/he", "his or her". Instead, use the following gender-neutral alternatives:
 
+- Omit the pronoun if possible: "The user authenticates himself using ..." -> "The user authenticates using ..."
 - Replace pronouns with "the or "a": "When the user enters his password ..." -> "When the user enters the password ..."
 - Use plural nouns and pronouns: "An attacker will use his jailbroken device ..." -> "Attackers will use their jailbroken devices ..."
 - Use the second person: "If the attacker runs this code, he can bypass ..." -> "If you run this code, you can bypass ..."
@@ -90,7 +91,7 @@ When presenting your content in a list format:
 - Use bulleted lists whenever the order of the entries is not important.
 - Generally, limit the number of items in a single list to no more than nine.
 - Generally, limit lists to no more than two levels: primary and secondary.
-- Punctuate and capitalize list items consistently (CMOS 6.124–6.126).
+- Punctuate and capitalize list items consistently (CMOS 6.124-6.126).
   - Don't add end punctuation to list items that are not complete sentences unless they complete the sentence that introduces the list.
   - Use appropriate capitalization and end punctuation for list items that individually form complete sentences.
   - If the list items complete an introductory sentence, end each (except the last item) with a comma and do not add "and" after the second-to-last item. End the last item with appropriate end punctuation (usu. a period).
@@ -99,7 +100,7 @@ When presenting your content in a list format:
 
 When using a number between zero and ten, spell out the number (e.g., "three" or "ten").
 
-When using any number higher than ten, use the numeric version (e.g., "12" or “300”).
+When using any number higher than ten, use the numeric version (e.g., "12" or "300").
 
 ## 2. Language
 
@@ -113,7 +114,7 @@ Change all British spelling and terminology to the American equivalents where ap
 
 Adhere to standard grammar and punctuation rules when it comes to pluralization of typical words.
 
-The plural of calendar years does not take the apostrophe before the “s”. For example, the plural form of 1990 is 1990s.
+The plural of calendar years does not take the apostrophe before the "s". For example, the plural form of 1990 is 1990s.
 
 ### Title Capitalization
 
@@ -121,7 +122,7 @@ We follow the title case rules from the "Chicago Manual of Style":
 
 - Capitalize the first and last word in a title, regardless of part of speech
 - Capitalize all nouns (app, encryption, package), pronouns (you, she, it), verbs (analyze, compile, inspect), adjectives (active, insecure, weak), adverbs (immediately, quietly), and subordinating conjunctions (as, because, although)
-- Lowercase “to” as part of an infinitive
+- Lowercase "to" as part of an infinitive
 - Lowercase all articles (a, the), prepositions (to, at, in, with), and coordinating conjunctions (and, but, or)
 
 When in doubt, you can verify proper capitalization on [https://titlecaseconverter.com/](https://titlecaseconverter.com/ "Title Case Converter").
@@ -200,29 +201,29 @@ Throughout the guide, you may want to address the readers in order to tell them 
 
 ### Web Links
 
-Special characters such as apostrophe (\') or single quote (\`) need to be escaped when using them in link descriptions, as otherwise the link is broken in Gitbook.
+Use markdown's in-line link format (A) `[TEXT](URL "TITLE")` or (B) `[TEXT](URL)`.
 
-Wrong usage, see "iPhone's":
-
-```markdown
-[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone's UDID")
-```
-
-Right usage, see "iPhone\'s":
-
-```markdown
-[UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID")
-```
-
-For web links, use the normal markdown in-line link format: `[TEXT](URL "NAME")`. For example:
+For example:
 
 ```markdown
 The [threat modeling guidelines defined by OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
 ```
 
-These links will be converted to numbered references in the print version.
+When using (A), be sure to escape special characters such as apostrophe (\') or single quote (\`), as otherwise the link will be broken in Gitbook.
 
-When adding them to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
+**Wrong** usage, see "iPhone's":
+
+```markdown
+[UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone's UDID")
+```
+
+**Right** usage, see "iPhone\'s":
+
+```markdown
+[UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID")
+```
+
+When adding links to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
 
 ```markdown
 - adb - <https://developer.android.com/studio/command-line/adb>
@@ -252,7 +253,7 @@ The general form for citing technical reports is to place the name and location 
 Basic Format:
 
 ```markdown
-- [shortname] J. K. Author, “Title of report,” Abbrev. Name of Co., City of Co., Abbrev. State, Rep. xxx, year
+- [shortname] J. K. Author, "Title of report," Abbrev. Name of Co., City of Co., Abbrev. State, Rep. xxx, year
 
 - [shortname] \[Author(s)\], \[Title\] - Link
 ```
@@ -262,7 +263,7 @@ Basic Format:
 ```markdown
 - [shortname] \[Author(s)\], \[Title\], \[Published\], \[Year\]
 
-- [examplebook] J. K. Author, “Title of chapter in the book,” in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx–xxx.
+- [examplebook] J. K. Author, "Title of chapter in the book," in Title of His Published Book, xth ed. City of Publisher, Country if not USA: Abbrev. of Publisher, year, ch. x, sec. x, pp. xxx-xxx.
 ```
 
 NOTE: Use et al. when three or more names are given
@@ -271,8 +272,8 @@ e.g.
 
 ```markdown
 - [klaus] B. Klaus and P. Horn, Robot Vision. Cambridge, MA: MIT Press, 1986.
-- [stein] L. Stein, “Random patterns,” in Computers and You, J. S. Brake, Ed. New York: Wiley, 1994, pp. 55-70.
-- [myer] R. L. Myer, “Parametric oscillators and nonlinear materials,” in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160.
+- [stein] L. Stein, "Random patterns," in Computers and You, J. S. Brake, Ed. New York: Wiley, 1994, pp. 55-70.
+- [myer] R. L. Myer, "Parametric oscillators and nonlinear materials," in Nonlinear Optics, vol. 4, P. G. Harper and B. S. Wherret, Eds. San Francisco, CA: Academic, 1977, pp. 47-160.
 - [abramowitz] M. Abramowitz and I. A. Stegun, Eds., Handbook of Mathematical Functions (Applied Mathematics Series 55). Washington, DC: NBS, 1964, pp. 32-33.
 ```
 
@@ -328,7 +329,7 @@ In order of preference, spell/punctuate **generic** technical terms according to
 |  Base64    |    Base64-      |
 | black box  |     *same*      |
 | Bundle ID  |      NA        |
-| byte-code  |       NA        |
+| bytecode  |       NA        |
 |client side |  client-side    |
 |  codebase  |     *same*      |
 |code signing|     *same*      |

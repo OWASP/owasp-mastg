@@ -8,4 +8,4 @@ Thank you for submitting a Pull Request to the Mobile Security Testing Guide. Pl
 - [ ] You verified/tested the effectiveness of your contribution (e.g.: is the code really an effective remediation? Please verify it works!)
 
 If your PR is related to an issue. Please end your PR test with the following line:
-This PR covers issue #< insert number here >.
+This PR closes #< insert number here >.

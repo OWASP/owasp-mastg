@@ -1,0 +1,17 @@
+changelog:
+  exclude:
+    labels:
+      - "ignore-for-release"
+  categories:
+    - title: Changes in MSTG Content
+      labels:
+        - "change-mstg"
+    - title: Errata Corrections (typos & more)
+      labels:
+        - "errata"
+    - title: New Donators
+      labels:
+        - "donation"
+    - title: Other Changes
+      labels:
+        - "*"
