@@ -1397,7 +1397,7 @@ You can find more security best practices when using WebViews on [Android Develo
 
 Android's WebView class offers the [`clearCache`](https://goo.gl/7dnhdi "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache.
 
-Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, the `clearCache` method might be also called in there.
+Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might be also called in there.
 
 Additionally, an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "false".
 
