@@ -1385,7 +1385,7 @@ There are several ways to perform dynamic analysis:
 
 #### Overview
 
-Clearing the WebView resources is a crucial step when having an app accessing any sensitive data within a WebView. This includes any files stored locally, the RAM cache and any loaded JavaScript.
+Clearing the WebView resources is a crucial step when an app accesses any sensitive data within a WebView. This includes any files stored locally, the RAM cache and any loaded JavaScript.
 
 As an additional measure, you could use server-side headers such as `no-cache`, which prevent an application from caching particular content.
 
