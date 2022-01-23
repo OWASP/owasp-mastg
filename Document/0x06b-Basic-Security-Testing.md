@@ -86,7 +86,6 @@ Other sources that have been, and might still be, reliable include:
 
 - [r/jailbreak Reddit Community Page](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 - [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
-- [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
 - [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
 
 > **IMPORTANT NOTE**:
