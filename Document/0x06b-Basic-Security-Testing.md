@@ -22,7 +22,7 @@ The following is the most basic iOS app testing setup:
 
 #### Testing on a Real Device
 
-We definitely recommend you to have a jailbroken iPhone or iPad for testing. These devices allow root access and tool installation, making the security testing process more straightforward. See the next section ["Getting Privileged Access"](#getting-privileged-access) for more information.
+We recommend having a jailbroken iPhone or iPad for testing. These devices allow root access and tool installation, making the security testing process more straightforward. See the next section ["Getting Privileged Access"](#getting-privileged-access) for more information.
 
 If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
 
