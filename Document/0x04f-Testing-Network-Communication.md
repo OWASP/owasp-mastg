@@ -401,14 +401,14 @@ Some Android and iOS versions do not support some of the recommended cipher suit
 
 Since Android 9 (API level 28), cleartext HTTP traffic is blocked by default. However, there are multiple ways in which an application can still send cleartext HTTP traffic:
 
-- Setting the [android:usesCleartextTraffic](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the \<application\> tag in the AndroidManifest.xml file. Note that this flag is ignored in case a network security config is configured.
-- Configuring the network security config to enable cleartext traffic by setting the cleartextTrafficPermitted attribute to true on \<domain-config\> elements.
-- Using low level libraries (e.g. [Socket](https://developer.android.com/reference/java/net/Socket "Socket class") to set up a custom HTTP connection.
+- Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case a network security config is configured.
+- Configuring the network security config to enable cleartext traffic by setting the cleartextTrafficPermitted attribute to true on `<domain-config>` elements.
+- Using low level libraries (e.g. [`Socket`](https://developer.android.com/reference/java/net/Socket "Socket class") to set up a custom HTTP connection.
 - Using an cross-platform framework, as these typically have their own implementations for HTTP libraries.
 
 Even if one of the above cases is true, it doesn't mean that the application actually sends HTTP traffic. It's possible that an exception is configured, but only HTTPS traffic is used in practice.
 
-Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [SSLSocket](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
+Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [`SSLSocket`](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
 
 Be aware that `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
 
