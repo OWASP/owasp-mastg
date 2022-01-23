@@ -326,7 +326,7 @@ When doing the dynamic analysis:
 - In many cases the app could opt for [alternatives to declaring permissions](https://developer.android.com/training/permissions/evaluating#alternatives), such as:
   - requesting the `ACCESS_COARSE_LOCATION` permission instead of `ACCESS_FINE_LOCATION`. Or even better not requesting the permission at all, and instead ask the user to enter a postal code.
   - invoking the `ACTION_IMAGE_CAPTURE` or `ACTION_VIDEO_CAPTURE` intent action instead of requesting the `CAMERA` permission.
-  - usinging [Companion Device Pairing](https://developer.android.com/guide/topics/connectivity/companion-device-pairing) (Android 8.0 (API level 26) and higher) when pairing with a Bluetooth device instead of declaring the `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATIION`, or `BLUETOOTH_ADMIN` permissions.
+  - using [Companion Device Pairing](https://developer.android.com/guide/topics/connectivity/companion-device-pairing) (Android 8.0 (API level 26) and higher) when pairing with a Bluetooth device instead of declaring the `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATIION`, or `BLUETOOTH_ADMIN` permissions.
 - Use the [Privacy Dashboard](https://developer.android.com/training/permissions/explaining-access#privacy-dashboard) (Android 12 (API level 31) and higher) to verify how the app [explains access to sensitive information](https://developer.android.com/training/permissions/explaining-access).
 
 To obtain detail about a specific permission you can refer to the [Android Documentation](https://developer.android.com/reference/android/Manifest.permission "Android Permissions").
