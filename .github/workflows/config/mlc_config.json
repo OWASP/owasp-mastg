@@ -38,6 +38,9 @@
         },
         {
             "pattern": "^https://support.virustotal.com"
+        },
+        {
+            "pattern": "^https://www.europeanpaymentscouncil.eu"
         }
     ],
     "httpHeaders": [
