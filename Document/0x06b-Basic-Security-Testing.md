@@ -82,7 +82,7 @@ Also consider getting one or more spare devices (which you will be updating with
 
 The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is very challenging. At the time of this writing we can recommend using the very complete ["Jailbreak Chart by the r/jailbreak Reddit community"](https://docs.google.com/spreadsheets/u/0/d/11DABHIIqwYQKj1L83AK9ywk_hYMjEkcaxpIg6phbTf0/htmlview#).
 
-Other sources that have been and might still be reliable include:
+Other sources that have been, and might still be, reliable include:
 
 - [r/jailbreak Reddit Community Page](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
 - [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
