@@ -276,11 +276,7 @@ This will return all classes using the `SecretKeySpec` class. Now examine those 
 
 You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](0x08-Testing-Tools.md#RMS-Runtime-Mobile-Security).
 
-## Testing the usage of proven implementations of cryptographic primitives (MSTG-CRYPTO-2)
-
-## Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-3)
-
-## Testing the usage of cryptographic protocols and algorithms (MSTG-CRYPTO-4)
+## Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
 
 ### Overview
 
