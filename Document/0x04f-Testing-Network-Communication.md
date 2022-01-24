@@ -399,7 +399,9 @@ Some Android and iOS versions do not support some of the recommended cipher suit
 
 ### Static Analysis
 
-Since Android 9 (API level 28), cleartext HTTP traffic is blocked by default. However, there are multiple ways in which an application can still send cleartext HTTP traffic:
+First, you should identify all network requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [`SSLSocket`](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
+
+Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default but there are multiple ways in which an application can still send it:
 
 - Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html) is configured.
 - Configuring the network security config to enable cleartext traffic by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
