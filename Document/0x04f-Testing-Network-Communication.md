@@ -403,7 +403,7 @@ Since Android 9 (API level 28), cleartext HTTP traffic is blocked by default. Ho
 
 - Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case a network security config is configured.
 - Configuring the network security config to enable cleartext traffic by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
-- Using low level libraries (e.g. [`Socket`](https://developer.android.com/reference/java/net/Socket "Socket class") to set up a custom HTTP connection.
+- Using low-level APIs (e.g. [`Socket`](https://developer.android.com/reference/java/net/Socket "Socket class")) to set up a custom HTTP connection.
 - Using an cross-platform framework, as these typically have their own implementations for HTTP libraries.
 
 Even if one of the above cases is true, it doesn't mean that the application actually sends HTTP traffic. It's possible that an exception is configured, but only HTTPS traffic is used in practice.
