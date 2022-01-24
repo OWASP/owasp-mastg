@@ -48,7 +48,7 @@ In this section, we will learn about some approaches and tools for collecting ba
 
 #### Application Binary
 
-You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](http://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
+You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
 
 ```bash
 $ unzip DamnVulnerableiOSApp.ipa
