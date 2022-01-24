@@ -57,9 +57,9 @@ The following list of recommendations should be considered during app examinatio
 
 ### Security provider
 
-Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
+Android relies on the `java.security.Provider` class to implement Java Security services. These providers are crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
-The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
+The list of security providers included in Android varies between versions of Android and the OEM-specific builds. Some security provider implementations in older versions are now known to be less secure or vulnerable. Thus, Android applications should not only choose the correct algorithms and provide a good configuration, in some cases they should also pay attention to the strength of the implementations in the legacy security providers.
 
 You can list the set of existing security providers using following code:
 
@@ -78,7 +78,7 @@ String providers = builder.toString();
 //now display the string on the screen or in the logs for debugging.
 ```
 
-Below you can find the output of a running Android 4.4 (API level 19) in an emulator with Google Play APIs, after the security provider has been patched:
+Below you can find the output of a running this snippet on Android 4.4 (API level 19) in an emulator with Google Play APIs, after the security provider has been patched:
 
 ```default
 provider: GmsCore_OpenSSL1.0 (Android's OpenSSL-backed security provider)
@@ -90,7 +90,7 @@ provider: HarmonyJSSE1.0 (Harmony JSSE Provider)
 provider: AndroidKeyStore1.0 (Android AndroidKeyStore security provider)
 ```
 
-Below you can find the output of a running Android 9 (API level 28) in an emulator with Google Play APIs:
+Below you can find the output of running this snippet on Android 9 (API level 28) in an emulator with Google Play APIs:
 
 ```default
 provider: AndroidNSSP 1.0(Android Network Security Policy Provider)
@@ -104,7 +104,7 @@ provider: AndroidKeyStore 1.0(Android KeyStore security provider)
 
 #### Updating security provider
 
-Keeping up-to-date and patched component is one of security principles. The same applies to `provider`. Application should check if used security provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider"). It is related to [Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries).
+Making sure all security critical components are up-to-date is an important security principle, and security providers are no exception. Applications should check if the installed Provider is up-to-date and [force an update](https://developer.android.com/training/articles/security-gms-provider "Updating security provider") if they aren't. Note that this is only possible on devices that have Google Play services isntalled.
 
 #### Older Android versions
 
