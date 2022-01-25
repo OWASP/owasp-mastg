@@ -1,5 +1,40 @@
 # Android Network Communication
 
+## Testing Data Encryption on the Network (MSTG-NETWORK-1)
+
+### Static Analysis
+
+First, you should identify all network requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [`SSLSocket`](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
+
+Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default but there are multiple ways in which an application can still send it:
+
+- Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html) is configured.
+- Configuring the Network Security Configuration to enable cleartext traffic by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
+- Using low-level APIs (e.g. [`Socket`](https://developer.android.com/reference/java/net/Socket "Socket class")) to set up a custom HTTP connection.
+- Using a cross-platform framework (e.g. Flutter, Xamarin, ...), as these typically have their own implementations for HTTP libraries.
+
+All of the above cases must be carefully analyzed as a whole. For example, even if the app does not permit cleartext traffic in its Android Manifest or Network Security Configuration, it might actually still be sending HTTP traffic. That could be the case if it's using a low-level API (for which Network Security Configuration is ignored) or a badly configured cross-platform framework.
+
+Next, even when using a low-level API which is supposed to make secure connections (such as `SSLSocket`), be aware that it has to be securely implemented. For instance, `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
+
+### Dynamic Analysis
+
+Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
+
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
+- Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
+
+> Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check ["Testing Custom Certificate Stores and Certificate Pinning"](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4).
+
+For more details refer to:
+
+- "Intercepting Traffic on the Network Layer" from chapter ["Testing Network Communication"](0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer)
+- "Setting up a Network Testing Environment" from chapter [Android Basic Security Testing](0x05b-Basic-Security_Testing.md#setting-up-a-network-testing-environment)
+
+## Testing the TLS Settings (MSTG-NETWORK-2)
+
+Refer to section "Verifying the TLS Settings" in chapter [Testing Network Communication](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings-mstg-network-2) for details.
+
 ## Testing Endpoint Identify Verification (MSTG-NETWORK-3)
 
 Using TLS to transport sensitive information over the network is essential for security. However, encrypting communication between a mobile application and its backend API is not trivial. Developers often decide on simpler but less secure solutions (e.g., those that accept any certificate) to facilitate the development process, and sometimes these weak solutions [make it into the production version](https://saschafahl.de/static/paper/androidssl2012.pdf "Hunting Down Broken SSL in Android Apps"), potentially exposing users to [man-in-the-middle attacks](https://cwe.mitre.org/data/definitions/295.html "CWE-295: Improper Certificate Validation").
@@ -14,6 +49,76 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 > Note that from Android 8.0 (API level 26) onward, there is no support for SSLv3 and `HttpsURLConnection` will no longer perform a fallback to an insecure TLS/SSL protocol.
 
 ### Static Analysis
+
+#### Trust Anchors in the Network Security Configuration
+
+When running on Android 7.0 (API level 24) or higher, apps targeting those API levels will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs. However, this protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
+
+Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After decoding the app you can look for the presence of `targetSDK` present in the file apktool.yml that was created in the output folder.
+
+The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
+
+If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CAs for those particular domains or for all domains. Example:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    <domain-config>
+        <domain includeSubdomains="false">owasp.org</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+        <pin-set expiration="2018/8/10">
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Intermediate CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Root CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+```
+
+Is important to understand the precedence of entries. If a value is not set in a `<domain-config\>` entry or in a parent `<domain-config\>`, the configurations in place will be based on the `<base-config\>`, and lastly if not defined in this entry, the default configuration will be used.
+
+The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="false">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 7.0 (API level 24) to Android 8.1 (API level 27) is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 6.0 (API level 23) and lower is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+    </trust-anchors>
+</base-config>
+```
 
 #### Verifying the Server Certificate
 
@@ -93,21 +198,27 @@ Make sure that your application verifies a hostname before setting a trusted con
 
 ### Dynamic Analysis
 
-Dynamic analysis requires an interception proxy. To test improper certificate verification, check the following controls:
+When testing an app targeting Android 7.0 (API level 24) or higher it should be effectively applying the Network Security Configuration **unless the app targets API levels below 24** and you shouldn't able to see the decrypted HTTPS traffic at first.
 
-- Self-signed certificate
+To test improper certificate verification launch a MITM attack using an interception proxy such as Burp. Try the following options:
 
-In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Use a self-signed certificate**, and click **Ok**. Now, run your application. If you're able to see HTTPS traffic, your application is accepting self-signed certificates.
+- **Self-signed certificate:**
+  1. In Burp, go to the **Proxy** tab and select the **Options** tab.
+  2. Go to the **Proxy Listeners** section, highlight your listener, and click **Edit**.
+  3. Go to the **Certificate** tab, check **Use a self-signed certificate**, and click **Ok**.
+  4. Run your application. If you're able to see HTTPS traffic, your application is accepting self-signed certificates.
+- **Accepting certificates with an untrusted CA:**
+  1. In Burp, go to the **Proxy** tab and select the **Options** tab.
+  2. Go to the **Proxy Listeners** section, highlight your listener, and click **Edit**.
+  3. Go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in the backend server's hostname.
+  4. Run your application. If you're able to see HTTPS traffic, your application is accepting certificates with an untrusted CA.
+- **Accepting incorrect hostnames:**
+  1. In Burp, go to the **Proxy** tab and select the **Options** tab.
+  2. Go to the **Proxy Listeners** section, highlight your listener, and click **Edit**.
+  3. Go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in an invalid hostname, e.g., example.org.
+  4. Run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
 
-- Accepting certificates with an untrusted CA
-
-In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in the backend server's hostname. Now, run your application. If you're able to see HTTPS traffic, your application is accepting certificates with an untrusted CA.
-
-- Accepting incorrect hostnames
-
-In Burp, go to the **Proxy** tab, select the **Options** tab, then go to the **Proxy Listeners** section, highlight your listener, and click **Edit**. Then go to the **Certificate** tab, check **Generate a CA-signed certificate with a specific hostname**, and type in an invalid hostname, e.g., example.org. Now, run your application. If you're able to see HTTPS traffic, your application is accepting all hostnames.
-
-If you're interested in further MITM analysis or you have problems with the configuration of your interception proxy, consider using [Tapioca](https://insights.sei.cmu.edu/cert/2014/08/-announcing-cert-tapioca-for-mitm-analysis.html "Announcing CERT Tapioca for MITM Analysis"). It's a CERT pre-configured [VM appliance](http://www.cert.org/download/mitm/CERT_Tapioca.ova "CERT Tapioca Virtual Machine Download") for MITM software analysis. All you have to do is [deploy a tested application on an emulator and start capturing traffic](https://insights.sei.cmu.edu/cert/2014/09/-finding-android-ssl-vulnerabilities-with-cert-tapioca.html "Finding Android SSL vulnerabilities with CERT Tapioca").
+If you're still not able to see any decrypted HTTPS traffic, your application might be implementing [certificate pinning](#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4).
 
 ## Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
 
@@ -134,7 +245,7 @@ When only very few pin failures are reported, then the network should be ok, and
 
 ### Static Analysis
 
-#### Network Security Configuration
+#### Certificate Pinning in the Network Security Configuration
 
 To customize their network security settings in a safe, declarative configuration file without modifying app code, applications can use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") that Android provides for versions 7.0 and above.
 
@@ -395,95 +506,6 @@ This command will search for all methods that take a string and a variable list 
 
 Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
 
-## Testing the Network Security Configuration Settings (MSTG-NETWORK-4)
-
-### Overview
-
-Network Security Configuration was introduced on Android 7.0 (API level 24) and lets apps customize their network security settings such as custom trust anchors and certificate pinning.
-
-#### Trust Anchors
-
-When running on Android 7.0 (API level 24) or higher, apps targeting those API levels will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs.
-
-This protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
-
-### Static Analysis
-
-Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After decoding the app you can look for the presence of `targetSDK` present in the file apktool.yml that was created in the output folder.
-
-The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
-
-If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CAs for those particular domains or for all domains. Example:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <base-config>
-        <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" />
-        </trust-anchors>
-    </base-config>
-    <domain-config>
-        <domain includeSubdomains="false">owasp.org</domain>
-        <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" />
-        </trust-anchors>
-        <pin-set expiration="2018/8/10">
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Intermediate CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Root CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
-        </pin-set>
-    </domain-config>
-</network-security-config>
-```
-
-Is important to understand the precedence of entries. If a value is not set in a `<domain-config\>` entry or in a parent `<domain-config\>`, the configurations in place will be based on the `<base-config\>`, and lastly if not defined in this entry, the default configuration will be used.
-
-The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
-
-```xml
-<base-config cleartextTrafficPermitted="false">
-    <trust-anchors>
-        <certificates src="system" />
-    </trust-anchors>
-</base-config>
-```
-
-The default configuration for apps targeting Android 7.0 (API level 24) to Android 8.1 (API level 27) is as follows:
-
-```xml
-<base-config cleartextTrafficPermitted="true">
-    <trust-anchors>
-        <certificates src="system" />
-    </trust-anchors>
-</base-config>
-```
-
-The default configuration for apps targeting Android 6.0 (API level 23) and lower is as follows:
-
-```xml
-<base-config cleartextTrafficPermitted="true">
-    <trust-anchors>
-        <certificates src="system" />
-        <certificates src="user" />
-    </trust-anchors>
-</base-config>
-```
-
-### Dynamic Analysis
-
-You can test the Network Security Configuration settings of a target app by using a dynamic approach, typically using an interception proxy such as Burp. However, it might be possible that you're not able to see the traffic at first, e.g. when testing an app targeting Android 7.0 (API level 24) or higher and effectively applying the Network Security Configuration. In that situation, you should patch the Network Security Configuration file. You'll find the necessary steps in section "[Bypassing the Network Security Configuration](0x05b-Basic-Security_Testing.md#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" in the "Android Basic Security Testing" chapter.
-
-There might still be scenarios where this is not needed and you can still do MITM attacks without patching:
-
-- When the app is running on an Android device with Android 7.0 (API level 24) onwards, but the app targets API levels below 24, it will not use the Network Security Configuration file. Instead, the app will still trust any user supplied CAs.
-- When the app is running on an Android device with Android 7.0 (API level 24) onwards and there is no custom Network Security Configuration implemented in the app.
-
 ## Testing the Security Provider (MSTG-NETWORK-6)
 
 ### Overview
@@ -647,25 +669,25 @@ When you do not have the source code:
 - Use Xposed to hook into the `java.security` package, then hook into `java.security.Security` with the method `getProviders` (with no arguments). The return value will be an array of `Provider`.
 - Determine whether the first provider is `GmsCore_OpenSSL`.
 
-### References
+## References
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 - MSTG-NETWORK-6: "The app only depends on up-to-date connectivity and security libraries."
 
-#### Android Developer Documentation
+### Android Developer Documentation
 
 - Network Security Configuration - <https://developer.android.com/training/articles/security-config>
 - Network Security Configuration (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
 
-#### Xamarin Certificate Pinning
+### Xamarin Certificate Pinning
 
 - Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
 - ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
 
-#### Cordova Certificate Pinning
+### Cordova Certificate Pinning
 
 - PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>
