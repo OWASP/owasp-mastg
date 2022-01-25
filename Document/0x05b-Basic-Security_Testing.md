@@ -830,11 +830,11 @@ As mentioned before, starting with Android 7.0 (API level 24), the Android OS wi
 
 #### Bypassing the Network Security Configuration
 
-From Android 7.0 (API level 24) onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
+From Android 7.0 (API level 24) onwards, the Network Security Configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
-In order to implement the network security configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android network security configuration training](https://developer.android.com/training/articles/security-config "Android network security configuration training").
+In order to implement the Network Security Configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android Network Security Configuration training](https://developer.android.com/training/articles/security-config "Android Network Security Configuration training").
 
-After the creation, the apps must also include an entry in the manifest file to point to the new network security configuration file.
+After the creation, the apps must also include an entry in the manifest file to point to the new Network Security Configuration file.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -846,7 +846,7 @@ After the creation, the apps must also include an entry in the manifest file to 
 </manifest>
 ```
 
-The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
+The Network Security Configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
 
 ##### Adding the User Certificates to the Network Security Configuration
 
@@ -884,7 +884,7 @@ To implement this new setting you must follow the steps below:
     $ apktool d <filename>.apk
     ```
 
-- Make the application trust user certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
+- Make the application trust user certificates by creating a Network Security Configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
 
     ```bash
@@ -897,7 +897,7 @@ Note that even if this method is quite simple its major drawback is that you hav
 
 > Bear in mind that if the app you are testing has additional hardening measures, like verification of the app signature you might not be able to start the app anymore. As part of the repackaging you will sign the app with your own key and therefore the signature changes will result in triggering such checks that might lead to immediate termination of the app. You would need to identify and disable such checks either by patching them during repackaging of the app or dynamic instrumentation through Frida.
 
-There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
+There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new Network Security Configuration that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
 
 ```bash
 python main.py -w
@@ -1091,7 +1091,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
-- Android network security configuration training - <https://developer.android.com/training/articles/security-config>
+- Android Network Security Configuration training - <https://developer.android.com/training/articles/security-config>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
