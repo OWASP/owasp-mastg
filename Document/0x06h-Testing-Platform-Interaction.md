@@ -2660,7 +2660,7 @@ If it's possible to load local files via a WebView, the app might be vulnerable 
 
 To simulate an attack, you may inject your own JavaScript into the WebView with an interception proxy or simply by using dynamic instrumentation. Attempt to access local storage and any native methods and properties that might be exposed to the JavaScript context.
 
-In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a MITM attack. See the OWASP [XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html "XSS (Cross-Site Scripting) Prevention Cheat Sheet") and the chapter "[iOS Network APIs](0x06g-Testing-Network-Communication.md)" for more information.
+In a real-world scenario, JavaScript can only be injected through a permanent backend Cross-Site Scripting vulnerability or a MITM attack. See the OWASP [XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html "XSS (Cross-Site Scripting) Prevention Cheat Sheet") and the chapter "[iOS Network Communication](0x06g-Testing-Network-Communication.md)" for more information.
 
 For what concerns this section we will learn about:
 

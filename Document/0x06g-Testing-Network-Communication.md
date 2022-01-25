@@ -1,17 +1,20 @@
-# iOS Network APIs
+# iOS Network Communication
 
 Almost every iOS app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
 
 Most modern mobile apps use variants of HTTP-based web services, as these protocols are well-documented and supported.
+
+## iOS Network APIs
+
 Since iOS 12.0 the [Network framework](https://developer.apple.com/documentation/network "API Reference Network") and the [`URLSession`](https://developer.apple.com/documentation/foundation/urlsession "API Reference URLSession") class provide methods to load network and URL requests asynchronously and synchronously. Older iOS versions can utilize the [Sockets API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/UsingSocketsandSocketStreams.html "Using Sockets and Socket Streams").
 
-## Network Framework
+### Network Framework
 
 The Network framework was introduced at [The Apple Worldwide Developers Conference (WWDC)](https://developer.apple.com/videos/play/wwdc2018/715 "Introducing Network.framework: A modern alternative to Sockets") in 2018 and is a replacement to the Sockets API. This low-level networking framework provides classes to send and receive data with built in dynamic networking, security and performance support.
 
 TLS 1.3 is enabled by default in the Network framework, if the argument `using: .tls` is used. It is the preferred option over the legacy [Secure Transport](https://developer.apple.com/documentation/security/secure_transport "API Reference Secure Transport") framework.
 
-## URLSession
+### URLSession
 
 `URLSession` was built upon the Network framework and utilizes the same transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS.
 
@@ -19,11 +22,11 @@ TLS 1.3 is enabled by default in the Network framework, if the argument `using: 
 
 The official Apple documentation includes examples of using the Network framework to [implement netcat](https://developer.apple.com/documentation/network/implementing_netcat_with_network_framework "Implementing netcat with Network Framework") and `URLSession` to [fetch website data into memory](https://developer.apple.com/documentation/foundation/url_loading_system/fetching_website_data_into_memory "Fetching Website Data into Memory").
 
-## App Transport Security (MSTG-NETWORK-2)
+## Testing App Transport Security (MSTG-NETWORK-2)
 
 ### Overview
 
-[App Transport Security (ATS)](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys") is a set of security checks that the operating system enforces when making connections with [NSURLConnection](https://developer.apple.com/reference/foundation/nsurlconnection "API Reference NSURLConnection"), [NSURLSession](https://developer.apple.com/reference/foundation/urlsession "API Reference NSURLSession") and [CFURL](https://developer.apple.com/reference/corefoundation/cfurl-rd7 "API Reference CFURL") to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
+[App Transport Security (ATS)](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Information Property List Key Reference: Cocoa Keys") is a set of security checks that the operating system enforces when making connections with [NSURLConnection](https://developer.apple.com/reference/foundation/nsurlconnection "API Reference NSURLConnection"), [NSURLSession](https://developer.apple.com/reference/foundation/urlsession "API Reference NSURLSession") and [CFURL](https://developer.apple.com/reference/corefoundation/cfurl-rd7 "API Reference CFURL") to public hostnames. ATS is enabled by default for applications build on iOS SDK 9 and above.
 
 ATS is enforced only when making connections to public hostnames. Therefore any connection made to an IP address, unqualified domain names or TLD of .local is not protected with ATS.
 
@@ -212,7 +215,7 @@ In that case, the certificate associated or 'pinned' to the host at when it seen
 
 #### When the Pin Fails
 
-Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or load balancer, or there might be a man-in-the-middle attack going on. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network APIs".
+Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or load balancer, or there might be a man-in-the-middle attack going on. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network Communication".
 
 ### Static Analysis
 
@@ -299,16 +302,16 @@ Some apps might implement custom SSL pinning methods, so the tester could also d
 
 If you want to get more details about white box testing and typical code patterns, refer to [#thiel]. It contains descriptions and code snippets illustrating the most common certificate pinning techniques.
 
-### References
+## References
 
 - [#thiel] - David Thiel. iOS Application Security, No Starch Press, 2015
 
-#### OWASP MASVS
+### OWASP MASVS
 
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
 
-#### Nscurl
+### Nscurl
 
 - A guide to ATS - Blog post by NowSecure - <https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/>

@@ -1,4 +1,4 @@
-# Android Network APIs
+# Android Network Communication
 
 ## Testing Endpoint Identify Verification (MSTG-NETWORK-3)
 
