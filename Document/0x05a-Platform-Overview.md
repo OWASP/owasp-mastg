@@ -412,7 +412,7 @@ The Binder framework includes a client-server communication model. To use IPC, a
 
 ![OWASP MSTG](Images/Chapters/0x05a/binder.jpg) \
 
-*Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://www.nds.rub.de/media/attachments/files/2011/10/main.pdf "Android Binder")*
+*Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.6498&rep=rep1&type=pdf "Android Binder")*
 
 Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface to clients. Developers use the Android Interface Descriptor Language (AIDL) to write interfaces for remote services.
 

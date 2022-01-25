@@ -222,12 +222,12 @@ A misconfigured Firebase instance can be identified by making the following netw
 
 `https://\<firebaseProjectName\>.firebaseio.com/.json`
 
-The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, _PROJECT_ID_ key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
+The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, `PROJECT_ID` key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
 
 Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Scanner"), a python script that automates the task above as shown below:
 
 ```bash
-python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
+python FirebaseScanner.py -f <commaSeparatedFirebaseProjectNames>
 ```
 
 #### Realm databases
@@ -429,8 +429,6 @@ Time: 0.013s
 
 By default NSURLSession stores data, such as HTTP requests and responses in the Cache.db database. This database can contain sensitive data, if tokens, usernames or any other sensitive information has been cached. To find the cached information open the data directory of the app (`/var/mobile/Containers/Data/Application/<UUID>`) and go to  `/Library/Caches/<Bundle Identifier>`. The WebKit cache is also being stored in the Cache.db file. Objection can open and interact with the database with the command `sqlite connect Cache.db`, as it is a normal SQLite database.
 
-###### Recommendations
-
 It is recommended to disable Caching this data, as it may contain sensitive information in the request or response. The following list below shows different ways of achieving this:
 
 1. It is recommended to remove Cached responses after logout. This can be done with the provided method by Apple called [`removeAllCachedResponses`](https://developer.apple.com/documentation/foundation/urlcache/1417802-removeallcachedresponses "URLCache removeAllCachedResponses")
@@ -504,7 +502,7 @@ Most third-party services are implemented in two ways:
 
 ### Static Analysis
 
-To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code, requested permissions and check for any known vulnerabilities (see ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x06i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses in-third-party-libraries-mstg-code-5)).
+To determine whether API calls and functions provided by the third-party library are used according to best practices, review their source code, requested permissions and check for any known vulnerabilities (see ["Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)"](0x06i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries-mstg-code-5)).
 
 All data that's sent to third-party services should be anonymized to prevent exposure of PII (Personal Identifiable Information) that would allow the third party to identify the user account. No other data (such as IDs that can be mapped to a user account or session) should be sent to a third party.
 

@@ -1341,7 +1341,7 @@ A tool that loads arbitrary dylibs into running App Store apps. It has built-in 
 
 ### BinaryCookieReader
 
-A tool to dump all the cookies from the binary Cookies.binarycookies file - <https://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py>
+A tool to dump all the cookies from the binary Cookies.binarycookies file - <https://github.com/as0ler/BinaryCookieReader/blob/master/BinaryCookieReader.py>
 
 ### Burp Suite Mobile Assistant
 

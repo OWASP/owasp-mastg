@@ -4,9 +4,11 @@
 
 ### Overview
 
-Code signing your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide.](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide")
+Code signing your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide").
 
-You can retrieve the signing certificate information from the application's .app file with [codesign](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html "Code Signing Tasks"). Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
+### Static Analysis
+
+You have to ensure that the app is [using the latest code signature format](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format). You can retrieve the signing certificate information from the application's .app file with [codesign](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html "Code Signing Tasks"). Codesign is used to create, check, and display code signatures, as well as inquire into the dynamic status of signed code in the system.
 
 After you get the application's IPA file, re-save it as a ZIP file and decompress the ZIP file. Navigate to the Payload directory, where the application's .app file will be.
 
@@ -214,7 +216,7 @@ In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing 
 First, at the root of the project, where the Podfile is located, execute the following commands:
 
 ```bash
-$ sudo gem install CocoaPods
+$ sudo gem install cocoapods
 $ pod install
 ```
 

@@ -16,7 +16,7 @@
 - [Cryptography in Mobile Apps](0x04g-Testing-Cryptography.md)
 - [Testing Code Quality](0x04h-Testing-Code-Quality.md)
 - [Tampering and Reverse Engineering](0x04c-Tampering-and-Reverse-Engineering.md)
-- [Testing User Education](0x04i-Testing-user-interaction.md)
+- [Testing User Privacy Protection](0x04i-Testing-User-Privacy-Protection.md)
 
 ## Android Testing Guide
 

@@ -1,4 +1,4 @@
-name: Check Markdown Links
+name: URLs Checker
 
 on:
   push:
@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           fetch-depth: 1
       - name: link-check
-        uses: gaurav-nelson/github-action-markdown-link-check@820c0581641b6e2fb34ae4d5f93ef4d841fb37e6
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes'
           use-verbose-mode: 'yes'
