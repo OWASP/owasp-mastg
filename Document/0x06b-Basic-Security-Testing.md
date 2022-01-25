@@ -66,7 +66,7 @@ There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailb
 
 - Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
 
-- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken. They are very rare and usually benefit from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") which directly affected the BootROM of the iPhone 4 and iPad 1.
+- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken. They are usually rare and benefit from vulnerabilities allowing an exploit to write persistent code on the device. Examples include [limera1n](https://www.theiphonewiki.com/wiki/Limera1n), [Pangu9](https://www.theiphonewiki.com/wiki/Pangu9) and [Fugu14](https://github.com/LinusHenze/Fugu14).
 
 ##### Jailbreak Device Strategy
 
