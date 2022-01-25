@@ -10,21 +10,100 @@ Although you can use a Linux or Windows host computer for testing, you'll find t
 
 The following is the most basic iOS app testing setup:
 
-- Ideally macOS host computer with admin rights
-- [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools) installed.
-- Wi-Fi network that permits client-to-client traffic.
-- At least one jailbroken iOS device (of the desired iOS version).
-- [Burp Suite](0x08-Testing-Tools.md#burp-suite) or other interception proxy tool.
+- Ideally macOS host computer with admin rights.
+  - [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools).
+  - An interception proxy tool such as [Burp Suite](0x08-Testing-Tools.md#burp-suite).
+  - [Frida via python-pip](0x08-Testing-Tools.md#frida)
+- At least one jailbroken iOS device (with the target iOS version installed).
+  - [Frida for iOS](0x08-Testing-Tools.md#frida-for-ios)
+- A Wi-Fi network that permits client-to-client traffic.
 
 ### Testing Device
 
+#### Testing on a Real Device
+
+We recommend having a jailbroken iPhone or iPad for testing. These devices allow root access and tool installation, making the security testing process more straightforward. See the next section ["Getting Privileged Access"](#getting-privileged-access) for more information.
+
+If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
+
+#### Testing on the iOS Simulator
+
+Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
+
+#### Testing on an Emulator
+
+Corellium is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer any trial license.
+
+#### Getting Privileged Access
+
+iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
+
+- **Rooting**: This typically involves installing the `su` binary on the system or replacing the whole system with a rooted custom ROM. Exploits aren't required to obtain root access as long as the bootloader is accessible.
+- **Flashing custom ROMs**: This allows you to replace the OS that's running on the device after you unlock the bootloader. The bootloader may require an exploit to unlock it.
+
+On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
+
+The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08-Testing-Tools.md#cydia) or [Sileo](0x08-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
+
+Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
+
+##### Benefits of Jailbreaking
+
+End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
+
+- Root access to the file system.
+- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
+- Unrestricted debugging and dynamic analysis.
+- Access to the Objective-C or Swift runtime.
+
+##### Jailbreak Types
+
+There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
+
+- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
+
+- Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
+
+- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
+
+- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken. They are usually rare and benefit from vulnerabilities allowing an exploit to write persistent code on the device. Examples include [limera1n](https://www.theiphonewiki.com/wiki/Limera1n), [Pangu9](https://www.theiphonewiki.com/wiki/Pangu9) and [Fugu14](https://github.com/LinusHenze/Fugu14).
+
+##### Jailbreak Device Strategy
+
+Jailbreaking an iOS device has become more and more challenging and a very time-sensitive procedure, which is understandable since Apple keeps hardening the system, patching the exploited vulnerabilities and quickly releasing upgrades.
+
+iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
+
+**Recommendation:** if you have a jailbroken device that you use for security testing, keep it as-is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version.
+
+Also consider getting one or more spare devices (which you will be updating with every major iOS release) and wait for new jailbreak software to be released publicly (see next section). Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade to the affected iOS version and apply the jailbreak.
+
+##### Jailbreak Software
+
+The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is very challenging. At the time of this writing we can recommend using the very complete ["Jailbreak Chart by the r/jailbreak Reddit community"](https://docs.google.com/spreadsheets/u/0/d/11DABHIIqwYQKj1L83AK9ywk_hYMjEkcaxpIg6phbTf0/htmlview#).
+
+Other sources that have been, and might still be, reliable include:
+
+- [r/jailbreak Reddit Community Page](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
+- [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
+- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
+
+> **IMPORTANT NOTE**:
+> Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
+>
+> Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
+
+##### Testing Jailbreak Detection
+
+Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapter ["iOS Anti-Reversing Defenses"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md).
+
 #### Getting the UDID of an iOS device
 
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Just select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
 ![OWASP MSTG](Images/Chapters/0x06b/UDID-Finder.png) \
 
-If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
+If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
 
 It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
 
@@ -56,77 +135,6 @@ It is also possible to get the UDID via various command line tools on macOS whil
     ```sh
     $ instruments -s devices
     ```
-
-#### Testing on a real device (Jailbroken)
-
-You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
-
-#### Testing on the iOS Simulator
-
-Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
-
-#### Testing on an Emulator
-
-Corellium is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer any trial license.
-
-#### Getting Privileged Access
-
-iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
-
-- **Rooting**: This typically involves installing the `su` binary on the system or replacing the whole system with a rooted custom ROM. Exploits aren't required to obtain root access as long as the bootloader is accessible.
-- **Flashing custom ROMs**: This allows you to replace the OS that's running on the device after you unlock the bootloader. The bootloader may require an exploit to unlock it.
-
-On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
-
-The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08-Testing-Tools.md#cydia) or [Sileo](0x08-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
-
-Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
-
-Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapters "Reverse Engineering and Tampering on iOS" and "Testing Anti-Reversing Defenses on iOS".
-
-##### Benefits of Jailbreaking
-
-End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
-
-- Root access to the file system.
-- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
-- Unrestricted debugging and dynamic analysis.
-- Access to the Objective-C or Swift runtime.
-
-##### Jailbreak Types
-
-There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
-
-- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
-
-- Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
-
-- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
-
-- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
-
-##### Caveats and Considerations
-
-Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the jailbreak benefits from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") affecting the BootROM of the iPhone 4 and iPad 1). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
-
-If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
-
-iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
-
-##### Which Jailbreaking Tool to Use
-
-Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
-
-The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If you have a device that's running an iOS version for which no jailbreak is available, you can still jailbreak the device if you downgrade or upgrade to the target _jailbreakable_ iOS version (via IPSW download or the iOS update mechanism). However, this may not be possible if the required iOS version is no longer signed by Apple.
-
-The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
-
-- [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
-- [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
-- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
-- [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
-
-> Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
 ## Basic Testing Operations
 
