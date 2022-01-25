@@ -310,14 +310,16 @@ If a mobile application connects to a specific server, its networking stack can 
 
 Cipher suites have the following structure:
 
-- **Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm**
+```txt
+Protocol_KeyExchangeAlgorithm_WITH_BlockCipher_IntegrityCheckAlgorithm
+```
 
-This structure can be described as follows:
+This structure includes:
 
-- The Protocol the cipher uses
-- The key Exchange Algorithm used by the server and the client to authenticate during the TLS handshake
-- The block cipher used to encrypt the message stream
-- Integrity check algorithm used to authenticate messages
+- A **Protocol** used by the cipher
+- A **Key Exchange Algorithm** used by the server and the client to authenticate during the TLS handshake
+- A **Block Cipher** used to encrypt the message stream
+- A **Integrity Check Algorithm** used to authenticate messages
 
 Example: `TLS_RSA_WITH_3DES_EDE_CBC_SHA`
 
@@ -328,11 +330,11 @@ In the example above the cipher suites uses:
 - 3DES for Symmetric encryption with EDE_CBC mode
 - SHA Hash algorithm for integrity
 
-Note that in TLSv1.3 the KeyExchangeAlgorithm is not part of the cipher suite, instead it is determined during the TLS handshake.
+Note that in TLSv1.3 the Key Exchange Algorithm is not part of the cipher suite, instead it is determined during the TLS handshake.
 
 In the following listing, we’ll present the different algorithms of each part of the cipher suite.
 
-Protocols:
+**Protocols:**
 
 - `SSLv1`
 - `SSLv2` - [RFC 6176](https://tools.ietf.org/html/rfc6176 "RFC 6176")
@@ -342,7 +344,7 @@ Protocols:
 - `TLSv1.2` - [RFC 5246](https://tools.ietf.org/html/rfc5246 "RFC 5246")
 - `TLSv1.3` - [RFC 8446](https://tools.ietf.org/html/rfc8446 "RFC 8446")
 
-Key Exchange Algorithms:
+**Key Exchange Algorithms:**
 
 - `DSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
 - `ECDSA` - [RFC 6979](https://tools.ietf.org/html/rfc6979 "RFC 6979")
@@ -358,7 +360,7 @@ Key Exchange Algorithms:
 - `ECDHE_PSK`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")  - [RFC 5489](https://tools.ietf.org/html/rfc5489 "RFC 5489")
 - `ECDHE_RSA`  - [RFC 8422](https://tools.ietf.org/html/rfc8422 "RFC 8422")
 
-Block Ciphers:
+**Block Ciphers:**
 
 - `DES`  - [RFC 4772](https://tools.ietf.org/html/rfc4772 "RFC 4772")
 - `DES_CBC`  - [RFC 1829](https://tools.ietf.org/html/rfc1829 "RFC 1829")
@@ -372,7 +374,7 @@ Block Ciphers:
 - `RC4_128`  - [RFC 7465](https://tools.ietf.org/html/rfc7465 "RFC 7465")
 - `CHACHA20_POLY1305`  - [RFC 7905](https://tools.ietf.org/html/rfc7905 "RFC 7905")  - [RFC 7539](https://tools.ietf.org/html/rfc7539 "RFC 7539")
 
-Integrity Check Algorithms:
+**Integrity Check Algorithms:**
 
 - `MD5`  - [RFC 6151](https://tools.ietf.org/html/rfc6151 "RFC 6151")
 - `SHA`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
@@ -381,21 +383,19 @@ Integrity Check Algorithms:
 
 Note that the efficiency of a cipher suite depends on the efficiency of its algorithms.
 
-In the following, we’ll present the updated recommended cipher suites list to use with TLS. These cipher suites are recommended by both IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
+In the following, we’ll present the updated recommended cipher suites list to use with TLS:
 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
 
-Note that in Android 10 the following [SHA-2 CBC cipher suites have been removed](https://developer.android.com/about/versions/10/behavior-changes-all#sha2-cbc-cipher-suites "SHA-2 CBC cipher suites removed"):
-
-- `TLS_RSA_WITH_AES_128_CBC_SHA256`
-- `TLS_RSA_WITH_AES_256_CBC_SHA256`
-- `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256`
-- `TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`
-- `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`
-- `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384`
-
 Some Android and iOS versions do not support some of the recommended cipher suites, so for compatibility purposes you can check the supported cipher suites for [Android](https://developer.android.com/reference/javax/net/ssl/SSLSocket#cipher-suites "Cipher suites") and [iOS](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc "SSL Cipher Suite Values") versions and choose the top supported cipher suites.
+
+### Testing Data Encryption on the Network
+
+Refer to the corresponding chapters for more information:
+
+- [Android Network Communication](Document/0x05g-Testing-Network-Communication.md)
+- [iOS Network Communication](Document/0x06g-Testing-Network-Communication.md)
 
 ### Static Analysis
 
