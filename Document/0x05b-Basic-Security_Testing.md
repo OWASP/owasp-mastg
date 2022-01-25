@@ -326,6 +326,59 @@ The APK will be downloaded in your working directory.
 
 Alternatively, there are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted APK via your preferred method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
 
+#### Testing Instant Apps
+
+With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview "Google Play Instant") you can create Instant apps which can be instantly launched from a browser or the "try now" button from the app store from Android 5.0 (API level 21) onward. They do not require any form of installation. There are a few challenges with an instant app:
+
+- There is a limited amount of size you can have with an instant app.
+- Only a reduced number of permissions can be used, which are documented at [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions "Permission documentation for Android Instant Apps").
+
+The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
+
+Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
+
+#### Static Analysis Considerations
+
+Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the App Bundle. When you analyze the App Bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entry points, which entry points are set (by means of `<data android:path="</PATH/HERE>" />`).
+
+Now follow the entry points, like you would do for any Activity and check:
+
+- Is there any data retrieved by the app which should require privacy protection of that data? If so, are all required controls in place?
+- Are all communications secured?
+- When you need more functionalities, are the right security controls downloaded as well?
+
+### Dynamic Analysis Considerations
+
+There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
+
+The installation of instant app support is taken care off through the following command:
+
+```bash
+$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
+```
+
+Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
+
+After the preparation, you can test instant apps locally on a device running Android 8.1 (API level 27) or later. The app can be tested in different ways:
+
+- Test the app locally:
+  Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
+  
+  ```bash
+  $ ia run output-from-build-command <app-artifact>
+  ```
+
+- Test the app using the Play Console:
+  1. Upload your App Bundle to the Google Play Console
+  2. Prepare the uploaded bundle for a release to the internal test track.
+  3. Sign into an internal tester account on a device, then launch your instant experience from either an external prepared link or via the `try now` button in the App store from the testers account.
+
+Now that you can test the app, check whether:
+
+- There are any data which require privacy controls and whether these controls are in place.
+- All communications are sufficiently secured.
+- When you need more functionalities, are the right security controls downloaded as well for these functionalities?
+
 ### Installing Apps
 
 Use `adb install` to install an APK on an emulator or connected device.
@@ -777,11 +830,11 @@ As mentioned before, starting with Android 7.0 (API level 24), the Android OS wi
 
 #### Bypassing the Network Security Configuration
 
-From Android 7.0 (API level 24) onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
+From Android 7.0 (API level 24) onwards, the Network Security Configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
-In order to implement the network security configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android network security configuration training](https://developer.android.com/training/articles/security-config "Android network security configuration training").
+In order to implement the Network Security Configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android Network Security Configuration training](https://developer.android.com/training/articles/security-config "Android Network Security Configuration training").
 
-After the creation, the apps must also include an entry in the manifest file to point to the new network security configuration file.
+After the creation, the apps must also include an entry in the manifest file to point to the new Network Security Configuration file.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -793,7 +846,7 @@ After the creation, the apps must also include an entry in the manifest file to 
 </manifest>
 ```
 
-The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
+The Network Security Configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
 
 ##### Adding the User Certificates to the Network Security Configuration
 
@@ -831,7 +884,7 @@ To implement this new setting you must follow the steps below:
     $ apktool d <filename>.apk
     ```
 
-- Make the application trust user certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
+- Make the application trust user certificates by creating a Network Security Configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
 
     ```bash
@@ -844,7 +897,7 @@ Note that even if this method is quite simple its major drawback is that you hav
 
 > Bear in mind that if the app you are testing has additional hardening measures, like verification of the app signature you might not be able to start the app anymore. As part of the repackaging you will sign the app with your own key and therefore the signature changes will result in triggering such checks that might lead to immediate termination of the app. You would need to identify and disable such checks either by patching them during repackaging of the app or dynamic instrumentation through Frida.
 
-There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
+There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new Network Security Configuration that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
 
 ```bash
 python main.py -w
@@ -1038,7 +1091,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
-- Android network security configuration training - <https://developer.android.com/training/articles/security-config>
+- Android Network Security Configuration training - <https://developer.android.com/training/articles/security-config>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>

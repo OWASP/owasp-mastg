@@ -2,17 +2,21 @@ name: Documents Build
 
 on: [push, workflow_dispatch]
 
-env:
-  VERSION: "1.2"
-
 jobs:
 
-  generate:
+  Generate-MSTG-Documents:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         fetch-depth: 1
+
+    - name: Set VERSION to env 
+      run: echo "VERSION=$(curl  "https://api.github.com/repos/OWASP/owasp-mstg/tags" | jq -r '.[0].name')" >> $GITHUB_ENV
+
+    - name: Set DEV VERSION if it's not a tag
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      run: echo "VERSION=${{env.VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Generate English PDF
       run: ./tools/docker/pandoc_makedocs.sh Document ${{env.VERSION}}
@@ -22,49 +26,109 @@ jobs:
       with:
         name: OWASP_MSTG-${{env.VERSION}}
         path: OWASP_MSTG-${{env.VERSION}}*
+  
+  Generate-Checklists:
+    runs-on: ubuntu-latest
 
-  #   - name: Listing of root directory
-  #     run: ls -l
+    steps:
 
-  #   - name: Listing of root directory
-  #     run: ls -l tools/
-
-    - name: Upload RECENT Changes
-      uses: actions/upload-artifact@v2
-      if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
+    - uses: actions/checkout@v2
       with:
-        name: RECENT_CHANGES.md
-        path: tools/RECENT_CHANGES.md
+        fetch-depth: 1
+    
+    - name: Listing repo recursive
+      run: ls -lR
 
+    - name: Set MSTG_VERSION to env 
+      # run: echo "MSTG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+      run: echo "MSTG_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-mstg/tags | jq '.[0].name' | sed 's/\"//g')" >> $GITHUB_ENV
+
+    - name: Set DEV VERSION if it's not a tag
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      run: echo "MSTG_VERSION=${{env.MSTG_VERSION}}-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - name: Confirm MSTG Current Tag
+      run: echo ${{env.MSTG_VERSION}}
+
+    - name: Get MSTG Current Commit ID
+      run: echo "MSTG_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+    - name: Confirm MSTG Current Commit ID
+      run: echo ${{env.MSTG_COMMIT}}
+    
+    - name: Get Latest MASVS Release Tag
+      run: echo "MASVS_VERSION=$(curl -s https://api.github.com/repos/OWASP/owasp-masvs/releases/latest | jq '.tag_name' | sed 's/\"//g')" >> $GITHUB_ENV
+
+    - name: Confirm MASVS Release Tag
+      run: echo ${{env.MASVS_VERSION}}
+
+    - uses: actions/checkout@v2
+      with:
+        repository: "OWASP/owasp-masvs.git"
+        ref: ${{env.MASVS_VERSION}}
+        fetch-depth: 1
+        path: tools/scripts/owasp-masvs
+
+    - name: Get MASVS Current Commit ID
+      run: cd tools/scripts/owasp-masvs && echo "MASVS_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+    - name: Confirm MSTG Current Commit ID
+      run: echo ${{env.MASVS_COMMIT}}
+
+    - name: Listing of scripts directory
+      run: ls -l tools/scripts/
+
+    - name: Install pip Requirements
+      run: pip3 install -r tools/scripts/requirements.txt
+
+    - name: Show openpyxl Version
+      run: pip3 show openpyxl
+
+    - name: Convert MSTG Testing Chapters to HTML
+      run: . tools/scripts/mstg_to_html.sh
+
+    - name: List MSTG HTML
+      run: ls -l tools/scripts/generated/html/
+
+    - name: Export YAML, enhance with MSTG and generate Excel
+      run: cd tools/scripts && ./gen_all_excel.sh ${{env.MSTG_VERSION}} ${{env.MSTG_COMMIT}} ${{env.MASVS_VERSION}} ${{env.MASVS_COMMIT}}
+
+    - name: Upload Enhanced MASVS YAML
+      uses: actions/upload-artifact@v2
+      with:
+        name: Enhanced-MASVS-YAML-Files
+        path: tools/scripts/masvs_full_*.yaml
+
+    - name: Upload Checklists
+      uses: actions/upload-artifact@v2
+      with:
+        name: Checklists
+        path: tools/scripts/*.xlsx
 
   release:
     runs-on: ubuntu-latest
-    needs: [generate]
+    needs: [Generate-MSTG-Documents, Generate-Checklists]
     if: startsWith(github.ref, 'refs/tags/') && (github.actor == 'cpholguera' || github.actor == 'sushi2k')
     steps:
       - uses: actions/download-artifact@v2
       - name: List Downloaded document (sampling of download-artifact)
         run: ls -l OWASP_MSTG*
-      # - name: Move all documents (pdf, epub and docx) to root
-      #   run: mv OWASP_MSTG-*-*/* .
-      # Produces error: 
-      #   mv: cannot stat 'OWASP_MSTG-*-*/*': No such file or directory
-      #   Error: Process completed with exit code 1.
+
       - name: print working directory
         run: pwd 
       - name: Listing of root directory
         run: ls -l 
-      # - name: Cleanup - Remove all downloaded documents
-      #   run: rm -rf OWASP_MSTG-*/
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: RECENT_CHANGES.md/RECENT_CHANGES.md
-          # body_path: RECENT_CHANGES.md
-          # body: 'MSTG test'
+          prerelease: false
+          draft: true
+          generate_release_notes: true
+          discussion_category_name: Announcements
           files: |
             OWASP_MSTG-*/OWASP_MSTG-*.pdf
             OWASP_MSTG-*/OWASP_MSTG-*.epub
             OWASP_MSTG-*/OWASP_MSTG-*.docx
+            Checklists/*.xlsx
+            Enhanced-MASVS-YAML-Files/*.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

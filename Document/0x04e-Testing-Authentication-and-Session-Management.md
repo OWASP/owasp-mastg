@@ -1,6 +1,6 @@
 # Mobile App Authentication Architectures
 
-Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project").
+Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the backend service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
 
@@ -223,7 +223,7 @@ Minimizing the lifetime of session identifiers and tokens decreases the likeliho
 
 In most popular frameworks, you can set the session timeout via configuration options. This parameter should be set according to the best practices specified in the framework documentation. The recommended timeout may be between 10 minutes and two hours, depending on the app's sensitivity. Refer to the framework documentation for examples of session timeout configuration:
 
-- [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
+- [Spring (Java)](https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.spring-session "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
 - [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
 - [ASP.Net](https://docs.microsoft.com/en-us/dotnet/api/system.web.sessionstate.httpsessionstate.timeout "ASP.NET")
@@ -270,7 +270,7 @@ Use an interception proxy for dynamic application analysis and execute the follo
 4. Try to access the data again by resending the request from step 2.
 
 If the logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
+The OWASP Web Testing Guide ([WSTG-SESS-06](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/06-Testing_for_Logout_Functionality "WSTG-SESS-006")) includes a detailed explanation and more test cases.
 
 ## Testing Two-Factor Authentication and Step-up Authentication (MSTG-AUTH-9 and MSTG-AUTH-10)
 
@@ -380,7 +380,7 @@ Verify that the implementation adheres to JWT [best practices](https://stormpath
 
 #### Enforcing the Hashing Algorithm
 
-An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. [Some libraries](https://stormpath.com/blog/jwt-the-right-way) might treat tokens signed with the 'none' algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 
 For example, in Java applications, the expected algorithm should be requested explicitly when creating the verification context:
 
@@ -526,9 +526,9 @@ For apps that operate within a closed ecosystem, *embedded authentication* is th
 
 For additional best practices and detailed information please refer to the following source documents:
 
-- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
-- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
-- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
+- [RFC6749 - The OAuth 2.0 Authorization Framework (October 2012)](https://tools.ietf.org/html/rfc6749)
+- [RFC8252 - OAuth 2.0 for Native Apps (October 2017)](https://tools.ietf.org/html/rfc8252)
+- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations (January 2013)](https://tools.ietf.org/html/rfc6819)
 
 ## Testing Login Activity and Device Blocking (MSTG-AUTH-11)
 

@@ -222,12 +222,12 @@ A misconfigured Firebase instance can be identified by making the following netw
 
 `https://\<firebaseProjectName\>.firebaseio.com/.json`
 
-The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, _PROJECT_ID_ key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
+The _firebaseProjectName_ can be retrieved from the property list(.plist) file. For example, `PROJECT_ID` key stores the corresponding Firebase project name in _GoogleService-Info.plist_ file.
 
 Alternatively, the analysts can use [Firebase Scanner](https://github.com/shivsahni/FireBaseScanner "Firebase Scanner"), a python script that automates the task above as shown below:
 
 ```bash
-python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
+python FirebaseScanner.py -f <commaSeparatedFirebaseProjectNames>
 ```
 
 #### Realm databases
@@ -428,8 +428,6 @@ Time: 0.013s
 ##### Searching for Cache Databases
 
 By default NSURLSession stores data, such as HTTP requests and responses in the Cache.db database. This database can contain sensitive data, if tokens, usernames or any other sensitive information has been cached. To find the cached information open the data directory of the app (`/var/mobile/Containers/Data/Application/<UUID>`) and go to  `/Library/Caches/<Bundle Identifier>`. The WebKit cache is also being stored in the Cache.db file. Objection can open and interact with the database with the command `sqlite connect Cache.db`, as it is a normal SQLite database.
-
-###### Recommendations
 
 It is recommended to disable Caching this data, as it may contain sensitive information in the request or response. The following list below shows different ways of achieving this:
 

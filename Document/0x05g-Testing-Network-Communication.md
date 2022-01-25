@@ -351,7 +351,7 @@ Somewhere in the application, both the endpoint and the certificate (or its hash
 
 - Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
 - Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
-- Truststore files: `find ./ -type f \( -iname \*.jks -o -iname \*.bks \)`. Add your proxy's certificates to the trustore and make sure they are in the correct format.
+- Truststore files: `find ./ -type f \( -iname \*.jks -o -iname \*.bks \)`. Add your proxy's certificates to the truststore and make sure they are in the correct format.
 
 > Keep in mind that an app might contain files without extension. The most common file locations are `assets` and `res` directories, which should also be investigated.
 
@@ -658,8 +658,8 @@ When you do not have the source code:
 
 #### Android Developer Documentation
 
-- Network Security Config - <https://developer.android.com/training/articles/security-config>
-- Network Security Config (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
+- Network Security Configuration - <https://developer.android.com/training/articles/security-config>
+- Network Security Configuration (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
 
 #### Xamarin Certificate Pinning
 
