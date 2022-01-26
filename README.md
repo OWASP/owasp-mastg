@@ -10,14 +10,6 @@
 [![Document Build](https://github.com/OWASP/owasp-mstg/workflows/Document%20Build/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22)
 [![Check Markdown Links](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Links/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Links%22)
 
-<br>
-<br>
-<a href="https://owasp.slack.com/messages/project-mobile_omtg/details/" style="float: right;"><img src="Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a>
-<br>
-<a href="https://twitter.com/OWASP_MSTG" style="float: right;"><img src="Document/Images/twitter_logo.png" width="14px" > @OWASP_MSTG</a>
-<br>
-<br>
-
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 
 - 📖 [Read it on Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/)
