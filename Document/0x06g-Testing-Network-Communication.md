@@ -223,7 +223,7 @@ In that case, the certificate associated or 'pinned' to the host at when it seen
 
 #### When the Pin Fails
 
-Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server and/or load balancer, or there might be a man-in-the-middle attack going on. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network Communication".
+Pinning failures can occur for various reasons: either the app is expecting another key or certificate than offered by the server, or there might be a man-in-the-middle attack occuring. In both cases and similar as with Android, there are various ways to respond to such a situation. Please see the section "[When the Pin Fails](0x05g-Testing-Network-Communication.md#when-the-pin-fails)" in the chapter "Android Network Communication".
 
 ### Static Analysis
 
