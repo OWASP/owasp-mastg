@@ -247,7 +247,7 @@ When only very few pin failures are reported, then the network should be ok, and
 
 #### Certificate Pinning in the Network Security Configuration
 
-To customize their network security settings in a safe, declarative configuration file without modifying app code, applications can use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") that Android provides for versions 7.0 and above.
+To customize their network security settings in a safe, declarative configuration file without modifying app code, applications can use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") that Android provides for versions 7.0 (API level 24) and above.
 
 The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. If an application uses this feature, two things should be checked to identify the defined configuration:
 
