@@ -113,7 +113,7 @@ First, you should identify all network requests in the source code and ensure th
 
 Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since iOS 9.0 cleartext HTTP traffic is blocked by default (due to App Transport Security (ATS)) but there are multiple ways in which an application can still send it:
 
-- Configuring ATS to enable cleartext traffic by setting the `NSAppTransportSecurity` attribute to `true` on [`NSAppTransportSecurity`](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) in the app [`Info.plist`](https://developer.apple.com/documentation/bundleresources/information_property_list).
+- Configuring ATS to enable cleartext traffic by setting the `NSAppTransportSecurity` attribute to `true` on [`NSAppTransportSecurity`](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) in the app's [`Info.plist`](https://developer.apple.com/documentation/bundleresources/information_property_list).
 - Using low-level APIs (e.g. [`Network`](https://developer.apple.com/documentation/network)) or [`CFNetwork`](https://developer.apple.com/documentation/cfnetwork) to set up a custom HTTP connection.
 - Using a cross-platform framework (e.g. Flutter, Xamarin, ...), as these typically have their own implementations for HTTP libraries.
 
