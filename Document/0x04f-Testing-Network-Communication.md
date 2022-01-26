@@ -388,7 +388,7 @@ In the following listing, we’ll present the different algorithms of each part 
 
 Note that the efficiency of a cipher suite depends on the efficiency of its algorithms.
 
-In the following, we’ll present the updated recommended cipher suites list to use with TLS:
+The following resources contain the latest recommended cipher suites to use with TLS:
 
 - IANA recommended cipher suites can be found in [TLS Cipher Suites](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 "TLS Cipher Suites").
 - OWASP recommended cipher suites can be found in the [TLS Cipher String Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md "OWASP TLS Cipher String Cheat Sheet").
