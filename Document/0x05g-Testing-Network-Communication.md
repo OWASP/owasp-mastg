@@ -87,7 +87,7 @@ If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-c
 </network-security-config>
 ```
 
-Is important to understand the precedence of entries. If a value is not set in a `<domain-config\>` entry or in a parent `<domain-config\>`, the configurations in place will be based on the `<base-config\>`, and lastly if not defined in this entry, the default configuration will be used.
+It is important to understand the precedence of entries. If a value is not set in a `<domain-config>` entry or in a parent `<domain-config\>`, the configurations in place will be based on the `<base-config>`, and lastly, if not defined in this entry, the default configuration will be used.
 
 The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
 
