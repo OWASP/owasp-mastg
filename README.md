@@ -18,6 +18,30 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users' document listing some of the adopters](Users.md).
 
+## Connect with Us
+
+<br>
+<br>
+
+<div style="display: grid; grid-gap: 10px; grid-template-columns: 1fr 3fr 1fr 3fr; max-width: 1000px;">
+  <img src="Document/Images/slack_logo.png" width="40px">
+  <div>
+    <a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Request Slack Invite</a>
+    <br>
+    <a href="https://owasp.slack.com/messages/project-mobile_omtg/details/ ">Join #project-mobile_omtg</a>
+  </div>
+
+  <img src="Document/Images/twitter_logo.png" width="40px">
+  <div>
+    <div>Follow us on Twitter</div>
+    <br>
+    <a href="https://twitter.com/OWASP_MSTG">@OWASP_MSTG</a>
+  </div>
+</div>
+
+<br>
+<br>
+
 ## Table-of-Contents
 
 ### Introduction
