@@ -52,7 +52,7 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 #### Trust Anchors in the Network Security Configuration
 
-When running on Android 7.0 (API level 24) or higher, apps targeting those API levels will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs. However, this protection can be bypassed by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
+Applications targeting Android 7.0 (API level 24) or higher will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs. However, this protection can be disabled by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
 
 Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After decoding the app you can look for the presence of `targetSDK` present in the file apktool.yml that was created in the output folder.
 
