@@ -1,6 +1,6 @@
 <a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg" /></a>
 
-# OWASP Mobile Security Testing Guide [![Twitter Follow](https://img.shields.io/twitter/follow/OWASP_MSTG.svg?style=social&label=Follow)](https://twitter.com/OWASP_MSTG) [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/OWASP/owasp-mstg)
+# OWASP Mobile Security Testing Guide
 
 [![Creative Commons License](https://img.shields.io/github/license/OWASP/owasp-mstg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 
@@ -9,6 +9,14 @@
 [![Check Markdown Markup](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Markup/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Markup%22)
 [![Document Build](https://github.com/OWASP/owasp-mstg/workflows/Document%20Build/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22)
 [![Check Markdown Links](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Links/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Links%22)
+
+<br>
+<br>
+<a href="https://owasp.slack.com/messages/project-mobile_omtg/details/" style="float: right;"><img src="Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a>
+<br>
+<a href="https://twitter.com/OWASP_MSTG" style="float: right;"><img src="Document/Images/twitter_logo.png" width="14px" > @OWASP_MSTG</a>
+<br>
+<br>
 
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 
@@ -21,24 +29,9 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 ## Connect with Us
 
 <br>
+<a href="https://owasp.slack.com/messages/project-mobile_omtg/details/"><img src="Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a>
 <br>
-
-<div style="display: grid; grid-gap: 10px; grid-template-columns: 1fr 3fr 1fr 3fr; max-width: 1000px;">
-  <img src="Document/Images/slack_logo.png" width="40px">
-  <div>
-    <a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Request Slack Invite</a>
-    <br>
-    <a href="https://owasp.slack.com/messages/project-mobile_omtg/details/ ">Join #project-mobile_omtg</a>
-  </div>
-
-  <img src="Document/Images/twitter_logo.png" width="40px">
-  <div>
-    <div>Follow us on Twitter</div>
-    <br>
-    <a href="https://twitter.com/OWASP_MSTG">@OWASP_MSTG</a>
-  </div>
-</div>
-
+<a href="https://twitter.com/OWASP_MSTG"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MSTG</a>
 <br>
 <br>
 
