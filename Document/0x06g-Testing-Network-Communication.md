@@ -117,7 +117,7 @@ Next, you should ensure that the app is not allowing cleartext HTTP traffic. Sin
 - Using low-level APIs (e.g. [`Network`](https://developer.apple.com/documentation/network)) or [`CFNetwork`](https://developer.apple.com/documentation/cfnetwork) to set up a custom HTTP connection.
 - Using a cross-platform framework (e.g. Flutter, Xamarin, ...), as these typically have their own implementations for HTTP libraries.
 
-All of the above cases must be carefully analyzed as a whole. For example, even if the app does not permit cleartext traffic in its Android Manifest or Network Security Configuration, it might actually still be sending HTTP traffic. That could be the case if it's using a low-level API (for which Network Security Configuration is ignored) or a badly configured cross-platform framework.
+All of the above cases must be carefully analyzed as a whole. For example, even if the app does not permit cleartext traffic in its Info.plist, it might actually still be sending HTTP traffic. That could be the case if it's using a low-level API (for which ATS is ignored) or a badly configured cross-platform framework.
 
 For more information refer to the article "Preventing Insecure Network Connections" in the [Apple Developer Documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections).
 
