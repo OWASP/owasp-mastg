@@ -198,7 +198,7 @@ Make sure that your application verifies a hostname before setting a trusted con
 
 ### Dynamic Analysis
 
-When testing an app targeting Android 7.0 (API level 24) or higher it should be effectively applying the Network Security Configuration **unless the app targets API levels below 24** and you shouldn't able to see the decrypted HTTPS traffic at first.
+When testing an app targeting Android 7.0 (API level 24) or higher it should be effectively applying the Network Security Configuration and you shouldn't able to see the decrypted HTTPS traffic at first. However, if the app targets API levels below 24, the app will automatically accept the installed user certificates.
 
 To test improper certificate verification launch a MITM attack using an interception proxy such as Burp. Try the following options:
 
