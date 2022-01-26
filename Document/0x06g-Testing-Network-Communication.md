@@ -151,7 +151,7 @@ If the source code is not available, then the `Info.plist` file should be either
 
 #### Testing Network Security Exceptions
 
-You should verify if the app has any network security exceptions configured by opening then `Info.plist` file in the application bundle directory and inspecting the [`NSAppTransportSecurity`](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) optional key. Verify if it contains any exceptions and [inspect the corresponding justifications](https://developer.apple.com/documentation/security/preventing_insecure_network_connections#3138036) to discard that it might be part of the app intended purpose.
+You should verify if the app has any network security exceptions configured by opening the `Info.plist` file in the application bundle directory and inspecting the [`NSAppTransportSecurity`](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) optional key. Verify if it contains any exceptions and [inspect the corresponding justifications](https://developer.apple.com/documentation/security/preventing_insecure_network_connections#3138036) to discard that it might be part of the app intended purpose.
 
 > **Apple Recommendation: Configure Exceptions Only When Needed; Prefer Server Fixes**: It’s always better to fix the server when faced with an ATS failure. Exceptions reduce the security of your app. Some also require justification when submitting an app to the App Store, as described in the next section.
 
