@@ -58,7 +58,7 @@ Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After
 
 The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
 
-If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>`, that define a `<certificates src="user">` the application will trust user supplied CAs for those particular domains or for all domains. Example:
+If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>` that define a `<certificates src="user">`, the application will trust user supplied CAs for those particular domains or for all domains. Example:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
