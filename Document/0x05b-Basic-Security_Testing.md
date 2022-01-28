@@ -337,7 +337,7 @@ The combination of these can lead to insecure decisions, such as: stripping too 
 
 Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
 
-#### Static Analysis Considerations
+**Static Analysis Considerations:**
 
 Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the App Bundle. When you analyze the App Bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entry points, which entry points are set (by means of `<data android:path="</PATH/HERE>" />`).
 
@@ -347,7 +347,7 @@ Now follow the entry points, like you would do for any Activity and check:
 - Are all communications secured?
 - When you need more functionalities, are the right security controls downloaded as well?
 
-### Dynamic Analysis Considerations
+**Dynamic Analysis Considerations:**
 
 There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
 
