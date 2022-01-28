@@ -284,7 +284,7 @@ If not already done, install the CA certificates in your mobile device which wil
 
 #### Intercepting Traffic
 
-Start using the app and trigger it's functions. You should see HTTP messages showing up in your interception proxy.
+Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
