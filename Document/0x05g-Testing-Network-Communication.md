@@ -295,9 +295,18 @@ When only very few pin failures are reported, then the network should be ok, and
 
 #### Certificate Pinning in the Network Security Configuration
 
-The [Network Security Configuration](#network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains.
+The [Network Security Configuration](#network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
 
-If an application uses this feature, its Network Security Configuration file must contain a `<pin-set>` entry including one or several `<pin>` elements. Each `<pin-set>` can define an expiration date. When reached, the network communication will continue to work, but the certificate pinning will be disabled for the affected domains.
+When connecting to a remote endpoint, the system will:
+
+- Get the incoming X.509 certificate.
+- Extract the public key.
+- Calculate a digest over the extracted public key.
+- Compare the digest with the set of local pins.
+
+If at least one of the pinned digests matches, the certificate chain will be considered valid and the connection will proceed.
+
+Each `<pin-set>` can define an expiration date. When reached, the network communication will continue to work, but the certificate pinning will be disabled for the affected domains enabling pinning bypass. Some apps will do this to prevent connectivity issues
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
