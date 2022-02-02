@@ -1,14 +1,87 @@
 # Android Network Communication
 
+## Network Security Configuration
+
+Starting on Android 7.0 (API level 24), Android apps can customize their network security settings using the so-called [Network Security Configuration](https://developer.android.com/training/articles/security-config) feature which offers the following key capabilities:
+
+- **Cleartext traffic**: Protect apps from accidental usage of cleartext traffic (or enables it).
+- **Custom trust anchors**: Customize which Certificate Authorities (CA) are trusted for an app's secure connections. For example, trusting particular self-signed certificates or restricting the set of public CAs that the app trusts.
+- **Certificate pinning**: Restrict an app's secure connection to particular certificates.
+- **Debug-only overrides**: Safely debug secure connections in an app without added risk to the installed base.
+
+If an app defines a custom Network Security Configuration, you can obtain its location by searching for `android:networkSecurityConfig` in the AndroidManifest.xml file.
+
+```xml
+<application android:networkSecurityConfig="@xml/network_security_config"
+```
+
+In this case the file is located at `@xml` (equivalent to /res/xml) and has the name "network_security_config" (which might vary). You should be able to find it as "res/xml/network_security_config.xml".
+
+The Network Security Configuration is [XML-based](https://developer.android.com/training/articles/security-config#FileFormat) and can be used to configure app-wide and domain-specific settings:
+
+- `base-config` applies to all connections that the app attempts to make.
+- `domain-config` overrides `base-config` for specific domains (it can contain multiple `domain` entries).
+
+For example, the following configuration uses the `base-config` to prevent cleartext traffic for all domains. But it overrides that rule using a `domain-config`, explicitly allowing cleartext traffic for `localhost` and its subdomains.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
+</network-security-config>
+```
+
+Learn more:
+
+- ["A Security Analyst’s Guide to Network Security Configuration in Android P"](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/)
+- [Android Developers - Network Security Configuration](https://developer.android.com/training/articles/security-config)
+- [Android Codelab - Network Security Configuration](https://developer.android.com/codelabs/android-network-security-config)
+
+### Default Configurations
+
+The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="false">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 7.0 (API level 24) to Android 8.1 (API level 27) is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</base-config>
+```
+
+The default configuration for apps targeting Android 6.0 (API level 23) and lower is as follows:
+
+```xml
+<base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+    </trust-anchors>
+</base-config>
+```
+
 ## Testing Data Encryption on the Network (MSTG-NETWORK-1)
 
 ### Static Analysis
 
 First, you should identify all network requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [`SSLSocket`](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
 
-Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default but there are multiple ways in which an application can still send it:
+Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default (thanks to the [default Network Security Configuration](#default-configurations)) but there are multiple ways in which an application can still send it:
 
-- Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html) is configured.
+- Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the Network Security Configuration is configured.
 - Configuring the Network Security Configuration to enable cleartext traffic by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
 - Using low-level APIs (e.g. [`Socket`](https://developer.android.com/reference/java/net/Socket "Socket class")) to set up a custom HTTP connection.
 - Using a cross-platform framework (e.g. Flutter, Xamarin, ...), as these typically have their own implementations for HTTP libraries.
@@ -50,75 +123,50 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 ### Static Analysis
 
-#### Trust Anchors in the Network Security Configuration
+#### Verifying the Target SDK Version
 
-Applications targeting Android 7.0 (API level 24) or higher will use a default Network Security Configuration that doesn't trust any user supplied CAs, reducing the possibility of MITM attacks by luring users to install malicious CAs. However, this protection can be disabled by using a custom Network Security Configuration with a custom trust anchor indicating that the app will trust user supplied CAs.
+Applications targeting Android 7.0 (API level 24) or higher will use a **default Network Security Configuration that doesn't trust any user supplied CAs**, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-Use a decompiler (e.g. jadx or apktool) to confirm the target SDK version. After decoding the app you can look for the presence of `targetSDK` present in the file apktool.yml that was created in the output folder.
+[Decode the app using apktool](0x05b-Basic-Security_Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal or higher than `24`.
 
-The Network Security Configuration should be analyzed to determine what settings are configured. The file is located inside the APK in the /res/xml/ folder with the name network_security_config.xml.
+```txt
+grep targetSdkVersion UnCrackable-Level3/apktool.yml
+  targetSdkVersion: '28'
+```
 
-If there are custom `<trust-anchors>` present in a `<base-config>` or `<domain-config>` that define a `<certificates src="user">`, the application will trust user supplied CAs for those particular domains or for all domains. Example:
+However, even if `targetSdkVersion >=24`, the developers can disable default protection can be disabled by using a custom Network Security Configuration defining a custom trust anchor **forcing the app to trust user supplied CAs**. See ["Analyzing Custom Trust Anchors"](#analyzing-custom-trust-anchors).
+
+#### Analyzing Custom Trust Anchors
+
+Search for the [Network Security Configuration](#network-security-configuration) file and inspect any custom `<trust-anchors>` defining `<certificates src="user">` (which should be avoided).
+
+You should carefully analyze the [precedence of entries](https://developer.android.com/training/articles/security-config#ConfigInheritance):
+
+- If a value is not set in a `<domain-config>` entry or in a parent `<domain-config>`, the configurations in place will be based on the `<base-config>`
+- If not defined in this entry, the [default configurations](#default-configurations) will be used.
+
+Take a look at this example of a Network Security Configuration for an app targeting Android 9 (API level 28):
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config>
-        <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" />
-        </trust-anchors>
-    </base-config>
     <domain-config>
         <domain includeSubdomains="false">owasp.org</domain>
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
         </trust-anchors>
-        <pin-set expiration="2018/8/10">
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Intermediate CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
-            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-            the Root CA of the OWASP website server certificate -->
-            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
-        </pin-set>
     </domain-config>
 </network-security-config>
 ```
 
-It is important to understand the precedence of entries. If a value is not set in a `<domain-config>` entry or in a parent `<domain-config\>`, the configurations in place will be based on the `<base-config>`, and lastly, if not defined in this entry, the default configuration will be used.
+Some observations:
 
-The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
+- There's no `<base-config>`, meaning that the [default configuration](#default-configurations) for Android 9 (API level 28) or higher will be used for all other connections (only `system` CA will be trusted in principle).
+- However, the `<domain-config>` overrides the default configuration allowing the app to trust both `system` and `user` CAs for the indicated `<domain>` (owasp.org).
+- This doesn't affect subdomains because of `includeSubdomains="false"`.
 
-```xml
-<base-config cleartextTrafficPermitted="false">
-    <trust-anchors>
-        <certificates src="system" />
-    </trust-anchors>
-</base-config>
-```
-
-The default configuration for apps targeting Android 7.0 (API level 24) to Android 8.1 (API level 27) is as follows:
-
-```xml
-<base-config cleartextTrafficPermitted="true">
-    <trust-anchors>
-        <certificates src="system" />
-    </trust-anchors>
-</base-config>
-```
-
-The default configuration for apps targeting Android 6.0 (API level 23) and lower is as follows:
-
-```xml
-<base-config cleartextTrafficPermitted="true">
-    <trust-anchors>
-        <certificates src="system" />
-        <certificates src="user" />
-    </trust-anchors>
-</base-config>
-```
+Putting all together we can _translate_ the above Network Security Configuration to: "the app trusts system and user CAs for the owasp.org domain, excluding its subdomains. For any other domains the app will trust the system CAs only".
 
 #### Verifying the Server Certificate
 
@@ -247,42 +295,27 @@ When only very few pin failures are reported, then the network should be ok, and
 
 #### Certificate Pinning in the Network Security Configuration
 
-To customize their network security settings in a safe, declarative configuration file without modifying app code, applications can use the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html "Network Security Configuration documentation") that Android provides for versions 7.0 (API level 24) and above.
+The [Network Security Configuration](#network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains.
 
-The Network Security Configuration can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. If an application uses this feature, two things should be checked to identify the defined configuration:
+If an application uses this feature, its Network Security Configuration file must contain a `<pin-set>` entry including one or several `<pin>` elements. Each `<pin-set>` can define an expiration date. When reached, the network communication will continue to work, but the certificate pinning will be disabled for the affected domains.
 
-First, find the Network Security Configuration file in the Android application manifest via the `android:networkSecurityConfig` attribute on the application tag:
-
-  ```xml
-  <?xml version="1.0" encoding="utf-8"?>
-  <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="owasp.com.app">
-      <application android:networkSecurityConfig="@xml/network_security_config">
-          ...
-      </application>
-  </manifest>
-  ```
-
-Open the identified file. In this case, the file can be found at "res/xml/network_security_config.xml":
-
-  ```xml
-  <?xml version="1.0" encoding="utf-8"?>
-  <network-security-config>
-      <domain-config>
-          Use certificate pinning for OWASP website access including sub domains
-          <domain includeSubdomains="true">owasp.org</domain>
-          <pin-set expiration="2018/8/10">
-              <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-              the Intermediate CA of the OWASP website server certificate -->
-              <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
-              <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
-              the Root CA of the OWASP website server certificate -->
-              <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
-          </pin-set>
-      </domain-config>
-  </network-security-config>
-  ```
-
-> The pin-set contains a set of public key pins. Each set can define an expiration date. When the expiration date is reached, the network communication will continue to work, but the Certificate Pinning will be disabled for the affected domains.
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        Use certificate pinning for OWASP website access including sub domains
+        <domain includeSubdomains="true">owasp.org</domain>
+        <pin-set expiration="2018/8/10">
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Intermediate CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+            <!-- Hash of the public key (SubjectPublicKeyInfo of the X.509 certificate) of
+            the Root CA of the OWASP website server certificate -->
+            <pin digest="SHA-256">Vjs8r4z+80wjNcr1YKepWQboSIRi63WsWXhIMN+eWys=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
+```
 
 If a configuration exists, the following event may be visible in the log:
 
@@ -295,8 +328,6 @@ If a certificate pinning validation check has failed, the following event will b
 ```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
 ```
-
-Using a decompiler (e.g. jadx or apktool) we will be able to confirm if the `<pin>` entry is present in the network_security_config.xml file located in the /res/xml/ folder.
 
 #### TrustManager
 
