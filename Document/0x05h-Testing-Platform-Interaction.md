@@ -409,8 +409,8 @@ An alternative to validation functions is type conversion, with, for example, `I
 
 #### Implicit Intent Injection
 
-[Implicit intents](https://developer.android.com/guide/components/intents-filters#ExampleSend) are useful when the user want to use an external functionality of another app without requiring the developer to specify a particular app in the intent. For example, if the user clicks on an e-mail address within an app, an e-mail app should open and prepare a draft to the given e-mail address. However, the calling app does not want to specify a concrete e-mail app but leaves this choice to the user.
-This can always lead to a security risk if the calling app processes the return value of the implicit intent without verifying it. A blog post by [oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents/), describes the mentioned problem with concrete attack scenarios.
+[Implicit intents](https://developer.android.com/guide/components/intents-filters#ExampleSend "Implicit intents") are useful when the user want to use an external functionality of another app without requiring the developer to specify a particular app in the intent. For example, if the user clicks on an e-mail address within an app, an e-mail app should open and prepare a draft to the given e-mail address. However, the calling app does not want to specify a concrete e-mail app but leaves this choice to the user.
+This can always lead to a security risk if the calling app processes the return value of the implicit intent without verifying it. A blog post by [oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents/ "Interception of Android implicit intents"), describes the mentioned problem with concrete attack scenarios.
 <br>Explicit Intent
 
 ```java
@@ -433,7 +433,7 @@ startActivityForResult(downloadIntent);
 
 #### Testing Implicit Intent Injection
 
-The Manifest contains [queries](https://developer.android.com/guide/topics/manifest/queries-element) that specify the set of other apps an app intends to interact with. Within the `<queries>` block an app can specify an intent signature with `<intent>`. A tester should check if it contains `android.intent.action.GET_CONTENT`, `android.intent.action.PICK`, `android.media.action.IMAGE_CAPTURE` and browse the code for their occurrence.
+The Manifest contains [queries](https://developer.android.com/guide/topics/manifest/queries-element "Android queries") that specify the set of other apps an app intends to interact with. Within the `<queries>` block an app can specify an intent signature with `<intent>`. A tester should check if it contains `android.intent.action.GET_CONTENT`, `android.intent.action.PICK`, `android.media.action.IMAGE_CAPTURE` and browse the code for their occurrence.
 Next, a tester should check if an implicit intent is being used for the actions mentioned previously which is then started by `startActivityForResult()`.
 
 ```java
@@ -504,7 +504,7 @@ for(ResolveInfo info : getPackageManager().queryIntentActivities(intent, 0)) {
 ```
 
 Furthermore, an improperly handled return value of an implicit intent can lead to arbitrary code execution if the victim app allows `content://` url's in addition to `file://` url's.
-An attacker implements a [ContentProvider](https://developer.android.com/reference/android/content/ContentProvider) that contains `public Cursor query(...)` to set an arbitrary file (in this case *lib.so*, and if the victim loads this file from the content provider by executing `copy()` the attackers `ParcelFileDescriptor openFile(...)` method is being executed and returns a malicious *fakelib.so*.
+An attacker implements a [ContentProvider](https://developer.android.com/reference/android/content/ContentProvider "Android ContentProvider") that contains `public Cursor query(...)` to set an arbitrary file (in this case *lib.so*, and if the victim loads this file from the content provider by executing `copy()` the attackers `ParcelFileDescriptor openFile(...)` method is being executed and returns a malicious *fakelib.so*.
 <br>AndroidManifest.xml
 
 ```xml
@@ -546,7 +546,7 @@ public class EvilContentActivity extends Activity{
 }
 ```
 
-A full description of the attack is included in the [blog article by oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents)
+A full description of the attack is included in the [blog article by oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents "Current attacks on implicit intents")
 
 ### Dynamic Analysis
 
