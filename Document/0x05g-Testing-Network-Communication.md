@@ -15,7 +15,11 @@ If an app defines a custom Network Security Configuration, you can obtain its lo
 <application android:networkSecurityConfig="@xml/network_security_config"
 ```
 
-In this case the file is located at `@xml` (equivalent to /res/xml) and has the name "network_security_config" (which might vary). You should be able to find it as "res/xml/network_security_config.xml".
+In this case the file is located at `@xml` (equivalent to /res/xml) and has the name "network_security_config" (which might vary). You should be able to find it as "res/xml/network_security_config.xml". If a configuration exists, the following event should be visible in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
+
+```bash
+D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
+```
 
 The Network Security Configuration is [XML-based](https://developer.android.com/training/articles/security-config#FileFormat) and can be used to configure app-wide and domain-specific settings:
 
@@ -291,22 +295,32 @@ When a large amount of pin failures are reported to the backend or crash-reporti
 
 When only very few pin failures are reported, then the network should be ok, and so should be the configuration of the TLS terminating endpoint. Instead, it might well be that there is a man-in-the-middle attack ongoing at the app instance of which the pin is failing.
 
+#### About Pinning Recommendations in Android Developers
+
+The [Android Developers](https://developer.android.com/training/articles/security-ssl#Pinning) site includes the following warning:
+
+> Caution: Certificate Pinning is not recommended for Android applications due to the high risk of future server configuration changes, such as changing to another Certificate Authority, rendering the application unable to connect to the server without receiving a client software update.
+
+They also include this [note](https://developer.android.com/training/articles/security-config#CertificatePinning):
+
+> Note that, when using certificate pinning, you should always include a backup key so that if you are forced to switch to new keys or change CAs (when pinning to a CA certificate or an intermediate of that CA), your app's connectivity is unaffected. Otherwise, you must push out an update to the app to restore connectivity.
+
+The first statement can be mistakenly interpreted as they'd be saying that they "do not recommend certificate pinning". The second statement clarifies it: the actual recommendation is that if developers want to implement certificate pinning they have to do it right, i.e. **they must include backup keys** (aka. backup pins).
+
 ### Static Analysis
 
 #### Certificate Pinning in the Network Security Configuration
 
 The [Network Security Configuration](#network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
 
-When connecting to a remote endpoint, the system will:
+When attempting to establish a connection to a remote endpoint, the system will:
 
-- Get the incoming X.509 certificate.
+- Get and validate the incoming certificate.
 - Extract the public key.
 - Calculate a digest over the extracted public key.
 - Compare the digest with the set of local pins.
 
 If at least one of the pinned digests matches, the certificate chain will be considered valid and the connection will proceed.
-
-Each `<pin-set>` can define an expiration date. When reached, the network communication will continue to work, but the certificate pinning will be disabled for the affected domains enabling pinning bypass. Some apps will do this to prevent connectivity issues
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -326,13 +340,9 @@ Each `<pin-set>` can define an expiration date. When reached, the network commun
 </network-security-config>
 ```
 
-If a configuration exists, the following event may be visible in the log:
+Inspect the `<pin-set>` elements for any `expiration` date. If expired, certificate pinning will be disabled for the affected domains.
 
-```bash
-D/NetworkSecurityConfig: Using Network Security Config from resource network_security_config
-```
-
-If a certificate pinning validation check has failed, the following event will be logged:
+> Testing Tip: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
 
 ```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
