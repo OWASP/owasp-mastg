@@ -3,12 +3,27 @@ changelog:
     labels:
       - "ignore-for-release"
   categories:
-    - title: Changes in MSTG Content
+    - title: MSTG Test Cases
+      labels:
+        - "tests"
+    - title: MSTG Testing Fundamentals
+      labels:
+        - "fundamentals"
+    - title: MSTG Testing Techniques
+      labels:
+        - "techniques"
+    - title: MSTG Testing Tools
+      labels:
+        - "tools"
+    - title: Other changes in MSTG Content
       labels:
         - "change-mstg"
     - title: Errata Corrections (typos & more)
       labels:
         - "errata"
+    - title: Automation Improvements
+      labels:
+        - "automation"
     - title: New Donators
       labels:
         - "donation"
