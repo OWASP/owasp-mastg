@@ -36,10 +36,11 @@ Currently the MASVS and MSTG are used by at least the following companies:
 
 Currently, the MASVS and MSTG are recommended by:
 
-- [Egov standards for India](http://egovstandards.gov.in/notified-standards-0 "Egov standards for India")
-- [Finish Transport and Communication Agency (TRAFICOM) - Assessment guideline for electronic identification services (Draft)](https://www.traficom.fi/sites/default/files/media/file/DRAFT%20Traficom%20guideline%20211%202019%20conformity%20assessment%20of%20eID%20service.pdf "Finish Transport and Communication Agency (TRAFICOM)")
-- [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability "European Payments Council")
-- [Vetting the Security of Mobile Applications: NIST Publishes SP 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1 "National Institute of Standards and Technology")
+- [[NIST] NIST.SP.800-163 "Vetting the Security of Mobile Applications", Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1 "National Institute of Standards and Technology")
+- [[NIST] NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities"](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
+- [[Government of India, Ministry of Electronics & Information Technology] "Adoption of Mobile AppSec Verification Standard (MASVS) Version 1.0 of OWASP"](http://egovstandards.gov.in/sites/default/files/Adoption%20of%20Mobile%20AppSec%20Verification%20Standard%20%28MASVS%29%20Version%201.0%20of%20OWASP_0.pdf)
+- [[Finish Transport and Communication Agency (TRAFICOM)] "Assessment guideline for electronic identification services (Draft)](https://www.traficom.fi/sites/default/files/media/file/DRAFT%20Traficom%20guideline%20211%202019%20conformity%20assessment%20of%20eID%20service.pdf "Finish Transport and Communication Agency (TRAFICOM)")
+- [[European Payments Council] "Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)"](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability)
 
 ## Application in scientific research
 
