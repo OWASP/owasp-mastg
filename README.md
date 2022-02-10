@@ -26,6 +26,9 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 <a href="https://twitter.com/OWASP_MSTG"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MSTG</a>
 <br>
 <br>
+<a href="https://github.com/OWASP/owasp-mstg/discussions"><img src="Document/Images/GitHub_logo.png" width="14px"> GitHub Discussions</a>
+<br>
+<br>
 
 ## Table-of-Contents
 
