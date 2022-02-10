@@ -36,7 +36,7 @@ The MSTG is an open source effort and we welcome contributions and feedback. If 
 - 💡 [Propose ideas or suggest improvements](https://github.com/OWASP/owasp-mstg/discussions/categories/ideas) (if it qualifies we'll promote it to an [Issue](https://github.com/OWASP/owasp-mstg/issues "Github issues"))
 - 💬 [Give feedback](https://github.com/OWASP/owasp-mstg/discussions/categories/general).
 - 🙏 [Ask questions](https://github.com/OWASP/owasp-mstg/discussions/categories/q-a)
-- 📄 [Create a Pull Request](https://github.com/OWASP/owasp-mstg/pulls) for concrete fixes (e.g. grammar/typos) or content already approved by the [core team](#connect-with-us).
+- 📄 [Create a Pull Request](https://github.com/OWASP/owasp-mstg/pulls) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
 Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started.
 
