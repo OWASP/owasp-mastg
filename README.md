@@ -21,11 +21,11 @@ The MSTG and the MASVS are being adopted by many companies, standards, and vario
 ## Connect with Us
 
 <br>
+<a href="https://github.com/OWASP/owasp-mstg/discussions"><img src="Document/Images/GitHub_logo.png" width="14px"> GitHub Discussions</a>
+<br>
 <a href="https://owasp.slack.com/messages/project-mobile_omtg/details/"><img src="Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a> (<a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Get Invitation</a>)
 <br>
-<a href="https://twitter.com/OWASP_MSTG"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MSTG</a>
-<br>
-<a href="https://github.com/OWASP/owasp-mstg/discussions"><img src="Document/Images/GitHub_logo.png" width="14px"> GitHub Discussions</a>
+<a href="https://twitter.com/OWASP_MSTG"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MSTG</a> <a href="https://twitter.com/bsd_daemon"><img src="Document/Images/twitter_logo.png" width="14px"> @bsd_daemon</a> <a href="https://twitter.com/grepharder"><img src="Document/Images/twitter_logo.png" width="14px"> @grepharder</a>
 <br>
 <br>
 
