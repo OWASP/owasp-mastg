@@ -1,13 +1,13 @@
-<a href="https://leanpub.com/mobile-security-testing-guide"><img width=180px align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg" /></a>
+<img width="180px" align="right" style="float: right;" src="Document/Images/mstg-cover-release-small.jpg"/>
 
-# OWASP Mobile Security Testing Guide
+# OWASP Mobile Security Testing Guide (MSTG)
 
 [![Creative Commons License](https://img.shields.io/github/license/OWASP/owasp-mstg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 
 [![OWASP Flagship](https://img.shields.io/badge/owasp-flagship%20project-48A646.svg)](https://owasp.org/projects/)
 
-[![Check Markdown Markup](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Markup/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Markup%22)
 [![Document Build](https://github.com/OWASP/owasp-mstg/workflows/Document%20Build/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22)
+[![Check Markdown Markup](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Markup/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Markup%22)
 [![Check Markdown Links](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Links/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Links%22)
 
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
@@ -16,9 +16,9 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mstg/releases/latest)
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest)
 - ⚡ [Contribute!](#how-to-contribute)
-- 💥 [Play with Crackmes](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md)
+- 💥 [Play with our Crackmes](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md)
 
-The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users' document listing some of the adopters](Users.md).
+> The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users' document listing some of the adopters](Users.md).
 
 ## Connect with Us
 
