@@ -30,15 +30,20 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 ## How to Contribute
 
-The MSTG is an open source effort and we welcome contributions and feedback. If you want to contribute with additional content, or improve existing content, we suggest that you [first contact us](#connect-with-us).
+The MSTG is an open source effort and we welcome all kinds of contributions and feedback.
+
+**Help us improve & join our community:**
 
 - 🐞 [Report an error (typos, grammar)](https://github.com/OWASP/owasp-mstg/issues) or [fix it on a Pull Request](https://github.com/OWASP/owasp-mstg/pulls).
-- 💡 [Propose ideas or suggest improvements](https://github.com/OWASP/owasp-mstg/discussions/categories/ideas) (if it qualifies we'll promote it to an [Issue](https://github.com/OWASP/owasp-mstg/issues "Github issues"))
 - 💬 [Give feedback](https://github.com/OWASP/owasp-mstg/discussions/categories/general).
 - 🙏 [Ask questions](https://github.com/OWASP/owasp-mstg/discussions/categories/q-a)
+
+**Contribute with content:**
+
+- 💡 [Propose ideas or suggest improvements](https://github.com/OWASP/owasp-mstg/discussions/categories/ideas) (if it qualifies we'll promote it to an [Issue](https://github.com/OWASP/owasp-mstg/issues "Github issues"))
 - 📄 [Create a Pull Request](https://github.com/OWASP/owasp-mstg/pulls) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
-Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started.
+Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started. If you have any doubts [please contact us](#connect-with-us).
 
 ### Contribution Credit / Acknowledgments
 
@@ -63,7 +68,6 @@ The MSTG is a living document that changes and adapts to the most recent securit
 > 🇯🇵 A translation of the MSTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
 
 That said, we **strongly encourage [further translations of the MASVS](https://github.com/OWASP/owasp-masvs/blob/master/README.md#masvs-translations)** as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MSTG for free.
-
 
 ## Other Formats
 
