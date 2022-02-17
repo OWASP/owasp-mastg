@@ -1,4 +1,4 @@
-<a href="https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring"><img width="180px" align="right" style="float: right;" src="Document/images/masvs_refactor.png"></a>
+<a href="https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring"><img width="180px" align="right" style="float: right;" src="Document/Images/masvs_refactor.png"></a>
 
 # OWASP Mobile Security Testing Guide (MSTG)
 
