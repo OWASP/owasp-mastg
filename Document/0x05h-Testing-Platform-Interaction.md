@@ -16,7 +16,7 @@ Android permissions are classified into four different categories on the basis o
 A list of all permissions can be found in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html "Permissions overview") as well as concrete steps on how to:
 
 - [Declare app permissions](https://developer.android.com/training/permissions/declaring) in your app's manifest file.
-- [Request app permissions](https://developer.android.com/training/permissions/requesting) programatically.
+- [Request app permissions](https://developer.android.com/training/permissions/requesting) programmatically.
 - [Define a Custom App Permission](https://developer.android.com/guide/topics/permissions/defining) to share your app resources and capabilities with other apps.
 
 #### Android 8.0 (API level 26) Changes
@@ -953,7 +953,7 @@ You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported 
   </activity>
   <!-- This activity is exported via the attribute "exported" -->
   <activity android:name=".PWList" android:exported="true" />
-  <!-- Activites below are not exported -->
+  <!-- Activities below are not exported -->
   <activity android:name=".SettingsActivity" />
   <activity android:name=".AddEntryActivity"/>
   <activity android:name=".ShortLoginActivity" />
@@ -1616,7 +1616,7 @@ if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
 
 
 
-                     //...Part 3: check if update completed succesfully
+                     //...Part 3: check if update completed successfully
  @Override
  public void onActivityResult(int requestCode, int resultCode, Intent data) {
    if (myRequestCode == MY_REQUEST_CODE) {
@@ -1675,7 +1675,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 ### Android Fragment Injection
 
-- <https://www.synopsys.com/blogs/software-security/fragment-injection/>
+- <https://www.synopsis.com/blogs/software-security/fragment-injection/>
 - <https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf>
 
 ### Android Permissions Documentation

@@ -208,7 +208,7 @@ A symmetric encryption key can be generated from the passphrase by using the Pas
 ```java
 public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 {
-    //Initiliaze objects and variables for later use
+    //Initialize objects and variables for later use
     int iterationCount = 10000;
     int saltLength     = keyLength / 8;
     SecureRandom random = new SecureRandom();

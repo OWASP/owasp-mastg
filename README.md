@@ -47,7 +47,7 @@ Before you start contributing, please check our [contribution guide](https://git
 
 ### Contribution Credit / Acknowledgments
 
-Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistenly demonstrating their commitment. Acknowlegements are visible in the [official owasp.org Project Page](https://owasp.org/www-project-mobile-security-testing-guide/#div-acknowledgements), in [GitHub](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02-Frontispiece.md#acknowledgments), [GitBook](https://mobile-security.gitbook.io/mobile-security-testing-guide/0x02-frontispiece#acknowledgments) and in the [printed versions](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html).
+Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowlegements are visible in the [official owasp.org Project Page](https://owasp.org/www-project-mobile-security-testing-guide/#div-acknowledgements), in [GitHub](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02-Frontispiece.md#acknowledgments), [GitBook](https://mobile-security.gitbook.io/mobile-security-testing-guide/0x02-frontispiece#acknowledgments) and in the [printed versions](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html).
 
 Contributors are categorized as follows:
 
