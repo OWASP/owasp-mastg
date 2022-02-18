@@ -1675,7 +1675,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 ### Android Fragment Injection
 
-- <https://www.synopsis.com/blogs/software-security/fragment-injection/>
+- <https://www.synopsys.com/blogs/software-security/fragment-injection/>
 - <https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf>
 
 ### Android Permissions Documentation
