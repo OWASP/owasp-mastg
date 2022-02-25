@@ -640,8 +640,8 @@ Steps for building an iOS application as PIE:
 
 1. In Xcode, select your target in the "Targets" section, then click the "Build Settings" tab to view the target's settings.
 2. Set the iOS Deployment Target to iOS 4.3 or later.
-3. Make sure that "Generate Position-Dependent Code" is set to its default value ("NO").
-4. Make sure that "Don't Create Position Independent Executables" is set to its default value ("NO").
+3. Make sure that "Generate Position-Dependent Code" (section "Apple Clang - Code Generation") is set to its default value ("NO").
+4. Make sure that "Generate Position-Dependent Executable" (section "Linking") is set to its default value ("NO").
 
 ##### ARC protection
 
