@@ -71,7 +71,7 @@ The most commonly used Class for cryptographic operations is the CommonCrypto, w
 
 Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
-Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
+Next, for asymmetric operations, Apple provides [SecKey](https://developer.apple.com/documentation/security/seckey "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
 
 As noted before: some wrapper-libraries exist for both in order to provide convenience. Typical libraries that are used are, for instance:
 
