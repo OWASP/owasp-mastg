@@ -24,6 +24,9 @@ changelog:
     - title: Automation Improvements
       labels:
         - "automation"
+    - title: Mobile Swcurity Checklists Improvements
+      labels:
+        - "checklists"
     - title: New Donators
       labels:
         - "donation"
