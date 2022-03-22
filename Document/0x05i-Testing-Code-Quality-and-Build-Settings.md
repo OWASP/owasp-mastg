@@ -484,87 +484,63 @@ There are various steps to take:
 
 ### Overview
 
-Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. [ProGuard](0x08-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
+The tests used to detect the presence of binary protection mechanisms heavily depend on the language used for developing the application. These are some basic guidelines:
 
-Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://owasp.org/www-community/vulnerabilities/Buffer_Overflow "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
+- In general all binaries must be tested, this includes both the app main executable as well as all libraries/dependencies.
+- In some cases the nature of the language they were written will offer sufficient protection (e.g. Java has Garbage Collection similar to ARC on iOS), so even if a feature is not enabled the test may pass.
+- In other cases, e.g. pure C code, the presence of certain binary protections has to be fully determined because of the high risk of potential exploitation.
+
+To each protection:
+
+- **PIE**: it’s used to enable ASLR and must be set for the main executable and libraries.
+  - Since Android 7.0 (API level 24), PIC compilation was [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
+  - Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50).
+- **Memory management**:
+  - **ARC** (Automatic Reference Counting) is a memory management feature [exclusive to Objective-C and Swift](https://en.wikipedia.org/wiki/Automatic_Reference_Counting) (iOS). Nothing to check on Android.
+  - **Garbage Collection** (GC) is a [memory management feature](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) of some languages such as Java/Kotlin/Dart.
+    - There’s nothing to check on the main executable.
+    - However, GC does not apply to native libraries. The developer is responsible for doing proper memory management. See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+    - You can learn more about how it differs from ARC [here](https://fragmentedpodcast.com/episodes/064/).
+- **SSP** (Stack Smashing Protection aka. canaries): Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
+  - It must be enabled for native code (keywords: C/C++/JNI/NDK) but it might be difficult to fully determine it.
+    - NDK libraries should have it enabled since the compiler does it by default.
+    - Other custom C/C++ libraries might not have it enabled.
+  - If the language is considered memory safe (at least for mitigating buffer overflows), it’s ok if it’s not enabled for that specific binary.
+  - Flutter will not compile using stack canaries because of the way Dart mitigates buffer overflows.
 
 ### Static Analysis
 
-If source code is provided, you can check the build.gradle file to see whether obfuscation settings have been applied. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with `-keepclassmembers` and `-keep class`) is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder.
+Test the app native libraries to determine if they have the PIE an SSP protections enabled.
 
-Further information on how to shrink, obfuscate, and optimize your app can be found in the [Android developer documentation](https://developer.android.com/studio/build/shrink-code "Shrink, obfuscate, and optimize your app").
+You can use rabin2 to get the binary information. We'll use [r2pay-v1.0.apk](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk):
 
-> When you build you project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin works with the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
+First we take a look at the main binary for the sake of clarity. You'll see that `canary` and `pic` seem to not enabled (`false`). However, they are actually not applicable, that's why the tool shows them as `false`.
 
-R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
-
-```default
-android {
-    buildTypes {
-        release {
-            // Enables code shrinking, obfuscation, and optimization for only
-            // your project's release build type.
-            minifyEnabled true
-
-            // Includes the default ProGuard rules files that are packaged with
-            // the Android Gradle plugin. To learn more, go to the section about
-            // R8 configuration files.
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-        }
-    }
-    ...
-}
+```sh
+rabin2 -I classes.dex  | grep -E "canary|pic"
+canary   false
+pic      false
 ```
 
-The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
+What you should definitely test are the native libraries. They must have `canary` and `pic` both set to `true`.
 
-```default
-...
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
-...
+That's the case for `libnative-lib.so`:
+
+```sh
+rabin2 -I lib/x86_64/libnative-lib.so | grep -E "canary|pic"
+canary   true
+pic      true
 ```
 
-You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
+But not for `libtool-checker.so`:
 
-```default
--keep public class MyClass
+```sh
+rabin2 -I lib/x86_64/libtool-checker.so | grep -E "canary|pic"
+canary   false
+pic      true
 ```
 
-### Dynamic Analysis
-
-If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting DEX code to a JAR file (e.g. dex2jar). The JAR file can be opened with tools such as JD-GUI that can be used to make sure that class, method, and variable names are not human-readable.
-
-Below you can find a sample for an obfuscated code block:
-
-```java
-package com.a.a.a;
-
-import com.a.a.b.a;
-import java.util.List;
-
-class a$b
-  extends a
-{
-  public a$b(List paramList)
-  {
-    super(paramList);
-  }
-
-  public boolean areAllItemsEnabled()
-  {
-    return true;
-  }
-
-  public boolean isEnabled(int paramInt)
-  {
-    return true;
-  }
-}
-```
+In this example, `libtool-checker.so` must be fixed to enable SSP.
 
 ## References
 
