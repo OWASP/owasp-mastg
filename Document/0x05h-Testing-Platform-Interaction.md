@@ -572,9 +572,21 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 ### Overview
 
-Android allows you to create two different types of links for your apps: deep links and Android App Links. According to the [Android Developer Documentation](https://developer.android.com/training/app-links#app-links-vs-deep-links "Deep linking and Android App Links"), **deep links** are URLs that take users directly to specific content in your app. You can set up deep links by adding _intent filters_ and extracting data from incoming intents to drive users to the right activity. You can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". These kind of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
+Android considers [different types of links](https://developer.android.com/training/app-links)
+
+- **Deep links**: unverified URIs of any scheme that take users directly to specific content in an app.
+- **Web Links**: unverified deep links that use the HTTP and HTTPS schemes.
+- **Android App Links** (Android 6.0 (API level 23) and higher): verified web links that use the HTTP and HTTPS schemes and contain the `autoVerify` attribute.
+
+#### Deep Links and Custom URL Schemes
+
+An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to drive users to the right activity. It can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". These kind of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
 
 This method of defining deep links via intent filters has an important issue: any other apps installed on a user's device can declare and try to handle the same intent (typically a custom URL scheme). This is known as **deep link collision** where any arbitrary application can declare control over the exact same URL custom scheme belonging to another application. In recent versions of Android this results in a so-called _disambiguation dialog_ being shown to the user and asking them to select the application that should handle the link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
+
+![OWASP_MSTG](https://developer.android.com/training/app-links/images/app-disambiguation_2x.png)
+
+> Something similar happens with Android App Links. Only one app at a time can be associated with a particular domain. If another app is already verified for the domain, the user must first disassociate that other app with the domain before they can associate your app with the domain. Apps are able to [ask the user to assotiate an app with a certain domain](https://developer.android.com/training/app-links/verify-site-associations#request-user-associate-app-with-domain). However, it is not a risk since these links are verified and will only work with the declaring legitimate apps.
 
 Consider the following example of a deep link to an email application:
 
@@ -584,13 +596,7 @@ emailapp://composeEmail/to=your.boss@company.com&message=SEND%20MONEY%20TO%20HER
 
 When a victim clicks such a link on a mobile device, a potentially vulnerable application might send an email from the user's original address containing attacker-crafted content. This could lead to financial loss, information disclosure, social damage of the victim, to name a few.
 
-Another application specific example of deep linking is shown below:
-
-```default
-myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAgeIs=100
-```
-
-This deep link could be used in order to abuse some known vulnerabilities already identified within an application (e.g. via reverse engineering). For instance, consider an application running a WebView with JavaScript enabled and rendering the `Whatismyname` parameter. In this concrete case, the deep link payload would trigger reflected cross site scripting within the context of the WebView.
+#### Android App Links
 
 Since Android 6.0 (API Level 23) a developer can opt to define [**Android App Links**](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links"), which are verified deep links based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed and most importantly, **the disambiguation dialog won't be prompted** and therefore collisions are not possible anymore.
 
@@ -598,7 +604,7 @@ There are some key differences from _regular_ deep links to consider:
 
 - App Links only use `http://` and `https://` schemes, any other custom URL schemes are not allowed.
 - App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
-- App links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
+- App Links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
 
 For every application, all existing deep links (including App Links) can potentially increase the app attack surface. All deep links must be enumerated and the actions they perform must be well tested, especially all input data which should be deemed to be untrustworthy and thus should be always validated. In addition, also consider the following:
 
@@ -608,6 +614,12 @@ For every application, all existing deep links (including App Links) can potenti
 - If tampering of the data will influence the result of the calculations: add an HMAC to the data.
 
 ### Static Analysis
+
+#### Check for Non-verifiable Deep Links
+
+On Android 11 (API level 30) and lower, if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), that can cause the system to not verify all Android App Links for that app.
+
+> Apps on Android 12 (API level 31) benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
 You can easily determine whether deep links (with or without custom URL schemes) are defined just by inspecting the Android Manifest file and looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
 
@@ -642,6 +654,42 @@ The following example specifies a new App Link using both the `http://` and `htt
 
 In this example, the `<intent-filter>` includes the flag `android:autoVerify="true"`, which makes it an App Link and causes the Android system to reach out to the declared `android:host` in an attempt to access the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") in order to [verify the App Links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links").
 
+> It is an [Android best practice](https://developer.android.com/training/app-links/verify-site-associations#add-intent-filters) to include `autoVerify` to each `<intent-filter>`.  
+
+#### Check for Redirects
+
+The system doesn't verify any Android App Links for an app if it set a redirect such as "http://example.com to https://example.com" or "example.com to www.example.com".
+
+#### Check for Subdomains
+
+If an intent filter lists multiple hosts with different subdomains, there must be a valid assetlinks.json on each domain. For example, the following intent filter includes www.example.com and mobile.example.com as accepted intent URL hosts. So a valid assetlinks.json must be published at both https://www.example.com/.well-known/assetlinks.json and https://mobile.example.com/.well-known/assetlinks.json.
+
+Also note that if the hostname includes a wildcard (such as *.example.com), you should be able to find an assetlinks.json file at the root hostname (https://example.com/.well-known/assetlinks.json).
+
+```xml
+<application>
+  <activity android:name=”MainActivity”>
+    <intent-filter android:autoVerify="true">
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:scheme="https" />
+      <data android:scheme="https" />
+      <data android:host="www.example.com" />
+      <data android:host="mobile.example.com" />
+    </intent-filter>
+  </activity>
+</application>
+```
+
+#### Check the Handler Method
+
+You should carefully analyze the logic of the deep link or App Link handler:
+
+- Check for **String Comparison Methods** being sued such as `startsWith`, `endsWith`, `contains` methods.
+- Check for [**Serialization Issues**](#testing-object-persistence-mstg-platform-8).
+- Check for **Data Transmission**
+
 You must pay special attention to deep links being used to transmit data (which is controlled externally, e.g. by the user or any other app). For example, the following URI could be used to transmit two values `valueOne` and `valueTwo`: `myapp://path/to/what/i/want?keyOne=valueOne&keyTwo=valueTwo`. In order to retrieve the input data and potentially process it, the receiving app could implement a code block similar to the following acting as a data handler method. The way to handle data is the same for both deep links and App Links:
 
 ```java
@@ -654,6 +702,16 @@ if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 ```
 
 The usage of the [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()")  and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()") should be verified in order to understand how the application handles deep link input data, and if it could be subject to any kind of abuse. This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data.
+
+#### Check for Reflected Cross-Site Scripting (XSS)
+
+Another application specific example of deep linking is shown below:
+
+```default
+myapp://mybeautifulapp/endpoint?Whatismyname=MyNameIs<svg onload=alert(1)>&MyAgeIs=100
+```
+
+This deep link could be used in order to abuse some known vulnerabilities already identified within an application (e.g. via reverse engineering). For instance, consider an application running a WebView with JavaScript enabled and rendering the `Whatismyname` parameter. In this concrete case, the deep link payload would trigger reflected cross site scripting within the context of the WebView.
 
 ### Dynamic Analysis
 
@@ -673,6 +731,8 @@ $ adb shell am start
         -W -a android.intent.action.VIEW
         -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
 ```
+
+On Android 12 (API level 31) and higher, you can also [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification) to test the verification logic regardless of whether the app targets Android 12 (API level 31). This is very useful if want to [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state), [invoke the domain verification process](https://developer.android.com/training/app-links/verify-site-associations#invoke-domain-verification) whenever you like and be able to [review the verification results](https://developer.android.com/training/app-links/verify-site-associations#review-results).
 
 ## Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
