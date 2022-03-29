@@ -572,7 +572,7 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 ### Overview
 
-Android considers [different types of links](https://developer.android.com/training/app-links)
+Android considers [different types of links](https://developer.android.com/training/app-links):
 
 - **Deep links**: unverified URIs of any scheme that take users directly to specific content in an app.
 - **Web Links**: unverified deep links that use the HTTP and HTTPS schemes.
@@ -580,7 +580,7 @@ Android considers [different types of links](https://developer.android.com/train
 
 #### Deep Links and Custom URL Schemes
 
-An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to drive users to the right activity. It can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". These kind of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
+An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to navigate users to the correct activity. It can even use any custom scheme prefix such as `myapp`, which will result in the URI prefix "myapp://". These kinds of deep links are also referred to as "Custom URL Schemes" and are typically used as a form of inter-app communication where an app can define certain actions (including the corresponding parameters) that can be triggered by other apps.
 
 This method of defining deep links via intent filters has an important issue: any other apps installed on a user's device can declare and try to handle the same intent (typically a custom URL scheme). This is known as **deep link collision** where any arbitrary application can declare control over the exact same URL custom scheme belonging to another application. In recent versions of Android this results in a so-called _disambiguation dialog_ being shown to the user and asking them to select the application that should handle the link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
 
@@ -617,7 +617,7 @@ For every application, all existing deep links (including App Links) can potenti
 
 #### Check for Non-verifiable Deep Links
 
-On Android 11 (API level 30) and lower, if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), that can cause the system to not verify all Android App Links for that app.
+On Android 11 (API level 30) and lower, if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
 
 > Apps on Android 12 (API level 31) benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
@@ -658,7 +658,7 @@ In this example, the `<intent-filter>` includes the flag `android:autoVerify="tr
 
 #### Check for Redirects
 
-The system doesn't verify any Android App Links for an app if it set a redirect such as "http://example.com to https://example.com" or "example.com to www.example.com".
+The system doesn't verify any Android App Links for an app if the server sets a redirect such as "http://example.com to https://example.com" or "example.com to www.example.com".
 
 #### Check for Subdomains
 
