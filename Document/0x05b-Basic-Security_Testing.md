@@ -511,6 +511,26 @@ As seen above in "[Exploring the App Package](#exploring-the-app-package "Explor
 
 Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more information about how to reverse engineer DEX files.
 
+##### Compiled App Binary
+
+In some cases it might be useful to retrieve the compiled app binary (.odex).
+
+First get the path to the app's data directory:
+
+```bash
+adb shell pm path com.example.myapplication
+package:/data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/base.apk
+```
+
+Remove the `/base.apk` part, add `/oat/arm64/base.odex` and use the resulting path to pull the base.odex from the device:
+
+```bash
+adb root
+adb pull /data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/oat/arm64/base.odex
+```
+
+Note that you must execute adb with root privileges. If the above doesn't work because the file cannot be found, try exploring yourself using `adb shell` and `cd` to that path until you find the `base.odex`.
+
 ##### Native Libraries
 
 You can inspect the `lib` folder in the APK:
