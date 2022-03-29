@@ -490,6 +490,17 @@ The tests used to detect the presence of binary protection mechanisms heavily de
 - In some cases the nature of the language they were written will offer sufficient protection (e.g. Java has Garbage Collection similar to ARC on iOS), so even if a feature is not enabled the test may pass.
 - In other cases, e.g. pure C code, the presence of certain binary protections has to be fully determined because of the high risk of potential exploitation.
 
+Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Basic-Security_Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
+
+The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
+
+Learn more:
+
+- [Android executable formats](https://lief-project.github.io/doc/latest/tutorials/10_android_formats.html)
+- [Android runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works)
+- [Android NDK](https://developer.android.com/ndk/guides)
+- [Android linker changes for NDK developers](https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md)
+
 To each protection:
 
 - **PIE**: it’s used to enable ASLR and must be set for the main executable and libraries.
@@ -497,7 +508,7 @@ To each protection:
   - Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50).
 - **Memory management**:
   - **ARC** (Automatic Reference Counting) is a memory management feature [exclusive to Objective-C and Swift](https://en.wikipedia.org/wiki/Automatic_Reference_Counting) (iOS). Nothing to check on Android.
-  - **Garbage Collection** (GC) is a [memory management feature](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) of some languages such as Java/Kotlin/Dart.
+  - **Garbage Collection** (GC) is a [memory management feature](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) of some languages such as Java/Kotlin/Dart. ART makes use of an [improved version of GC](https://source.android.com/devices/tech/dalvik#Improved_GC).
     - There’s nothing to check on the main executable.
     - However, GC does not apply to native libraries. The developer is responsible for doing proper memory management. See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
     - You can learn more about how it differs from ARC [here](https://fragmentedpodcast.com/episodes/064/).
