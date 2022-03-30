@@ -586,7 +586,7 @@ This method of defining deep links via intent filters has an important issue: an
 
 ![OWASP_MSTG](https://developer.android.com/training/app-links/images/app-disambiguation_2x.png)
 
-> Something similar happens with Android App Links. Only one app at a time can be associated with a particular domain. If another app is already verified for the domain, the user must first disassociate that other app with the domain before they can associate your app with the domain. Apps are able to [ask the user to assotiate an app with a certain domain](https://developer.android.com/training/app-links/verify-site-associations#request-user-associate-app-with-domain). However, it is not a risk since these links are verified and will only work with the declaring legitimate apps.
+Something similar happens with Android App Links. Only one app at a time can be associated with a particular domain. If another app is already verified for the domain, the user must first disassociate that other app with the domain before they can associate your app with the domain. Apps are able to [ask the user to assotiate an app with a certain domain](https://developer.android.com/training/app-links/verify-site-associations#request-user-associate-app-with-domain). However, it is not a risk since these links are verified and will only work with the declaring legitimate apps.
 
 Consider the following example of a deep link to an email application:
 
