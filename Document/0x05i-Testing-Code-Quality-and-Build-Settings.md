@@ -523,7 +523,7 @@ To each protection:
 
 Test the app native libraries to determine if they have the PIE an SSP protections enabled.
 
-You can use rabin2 to get the binary information. We'll use [r2pay-v1.0.apk](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk):
+You can use rabin2 to get the binary information. We'll use [r2pay-v1.0.apk](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk) as an example:
 
 First we take a look at the main binary for the sake of clarity. You'll see that `canary` and `pic` seem to not enabled (`false`). However, they are actually not applicable, that's why the tool shows them as `false`.
 
