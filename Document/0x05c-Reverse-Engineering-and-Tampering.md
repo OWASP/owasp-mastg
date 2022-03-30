@@ -22,9 +22,13 @@ Nevertheless, if the code has been purposefully obfuscated (or some tool-breakin
 
 #### Decompiling Java Code
 
-If you don't mind looking at Smali instead of Java, you can simply [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the Welcome screen (even if you don't intend to debug it you can take a look at the smali code).
+**Java Disassembled Code (Smali):**
 
-Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali. apktool allows you to reassemble the package, which is useful for patching and applying changes to e.g. the Android Manifest.
+If you want to inspect the app's Smali code (instead of Java), you can simply [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the "Welcome screen" (even if you don't intend to debug it you can take a look at the smali code).
+
+Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali. apktool allows you to reassemble the package, which is useful for [patching](#patching-repackaging-and-re-signing) the app or applying changes to e.g. the Android Manifest.
+
+**Java Decompiled Code:**
 
 If you want to look directly into Java source code on a GUI, simply open your APK using [jadx](0x08-Testing-Tools.md#jadx) or [Bytecode Viewer](0x08-Testing-Tools.md#bytecode-viewer).
 
@@ -299,7 +303,7 @@ Remember that in most of the cases, just using static analysis will not be enoug
 
 #### Reviewing Decompiled Java Code
 
-Following the example from "Decompiling Java Code", we assume that you've successfully decompiled and opened the crackme app in IntelliJ. As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of obfuscation that makes the bytecode a little more difficult to read, but with a fairly simple app like this one, it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
+Following the example from ["Decompiling Java Code"](#decompiling-java-code), we assume that you've successfully decompiled and opened the crackme app in IntelliJ. As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of [obfuscation](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) that makes the bytecode a little more difficult to read, but with a fairly simple app like this one, it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
 
 When analyzing obfuscated code, annotating class names, method names, and other identifiers as you go along is a good practice. Open the `MainActivity` class in the package `sg.vantagepoint.uncrackable1`. The method `verify` is called when you tap the "verify" button. This method passes the user input to a static method called `a.a`, which returns a boolean value. It seems plausible that `a.a` verifies user input, so we'll refactor the code to reflect this.
 

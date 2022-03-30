@@ -640,64 +640,16 @@ However, this is not a concern on iOS. As discussed in the section [Testing on t
 
 ### Overview
 
-Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
+The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
-> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
-
-The following techniques can be used to obfuscate an application:
-
-- Name obfuscation
-- Instruction substitution
-- Control flow flattening
-- Dead code injection
-- String encryption
-
-### Name Obfuscation
-
-The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the Damn Vulnerable iOS App (DVIA-v2).
-
-```assembly
-__T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:
-stp        x22, x21, [sp, #-0x30]!
-mov        rbp, rsp
-```
-
-After the obfuscation we can observe that the symbol’s name is no longer meaningful as shown on the listing below.
-
-```assembly
-__T07DVIA_v232zNNtWKQptikYUBNBgfFVMjSkvRdhhnbyyFySbyypF:
-stp        x22, x21, [sp, #-0x30]!
-mov        rbp, rsp
-```
-
-Nevertheless, this only applies to the names of functions, classes and fields. The actual code remains unmodified, so an attacker can still read the disassembled version of the function and try to understand its purpose (e.g. to retrieve the logic of a security algorithm).
-
-### Instruction Substitution
-
-This technique replaces standard binary operators like addition or subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. This technique is vulnerable to deobfuscation, but depending on the complexity and depth of the substitutions, applying it can still be time consuming.
-
-### Control Flow Flattening
-
-Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
-
-![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png) \
-
-The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
-
-### Dead Code Injection
-
-This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
-
-### String Encryption
-
-Applications are often compiled with hardcoded keys, licences, tokens and endpoint URLs. By default, all of them are stored in plaintext in the data section of an application’s binary. This technique encrypts these values and injects stubs of code into the program that will decrypt that data before it is used by the program.
-
-### Recommended Tools
+iOS apps can implement some of those obfuscation techniques using different tooling. For example:
 
 - [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
-### How to use SwiftShield
+Learn more about iOS obfuscation techniques [here](https://faculty.ist.psu.edu/wu/papers/obf-ii.pdf).
+
+#### How to use SwiftShield
 
 > Warning: SwiftShield irreversibly overwrites all your source files. Ideally, you should have it run only on your CI server, and on release builds.
 
@@ -763,7 +715,7 @@ This is needed for [deobfuscating encrypted crash logs](https://github.com/rockb
 
 Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
-### Effectiveness Assessment
+### Static Analysis
 
 Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
 
