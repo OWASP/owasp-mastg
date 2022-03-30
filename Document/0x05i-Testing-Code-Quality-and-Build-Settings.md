@@ -551,7 +551,7 @@ canary   false
 pic      true
 ```
 
-In this example, `libtool-checker.so` must be fixed to enable SSP.
+In this example, `libtool-checker.so` must be recompiled with SSP support.
 
 ## References
 
