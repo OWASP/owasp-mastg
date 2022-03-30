@@ -686,7 +686,7 @@ Also note that if the hostname includes a wildcard (such as *.example.com), you 
 
 You should carefully analyze the logic of the deep link or App Link handler:
 
-- Check for **String Comparison Methods** being sued such as `startsWith`, `endsWith`, `contains` methods.
+- Check for **String Comparison Methods** being used such as `startsWith`, `endsWith`, `contains` methods.
 - Check for [**Serialization Issues**](#testing-object-persistence-mstg-platform-8).
 - Check for **Data Transmission**
 
