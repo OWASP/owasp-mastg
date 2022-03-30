@@ -486,7 +486,7 @@ There are various steps to take:
 
 The tests used to detect the presence of binary protection mechanisms heavily depend on the language used for developing the application. These are some basic guidelines:
 
-- In general all binaries must be tested, this includes both the app main executable as well as all libraries/dependencies.
+- In general all binaries must be tested, which includes both the main app executable as well as all libraries/dependencies.
 - In some cases the nature of the language they were written will offer sufficient protection (e.g. Java has Garbage Collection similar to ARC on iOS), so even if a feature is not enabled the test may pass.
 - In other cases, e.g. pure C code, the presence of certain binary protections has to be fully determined because of the high risk of potential exploitation.
 
