@@ -732,7 +732,7 @@ $ adb shell am start
         -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
 ```
 
-On Android 12 (API level 31) and higher, you can also [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification) to test the verification logic regardless of whether the app targets Android 12 (API level 31). This is very useful if want to [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state), [invoke the domain verification process](https://developer.android.com/training/app-links/verify-site-associations#invoke-domain-verification) whenever you like and be able to [review the verification results](https://developer.android.com/training/app-links/verify-site-associations#review-results).
+On Android 12 (API level 31) and higher, you can also [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification) to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This is useful if you want to [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state), [invoke the domain verification process](https://developer.android.com/training/app-links/verify-site-associations#invoke-domain-verification) and [review the verification results](https://developer.android.com/training/app-links/verify-site-associations#review-results) in order to debug and troubleshoot.
 
 ## Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
