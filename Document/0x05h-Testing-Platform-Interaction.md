@@ -662,7 +662,7 @@ The system doesn't verify any Android App Links for an app if the server sets a 
 
 #### Check for Subdomains
 
-If an intent filter lists multiple hosts with different subdomains, there must be a valid assetlinks.json on each domain. For example, the following intent filter includes www.example.com and mobile.example.com as accepted intent URL hosts. So a valid assetlinks.json must be published at both https://www.example.com/.well-known/assetlinks.json and https://mobile.example.com/.well-known/assetlinks.json.
+If an intent filter lists multiple hosts with different subdomains, there must be a valid assetlinks.json on each domain. For example, the following intent filter includes www.example.com and mobile.example.com as accepted intent URL hosts. In order for the links to correctly register, a valid assetlinks.json must be published at both https://www.example.com/.well-known/assetlinks.json and https://mobile.example.com/.well-known/assetlinks.json.
 
 Also note that if the hostname includes a wildcard (such as *.example.com), you should be able to find an assetlinks.json file at the root hostname (https://example.com/.well-known/assetlinks.json).
 
