@@ -484,15 +484,25 @@ There are various steps to take:
 
 ### Overview
 
-The tests used to detect the presence of binary protection mechanisms heavily depend on the language used for developing the application. These are some basic guidelines:
+The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
-- In general all binaries must be tested, which includes both the main app executable as well as all libraries/dependencies.
-- In some cases the nature of the language they were written will offer sufficient protection (e.g. Java has Garbage Collection similar to ARC on iOS), so even if a feature is not enabled the test may pass.
-- In other cases, e.g. pure C code, the presence of certain binary protections has to be fully determined because of the high risk of potential exploitation.
+In general all binaries should be tested, which includes both the main app executable as well as all libraries/dependencies. However, on Android we will focus on native libraries since the main executables are considered safe as we will see next.
 
 Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Basic-Security_Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
 
 The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
+
+- [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
+  - Since Android 7.0 (API level 24), PIC compilation was [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
+  - Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
+- [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
+  - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
+  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+- [**SSP (Stack Smashing Protection)**](0x04h-Testing-Code-Quality.md#stack-smashing-protection):
+  - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
+  - It must be enabled for Android native libraries but it might be difficult to fully determine it.
+    - NDK libraries should have it enabled since the compiler does it by default.
+    - Other custom C/C++ libraries might not have it enabled.
 
 Learn more:
 
@@ -501,39 +511,13 @@ Learn more:
 - [Android NDK](https://developer.android.com/ndk/guides)
 - [Android linker changes for NDK developers](https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md)
 
-To each protection:
-
-- **PIE**: it’s used to enable ASLR and must be set for the main executable and libraries.
-  - Since Android 7.0 (API level 24), PIC compilation was [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
-  - Since Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50).
-- **Memory management**:
-  - **ARC** (Automatic Reference Counting) is a memory management feature [exclusive to Objective-C and Swift](https://en.wikipedia.org/wiki/Automatic_Reference_Counting) (iOS). Nothing to check on Android.
-  - **Garbage Collection** (GC) is a [memory management feature](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) of some languages such as Java/Kotlin/Dart. ART makes use of an [improved version of GC](https://source.android.com/devices/tech/dalvik#Improved_GC).
-    - There’s nothing to check on the main executable.
-    - However, GC does not apply to native libraries. The developer is responsible for doing proper memory management. See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
-    - You can learn more about how it differs from ARC [here](https://fragmentedpodcast.com/episodes/064/).
-- **SSP** (Stack Smashing Protection aka. canaries): Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
-  - It must be enabled for native code (keywords: C/C++/JNI/NDK) but it might be difficult to fully determine it.
-    - NDK libraries should have it enabled since the compiler does it by default.
-    - Other custom C/C++ libraries might not have it enabled.
-  - If the language is considered memory safe (at least for mitigating buffer overflows), it’s ok if it’s not enabled for that specific binary.
-  - Flutter will not compile using stack canaries because of the way Dart mitigates buffer overflows.
-
 ### Static Analysis
 
 Test the app native libraries to determine if they have the PIE an SSP protections enabled.
 
-You can use rabin2 to get the binary information. We'll use [r2pay-v1.0.apk](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk) as an example:
+You can use [radare2's rabin2](0x08-Testing-Tools.md#radare2) to get the binary information. We'll use [r2pay-v1.0.apk](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk) as an example.
 
-First, take a look at the main binary. You'll see that `canary` and `pic` are not enabled (`false`). However, they are actually not applicable, which is why the tool shows them as `false`.
-
-```sh
-rabin2 -I classes.dex  | grep -E "canary|pic"
-canary   false
-pic      false
-```
-
-What you should definitely test are the native libraries. They must have `canary` and `pic` both set to `true`.
+All native libraries must have `canary` and `pic` both set to `true`.
 
 That's the case for `libnative-lib.so`:
 
