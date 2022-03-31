@@ -658,7 +658,7 @@ In this example, the `<intent-filter>` includes the flag `android:autoVerify="tr
 
 #### Check for Redirects
 
-The system doesn't verify any Android App Links for an app if the server sets a redirect such as "http://example.com to https://example.com" or "example.com to www.example.com".
+To enhance the app security, the system [doesn't verify any Android App Links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) for an app if the server sets a redirect such as "http://example.com to https://example.com" or "example.com to www.example.com".
 
 #### Check for Subdomains
 
