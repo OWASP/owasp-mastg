@@ -379,6 +379,20 @@ Now that you can test the app, check whether:
 - All communications are sufficiently secured.
 - When you need more functionalities, are the right security controls downloaded as well for these functionalities?
 
+### Repackaging Apps
+
+If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
+
+Use a computer to perform all the steps indicated in the article ["Patching Android Applications"](https://github.com/sensepost/objection/wiki/Patching-Android-Applications) from the objection Wiki. Once you're done you'll be able to patch an APK by calling the objection command:
+
+```bash
+$ objection patchapk --source app-release.apk
+```
+
+The patched application then needs to be installed using adb, as explained in ["Installing Apps"](#installing-apps).
+
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["Android Tampering and Reverse Engineering - Patching, Repackaging and Re-Signing"](0x05c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing).
+
 ### Installing Apps
 
 Use `adb install` to install an APK on an emulator or connected device.
@@ -447,36 +461,42 @@ Note that this also shows the PID of the apps that are running at the moment. Ta
 
 #### Exploring the App Package
 
-Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in "Basic Testing Operations - Obtaining and Extracting Apps".
+Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the APK as explained in ["Basic Testing Operations - Obtaining and Extracting Apps"](#obtaining-and-extracting-apps).
 
-APK files are actually ZIP files that can be unpacked using a standard unarchiver:
+APK files are actually ZIP files that can be unpacked using a standard decompression utility such as `unzip`. However, we recommend using [apktool](0x08-Testing-Tools.md#apktool) which additionally decodes the AndroidManifest.xml and disassembles the app binaries (classes.dex) to smali code:
 
 ```bash
-$ unzip base.apk
-$ ls -lah
--rw-r--r--   1 sven  staff    11K Dec  5 14:45 AndroidManifest.xml
-drwxr-xr-x   5 sven  staff   170B Dec  5 16:18 META-INF
-drwxr-xr-x   6 sven  staff   204B Dec  5 16:17 assets
--rw-r--r--   1 sven  staff   3.5M Dec  5 14:41 classes.dex
-drwxr-xr-x   3 sven  staff   102B Dec  5 16:18 lib
-drwxr-xr-x  27 sven  staff   918B Dec  5 16:17 res
--rw-r--r--   1 sven  staff   241K Dec  5 14:45 resources.arsc
+$ apktool d UnCrackable-Level3.apk
+$ tree
+.
+├── AndroidManifest.xml
+├── apktool.yml
+├── lib
+├── original
+│   ├── AndroidManifest.xml
+│   └── META-INF
+│       ├── CERT.RSA
+│       ├── CERT.SF
+│       └── MANIFEST.MF
+├── res
+...
+└── smali
 ```
 
 The following files are unpacked:
 
 - AndroidManifest.xml: contains the definition of the app's package name, target and minimum [API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels "API Levels"), app configuration, app components, permissions, etc.
-- META-INF: contains the app's metadata
+- original/META-INF: contains the app's metadata
   - MANIFEST.MF: stores hashes of the app resources
   - CERT.RSA: the app's certificate(s)
   - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
-- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager "AssetMaanger") can retrieve
+- assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager) can retrieve
 - classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
 - lib: directory containing 3rd party libraries that are part of the APK.
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using apktool as described in "Recommended Tools - apktool". The unpacking results into:
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using [apktool](0x08-Testing-Tools.md#apktool).
 
 ```bash
 $ ls -alh

@@ -448,6 +448,26 @@ libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00
 
 After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using [ios-deploy](0x08-Testing-Tools.md#ios-deploy) `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
+### Repackaging Apps
+
+If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
+
+Use a computer with macOS to perform all the steps indicated in the article ["Patching iOS Applications"](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications) from the objection Wiki. Once you're done you'll be able to patch an IPA by calling the objection command:
+
+```bash
+$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+```
+
+Finally, the app needs to be installed (sideloaded) and run with debugging communication enabled. Perform the steps from the article ["Running Patched iOS Applications"](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications) from the objection Wiki (using ios-deploy).
+
+```bash
+$ ios-deploy --bundle Payload/my-app.app -W -d
+```
+
+Refer to ["Installing Apps"](#installing-apps) to learn about other installation methods. Some of them doesn't require you to have a macOS.
+
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["iOS Tampering and Reverse Engineering - Patching, Repackaging and Re-Signing"](0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing).
+
 ### Installing Apps
 
 When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified "AppSync"), a package available in the Cydia store. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.

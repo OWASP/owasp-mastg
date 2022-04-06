@@ -242,14 +242,15 @@ Life is easy with a jailbroken device: not only do you gain easy privileged acce
 
 ### Dynamic Analysis on Non-Jailbroken Devices
 
-#### Automated Repackaging with Objection
+If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup (e.g. the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") to enable dynamic testing with Frida and related tools such as objection). This way, you can instrument the app and do pretty much everything you need to do for a dynamic analysis (of course, you can't break out of the sandbox this way, but you won't often need to). However, this technique works only if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
 
-[Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter "Manual Repackaging".
-We won't cover Objection in detail in this guide, as you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+#### Automated Repackaging
+
+[Objection](0x08-Testing-Tools.md#objection) automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+
+Using objection's repackaging feature is sufficient for most of the cases. However, in some complex scenarios you might need more fine-grained access or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
 
 #### Manual Repackaging
-
-If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and do pretty much everything you need to do for a dynamic analysis (of course, you can't break out of the sandbox this way, but you won't often need to). However, this technique works only if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
 
 Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, Bundle IDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
 

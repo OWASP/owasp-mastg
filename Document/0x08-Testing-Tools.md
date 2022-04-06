@@ -537,7 +537,7 @@ $ pip3 install objection
 
 #### Objection for Android
 
-Objection offers several features specific to Android. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+Objection offers several features specific to Android. You can find the [full list of features](https://github.com/sensepost/objection/wiki/Features) on the project's page, but here are a few interesting ones:
 
 - Repackage applications to include the Frida gadget
 - Disable SSL pinning for popular methods
@@ -546,15 +546,9 @@ Objection offers several features specific to Android. A full list of the featur
 - List the Activities, Services and Broadcast receivers
 - Start Activities
 
-The ability to perform advanced dynamic analysis on non-rooted devices is one of the features that makes Objection incredibly useful. An application may contain advanced RASP controls which detect your rooting method and injecting a frida-gadget may be the easiest way to bypass those controls. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+If you have a rooted device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to jailbreak the latest version of iOS or the app may contain advanced RASP controls for rooting detection, so injecting a frida-gadget may be the easiest way to bypass those controls.
 
-Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
-
-```bash
-$ objection patchapk --source app-release.apk
-```
-
-The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
+The ability to **perform advanced dynamic analysis on non-rooted devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x05b-Basic-Security_Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or get around basic security controls.
 
 ##### Using Objection on Android
 
@@ -593,7 +587,7 @@ More information on using the Objection REPL can be found on the [Objection Wiki
 
 #### Objection for iOS
 
-Objection offers several features specific to iOS. A full list of the features of Objection can be found on the project's homepage, but here are a few interesting ones:
+Objection offers several features specific to iOS. You can find the [full list of features](https://github.com/sensepost/objection/wiki/Features) on the project's page, but here are a few interesting ones:
 
 - Repackage applications to include the Frida gadget
 - Disable SSL pinning for popular methods
@@ -610,19 +604,9 @@ OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios hooking list class_methods <Clas
 OWASP.iGoat-Swift on (iPhone: 12.0) [usb] # ios bundles list_bundles
 ```
 
-The ability to perform advanced dynamic analysis on non-jailbroken devices is one of the features that makes Objection incredibly useful. It is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms. Furthermore, the included Frida scripts make it very easy to quickly analyze an application, or get around basic security controls.
+If you have a jailbroken device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to jailbreak the latest version of iOS, or you may have an application with advanced jailbreak detection mechanisms.
 
-Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
-
-```bash
-$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
-```
-
-Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
-
-```bash
-$ ios-deploy --bundle Payload/my-app.app -W -d
-```
+The ability to **perform advanced dynamic analysis on non-jailbroken devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x06b-Basic-Security-Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or get around basic security controls.
 
 ##### Using Objection on iOS
 
@@ -1806,4 +1790,4 @@ The applications listed below can be used as training materials. Note: only the 
 - DVIA-v2: A vulnerable iOS app, written in Swift with over 15 vulnerabilities - <https://github.com/prateek147/DVIA-v2>
 - iGoat: An iOS Objective-C app serving as a learning tool for iOS developers (iPhone, iPad, etc.) and mobile app pentesters. It was inspired by the WebGoat project, and has a similar conceptual flow to it - <https://github.com/owasp/igoat>
 - iGoat-Swift: A Swift version of original iGoat project - <https://github.com/owasp/igoat-swift>
-- UnSAFE Bank: UnSAFE Bank is a core virtual banking application designed with the aim to incorporate the cyber security risks and various test cases such that newbie, developers, and security analysts can learn, hack and improvise their vulnerability assessment and penetration testing skills. - <https://github.com/lucideus-repo/UnSAFE_Bank>
+- UnSAFE Bank: UnSAFE Bank is a core virtual banking application designed with the aim to incorporate the cybersecurity risks and various test cases such that newbie, developers, and security analysts can learn, hack and improvise their vulnerability assessment and penetration testing skills. - <https://github.com/lucideus-repo/UnSAFE_Bank>
