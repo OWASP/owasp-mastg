@@ -1,6 +1,12 @@
 # Android Network Communication
 
-## Network Security Configuration
+Almost every Android app acts as a client to one or more remote services. As this network communication usually takes place over untrusted networks such as public Wi-Fi, classical network based-attacks become a potential issue.
+
+Most modern mobile apps use variants of HTTP-based web services, as these protocols are well-documented and supported.
+
+## Overview
+
+### Android Network Security Configuration
 
 Starting on Android 7.0 (API level 24), Android apps can customize their network security settings using the so-called [Network Security Configuration](https://developer.android.com/training/articles/security-config) feature which offers the following key capabilities:
 
@@ -44,7 +50,7 @@ Learn more:
 - [Android Developers - Network Security Configuration](https://developer.android.com/training/articles/security-config)
 - [Android Codelab - Network Security Configuration](https://developer.android.com/codelabs/android-network-security-config)
 
-### Default Configurations
+#### Default Configurations
 
 The default configuration for apps targeting Android 9 (API level 28) and higher is as follows:
 
@@ -142,7 +148,7 @@ However, even if `targetSdkVersion >=24`, the developers can disable default pro
 
 #### Analyzing Custom Trust Anchors
 
-Search for the [Network Security Configuration](#network-security-configuration) file and inspect any custom `<trust-anchors>` defining `<certificates src="user">` (which should be avoided).
+Search for the [Network Security Configuration](#android-network-security-configuration) file and inspect any custom `<trust-anchors>` defining `<certificates src="user">` (which should be avoided).
 
 You should carefully analyze the [precedence of entries](https://developer.android.com/training/articles/security-config#ConfigInheritance):
 
@@ -311,7 +317,7 @@ The first statement can be mistakenly interpreted as they'd be saying that they 
 
 #### Certificate Pinning in the Network Security Configuration
 
-The [Network Security Configuration](#network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
+The [Network Security Configuration](#android-network-security-configuration) can also be used to pin [declarative certificates](https://developer.android.com/training/articles/security-config.html#CertificatePinning "Certificate Pinning using Network Security Configuration") to specific domains. This is done by providing a `<pin-set>` in the Network Security Configuration, which is a set of digests (hashes) of the public key (`SubjectPublicKeyInfo`) of the corresponding X.509 certificate.
 
 When attempting to establish a connection to a remote endpoint, the system will:
 
