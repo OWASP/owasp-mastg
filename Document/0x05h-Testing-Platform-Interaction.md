@@ -328,7 +328,7 @@ To obtain detail about a specific permission you can refer to the [Android Docum
 
 ### Overview
 
-Android apps can expose functionality through custom URL schemes (which are a part of Intents). They can expose functionality to
+Android apps can expose functionality through deep links (which are a part of Intents). They can expose functionality to
 
 - other apps (via IPC mechanisms, such as Intents, Binders, Android Shared Memory (ASHMEM), or BroadcastReceivers),
 - the user (via the user interface).
@@ -337,8 +337,8 @@ None of the input from these sources can be trusted; it must be validated and/or
 
 The following portions of the source code should be checked if any app functionality has been exposed:
 
-- Custom URL schemes. Check the test case "Testing Custom URL Schemes" as well for further test scenarios.
-- IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case "Testing Whether Sensitive Data Is Exposed via IPC Mechanisms" as well for further test scenarios.
+- Deep Links. Check the test case ["Testing Deep Links"](#testing-deep-links-mstg-platform-3) as well for further test scenarios.
+- IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case ["Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"](#testing-we) as well for further test scenarios.
 - User interface
 
 An example of a vulnerable IPC mechanism is shown below.
