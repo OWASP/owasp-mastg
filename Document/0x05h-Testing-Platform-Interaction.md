@@ -654,12 +654,12 @@ When listing deep links remember that `<data>` elements within the same `<intent
 </intent-filter>
 ```
 
-It might seem as though this supports only "https://www.example.com" and "app://open.my.app". However, it actually supports:
+It might seem as though this supports only `https://www.example.com` and `app://open.my.app`. However, it actually supports:
 
-- https://www.example.com
-- app://open.my.app
-- app://www.example.com
-- https://open.my.app
+- `https://www.example.com`
+- `app://open.my.app`
+- `app://www.example.com`
+- `https://open.my.app`
 
 **Using Dumpsys:**
 
@@ -732,11 +732,11 @@ There might be many different reasons why the verification process failed or was
 
 **Check for Redirects:**
 
-To enhance the app security, the system [doesn't verify any Android App Links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) for an app if the server sets a redirect such as "http://example.com" to "https://example.com" or "example.com" to "www.example.com".
+To enhance the app security, the system [doesn't verify any Android App Links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) for an app if the server sets a redirect such as `http://example.com` to `https://example.com` or `example.com` to `www.example.com`.
 
 **Check for Subdomains:**
 
-If an intent filter lists multiple hosts with different subdomains, there must be a valid assetlinks.json on each domain. For example, the following intent filter includes "www.example.com" and "mobile.example.com" as accepted intent URL hosts.
+If an intent filter lists multiple hosts with different subdomains, there must be a valid assetlinks.json on each domain. For example, the following intent filter includes `www.example.com`and `mobile.example.com` as accepted intent URL hosts.
 
 ```xml
 <application>
@@ -754,11 +754,11 @@ If an intent filter lists multiple hosts with different subdomains, there must b
 </application>
 ```
 
-In order for the links to correctly register, a valid assetlinks.json must be published at both "https://www.example.com/.well-known/assetlinks.json" and "https://mobile.example.com/.well-known/assetlinks.json".
+In order for the links to correctly register, a valid assetlinks.json must be published at both `https://www.example.com/.well-known/assetlinks.json` and `https://mobile.example.com/.well-known/assetlinks.json`.
 
 **Check for Wildcards:**
 
-If the hostname includes a wildcard (such as *.example.com), you should be able to find an assetlinks.json file at the root hostname: "https://example.com/.well-known/assetlinks.json".
+If the hostname includes a wildcard (such as *.example.com), you should be able to find an assetlinks.json file at the root hostname: `https://example.com/.well-known/assetlinks.json`.
 
 #### Check the Handler Method
 
@@ -766,7 +766,7 @@ Even if the deep link is correctly verified you should carefully analyze the log
 
 First, obtain the name of the Activity from the Android Manifest `<activity>` element which defines the target `<intent-filter>` and search for usage of [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()") and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()"). This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data and if it could be subject to any kind of abuse.
 
-The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code). From the Android Manifest we know that it supports the deep link "deeplinkdemo://load.html/" as part of `com.mstg.deeplinkdemo.WebViewActivity`.
+The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code). From the Android Manifest we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
 
 ```java
 // snippet edited for simplicity
