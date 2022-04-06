@@ -87,7 +87,15 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 
 ### Static Analysis
 
+#### Testing Network Requests over Secure Protocols
+
 First, you should identify all network requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [`SSLSocket`](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
+
+#### Testing Network API Usage
+
+Next, even when using a low-level API which is supposed to make secure connections (such as `SSLSocket`), be aware that it has to be securely implemented. For instance, `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
+
+#### Testing for Cleartext Traffic
 
 Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default (thanks to the [default Network Security Configuration](#default-configurations)) but there are multiple ways in which an application can still send it:
 
@@ -98,7 +106,7 @@ Next, you should ensure that the app is not allowing cleartext HTTP traffic. Sin
 
 All of the above cases must be carefully analyzed as a whole. For example, even if the app does not permit cleartext traffic in its Android Manifest or Network Security Configuration, it might actually still be sending HTTP traffic. That could be the case if it's using a low-level API (for which Network Security Configuration is ignored) or a badly configured cross-platform framework.
 
-Next, even when using a low-level API which is supposed to make secure connections (such as `SSLSocket`), be aware that it has to be securely implemented. For instance, `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
+For more information refer to the article ["Security with HTTPS and SSL"](https://developer.android.com/training/articles/security-ssl.html).
 
 ### Dynamic Analysis
 
@@ -282,36 +290,9 @@ If you're still not able to see any decrypted HTTPS traffic, your application mi
 
 ### Overview
 
-Certificate pinning is the process of associating the backend server with a particular X.509 certificate or public key instead of accepting any certificate signed by a trusted certificate authority. After storing ("pinning") the server certificate or public key, the mobile app will subsequently connect to the known server only. Withdrawing trust from external certificate authorities reduces the attack surface (after all, there are many cases of certificate authorities that have been compromised or tricked into issuing certificates to impostors).
+This test verifies if the app properly implements identity pinning (certificate or public key pinning).
 
-The certificate can be pinned and hardcoded into the app or retrieved at the time the app first connects to the backend. In the latter case, the certificate is associated with ("pinned" to) the host when the host is seen for the first time. This alternative is less secure because attackers intercepting the initial connection can inject their own certificates.
-
-#### When the Pin Fails
-
-Note that there are various options when dealing with a failing pin:
-
-- Inform the user about not being able to connect to the backend and stop all operations. The app can check whether there is an update and inform the user about updating to the latest version of the app if available. The app allows no longer for any form of interaction with the user until it is updated or the pin works again.
-- Do a call to a crash-reporting service including information about the failed pin. The responsible developers should get notified about a potential security misconfiguration.
-- The app calls the backend using a TLS enabled call with no pinning to inform the backend of a pinning failure. The call can either differ in user-agent, JWT token-contents, or have other headers with a flag enabled as an indication of pinning failure.
-- After calling the backend or crash-reporting service to notify about the failing pinning, the app can still offer limited functionality that shouldn't involve sensitive functions or processing of sensitive data. The communication would happen without SSL Pinning and just validate the X.509 certificate accordingly.
-
-Which option(s) you choose depends on how important availability is compared to the complexity of maintaining the application.
-
-When a large amount of pin failures are reported to the backend or crash-reporting service, the developer should understand that there is probably a misconfiguration. There is a large chance that the key materials used at the TLS terminating endpoint (e.g. server/loadbalancer) is different than what the app is expecting. In that case, an update of either that key material or an update of the app should be pushed through.
-
-When only very few pin failures are reported, then the network should be ok, and so should be the configuration of the TLS terminating endpoint. Instead, it might well be that there is a man-in-the-middle attack ongoing at the app instance of which the pin is failing.
-
-#### About Pinning Recommendations in Android Developers
-
-The [Android Developers](https://developer.android.com/training/articles/security-ssl#Pinning) site includes the following warning:
-
-> Caution: Certificate Pinning is not recommended for Android applications due to the high risk of future server configuration changes, such as changing to another Certificate Authority, rendering the application unable to connect to the server without receiving a client software update.
-
-They also include this [note](https://developer.android.com/training/articles/security-config#CertificatePinning):
-
-> Note that, when using certificate pinning, you should always include a backup key so that if you are forced to switch to new keys or change CAs (when pinning to a CA certificate or an intermediate of that CA), your app's connectivity is unaffected. Otherwise, you must push out an update to the app to restore connectivity.
-
-The first statement can be mistakenly interpreted as they'd be saying that they "do not recommend certificate pinning". The second statement clarifies it: the actual recommendation is that if developers want to implement certificate pinning they have to do it right, i.e. **they must include backup keys** (aka. backup pins).
+For more details refer to section "Identity Pinning" in the general chapter ["Mobile App Network Communication"](0x04f-Testing-Network-Communication.md#identity-pinning).
 
 ### Static Analysis
 
@@ -348,7 +329,7 @@ If at least one of the pinned digests matches, the certificate chain will be con
 
 Inspect the `<pin-set>` elements for any `expiration` date. If expired, certificate pinning will be disabled for the affected domains.
 
-> Testing Tip: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
+> **Testing Tip**: If a certificate pinning validation check has failed, the following event should be logged in the [system logs](0x05b-Basic-Security_Testing.md#monitoring-system-logs):
 
 ```bash
 I/X509Util: Failed to validate the certificate chain, error: Pin verification failed
@@ -499,68 +480,18 @@ After decompressing the APK file, Cordova/Phonegap files will be located in the 
 
 ### Dynamic Analysis
 
-Dynamic analysis can be performed by launching a MITM attack with your preferred interception proxy. This will allow you to monitor the traffic between the client (the mobile application) and the backend server. If the proxy is unable to intercept the HTTP requests and responses, the SSL pinning has been implemented correctly.
+Follow the instructions from ["Testing Endpoint Identify Verification > Dynamic Analysis"](#testing-endpoint-identify-verification-mstg-network-3). If doing so doesn't lead to traffic being proxied, it may mean that certificate pinning is actually implemented and all security measures are in place. Does the same happen for all domains?
 
-#### Bypassing Certificate Pinning
+As a quick smoke test, you can try to bypass certificate pinning using [objection](0x08-Testing-Tools.md#objection) as described in ["Bypassing Certificate Pinning"](0x05b-Basic-Security_Testing.md#bypassing-certificate-pinning). Pinning related APIs being hooked by objection should appear in objection's output.
 
-There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
+![objection Android SSL Pinning Bypass](Images/Chapters/0x05b/android_ssl_pinning_bypass.png)
 
-- Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
-- Frida: Use the [Universal Android SSL Pinning Bypass with Frida](https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/ "Universal Android SSL Pinning Bypass with Frida") script.
-- Objection: Use the `android sslpinning disable` command.
-- Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
+However, keep in mind that:
 
-For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+- the APIs might not be complete.
+- if nothing is hooked, that doesn't necessarily mean that the app doesn't implement pinning.
 
-##### Bypass Custom Certificate Pinning Statically
-
-Somewhere in the application, both the endpoint and the certificate (or its hash) must be defined. After decompiling the application, you can search for:
-
-- Certificate hashes: `grep -ri "sha256\|sha1" ./smali`. Replace the identified hashes with the hash of your proxy's CA. Alternatively, if the hash is accompanied by a domain name, you can try modifying the domain name to a non-existing domain so that the original domain is not pinned. This works well on obfuscated OkHTTP implementations.
-- Certificate files: `find ./assets -type f \( -iname \*.cer -o -iname \*.crt \)`. Replace these files with your proxy's certificates, making sure they are in the correct format.
-- Truststore files: `find ./ -type f \( -iname \*.jks -o -iname \*.bks \)`. Add your proxy's certificates to the truststore and make sure they are in the correct format.
-
-> Keep in mind that an app might contain files without extension. The most common file locations are `assets` and `res` directories, which should also be investigated.
-
-As an example, let's say that you find an application which uses a BKS (BouncyCastle) truststore and it's stored in the file `res/raw/truststore.bks`. To bypass SSL Pinning you need to add your proxy's certificate to the truststore with the command line tool `keytool`. `Keytool` comes with the Java SDK and the following values are needed to execute the command:
-
-- password - Password for the keystore. Look in the decompiled app code for the hardcoded password.
-- providerpath - Location of the BouncyCastle Provider jar file. You can download it from [The Legion of the Bouncy Castle](https://www.bouncycastle.org/latest_releases.html "https://www.bouncycastle.org/latest_releases.html").
-- proxy.cer - Your proxy's certificate.
-- aliascert - Unique value which will be used as alias for your proxy's certificate.
-
-To add your proxy's certificate use the following command:
-
-```bash
-$ keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
-```
-
-To list certificates in the BKS truststore use the following command:
-
-```bash
-$ keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
-```
-
-After making these modifications, repackage the application using apktool and install it on your device.
-
-If the application uses native libraries to implement network communication, further reverse engineering is needed. An example of such an approach can be found in the blog post [Identifying the SSL Pinning logic in smali code, patching it, and reassembling the APK](https://serializethoughts.wordpress.com/2016/08/18/bypassing-ssl-pinning-in-android-applications/ "Bypassing SSL Pinning in Android Applications")
-
-##### Bypass Custom Certificate Pinning Dynamically
-
-Bypassing the pinning logic dynamically makes it more convenient as there is no need to bypass any integrity checks and it's much faster to perform trial & error attempts.
-
-Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
-
-As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the CertificatePinner.Builder class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways:
-
-- Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
-- Search for the method signature in the SMALI code
-
-For the Builder.add method, you can find the possible methods by running the following grep command: `grep -ri java/lang/String;\[Ljava/lang/String;)L ./`
-
-This command will search for all methods that take a string and a variable list of strings as arguments, and return a complex object. Depending on the size of the application, this may have one or multiple matches in the code.
-
-Hook each method with Frida and print the arguments. One of them will print out a domain name and a certificate hash, after which you can modify the arguments to circumvent the implemented pinning.
+In both cases, the app or some of its components might implement pinning on a very custom way that it's [not implemented in objection](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts).
 
 ## Testing the Security Provider (MSTG-NETWORK-6)
 
@@ -729,6 +660,7 @@ When you do not have the source code:
 
 ### OWASP MASVS
 
+- MSTG-NETWORK-1: "Data is encrypted on the network using TLS. The secure channel is used consistently throughout the app."
 - MSTG-NETWORK-2: "The TLS settings are in line with current best practices, or as close as possible if the mobile operating system does not support the recommended standards."
 - MSTG-NETWORK-3: "The app verifies the X.509 certificate of the remote endpoint when the secure channel is established. Only certificates signed by a trusted CA are accepted."
 - MSTG-NETWORK-4: "The app either uses its own certificate store, or pins the endpoint certificate or public key, and subsequently does not establish connections with endpoints that offer a different certificate or key, even if signed by a trusted CA."
