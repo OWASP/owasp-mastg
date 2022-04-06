@@ -1031,7 +1031,7 @@ As detailed in section [Reviewing Disassembled Native Code](#reviewing-disassemb
 
 [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace") is a Frida based tool similar to frida-trace which specifically targets the usage of Android's JNI API by native libraries, providing a convenient way to obtain JNI method traces including arguments and return values.
 
-You can easily install it by running `pip install jnitrace` and run it straightaway as follows:
+You can easily install it by running `pip install jnitrace` and run it straight away as follows:
 
 ```bash
 $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni

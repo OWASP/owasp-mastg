@@ -578,7 +578,7 @@ You can also directly open passionfruit and after selecting your iOS device you'
 
 Once you have collected the package name of the application you want to target, you'll want to start gathering information about it. First, retrieve the IPA as explained in [Basic Testing Operations - Obtaining and Extracting Apps](#obtaining-and-extracting-apps "Obtaining and Extracting Apps").
 
-You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder contaning the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
+You can unzip the IPA using the standard `unzip` or any other ZIP utility. Inside you'll find a `Payload` folder containing the so-called Application Bundle (.app). The following is an example in the following output, note that it was truncated for better readability and overview:
 
 ```bash
 $ ls -1 Payload/iGoat-Swift.app
