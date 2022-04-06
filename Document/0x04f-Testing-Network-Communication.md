@@ -2,6 +2,121 @@
 
 Practically every network-connected mobile app uses the Hypertext Transfer Protocol (HTTP) or HTTP over Transport Layer Security (TLS), HTTPS, to send and receive data to and from remote endpoints. Consequently, network-based attacks (such as packet sniffing and man-in-the-middle-attacks) are a problem. In this chapter we discuss potential vulnerabilities, testing techniques, and best practices concerning the network communication between mobile apps and their endpoints.
 
+## Secure Connections
+
+The time has long passed since it was reasonable to use cleartext HTTP alone and it's usually trivial to secure HTTP connections using HTTPS. HTTPS is essentially HTTP layered on top of another protocol known as transport layer security. And transport layer security performs a multi-leg handshake using public key cryptography and, when complete, creates a secure connection.
+
+An HTTPS connection is considered secure because of three properties. The first being that the data that's leaving your app goes over the network encrypted. So it can't be read.
+The second that it provides message integrity so the message can't be altered without detection.
+And finally, the third, it provides authentication so you can actually prove the identity of exactly who you are talking to.
+
+it important to use HTTPS? Well, it's essentially, it comes down to this: your customers trust you with their data and their privacy.
+
+## Server Trust Evaluation
+
+Certificate Authorities are an integral part of a secure client server communication and they are predefined in the trust store of each operating system. For instance, on iOS you are automatically trusting an enormous amount of certificates which you can look up in detail in the Apple documentation, that will show you [lists of available trusted root certificates for each iOS version](https://support.apple.com/en-gb/HT204132 "Lists of available trusted root certificates in iOS").
+
+CAs can be added to the trust store, either manually through the user, by an MDM that manages your enterprise device or through malware. The question is then: "can you trust all of those CAs and should your app rely on the default trust store?". After all, there are well-known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors. A detailed timeline of CA breaches and failures can be found at [sslmate.com](https://sslmate.com/certspotter/failures "Timeline of PKI Security Failures").
+
+Both Android and iOS allow to customize trusted CAs or trust anchors.
+
+An app may want to trust a custom set of CAs instead of the platform default. The most common reasons of this are:
+
+- Connecting to a host with a custom certificate authority (a CA that isn't known or trusted by the system yet), such as a CA that is self-signed or is issued internally within a company.
+- Limiting the set of CAs to only the CAs you trust instead of every pre-installed CA.
+- Trusting additional CAs not included in the system.
+
+### About Trust Stores
+
+> By default, secure connections (using protocols like TLS and HTTPS) from all apps trust the pre-installed system CAs, and apps targeting Android 6.0 (API level 23) and lower also trust the user-added CA store by default. An app can customize its own connections using base-config (for app-wide customization) or domain-config (for per-domain customization). (EDIT)
+
+Android has 2 different Trust Stores, the system trust store and the user trust store.
+
+- Apps do not trust certificates in the user trust store by default. It must be configured in the Network Security Configuration as an additional trust anchor.
+- Adding certificates to the system trust store can only be done with root privileges.
+
+iOS has only one Trust Store, the system trust store. Any user-installed certificates are installed to the system trust store.
+
+- The user has to install a profile (installed profiles can be found in **Settings** -> **General** -> **Profiles**).
+- After that, the user has to **explicitly trust the profile** by going to "Enable Full Trust for the XXXX CA" in **Settings** -> **General** -> **About** -> **Certificate Trust Settings**.
+
+Both Android and iOS offer means to either extend or restrict trust by providing certificates and doing the pertinent configurations. Usually additional trusted CAs are added in PEM or DER format.
+
+> Note about WebViews:
+> By default, WebViews will use the system trust store.
+>
+> - On Android WebViews do not trust the user trust store even if the app does (!).
+> - iOS has a specific parameter to disable trust evaluation on WebViews loading arbitrary websites.
+>
+> it would be understandable that a web browser app meant to navigate to any arbitrary page would be unrestricted. But if that's not the case, the app should be careful because the. TO help with that the app should comply with the MASVS and the related MSTG tests to properly protect the WebViews. For instance, by loading only allow-listed content to prevent users to navigate to sites that are outside of the app control. Other protections include CSS which can be found in ["Android Testing Platform Interaction"](0x05h-Testing-Platform-Interaction.md) and ["iOS Testing Platform Interaction"](0x06h-Testing-Platform-Interaction.md).
+> See ["Testing for URL Loading in WebViews"](0x05h-Testing-Platform-Interaction.md#testing-for-url-loading-in-webviews-mstg-platform-2) for more information.
+
+Also, for testing purposes such as when performing traffic interception, you need the interceptor certificate to be in the system trust store so that WebViews are also proxied.
+
+### Extending Trust
+
+Whenever the app connects to a server whose certificate is self-signed or unknown to the system. This is typically the case for any non public CAs, for instance those issued by an organization such as a government, corporation, or education institution for their own use.
+
+Both Android and iOS offer means to extend trust, i.e. include additional CAs so that the app trusts the system's built-in ones plus the custom ones.
+
+However, remember that the device users are always able to include additional CAs (on Android by adding certificates to the user Trust Store and on iOS by installing so-called profiles and trusting them). Therefore, depending on the threat model of the app it might be necessary to avoid trusting any certificates added to the user trust store or even go further and only trust a pre-defined specific certificate or set of certificates.
+
+For many apps, the "default behaviour" provided by the mobile platform will be surely enough for their use case (in the rare case that a system-trusted CA could get compromised the data that they handle is not considered sensitive or the take other mean to secure it which is resilient even to such a CA breach). However, for other apps such as financial or health apps, the risk of a CA brach, even if rare, must be considered.
+
+### Restricting Trust: Identity Pinning
+
+Some apps might require to further increase their security by restricting the number of CAs that they trust. Typically to those under the control of the app developers or explicitly trusted by them because they are an integral part of the functioning of their apps. This trust restriction is known as _Identity Pinning_ usually implemented as _Certificate Pinning_ or _Public Key Pinning_.
+
+> In the OWASP MSTG we will be referring to this term as "Identity Pinning", "Certificate Pinning", "Public Key Pinning" or simply "Pinning".
+
+Pinning is the process of associating a remote endpoint with a particular identity, such as a X.509 certificate or public key, instead of accepting any certificate signed by a trusted certificate authority. After pinning the server identity (or a certain set, aka. _pinset_), the mobile app will subsequently connect to those known remote endpoints only. Withdrawing trust from external CAs reduces the app attack surface.
+
+#### General Guidelines
+
+The [OWASP Certificate Pinning Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html) gives essential guidance on:
+
+- when pinning is recommended and which exceptions might apply.
+- when to pin: development time (preloading) or upon first encountering (trust on first use).
+- what to pin: certificate, public key or hash.
+
+Both Android and iOS recommendations match the "best case" which is:
+
+- Pin only to remote endpoints where the developer has control.
+- at development time via (NSC/ATS)
+- pin a hash of the SPKI `subjectPublicKeyInfo`.
+
+Pinning has gained a bad reputation since its introduction several years ago. We'd like to clarify a couple of points that are valid at least for mobile application security:
+
+- The bad reputation is due to operational reasons (e.g. implementation/pin management complexity) not lack of security.
+- If an app does not implement pinning, this shouldn't be reported as a vulnerability. However, if the app must verify against MASVS-L2 it must be implemented.
+- Both Android and iOS make implementing pinning very easy and follow the best practices.
+- Pinning can be bypassed (usually very easily) and therefore the app shouldn't solely rely on it (it's defense in depth).
+
+#### About Pinning Recommendations in Android Developers
+
+The [Android Developers](https://developer.android.com/training/articles/security-ssl#Pinning) site includes the following warning:
+
+> Caution: Certificate Pinning is not recommended for Android applications due to the high risk of future server configuration changes, such as changing to another Certificate Authority, rendering the application unable to connect to the server without receiving a client software update.
+
+They also include this [note](https://developer.android.com/training/articles/security-config#CertificatePinning):
+
+> Note that, when using certificate pinning, you should always include a backup key so that if you are forced to switch to new keys or change CAs (when pinning to a CA certificate or an intermediate of that CA), your app's connectivity is unaffected. Otherwise, you must push out an update to the app to restore connectivity.
+
+The first statement can be mistakenly interpreted as they'd be saying that they "do not recommend certificate pinning". The second statement clarifies it: the actual recommendation is that if developers want to implement pinning they have to do it right.
+
+#### About Pinning Recommendations in Apple Developers
+
+Apple recommends [thinking long-term](https://developer.apple.com/news/?id=g9ejcf8y) and [creating a proper server authentication strategy](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication#2956135).
+
+#### OWASP MSTG Recommendation
+
+Pinning is a recommended practice, especially for MASVS-L2 apps. However, developers must implement it exclusively for the endpoints under their control and be sure to include backup keys (aka. backup pins) and have a proper app update strategy.
+
+#### Learn more
+
+- ["Android Security: SSL Pinning"](https://appmattus.medium.com/android-security-ssl-pinning-1db8acb6621e)
+- [OWASP Certificate Pinning Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html)
+
 ## Intercepting HTTP(S) Traffic
 
 In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
@@ -17,7 +132,7 @@ To use the interception proxy, you'll need run it on your host computer and conf
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
-## Burp plugins to Process Non-HTTP Traffic
+## Intercepting Non-HTTP Traffic
 
 Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
@@ -27,6 +142,24 @@ Interception proxies such as Burp and OWASP ZAP won't show non-HTTP traffic, bec
 These plugins can visualize non-HTTP protocols and you will also be able to intercept and manipulate the traffic.
 
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
+
+## Intercepting Traffic from the App Process
+
+Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or once it arrives to the app.
+
+You don't need to deploy a fully fledged MITM attack if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case you wouldn't even have to bypass pinning, if implemented. You just have to hook the right functions, e.g. `SSL_write` and `SSL_read` from openssl.
+
+This would work pretty well for apps using standard API libraries functions and classes, however there might be some downsides:
+
+- the app might implement a custom network stack and you'll have to spend time analyzing the app to find out the APIs that you can use (see section "Searching for OpenSSL traces with signature analysis" in [this blog post](https://hackmag.com/security/ssl-sniffing/)).
+- it might be very time consuming to craft the right hooking scripts to re-assemble HTTP response pairs (across many method calls and execution threads). You might find [ready-made scripts](https://github.com/fanxs-t/Android-SSL_read-write-Hook/blob/master/frida-hook.py) and even for [alternative network stacks](https://codeshare.frida.re/@owen800q/okhttp3-interceptor/) but depending on the app and the platform these scripts might need a lot of maintenance and might not _always work_.
+
+See some examples:
+
+- ["Universal interception. How to bypass SSL Pinning and monitor traffic of any application"](https://hackmag.com/security/ssl-sniffing/), sections "Grabbing payload prior to transmission" and "Grabbing payload prior to encryption"
+- ["Frida as an Alternative to Network Tracing"](https://gaiaslastlaugh.medium.com/frida-as-an-alternative-to-network-tracing-5173cfbd7a0b)
+
+> This technique is also useful for other types of traffic such as BLE, NFC, etc. where deploying a MITM attack might be very costly and or complex.
 
 ## Intercepting Traffic on the Network Layer
 
