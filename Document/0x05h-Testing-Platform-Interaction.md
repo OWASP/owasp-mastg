@@ -576,8 +576,8 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 Android supports two types of deep links:
 
-- **Custom URL Scheme**: deep links that use any custom URL scheme, e.g. "myapp://" (not verified by the OS).
-- **Android App Links** (Android 6.0 (API level 23) and higher): deep links that use the "http://" and "https://" schemes and contain the `autoVerify` attribute (which triggers OS verification).
+- **Custom URL Scheme**: deep links that use any custom URL scheme, e.g. `myapp://` (not verified by the OS).
+- **Android App Links** (Android 6.0 (API level 23) and higher): deep links that use the `http://` and `https://` schemes and contain the `autoVerify` attribute (which triggers OS verification).
 
 #### Deep Link Collision
 
@@ -599,13 +599,12 @@ There are some key differences from unverified deep links:
 
 #### Testing Deep Links
 
-Any existing deep links (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
+Any existing deep links (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc. The Android version in which the app runs also influences the risk:
+
+- Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
+- Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
 All deep links must be enumerated and verified for correct website association. The actions they perform must be well tested, especially all input data which should be deemed to be untrustworthy and thus should be always validated.
-
-On Android 11 (API level 30) and lower, if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
-
-Apps on Android 12 (API level 31) benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
 ### Static Analysis
 
@@ -613,7 +612,7 @@ Apps on Android 12 (API level 31) benefit from a [reduced attack surface](https:
 
 **Inspecting the Android Manifest:**
 
-You can easily determine whether deep links (with or without custom URL schemes) are defined just by inspecting the Android Manifest file and looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
+You can easily determine whether deep links (with or without custom URL schemes) are defined by [decoding the app using apktool](0x05b-Basic-Security_Testing.md#exploring-the-app-package) and inspecting the Android Manifest file looking for [`<intent-filter>` elements](https://developer.android.com/guide/components/intents-filters.html#DataTest "intent-filters - DataTest").
 
 - **Custom Url Schemes**: The following example specifies a deep link with a custom URL scheme called `myapp://`.
 
@@ -663,7 +662,7 @@ It might seem as though this supports only `https://www.example.com` and `app://
 
 **Using Dumpsys:**
 
-Use [adb](0x08-Testing-Tools.md#adb) to run following command which will show all schemes and if running on Android 12 or higher it also shows the verification status:
+Use [adb](0x08-Testing-Tools.md#adb) to run following command which will show all schemes:
 
 ```bash
 adb shell dumpsys package com.example.package
@@ -686,7 +685,7 @@ https://www.example.com
 
 #### Check for Correct Website Association
 
-When using App Links, even if they contain the `android:autoVerify="true"` attribute, they must be _really_ verified. You should test for any possible misconfigurations that might prevent full verification.
+Even if deep links contain the `android:autoVerify="true"` attribute, they must be _really_ verified in order to be considered App Links. You should test for any possible misconfigurations that might prevent full verification.
 
 ##### Automatic Verification
 
@@ -694,12 +693,13 @@ Use the [Android "App Link Verification" Tester](https://github.com/inesmartins/
 
 **Only on Android 12 (API level 31) or higher:**
 
-You can use [adb](0x08-Testing-Tools.md#adb) to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. You can:
+You can use [adb](0x08-Testing-Tools.md#adb) to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This feature allows you to:
 
 - [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification).
 - [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state).
 - [invoke the domain verification process](https://developer.android.com/training/app-links/verify-site-associations#invoke-domain-verification).
-- [review the verification results](https://developer.android.com/training/app-links/verify-site-associations#review-results).
+
+You can also [review the verification results](https://developer.android.com/training/app-links/verify-site-associations#review-results). For example:
 
 ```bash
 adb shell pm get-app-links com.example.package
@@ -722,11 +722,11 @@ There might be many different reasons why the verification process failed or was
 
 **Check the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link"):**
 
-- Check for lack of Digital Asset Links file:
+- Check for **missing** Digital Asset Links file:
   - try to find it in the domain's `/.well-known/` path. Example: `https://www.example.com/.well-known/assetlinks.json`
   - else try `https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=www.example.com`
-- Check for App Links domains serving a valid Digital Asset Links file via HTTP.
-- Check for App Links domains serving an invalid Digital Asset Links file via HTTPS. For example:
+- Check for valid Digital Asset Links file **served via HTTP**.
+- Check for **invalid** Digital Asset Links files served via HTTPS. For example:
   - the file contains invalid JSON.
   - the file doesn't include the target app's package.
 
@@ -736,7 +736,7 @@ To enhance the app security, the system [doesn't verify any Android App Links](h
 
 **Check for Subdomains:**
 
-If an intent filter lists multiple hosts with different subdomains, there must be a valid assetlinks.json on each domain. For example, the following intent filter includes `www.example.com`and `mobile.example.com` as accepted intent URL hosts.
+If an intent filter lists multiple hosts with different subdomains, there must be a valid Digital Asset Links file on each domain. For example, the following intent filter includes `www.example.com` and `mobile.example.com` as accepted intent URL hosts.
 
 ```xml
 <application>
@@ -754,11 +754,11 @@ If an intent filter lists multiple hosts with different subdomains, there must b
 </application>
 ```
 
-In order for the links to correctly register, a valid assetlinks.json must be published at both `https://www.example.com/.well-known/assetlinks.json` and `https://mobile.example.com/.well-known/assetlinks.json`.
+In order for the deep links to correctly register, a valid Digital Asset Links file must be published at both `https://www.example.com/.well-known/assetlinks.json` and `https://mobile.example.com/.well-known/assetlinks.json`.
 
 **Check for Wildcards:**
 
-If the hostname includes a wildcard (such as *.example.com), you should be able to find an assetlinks.json file at the root hostname: `https://example.com/.well-known/assetlinks.json`.
+If the hostname includes a wildcard (such as `*.example.com`), you should be able to find a valid Digital Asset Links file at the root hostname: `https://example.com/.well-known/assetlinks.json`.
 
 #### Check the Handler Method
 
@@ -766,7 +766,7 @@ Even if the deep link is correctly verified you should carefully analyze the log
 
 First, obtain the name of the Activity from the Android Manifest `<activity>` element which defines the target `<intent-filter>` and search for usage of [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()") and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()"). This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data and if it could be subject to any kind of abuse.
 
-The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code). From the Android Manifest we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
+The following example is a snippet from an exemplary Kotlin app [decompiled with jadx](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code). From the [static analysis](#enumerate-deep-links) we know that it supports the deep link `deeplinkdemo://load.html/` as part of `com.mstg.deeplinkdemo.WebViewActivity`.
 
 ```java
 // snippet edited for simplicity
@@ -787,9 +787,9 @@ public final class WebViewActivity extends AppCompatActivity {
             ...
 ```
 
-You can simply follow the `deeplink_url` String variable and see how it ends up as part of the `wv.loadUrl` call. This means that the attacker has full control of the URL being loaded to the WebView (which as you can see above has JavaScript enabled. See ["Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)"](#testing-javascript-execution-in-webviews-mstg-platform-5) for more information).
+You can simply follow the `deeplink_url` String variable and see how it ends up as part of the `wv.loadUrl` call. This means that the attacker has full control of the URL being loaded to the WebView (which as you can see above has [JavaScript enabled](#testing-javascript-execution-in-webviews-mstg-platform-5).
 
-The same WebView might be also rendering an attacker controlled parameter parameter. In that case, the following deep link payload would trigger **Reflected Cross-Site Scripting (XSS)** within the context of the WebView:
+The same WebView might be also rendering an attacker controlled parameter parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws-mstg-platform-2) within the context of the WebView:
 
 ```default
 deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
@@ -799,7 +799,7 @@ But there are many other possibilities. Be sure to check the following sections 
 
 - ["Cross-Site Scripting Flaws (MSTG-PLATFORM-2)"](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws-mstg-platform-2).
 - ["Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)"](0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2).
-- ["Testing Object Persistence (MSTG-PLATFORM-8)"](#testing-object-persistence-mstg-platform-8) (serialization issues).
+- ["Testing Object Persistence (MSTG-PLATFORM-8)"](#testing-object-persistence-mstg-platform-8).
 - ["Testing for URL Loading in WebViews (MSTG-PLATFORM-2)"](#testing-for-url-loading-in-webviews-mstg-platform-2)
 - ["Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)"](#testing-javascript-execution-in-webviews-mstg-platform-5)
 - ["Testing WebView Protocol Handlers (MSTG-PLATFORM-6)"](#testing-webview-protocol-handlers-mstg-platform-6)
@@ -816,13 +816,13 @@ In addition, we recommend to search and read public reports (search term: `"deep
 
 Here you will use the list of deep links from the static analysis and iterate it to determine each handler method and the processed data, if any. You will first start a [Frida](0x08-Testing-Tools.md#frida) hook and then start invoking the deep links.
 
-The following example assumes a target app which accepts this deep link: "deeplinkdemo://load.html". However, we don't know the corresponding handler method yet nor which parameters it potentially accepts.
+The following example assumes a target app which accepts this deep link: `deeplinkdemo://load.html`. However, we don't know the corresponding handler method yet nor which parameters it potentially accepts.
 
-**Step 1: Frida Hooking:**
+**[Step 1] Frida Hooking:**
 
 You can use the script ["Android Deep Link Observer"](https://codeshare.frida.re/@leolashkevych/android-deep-link-observer/) from [Frida CodeShare](0x08-Testing-Tools.md#frida-codeshare) to monitor all invoked deep links triggering a call to `Intent.getData`. You can also use the script as a base to include your own modifications depending on the use case at hand. In this case we [included the stack trace](https://github.com/FrenchYeti/frida-trick/blob/master/README.md) in the script since we are interested in the method which calls `Intent.getData`.
 
-**Step 2: Invoking Deep Links:**
+**[Step 2] Invoking Deep Links:**
 
 Now you can invoke any of the deep links using [adb](0x08-Testing-Tools.md#adb) and the [Activity Manager (am)](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") which will send intents within the Android device. For example:
 
