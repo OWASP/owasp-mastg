@@ -338,8 +338,8 @@ None of the input from these sources can be trusted; it must be validated and/or
 The following portions of the source code should be checked if any app functionality has been exposed:
 
 - Deep Links. Check the test case ["Testing Deep Links"](#testing-deep-links-mstg-platform-3) as well for further test scenarios.
-- IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case ["Testing Whether Sensitive Data Is Exposed via IPC Mechanisms"](#testing-we) as well for further test scenarios.
-- User interface
+- IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case ["Testing for Sensitive Functionality Exposure Through IPC"](#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4) as well for further test scenarios.
+- User interface. Check the test case ["Testing for Overlay Attacks"](#testing-for-overlay-attacks-mstg-platform-9).
 
 An example of a vulnerable IPC mechanism is shown below.
 
