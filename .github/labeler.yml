@@ -1,0 +1,63 @@
+# LABEL List for workflow/labeler.yml
+iOS:
+- Document/0x06*
+
+Android:
+- Document/0x05*
+
+"MASVS-STORAGE":
+- Document/0x05d*
+- Document/0x06d*
+
+"MASVS-CRYPTO":
+- Document/0x05e*
+- Document/0x06e*
+
+"MASVS-AUTH":
+- Document/0x05f*
+- Document/0x06f*
+
+"MASVS-NETWORK":
+- Document/0x05g*
+- Document/0x06g*
+
+"MASVS-PLATFORM":
+- Document/0x05h*
+- Document/0x06h*
+
+"MASVS-CODE":
+- Document/0x05i*
+- Document/0x06i*
+
+"MASVS-RESILIENCE":
+- Document/0x05j*
+- Document/0x06j*
+
+tests:
+- Document/0x05d*
+- Document/0x05e*
+- Document/0x05f*
+- Document/0x05g*
+- Document/0x05h*
+- Document/0x05i*
+- Document/0x05j*
+- Document/0x06d*
+- Document/0x06e*
+- Document/0x06f*
+- Document/0x06g*
+- Document/0x06h*
+- Document/0x06i*
+- Document/0x06j*
+
+fundamentals:
+- Document/0x05a*
+- Document/0x05b*
+- Document/0x06a*
+- Document/0x06b*
+
+techniques:
+- Document/0x05c*
+- Document/0x06c*
+
+tools:
+- Document/0x08*
