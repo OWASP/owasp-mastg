@@ -581,9 +581,9 @@ Android supports two types of deep links:
 
 #### Deep Link Collision
 
-Using unverified deep links has an important issue: any other apps installed on a user's device can declare and try to handle the same intent, which is known as **deep link collision**. Any arbitrary application can declare control over the exact same deep link belonging to another application.
+Using unverified deep links can cause a significant issue- any other apps installed on a user's device can declare and try to handle the same intent, which is known as **deep link collision**. Any arbitrary application can declare control over the exact same deep link belonging to another application.
 
-In recent versions of Android this results in a so-called _disambiguation dialog_ being shown to the user and asking them to select the application that should handle the deep link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
+In recent versions of Android this results in a so-called _disambiguation dialog_ shown to the user that asks them to select the application that should handle the deep link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
 
 ![OWASP_MSTG](https://developer.android.com/training/app-links/images/app-disambiguation_2x.png)
 
@@ -662,7 +662,7 @@ It might seem as though this supports only `https://www.example.com` and `app://
 
 **Using Dumpsys:**
 
-Use [adb](0x08-Testing-Tools.md#adb) to run following command which will show all schemes:
+Use [adb](0x08-Testing-Tools.md#adb) to run the following command that will show all schemes:
 
 ```bash
 adb shell dumpsys package com.example.package
@@ -685,7 +685,7 @@ https://www.example.com
 
 #### Check for Correct Website Association
 
-Even if deep links contain the `android:autoVerify="true"` attribute, they must be _really_ verified in order to be considered App Links. You should test for any possible misconfigurations that might prevent full verification.
+Even if deep links contain the `android:autoVerify="true"` attribute, they must be _actually_ verified in order to be considered App Links. You should test for any possible misconfigurations that might prevent full verification.
 
 ##### Automatic Verification
 
