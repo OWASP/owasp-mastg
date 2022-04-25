@@ -328,9 +328,9 @@ To obtain detail about a specific permission you can refer to the [Android Docum
 
 ### Overview
 
-Android apps can expose functionality through deep links (which are a part of Intents). They can expose functionality to
+Android apps can expose functionality through deep links (which are a part of Intents). They can expose functionality to:
 
-- other apps (via IPC mechanisms, such as Intents, Binders, Android Shared Memory (ASHMEM), or BroadcastReceivers),
+- other apps (via deep links or other IPC mechanisms, such as Intents or BroadcastReceivers).
 - the user (via the user interface).
 
 None of the input from these sources can be trusted; it must be validated and/or sanitized. Validation ensures processing of data that the app is expecting only. If validation is not enforced, any input can be sent to the app, which may allow an attacker or malicious app to exploit app functionality.
@@ -576,8 +576,8 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 Android supports two types of deep links:
 
-- **Custom URL Scheme**: deep links that use any custom URL scheme, e.g. `myapp://` (not verified by the OS).
-- **Android App Links** (Android 6.0 (API level 23) and higher): deep links that use the `http://` and `https://` schemes and contain the `autoVerify` attribute (which triggers OS verification).
+- **Custom URL Schemes**, which are deep links that use any custom URL scheme, e.g. `myapp://` (not verified by the OS).
+- **Android App Links** (Android 6.0 (API level 23) and higher), which are deep links that use the `http://` and `https://` schemes and contain the `autoVerify` attribute (which triggers OS verification).
 
 #### Deep Link Collision
 
