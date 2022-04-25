@@ -1217,17 +1217,20 @@ The final solution script is presented below:
 
 ```python
 import angr
-import claripy
 import base64
 
 load_options = {}
 
 b = angr.Project("./validate", load_options = load_options)
-
 # The key validation function starts at 0x401760, so that's where we create the initial state.
 # This speeds things up a lot because we're bypassing the Base32-encoder.
 
-state = b.factory.blank_state(addr=0x401760)
+options = {
+    angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+    angr.options.ZERO_FILL_UNCONSTRAINED_REGISTERS,
+}
+
+state = b.factory.blank_state(addr=0x401760, add_options=options)
 
 simgr = b.factory.simulation_manager(state)
 simgr.explore(find=0x401840, avoid=0x401854)
@@ -1238,7 +1241,7 @@ found = simgr.found[0]
 
 # Get the solution string from *(R11 - 0x20).
 
-addr = found.memory.load(found.regs.r11 - 0x20, endness='Iend_LE')
+addr = found.memory.load(found.regs.r11 - 0x20, 1, endness="Iend_LE")
 concrete_addr = found.solver.eval(addr)
 solution = found.solver.eval(found.memory.load(concrete_addr,10), cast_to=bytes)
 print(base64.b32encode(solution))
