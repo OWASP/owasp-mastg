@@ -627,7 +627,7 @@ You can easily determine whether deep links (with or without custom URL schemes)
   </activity>
   ```
 
-- **Deep Links**: The following example specifies a deep Link using both the `http://` and `https://` schemes, along with the host and path which will activate it (in this case, the full URL would be `https://www.myapp.com/my/app/path`):
+- **Deep Links**: The following example specifies a deep Link using both the `http://` and `https://` schemes, along with the host and path that will activate it (in this case, the full URL would be `https://www.myapp.com/my/app/path`):
 
   ```xml
   <intent-filter>
