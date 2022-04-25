@@ -604,7 +604,7 @@ Any existing deep links (including App Links) can potentially increase the app a
 - Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
 
-All deep links must be enumerated and verified for correct website association. The actions they perform must be well tested, especially all input data which should be deemed to be untrustworthy and thus should be always validated.
+All deep links must be enumerated and verified for correct website association. The actions they perform must be well tested, especially all input data, which should be deemed untrustworthy and thus should always be validated.
 
 ### Static Analysis
 
