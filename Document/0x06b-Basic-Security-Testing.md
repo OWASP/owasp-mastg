@@ -1028,11 +1028,51 @@ The last step would be to set the proxy globally on your iOS device:
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-### Certificate Pinning
+### Bypassing Certificate Pinning
 
 Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
 
-For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
+For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+
+This section describes various ways to bypass SSL Pinning and gives guidance about what you should do when the existing tools don't help.
+
+#### Methods for Jailbroken and Non-jailbroken Devices
+
+If you have a jailbroken device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-jailbroken device):
+
+```bash
+$ ios sslpinning disable
+```
+
+Here's an example of the output:
+
+![objection iOS SSL Pinning Bypass](Images/Chapters/0x06b/ios_ssl_pinning_bypass.png)
+
+See also [Objection's help on Disabling SSL Pinning for iOS](https://github.com/sensepost/objection/blob/master/objection/console/helpfiles/ios.sslpinning.disable.txt) for further information and inspect the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts "pinning.ts") file to understand how the bypass works.
+
+#### Methods for Jailbroken Devices Only
+
+If you have a jailbroken device you can try one of the following tools that can automatically disable SSL Pinning:
+
+- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the [Cydia](0x08-Testing-Tools.md#cydia) store. It will hook on to all high-level API calls and bypass certificate pinning.
+- The [Burp Suite Mobile Assistant](0x08-Testing-Tools.md#burp-suite-mobile-assistant) app can also be used to bypass certificate pinning.
+
+#### When the Automated Bypasses Fail
+
+Technologies and systems change over time, and some bypass techniques might not work eventually. Hence, it's part of the tester work to do some research, since not every tool is able to keep up with OS versions quickly enough.
+
+Some apps might implement custom SSL pinning methods, so the tester could also develop new bypass scripts making use of existing ones as a base or inspiration and using similar techniques but targeting the app's custom APIs. Here you can inspect two good examples of such scripts:
+
+- ["objection - Pinning Bypass Module" (pinning.ts)](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts
+- ["Frida CodeShare - ios10-ssl-bypass"](https://codeshare.frida.re/@dki/ios10-ssl-bypass/) by @dki
+
+**Other Techniques:**
+
+If you don't have access to the source, you can try binary patching:
+
+- If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
+- Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware of the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
+- If you can access the source code you could try to disable certificate pinning and recompile the app, look for API calls for `NSURLSession`, `CFStream`, and `AFNetworking` and methods/strings containing words like "pinning", "X.509", "Certificate", etc.
 
 ## References
 
