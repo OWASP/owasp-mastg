@@ -1216,7 +1216,7 @@ You need to perform several steps to initialize Angr's symbolic execution engine
 The final solution script is presented below:
 
 ```python
-import angr
+import angr # Version: 9.2.2
 import base64
 
 load_options = {}
