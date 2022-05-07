@@ -1260,12 +1260,13 @@ Also, it may appear as if the script is simply reading the solution string from 
 Running this script should return the following output:
 
 ```bash
-(angr) $ python solve.py
-WARNING | cle.loader | The main binary is a position-independent executable.
-It is being loaded with a base address of 0x400000.
+$ python3 solve.py
+WARNING | ... | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
 
-b'ABGAATYAJQAFUABB'
+b'JACE6ACIARNAAIIA'
 ```
+
+Now you can run the validate binary in your Android device to verify the solution as indicated [here](../Crackmes/README.md#android-license-validatorandroidlicense01-"android-license-validator").
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.
 
