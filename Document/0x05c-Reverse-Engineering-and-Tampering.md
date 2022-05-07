@@ -1266,7 +1266,7 @@ WARNING | ... | cle.loader | The main binary is a position-independent executabl
 b'JACE6ACIARNAAIIA'
 ```
 
-Now you can run the validate binary in your Android device to verify the solution as indicated [here](../Crackmes/README.md#android-license-validatorandroidlicense01-"android-license-validator").
+Now you can run the validate binary in your Android device to verify the solution as indicated [here](../Crackmes/README.md#android-license-validator).
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.
 
