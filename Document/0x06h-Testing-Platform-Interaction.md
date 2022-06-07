@@ -2259,6 +2259,18 @@ There are a couple of things to consider:
 
 This should be sufficient for an app analysis and therefore, `SFSafariViewController`s are out of scope for the Static and Dynamic Analysis sections.
 
+#### Safari Web Inspector
+
+Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a Mac.
+This does not require a jailbroken iOS device.
+Enabling the Web Inspector is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
+To activate the web inspection you have to follow these steps:
+1. On the iOS device open the Settings app: Go to **Safari->Advanced** and toggle on *Web Inspector*.
+2. On the Mac device, open Safari: Go to **Safari menu->Preferences->Advanced** and enable *Show Develop menu in menu bar*.
+3. Connect your iOS device to the Mac device: The iOS device name should appear in the *Developer* toolbar entry.
+    - Open a WebView based context in the application under test.
+    - The Web Inspector can now be opened in Safari on the Mac device: Open the corresponding Web Inspector in **Developer->'iOS Device Name'**.
+
 ### Static Analysis
 
 For the static analysis we will focus mostly on the following points having `UIWebView` and `WKWebView` under scope.
@@ -3105,6 +3117,7 @@ Finally, see if you can play with the version number of a man-in-the-middled app
 - [#thiel2] David Thiel, iOS Application Security: The Definitive Guide for Hackers and Developers (Kindle Locations 3394-3399), No Starch Press, Kindle Edition.
 - Security Flaw with UIWebView - <https://medium.com/ios-os-x-development/security-flaw-with-uiwebview-95bbd8508e3c>
 - Learning about Universal Links and Fuzzing URL Schemes on iOS with Frida - <https://grepharder.github.io/blog/0x03_learning_about_universal_links_and_fuzzing_url_schemes_on_ios_with_frida.html>
+- Safari Web Inspector - <https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html>
 
 ### OWASP MASVS
 
