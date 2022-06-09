@@ -2265,6 +2265,7 @@ Enabling Safari web inspection on iOS allows you to inspect the contents of a We
 This does not require a jailbroken iOS device.
 Enabling the Web Inspector is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
 To activate the web inspection you have to follow these steps:
+
 1. On the iOS device open the Settings app: Go to **Safari->Advanced** and toggle on *Web Inspector*.
 2. On the Mac device, open Safari: Go to **Safari menu->Preferences->Advanced** and enable *Show Develop menu in menu bar*.
 3. Connect your iOS device to the Mac device: The iOS device name should appear in the *Developer* toolbar entry.
