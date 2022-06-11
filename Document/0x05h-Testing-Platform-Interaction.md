@@ -724,7 +724,7 @@ This section details a few, of potentially many, reasons why the verification pr
 
 - Check for **missing** Digital Asset Links file:
   - try to find it in the domain's `/.well-known/` path. Example: `https://www.example.com/.well-known/assetlinks.json`
-  - else try `https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=www.example.com`
+  - or try `https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=www.example.com`
 - Check for valid Digital Asset Links file **served via HTTP**.
 - Check for **invalid** Digital Asset Links files served via HTTPS. For example:
   - the file contains invalid JSON.
@@ -762,7 +762,7 @@ If the hostname includes a wildcard (such as `*.example.com`), you should be abl
 
 #### Check the Handler Method
 
-Even if the deep link is correctly verified you should carefully analyze the logic of the handler method and pay special attention to **deep links being used to transmit data** (which is controlled externally, e.g. by the user or any other app).
+Even if the deep link is correctly verified, the logic of the handler method should be carefully analyzed. Pay special attention to **deep links being used to transmit data** (which is controlled externally by the user or any other app).
 
 First, obtain the name of the Activity from the Android Manifest `<activity>` element which defines the target `<intent-filter>` and search for usage of [`getIntent`](https://developer.android.com/reference/android/content/Intent#getIntent(java.lang.String) "getIntent()") and [`getData`](https://developer.android.com/reference/android/content/Intent#getData%28%29 "getData()"). This general approach of locating these methods can be used across most applications when performing reverse engineering and is key when trying to understand how the application uses deep links and handles any externally provided input data and if it could be subject to any kind of abuse.
 
@@ -787,9 +787,9 @@ public final class WebViewActivity extends AppCompatActivity {
             ...
 ```
 
-You can simply follow the `deeplink_url` String variable and see how it ends up as part of the `wv.loadUrl` call. This means that the attacker has full control of the URL being loaded to the WebView (which as you can see above has [JavaScript enabled](#testing-javascript-execution-in-webviews-mstg-platform-5).
+You can simply follow the `deeplink_url` String variable and see the result from the `wv.loadUrl` call. This means the attacker has full control of the URL being loaded to the WebView (as shown above has [JavaScript enabled](#testing-javascript-execution-in-webviews-mstg-platform-5).
 
-The same WebView might be also rendering an attacker controlled parameter parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws-mstg-platform-2) within the context of the WebView:
+The same WebView might be also rendering an attacker controlled parameter. In that case, the following deep link payload would trigger [Reflected Cross-Site Scripting (XSS)](0x04h-Testing-Code-Quality.md#cross-site-scripting-flaws-mstg-platform-2) within the context of the WebView:
 
 ```default
 deeplinkdemo://load.html?attacker_controlled=<svg onload=alert(1)>
@@ -814,9 +814,9 @@ In addition, we recommend to search and read public reports (search term: `"deep
 
 ### Dynamic Analysis
 
-Here you will use the list of deep links from the static analysis and iterate it to determine each handler method and the processed data, if any. You will first start a [Frida](0x08-Testing-Tools.md#frida) hook and then start invoking the deep links.
+Here you will use the list of deep links from the static analysis to iterate and determine each handler method and the processed data, if any. You will first start a [Frida](0x08-Testing-Tools.md#frida) hook and then begin invoking the deep links.
 
-The following example assumes a target app which accepts this deep link: `deeplinkdemo://load.html`. However, we don't know the corresponding handler method yet nor which parameters it potentially accepts.
+The following example assumes a target app that accepts this deep link: `deeplinkdemo://load.html`. However, we don't know the corresponding handler method yet, nor the parameters it potentially accepts.
 
 **[Step 1] Frida Hooking:**
 
@@ -862,13 +862,13 @@ android.app.Activity.performCreate(Activity.java)
 com.android.internal.os.ZygoteInit.main(ZygoteInit.java)
 ```
 
-In this case we've crafted the deep link including arbitrary parameters (`?message=ok`) and fragment (`#part1`). We still don't know if they are being used. The information above reveals useful information which you can use now to reverse engineer the app. See the section ["Check the Handler Method"](#check-the-handler-method) to learn about things you should consider.
+In this case we've crafted the deep link including arbitrary parameters (`?message=ok`) and fragment (`#part1`). We still don't know if they are being used. The information above reveals useful information that you can use now to reverse engineer the app. See the section ["Check the Handler Method"](#check-the-handler-method) to learn about things you should consider.
 
 - File: `WebViewActivity.kt`
 - Class: `com.mstg.deeplinkdemo.WebViewActivity`
 - Method: `onCreate`
   
-> Sometimes you can even take advantage of other applications which you know that interact with your target app. You can reverse engineer them (e.g. extracting all strings and filtering those which include the target deep links, `deeplinkdemo:///load.html` in the previous case), or use them as triggers, while hooking the app as we did before.
+> Sometimes you can even take advantage of other applications that you know interact with your target app. You can reverse engineer the app, (e.g. to extract all strings and filter those which include the target deep links, `deeplinkdemo:///load.html` in the previous case), or use them as triggers, while hooking the app as previously discussed.
 
 ## Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
