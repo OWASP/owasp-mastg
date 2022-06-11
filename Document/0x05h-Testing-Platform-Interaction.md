@@ -718,7 +718,7 @@ com.example.package:
 
 ##### Manual Verification
 
-There might be many different reasons why the verification process failed or wasn't actually triggered. In this section we'll present a couple of them. See more information in the [Android Developers Documentation](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) and in the whitepaper ["Measuring the Insecurity of Mobile Deep Links of Android"](https://people.cs.vt.edu/gangwang/deep17.pdf).
+This section details a few, of potentially many, reasons why the verification process failed or was not actually triggered. See more information in the [Android Developers Documentation](https://developer.android.com/training/app-links/verify-site-associations#fix-errors) and in the white paper ["Measuring the Insecurity of Mobile Deep Links of Android"](https://people.cs.vt.edu/gangwang/deep17.pdf).
 
 **Check the [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link"):**
 
