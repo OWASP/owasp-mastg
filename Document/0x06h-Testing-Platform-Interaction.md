@@ -2261,9 +2261,9 @@ This should be sufficient for an app analysis and therefore, `SFSafariViewContro
 
 #### Safari Web Inspector
 
-Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a Mac.
-This does not require a jailbroken iOS device.
-Enabling the Web Inspector is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
+Enabling Safari web inspection on iOS allows you to inspect the contents of a WebView remotely from a macOS device and it does not require a jailbroken iOS device.
+Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/GettingStarted/GettingStarted.html) is especially interesting in applications that expose native APIs using a JavaScript bridge, for example in hybrid applications.
+
 To activate the web inspection you have to follow these steps:
 
 1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on *Web Inspector*.
