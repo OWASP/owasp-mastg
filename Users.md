@@ -28,7 +28,9 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 ### NIST (National Institute of Standards and Technology, United States)
 
 <div style="display: flex">
+<div>
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
+</div>
 <div>
 
 The [National Institute of Standards and Technology (NIST)](https://www.nist.gov/about-nist) was founded in 1901 and is now part of the U.S. Department of Commerce. NIST is one of the nation's oldest physical science laboratories. Congress established the agency to remove a major challenge to U.S. industrial competitiveness at the time — a second-rate measurement infrastructure that lagged behind the capabilities of the United Kingdom, Germany and other economic rivals.
