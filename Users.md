@@ -6,7 +6,7 @@
 
 <table>
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/android-logo.png"/>
 </td>
 <td width="600px"><br>
@@ -29,7 +29,7 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 <table>
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
 </td>
 <td width="600px"><br>
@@ -47,7 +47,7 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 <table>
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
 <td width="600px"><br>
@@ -65,7 +65,7 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 
 <table>
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
 </td>
 <td width="600px"><br>
