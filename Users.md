@@ -29,10 +29,10 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 <table style="border: none">
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: none">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
 </td>
-<td width="600px"><br>
+<td width="600px" style="border: none"><br>
 
 The [National Institute of Standards and Technology (NIST)](https://www.nist.gov/about-nist) was founded in 1901 and is now part of the U.S. Department of Commerce. NIST is one of the nation's oldest physical science laboratories. Congress established the agency to remove a major challenge to U.S. industrial competitiveness at the time — a second-rate measurement infrastructure that lagged behind the capabilities of the United Kingdom, Germany and other economic rivals.
 
@@ -47,10 +47,10 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 <table style="border: none">
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: none">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
-<td width="600px"><br>
+<td width="600px" style="border: none"><br>
 
 BSI stands for "Federal Office for Information Security", it has the goal to promote IT security in Germany and is the central IT security service provider for the federal government.
 
@@ -65,10 +65,10 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 
 <table style="border: none">
 <tr>
-<td width="400px" valign="top">
+<td width="400px" valign="top" style="border: none">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
 </td>
-<td width="600px"><br>
+<td width="600px" style="border: none"><br>
 
 The mission of the [ioXt Alliance](https://www.ioxtalliance.org/) is to build confidence in Internet of Things products through multi-stakeholder, international, harmonized, and standardized security and privacy requirements, product compliance programs, and public transparency of those requirements and programs.
 
