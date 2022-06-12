@@ -62,7 +62,7 @@ According to the [Archived Apple Developer Documentation](https://developer.appl
 
 - A seal. This is a collection of checksums or hashes of the various parts of the code, created by the code signing software. The seal can be used at verification time to detect alterations.
 - A digital signature. The code signing software encrypts the seal using the signer’s identity to create a digital signature. This guarantees the seal’s integrity.
-- Code requirements. These are the rules governing verification of the code signature. Some are inherent to the verifier (depending on its goals). Others are specified by the signer and sealed with the rest of the code.
+- Code requirements. These are the rules governing verification of the code signature. Depending on the goals, some are inherent to the verifier, while others are specified by the signer and sealed with the rest of the code.
 
 Learn more:
 
