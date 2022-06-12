@@ -27,21 +27,17 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 ### NIST (National Institute of Standards and Technology, United States)
 
-<table>
-<tr>
-<td width="400px" valign="top">
+<div class="flex-container">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
-</td>
-<td width="600px"><br>
+<div>
 
 The [National Institute of Standards and Technology (NIST)](https://www.nist.gov/about-nist) was founded in 1901 and is now part of the U.S. Department of Commerce. NIST is one of the nation's oldest physical science laboratories. Congress established the agency to remove a major challenge to U.S. industrial competitiveness at the time — a second-rate measurement infrastructure that lagged behind the capabilities of the United Kingdom, Germany and other economic rivals.
 
 - [NIST.SP.800-163 "Vetting the Security of Mobile Applications" Revision 1, 2019](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1 "National Institute of Standards and Technology")
 - [NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities" v1.1, 2022](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
 
-</td>
-</tr>
-</table>
+</div>
+</div>
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
