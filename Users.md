@@ -6,7 +6,7 @@
 
 <table>
 <tr>
-<td width="400px" valign="top" style="border: 0px">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/android-logo.png"/>
 </td>
 <td width="600px"><br>
@@ -27,9 +27,9 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 ### NIST (National Institute of Standards and Technology, United States)
 
-<table style="border: 0px">
+<table style="border: none">
 <tr>
-<td width="400px" valign="top" style="border: 0px">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
 </td>
 <td width="600px"><br>
@@ -45,9 +45,9 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
-<table style="border: 0px">
+<table style="border: none">
 <tr>
-<td width="400px" valign="top" style="border: 0px">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
 <td width="600px"><br>
@@ -63,9 +63,9 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 
 ### ioXt
 
-<table style="border: 0px">
+<table style="border: none">
 <tr>
-<td width="400px" valign="top" style="border: 0px">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
 </td>
 <td width="600px"><br>
