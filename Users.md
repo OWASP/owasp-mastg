@@ -27,7 +27,7 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 ### NIST (National Institute of Standards and Technology, United States)
 
-<table>
+<table style="border: 0px">
 <tr>
 <td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
@@ -45,7 +45,7 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
-<table>
+<table style="border: 0px">
 <tr>
 <td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
@@ -63,7 +63,7 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 
 ### ioXt
 
-<table>
+<table style="border: 0px">
 <tr>
 <td width="400px" valign="top" style="border: 0px">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
