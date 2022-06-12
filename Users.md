@@ -27,7 +27,7 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 ### NIST (National Institute of Standards and Technology, United States)
 
-<div class="flex-container">
+<div style="display: flex">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
 <div>
 
