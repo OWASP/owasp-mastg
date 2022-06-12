@@ -2270,8 +2270,13 @@ To activate the web inspection you have to follow these steps:
 2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable *Show Develop menu in menu bar*.
 3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the *Develop* menu.
 4. (If not yet trusted) On macOS's Safari, go to the *Develop* menu, click on the iOS device name, then on "Use for Development" and enable trust.
-    - Open a WebView based context in the application under test.
-    - The Web Inspector can now be opened in Safari on the Mac device: Open the corresponding Web Inspector in **Developer->'iOS Device Name'**.
+
+To open the web inspector and debug a WebView:
+
+1. In iOS, open the app and navigate to the screen that should contain a WebView.
+2. In macOS Safari, go to **Developer -> 'iOS Device Name'** and you should see the name of the WebView based context. Click on it to open the Web Inspector.
+
+Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
 ### Static Analysis
 
