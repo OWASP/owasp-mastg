@@ -326,7 +326,7 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 > A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
 
-Whenever OTP Authentication is implemented in the application, always check if the application is responding back with static responses like "message":"Success" or some default application related content.If that is the case , the attacker can easily bypass the 2FA implementation by manipulating the server response. For eg. If the app is giving "message":"OTP is not correct" , the attacker can change it to "message":"Success" and takeover the user account.
+You should check if the app relies on static responses from the remote endpoint such as `"message":"Success"` to grant access to app internal sensitive data or functions. If that's the case, an attacker could easily bypass the 2FA implementation by manipulating the server response e.g. by using an interception proxy such as [Burp Suite](0x08-Testing-Tools.md#burp-suite) and modifying the response to be `"message":"Success"`.
 
 > The application should always pass user token or some dynamic information related to the user to prevent the attack
 
