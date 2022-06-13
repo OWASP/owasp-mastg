@@ -40,7 +40,9 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 - [NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities" v1.1, 2022](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
 
 </td>
+</tr>
 
+<tr>
 <td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
@@ -54,7 +56,9 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 - [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
 
 </td>
+</tr>
 
+<tr>
 <td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
 </td>
