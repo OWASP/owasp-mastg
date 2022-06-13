@@ -86,6 +86,7 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 
 - [Foreword](Document/0x01-Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
+- [OWASP MASVS and MSTG Adoption](Document/0x02b-MASVS-MSTG-Adoption.md)
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
