@@ -2,14 +2,11 @@
 
 ## Mobile Platform Providers
 
-### Google Android
-
 <table>
 <tr>
-<td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/android-logo.png"/>
-</td>
-<td width="600px"><br>
+<td width="700px">
+
+### Google Android
 
 Since 2021 Google has shown their support for the OWASP Mobile Security project (MSTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
 
@@ -18,6 +15,10 @@ With MASA, Google has acknowledged the importance of leveraging a globally recog
 We thank Google, the ADA and all its members for their support and for their excellent work on protecting the mobile app ecosystem.
 
 </td>
+<td width="300px" valign="top">
+<img width="300px" src="Document/Images/Other/android-logo.png"/>
+</td>
+
 </tr>
 </table>
 
@@ -27,10 +28,8 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 
 <table>
 <tr>
-<td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/nist-logo.png"/>
-</td>
-<td width="600px"><br>
+
+<td width="700px">
 
 ### NIST (National Institute of Standards and Technology, United States)
 
@@ -40,13 +39,14 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 - [NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities" v1.1, 2022](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
 
 </td>
-</tr>
-
-<tr>
-<td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/bsi-logo.png"/>
+<td width="300px" valign="top">
+<img width="300px" src="Document/Images/Other/nist-logo.png"/>
 </td>
-<td width="600px"><br>
+
+</tr>
+<tr>
+
+<td width="700px">
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
@@ -56,13 +56,14 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 - [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
 
 </td>
-</tr>
-
-<tr>
-<td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
+<td width="300px" valign="top">
+<img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
-<td width="600px"><br>
+
+</tr>
+<tr>
+
+<td width="700px">
 
 ### ioXt
 
@@ -73,6 +74,10 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 - [ioXt Base Profile v2.0](https://static1.squarespace.com/static/5c6dbac1f8135a29c7fbb621/t/6078677c7d7b84799f1eaa5b/1618503553847/ioXt_Base_Profile.pdf)
 
 </td>
+<td width="300px" valign="top">
+<img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
+</td>
+
 </tr>
 </table>
 
