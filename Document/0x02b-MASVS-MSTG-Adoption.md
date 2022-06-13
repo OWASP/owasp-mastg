@@ -1,6 +1,6 @@
 # OWASP MASVS and MSTG Adoption
 
-The OWASP MASVS and MSTG are trusted by the following platform providers, standardization, governmental and educational institutions and companies.
+The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions.
 
 ## Mobile Platform Providers
 
@@ -100,36 +100,6 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 | University of Adelaide, Australia and Queen Mary University of London, United Kingdom | [An Empirical Assessment of Global COVID-19 Contact Tracing Applications](https://arxiv.org/pdf/2006.10933.pdf) | 2021 |
 | School of Information Technology, Mapúa University, Philippines | [A Vulnerability Assessment on the Parental Control Mobile Applications Security: Status based on the OWASP Security Requirements](http://www.ieomsociety.org/singapore2021/papers/1104.pdf) | 2021 |
 
-## Companies
-
-**Note: the quality of the application of the MASVS/MSTG by these companies has not been vetted by the MSTG team. It is just an indicator of adoption reported publicly.**
-
-- [7asecurity](https://7asecurity.com "7asecurity")
-- [Brewsec](https://brewsec.io/ "Brewsec")
-- [Briskinfosec Technology and Consulting Pvt Ltd](https://www.briskinfosec.com/ "Briskinfosec Technology and Consulting Pvt Ltd")
-- [Citadelo](https://citadelo.com/en/blog/how-to-order-a-pen-test/ "Citadelo")
-- [Comsec](https://comsecglobal.com/ "Comsec")
-- [continuumsecurity](https://continuumsecurity.net "continuumsecurity")
-- [Cyber Ninjas](https://www.CyberNinjas.com "Cyber Ninjas")
-- [ESCRYPT GmbH](https://www.escrypt.com "ESCRYPT GmbH")
-- [FH Münster - University of applied sciences](https://www.fh-muenster.de "FH Münster - University of applied sciences")
-- [Genexus](https://www.genexus.com "Genexus") & [Genexus Consulting](https://www.genexusconsulting.com/es/ "Genexus Consulting")
-- [Hackenproof](https://hackenproof.com "Hackenproof")
-- [Infosec](https://Infosec.com.br "Infosec")
-- [Netguru](https://www.netguru.co/ "Netguru")
-- [NowSecure](https://www.nowsecure.com/ "NowSecure")
-- [NVISO](https://www.nviso.eu "NVISO")
-- [Randorisec](https://randorisec.fr/ "Randorisec")
-- [Secarma](https://www.secarma.com/ "Secarma")
-- [SecuRing](https://securing.biz/ "SecuRing")
-- [Stingray Technologies](https://stingray-mobile.ru/  "Stingray Technologies")
-- [STM Solutions](https://stmsolutions.pl/ "STM Solutions")
-- [Toreon](https://www.toreon.com/ "Toreon")
-- [VantagePoint](https://www.vantagepoint.sg "VantagePoint")
-- [Vertical Structure](https://www.verticalstructure.com "Vertical Structure Ltd")
-- [Websec Canada](https://www.websec.ca/mobile-application-security "Websec Canada")
-- [Xebia](https://xebia.com "Xebia")
-
 ## Application in scientific research
 
 - [STAMBA: Security Testing for Android Mobile Banking Apps](https://link.springer.com/chapter/10.1007/978-3-319-28658-7_57 "Advances in Signal Processing and Intelligent Recognition Systems pp 671-683")
@@ -137,7 +107,3 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 ## Books
 
 - [Hands-On Security in DevOps](https://books.google.co.uk/books?id=bO1mDwAAQBAJ&pg=PA40&lpg=PA40&dq=owasp+mobile+security+testing+guide&source=bl&ots=pHhAasVgeC&sig=ACfU3U0yodcqH0O8Sjx3ADTN2m1tbHeCsg&hl=nl&sa=X&ved=2ahUKEwio2umM8tbiAhXgVBUIHehnAEU4UBDoATAIegQICRAB#v=onepage&q=owasp%20mobile%20security%20testing%20guide&f=false "Hands-On Security in DevOps in Google books")
-
-## Call for Users
-
-Are you actively using the MASVS or MSTG and want to be listed here? File an [issue on GitHub](https://github.com/OWASP/owasp-mstg/issues/new "New Issue"), contact Sven Schleier (Slack: *Sven*) or Carlos Holguera (Slack: *Carlos*), or send an email to [Sven](mailto:sven.schleier@owasp.org) or [Carlos](mailto:carlos.holguera@owasp.org).
