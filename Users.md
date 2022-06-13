@@ -84,7 +84,7 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 ## Governmental Institutions
 
 | Name | Year | Document |
-| -- | - | ---------- |
+| -- | - | -------------------- |
 | European Payments Council | 2021 | [Payment Threats and Fraud Trends Report](https://www.europeanpaymentscouncil.eu/sites/default/files/kb/file/2021-12/EPC193-21%20v1.0%202021%20Payments%20Threats%20and%20Fraud%20Trends%20Report.pdf) |
 | European Payments Council | 2019 | [Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability) |
 | ENISA (European Union Agency for Cybersecurity) | 2011 | [Smartphone Secure Development Guidelines](https://www.enisa.europa.eu/publications/smartphone-secure-development-guidelines) |
