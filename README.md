@@ -16,7 +16,14 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mstg/releases/latest)
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest)
 
-The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users' document listing some of the adopters](Users.md).
+## Trusted by ...
+
+The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Check our [OWASP MASVS and MSTG Adoption](Users.md) page.
+
+<img width="200px" src="Document/Images/Other/android-logo.png"/>
+<img width="200px" src="Document/Images/Other/nist-logo.png"/>
+<img width="200px" src="Document/Images/Other/bsi-logo.png"/>
+<img width="200px" src="Document/Images/Other/ioxt-logo.png"/>
 
 ## Table-of-Contents
 
