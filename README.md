@@ -20,10 +20,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Check our [OWASP MASVS and MSTG Adoption](Users.md) page.
 
-<img width="200px" src="Document/Images/Other/android-logo.png"/>
-<img width="200px" src="Document/Images/Other/nist-logo.png"/>
-<img width="200px" src="Document/Images/Other/bsi-logo.png"/>
-<img width="200px" src="Document/Images/Other/ioxt-logo.png"/>
+<img src="Document/Images/Other/trusted-by-logos.png"/>
 
 ## Table-of-Contents
 
