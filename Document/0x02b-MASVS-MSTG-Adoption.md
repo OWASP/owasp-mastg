@@ -18,7 +18,7 @@ We thank Google, the ADA and all its members for their support and for their exc
 
 </td>
 <td width="400px" valign="top">
-<img width="400px" src="Document/Images/Other/android-logo.png"/>
+<img width="400px" src="Images/Other/android-logo.png"/>
 </td>
 
 </tr>
@@ -40,7 +40,7 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 </td>
 <td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/nist-logo.png"/>
+<img width="300px" src="Images/Other/nist-logo.png"/>
 </td>
 
 </tr>
@@ -57,7 +57,7 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 
 </td>
 <td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/bsi-logo.png"/>
+<img width="300px" src="Images/Other/bsi-logo.png"/>
 </td>
 
 </tr>
@@ -75,7 +75,7 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 
 </td>
 <td width="400px" valign="top">
-<img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
+<img width="300px" src="Images/Other/ioxt-logo.png"/>
 </td>
 
 </tr>
