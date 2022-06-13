@@ -12,8 +12,7 @@ OWASP thanks the many authors, reviewers, and editors for their hard work in dev
 
 ## OWASP MASVS and MSTG Adoption
 
-The OWASP MASVS and MSTG are trusted by the following platform providers, standardization, governmental and educational institutions and companies.
-. [Learn more](0x02b-MASVS-MSTG-Adoption.md).
+The OWASP MASVS and MSTG are trusted by the following platform providers, standardization, governmental and educational institutions and companies. [Learn more](0x02b-MASVS-MSTG-Adoption.md).
 
 <img src="Images/Other/trusted-by-logos.png"/>
 

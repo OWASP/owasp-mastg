@@ -19,8 +19,7 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 ## Trusted by ...
 
-The OWASP MASVS and MSTG are trusted by the following platform providers, standardization, governmental and educational institutions and companies.
-. [Learn more](Users.md).
+The OWASP MASVS and MSTG are trusted by the following platform providers, standardization, governmental and educational institutions and companies. [Learn more](Document/0x02b-MASVS-MSTG-Adoption.md).
 
 <img src="Document/Images/Other/trusted-by-logos.png"/>
 
