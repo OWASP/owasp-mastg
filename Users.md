@@ -4,7 +4,7 @@
 
 ### Google Android
 
-<img width="300px" align="right" style="float: right; src="Document/Images/Other/android-logo.png"/>
+<img width="300px" align="right" style="float: right;" src="Document/Images/Other/android-logo.png"/>
 
 Since 2021 Google has shown their support for the OWASP Mobile Security project (MSTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
 
