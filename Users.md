@@ -4,7 +4,12 @@
 
 ### Google Android
 
-<img width="300px" align="right" style="float: right;" src="Document/Images/Other/android-logo.png"/>
+<table>
+<tr>
+<td width="400px" valign="top">
+<img width="300px" src="Document/Images/Other/android-logo.png"/>
+</td>
+<td width="600px"><br>
 
 Since 2021 Google has shown their support for the OWASP Mobile Security project (MSTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
 
@@ -12,12 +17,13 @@ With MASA, Google has acknowledged the importance of leveraging a globally recog
 
 We thank Google, the ADA and all its members for their support and for their excellent work on protecting the mobile app ecosystem.
 
+</td>
+</tr>
+</table>
 
 ## Standards, frameworks and guidelines recommending the MASVS and MSTG
 
 Currently, the MASVS and MSTG are trusted by the following standardization institutions.
-
-### NIST (National Institute of Standards and Technology, United States)
 
 <table>
 <tr>
@@ -26,23 +32,21 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 </td>
 <td width="600px"><br>
 
+### NIST (National Institute of Standards and Technology, United States)
+
 The [National Institute of Standards and Technology (NIST)](https://www.nist.gov/about-nist) was founded in 1901 and is now part of the U.S. Department of Commerce. NIST is one of the nation's oldest physical science laboratories. Congress established the agency to remove a major challenge to U.S. industrial competitiveness at the time — a second-rate measurement infrastructure that lagged behind the capabilities of the United Kingdom, Germany and other economic rivals.
 
 - [NIST.SP.800-163 "Vetting the Security of Mobile Applications" Revision 1, 2019](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1 "National Institute of Standards and Technology")
 - [NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities" v1.1, 2022](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
 
 </td>
-</tr>
-</table>
 
-### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
-
-<table>
-<tr>
 <td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
 <td width="600px"><br>
+
+### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
 BSI stands for "Federal Office for Information Security", it has the goal to promote IT security in Germany and is the central IT security service provider for the federal government.
 
@@ -50,17 +54,13 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 - [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
 
 </td>
-</tr>
-</table>
 
-### ioXt
-
-<table>
-<tr>
 <td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
 </td>
 <td width="600px"><br>
+
+### ioXt
 
 The mission of the [ioXt Alliance](https://www.ioxtalliance.org/) is to build confidence in Internet of Things products through multi-stakeholder, international, harmonized, and standardized security and privacy requirements, product compliance programs, and public transparency of those requirements and programs.
 
