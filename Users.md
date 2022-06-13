@@ -4,7 +4,7 @@
 
 <table>
 <tr>
-<td width="700px">
+<td width="600px">
 
 ### Google Android
 
@@ -15,8 +15,8 @@ With MASA, Google has acknowledged the importance of leveraging a globally recog
 We thank Google, the ADA and all its members for their support and for their excellent work on protecting the mobile app ecosystem.
 
 </td>
-<td width="300px" valign="top">
-<img width="300px" src="Document/Images/Other/android-logo.png"/>
+<td width="400px" valign="top">
+<img width="400px" src="Document/Images/Other/android-logo.png"/>
 </td>
 
 </tr>
@@ -29,7 +29,7 @@ Currently, the MASVS and MSTG are trusted by the following standardization insti
 <table>
 <tr>
 
-<td width="700px">
+<td width="600px">
 
 ### NIST (National Institute of Standards and Technology, United States)
 
@@ -39,14 +39,14 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 - [NIST.SP.800-218 "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities" v1.1, 2022](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)
 
 </td>
-<td width="300px" valign="top">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/nist-logo.png"/>
 </td>
 
 </tr>
 <tr>
 
-<td width="700px">
+<td width="600px">
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
@@ -56,14 +56,14 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 - [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
 
 </td>
-<td width="300px" valign="top">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/bsi-logo.png"/>
 </td>
 
 </tr>
 <tr>
 
-<td width="700px">
+<td width="600px">
 
 ### ioXt
 
@@ -74,22 +74,19 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 - [ioXt Base Profile v2.0](https://static1.squarespace.com/static/5c6dbac1f8135a29c7fbb621/t/6078677c7d7b84799f1eaa5b/1618503553847/ioXt_Base_Profile.pdf)
 
 </td>
-<td width="300px" valign="top">
+<td width="400px" valign="top">
 <img width="300px" src="Document/Images/Other/ioxt-logo.png"/>
 </td>
 
 </tr>
 </table>
 
-### ENISA (European Union Agency for Cybersecurity, European Union)
-
-- [Smartphone Secure Development Guidelines, 2011](https://www.enisa.europa.eu/publications/smartphone-secure-development-guidelines)
-- [Good Practices for Security of SMART CARS, 2019](https://www.enisa.europa.eu/publications/smart-cars)
-
 ## Governmental Institutions
 
 - [[European Payments Council] "Payment Threats and Fraud Trends Report", 2021](https://www.europeanpaymentscouncil.eu/sites/default/files/kb/file/2021-12/EPC193-21%20v1.0%202021%20Payments%20Threats%20and%20Fraud%20Trends%20Report.pdf)
-- [[European Payments Council] "Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)"](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability)
+- [[European Payments Council] "Mobile Initiated SEPA Credit Transfer Interoperability Implementation Guidelines, including SCT Instant (MSCT IIGs)", 2019](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/mobile-initiated-sepa-instant-credit-transfer-interoperability)
+- [[ENISA (European Union Agency for Cybersecurity)] Smartphone Secure Development Guidelines, 2011](https://www.enisa.europa.eu/publications/smartphone-secure-development-guidelines)
+- [[[ENISA (European Union Agency for Cybersecurity)] Good Practices for Security of SMART CARS, 2019](https://www.enisa.europa.eu/publications/smart-cars)
 - [[Government of India, Ministry of Electronics & Information Technology] "Adoption of Mobile AppSec Verification Standard (MASVS) Version 1.0 of OWASP", 2019](http://egovstandards.gov.in/sites/default/files/Adoption%20of%20Mobile%20AppSec%20Verification%20Standard%20%28MASVS%29%20Version%201.0%20of%20OWASP_0.pdf)
 - [[Finish Transport and Communication Agency (TRAFICOM)] "Assessment guideline for electronic identification services (Draft)", 2019](https://www.traficom.fi/sites/default/files/media/file/DRAFT%20Traficom%20guideline%20211%202019%20conformity%20assessment%20of%20eID%20service.pdf)
 - [[Gobierno de España INCIBE] "Ciberseguridad en Smart Toys", 2019](https://www.incibe.es/sites/default/files/contenidos/guias/doc/guia_smarttoys_final.pdf)
