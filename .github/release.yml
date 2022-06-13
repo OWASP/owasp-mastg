@@ -3,28 +3,28 @@ changelog:
     labels:
       - "ignore-for-release"
   categories:
-    - title: MSTG Test Cases
+    - title: 🧪 MSTG Test Cases
       labels:
         - "tests"
-    - title: MSTG Testing Fundamentals
+    - title: 📖 MSTG Testing Fundamentals
       labels:
         - "fundamentals"
-    - title: MSTG Testing Techniques
+    - title: ✨ MSTG Testing Techniques
       labels:
         - "techniques"
-    - title: MSTG Testing Tools
+    - title: 🪄 MSTG Testing Tools
       labels:
         - "tools"
-    - title: Other changes in MSTG Content
-      labels:
-        - "change-mstg"
-    - title: Errata Corrections (typos & more)
+    - title: 🐞 Errata Corrections
       labels:
         - "errata"
-    - title: Automation Improvements
+    - title: ⚡ Automation
       labels:
         - "automation"
-    - title: New Donators
+    - title: 📜 Mobile Security Checklists
+      labels:
+        - "checklists"
+    - title: 🎉 New Donators
       labels:
         - "donation"
     - title: Other Changes

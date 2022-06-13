@@ -56,6 +56,20 @@ Apple has implemented an elaborate DRM system to make sure that only Apple-appro
 A developer profile and an Apple-signed certificate are required to deploy and run an application.
 Developers need to register with Apple, join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription to get the full range of development and deployment possibilities. There's also a free developer account that allows you to compile and deploy apps (but not distribute them in the App Store) via sideloading.
 
+![OWASP MSTG](Images/Chapters/0x06a/code_signing.png) \
+
+According to the [Archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/AboutCS/AboutCS.html#//apple_ref/doc/uid/TP40005929-CH3-SW3) the code signature consists of three parts:
+
+- A seal. This is a collection of checksums or hashes of the various parts of the code, created by the code signing software. The seal can be used at verification time to detect alterations.
+- A digital signature. The code signing software encrypts the seal using the signer’s identity to create a digital signature. This guarantees the seal’s integrity.
+- Code requirements. These are the rules governing verification of the code signature. Depending on the goals, some are inherent to the verifier, while others are specified by the signer and sealed with the rest of the code.
+
+Learn more:
+
+- [Code Signing Guide (Archived Apple Developer Documentation)](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html)
+- [Code Signing (Apple Developer Documentation)](https://developer.apple.com/support/code-signing/)
+- [Demystifying iOS Code Signature](https://medium.com/csit-tech-blog/demystifying-ios-code-signature-309d52c2ff1d)
+
 ### Encryption and Data Protection
 
 _FairPlay Code Encryption_ is applied to apps downloaded from the App Store. FairPlay was developed as a DRM when purchasing multimedia content. Originally, FairPlay encryption was applied to MPEG and QuickTime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, or Apple ID, a public/private key pair will be created and assigned to your account. The private key is securely stored on your device. This means that FairPlay-encrypted code can be decrypted only on devices associated with your account. Reverse FairPlay encryption is usually obtained by running the app on the device, then dumping the decrypted code from memory (see also "Basic Security Testing on iOS").

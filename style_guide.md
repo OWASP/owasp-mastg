@@ -152,7 +152,7 @@ Use the following common contractions:
 - there is -> there's  
 - was not -> wasn't  
 - were not -> weren't  
-- will not -> wont  
+- will not -> won't  
 - would not -> wouldn't  
 - you are -> you're  
 - you have + *verb* -> you've + *verb*

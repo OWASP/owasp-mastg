@@ -1031,7 +1031,7 @@ As detailed in section [Reviewing Disassembled Native Code](#reviewing-disassemb
 
 [jnitrace](https://github.com/chame1eon/jnitrace "jnitrace") is a Frida based tool similar to frida-trace which specifically targets the usage of Android's JNI API by native libraries, providing a convenient way to obtain JNI method traces including arguments and return values.
 
-You can easily install it by running `pip install jnitrace` and run it straightaway as follows:
+You can easily install it by running `pip install jnitrace` and run it straight away as follows:
 
 ```bash
 $ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
@@ -1216,18 +1216,21 @@ You need to perform several steps to initialize Angr's symbolic execution engine
 The final solution script is presented below:
 
 ```python
-import angr
-import claripy
+import angr # Version: 9.2.2
 import base64
 
 load_options = {}
 
 b = angr.Project("./validate", load_options = load_options)
-
 # The key validation function starts at 0x401760, so that's where we create the initial state.
 # This speeds things up a lot because we're bypassing the Base32-encoder.
 
-state = b.factory.blank_state(addr=0x401760)
+options = {
+    angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+    angr.options.ZERO_FILL_UNCONSTRAINED_REGISTERS,
+}
+
+state = b.factory.blank_state(addr=0x401760, add_options=options)
 
 simgr = b.factory.simulation_manager(state)
 simgr.explore(find=0x401840, avoid=0x401854)
@@ -1238,7 +1241,7 @@ found = simgr.found[0]
 
 # Get the solution string from *(R11 - 0x20).
 
-addr = found.memory.load(found.regs.r11 - 0x20, endness='Iend_LE')
+addr = found.memory.load(found.regs.r11 - 0x20, 1, endness="Iend_LE")
 concrete_addr = found.solver.eval(addr)
 solution = found.solver.eval(found.memory.load(concrete_addr,10), cast_to=bytes)
 print(base64.b32encode(solution))
@@ -1257,12 +1260,13 @@ Also, it may appear as if the script is simply reading the solution string from 
 Running this script should return the following output:
 
 ```bash
-(angr) $ python solve.py
-WARNING | cle.loader | The main binary is a position-independent executable.
-It is being loaded with a base address of 0x400000.
+$ python3 solve.py
+WARNING | ... | cle.loader | The main binary is a position-independent executable. It is being loaded with a base address of 0x400000.
 
-b'ABGAATYAJQAFUABB'
+b'JACE6ACIARNAAIIA'
 ```
+
+Now you can run the validate binary in your Android device to verify the solution as indicated [here](../Crackmes/README.md#android-license-validator).
 
 > You may obtain different solutions using the script, as there are multiple valid license keys possible.
 

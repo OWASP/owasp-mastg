@@ -326,6 +326,10 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 > A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
 
+You should check if the app relies on static responses from the remote endpoint such as `"message":"Success"` to grant access to app internal sensitive data or functions. If that's the case, an attacker could easily bypass the 2FA implementation by manipulating the server response e.g. by using an interception proxy such as [Burp Suite](0x08-Testing-Tools.md#burp-suite) and modifying the response to be `"message":"Success"`.
+
+To prevent these kind of attacks, the application should always verify some kind of user token or other dynamic information related to the user that was previously securely stored (e.g. in the Keychain/KeyStore).
+
 Consult the [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/01-Testing_for_Session_Management_Schema "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
 ## Testing Stateless (Token-Based) Authentication (MSTG-AUTH-3)
@@ -532,7 +536,7 @@ For additional best practices and detailed information please refer to the follo
 
 ## Testing Login Activity and Device Blocking (MSTG-AUTH-11)
 
-For applications which require L2 protection, the MASVS states that they should inform the user about all login activities within the app with the possiblity of blocking certain devices. This can be broken down into various scenarios:
+For applications which require L2 protection, the MASVS states that they should inform the user about all login activities within the app with the possibility of blocking certain devices. This can be broken down into various scenarios:
 
 1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification.
 2. The application provides an overview of the last session after login. If the previous session was with a different configuration (e.g. location, device, app-version) compared to the current configuration, then the user should have the option to report suspicious activities and block devices used in the previous session.
@@ -555,7 +559,7 @@ The application can provide a list of activities history which will be updated a
 
 Paid content requires special care, and additional meta-information (e.g., operation cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
 
-In addition, non-repudiation mechanisms should be applied to sensitive transactions (e.g. payed content access, given consent to Terms and Conditions clauses, etc.) in order to prove that a specific transaction was in fact performed (integrity) and by whom (authentication).
+In addition, non-repudiation mechanisms should be applied to sensitive transactions (e.g. paid content access, given consent to Terms and Conditions clauses, etc.) in order to prove that a specific transaction was in fact performed (integrity) and by whom (authentication).
 
 In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested.
 In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.
