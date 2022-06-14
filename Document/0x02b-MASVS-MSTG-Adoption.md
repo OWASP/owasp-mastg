@@ -2,28 +2,6 @@
 
 The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions.
 
-## Mobile Platform Providers
-
-<table>
-<tr>
-<td width="600px">
-
-### Google Android
-
-Since 2021 Google has shown their support for the OWASP Mobile Security project (MSTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
-
-With MASA, Google has acknowledged the importance of leveraging a globally recognized standard for mobile app security to the mobile app ecosystem. Developers can work directly with an Authorized Lab partner to initiate a security assessment. Google will recognize developers who have had their applications independently validated against a set of MASVS Level 1 requirements and will showcase this on their Data safety section.
-
-We thank Google, the ADA and all its members for their support and for their excellent work on protecting the mobile app ecosystem.
-
-</td>
-<td width="400px" valign="top">
-<img width="400px" src="Images/Other/android-logo.png"/>
-</td>
-
-</tr>
-</table>
-
 ## Governmental Institutions
 
 | Name | Document | Year |
