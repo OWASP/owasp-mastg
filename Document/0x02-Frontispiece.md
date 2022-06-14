@@ -14,6 +14,10 @@ OWASP thanks the many authors, reviewers, and editors for their hard work in dev
 
 The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MSTG-Adoption.md).
 
+<a href="0x02b-MASVS-MSTG-Adoption.md">
+<img src="Images/Other/trusted-by-logos.png"/>
+</a>
+
 ## Disclaimer
 
 Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG.
