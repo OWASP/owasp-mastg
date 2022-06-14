@@ -6,7 +6,7 @@ The OWASP MASVS and MSTG are trusted by the following platform providers and sta
 
 ### Google Android
 
-<img align="right" width="400px" src="Images/Other/android-logo.png"/>
+<img width="300px" src="Images/Other/android-logo.png"/>
 
 Since 2021 Google has shown their support for the OWASP Mobile Security project (MSTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
 
@@ -18,7 +18,7 @@ We thank Google, the ADA and all its members for their support and for their exc
 
 ### NIST (National Institute of Standards and Technology, United States)
 
-<img align="right" width="300px" src="Images/Other/nist-logo.png"/>
+<img width="250px" src="Images/Other/nist-logo.png"/>
 
 The [National Institute of Standards and Technology (NIST)](https://www.nist.gov/about-nist) was founded in 1901 and is now part of the U.S. Department of Commerce. NIST is one of the nation's oldest physical science laboratories. Congress established the agency to remove a major challenge to U.S. industrial competitiveness at the time — a second-rate measurement infrastructure that lagged behind the capabilities of the United Kingdom, Germany and other economic rivals.
 
@@ -27,7 +27,7 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 ### BSI (Bundesamt für Sicherheit in der Informationstechnik, Germany)
 
-<img align="right" width="300px" src="Images/Other/bsi-logo.png"/>
+<img width="250px" src="Images/Other/bsi-logo.png"/>
 
 BSI stands for "Federal Office for Information Security", it has the goal to promote IT security in Germany and is the central IT security service provider for the federal government.
 
@@ -36,7 +36,7 @@ BSI stands for "Federal Office for Information Security", it has the goal to pro
 
 ### ioXt
 
-<img align="right" width="300px" src="Images/Other/ioxt-logo.png"/>
+<img width="250px" src="Images/Other/ioxt-logo.png"/>
 
 The mission of the [ioXt Alliance](https://www.ioxtalliance.org/) is to build confidence in Internet of Things products through multi-stakeholder, international, harmonized, and standardized security and privacy requirements, product compliance programs, and public transparency of those requirements and programs.
 
