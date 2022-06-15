@@ -54,7 +54,7 @@ ${PANDOC} \
 
 # PDF
 ${PANDOC} \
-  --from raw_html \
+  --from markdown+raw_html \
   --template=${LATEX_TEMPLATE} \
   --pdf-engine=xelatex \
   --columns 50 \
