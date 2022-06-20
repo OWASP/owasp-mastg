@@ -17,7 +17,13 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - ⚡ [Contribute!](#how-to-contribute)
 - 💥 [Play with our Crackmes](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md)
 
-> The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users' document listing some of the adopters](Users.md).
+## Trusted by ...
+
+The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](Document/0x02b-MASVS-MSTG-Adoption.md).
+
+<a href="Document/0x02b-MASVS-MSTG-Adoption.md">
+<img src="Document/Images/Other/trusted-by-logos.png"/>
+</a>
 
 ## Connect with Us
 
@@ -81,6 +87,7 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 
 - [Foreword](Document/0x01-Foreword.md)
 - [Frontispiece](Document/0x02-Frontispiece.md)
+- [OWASP MASVS and MSTG Adoption](Document/0x02b-MASVS-MSTG-Adoption.md)
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
