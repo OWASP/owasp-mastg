@@ -24,7 +24,7 @@ PANDOCKER="docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} ${PANDOC_PARAMS}
 docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i "s#<!-- \(.*\) -->#\1#g" Document/*.md'
 
 # convert HTML images to pandoc markdown images
-docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i -f tools/docker/imagereplace.sed Document/*.md'
+docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i -f tools/docker/imagereplace.sed Document/0x*.md'
 
 # Use pandocker PANDOCKER by default, unless `export PANDOC=pandoc`
 # this is useful for CI, because we can run the script directly inside the container
