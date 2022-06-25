@@ -350,7 +350,7 @@ $ class-dump Telegram
 
 In order to retrieve the unencrypted version, you can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") (all iOS versions) or [Clutch](0x08-Testing-Tools.md#clutch) (only up to iOS 11; for iOS 12 and above, it requires a patch). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and frida-ios-dump can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary.
 
-**IMPORTANT NOTE:** In the United States, the Digital Millennium Copyright Act 17 U.S.C. 1201, or DMCA, makes it illegal and actionable to circumvent certain types of DRM. However, the DMCA also provides exemptions, such as for certain kinds of security research. A qualified attorney can help you determine if your research qualifies under the DMCA exemptions. (Source: [Corellium](https://support.corellium.com/en/articles/6181345-testing-third-party-ios-apps))
+>**IMPORTANT NOTE:** In the United States, the Digital Millennium Copyright Act 17 U.S.C. 1201, or DMCA, makes it illegal and actionable to circumvent certain types of DRM. However, the DMCA also provides exemptions, such as for certain kinds of security research. A qualified attorney can help you determine if your research qualifies under the DMCA exemptions. (Source: [Corellium](https://support.corellium.com/en/articles/6181345-testing-third-party-ios-apps))
 
 ##### Using Clutch
 
