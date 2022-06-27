@@ -1218,8 +1218,8 @@ If the option has not been set, the application is vulnerable to screen capturin
 
 While black-box testing the app, navigate to any screen that contains sensitive information and click the home button to send the app to the background, then press the app switcher button to see the snapshot. As shown below, if `FLAG_SECURE` is set (left image), the snapshot will be empty; if the flag has not been set (right image), activity information will be shown:
 
-![OWASP MSTG](Images/Chapters/0x05d/2.png) \
-![OWASP MSTG](Images/Chapters/0x05d/1.png) \
+<img src="Images/Chapters/0x05d/2.png" width="200px" />
+<img src="Images/Chapters/0x05d/1.png" width="200px" />
 
 On devices supporting [file-based encryption (FBE)](https://source.android.com/security/encryption/file-based "FBE"), snapshots are stored in the `/data/system_ce/<USER_ID>/<IMAGE_FOLDER_NAME>` folder. `<IMAGE_FOLDER_NAME>` depends on the vendor but most common names are `snapshots` and `recent_images`. If the device doesn't support FBE, the `/data/system/<IMAGE_FOLDER_NAME>` folder is used.
 
@@ -1566,11 +1566,11 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 For rudimentary analysis, you can use Android Studio's built-in tools. They are on the _Android Monitor_ tab. To dump memory, select the device and app you want to analyze and click _Dump Java Heap_. This will create a _.hprof_ file in the _captures_ directory, which is on the app's project path.
 
-![OWASP MSTG](Images/Chapters/0x05d/Dump_Java_Heap.png) \
+<img src="Images/Chapters/0x05d/Dump_Java_Heap.png" width="100%" />
 
 To navigate through class instances that were saved in the memory dump, select the Package Tree View in the tab showing the _.hprof_ file.
 
-![OWASP MSTG](Images/Chapters/0x05d/Package_Tree_View.png) \
+<img src="Images/Chapters/0x05d/Package_Tree_View.png" width="100%" />
 
 For more advanced analysis of the memory dump, use the [Eclipse Memory Analyzer Tool (MAT)](https://eclipse.org/mat/downloads.php "Eclipse Memory Analyzer Tool"). It is available as an Eclipse plugin and as a standalone application.
 

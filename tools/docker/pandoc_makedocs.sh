@@ -6,6 +6,9 @@ set -eo pipefail
 FOLDER=${1:-Document}
 VERSION=${2:-SNAPSHOT}
 
+rm -rf build
+cp -R $FOLDER "build"
+
 # You can also use the environment variables below to adapt the build process
 IMG=${IMG:-dalibo/pandocker}
 TAG=${TAG:-21.02} # /!\ use stable-full for non-european languages
@@ -13,7 +16,7 @@ LATEX_TEMPLATE=${LATEX_TEMPLATE:-eisvogel}
 TITLE=${TITLE:-OWASP Mobile Security Testing Guide ${VERSION}}
 
 PANDOC_PARAMS=${PANDOC_PARAMS:-}
-PANDOC_PARAMS+="--resource-path=.:${FOLDER} "
+PANDOC_PARAMS+="--resource-path=.:build "
 PANDOC_PARAMS+="--metadata version=${VERSION} "
 
 [ ! -z "${VERBOSE}" ] && PANDOC_PARAMS+="--verbose "
@@ -21,18 +24,17 @@ PANDOC_PARAMS+="--metadata version=${VERSION} "
 PANDOCKER="docker run --rm --volume `pwd`:/pandoc ${IMG}:${TAG} ${PANDOC_PARAMS}"
 
 # remove the HTML comment from \pagebreak
-docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i "s#<!-- \(.*\) -->#\1#g" Document/*.md'
+docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i "s#<!-- \(.*\) -->#\1#g" build/*.md'
 
 # convert HTML images to pandoc markdown images
-docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i -f tools/docker/imagereplace.sed Document/0x*.md'
+docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c 'sed -i -f tools/docker/imagereplace.sed build/0x*.md'
 
 # Use pandocker PANDOCKER by default, unless `export PANDOC=pandoc`
 # this is useful for CI, because we can run the script directly inside the container
 PANDOC=${PANDOC:-${PANDOCKER}}
 
-
-METADATA="Document/metadata.md ${FOLDER}/metadata.md"
-CHAPTERS="${FOLDER}/0x*.md ${FOLDER}/CHANGELOG.md"
+METADATA="build/metadata.md"
+CHAPTERS="build/0x*.md build/CHANGELOG.md"
 OUTPUT_BASE_NAME="OWASP_MSTG-${VERSION}"
 
 [ ! -z "${VERBOSE}" ] && echo "Create PDF"
@@ -99,3 +101,4 @@ ${PANDOC} \
 
 # clean temp files
 rm -f tmp_latex-header.latex tmp_cover.latex tmp_first_page.latex
+rm -rf build
