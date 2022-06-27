@@ -1096,10 +1096,10 @@ libc++.1.dylib                    0x1847c0000  368640 (360.0 KiB)    /usr/lib/li
 
 In-memory search is a very useful technique to test for sensitive data that might be present in the app memory.
 
-See r2frida's help on the search command (`/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
+See r2frida's help on the search command (`\/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
 
 ```bash
-[0x00000000]> /?
+[0x00000000]> \/?
  /      search
  /j     search json
  /w     search wide
@@ -1109,7 +1109,7 @@ See r2frida's help on the search command (`/?`) to learn about the search comman
 ...
 ```
 
-You can adjust your search by using the search settings `\e search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
+You can adjust your search by using the search settings `\e~search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
 
 ```bash
 [0x00000000]> \e search
@@ -1120,7 +1120,7 @@ e search.quiet=false
 For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know should be located in the main binary of the app:
 
 ```bash
-[0x00000000]> / iGoat
+[0x00000000]> \/ iGoat
 Searching 5 bytes: 69 47 6f 61 74
 Searching 5 bytes in [0x0000000100b7c000-0x0000000100de0000]
 ...
@@ -1145,7 +1145,7 @@ As expected, you are located in the region of the main iGoat-Swift binary (r-x, 
 Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the iGoat-Swift app and navigate in the menu to **Authentication** -> **Remote Authentication** -> **Start**. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on **Login** just yet. Perform the following two steps.
 
 ```bash
-[0x00000000]> / owasp-mstg
+[0x00000000]> \/ owasp-mstg
 hits: 1
 0x1c06619c0 hit3_0 owasp-mstg
 ```
