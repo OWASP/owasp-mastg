@@ -808,6 +808,13 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
+This installs the certificate in the user certificate store (Tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
+
+1. Run adb as root with `adb root` and `adb shell`.
+2. Locate the newly installed certificate at `/data/misc/user/0/cacerts-added/`.
+3. Copy the certificate to the following folder `/system/etc/security/cacerts/`.
+4. Reboot the Android VM.
+
 For Android 7.0 (API level 24) and above follow the same procedure described in the "[Bypassing the Network Security Configuration](#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" section.
 
 #### Interception Proxy for a Physical Device
