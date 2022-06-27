@@ -1112,7 +1112,7 @@ See r2frida's help on the search command (`\/?`) to learn about the search comma
 You can adjust your search by using the search settings `\e~search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
 
 ```bash
-[0x00000000]> \e search
+[0x00000000]> \e~search
 e search.in=perm:r--
 e search.quiet=false
 ```
