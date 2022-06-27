@@ -24,11 +24,11 @@ If you have a license for IDA Pro, you can analyze the app binary using IDA Pro 
 
 To get started, simply open the app binary in IDA Pro.
 
-![IDA Pro open a Mach-O file](Images/Chapters/0x06c/ida_macho_import.png) \
+<img src="Images/Chapters/0x06c/ida_macho_import.png" width="100%" />
 
 Upon opening the file, IDA Pro will perform auto-analysis, which can take a while depending on the size of the binary. Once the auto-analysis is completed you can browse the disassembly in the **IDA View** (Disassembly) window and explore functions in the **Functions** window, both shown in the screenshot below.
 
-![IDA Pro main window](Images/Chapters/0x06c/ida_main_window.png) \
+<img src="Images/Chapters/0x06c/ida_main_window.png" width="100%" />
 
 A regular IDA Pro license does not include a decompiler by default and requires an additional license for the Hex-Rays decompiler, which is expensive. In contrast, Ghidra comes with a very capable free builtin decompiler, making it a compelling alternative to use for reverse engineering.
 
@@ -150,11 +150,11 @@ In addition to the techniques learned in the "[Disassembling and Decompiling](#d
 
 We will be using the [UnCrackable Level 1 crackme app](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/iOS/Level_01/UnCrackable_Level1.ipa "UnCrackable Level 1 iOS App"), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_app_home_screen2.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_app_home_screen2.png" width="400px" />
 
 When the user inputs the wrong string, the application shows a pop-up with the "Verification Failed" message.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_app_wrong_input.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_app_wrong_input.png" width="400px" />
 
 You can keep note of the strings displayed in the pop-up, as this might be helpful when searching for the code where the input is processed and a decision is being made. Luckily, the complexity and interaction with this application is straightforward, which bodes well for our reversing endeavors.
 
@@ -162,11 +162,11 @@ You can keep note of the strings displayed in the pop-up, as this might be helpf
 
 We can start by checking the strings present in the binary by opening it in Ghidra. The listed strings might be overwhelming at first, but with some experience in reversing Objective-C code, you'll learn how to _filter_ and discard the strings that are not really helpful or relevant. For instance, the ones shown in screenshot below, which are generated for the Objective-C runtime. Other strings might be helpful in some cases, such as those containing symbols (function names, class names, etc.) and we'll be using them when performing static analysis to check if some specific function is being used.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_objc_runtime_strings.png" width="100%" />
 
 If we continue our careful analysis, we can spot the string, "Verification Failed", which is used for the pop-up when a wrong input is given. If you follow the cross-references (Xrefs) of this string, you will reach `buttonClick` function of the `ViewController` class. We will look into the `buttonClick` function later in this section. When further checking the other strings in the application, only a few of them look a likely candidate for a _hidden flag_. You can try them and verify as well.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_ghidra_strings.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_strings.png" width="100%" />
 
 Moving forward, we have two paths to take. Either we can start analyzing the `buttonClick` function identified in the above step, or start analyzing the application from the various entry points. In real world situation, most times you will be taking the first path, but from a learning perspective, in this section we will take the latter path.
 
@@ -181,13 +181,13 @@ Once we're done with the analysis of all the functions in the `AppDelegate` clas
 
 Luckily the current application has a small code base, and we can find another `ViewController` class in the **Symbol Tree** view. In this class, function `viewDidLoad` function looks interesting. If you check the documentation of [`viewDidLoad`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621495-viewdidload "viewDidLoad()"), you can see that it can also be used to perform additional initialization on views.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_viewdidload_decompile.png" width="600px" />
 
 If we check the decompilation of this function, there are a few interesting things going on. For instance, there is a call to a native function at line 31 and a label is initialized with a `setHidden` flag set to 1 in lines 27-29. You can keep a note of these observations and continue exploring the other functions in this class. For brevity, exploring the other parts of the function is left as an exercise for the readers.
 
 In our first step, we observed that the application verifies the input string only when the UI button is pressed. Thus, analyzing the `buttonClick` function is an obvious target. As earlier mentioned, this function also contains the string we see in the pop-ups. At line 29 a decision is being made, which is based on the result of `isEqualString` (output saved in `uVar1` at line 23). The input for the comparison is coming from the text input field (from the user) and the value of the `label`. Therefore, we can assume that the hidden flag is stored in that label.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_buttonclick_decompiled.png" width="600px" />
 
 Now we have followed the complete flow and have all the information about the application flow. We also concluded that the hidden flag is present in a text label and in order to determine the value of the label, we need to revisit `viewDidLoad` function, and understand what is happening in the native function identified. Analysis of the native function is discussed in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")".
 
@@ -207,7 +207,7 @@ Decompilers can help us in analyzing native code, but they should be used with c
 
 We will be analyzing the native function identified in `viewDidLoad` function in the previous section. The function is located at offset 0x1000080d4. The return value of this function used in the `setText` function call for the label. This text is used to compare against the user input. Thus, we can be sure that this function will be returning a string or equivalent.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
 
 The first thing we can see in the disassembly of the function is that there is no input to the function. The registers X0-X7 are not read throughout the function. Also, there are multiple calls to other functions like the ones at 0x100008158, 0x10000dbf0 etc.
 
@@ -226,7 +226,7 @@ The return value from the function (found in W0), is stored to the address in re
 
 To determine the value of the hidden flag we need to know the return value of each of the subsequent function calls identified above. When analyzing the function 0x100006fb4, we can observe that this function is much bigger and more complex than the previous one we analyzed. Function graphs can be very helpful when analyzing complex functions, as it helps into better understanding the control flow of the function. Function graphs can be obtained in Ghidra by clicking the **Display function graph** icon in the sub-menu.
 
-![Function graph from 0x100006fb4](Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_function_graph.png" width="100%" />
 
 Manually analyzing all the native functions completely will be time consuming and might not be the wisest approach. In such a scenario using a dynamic analysis approach is highly recommended. For instance, by using the techniques like hooking or simply debugging the application, we can easily determine the returned values. Normally it's a good idea to use a dynamic analysis approach and then fallback to manually analyzing the functions in a feedback loop. This way you can benefit from both approaches at the same time while saving time and reducing effort. Dynamic analysis techniques are discussed in "[Dynamic Analysis](#dynamic-analysis "Dynamic Analysis")" section.
 
@@ -520,15 +520,15 @@ The final breakpoint address to be used in the debugger is the sum of the above 
 
 When a binary is opened in a disassembler like Ghidra, it loads a binary by emulating the respective operating system's loader. The address at which the binary is loaded is called _image base address_. All the code and symbols inside this binary can be addressed using a constant address offset from this image base address. In Ghidra, the image base address can be obtained by determining the address of the start of a Mach-O file. In this case, it is 0x100000000.
 
-![Obtaining image base address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_image_base_address.png "Obtaining image base address using Ghidra") \
+<img src="Images/Chapters/0x06c/debugging_ghidra_image_base_address.png" width="100%" />
 
 From our previous analysis of the UnCrackable Level 1 application in "[Manual (Reversed) Code Review](#manual-reversed-code-review)" section, the value of the hidden string is stored in a label with the `hidden` flag set. In the disassembly, the text value of this label is stored in register `X21`, stored via `mov` from `X0`, at offset 0x100004520. This is our _breakpoint offset_.
 
-![Breakpoint address using Ghidra](Images/Chapters/0x06c/debugging_ghidra_breakpoint.png "Breakpoint address using Ghidra") \
+<img src="Images/Chapters/0x06c/debugging_ghidra_breakpoint.png" width="100%" />
 
 For the second address, we need to determine the _ASLR shift offset_ for a given process. The ASLR offset can be determined by using the LLDB command `image list -o -f`. The output is shown in the screenshot below.
 
-![Process image list](Images/Chapters/0x06c/debugging_lldb_image_list.png "Process image list") \
+<img src="Images/Chapters/0x06c/debugging_lldb_image_list.png" width="100%" />
 
 In the output, the first column contains the sequence number of the image ([X]), the second column contains the randomly generated ASLR offset, while 3rd column contains the full path of the image and towards the end, content in the bracket shows the image base address after adding ASLR offset to the original image base address (0x100000000 + 0x70000 = 0x100070000). You will notice the image base address of 0x100000000 is same as in Ghidra. Now, to obtain the effective memory address for a code location we only need to add ASLR offset to the address identified in Ghidra. The effective address to set the breakpoint will be 0x100004520 + 0x70000 = 0x100074520. The breakpoint can be set using command `b 0x100074520`.
 
@@ -536,7 +536,7 @@ In the output, the first column contains the sequence number of the image ([X]),
 
 After putting the breakpoint and running the app, the execution will be halted once the breakpoint is hit. Now you can access and explore the current state of the process. In this case, you know from the previous static analysis that the register `X0` contains the hidden string, thus let's explore it. In LLDB you can print Objective-C objects using the `po` (_print object_) command.
 
-![Setting breakpoint in LLDB](Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png "Setting breakpoint in LLDB") \
+<img src="Images/Chapters/0x06c/debugging_lldb_breakpoint_solution.png" width="100%" />
 
 Voila, the crackme can be easily solved aided by static analysis and a debugger. There are plethora of features implemented in LLDB, including changing the value of the registers, changing values in the process memory and even [automating tasks using Python scripts](https://lldb.llvm.org/use/python.html "LLDB - Python Scripting").
 
@@ -618,7 +618,7 @@ To use Unicorn's _full power_, we would need to implement all the necessary infr
 
 While performing manual analysis in "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" section, we determined that the function at address 0x1000080d4 is responsible for dynamically generating the secret string. As we're about to see, all the necessary code is pretty much self-contained in the binary, making this a perfect scenario to use a CPU emulator like Unicorn.
 
-![OWASP MSTG](Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png) \
+<img src="Images/Chapters/0x06c/manual_reversing_ghidra_native_disassembly.png" width="100%" />
 
 If we analyze that function and the subsequent function calls, we will observe that there is no hard dependency on any external library and neither it's performing any system calls. The only access external to the functions occurs for instance at address 0x1000080f4, where a value is being stored to address 0x10000dbf0, which maps to the `__data` section.
 
@@ -823,7 +823,7 @@ PID  Name
 499  Gadget
 ```
 
-![Frida on non-JB device](Images/Chapters/0x06b/fridaStockiOS.png "Frida on non-JB device") \
+<img src="Images/Chapters/0x06b/fridaStockiOS.png" width="100%" />
 
 When something goes wrong (and it usually does), mismatches between the provisioning profile and code-signing header are the most likely causes. Reading the [official documentation](https://developer.apple.com/support/code-signing/ "Code Signing") helps you understand the code-signing process. Apple's [entitlement troubleshooting page](https://developer.apple.com/library/content/technotes/tn2415/_index.html "Entitlements Troubleshooting") is also a useful resource.
 
@@ -1013,7 +1013,7 @@ sys.stdin.read()
 
 Start Safari on the iOS device. Run the above Python script on your connected host and open the device log (as explained in the section "Monitoring System Logs" from the chapter "iOS Basic Security Testing"). Try opening a new URL in Safari, e.g. <https://github.com/OWASP/owasp-mstg>; you should see Frida's output in the logs as well as in your terminal.
 
-![Frida Xcode Log](Images/Chapters/0x06c/frida-xcode-log.png) \
+<img src="Images/Chapters/0x06c/frida-xcode-log.png" width="100%" />
 
 Of course, this example illustrates only one of the things you can do with Frida. To unlock the tool's full potential, you should learn to use its [JavaScript API](https://www.frida.re/docs/javascript-api/ "Frida JavaScript API reference"). The documentation section of the Frida website has a [tutorial](https://www.frida.re/docs/ios/ "Frida Tutorial") and [examples](https://www.frida.re/docs/examples/ios/ "Frida examples") for using Frida on iOS.
 
@@ -1096,10 +1096,10 @@ libc++.1.dylib                    0x1847c0000  368640 (360.0 KiB)    /usr/lib/li
 
 In-memory search is a very useful technique to test for sensitive data that might be present in the app memory.
 
-See r2frida's help on the search command (`\/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
+See r2frida's help on the search command (`/?`) to learn about the search command and get a list of options. The following shows only a subset of them:
 
 ```bash
-[0x00000000]> \/?
+[0x00000000]> /?
  /      search
  /j     search json
  /w     search wide
@@ -1109,18 +1109,18 @@ See r2frida's help on the search command (`\/?`) to learn about the search comma
 ...
 ```
 
-You can adjust your search by using the search settings `\e~search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
+You can adjust your search by using the search settings `\e search`. For example, `\e search.quiet=true;` will print only the results and hide search progress:
 
 ```bash
-[0x00000000]> \e~search
+[0x00000000]> \e search
 e search.in=perm:r--
 e search.quiet=false
 ```
 
-For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know it should be located in the main binary of the app:
+For now, we'll continue with the defaults and concentrate on string search. In this first example, you can start by searching for something that you know should be located in the main binary of the app:
 
 ```bash
-[0x00000000]> \/ iGoat
+[0x00000000]> / iGoat
 Searching 5 bytes: 69 47 6f 61 74
 Searching 5 bytes in [0x0000000100b7c000-0x0000000100de0000]
 ...
@@ -1145,7 +1145,7 @@ As expected, you are located in the region of the main iGoat-Swift binary (r-x, 
 Now, for this second example, you can search for something that's not in the app binary nor in any loaded library, typically user input. Open the iGoat-Swift app and navigate in the menu to **Authentication** -> **Remote Authentication** -> **Start**. There you'll find a password field that you can overwrite. Write the string "owasp-mstg" but do not click on **Login** just yet. Perform the following two steps.
 
 ```bash
-[0x00000000]> \/ owasp-mstg
+[0x00000000]> / owasp-mstg
 hits: 1
 0x1c06619c0 hit3_0 owasp-mstg
 ```
@@ -1160,12 +1160,12 @@ In fact, the string could be found at address `0x1c06619c0`. Seek `s` to there a
 
 Now you know that the string is located in a rw- (read and write) region of the memory map.
 
-Additionally, you can search for occurrences of the [wide version of the string](https://en.wikipedia.org/wiki/Wide_character "Wide character") (`\/w`) and, again, check their memory regions:
+Additionally, you can search for occurrences of the [wide version of the string](https://en.wikipedia.org/wiki/Wide_character "Wide character") (`/w`) and, again, check their memory regions:
 
 > This time we run the `\dm.` command for all `@@` hits matching the glob `hit5_*`.
 
 ```bash
-[0x00000000]> \/w owasp-mstg
+[0x00000000]> /w owasp-mstg
 Searching 20 bytes: 6f 00 77 00 61 00 73 00 70 00 2d 00 6d 00 73 00 74 00 67 00
 Searching 20 bytes in [0x0000000100708000-0x000000010096c000]
 ...

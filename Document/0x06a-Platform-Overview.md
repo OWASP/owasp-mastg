@@ -33,7 +33,7 @@ The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-![OWASP MSTG](Images/Chapters/0x06a/iOS_Security_Architecture.png) \
+<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" width="200px" />
 
 ### Hardware Security
 
@@ -56,7 +56,7 @@ Apple has implemented an elaborate DRM system to make sure that only Apple-appro
 A developer profile and an Apple-signed certificate are required to deploy and run an application.
 Developers need to register with Apple, join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription to get the full range of development and deployment possibilities. There's also a free developer account that allows you to compile and deploy apps (but not distribute them in the App Store) via sideloading.
 
-![OWASP MSTG](Images/Chapters/0x06a/code_signing.png) \
+<img src="Images/Chapters/0x06a/code_signing.png" width="400px" />
 
 According to the [Archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/AboutCS/AboutCS.html#//apple_ref/doc/uid/TP40005929-CH3-SW3) the code signature consists of three parts:
 
@@ -141,7 +141,7 @@ A language.lproj folder exists for each language that the application supports. 
 - A storyboard is a visual representation of the iOS application's user interface. It shows screens and the connections between those screens.
 - The strings file format consists of one or more key-value pairs and optional comments.
 
-![OWASP MSTG](Images/Chapters/0x06a/iOS_project_folder.png) \
+<img src="Images/Chapters/0x06a/iOS_project_folder.png" width="400px" />
 
 On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g. [TestFlight](https://developer.apple.com/testflight/ "TestFlight") or [Visual Studio App Center](https://appcenter.ms/ "Visual Studio App Center").
 
