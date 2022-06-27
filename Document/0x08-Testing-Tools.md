@@ -1420,7 +1420,7 @@ cy# [alertView show]
 cy# [alertView release]
 ```
 
-<img src="Images/Chapters/0x06c/cycript_sample.png" width="100%" />
+<img src="Images/Chapters/0x06c/cycript_sample.png" width="400px" />
 
 Find the app's document directory with Cycript:
 
