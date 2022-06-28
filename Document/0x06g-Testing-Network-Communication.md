@@ -56,7 +56,7 @@ ATS restrictions can be disabled by configuring exceptions in the Info.plist fil
 - disable PFS or
 - allow connections to local domains.
 
-ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the `[NSAppTransportSecurity](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "API Reference NSAppTransportSecurity")` dictionary.
+ATS exceptions can be applied globally or per domain basis. The application can globally disable ATS, but opt in for individual domains. The following listing from Apple Developer documentation shows the structure of the [`NSAppTransportSecurity`](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/plist/info/NSAppTransportSecurity "API Reference NSAppTransportSecurity") dictionary.
 
 ```objectivec
 NSAppTransportSecurity : Dictionary {
@@ -81,7 +81,7 @@ Source: [Apple Developer Documentation](https://developer.apple.com/library/cont
 The following table summarizes the global ATS exceptions. For more information about these exceptions, please refer to [table 2 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW34 "App Transport Security dictionary primary keys").
 
 |  Key | Description |
-| -----| ------------|
+| --------------| ------------|
 | `NSAllowsArbitraryLoads` | Disable ATS restrictions globally excepts for individual domains specified under `NSExceptionDomains` |
 | `NSAllowsArbitraryLoadsInWebContent` | Disable ATS restrictions for all the connections made from web views |
 | `NSAllowsLocalNetworking` | Allow connection to unqualified domain names and .local domains |
@@ -90,7 +90,7 @@ The following table summarizes the global ATS exceptions. For more information a
 The following table summarizes the per-domain ATS exceptions. For more information about these exceptions, please refer to [table 3 in the official Apple developer documentation](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW44 "App Transport Security dictionary primary keys").
 
 |  Key | Description |
-| -----| ------------|
+| --------------| ------------|
 | `NSIncludesSubdomains` | Indicates whether ATS exceptions should apply to subdomains of the named domain |
 | `NSExceptionAllowsInsecureHTTPLoads` | Allows HTTP connections to the named domain, but does not affect TLS requirements |
 | `NSExceptionMinimumTLSVersion` | Allows connections to servers with TLS versions less than 1.2 |
@@ -165,7 +165,7 @@ The output above only shows the first few results of nscurl. A permutation of di
 
 > If there are any fails in the nscurl output, please change the server side configuration of TLS to make the serverside more secure, instead of weakening the configuration in ATS on the client.
 
-For more information on this topic please consult the [blog post by NowSecure on ATS](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
+For more information on ATS please consult this [blog post](https://www.nowsecure.com/blog/2017/08/31/security-analysts-guide-nsapptransportsecurity-nsallowsarbitraryloads-app-transport-security-ats-exceptions/ "A guide to ATS").
 
 In general it can be summarized:
 
@@ -222,40 +222,17 @@ Verify that the server certificate is pinned. Pinning can be implemented on vari
 2. Limiting certificate issuer to e.g. one entity and bundling the intermediate CA's public key into the application. In this way we limit the attack surface and have a valid certificate.
 3. Owning and managing your own PKI. The application would contain the intermediate CA's public key. This avoids updating the application every time you change the certificate on the server, due to e.g. expiration. Note that using your own CA would cause the certificate to be self-singed.
 
-The code presented below shows how it is possible to check if the certificate provided by the server matches the certificate stored in the app. The method below implements the connection authentication and tells the delegate that the connection will send a request for an authentication challenge.
+The latest approach recommended by Apple is to specify a pinned CA public key in the `Info.plist` file under App Transport Security Settings. You can find an example in their article [Identity Pinning: How to configure server certificates for your app](https://developer.apple.com/news/?id=g9ejcf8y "Identity Pinning: How to configure server certificates for your app").
 
-The delegate must implement `connection:canAuthenticateAgainstProtectionSpace:` and `connection: forAuthenticationChallenge`. Within `connection: forAuthenticationChallenge`, the delegate must call `SecTrustEvaluate` to perform customary X.509 checks. The snippet below implements a check of the certificate.
+Another common approach is to use the [`connection:willSendRequest ForAuthenticationChallenge:`](https://developer.apple.com/documentation/foundation/nsurlconnectiondelegate/1414078-connection?language=objc "connection:willSendRequestForAuthenticationChallenge:") method of `NSURLConnectionDelegate` to check if the certificate provided by the server is valid and matches the certificate stored in the app. You can find more details in the [HTTPS Server Trust Evaluation](https://developer.apple.com/library/archive/technotes/tn2232/_index.html#//apple_ref/doc/uid/DTS40012884-CH1-SECNSURLCONNECTION "HTTPS Server Trust Evaluation") technical note.
 
-```objectivec
+Note that if you compare local and remote certificates, you will have to update the app when the remote certificate changes. A fallback certificate can be stored in the app to make the transition smoother. Alternatively, the pin can be based on public-key comparison. Thus if the remote certificate changes, the public key stays the same.
 
-(void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
-  SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, 0);
-  NSData *remoteCertificateData = CFBridgingRelease(SecCertificateCopyData(certificate));
-  NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"MyLocalCertificate" ofType:@"cer"];
-  NSData *localCertData = [NSData dataWithContentsOfFile:cerPath];
-  The control below can verify if the certificate received by the server is matching the one pinned in the client.
-  if ([remoteCertificateData isEqualToData:localCertData]) {
-  NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
-  [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-}
-else {
-  [[challenge sender] cancelAuthenticationChallenge:challenge];
-}
-```
+The following third-party libraries include pinning functionality:
 
-Note that the certificate pinning example above has a major drawback when you use certificate pinning and the certificate changes, then the pin is invalidated. If you can reuse the public key of the server, then you can create a new certificate with that same public key, which will ease the maintenance. There are various ways in which you can do this:
-
-- Implement your own pin based on the public key: Change the comparison the following comparision in our example to a comparison of the key-bytes or the certificate-thumb:
-
-```objectivec
-if ([remoteCertificateData isEqualToData:localCertData]) {
-```
-
-- Use [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
-- Use [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
-- Use [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
+- [TrustKit](https://github.com/datatheorem/TrustKit "TrustKit"): here you can pin by setting the public key hashes in your Info.plist or provide the hashes in a dictionary. See their readme for more details.
+- [AlamoFire](https://github.com/Alamofire/Alamofire "AlamoFire"): here you can define a `ServerTrustPolicy` per domain for which you can define the pinning method.
+- [AFNetworking](https://github.com/AFNetworking/AFNetworking "AfNetworking"): here you can set an `AFSecurityPolicy` to configure your pinning.
 
 ### Dynamic Analysis
 

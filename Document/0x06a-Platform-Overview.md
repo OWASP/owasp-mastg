@@ -33,7 +33,7 @@ The [iOS security architecture](https://www.apple.com/business/docs/iOS_Security
 - Encryption and Data Protection
 - General Exploit Mitigations
 
-<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" alt="iOS Security Architecture" width="275" />
+<img src="Images/Chapters/0x06a/iOS_Security_Architecture.png" width="200px" />
 
 ### Hardware Security
 
@@ -56,6 +56,20 @@ Apple has implemented an elaborate DRM system to make sure that only Apple-appro
 A developer profile and an Apple-signed certificate are required to deploy and run an application.
 Developers need to register with Apple, join the [Apple Developer Program](https://developer.apple.com/support/compare-memberships/ "Membership for Apple Developer Program") and pay a yearly subscription to get the full range of development and deployment possibilities. There's also a free developer account that allows you to compile and deploy apps (but not distribute them in the App Store) via sideloading.
 
+<img src="Images/Chapters/0x06a/code_signing.png" width="400px" />
+
+According to the [Archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/AboutCS/AboutCS.html#//apple_ref/doc/uid/TP40005929-CH3-SW3) the code signature consists of three parts:
+
+- A seal. This is a collection of checksums or hashes of the various parts of the code, created by the code signing software. The seal can be used at verification time to detect alterations.
+- A digital signature. The code signing software encrypts the seal using the signer’s identity to create a digital signature. This guarantees the seal’s integrity.
+- Code requirements. These are the rules governing verification of the code signature. Depending on the goals, some are inherent to the verifier, while others are specified by the signer and sealed with the rest of the code.
+
+Learn more:
+
+- [Code Signing Guide (Archived Apple Developer Documentation)](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html)
+- [Code Signing (Apple Developer Documentation)](https://developer.apple.com/support/code-signing/)
+- [Demystifying iOS Code Signature](https://medium.com/csit-tech-blog/demystifying-ios-code-signature-309d52c2ff1d)
+
 ### Encryption and Data Protection
 
 _FairPlay Code Encryption_ is applied to apps downloaded from the App Store. FairPlay was developed as a DRM when purchasing multimedia content. Originally, FairPlay encryption was applied to MPEG and QuickTime streams, but the same basic concepts can also be applied to executable files. The basic idea is as follows: Once you register a new Apple user account, or Apple ID, a public/private key pair will be created and assigned to your account. The private key is securely stored on your device. This means that FairPlay-encrypted code can be decrypted only on devices associated with your account. Reverse FairPlay encryption is usually obtained by running the app on the device, then dumping the decrypted code from memory (see also "Basic Security Testing on iOS").
@@ -72,7 +86,7 @@ The [appsandbox](https://developer.apple.com/library/content/documentation/FileM
 
 Sandboxing has been a core security feature since the first release of iOS. All third-party apps run under the same user (`mobile`), and only a few system applications and services run as `root` (or other specific system users). Regular iOS apps are confined to a *container* that restricts access to the app's own files and a very limited number of system APIs. Access to all resources (such as files, network sockets, IPCs, and shared memory) are controlled by the sandbox. These restrictions work as follows [#levin]:
 
-- The app process is restricted to its own directory (under /var/mobile/Containers/Bundle/Application/ or /var/containers/Bundle/Application/, depending on the iOS version) via a chroot-like process.
+- The app process is restricted to its own directory (under /var/mobile/Containers/ Bundle/Application/ or /var/containers/Bundle/Application/, depending on the iOS version) via a chroot-like process.
 - The `mmap` and `mmprotect` system calls are modified to prevent apps from making writable memory pages executable and stopping processes from executing dynamically generated code. In combination with code signing and FairPlay, this strictly limits what code can run under specific circumstances (e.g., all code in apps distributed via the App Store is approved by Apple).
 - Processes are isolated from each other, even if they are owned by the same UID at the operating system level.
 - Hardware drivers can't be accessed directly. Instead, they must be accessed through Apple's public frameworks.
@@ -127,9 +141,9 @@ A language.lproj folder exists for each language that the application supports. 
 - A storyboard is a visual representation of the iOS application's user interface. It shows screens and the connections between those screens.
 - The strings file format consists of one or more key-value pairs and optional comments.
 
-<img src="Images/Chapters/0x06a/iOS_project_folder.png" alt="iOS App Folder Structure" width="500" />
+<img src="Images/Chapters/0x06a/iOS_project_folder.png" width="400px" />
 
-On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g., [HockeyApp](https://hockeyapp.net/ "HockeyApp") or [TestFlight](https://developer.apple.com/testflight/ "TestFlight").
+On a jailbroken device, you can recover the IPA for an installed iOS app using different tools that allow decrypting the main app binary and reconstruct the IPA file. Similarly, on a jailbroken device you can install the IPA file with [IPA Installer](https://github.com/autopear/ipainstaller "IPA Installer"). During mobile security assessments, developers often give you the IPA directly. They can send you the actual file or provide access to the development-specific distribution platform they use, e.g. [TestFlight](https://developer.apple.com/testflight/ "TestFlight") or [Visual Studio App Center](https://appcenter.ms/ "Visual Studio App Center").
 
 ### App Permissions
 

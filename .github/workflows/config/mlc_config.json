@@ -23,6 +23,27 @@
         },
         {
             "pattern": "^https://source.android.com"
+        },
+        {
+            "pattern": "^https://www.infosecurity-magazine.com"
+        },
+        {
+            "pattern": "^https://apkpure.com"
+        },
+        {
+            "pattern": "^https://manualzz.com"
+        },
+        {
+            "pattern": "^https://www.verticalstructure.com"
+        },
+        {
+            "pattern": "^https://support.virustotal.com"
+        },
+        {
+            "pattern": "^https://www.europeanpaymentscouncil.eu"
+        },
+        {
+            "pattern": "^http://damnvulnerableiosapp.com/"
         }
     ],
     "httpHeaders": [

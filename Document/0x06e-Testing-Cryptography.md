@@ -59,7 +59,7 @@ For more information about Apple CryptoKit, please visit the following resources
 - [WWDC 2019 session 709 | Cryptography and Your Apps](https://developer.apple.com/videos/play/wwdc19/709/ "Cryptography and Your Apps from WWDC 2019 session 709")
 - [How to calculate the SHA hash of a String or Data instance | Hacking with Swift](https://www.hackingwithswift.com/example-code/cryptokit/how-to-calculate-the-sha-hash-of-a-string-or-data-instance "How to calculate the SHA hash of a String or Data instance from Hacking with Swift")
 
-#### CommonCrypto, SecKeyEncrypt and Wrapper libraries
+#### CommonCrypto, SecKey and Wrapper libraries
 
 The most commonly used Class for cryptographic operations is the CommonCrypto, which is packed with the iOS runtime. The functionality offered by the CommonCrypto object can best be dissected by having a look at the [source code of the header file](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-36064/CommonCrypto/CommonCryptor.h.auto.html "CommonCrypto.h"):
 
@@ -71,14 +71,13 @@ The most commonly used Class for cryptographic operations is the CommonCrypto, w
 
 Unfortunately, CommonCryptor lacks a few types of operations in its public APIs, such as: GCM mode is only available in its private APIs See [its source code](https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonCryptorSPI.h "GCM in CC"). For this, an additional binding header is necessary or other wrapper libraries can be used.
 
-Next, for asymmetric operations, Apple provides [SecKey](https://opensource.apple.com/source/Security/Security-57740.51.3/keychain/SecKey.h.auto.html "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
+Next, for asymmetric operations, Apple provides [SecKey](https://developer.apple.com/documentation/security/seckey "SecKey"). Apple provides a nice guide in its [Developer Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption "Using keys for encryption") on how to use this.
 
 As noted before: some wrapper-libraries exist for both in order to provide convenience. Typical libraries that are used are, for instance:
 
 - [IDZSwiftCommonCrypto](https://github.com/iosdevzone/IDZSwiftCommonCrypto "IDZSwiftCommonCrypto")
 - [Heimdall](https://github.com/henrinormak/Heimdall "Heimdall")
 - [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA "SwiftyRSA")
-- [SwiftSSL](https://github.com/SwiftP2P/SwiftSSL "SwiftSSL")
 - [RNCryptor](https://github.com/RNCryptor/RNCryptor "RNCryptor")
 - [Arcane](https://github.com/onmyway133/Arcane "Arcane")
 
@@ -190,7 +189,7 @@ func testKeyDerivation() {
 When you need to store the key, it is recommended to use the Keychain as long as the protection class chosen is not `kSecAttrAccessibleAlways`. Storing keys in any other location, such as the `NSUserDefaults`, property list files or by any other sink from Core Data or Realm, is usually less secure than using the KeyChain.
 Even when the sync of Core Data or Realm is protected by using `NSFileProtectionComplete` data protection class, we still recommend using the KeyChain. See the chapter "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" for more details.
 
-The KeyChain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure-enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH singing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Secure Enclave") for more details on its implementation.
+The KeyChain supports two type of storage mechanisms: a key is either secured by an encryption key stored in the secure enclave or the key itself is within the secure enclave. The latter only holds when you use an ECDH signing key. See the [Apple Documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Secure Enclave") for more details on its implementation.
 
 The last three options consist of using hardcoded encryption keys in the source code, having a predictable key derivation function based on stable attributes, and storing generated keys in places that are shared with other applications. Using hardcoded encryption keys is obviously not the way to go, as this would mean that every instance of the application uses the same encryption key. An attacker needs only to do the work once in order to extract the key from the source code (whether stored natively or in Objective-C/Swift). Consequently, the attacker can decrypt any other data that was encrypted by the application.
 Next, when you have a predictable key derivation function based on identifiers which are accessible to other applications, the attacker only needs to find the KDF and apply it to the device in order to find the key. Lastly, storing symmetric encryption keys publicly also is highly discouraged.
@@ -285,7 +284,6 @@ If you want to test for randomness, you can try to capture a large set of number
 - IDZSwiftCommonCrypto - <https://github.com/iosdevzone/IDZSwiftCommonCrypto>
 - Heimdall - <https://github.com/henrinormak/Heimdall>
 - SwiftyRSA - <https://github.com/TakeScoop/SwiftyRSA>
-- SwiftSSL - <https://github.com/SwiftP2P/SwiftSSL>
 - RNCryptor - <https://github.com/RNCryptor/RNCryptor>
 - Arcane - <https://github.com/onmyway133/Arcane>
 - CJOSE - <https://github.com/cisco/cjose>

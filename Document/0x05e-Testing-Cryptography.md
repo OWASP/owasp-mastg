@@ -201,14 +201,14 @@ keyPairGenerator.initialize(keyPairGeneratorSpec);
 KeyPair keyPair = keyPairGenerator.generateKeyPair();
 ```
 
-This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size).
+This sample creates the RSA key pair with a key size of 4096-bit (i.e. modulus size). Elliptic Curve (EC) keys can also be generated in a similar way. However as of Android 11, [AndroidKeyStore does not support encryption or decryption with EC keys](https://developer.android.com/guide/topics/security/cryptography#SupportedCipher). They can only be used for signatures.
 
 A symmetric encryption key can be generated from the passphrase by using the Password Based Key Derivation Function version 2 (PBKDF2). This cryptographic protocol is designed to generate cryptographic keys, which can be used for cryptography purpose. Input parameters for the algorithm are adjusted according to [weak key generation function](0x04g-Testing-Cryptography.md#weak-key-generation-functions) section. The code listing below illustrates how to generate a strong encryption key based on a password.
 
 ```java
 public static SecretKey generateStrongAESKey(char[] password, int keyLength)
 {
-    //Initiliaze objects and variables for later use
+    //Initialize objects and variables for later use
     int iterationCount = 10000;
     int saltLength     = keyLength / 8;
     SecureRandom random = new SecureRandom();
@@ -240,41 +240,37 @@ Most developers should instantiate `SecureRandom` via the default constructor wi
 
 ### Overview
 
-This test case focuses on hardcoded symmetric cryptography as the only method of encryption. Following checks should be performed:
+This test case focuses on hardcoded symmetric cryptography as the only method of encryption. The following checks should be performed:
 
-- identify all instance of symmetric cryptography
-- verify if symmetric keys in all identified instances are not hardcoded
+- identify all instances of symmetric cryptography
+- for each identified instance verify if there are any hardcoded symmetric keys
 - verify if hardcoded symmetric cryptography is not used as the only method of encryption
 
 ### Static Analysis
 
-Identify all the instances of symmetric key encryption in code and look for mechanism which loads or provides a symmetric key. You can look for:
+Identify all the instances of symmetric key encryption in code and look for any mechanism which loads or provides a symmetric key. You can look for:
 
-- symmetric algorithms (like `DES`, `AES`, etc.)
-- specifications for a key generator (like `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
-- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
+- symmetric algorithms (such as `DES`, `AES`, etc.)
+- specifications for a key generator (such as `KeyGenParameterSpec`, `KeyPairGeneratorSpec`, `KeyPairGenerator`, `KeyGenerator`, `KeyProperties`, etc.)
+- classes importing `java.security.*`, `javax.crypto.*`, `android.security.*`, `android.security.keystore.*`
 
-Verify that symmetric keys in all identified instances are not hardcoded. Check if symmetric keys are not:
+For each identified instance verify if the used symmetric keys:
 
-- part of application resources
-- values which can be derived from known values
-- hardcoded in code
+- are not part of the application resources
+- cannot be derived from known values
+- are not hardcoded in code
 
-Verify that all identified instances of hardcoded symmetric cryptography is not used in security-sensitive contexts as the only method of encryption.
+For each hardcoded symmetric key, verify that is not used in security-sensitive contexts as the only method of encryption.
 
-As an example we illustrate how to locate the use of a hardcoded encryption key. First disassemble the DEX bytecode to a collection of Smali bytecode files using ```Baksmali```.
+As an example we illustrate how to locate the use of a hardcoded encryption key. First [disassemble and decompile](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-and-decompiling) the app to obtain Java code, e.g. by using [jadx](0x08-Testing-Tools.md#jadx).
 
-```bash
-$ baksmali d file.apk -o smali_output/
-```
-
-Now that we have a collection of Smali bytecode files, we can search the files for the usage of the ```SecretKeySpec``` class. We do this by simply recursively grepping on the Smali source code we just obtained. Please note that class descriptors in Smali start with `L` and end with `;`:
+Now search the files for the usage of the `SecretKeySpec` class, e.g. by simply recursively grepping on them or using jadx search function:
 
 ```bash
-$ grep -r "Ljavax\crypto\spec\SecretKeySpec;"
+$ grep -r "SecretKeySpec"
 ```
 
-This will highlight all the classes that use the `SecretKeySpec` class, we now examine all the highlighted files and trace which bytes are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. For sake of readability we have reverse engineered the DEX bytecode to Java code. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
+This will return all classes using the `SecretKeySpec` class. Now examine those files and trace which variables are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.
 
 <img src="Images/Chapters/0x5e/static_encryption_key.png" width="600px"/>
 
@@ -314,10 +310,10 @@ You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-t
 
 ### Overview
 
-This test case focuses on verification of purpose and reusage of the same cryptographic keys. Following checks should be performed:
+This test case focuses on verification of purpose and reusage of the same cryptographic keys. The following checks should be performed:
 
 - identify all instances where cryptography is used
-- identify purpose why cryptography is used (to protect data in use, in transit or at rest)
+- identify the purpose of the cryptographic material (to protect data in use, in transit or at rest)
 - identify type of cryptography
 - verify if cryptography is used according to its purpose
 
@@ -329,22 +325,22 @@ Identify all instances where cryptography is used. You can look for:
 - interfaces `Key`, `PrivateKey`, `PublicKey`, `SecretKey`
 - functions `getInstance`, `generateKey`
 - exceptions `KeyStoreException`, `CertificateException`, `NoSuchAlgorithmException`
-- classes which uses `java.security.*`, `javax.crypto.*`, `android.security.*` and `android.security.keystore.*` packages.
+- classes importing `java.security.*`, `javax.crypto.*`, `android.security.*`, `android.security.keystore.*`
 
-For all identified instance, identify purpose of using cryptography and its type. It can be used :
+For each identified instance, identify its purpose and its type. It can be used:
 
-- to encrypt/decrypt - that ensures confidentiality of data
-- to sign/verify - that ensures integrity of data (as well as accountability in some cases)
-- to maintenance - that protects key during an operation (like import to KeyStore)
+- for encryption/decryption - to ensure data confidentiality
+- for signing/verifying - to ensure integrity of data (as well as accountability in some cases)
+- for maintenance - to protect keys during certain sensitive operations (such as being imported to the KeyStore)
 
-Additionally, you should identify business logic which uses identified instances of cryptography. That should give you explanation why cryptography is used from business perspective (i.e. to protect confidentiality of data at rest, to confirm that file was signed from device X which belongs to Y).
+Additionally, you should identify the business logic which uses identified instances of cryptography.
 
-During verification take the following checks should be performed:
+During verification the following checks should be performed:
 
-- make sure that key is used according to purpose defined during its creation (it is relevant to KeyStore keys, which can have KeyProperties defined)
-- make sure that for asymmetric keys, the private key is exclusively used for signing and the public key is only used for encryption.
-- make sure that symmetric keys are not reused for multiple purposes. A new symmetric key should be generated if it's used in a different context.
-- make sure that cryptography is used according to business purpose.
+- are all keys used according to the purpose defined during its creation? (it is relevant to KeyStore keys, which can have KeyProperties defined)
+- for asymmetric keys, is the private key being exclusively used for signing and the public key encryption?
+- are symmetric keys used for multiple purposes? A new symmetric key should be generated if it's used in a different context.
+- is cryptography used according to its business purpose?
 
 ### Dynamic Analysis
 
@@ -354,60 +350,29 @@ You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-t
 
 ### Overview
 
-This test case focuses on random values used by application. Following checks should be performed:
+This test case focuses on random values used by application. The following checks should be performed:
 
-- identify all instances where random values are used and all instances of random number generators are of `Securerandom`
+- identify all instances where random values are used
 - verify if random number generators are not considered as being cryptographically secure
-- verify how random number generators were used
-- verify randomness of random values generated by application
+- verify how random number generators are used
+- verify randomness of the generated random values
 
 ### Static Analysis
 
-Identify all the instances of random number generators and look for either custom or known insecure `java.util.Random` class. This class produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable.
-
-The following sample source code shows weak random number generation:
-
-```java
-import java.util.Random;
-// ...
-
-Random number = new Random(123L);
-//...
-for (int i = 0; i < 20; i++) {
-  // Generate another random integer in the range [0, 20]
-  int n = number.nextInt(21);
-  System.out.println(n);
-}
-```
-
-Instead a well-vetted algorithm should be used that is currently considered to be strong by experts in the field, and select well-tested implementations with adequate length seeds.
+Identify all the instances of random number generators and look for either custom or well-known insecure classes. For instance, `java.util.Random` produces an identical sequence of numbers for each given seed value; consequently, the sequence of numbers is predictable. Instead a well-vetted algorithm should be chosen that is currently considered to be strong by experts in the field, and a well-tested implementations with adequate length seeds should be used.
 
 Identify all instances of `SecureRandom` that are not created using the default constructor. Specifying the seed value may reduce randomness. Prefer the [no-argument constructor of `SecureRandom`](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers "Generation of Strong Random Numbers") that uses the system-specified seed value to generate a 128-byte-long random number.
 
 In general, if a PRNG is not advertised as being cryptographically secure (e.g. `java.util.Random`), then it is probably a statistical PRNG and should not be used in security-sensitive contexts.
 Pseudo-random number generators [can produce predictable numbers](https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded "Proper seeding of SecureRandom") if the generator is known and the seed can be guessed. A 128-bit seed is a good starting point for producing a "random enough" number.
 
-The following sample source code shows the generation of a secure random number:
+Once an attacker knows what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write a proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
 
-```java
-import java.security.SecureRandom;
-import java.security.NoSuchAlgorithmException;
-// ...
-
-public static void main (String args[]) {
-  SecureRandom number = new SecureRandom();
-  // Generate 20 integers 0..20
-  for (int i = 0; i < 20; i++) {
-    System.out.println(number.nextInt(21));
-  }
-}
-```
+If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp\'s Sequencer") to see how good the quality of the randomness is.
 
 ### Dynamic Analysis
 
-Once an attacker is knowing what type of weak pseudo-random number generator (PRNG) is used, it can be trivial to write proof-of-concept to generate the next random value based on previously observed ones, as it was [done for Java Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/ "Predicting the next Math.random() in Java"). In case of very weak custom random generators it may be possible to observe the pattern statistically. Although the recommended approach would anyway be to decompile the APK and inspect the algorithm (see Static Analysis).
-
-If you want to test for randomness, you can try to capture a large set of numbers and check with the Burp's [sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer "Burp\'s Sequencer") to see how good the quality of the randomness is.
+You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on the mentioned classes and methods to determine input / output values being used.
 
 ## References
 
@@ -420,16 +385,16 @@ If you want to test for randomness, you can try to capture a large set of number
 - Android Developer blog: Cryptography Changes in Android P - <https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html>
 - Android Developer blog: Some SecureRandom Thoughts - <https://android-developers.googleblog.com/2013/08/some-securerandom-thoughts.html>
 - Android Developer documentation - <https://developer.android.com/guide>
-- BSI Recommendations - 2017 - <https://www.keylength.com/en/8/>
+- BSI Recommendations - <https://www.keylength.com/en/8/>
 - Ida Pro - <https://www.hex-rays.com/products/ida/>
 - Legion of the Bouncy Castle - <https://www.bouncycastle.org/java.html>
 - NIST Key Length Recommendations - <https://www.keylength.com/en/4/>
-- Security Providers -  <https://developer.android.com/reference/java/security/Provider.html>
-- Spongy Castle  - <https://rtyley.github.io/spongycastle/>
+- Security Providers - <https://developer.android.com/reference/java/security/Provider.html>
+- Spongy Castle - <https://rtyley.github.io/spongycastle/>
 
 ### SecureRandom references
 
-- Burpproxy its Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
+- BurpProxy Sequencer - <https://portswigger.net/burp/documentation/desktop/tools/sequencer>
 - Proper Seeding of SecureRandom - <https://www.securecoding.cert.org/confluence/display/java/MSC63-J.+Ensure+that+SecureRandom+is+properly+seeded>
 
 ### Testing Key Management references

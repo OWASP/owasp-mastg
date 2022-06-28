@@ -22,9 +22,9 @@ In order to increase the chances of your PR being accepted, please make sure tha
 
 After your PR has been submitted, we will review it as quickly as possible. This typically only takes a few days, but can vary depending on the size of the PR. Small PRs require only one reviewer, while large PRs may require multiple reviewers. We will always try to give initial feedback on your PR within 14 days. If you think we have forgotten about your PR, feel free to give us a nudge after these 7 days have passed.
 
-Once the PR has been reviewed, the reviewers might add some comments and suggested changes, usually via GitHub's ["Suggested Changes"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request "Applying suggested changes") feature (which can be quickly accepted and commited by simply clicking on the "Commit suggestion" button). In order to boost the workflow of reviewing and merging, **the authors of the MSTG reserve the right to commit "Suggested Changes"** falling under the following categories:
+Once the PR has been reviewed, the reviewers might add some comments and suggested changes, usually via GitHub's ["Suggested Changes"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request "Applying suggested changes") feature (which can be quickly accepted and committed by simply clicking on the "Commit suggestion" button). In order to boost the workflow of reviewing and merging, **the authors of the MSTG reserve the right to commit "Suggested Changes"** falling under the following categories:
 
-- Minor changes, i.e. only affecting formatting, fixing some clear typos, new lines, markdown linting errors, etc. can be directly commited by the MSTG authors.
+- Minor changes, i.e. only affecting formatting, fixing some clear typos, new lines, markdown linting errors, etc. can be directly committed by the MSTG authors.
 - Moderate and major changes involving the content itself or bigger structural changes must be accepted and committed by the authors of the PR themselves. In case of unresponsiveness within 2 weeks the authors of the MSTG are allowed to commit any kind of changes.
 Of course, all those changes remain transparent to the original author who can verify them any time in the PR changelog.
 
@@ -70,12 +70,6 @@ In case of general unresponsiveness within 3-4 weeks, the authors of the MSTG ar
 If at any time you want to work on a different issue, you can simply switch to a different branch, as explained in step 5.
 
 > Tip: Don't try to work on too many issues at once though, as it will be a lot more difficult to merge branches the longer they are open.
-
-## Translating
-
-Our current goal is to publish one minor release every 6 months. Next, we will often create patch updates in order to provide intermediary updates in PDF and DocX format. Releases that have been tagged can then be translated into preferred languages.
-
-> Note we use semantic versioning: major.minor.patch
 
 ## What not to do
 

@@ -1,0 +1,10 @@
+name: codespell
+on: [pull_request, push]
+jobs:
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: codespell-project/actions-codespell@master
+        with:
+          ignore_words_list: ba,compliancy,firt,ist,keypair,ligh,ser,synopsys,zuser

@@ -4,44 +4,57 @@
 
 This directory is for tools that are used to generate the necessary files for our release-channels.
 
-## Channels
+Channels:
 
-- Gitbook: currenlty using @sushi2k's repository which is synced manually.
-- Github release: currently using travis to automatically build stuff based on a tag. See ../travis.yml. It uses `gendocs.sh`, `generate_document.sh` and `gitbookepubanpdf.sh`.
-- Leanpub: `updateLeanpub.sh` is in the making: for now it contains only instructions.
+- Gitbook: currently using @sushi2k's repository (<https://github.com/sushi2k/owasp-mstg>) which is synced automatically via <https://github.com/apps/pull>.
+- Github actions & Github releases: We use Github actions to build and verify the documents in an automated fashion as well as build releases.
+- Leanpub: The book can be bought via Leanpub <https://leanpub.com/mobile-security-testing-guide> as PDF to support OWASP and the MSTG project financially.
+- Lulu: The book can be bought via Lulu <https://www.lulu.com/en/en/shop/bernhard-müller-and-jeroen-willemsen-and-sven-schleier/owasp-mobile-security-testing-guide/paperback/product-1q2rerwp.html> as hard-copy to support OWASP and the MSTG project financially.
 
-## Files
+Files:
 
-- Apply_Link_Check.sh: used to check whether there are any broken links in the markdown files. Requires `markdown-link-check` to be installed.
-- Apply_Linter_Check.sh: used to check whether there are any markdown markup issues. Requires `markdownlint-cli` to be installed.
-- before_install.sh: script used by the Travis pipeline to check which tools need to be installed depending on whether it is a pull-request or a tag has been added for a release.
-- book.json: the book.json metadata template for Gitbook. Necessary for `gitbookepubanpdf.sh` to automatically create an updated book.json in the root of the folder.
-- gendocs.sh: used to simplify the work with Travis.
-- gendocsLocal.sh: used to simplify the work with Travis, but then on your local machine (partially).
-- generate_document.sh: used to generate the docx and html files.
-- generate_toc.rb: used to generate a TOC file.
-- gitbookepubandpdf.sh: used to generate the epub, pdf and mobi files.
-- metadata.yml: used by pandoc for generating docx files with `generate_Document.sh`.
-- omtg-pre-commit.sh: older not maintained hook for automatically triggering `generate_toc.rb`.
-- reference.docx: templatefile used for generating the word doc using `generate_document.sh`.
+- `Apply_Link_Check.sh`: Tool to inspect the links in the document folders for every language.
+- `Apply_Lint_Check.sh`: Tool to inspect the markdown files their markup in the document folders for every language.
+- `contributors.py`: Python script to retrieve current contributors and group them into our different categories according to their additions.
+- `custom-reference.docx`: Template file used for generating the word document.
+- `pandoc_makedocs.sh`: Script that is being used to generate PDF, ePub and docx version of the MSTG. This script can be used to generate the documents locally and is also used in Github Actions.
+- `updateLeanpub.sh` is in the making: for now it contains only instructions.
 
 ## Release process
 
-Pre-checks:
+1. Update the CHANGELOG.md in the Documents directory and add a release statement and summary of the changes since the last release. Update the RECENT_CHANGES.md in the tools folder. Add it also to the CHANGELOG.md in the root directory.
+2. Commit the changes (with message `Release <version>`)
+3. Merge the PR into master
+4. Checkout master and pull changes:
 
-- Make sure the contributor list in 0x02-Frontispiece.md is up to date with the [contributor scripts](https://github.com/commjoen/contributors-mstg)
-- Make sure you have all the files in GIT that you want to release: do not add files to it from another PR, and let the pipeline do its work.
-- Make sure you have put the right version everywhere
-- Make sure that excels have been updated a priori the release process of a new version. Directly after the release, the actual excel-links can be tested for the new tag set. (so make sure that the new excel links are compatible with the chosen tag in step 3).
+    ```bash
+    $ git checkout master
+    $ git pull
+    ```
 
-Steps:
+5. Push a tag with the new version:
 
-1. Sync @sushi2k's repository for Gitbook (done automatically now)
-2. Update the Changelog.md.
-3. Generate new PDF and docx with the new version for review, e.g. version 1.2 (`cd Tools && ./gendocsLocal.sh 1.2`). Files are available in `Generated` folder for verification purpose ONLY.
-4. Commit the changes with message `"Release <version>"` (`$ git commit -m "Release 1.2"`). Then push it to a release branch, make sure it gets reviewed & merged.
-5. Push a tag with the new version (`git checkout master && git tag -a <version> -m "Release message that will be on github" && git push --tags` )
-6. Update the Leanpub Files at Leanpub with the downloaded files from the release page.
-7. Update OWASP Wiki if necessary with release news.
-8. Update the book at lulu.com (Ask @sushi2k) with the downloaded PDF from the release page.
-9. Tweet about it with @OWASP-MSTG & share a message at LinkedIn.
+    ```bash
+    $ git tag -a v<version> -m "Release message"
+    $ git push origin v<version>
+    ```
+
+    > The letter `v` need to be part of the tag name to trigger the release Github action. The tag name will become the version title of the release. The content of the RECENT_CHANGES file will become the body text of the release (be sure it includes the actual title of the release).
+
+6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mstg/actions>
+7. Verify the new release <https://github.com/OWASP/owasp-mstg/releases>
+8. Update OWASP Wiki if necessary <https://github.com/OWASP/www-project-mobile-security-testing-guide>
+9. Update the files at Lulu with the created files from the release page.
+10. Update the files at Leanpub with the created files from the release page.
+11. Tweet about it with @OWASP-MSTG, Linkedin and OWASP Slack
+
+In case something went wrong and we need to remove the release:
+
+1. Delete the tag locally and remotely:
+
+    ```bash
+    $ git tag -d <tag>   # delete the tag locally
+    $ git push origin :refs/tags/<tag>  # delete the tag remotely
+    ```
+
+2. Go to Github release page <https://github.com/OWASP/owasp-masvs/releases>. The release you removed is now in "draft". Click on edit and discard/delete the release.

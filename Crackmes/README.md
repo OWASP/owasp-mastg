@@ -28,9 +28,10 @@ This app is compatible with Android 4.4 and up.
 - [Solution using static analysis](../Document/0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Solution using static analysis")
 - [Solution using jdb](../Document/0x05c-Reverse-Engineering-and-Tampering.md#debugging-with-jdb "Solution using jdb")
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html "Solution by Eduardo Novella")
-- [Solution using Xposed by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level1/ "Solution by sh3llc0d3r")
+- [Solution using Xposed by sh3llc0d3r](https://web.archive.org/web/20210124161121/http://sh3llc0d3r.com/owasp-uncrackable-android-level1/ "Solution by sh3llc0d3r")
 - [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/P6rNPkM2DdY "Solution by @mobilesecurity_")
 - [Solution using static analysis by Eduardo Vasconcelos](https://tereresecurity.wordpress.com/2021/03/03/write-up-uncrackable-level-1/ "Solution by Eduardo Vasconcelos")
+- [Solution using Frida by Davide Cioccia](https://1337.dcodx.com/mobile-security/owasp-mstg-crackme-1-writeup-android "Solution by Davide Cioccia")
 
 ### [UnCrackable App for Android Level 2](Android/Level_02 "Android level 2")
 
@@ -53,9 +54,10 @@ This app is compatible with Android 4.4 and up.
 
 - [Solution using Frida and radare2 by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-3/ "Solution by c0dmtr1x").
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-2.html "Solution by Eduardo Novella").
-- [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level2/ "Solution by sh3llc0d3r").
+- [Solution using patches by sh3llc0d3r](https://web.archive.org/web/20210124162744/http://sh3llc0d3r.com/owasp-uncrackable-android-level2/ "Solution by sh3llc0d3r").
 - [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/xRQVljerl0A "Solution by @mobilesecurity_").
 - [Solution using static analysis and Ghidra by Eduardo Vasconcelos](https://tereresecurity.wordpress.com/2021/03/23/write-up-uncrackable-level-2/ "Solution by Eduardo Vasconcelos").
+- [Solution using Ghidra and Frida by Davide Cioccia](https://1337.dcodx.com/mobile-security/owasp-mstg-crackme-2-writeup-android "Solution by Davide Cioccia")
 
 ### [UnCrackable App for Android Level 3](Android/Level_03 "Android level 3")
 
@@ -77,7 +79,8 @@ $ adb install UnCrackable-Level3.apk
 #### Solutions
 
 - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/20/android-owasp-crackmes-level-3.html "Solution by Eduardo Novella").
-- [Solution using patches by sh3llc0d3r](http://sh3llc0d3r.com/owasp-uncrackable-android-level3/ "Solution by sh3llc0d3r").
+- [Solution using patches by sh3llc0d3r](https://web.archive.org/web/20210124164453/http://sh3llc0d3r.com/owasp-uncrackable-android-level3/ "Solution by sh3llc0d3r").
+- [Solution using Ghidra and Frida by Davide Cioccia](https://1337.dcodx.com/mobile-security/owasp-mstg-crackme-3-writeup-android "Solution by Davide Cioccia")
 
 ### [UnCrackable App for Android Level 4: Radare2 Pay v0.9](Android/Level_04 "Android level 4")
 
@@ -127,13 +130,18 @@ A brand new Android app sparks your interest. Of course, you are planning to pur
 Copy the binary to your Android device and run using the shell.
 
 ```shell
-  $ adb push validate /data/local/tmp
-  [100%] /data/local/tmp/validate
-  $ adb shell chmod 755 /data/local/tmp/validate
-  $ adb shell /data/local/tmp/validate
-  Usage: ./validate <serial>
-  $ adb shell /data/local/tmp/validate 1234
-  Incorrect serial (wrong format).
+$ adb push validate /data/local/tmp
+[100%] /data/local/tmp/validate
+$ adb shell chmod 755 /data/local/tmp/validate
+$ adb shell /data/local/tmp/validate
+Usage: ./validate <serial>
+$ adb shell /data/local/tmp/validate 1234
+Incorrect serial (wrong format).
+$ adb shell /data/local/tmp/validate JACE6ACIARNAAIIA
+Entering base32_decode
+Outlen = 10
+Entering check_license
+Product activation passed. Congratulations!
 ```
 
 #### Solutions

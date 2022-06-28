@@ -85,15 +85,15 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
 
 ```default
-/sbin/su  
-/system/bin/su  
-/system/bin/failsafe/su  
-/system/xbin/su  
-/system/xbin/busybox  
-/system/sd/xbin/su  
-/data/local/su  
-/data/local/xbin/su  
-/data/local/bin/su  
+/sbin/su
+/system/bin/su
+/system/bin/failsafe/su
+/system/xbin/su
+/system/xbin/busybox
+/system/sd/xbin/su
+/data/local/su
+/data/local/xbin/su
+/data/local/bin/su
 ```
 
 Checking whether `su` is on the PATH also works:
@@ -179,7 +179,7 @@ Unusual permissions on system directories may indicate a customized or rooted de
 
 ##### Checking for custom Android builds
 
-Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](https://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion// "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://www.joeyconway.com/blog/2014/03/29/android-detect-root-access-from-inside-an-app/ "Android - Detect Root Access from inside an app"):
+Checking for signs of test builds and custom ROMs is also helpful. One way to do this is to check the BUILD tag for test-keys, which normally [indicate a custom Android image](https://resources.infosecinstitute.com/android-hacking-security-part-8-root-detection-evasion// "InfoSec Institute - Android Root Detection and Evasion"). [Check the BUILD tag as follows](https://github.com/scottyab/rootbeer/blob/master/rootbeerlib/src/main/java/com/scottyab/rootbeer/RootBeer.java#L76 "Rootbeer - detectTestKeys function"):
 
 ```java
 private boolean isTestKeyBuild()
@@ -327,7 +327,7 @@ JNIEXPORT jboolean JNICALL Java_poc_c_crashOnInit ( JNIEnv* env , jobject ) {
 }
 ```
 
-You can disable debugging by using similar techniques in ART even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes `JdwpSocketState` and `JdwpAdbState`, which handle JDWP connections via network sockets and ADB, respectively. You can manipulate the behavior of the debugging runtime [by overwriting the method pointers in the associated vtables](https://web.archive.org/web/20200307152820/https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art "Vantage Point Security - Anti-Debugging Fun with Android ART") (archived).
+You can disable debugging by using similar techniques in ART even though the gDvm variable is not available. The ART runtime exports some of the vtables of JDWP-related classes as global symbols (in C++, vtables are tables that hold pointers to class methods). This includes the vtables of the classes `JdwpSocketState` and `JdwpAdbState`, which handle JDWP connections via network sockets and ADB, respectively. You can manipulate the behavior of the debugging runtime [by overwriting the method pointers in the associated vtables](https://web.archive.org/web/20200307152820/https://www.vantagepoint.sg/blog/88-anti-debugging-fun-with-android-art "Anti-Debugging Fun with Android ART") (archived).
 
 One way to overwrite the method pointers is to overwrite the address of the function `jdwpAdbState::ProcessIncoming` with the address of `JdwpAdbState::Shutdown`. This will cause the debugger to disconnect immediately.
 
@@ -655,7 +655,7 @@ private void crcTest() throws IOException {
 
 When providing integrity on the storage itself, you can either create an HMAC over a given key-value pair (as for the Android `SharedPreferences`) or create an HMAC over a complete file that's provided by the file system.
 
-When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+When using an HMAC, you can [use a bouncy castle implementation or the AndroidKeyStore to HMAC the given content](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 Complete the following procedure when generating an HMAC with BouncyCastle:
 
@@ -828,13 +828,13 @@ Looking at these two _traces_ that Frida _lefts behind_, you might already imagi
 | **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
 | **Scanning Process Memory for Known Artifacts** | Scan the memory for artifacts found in Frida's libraries, e.g. the string "LIBFRIDA" present in all versions of frida-gadget and frida-agent. For example, use `Runtime.getRuntime().exec` and iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) searching for the string. | This method is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added and if multiple artifacts are being scanned. However, the chosen artifacts might be patched in the Frida binaries. Find the source code on [Berdhard Mueller's GitHub](https://github.com/b-mueller/frida-detection-demo/blob/master/AntiFrida/app/src/main/cpp/native-lib.cpp "frida-detection-demo"). |
 
-Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
+Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques, as discussed below in section "[Testing Resiliency Against Reverse Engineering](#testing-obfuscation-mstg-resilience-9 "Testing Resiliency Against Reverse Engineering")". At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
 > It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
 ### Effectiveness Assessment
 
-Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, Drozer, RootCloak, Android SSL Trust Killer.
+Launch the app with various reverse engineering tools and frameworks installed in your test device. Include at least the following: Frida, Xposed, Substrate for Android, RootCloak, Android SSL Trust Killer.
 
 The app should respond in some way to the presence of those tools. For example by:
 
@@ -1006,13 +1006,18 @@ In the test case "Make Sure That Free Security Features Are Activated (MSTG-CODE
 
 ### Effectiveness Assessment
 
-Attempt to decompile the bytecode, disassemble any included library files, and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that
+Attempt to decompile the bytecode, disassemble any included library files and try to understand it. When doing so, consider the following:
 
-- meaningful identifiers, such as class names, method names, and variable names, have been discarded,
-- string resources and strings in binaries are encrypted,
-- code and data related to the protected functionality is encrypted, packed, or otherwise concealed.
+- Obfuscation often carries a cost in runtime performance, therefore it might have been only applied to certain very specific parts of the code, typically those dealing with security and runtime protection.
+- Meaningful identifiers, such as class names, method names, and variable names, might have been discarded.
+- String resources and strings in binaries might have been encrypted.
+- Code and data related to the protected functionality might be encrypted, packed, or otherwise concealed.
+- For native code, [libc APIs](https://man7.org/linux/man-pages/dir_section_3.html) (e.g open, read) might have been replaced with OS [syscalls](https://man7.org/linux/man-pages/man2/syscalls.2.html).
+- Additional obfuscation techniques such as ["Control Flow Flattening"](https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening) or ["Bogus Control Flow"](https://github.com/obfuscator-llvm/obfuscator/wiki/Bogus-Control-Flow) might have been applied using e.g. [Obfuscator-LLVM](https://github.com/obfuscator-llvm/obfuscator "Obfuscator-LLVM").
 
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
+Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind.
+
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. There are some tools such as [APKiD](https://github.com/rednaga/APKiD) that might be able to give you some indications about the kind of obfuscators being used.
 
 ## Testing Device Binding (MSTG-RESILIENCE-10)
 
@@ -1052,7 +1057,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     ```
 
   - Generating a secret key for AES-GCM:
-  
+
     ```java
     //Source: <https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html>
     KeyGenerator keyGenerator = KeyGenerator.getInstance(
@@ -1072,7 +1077,7 @@ Before we describe the usable identifiers, let's quickly discuss how they can be
     ```
 
   - Encrypt the authentication data and other sensitive data stored by the application using a secret key through AES-GCM cipher and use device specific parameters such as Instance ID, etc. as associated data:
-  
+
     ```java
     Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
     final byte[] nonce = new byte[GCM_NONCE_LENGTH];
@@ -1329,3 +1334,4 @@ See section "[Dynamic Analysis with an Emulator](#dynamic-analysis-with-an-emula
 - Do's & Don'ts of SafetyNet Attestation - <https://android-developers.googleblog.com/2017/11/10-things-you-might-be-doing-wrong-when.html>
 - SafetyNet Verification Samples - <https://github.com/googlesamples/android-play-safetynet/>
 - SafetyNet Attestation API - Quota Request - <https://support.google.com/googleplay/android-developer/contact/safetynetqr>
+- Obfuscator-LLVM - <https://github.com/obfuscator-llvm/obfuscator>

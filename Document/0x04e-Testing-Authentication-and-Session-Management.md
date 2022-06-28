@@ -1,6 +1,6 @@
 # Mobile App Authentication Architectures
 
-Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project "OWASP Top Ten Project").
+Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the backend service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
 
@@ -104,7 +104,7 @@ Confirm the existence of a password policy and verify the implemented password c
 
 After adding the zxcvbn JavaScript library to the HTML page, you can execute the command `zxcvbn` in the browser console, to get back detailed information about how likely it is to crack the password including a score.
 
-<img src="Images/Chapters/0x04e/zxcvbn.png" alt="An example of a zxcvbn score" width="500" />
+<img src="Images/Chapters/0x04e/zxcvbn.png" width="100%" />
 
 The score is defined as follows and can be used for a password strength bar for example:
 
@@ -151,7 +151,7 @@ Additional brute force mitigation techniques are described on the OWASP page [Bl
 
 ### Dynamic Testing (MSTG-AUTH-6)
 
-Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/help/intruder_using.html "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
+Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
 > Please keep in mind that the Burp Suite Community Edition has significant limitations apart from not being able to save projects. For example, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap).
 
@@ -167,13 +167,13 @@ Execute the following steps for a wordlist based brute force attack with Burp In
 
 Once everything is configured and you have a word-list selected, you're ready to start the attack!
 
-<img src="Images/Chapters/0x04e/BurpIntruderInputList.png" alt="List of passwords in Burp Suite" width="450" />
+<img src="Images/Chapters/0x04e/BurpIntruderInputList.png" width="400px" />
 
 - Click the **Start attack** button to attack the authentication.
 
 A new window will open. Site requests are sent sequentially, each request corresponding to a password from the list. Information about the response (length, status code, etc.) is provided for each request, allowing you to distinguish successful and unsuccessful attempts:
 
-<img src="Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.png" alt="A successful attack in Burp Suite" width="450" />
+<img src="Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.png" width="400px" />
 
 In this example, you can identify the successful attempt according to the different length and the HTTP status code, which reveals the password 12345.
 
@@ -213,7 +213,7 @@ Authentication shouldn't be implemented from scratch but built on top of proven 
 - [Laravel (PHP)](https://laravel.com/docs/5.4/authentication "Laravel (PHP)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 
-A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://www.owasp.org/index.php/Testing_for_authentication) and [Testing Session Management](https://www.owasp.org/index.php/Testing_for_Session_Management) chapters.
+A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/04-Authentication_Testing/README) and [Testing Session Management](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/README) chapters.
 
 ## Testing Session Timeout (MSTG-AUTH-7)
 
@@ -223,7 +223,7 @@ Minimizing the lifetime of session identifiers and tokens decreases the likeliho
 
 In most popular frameworks, you can set the session timeout via configuration options. This parameter should be set according to the best practices specified in the framework documentation. The recommended timeout may be between 10 minutes and two hours, depending on the app's sensitivity. Refer to the framework documentation for examples of session timeout configuration:
 
-- [Spring (Java)](https://docs.spring.io/spring-session/docs/current/reference/html5/ "Spring (Java)")
+- [Spring (Java)](https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.spring-session "Spring (Java)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html#session-expiry "Ruby on Rails")
 - [PHP](https://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime "PHP")
 - [ASP.Net](https://docs.microsoft.com/en-us/dotnet/api/system.web.sessionstate.httpsessionstate.timeout "ASP.NET")
@@ -270,7 +270,7 @@ Use an interception proxy for dynamic application analysis and execute the follo
 4. Try to access the data again by resending the request from step 2.
 
 If the logout is correctly implemented on the server, an error message or redirect to the login page will be sent back to the client. On the other hand, if you receive the same response you got in step 2, the token or session ID is still valid and hasn't been correctly terminated on the server.
-The OWASP Web Testing Guide ([OTG-SESS-006](https://www.owasp.org/index.php/Testing_for_logout_functionality_%28OTG-SESS-006%29 "OTG-SESS-006")) includes a detailed explanation and more test cases.
+The OWASP Web Testing Guide ([WSTG-SESS-06](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/06-Testing_for_Logout_Functionality "WSTG-SESS-006")) includes a detailed explanation and more test cases.
 
 ## Testing Two-Factor Authentication and Step-up Authentication (MSTG-AUTH-9 and MSTG-AUTH-10)
 
@@ -326,7 +326,11 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 > A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
 
-Consult the [OWASP Testing Guide](https://www.owasp.org/index.php/Testing_for_Session_Management "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
+You should check if the app relies on static responses from the remote endpoint such as `"message":"Success"` to grant access to app internal sensitive data or functions. If that's the case, an attacker could easily bypass the 2FA implementation by manipulating the server response e.g. by using an interception proxy such as [Burp Suite](0x08-Testing-Tools.md#burp-suite) and modifying the response to be `"message":"Success"`.
+
+To prevent these kind of attacks, the application should always verify some kind of user token or other dynamic information related to the user that was previously securely stored (e.g. in the Keychain/KeyStore).
+
+Consult the [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/01-Testing_for_Session_Management_Schema "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
 ## Testing Stateless (Token-Based) Authentication (MSTG-AUTH-3)
 
@@ -375,11 +379,12 @@ Verify that the implementation adheres to JWT [best practices](https://stormpath
 - Verify the location of the private signing key or HMAC secret key. The key should remain on the server and should never be shared with the client. It should be available for the issuer and verifier only.
 - Verify that no sensitive data, such as personal identifiable information, is embedded in the JWT. If, for some reason, the architecture requires transmission of such information in the token, make sure that payload encryption is being applied. See the sample Java implementation on the [OWASP JWT Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html "JSON Web Token for Java Cheat Sheet").
 - Make sure that replay attacks are addressed with the `jti` (JWT ID) claim, which gives the JWT a unique identifier.
+- Make sure that cross service relay attacks are addressed with the `aud` (audience) claim, which defines for which application the token is entitled.
 - Verify that tokens are stored securely on the mobile phone, with, for example, KeyChain (iOS) or KeyStore (Android).
 
 #### Enforcing the Hashing Algorithm
 
-An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. As explained at the link above, some libraries treated tokens signed with the none algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
+An attacker executes this by altering the token and, using the 'none' keyword, changing the signing algorithm to indicate that the integrity of the token has already been verified. [Some libraries](https://stormpath.com/blog/jwt-the-right-way) might treat tokens signed with the 'none' algorithm as if they were valid tokens with verified signatures, so the application will trust altered token claims.
 
 For example, in Java applications, the expected algorithm should be requested explicitly when creating the verification context:
 
@@ -465,7 +470,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
 
-<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" alt="Abstract Protocol Flow" width="450" />
+<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="400px" />
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 
@@ -525,13 +530,13 @@ For apps that operate within a closed ecosystem, *embedded authentication* is th
 
 For additional best practices and detailed information please refer to the following source documents:
 
-- [RFC6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749 "RFC6749: The OAuth 2.0 Authorization Framework (October 2012)")
-- [DRAFT - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-12 "draft_ietf-oauth-native-apps-12: OAuth 2.0 for Native Apps (June 2017)")
-- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations](https://tools.ietf.org/html/rfc6819 "RFC6819: OAuth 2.0 Threat Model and Security Considerations (January 2013)")
+- [RFC6749 - The OAuth 2.0 Authorization Framework (October 2012)](https://tools.ietf.org/html/rfc6749)
+- [RFC8252 - OAuth 2.0 for Native Apps (October 2017)](https://tools.ietf.org/html/rfc8252)
+- [RFC6819 - OAuth 2.0 Threat Model and Security Considerations (January 2013)](https://tools.ietf.org/html/rfc6819)
 
 ## Testing Login Activity and Device Blocking (MSTG-AUTH-11)
 
-For applications which require L2 protection, the MASVS states that they should inform the user about all login activities within the app with the possiblity of blocking certain devices. This can be broken down into various scenarios:
+For applications which require L2 protection, the MASVS states that they should inform the user about all login activities within the app with the possibility of blocking certain devices. This can be broken down into various scenarios:
 
 1. The application provides a push notification the moment their account is used on another device to notify the user of different activities. The user can then block this device after opening the app via the push-notification.
 2. The application provides an overview of the last session after login. If the previous session was with a different configuration (e.g. location, device, app-version) compared to the current configuration, then the user should have the option to report suspicious activities and block devices used in the previous session.
@@ -554,7 +559,7 @@ The application can provide a list of activities history which will be updated a
 
 Paid content requires special care, and additional meta-information (e.g., operation cost, credit, etc.) might be used to ensure user's knowledge about the whole operation's parameters.
 
-In addition, non-repudiation mechanisms should be applied to sensitive transactions (e.g. payed content access, given consent to Terms and Conditions clauses, etc.) in order to prove that a specific transaction was in fact performed (integrity) and by whom (authentication).
+In addition, non-repudiation mechanisms should be applied to sensitive transactions (e.g. paid content access, given consent to Terms and Conditions clauses, etc.) in order to prove that a specific transaction was in fact performed (integrity) and by whom (authentication).
 
 In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested.
 In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.

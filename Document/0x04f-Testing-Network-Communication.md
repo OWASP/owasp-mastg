@@ -13,7 +13,7 @@ Several free and commercial proxy tools are available. Here are some of the most
 
 To use the interception proxy, you'll need run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
-<img src="Images/Chapters/0x04f/BURP.png" width="550px" />
+<img src="Images/Chapters/0x04f/BURP.png" width="100%" />
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
@@ -66,7 +66,7 @@ bettercap will then automatically send the packets to the network gateway in the
 
 On the mobile phone start the browser and navigate to `http://example.com`, you should see output like the following when you are using Wireshark.
 
-<img src="Images/Chapters/0x04f/bettercap.png" alt="Wireshark" />
+<img src="Images/Chapters/0x04f/bettercap.png" width="100%" />
 
 If that's the case, you are now able to see the complete network traffic that is sent and received by the mobile phone. This includes also DNS, DHCP and any other form of communication and can therefore be quite "noisy". You should therefore know how to use [DisplayFilters in Wireshark](https://wiki.wireshark.org/DisplayFilters "DisplayFilters") or know [how to filter in tcpdump](https://danielmiessler.com/study/tcpdump/#gs.OVQjKbk "A tcpdump Tutorial and Primer with Examples") to focus only on the relevant traffic for you.
 
@@ -99,7 +99,7 @@ In both cases the AP needs to be configured to point to your host computer's IP.
 
 > If the separate access point belongs to the customer, all changes and configurations should be clarified prior to the engagement and a backup should be created, before making any changes.
 
-<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" alt="Network Diagram - MITM with an access point" />
+<img src="Images/Chapters/0x04f/architecture_MITM_AP.png" width="100%" />
 
 #### Installation
 
@@ -269,7 +269,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
     - Redirect to port: provide original port location.
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
-<img src="Images/Chapters/0x04f/burp_xamarin.png" alt="Burp redirect to original location" width="600px" />
+<img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
 <br/>
 <br/>
@@ -284,7 +284,7 @@ If not already done, install the CA certificates in your mobile device which wil
 
 #### Intercepting Traffic
 
-Start using the app and trigger it's functions. You should see HTTP messages showing up in your interception proxy.
+Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
@@ -379,7 +379,7 @@ Integrity Check Algorithms:
 - `SHA256`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
 - `SHA384`  - [RFC 6234](https://tools.ietf.org/html/rfc6234 "RFC 6234")
 
-Note that The efficiency of a cipher suite depends on the efficiency of its algorithms.
+Note that the efficiency of a cipher suite depends on the efficiency of its algorithms.
 
 In the following, we’ll present the updated recommended cipher suites list to use with TLS. These cipher suites are recommended by both IANA in its TLS parameters documentation and OWASP TLS Cipher String Cheat Sheet:
 
@@ -399,11 +399,20 @@ Some Android and iOS versions do not support some of the recommended cipher suit
 
 ### Static Analysis
 
-Identify all API/web service requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [HttpsURLConnection](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [SSLSocket](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
+First, you should identify all network requests in the source code and ensure that no plain HTTP URLs are used. Make sure that sensitive information is sent over secure channels by using [`HttpsURLConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html "HttpsURLConnection") or [`SSLSocket`](https://developer.android.com/reference/javax/net/ssl/SSLSocket.html "SSLSocket") (for socket-level communication using TLS).
 
-Be aware that `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
+Next, you should ensure that the app is not allowing cleartext HTTP traffic. Since Android 9 (API level 28) cleartext HTTP traffic is blocked by default but there are multiple ways in which an application can still send it:
 
-Verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
+- Setting the [`android:usesCleartextTraffic`](https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic "Android documentation - usesCleartextTraffic flag") attribute of the `<application>` tag in the AndroidManifest.xml file. Note that this flag is ignored in case the [Network Security Configuration](https://developer.android.com/training/articles/security-config.html) is configured.
+- Configuring the Network Security Configuration to enable cleartext traffic by setting the `cleartextTrafficPermitted` attribute to true on `<domain-config>` elements.
+- Using low-level APIs (e.g. [`Socket`](https://developer.android.com/reference/java/net/Socket "Socket class")) to set up a custom HTTP connection.
+- Using a cross-platform framework (e.g. Flutter, Xamarin, ...), as these typically have their own implementations for HTTP libraries.
+
+All of the above cases must be carefully analyzed as a whole. For example, even if the app does not permit cleartext traffic in its Android Manifest or Network Security Configuration, it might actually still be sending HTTP traffic. That could be the case if it's using a low-level API (for which Network Security Configuration is ignored) or a badly configured cross-platform framework.
+
+Next, even when using a low-level API which is supposed to make secure connections (such as `SSLSocket`), be aware that it has to be securely implemented. For instance, `SSLSocket` **doesn't** verify the hostname. Use `getDefaultHostnameVerifier` to verify the hostname. The Android developer documentation includes a [code example](https://developer.android.com/training/articles/security-ssl.html#WarningsSslSocket "Warnings About Using SSLSocket Directly").
+
+Finally, verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://dev.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
 ### Dynamic Analysis
 

@@ -1,0 +1,33 @@
+# YAML 1.2
+---
+abstract: "The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the OWASP Mobile Application Verification Standard (MASVS)."
+authors: 
+  -
+    family-names: Holguera
+    given-names: Carlos
+  -
+    family-names: Schleier
+    given-names: Sven
+  -
+    family-names: Mueller
+    given-names: Bernhard
+  -
+    family-names: Willemsen
+    given-names: Jeroen
+cff-version: "1.1.0"
+date-released: 2021-07-25
+identifiers: 
+  - 
+    type: isbn
+    value: "978-1-257-96636-3"
+keywords: 
+  - "mobile security"
+  - "Android security"
+  - "iOS security"
+  - "mobile pentesting"
+license: "CC-BY-SA-4.0"
+message: "If you use the MSTG, please cite it using these metadata."
+repository-code: "https://github.com/OWASP/owasp-mstg/"
+title: "OWASP Mobile Security Testing Guide"
+version: "1.2"
+...

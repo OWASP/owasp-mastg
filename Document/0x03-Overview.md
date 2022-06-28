@@ -46,7 +46,7 @@ There are three things you should never bring up in polite conversations: religi
 
 This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. The MSTG maps to the same basic set of security requirements offered by the MASVS and depending on the context they can be used individually or combined to achieve different objectives.
 
-<img src="Images/Chapters/0x03/owasp-mobile-overview.jpg" width="550" />
+<img src="Images/Chapters/0x03/owasp-mobile-overview.jpg" width="100%" />
 
 For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the "[Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)" chapter we'll describe how you can apply the checklist and MSTG to a mobile app penetration test.
 
