@@ -79,6 +79,7 @@ You can learn more about this and other privacy related topics here:
 - [iOS Privacy Best Practices](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy)
 - [Android App Privacy Policy](https://support.google.com/googleplay/android-developer/answer/9859455#privacy_policy)
 - [Android Data Safety Section on Google Play](https://support.google.com/googleplay/android-developer/answer/10787469)
+- [Preparing your app for the new Data safety section in Google Play](https://www.youtube.com/watch?v=J7TM0Yy0aTQ)
 - [Android Privacy Best Practices](https://developer.android.com/privacy/best-practices)
 
 ## Testing User Education (MSTG-STORAGE-12)
