@@ -32,7 +32,7 @@ Unlike the Android emulator, which fully emulates the hardware of an actual Andr
 
 #### Testing on an Emulator
 
-Corellium is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer any trial license.
+[Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
 
 #### Getting Privileged Access
 
@@ -101,7 +101,7 @@ Some apps attempt to detect whether the iOS device on which they're running is j
 
 The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
-![OWASP MSTG](Images/Chapters/0x06b/UDID-Finder.png) \
+<img src="Images/Chapters/0x06b/UDID-Finder.png" width="400px" />
 
 If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
 
@@ -146,7 +146,7 @@ One of the most common things you do when testing an app is accessing the device
 
 In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08-Testing-Tools.md#cydia) (see screenshot below) or [Sileo](0x08-Testing-Tools.md#sileo) installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
-![OWASP MSTG](Images/Chapters/0x06b/cydia.png) \
+<img src="Images/Chapters/0x06b/cydia.png" width="300px" />
 
 In order to enable SSH access to your iOS device you can install the OpenSSH package. Once installed, be sure to connect both devices to the same Wi-Fi network and take a note of the device IP address, which you can find in the **Settings -> Wi-Fi** menu and tapping once on the info icon of the network you're connected to.
 
@@ -242,7 +242,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 After starting [Passionfruit](0x08-Testing-Tools.md#passionfruit) you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_data_dir.png) \
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" width="100%" />
 
 When navigating through the directories and selecting a file, a pop-up will show up and display the data either as hexadecimal or text. When closing this pop-up you have various options available for the file, including:
 
@@ -252,7 +252,7 @@ When navigating through the directories and selecting a file, a pop-up will show
 - Plist viewer
 - Download
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_file_download.png) \
+<img src="Images/Chapters/0x06b/passionfruit_file_download.png" width="100%" />
 
 #### Objection
 
@@ -349,6 +349,8 @@ $ class-dump Telegram
 ```
 
 In order to retrieve the unencrypted version, you can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") (all iOS versions) or [Clutch](0x08-Testing-Tools.md#clutch) (only up to iOS 11; for iOS 12 and above, it requires a patch). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and frida-ios-dump can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary.
+
+>**IMPORTANT NOTE:** In the United States, the Digital Millennium Copyright Act 17 U.S.C. 1201, or DMCA, makes it illegal and actionable to circumvent certain types of DRM. However, the DMCA also provides exemptions, such as for certain kinds of security research. A qualified attorney can help you determine if your research qualifies under the DMCA exemptions. (Source: [Corellium](https://support.corellium.com/en/articles/6181345-testing-third-party-ios-apps))
 
 ##### Using Clutch
 
@@ -592,7 +594,7 @@ It also shows which of them are currently running. Take a note of the "Identifie
 
 You can also directly open passionfruit and after selecting your iOS device you'll get the list of installed apps.
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_installed_apps.png) \
+<img src="Images/Chapters/0x06b/passionfruit_installed_apps.png" width="400px" />
 
 #### Exploring the App Package
 
@@ -685,11 +687,11 @@ iOS native libraries are known as Frameworks.
 
 You can easily visualize them from Passionfruit by clicking on "Modules":
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_modules.png) \
+<img src="Images/Chapters/0x06b/passionfruit_modules.png" width="100%" />
 
 And get a more detailed view including their imports/exports:
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_modules_detail.png) \
+<img src="Images/Chapters/0x06b/passionfruit_modules_detail.png" width="100%" />
 
 They are available in the `Frameworks` folder in the IPA, you can also inspect them from the terminal:
 
@@ -722,13 +724,13 @@ For now this is all information you can get about the Frameworks unless you star
 
 It is normally worth taking a look at the rest of the resources and files that you may find in the Application Bundle (.app) inside the IPA as some times they contain additional goodies like encrypted databases, certificates, etc.
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_db_view.png) \
+<img src="Images/Chapters/0x06b/passionfruit_db_view.png" width="100%" />
 
 #### Accessing App Data Directories
 
 Once you have installed the app, there is further information to explore. Let's go through a short overview of the app folder structure on iOS apps to understand which data is stored where. The following illustration represents the application folder structure:
 
-![OWASP MSTG](Images/Chapters/0x06a/iOS_Folder_Structure.png) \
+<img src="Images/Chapters/0x06a/iOS_Folder_Structure.png" width="400px" />
 
 On iOS, system applications can be found in the `/Applications` directory while user-installed apps are available under `/private/var/containers/`. However, finding the right folder just by navigating the file system is not a trivial task as every app gets a random 128-bit UUID (Universal Unique Identifier) assigned for its directory names.
 
@@ -849,15 +851,15 @@ Regular           493  None                ...  iGoat-Swift
 
 You can also visualize the Bundle directory from Passionfruit by clicking on **Files** -> **App Bundle**:
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_bundle_dir.png) \
+<img src="Images/Chapters/0x06b/passionfruit_bundle_dir.png" width="100%" />
 
 Including the `Info.plist` file:
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_plist_view.png) \
+<img src="Images/Chapters/0x06b/passionfruit_plist_view.png" width="100%" />
 
 As well as the Data directory in **Files** -> **Data**:
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_data_dir.png) \
+<img src="Images/Chapters/0x06b/passionfruit_data_dir.png" width="100%" />
 
 Refer to the [Testing Data Storage](0x06d-Testing-Data-Storage.md "Data Storage on iOS") chapter for more information and best practices on securely storing sensitive data.
 
@@ -872,11 +874,11 @@ Many apps log informative (and potentially sensitive) messages to the console lo
 5. Reproduce the problem.
 6. Click on the **Open Console** button located in the upper right-hand area of the Devices window to view the console logs on a separate window.
 
-![OWASP MSTG](Images/Chapters/0x06b/open_device_console.png) \
+<img src="Images/Chapters/0x06b/open_device_console.png" width="100%" />
 
 To save the console output to a text file, go to the top right side of the Console window and click on the **Save** button.
 
-![OWASP MSTG](Images/Chapters/0x06b/device_console.png) \
+<img src="Images/Chapters/0x06b/device_console.png" width="100%" />
 
 You can also connect to the device shell as explained in [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell), install socat via apt-get and run the following command:
 
@@ -897,7 +899,7 @@ Jun  7 13:42:14 iPhone touch[9708] <Notice>: MS:Notice: Injecting: (null) [touch
 
 Additionally, Passionfruit offers a view of all the NSLog-based application logs. Simply click on the **Console** -> **Output** tab:
 
-![OWASP MSTG](Images/Chapters/0x06b/passionfruit_console_logs.png) \
+<img src="Images/Chapters/0x06b/passionfruit_console_logs.png" width="100%" />
 
 #### Dumping KeyChain Data
 
@@ -932,7 +934,7 @@ Finally, since the keychain dumper is executed from within the application conte
 
 With [Passionfruit](0x08-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
-![OWASP MSTG](Images/Chapters/0x06b/Passionfruit_Keychain.png) \
+<img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" width="100%" />
 
 ##### Keychain-dumper (Jailbroken)
 
@@ -986,7 +988,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 ip.addr == 192.168.1.1 && http
 ```
 
-![OWASP MSTG](Images/Chapters/0x06b/wireshark_filters.png) \
+<img src="Images/Chapters/0x06b/wireshark_filters.png" width="100%" />
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
 

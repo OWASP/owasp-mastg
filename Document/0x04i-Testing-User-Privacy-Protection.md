@@ -1,6 +1,6 @@
 # Mobile App User Privacy Protection
 
-**IMPORTANT DISCLAIMER:** The MSTG is not a legal handbook. Therefore, we will not deep dive into the GDPR or other possibly relevant legislations here. This chapter is meant to introduce you to the topics and provide you with essential references that you can use to continue researching by yourself. We'll also do our best effort to provide you with tests or guidelines for testing the privacy related requirements listed in the OWASP MASVS.
+**IMPORTANT DISCLAIMER:** The MSTG is not a legal handbook. Therefore, we will not deep dive into the GDPR or other possibly relevant legislation here. This chapter is meant to introduce you to the topics and provide you with essential references that you can use to continue researching by yourself. We'll also do our best effort to provide you with tests or guidelines for testing the privacy-related requirements listed in the OWASP MASVS.
 
 ## Overview
 
@@ -8,7 +8,7 @@
 
 Mobile apps handle all kinds of sensitive user data, from identification and banking information to health data. There is an understandable concern about how this data is handled and where it ends up. We can also talk about "benefits users get from using the apps" vs "the real price that they are paying for it" (usually and unfortunately without even being aware of it).
 
-### The Solution (pre 2020)
+### The Solution (pre-2020)
 
 To ensure that users are properly protected, legislation such as the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/ "GDPR") in Europe has been developed and deployed (applicable since May 25, 2018), forcing developers to be more transparent regarding the handling of sensitive user data. This has been mainly implemented using privacy policies.
 
@@ -19,7 +19,7 @@ There are two main dimensions to consider here:
 - **Developer Compliance**: Developers need to comply with legal privacy principles since they are enforced by law. Developers need to better comprehend the legal principles in order to know what exactly they need to implement to remain compliant. Ideally, at least, the following must be fulfilled:
   - **Privacy-by-Design** approach (Art. 25 GDPR, "Data protection by design and by default").
   - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
-- **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure a secure handling and processing of their information).
+- **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure secure handling and processing of their information).
 
 > Note: More often than not apps will claim to handle certain data, but in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://www.researchgate.net/publication/339349349_Engineering_Privacy_in_Smartphone_Apps_A_Technical_Guideline_Catalog_for_App_Developers) gives a very nice introduction to this topic.
 
@@ -27,7 +27,7 @@ There are two main dimensions to consider here:
 
 When an app needs personal information from a user for its business process, the user needs to be informed on what happens with the data and why the app needs it. If there is a third party doing the actual processing of the data, the app should inform the user about that too.
 
-Surely you're already familiar with the  classic  triad  of  security  protection  goals:  confidentiality,  integrity,  and  availability. However, you might not be aware of the three protection goals that have been proposed to focus on data protection:
+Surely you're already familiar with the classic triad of security protection goals: confidentiality, integrity, and availability. However, you might not be aware of the three protection goals that have been proposed to focus on data protection:
 
 - **Unlinkability**:
   - Users' privacy-relevant data must be unlinkable to any other set of privacy-relevant data outside of the domain.
@@ -43,14 +43,14 @@ Surely you're already familiar with the  classic  triad  of  security  protectio
 
 Addressing both security and privacy protection goals at the same time is a very challenging task (if not impossible in many cases). There is an interesting visualization in IEEE's publication [Protection Goals for Privacy Engineering](https://ieeexplore.ieee.org/document/7163220) called ["The Three Axes"](https://ieeexplore.ieee.org/document/7163220#sec2e) representing the impossibility to ensure 100% of each of the six goals simultaneously.
 
-Most parts of the processes derived from the protection goals are traditionally being covered in a privacy policy. However, this approach is not always optimal:
+Most parts of the processes derived from the protection goals are traditionally covered in a privacy policy. However, this approach is not always optimal:
 
 - developers are not legal experts but still need to be compliant.
 - users would be required to read usually long and wordy policies.
 
 ### The New Approach (Google's and Apple's take on this)
 
-In order to address these challenges and help users easily understand how their data is being collected, handled and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf):
+In order to address these challenges and help users easily understand how their data is being collected, handled, and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf):
 
 - the App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
 - the Google Play [Data Safety Labels](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
@@ -68,7 +68,7 @@ The following is a list of [common privacy violations](https://support.google.co
 
 > You can find more common violations in [Google Play Console Help (Policy Centre -> Privacy, deception and device abuse -> User data)](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations).
 
-As you can see this is deeply related to other testing categories. When you're testing them you're often indirectly testing for User Privacy Protection. Keep this in mind since it will help you provide better and more comprehensive reports. Often you'll also be able to reuse evidences from other tests in order to test for User Privacy Protection (see an example of this in ["Testing User Education"](#testing-user-education-mstg-storage-12)).
+As you can see this is deeply related to other testing categories. When you're testing them you're often indirectly testing for User Privacy Protection. Keep this in mind since it will help you provide better and more comprehensive reports. Often you'll also be able to reuse evidence from other tests in order to test for User Privacy Protection (see an example of this in ["Testing User Education"](#testing-user-education-mstg-storage-12)).
 
 ### Learn More
 
@@ -85,9 +85,9 @@ You can learn more about this and other privacy related topics here:
 
 ### Testing User Education on Data Privacy on the App Marketplace
 
-At this point we're only interested into knowing which privacy related information is being disclosed by the developers and try to evaluate if it seems reasonable (similarly as you'd do when testing for permissions).
+At this point, we're only interested in knowing which privacy-related information is being disclosed by the developers and trying to evaluate if it seems reasonable (similarly as you'd do when testing for permissions).
 
-> It's possible that the developers are not declaring certain information that is indeed being collected and or shared, but that's a topic for a different test extending this one here. As part of this test you are not supposed to provide privacy violations assurance.
+> It's possible that the developers are not declaring certain information that is indeed being collected and or shared, but that's a topic for a different test extending this one here. As part of this test, you are not supposed to provide privacy violation assurance.
 
 ### Static Analysis
 
@@ -97,21 +97,21 @@ You can follow these steps:
 2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (Google Play).
 3. Verify if there's any information available at all.
 
-The test passes if the developer have complied with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
+The test passes if the developer has complied with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
 
 ### Dynamic analysis
 
-As an optional step, you can also provide some kind of evidence as part of this test. For instance, if you're testing an iOS app you can easily enable app activity recording and export a [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) containing detailed app accesses to different resources such as photos, contacts, camera, microphone, network connections, etc.
+As an optional step, you can also provide some kind of evidence as part of this test. For instance, if you're testing an iOS app you can easily enable app activity recording and export a [Privacy Report](https://developer.apple.com/documentation/network/privacy_management/inspecting_app_activity_data) containing detailed app access to different resources such as photos, contacts, camera, microphone, network connections, etc.
 
 Doing this has actually many advantages for testing other MASVS categories. It provides very useful information that you can use to [test network communication](0x06g-Testing-Network-Communication.md) in MASVS-NETWORK or when [testing app permissions](0x06h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) in MASVS-PLATFORM. While testing these other categories you might have taken similar measurements using other testing tools. You can also provide this as evidence for this test.
 
-> Ideally, the information available should be compared against what the app is actually meant to do. However, that's far from a trivial task that could take from several days to weeks to complete depending on your resources and support from automated tooling. It also heavily depends on the app functionality and context and should be ideally performed on a whitebox setup working very closely with the app developers.
+> Ideally, the information available should be compared against what the app is actually meant to do. However, that's far from a trivial task that could take from several days to weeks to complete depending on your resources and support from automated tooling. It also heavily depends on the app functionality and context and should be ideally performed on a white box setup working very closely with the app developers.
 
 ### Testing User Education on Security Best Practices
 
-Testing this might be especially challenging if you intend to automate it. We recommend to use the app extensively and try to answer the following questions whenever applicable:
+Testing this might be especially challenging if you intend to automate it. We recommend using the app extensively and try to answer the following questions whenever applicable:
 
-- **Fingerprint usage**: when fingerprints are used for authentication providing access to high risk transactions/information,
+- **Fingerprint usage**: when fingerprints are used for authentication providing access to high-risk transactions/information,
 
     _does the app inform the user about potential issues when having multiple fingerprints of other people registered to the device as well?_
 
@@ -129,7 +129,7 @@ Testing this might be especially challenging if you intend to automate it. We re
 
 - **Prominent Disclosure**: in any case,
 
-    _does the app display prominent disclosure of data access, collection, use, and sharing? e.g. does the app use the [App Tracking Transparency Framework](https://developer.apple.com/documentation/apptrackingtransparency) to ask for permission on iOS?_
+    _does the app display prominent disclosure of data access, collection, use, and sharing? e.g. does the app use the [App Tracking Transparency Framework](https://developer.apple.com/documentation/apptrackingtransparency) to ask for the permission on iOS?_
 
 ## References
 
