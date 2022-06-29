@@ -48,7 +48,7 @@ In contrast, Frida implements code injection by writing code directly into the p
 - The agent establishes a bi-directional communication channel back to the tool (e.g. the Frida REPL or your custom Python script).
 - The hijacked thread resumes after being restored to its original state, and process execution continues as usual.
 
-![OWASP MSTG](Images/Chapters/0x04/frida.png) \
+<img src="Images/Chapters/0x04/frida.png" width="100%" />
 
 - *Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")*
 
@@ -414,27 +414,27 @@ Ghidra is an open source software reverse engineering (SRE) suite of tools devel
 
 Start Ghidra using `ghidraRun` (\*nix) or `ghidraRun.bat` (Windows), depending on the platform you are on. Once Ghidra is fired up, create a new project by specifying the project directory. You will be greeted by a window as shown below:
 
-![OWASP MSTG](Images/Chapters/0x04c/Ghidra_new_project.png) \
+<img src="Images/Chapters/0x04c/Ghidra_new_project.png" width="100%" />
 
 In your new **Active Project** you can import an app binary by going to **File** -> **Import File** and choosing the desired file.
 
-![OWASP MSTG](Images/Chapters/0x04c/Ghidra_import_binary.png) \
+<img src="Images/Chapters/0x04c/Ghidra_import_binary.png" width="100%" />
 
 If the file can be properly processed, Ghidra will show meta-information about the binary before starting the analysis.
 
-![OWASP MSTG](Images/Chapters/0x04c/Ghidra_elf_import.png) \
+<img src="Images/Chapters/0x04c/Ghidra_elf_import.png" width="100%" />
 
 To get the disassembled code for the binary file chosen above, double click the imported file from the **Active Project** window. Click **yes** and **analyze** for auto-analysis on the subsequent windows. Auto-analysis will take some time depending on the size of the binary, the progress can be tracked in the bottom right corner of the code browser window. Once auto-analysis is completed you can start exploring the binary.
 
-![OWASP MSTG](Images/Chapters/0x04c/Ghidra_main_window.png) \
+<img src="Images/Chapters/0x04c/Ghidra_main_window.png" width="100%" />
 
 The most important windows to explore a binary in Ghidra are the **Listing** (Disassembly) window, the **Symbol Tree** window and the **Decompiler** window, which shows the decompiled version of the function selected for disassembly. The **Display Function Graph** option shows control flow graph of the selected function.
 
-![OWASP MSTG](Images/Chapters/0x04c/Ghidra_function_graph.png) \
+<img src="Images/Chapters/0x04c/Ghidra_function_graph.png" width="100%" />
 
 There are many other functionalities available in Ghidra and most of them can be explored by opening the **Window** menu. For example, if you want to examine the strings present in the binary, open the **Defined Strings** option. We will discuss other advanced functionalities while analyzing various binaries for Android and iOS platforms in the coming chapters.
 
-![OWASP MSTG](Images/Chapters/0x04c/Ghidra_string_window.png) \
+<img src="Images/Chapters/0x04c/Ghidra_string_window.png" width="100%" />
 
 ### Hopper (Commercial Tool)
 
@@ -477,7 +477,7 @@ Once you have MobSF up and running you can open it in your browser by navigating
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
 
-![OWASP MSTG](Images/Chapters/0x05b/mobsf_android.png) \
+<img src="Images/Chapters/0x05b/mobsf_android.png" width="100%" />
 
 The following is displayed:
 
@@ -501,7 +501,7 @@ Once you have MobSF up and running you can open it in your browser by navigating
 
 After MobSF is done with its analysis, you will receive a one-page overview of all the tests that were executed. The page is split up into multiple sections giving some first hints on the attack surface of the application.
 
-![OWASP MSTG](Images/Chapters/0x06b/mobsf_ios.png) \
+<img src="Images/Chapters/0x06b/mobsf_ios.png" width="100%" />
 
 The following is displayed:
 
@@ -980,19 +980,19 @@ And of course you can also use the disassembler capabilities of r2 and print the
 
 r2 commands normally accept options (see `pd?`), e.g. you can limit the opcodes displayed by appending a number ("N") to the command `pd N`.
 
-![OWASP MSTG](Images/Chapters/0x05b/r2_pd_10.png) \
+<img src="Images/Chapters/0x05b/r2_pd_10.png" width="100%" />
 
 Instead of just printing the disassembly to the console you may want to enter the so-called **Visual Mode** by typing `V`.
 
-![OWASP MSTG](Images/Chapters/0x05b/r2_visualmode_hex.png) \
+<img src="Images/Chapters/0x05b/r2_visualmode_hex.png" width="100%" />
 
 By default, you will see the hexadecimal view. By typing `p` you can switch to different views, such as the disassembly view:
 
-![OWASP MSTG](Images/Chapters/0x05b/r2_visualmode_disass.png) \
+<img src="Images/Chapters/0x05b/r2_visualmode_disass.png" width="100%" />
 
 Radare2 offers a **Graph Mode** that is very useful to follow the flow of the code. You can access it from the Visual Mode by typing `V`:
 
-![OWASP MSTG](Images/Chapters/0x05b/r2_graphmode.png) \
+<img src="Images/Chapters/0x05b/r2_graphmode.png" width="100%" />
 
 This is only a selection of some radare2 commands to start getting some basic information from Android binaries. Radare2 is very powerful and has dozens of commands that you can find on the [radare2 command documentation](https://book.rada.re/basic_commands/intro.html "radare2 command documentation"). Radare2 will be used throughout the guide for different purposes such as reversing code, debugging or performing binary analysis. We will also use it in combination with other frameworks, especially Frida (see the r2frida section for more information).
 
@@ -1088,7 +1088,7 @@ Local Android SDK installations are managed via Android Studio. Create an empty 
 
 An overview of all Android codenames, their version number and API levels can be found in the [Android Developer Documentation](https://source.android.com/setup/start/build-numbers "Codenames, Tags, and Build Numbers").
 
-![OWASP MSTG](Images/Chapters/0x05c/sdk_manager.jpg) \
+<img src="Images/Chapters/0x05c/sdk_manager.jpg" width="100%" />
 
 Installed SDKs are on the following paths:
 
@@ -1431,7 +1431,7 @@ cy# [alertView show]
 cy# [alertView release]
 ```
 
-![OWASP MSTG](Images/Chapters/0x06c/cycript_sample.png) \
+<img src="Images/Chapters/0x06c/cycript_sample.png" width="400px" />
 
 Find the app's document directory with Cycript:
 
@@ -1672,7 +1672,7 @@ listening on http://localhost:31337
 
 When you execute the command `passionfruit` a local server will be started on port 31337. Connect your jailbroken device with the Frida server running, or a non-jailbroken device with a repackaged app including Frida to your macOS device via USB. Once you click on the "iPhone" icon you will get an overview of all installed apps:
 
-![OWASP MSTG](Images/Chapters/0x06b/Passionfruit.png) \
+<img src="Images/Chapters/0x06b/Passionfruit.png" width="100%" />
 
 With Passionfruit it's possible to explore different kinds of information concerning an iOS app. Once you selected the iOS app you can perform many tasks such as:
 

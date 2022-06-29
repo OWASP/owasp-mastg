@@ -130,13 +130,18 @@ A brand new Android app sparks your interest. Of course, you are planning to pur
 Copy the binary to your Android device and run using the shell.
 
 ```shell
-  $ adb push validate /data/local/tmp
-  [100%] /data/local/tmp/validate
-  $ adb shell chmod 755 /data/local/tmp/validate
-  $ adb shell /data/local/tmp/validate
-  Usage: ./validate <serial>
-  $ adb shell /data/local/tmp/validate 1234
-  Incorrect serial (wrong format).
+$ adb push validate /data/local/tmp
+[100%] /data/local/tmp/validate
+$ adb shell chmod 755 /data/local/tmp/validate
+$ adb shell /data/local/tmp/validate
+Usage: ./validate <serial>
+$ adb shell /data/local/tmp/validate 1234
+Incorrect serial (wrong format).
+$ adb shell /data/local/tmp/validate JACE6ACIARNAAIIA
+Entering base32_decode
+Outlen = 10
+Entering check_license
+Product activation passed. Congratulations!
 ```
 
 #### Solutions
