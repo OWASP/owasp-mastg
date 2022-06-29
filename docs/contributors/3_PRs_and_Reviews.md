@@ -9,7 +9,7 @@ You can create a Pull Request (PR) by following [these steps](https://docs.githu
 
 Your PR will be reviewed soon (refer to this page to learn more about [reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)).
 
-> Before opening a PR please **self-review your changes in GitHub** and ensure that you follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md) to speed up the review process⚡
+> Before opening a PR please **self-review your changes in GitHub** and ensure that you follow our [style guide](5_Style_Guide.md) to speed up the review process⚡
 
 ## How to Incorporate the Reviewer's Feedback to your PR
 
@@ -31,7 +31,7 @@ When reviewers suggest changes in a pull request, you can automatically incorpor
 
 ## How to Review a PR
 
-If you'd like to review another contributor's PR please [follow the steps here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/reviewing-proposed-changes-in-a-pull-request).
+If you'd like to review an open PR please follow these steps:
 
 ### Step 1: Comment and Suggest Changes
 
@@ -45,6 +45,8 @@ You can enter single or multi-line comments (click and drag to select the range 
 
 If the suggestion you'd like to make cannot be expressed using "suggested changes" please enter a clear comment explaining what should be fixed (e.g. some paragraphs don't link properly or some essential information cannot be found and should be added).
 
+> Using "Suggested Changes" saves you as a reviewer and the PR author a lot of time. And you get _points_ (attributions) for the changes that you suggested (if the author commits them you become a co-author of those commits). If you're constant with your reviewer work you can apply to be recognize as an official reviewer in our Acknowledgements page.
+
 ### Step 2: Submit your Review
 
 Once you went through the whole PR you can [submit your review](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/reviewing-proposed-changes-in-a-pull-request#submitting-your-review)
@@ -53,3 +55,5 @@ Once you went through the whole PR you can [submit your review](https://docs.git
 2. Enter a comment for the contributor.
 3. Select the type of review you'd like to leave (Comment, Approve or Request Changes).
 4. Click on "Submit review".
+
+> Learn more: ["(GitHub Docs) Reviewing proposed changes in a pull request"](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/reviewing-proposed-changes-in-a-pull-request).

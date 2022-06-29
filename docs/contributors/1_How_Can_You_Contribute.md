@@ -6,7 +6,27 @@ A direct contribution to the MASVS can be done in many different ways. First of 
 
 Show your interest and support to the project by [_starring_ it](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars#starring-a-repository).
 
-![Star](https://docs.github.com/assets/cb-13889/images/help/stars/starring-a-repository.png)
+<img src="https://docs.github.com/assets/cb-13889/images/help/stars/starring-a-repository.png" width="300px"/>
+
+<br>
+
+## Contribution Flow
+
+```mermaid
+flowchart LR
+    A(Open Discussion) -->|discuss| C{qualifies?}
+    C -->|Yes| D(Issue)
+    C -->|No| E[Close]
+    D -->|open PR| F(Pull Request)
+    F -->|review| G{approved?}
+    F -->|make changes| F
+    G -->|Yes| H[Merge]
+    G -->|No| I[Close]
+```
+
+## 💬 Participate in Discussions
+
+Our GitHub [Discussions](https://docs.github.com/en/discussions) are the first place to go for asking questions, giving us feedback and proposing new ideas. If your proposal qualifies for the MSTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
 
 ## 🎯 Create Issues
 
@@ -17,10 +37,12 @@ You can create [Issues](https://github.com/OWASP/owasp-masvs/issues "MASVS Issue
 
 ## 📝 Open a Pull Request
 
-Open a [Pull Request (PR)](https://github.com/OWASP/owasp-masvs/pulls) with your changes.
+You can contribute with content or corrections by opening a Pull Request (PR).
 
-- Your PR may be merged after review. Be sure to follow our [style guide](https://github.com/OWASP/owasp-mstg/blob/master/style_guide.md "MSTG Style Guide") when writing content.
-- A PR is the preferred way for small modifications such as correcting typos.
+- Your PR may be merged after review.
+- Be sure to follow our [style guide](5_Style_Guide.md) when writing content.
+
+> Learn how to open a PR [here](3_PRs_and_Reviews.md#how-to-open-a-pr).
 
 ## ✅ Become a Reviewer
 
@@ -28,7 +50,7 @@ You can [Review Pull Requests (PRs)](https://github.com/OWASP/owasp-masvs/pulls)
 
 After your PR or issue has been submitted, we will review it as quickly as possible which typically only takes a few days. If you think we have forgotten about it, feel free to give us a nudge after 7 days have passed.
 
-> Be sure to use GitHub "Suggested Changes". This saves you as a reviewer and the PR author a lot of time. And you get *points* (attributions) for the changes that you suggested (if the author commits them you become a co-author of those commits). If you're constant with your reviewer work you can apply to be recognize as an official reviewer in our Acknowledgements page.
+> Learn how to review a PR [here](3_PRs_and_Reviews.md#how-to-review-a-pr).
 
 ## 🔎 Proof-reading
 
@@ -39,7 +61,7 @@ If you do proof-reading, these are the things we’re looking for:
   - does the paragraph make sense?
   - does it make sense with the next one? think that hundreds of people have written in here, often without considering the surroundings of the text they were including).
 - Reducing the content to a minimum (people tend to be very verbose/wordy) and in such a document we need clear and short/concise statements
-- Optimize for scannability (maybe instead of a big paragraph it would be better to have a bullet point list).
+- Optimize for _scannability_ (maybe instead of a big paragraph it would be better to have a bullet point list).
 - Any passive voice sentences? Convert to active voice.
 - Does each paragraph focus on a single topic?
 - Are key points stated at the start of each section?
@@ -57,16 +79,15 @@ Translating the MASVS in a new language is another great way to contribute. This
 Before starting a translation please consider the following:
 
 - **First of all** contact us on Slack or via email.
+- We need your commitment. After the first translation is done, we will ask for your help to translate any new changes, so your translation can remain up to date.
 - We need a second translator who can verify that the English version of the MASVS has been translated properly.
-- Once you are all set, go to your fork and follow [these steps](4_Add_new_Language.md) and create a Pull Request once finished.
-
-> Note that after your translation, we will ask your help to translate any changes as well, so your language can remain up to date. Otherwise we can only create a one-time-release.
+- Once you are all set, go to your fork and follow [these steps](4_Add_new_Language.md).
 
 ## 🚫 What not to do
 
 Although we greatly appreciate any and all contributions to the project, there are a few things that you should take into consideration:
 
-- The document should not be used as a platform for advertisement of commercial tools, companies or individuals. Write-ups should be written with free and open-source tools in mind and commercial tools are typically not accepted, unless as a reference in the security tools section.
-- Unnecessary self-promotion of tools or blog posts is frowned upon. If you have a relation with on of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
+- **No advertisement**: The OWASP mobile Security Project cannot be used as a platform for advertisement of commercial tools, companies or individuals. Technical content such as the implementation of certain techniques or tests should be written with free and open-source tools in mind. Commercial tools are typically not accepted, but might be referenced in some specific cases.
+- **No unnecessary self-promotion of tools or blog posts**: If you have a relation with one of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
 
-Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") for all the details.
+Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](../../README.md#connect-with-us) in case of doubt.
