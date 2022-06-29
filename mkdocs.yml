@@ -1,0 +1,50 @@
+site_name: OWASP Mobile Security Project
+# use_directory_urls: false # only set for mkdocs build
+theme:
+  name: material
+  # custom_dir: overrides
+  # logo: assets/logo.png
+  # favicon: assets/logo.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.instant
+    - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
+  # extra_css:
+  #   - stylesheets/extra.css
+  palette: 
+    - scheme: default
+      toggle:
+        icon: material/weather-night 
+        name: Switch to dark mode
+    - scheme: slate 
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+repo_url: https://github.com/OWASP/owasp-mstg
+repo_name: OWASP/owasp-mstg
+plugins:
+  - search
+  - mermaid2
+markdown_extensions:
+  - meta
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.progressbar
+
+# display metadata: https://www.dirigible.io/blogs/2021/11/2/material-blogging-capabilities/
