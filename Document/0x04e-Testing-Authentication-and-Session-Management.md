@@ -104,7 +104,7 @@ Confirm the existence of a password policy and verify the implemented password c
 
 After adding the zxcvbn JavaScript library to the HTML page, you can execute the command `zxcvbn` in the browser console, to get back detailed information about how likely it is to crack the password including a score.
 
-![OWASP MSTG](Images/Chapters/0x04e/zxcvbn.png) \
+<img src="Images/Chapters/0x04e/zxcvbn.png" width="100%" />
 
 The score is defined as follows and can be used for a password strength bar for example:
 
@@ -167,13 +167,13 @@ Execute the following steps for a wordlist based brute force attack with Burp In
 
 Once everything is configured and you have a word-list selected, you're ready to start the attack!
 
-![OWASP MSTG](Images/Chapters/0x04e/BurpIntruderInputList.png) \
+<img src="Images/Chapters/0x04e/BurpIntruderInputList.png" width="400px" />
 
 - Click the **Start attack** button to attack the authentication.
 
 A new window will open. Site requests are sent sequentially, each request corresponding to a password from the list. Information about the response (length, status code, etc.) is provided for each request, allowing you to distinguish successful and unsuccessful attempts:
 
-![OWASP MSTG](Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.png) \
+<img src="Images/Chapters/0x04e/BurpIntruderSuccessfulAttack.png" width="400px" />
 
 In this example, you can identify the successful attempt according to the different length and the HTTP status code, which reveals the password 12345.
 
@@ -326,6 +326,10 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 > A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
 
+You should check if the app relies on static responses from the remote endpoint such as `"message":"Success"` to grant access to app internal sensitive data or functions. If that's the case, an attacker could easily bypass the 2FA implementation by manipulating the server response e.g. by using an interception proxy such as [Burp Suite](0x08-Testing-Tools.md#burp-suite) and modifying the response to be `"message":"Success"`.
+
+To prevent these kind of attacks, the application should always verify some kind of user token or other dynamic information related to the user that was previously securely stored (e.g. in the Keychain/KeyStore).
+
 Consult the [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/01-Testing_for_Session_Management_Schema "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
 ## Testing Stateless (Token-Based) Authentication (MSTG-AUTH-3)
@@ -466,7 +470,7 @@ OAuth 2.0 defines four roles:
 
 Note: The API fulfills both the Resource Owner and Authorization Server roles. Therefore, we will refer to both as the API.
 
-![OWASP MSTG](Images/Chapters/0x04e/abstract_oath2_flow.png) \
+<img src="Images/Chapters/0x04e/abstract_oath2_flow.png" width="400px" />
 
 Here is a more [detailed explanation](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2 "An Introduction into OAuth2") of the steps in the diagram:
 

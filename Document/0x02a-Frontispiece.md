@@ -1,6 +1,6 @@
 # Frontispiece
 
-![OWASP MSTG](Images/OWASP_logo.png) \
+<img src="Images/OWASP_logo.png" width="100%" />
 
 ## About the OWASP Mobile Security Testing Guide
 
@@ -10,6 +10,14 @@ OWASP thanks the many authors, reviewers, and editors for their hard work in dev
 
 > Please open an issue in our Github Repo if the invite has expired.
 
+## OWASP MASVS and MSTG Adoption
+
+The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MSTG-Adoption.md).
+
+<a href="0x02b-MASVS-MSTG-Adoption.md">
+<img src="Images/Other/trusted-by-logos.png"/>
+</a>
+
 ## Disclaimer
 
 Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG.
@@ -18,9 +26,9 @@ Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CO
 
 ## Copyright and License
 
-Copyright © 2021 The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
+Copyright © The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-![OWASP MSTG](Images/CC-license.png) \
+<img src="Images/CC-license.png" width="300px" />
 
 ## ISBN
 
@@ -120,7 +128,7 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
 
-![OWASP MSTG](Images/Donators/donators.png) \
+<img src="Images/Donators/donators.png" width="100%" />
 
 ### Older Versions
 
