@@ -1,6 +1,6 @@
 # GitHub Actions
 
-![OWASP MSTG](images/release_header.png)
+![OWASP MSTG](/../../assets/release_header.png)
 
 Our workflows for GitHub Actions are located in `.github/workflows`.
 

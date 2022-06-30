@@ -1,5 +1,7 @@
 :root {
   --md-primary-fg-color: #499FFF;
-  /* --md-primary-fg-color--light: #ECB7B7;
-  --md-primary-fg-color--dark:  #90030C; */
+}
+
+.md-footer__inner:not([hidden]){
+  display: none;
 }
