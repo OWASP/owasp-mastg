@@ -1018,7 +1018,7 @@ Many binaries are stripped and don't have function name symbols available with t
 $ frida-trace -p 1372 -a "libjpeg.so!0x4793c"
 ```
 
-Frida 12.10 introduces a new useful syntax to query Java classes and methods as well as Java method tracing support for frida-trace via `-j` ((starting on frida-tools 8.0).
+Frida 12.10 introduces a new useful syntax to query Java classes and methods as well as Java method tracing support for frida-trace via `-j` (starting on frida-tools 8.0).
 
 - In Frida scripts: e.g. `Java.enumerateMethods('*youtube*!on*')` uses globs to take all classes that include "youtube" as part of their name and enumerate all methods starting with "on".
 - In frida-trace: e.g. `-j '*!*certificate*/isu'` triggers a case-insensitive query (`i`), including method signatures (`s`) and excluding system classes (`u`).
