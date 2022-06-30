@@ -1602,15 +1602,15 @@ Clearing the WebView resources is a crucial step when an app accesses any sensit
 
 As an additional measure, you could use server-side headers such as `no-cache`, which prevent an application from caching particular content.
 
-> Starting on Android 10 (API level 29) apps are able to detect if a WebView has become [unresponsive](https://developer.android.com/about/versions/10/features?hl=en#webview-hung "WebView hung renderer detection"). If the this happens, the OS will automatically call the `onRenderProcessUnresponsive` method.
+> Starting on Android 10 (API level 29) apps are able to detect if a WebView has become [unresponsive](https://developer.android.com/about/versions/10/features?hl=en#webview-hung "WebView hung renderer detection"). If this happens, the OS will automatically call the `onRenderProcessUnresponsive` method.
 
 You can find more security best practices when using WebViews on [Android Developers](https://developer.android.com/training/articles/security-tips?hl=en#WebView "Security Tips - Use WebView").
 
 #### Static Analysis
 
-Android's WebView class offers the [`clearCache`](https://goo.gl/7dnhdi "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache.
+Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache.
 
-Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might be also called in there.
+Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
 
 Additionally, an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "false".
 
@@ -1649,7 +1649,15 @@ You can use:
 
 #### Dynamic Analysis
 
-Open a WebView accessing some sensitive data and use a dynamic instrumentation framework such as Frida to hook `clearCache` in order to verify if it's being used whenever you terminate a WebView.
+Open a WebView accessing sensitive data and then log out of the application. Access the application's storage container and make sure all WebView related files are deleted. The following files and folders are typically related to WebViews:
+
+- app_webview
+- Cookies
+- pref_store
+- blob_storage
+- Session Storage
+- Web Data
+- Service Worker
 
 ## Testing for Overlay Attacks (MSTG-PLATFORM-9)
 
