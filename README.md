@@ -17,6 +17,8 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - ⚡ [Contribute!](#how-to-contribute)
 - 💥 [Play with our Crackmes](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md)
 
+<br>
+
 ## Trusted by ...
 
 The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](Document/0x02b-MASVS-MSTG-Adoption.md).
@@ -31,11 +33,13 @@ The OWASP MASVS and MSTG are trusted by the following platform providers and sta
 
 MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](Document/0x02a-Acknowledgements.md#our-mstg-advocates).
 
+<br>
+
 <a href="Document/0x02a-Acknowledgements.md#our-mstg-advocates">
-<img src="Document/Images/Other/nowsecure-logo.png"/>
+<img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
 </a>
 
-<br>
+<br><br>
 
 ## Connect with Us
 
@@ -45,6 +49,8 @@ MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invest
 <li><a href="https://twitter.com/OWASP_MSTG"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MSTG </a> (Official Account)</li>
 <li><a href="https://twitter.com/bsd_daemon"><img src="Document/Images/twitter_logo.png" width="14px"> @bsd_daemon </a> (Sven Schleier, Project Lead) <a href="https://twitter.com/grepharder"><img src="Document/Images/twitter_logo.png" width="14px"> @grepharder </a> (Carlos Holguera, Project Lead)</li>
 </ul>
+
+<br>
 
 ## How to Contribute
 
@@ -79,6 +85,8 @@ Contributors are categorized as follows:
 
 [Contact us](#connect-with-us) (Sven Schleier (Slack: *Sven*) or Carlos Holguera (Slack: *Carlos*)) if you are planning to become an Author/Co-Author/Reviewer, are missing from the acknowledgements (note that we make updates frequently, but not in realtime).
 
+<br>
+
 ## MSTG Translations
 
 The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MSTG translations will be declined**, but you're free to do them on your own forks.
@@ -87,11 +95,15 @@ The MSTG is a living document that changes and adapts to the most recent securit
 
 That said, we **strongly encourage [further translations of the MASVS](https://github.com/OWASP/owasp-masvs/blob/master/README.md#masvs-translations)** as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MSTG for free.
 
+<br>
+
 ## Other Formats
 
 - Get the [printed version via lulu.com](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)
 - Get the [e-book on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview) (please consider purchasing it to support our project or [make a donation](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate))
 - Check our [Document generation scripts](tools/docker/README.md)
+
+<br>
 
 ## Table-of-Contents
 
@@ -143,6 +155,8 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 
 - [Testing Tools](Document/0x08-Testing-Tools.md)
 - [Suggested Reading](Document/0x09-Suggested-Reading.md)
+
+<br>
 
 ## About Hybrid Apps
 
