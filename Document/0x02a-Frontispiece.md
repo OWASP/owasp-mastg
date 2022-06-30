@@ -1,6 +1,6 @@
 # Frontispiece
 
-![OWASP MSTG](Images/OWASP_logo.png) \
+<img src="Images/OWASP_logo.png" width="100%" />
 
 ## About the OWASP Mobile Security Testing Guide
 
@@ -40,7 +40,7 @@ Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CO
 
 Copyright © The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
 
-![OWASP MSTG](Images/CC-license.png) \
+<img src="Images/CC-license.png" width="150px" />
 
 ## ISBN
 
