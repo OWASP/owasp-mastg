@@ -3,8 +3,8 @@ site_name: OWASP Mobile Security Project
 theme:
   name: material
   # custom_dir: overrides
-  # logo: assets/logo.png
-  # favicon: assets/logo.png
+  logo: assets/logo.png
+  favicon: assets/logo.png
   icon:
     repo: fontawesome/brands/github
   features:
@@ -15,14 +15,15 @@ theme:
     - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
-  # extra_css:
-  #   - stylesheets/extra.css
-  palette: 
+    - toc.integrate
+  extra_css:
+    - docs/stylesheets/extra.css
+  palette:
     - scheme: default
       toggle:
         icon: material/weather-night 
         name: Switch to dark mode
-    - scheme: slate 
+    - scheme: slate
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
