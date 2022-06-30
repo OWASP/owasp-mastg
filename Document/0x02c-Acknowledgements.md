@@ -41,7 +41,10 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 - If the "MSTG Advocate" status is granted and you'd like to maintain it, the aforementioned contributions must remain consistent after the initial period as well. You should keep collecting this evidence and send us a *contribution report* yearly.
 - [Financial donations](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) are not part of the eligibility criteria but will be listed for completion.
-- Re-shared publications and blog posts linked in MSTG text must be **exclusively educational** and focus on mobile security or MASVS/MSTG and **not fundamentally promote company products/services**.
+- Re-shared publications and blog posts linked in MSTG text must be **educational** and focus on mobile security or MASVS/MSTG and **not endorse company products/services**.
+- Advocate Companies may use the logo and links to MASVS/MSTG resources as part of their communication but cannot use them as an endorsement by OWASP as a preferred provider of software and services.
+  - Example of what's ok: list “MSTG Advocate” status on website home page, in about company slides in sales presentations, on sales collateral.
+  - Example of what's not ok: an “MSTG Advocate” cannot claim they are OWASP certified.
 - The quality of the application of the MASVS/MSTG by these companies [has not been vetted by the MSTG team](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x04-Assessment_and_Certification.md#owasps-stance-on-masvs-certifications-and-trust-marks).
 
 > The OWASP Foundation is very grateful for the support by the individuals and organizations listed. However please note, the OWASP Foundation is strictly vendor neutral and does not endorse any of its supporters. MSTG Advocates do not influence the content of the MASVS or MSTG in any way.
@@ -50,7 +53,9 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 <br>
 
-[![NowSecure](Images/Other/nowsecure-logo.png)](https://www.nowsecure.com)
+<a href="https://www.nowsecure.com">
+<img src="Images/Other/nowsecure-logo.png" width="200px;"/>
+</a>
 
 <br>
 
@@ -62,6 +67,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 - Services / Products:
   - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
+  - [NowSecure Platform for Automated Mobile Security Testing](https://www.nowsecure.com/products/nowsecure-platform/)
 - Resources:
   - [The Essential Guide to the OWASP Mobile Security Project](https://discover.nowsecure.com/c/manager-guide-owasp?x=LIaYZt&xs=90367)
 - Trainings:
@@ -77,7 +83,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 - Technical Reviews for PRs
 - Participation in GitHub Discussions
 
-A special mention goes for the contribution to the MASVS Refactoring
+A special mention goes for the **contribution to the MASVS Refactoring**:
 
 - Significant time investment to drive the discussions and create the proposals along with the community
 - Testability Analysis
@@ -98,6 +104,8 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
   - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
   - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
   - and more
+
+<br><br>
 
 ## Contributors
 
@@ -159,4 +167,4 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
 
-![OWASP MSTG](Images/Donators/donators.png) \
+<img src="Images/Donators/donators.png"/>
