@@ -1,4 +1,4 @@
-# Welcome to the OWASP Mobile Security Project
+# Welcome
 
 <img align="right" style="padding: 10px;" width="350px" src="assets/logo_circle.png" />
 
