@@ -1608,15 +1608,22 @@ You can find more security best practices when using WebViews on [Android Develo
 
 #### Static Analysis
 
-Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache.
+There are a couple of areas where an app can be deleting WebView related data. You should inspect all related APIs and try to fully track data deletion.
 
-Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
+- **WebView APIs**:
+  - **Initialization**: an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "false".
+  - **Cache**: Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache. Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
 
-Additionally, an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "false".
+- **WebStorage APIs**: [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData) can be also used to clear all storage currently being used by the JavaScript storage APIs, including the Web SQL Database and the HTML5 Web Storage APIs.
+  > Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
 
-> Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
+- **Cookies**: any existing cookies can be delted by using [CookieManager.removeAllCookies](https://developer.android.com/reference/android/webkit/CookieManager#removeAllCookies(android.webkit.ValueCallback%3Cjava.lang.Boolean%3E)).
 
-This example in Kotlin from the [open source Firefox Focus](https://github.com/mozilla-mobile/focus-android/blob/master/app/src/main/java/org/mozilla/focus/webview/SystemWebView.kt#L220 "Firefox Focus for Android") app shows different cleanup steps:
+- **File APIs**: proper data deletion in certain directories might not be that straighforward, some apps use a pragmatic solution which is to _manually_ delete selected directories known to hold user data. This can be done using the `java.io.File` API such as [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html).
+
+**Example:**
+
+This example in Kotlin from the [open source Firefox Focus](https://github.com/mozilla-mobile/focus-android/blob/v8.17.1/app/src/main/java/org/mozilla/focus/webview/SystemWebView.kt#L220 "Firefox Focus for Android") app shows different cleanup steps:
 
 ```Java
 override fun cleanup() {
@@ -1626,7 +1633,6 @@ override fun cleanup() {
         clearSslPreferences()
         clearCache(true)
 
-        // We don't care about the callback - we just want to make sure cookies are gone
         CookieManager.getInstance().removeAllCookies(null)
 
         WebStorage.getInstance().deleteAllData() // Clears all storage currently being used by the JavaScript storage APIs. This includes the Application Cache, Web SQL Database and the HTML5 Web Storage APIs.
@@ -1641,11 +1647,14 @@ override fun cleanup() {
     }
 ```
 
-https://github.com/mozilla-mobile/focus-android/blob/master/app/src/main/java/org/mozilla/focus/utils/FileUtils.kt
+The function finishes doing some extra _manual_ file deletion in `deleteContentFromKnownLocations` which calls functions from [`FileUtils`](https://github.com/mozilla-mobile/focus-android/blob/v8.17.1/app/src/main/java/org/mozilla/focus/utils/FileUtils.kt). These functions use the [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html) method to recursively delete files from the specified directories.
 
-You can use:
-
-- [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData)
+```Java
+private fun deleteContent(directory: File, doNotEraseWhitelist: Set<String> = emptySet()): Boolean {
+    val filesToDelete = directory.listFiles()?.filter { !doNotEraseWhitelist.contains(it.name) } ?: return false
+    return filesToDelete.all { it.deleteRecursively() }
+}
+```
 
 #### Dynamic Analysis
 
