@@ -1,0 +1,77 @@
+site_name: OWASP Mobile Security Project
+repo_url: https://github.com/OWASP/owasp-mstg
+repo_name: OWASP/owasp-mstg
+# use_directory_urls: false # only set for mkdocs build
+
+copyright: |
+  <div style="float: left; padding-right: 1em;">
+    <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mstg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
+  </div>
+  <span>
+    &#169; OWASP Foundation 2022. This work is licensed under 
+    <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
+  </span>
+
+theme:
+  name: material
+  # custom_dir: docs/overrides
+  logo: assets/logo_circle.png
+  favicon: assets/logo_circle.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.instant
+    - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - toc.integrate
+
+  palette:
+    # - primary: #499FFF 
+    - scheme: default
+      toggle:
+        icon: material/weather-night 
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
+plugins:
+  - search
+  - mermaid2
+markdown_extensions:
+  - meta
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.progressbar
+
+extra:
+  social:
+    - icon: fontawesome/brands/slack
+      link: https://owasp.slack.com/messages/project-mobile_omtg/details/
+    - icon: fontawesome/brands/twitter 
+      link: https://twitter.com/OWASP_MSTG
+    - icon: fontawesome/brands/github
+      link: https://github.com/OWASP/owasp-mstg/discussions
+    # - icon: fontawesome/solid/paper-plane
+    #   link: mailto:carlos.holguera@owasp.org
+    #   name: Carlos Holguera
+    # - icon: fontawesome/solid/paper-plane
+    #   link: mailto:sven.schleier@owasp.org
+    #   name: Sven Schleier
