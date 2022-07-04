@@ -3,7 +3,7 @@
     "MD013": false,
     "MD014": false,
     "MD024": false,
-    "MD033": {"allowed_elements": ["img", "br", "div"]},
+    "MD033": false,
     "MD036": {
         "punctuation": ".,;:!。"
       },

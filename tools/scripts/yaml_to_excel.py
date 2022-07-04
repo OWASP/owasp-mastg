@@ -51,6 +51,7 @@ MSTGVERSION = ""
 MSTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
+TEST_CASE_ALIAS = "Test Case"
 
 WS_BASE_CONFIG = {
     "start_row": 6,
@@ -113,6 +114,11 @@ def write_title(ws, row, start_column, end_column, title):
     ws.merge_cells(start_row=row, end_row=row, start_column=start_column, end_column=end_column)
 
     ws.row_dimensions[row].height = 25  # points
+
+def write_testcase(ws, row, column, url_string):
+    ws.cell(row=row, column=column).value = f'=HYPERLINK("{url_string}", "{TEST_CASE_ALIAS}")'
+    ws.cell(row=row, column=column).style = "Hyperlink"
+    ws.cell(row=row, column=column).alignment = excel_styles_and_validation.align_center
 
 def get_link_for(links, type):
     for link in links:
@@ -184,25 +190,31 @@ def create_security_requirements_sheet(wb):
         
         if req.get("links"):
             # We only get the first link because there should be actually only one per platform.
+            link_common = get_link_for(req["links"], "0x04")
             link_android = get_link_for(req["links"], "0x05")
             link_ios = get_link_for(req["links"], "0x06")
 
             if link_android:
-                ws.cell(row=row, column=col_link_android).value = f'=HYPERLINK("{link_android}", "Test Case")'
-                ws.cell(row=row, column=col_link_android).style = "Hyperlink"
-                ws.cell(row=row, column=col_link_android).alignment = excel_styles_and_validation.align_center
+                write_testcase(ws, row, col_link_android, link_android)
             else:
                 ws.cell(row=row, column=col_link_android).value = "N/A"
                 ws.cell(row=row, column=col_link_android).style = "gray_header"
             
             if link_ios:
-                ws.cell(row=row, column=col_link_ios).value = f'=HYPERLINK("{link_ios}", "Test Case")'
-                ws.cell(row=row, column=col_link_ios).style = "Hyperlink"
-                ws.cell(row=row, column=col_link_ios).alignment = excel_styles_and_validation.align_center
+                write_testcase(ws, row, col_link_ios, link_ios)
 
             else:
                 ws.cell(row=row, column=col_link_ios).value = "N/A"
                 ws.cell(row=row, column=col_link_ios).style = "gray_header"
+
+            # If 0x04 link exists, and a cell is None or "N/A", then write the link as common test case.
+            if link_common:
+                if  ws.cell(row=row, column=col_link_android).value is None \
+                    or ws.cell(row=row, column=col_link_android).value == "N/A":
+                    write_testcase(ws, row, col_link_android, link_common)
+                if  ws.cell(row=row, column=col_link_ios).value is None \
+                    or ws.cell(row=row, column=col_link_ios).value == "N/A":
+                    write_testcase(ws, row, col_link_ios, link_common)
 
         ws.row_dimensions[row].height = 55  # points
         

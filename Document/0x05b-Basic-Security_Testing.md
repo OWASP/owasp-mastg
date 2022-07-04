@@ -193,7 +193,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-![OWASP MSTG](Images/Chapters/0x05b/android-studio-file-device-explorer.png) \
+<img src="Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="400px" />
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
@@ -263,7 +263,7 @@ sg.vp.owasp_mobile.omtg_android
 
 Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-![OWASP MSTG](Images/Chapters/0x05b/sftp-with-filezilla.png) \
+<img src="Images/Chapters/0x05b/sftp-with-filezilla.png" width="400px" />
 
 Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
@@ -325,6 +325,59 @@ $ adb pull <apk path>
 The APK will be downloaded in your working directory.
 
 Alternatively, there are also apps like [APK Extractor](https://play.google.com/store/apps/details?id=com.ext.ui "APK Extractor") that do not require root and can even share the extracted APK via your preferred method. This can be useful if you don't feel like connecting the device or setting up adb over the network to transfer the file.
+
+#### Testing Instant Apps
+
+With [Google Play Instant](https://developer.android.com/topic/google-play-instant/overview "Google Play Instant") you can create Instant apps which can be instantly launched from a browser or the "try now" button from the app store from Android 5.0 (API level 21) onward. They do not require any form of installation. There are a few challenges with an instant app:
+
+- There is a limited amount of size you can have with an instant app.
+- Only a reduced number of permissions can be used, which are documented at [Android Instant app documentation](https://developer.android.com/topic/google-play-instant/getting-started/instant-enabled-app-bundle?tenant=irina#request-supported-permissions "Permission documentation for Android Instant Apps").
+
+The combination of these can lead to insecure decisions, such as: stripping too much of the authorization/authentication/confidentiality logic from an app, which allows for information leakage.
+
+Note: Instant apps require an App Bundle. App Bundles are described in the "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" section of the "Android Platform Overview" chapter.
+
+#### Static Analysis Considerations
+
+Static analysis can be either done after reverse engineering a downloaded instant app, or by analyzing the App Bundle. When you analyze the App Bundle, check the Android Manifest to see whether `dist:module dist:instant="true"` is set for a given module (either the base or a specific module with `dist:module` set). Next, check for the various entry points, which entry points are set (by means of `<data android:path="</PATH/HERE>" />`).
+
+Now follow the entry points, like you would do for any Activity and check:
+
+- Is there any data retrieved by the app which should require privacy protection of that data? If so, are all required controls in place?
+- Are all communications secured?
+- When you need more functionalities, are the right security controls downloaded as well?
+
+### Dynamic Analysis Considerations
+
+There are multiple ways to start the dynamic analysis of your instant app. In all cases, you will first have to install the support for instant apps and add the `ia` executable to your `$PATH`.
+
+The installation of instant app support is taken care off through the following command:
+
+```bash
+$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
+```
+
+Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
+
+After the preparation, you can test instant apps locally on a device running Android 8.1 (API level 27) or later. The app can be tested in different ways:
+
+- Test the app locally:
+  Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
+  
+  ```bash
+  $ ia run output-from-build-command <app-artifact>
+  ```
+
+- Test the app using the Play Console:
+  1. Upload your App Bundle to the Google Play Console
+  2. Prepare the uploaded bundle for a release to the internal test track.
+  3. Sign into an internal tester account on a device, then launch your instant experience from either an external prepared link or via the `try now` button in the App store from the testers account.
+
+Now that you can test the app, check whether:
+
+- There are any data which require privacy controls and whether these controls are in place.
+- All communications are sufficiently secured.
+- When you need more functionalities, are the right security controls downloaded as well for these functionalities?
 
 ### Installing Apps
 
@@ -556,7 +609,7 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-![OWASP MSTG](Images/Chapters/0x05b/log_output_Android_Studio.png) \
+<img src="Images/Chapters/0x05b/log_output_Android_Studio.png" width="100%" />
 
 - You can execute Logcat with adb to store the log output permanently:
 
@@ -643,11 +696,11 @@ $ nc localhost 11111 | wireshark -k -S -i -
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-![OWASP MSTG](Images/Chapters/0x05b/Android_Wireshark.png) \
+<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="100%" />
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-![OWASP MSTG](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png) \
+<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" width="400px" />
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -655,7 +708,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM-notifications-overview.png) \
+<img src="Images/Chapters/0x05b/FCM-notifications-overview.png" width="100%" />
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -702,7 +755,7 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM_Intercept.png) \
+<img src="Images/Chapters/0x05b/FCM_Intercept.png" width="100%" />
 
 ##### End-to-End Encryption for Push Notifications
 
@@ -728,7 +781,7 @@ The following procedure, which works on the Android emulator that ships with And
     - Enter "127.0.0.1" in the **Host Name** field and your proxy port in the **Port number** field (e.g., "8080")
     - Tap **Apply**
 
-![OWASP MSTG](Images/Chapters/0x05b/emulator-proxy.png) \
+<img src="Images/Chapters/0x05b/emulator-proxy.png" width="100%" />
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 
@@ -755,6 +808,13 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
+This installs the certificate in the user certificate store (Tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
+
+1. Run adb as root with `adb root` and `adb shell`.
+2. Locate the newly installed certificate at `/data/misc/user/0/cacerts-added/`.
+3. Copy the certificate to the following folder `/system/etc/security/cacerts/`.
+4. Reboot the Android VM.
+
 For Android 7.0 (API level 24) and above follow the same procedure described in the "[Bypassing the Network Security Configuration](#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" section.
 
 #### Interception Proxy for a Physical Device
@@ -765,7 +825,7 @@ Once you've configured the network and established a connection between the test
 
 - The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
 - The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
-- Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in a [blog post on nviso.be](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
+- Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in this [blog post](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
@@ -777,11 +837,11 @@ As mentioned before, starting with Android 7.0 (API level 24), the Android OS wi
 
 #### Bypassing the Network Security Configuration
 
-From Android 7.0 (API level 24) onwards, the network security configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
+From Android 7.0 (API level 24) onwards, the Network Security Configuration allows apps to customize their network security settings, by defining which CA certificates the app will be trusting.
 
-In order to implement the network security configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android network security configuration training](https://developer.android.com/training/articles/security-config "Android network security configuration training").
+In order to implement the Network Security Configuration for an app, you would need to create a new xml resource file with the name `network_security_config.xml`. This is explained in detail in the [Android Network Security Configuration training](https://developer.android.com/training/articles/security-config "Android Network Security Configuration training").
 
-After the creation, the apps must also include an entry in the manifest file to point to the new network security configuration file.
+After the creation, the apps must also include an entry in the manifest file to point to the new Network Security Configuration file.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -793,7 +853,7 @@ After the creation, the apps must also include an entry in the manifest file to 
 </manifest>
 ```
 
-The network security configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
+The Network Security Configuration uses an XML file where the app specifies which CA certificates will be trusted. There are various ways to bypass the Network Security Configuration, which will be described below. Please also see the [Security Analyst’s Guide to Network Security Configuration in Android P](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/ "Security Analyst’s Guide to Network Security Configuration in Android P") for further information.
 
 ##### Adding the User Certificates to the Network Security Configuration
 
@@ -831,7 +891,7 @@ To implement this new setting you must follow the steps below:
     $ apktool d <filename>.apk
     ```
 
-- Make the application trust user certificates by creating a network security configuration that includes `<certificates src="user" />` as explained above
+- Make the application trust user certificates by creating a Network Security Configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
 
     ```bash
@@ -844,7 +904,7 @@ Note that even if this method is quite simple its major drawback is that you hav
 
 > Bear in mind that if the app you are testing has additional hardening measures, like verification of the app signature you might not be able to start the app anymore. As part of the repackaging you will sign the app with your own key and therefore the signature changes will result in triggering such checks that might lead to immediate termination of the app. You would need to identify and disable such checks either by patching them during repackaging of the app or dynamic instrumentation through Frida.
 
-There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new network security config that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
+There is a python script available that automates the steps described above called [Android-CertKiller](https://github.com/51j0/Android-CertKiller "Android-CertKiller"). This Python script can extract the APK from an installed Android app, decompile it, make it debuggable, add a new Network Security Configuration that allows user certificates, builds and signs the new APK and installs the new APK with the SSL Bypass.
 
 ```bash
 python main.py -w
@@ -1038,7 +1098,7 @@ For information on disabling SSL Pinning both statically and dynamically, refer 
 
 - Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
-- Android network security configuration training - <https://developer.android.com/training/articles/security-config>
+- Android Network Security Configuration training - <https://developer.android.com/training/articles/security-config>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
 - Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>

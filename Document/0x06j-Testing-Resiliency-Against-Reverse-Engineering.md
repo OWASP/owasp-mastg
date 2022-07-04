@@ -4,7 +4,7 @@
 
 ### Overview
 
-Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. A [list of typical jailbreak detection techniques for iOS was published by Trustwave](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods on the Trustware Spiderlabs Blog").
+Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. Here's a [list of typical jailbreak detection techniques for iOS](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods").
 
 #### File-based Checks
 
@@ -113,9 +113,8 @@ In the first case, make sure the application is fully functional on non-jailbrok
 
 Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
 
-![OWASP MSTG](Images/Chapters/0x06b/HopperDisassembling.png) \
-
-![OWASP MSTG](Images/Chapters/0x06b/HopperDecompile.png) \
+<img src="Images/Chapters/0x06b/HopperDisassembling.png" width="300px" />
+<img src="Images/Chapters/0x06b/HopperDecompile.png" width="300px" />
 
 As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`) and an instance method (`-[JailbreakDetectionVC isJailbroken]`). The main difference is that we can inject Cycript in the app and call the class method directly, whereas the instance method requires first looking for instances of the target class. The function `choose` will look in the memory heap for known signatures of a given class and return an array of instances. Putting an application into a desired state (so that the class is indeed instantiated) is important.
 
@@ -143,7 +142,7 @@ cy# [a[0] isJailbroken]
 True
 ```
 
-![OWASP MSTG](Images/Chapters/0x06j/deviceISjailbroken.png) \
+<img src="Images/Chapters/0x06j/deviceISjailbroken.png" width="300px" />
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
@@ -153,7 +152,7 @@ cy# [a[0] isJailbroken]
 false
 ```
 
-![OWASP MSTG](Images/Chapters/0x06j/deviceisNOTjailbroken.png) \
+<img src="Images/Chapters/0x06j/deviceisNOTjailbroken.png" width="300px" />
 
 In this case we have bypassed the jailbreak detection of the application!
 
@@ -328,11 +327,11 @@ void anti_debug() {
 
 To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
 
-![OWASP MSTG](Images/Chapters/0x06j/ptraceDisassembly.png) \
+<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="100%" />
 
 Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
 
-![OWASP MSTG](Images/Chapters/0x06j/ptracePatched.png) \
+<img src="Images/Chapters/0x06j/ptracePatched.png" width="100%" />
 
 [Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
 
@@ -387,11 +386,11 @@ static bool AmIBeingDebugged(void)
 
 One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
 
-![OWASP MSTG](Images/Chapters/0x06j/sysctlOriginal.png) \
+<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="100%" />
 
 After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
 
-![OWASP MSTG](Images/Chapters/0x06j/sysctlPatched.png) \
+<img src="Images/Chapters/0x06j/sysctlPatched.png" width="100%" />
 
 You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
@@ -680,7 +679,7 @@ This technique replaces standard binary operators like addition or subtraction w
 
 Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
 
-![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png) \
+<img src="Images/Chapters/0x06j/control-flow-flattening.png" width="600px">
 
 The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
 
@@ -734,11 +733,11 @@ SwiftShield is now detecting class and method names and is replacing their ident
 
 In the original source code you can see all the class and method identifiers:
 
-![OWASP MSTG](Images/Chapters/0x06j/no_obfuscation.jpg) \
+<img src="Images/Chapters/0x06j/no_obfuscation.jpg" width="400px" />
 
 SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
 
-![OWASP MSTG](Images/Chapters/0x06j/swiftshield_obfuscated.jpg) \
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.jpg" width="400px" />
 
 After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 
