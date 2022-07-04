@@ -14,6 +14,6 @@ jobs:
       - run: pip install -r requirements.txt
       - run: mkdir docs/MSTG
       - run: mv Document/0x0*.md docs/MSTG
-      - run: mv -r Document/Images/ docs/assets/Images/
+      - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MSTG/*.md
       - run: mkdocs gh-deploy --force --clean --verbose
