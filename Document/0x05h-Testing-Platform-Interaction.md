@@ -1617,9 +1617,9 @@ There are a couple of areas where an app can be deleting WebView related data. Y
 - **WebStorage APIs**: [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData) can be also used to clear all storage currently being used by the JavaScript storage APIs, including the Web SQL Database and the HTML5 Web Storage APIs.
   > Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
 
-- **Cookies**: any existing cookies can be delted by using [CookieManager.removeAllCookies](https://developer.android.com/reference/android/webkit/CookieManager#removeAllCookies(android.webkit.ValueCallback%3Cjava.lang.Boolean%3E)).
+- **Cookies**: any existing cookies can be deleted by using [CookieManager.removeAllCookies](https://developer.android.com/reference/android/webkit/CookieManager#removeAllCookies(android.webkit.ValueCallback%3Cjava.lang.Boolean%3E)).
 
-- **File APIs**: proper data deletion in certain directories might not be that straighforward, some apps use a pragmatic solution which is to _manually_ delete selected directories known to hold user data. This can be done using the `java.io.File` API such as [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html).
+- **File APIs**: proper data deletion in certain directories might not be that straightforward, some apps use a pragmatic solution which is to _manually_ delete selected directories known to hold user data. This can be done using the `java.io.File` API such as [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html).
 
 **Example:**
 
