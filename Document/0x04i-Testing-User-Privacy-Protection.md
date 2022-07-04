@@ -65,7 +65,7 @@ In order to provide more transparency into the app's security architecture, Goog
 
 <img src="Images/Chapters/0x04i/masa_framework.png" width="100%"/>
 
-> If you are a developer would like to participate, you should complete this [form](https://docs.google.com/forms/d/e/1FAIpQLSdBl_eCNcUeUVDiB2duiJLZ5s4AV5AhDVuOz_1u8S9qhcXF5g/viewform).
+> If you are a developer and would like to participate, you should complete this [form](https://docs.google.com/forms/d/e/1FAIpQLSdBl_eCNcUeUVDiB2duiJLZ5s4AV5AhDVuOz_1u8S9qhcXF5g/viewform).
 
 Note that the limited nature of testing does not guarantee complete safety of the application. This independent review may not be scoped to verify the accuracy and completeness of a developer's Data safety declarations. Developers remain solely responsible for making complete and accurate declarations in their app's Play store listing.
 
