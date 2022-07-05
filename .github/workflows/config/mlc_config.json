@@ -53,6 +53,9 @@
         },
         {
             "pattern": "^https://busybox.net"
+        },
+        {
+            "pattern": "^https://oauth.net"
         }
     ],
     "httpHeaders": [
