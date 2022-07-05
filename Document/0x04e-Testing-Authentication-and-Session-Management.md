@@ -1,6 +1,6 @@
 # Mobile App Authentication Architectures
 
-Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).
+Authentication and authorization problems are prevalent security vulnerabilities. In fact, they consistently rank second highest in the [OWASP Top 10](https://owasp.org/www-project-top-ten/).
 
 Most mobile apps implement some kind of user authentication. Even though part of the authentication and state management logic is performed by the backend service, authentication is such an integral part of most mobile app architectures that understanding its common implementations is important.
 
@@ -72,7 +72,7 @@ Perform the following steps when testing authentication and authorization:
 
 Authentication bypass vulnerabilities exist when authentication state is not consistently enforced on the server and when the client can tamper with the state. While the backend service is processing requests from the mobile client, it must consistently enforce authorization checks: verifying that the user is logged in and authorized every time a resource is requested.
 
-Consider the following example from the [OWASP Web Testing Guide](https://www.owasp.org/index.php/Testing_for_Bypassing_Authentication_Schema_%28OTG-AUTHN-004%29 "Testing for Bypassing Authentication Schema (OTG-AUTHN-004)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
+Consider the following example from the [OWASP Web Testing Guide](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/04-Authentication_Testing/04-Testing_for_Bypassing_Authentication_Schema "Testing for Bypassing Authentication Schema (WSTG-ATHN-04)"). In the example, a web resource is accessed through a URL, and the authentication state is passed through a GET parameter:
 
 ```html
 http://www.site.com/page.asp?authenticated=no
@@ -147,7 +147,7 @@ Observe the following best practices when implementing anti-brute-force controls
 - The controls must be implemented on the server because client-side controls are easily bypassed.
 - Unauthorized login attempts must be tallied with respect to the targeted account, not a particular session.
 
-Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://www.owasp.org/index.php/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
+Additional brute force mitigation techniques are described on the OWASP page [Blocking Brute Force Attacks](https://owasp.org/www-community/controls/Blocking_Brute_Force_Attacks "OWASP - Blocking Brute Force Attacks").
 
 ### Dynamic Testing (MSTG-AUTH-6)
 

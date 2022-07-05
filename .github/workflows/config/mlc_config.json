@@ -50,6 +50,9 @@
         },
         {
             "pattern": "^https://docs.github.com"
+        },
+        {
+            "pattern": "^https://busybox.net"
         }
     ],
     "httpHeaders": [

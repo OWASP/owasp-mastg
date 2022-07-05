@@ -27,7 +27,7 @@ Vulnerability analysis is usually the process of looking for vulnerabilities in 
 ### Static versus Dynamic Analysis
 
 Static Application Security Testing (SAST) involves examining an application's components without executing them, by analyzing the source code either manually or automatically.
-OWASP provides information about [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
+OWASP provides information about [Static Code Analysis](https://owasp.org/www-community/controls/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
 
 Dynamic Application Security Testing (DAST) involves examining the app during runtime. This type of analysis can be manual or automatic. It usually doesn't provide the information that static analysis provides, but it is a good way to detect interesting elements (assets, features, entry points, etc.) from a user's point of view.
 
@@ -164,7 +164,7 @@ Environmental information includes:
 - The organization's goals for the app. Functionality shapes users' interaction with the app and may make some surfaces more likely than others to be targeted by attackers.
 - The relevant industry. Different industries may have different risk profiles.
 - Stakeholders and investors; understanding who is interested in and responsible for the app.
-- Internal processes, workflows, and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic exploits](https://www.owasp.org/index.php/Testing_for_business_logic "Testing business logic").
+- Internal processes, workflows, and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic vulnerabilities](https://owasp.org/www-community/vulnerabilities/Business_logic_vulnerability "Business logic vulnerability").
 
 ##### Architectural Information
 
@@ -184,7 +184,7 @@ DAST tools may support black-box testing and automatically scan the app: whereas
 
 Threat Modeling is an important artifact: documents from the workshop usually greatly support the identification of much of the information a security tester needs (entry points, assets, vulnerabilities, severity, etc.). Testers are strongly advised to discuss the availability of such documents with the client. Threat modeling should be a key part of the software development life cycle. It usually occurs in the early phases of a project.
 
-The [threat modeling guidelines defined in OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
+The [threat modeling guidelines defined in OWASP](https://owasp.org/www-community/Threat_Modeling "OWASP Threat Modeling") are generally applicable to mobile apps.
 
 #### Exploitation
 
