@@ -128,10 +128,9 @@ adb shell
 
 > press Control + D or type `exit` to quit
 
-If your device is rooted or you're using the emulator, you can get root access by running `su` once in the remote shell:
+Once in the remote shell, if your device is rooted or you're using the emulator, you can get root access by running `su`:
 
 ```bash
-$ adb shell
 bullhead:/ $ su
 bullhead:/ # id
 uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
@@ -144,7 +143,7 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:su:s0
 If you have more than one device, remember to include the `-s` flag followed by the device serial ID on all your `adb` commands (e.g. `adb -s emulator-5554 shell` or `adb -s 00b604081540b7c6 shell`). You can get a list of all connected devices and their serial IDs by using the following command:
 
 ```bash
-$ adb devices
+adb devices
 List of devices attached
 00c907098530a82c    device
 emulator-5554    device
@@ -386,7 +385,7 @@ If you need to test on a non-jailbroken device you should learn how to repackage
 Use a computer to perform all the steps indicated in the article ["Patching Android Applications"](https://github.com/sensepost/objection/wiki/Patching-Android-Applications) from the objection Wiki. Once you're done you'll be able to patch an APK by calling the objection command:
 
 ```bash
-$ objection patchapk --source app-release.apk
+objection patchapk --source app-release.apk
 ```
 
 The patched application then needs to be installed using adb, as explained in ["Installing Apps"](#installing-apps).
@@ -1112,7 +1111,7 @@ There are several ways to bypass certificate pinning for a black box test, depen
 If you have a rooted device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-rooted device):
 
 ```bash
-$ android sslpinning disable
+android sslpinning disable
 ```
 
 Here's an example of the output:
@@ -1141,13 +1140,13 @@ As an example, let's say that you find an application which uses a BKS (BouncyCa
 To add your proxy's certificate use the following command:
 
 ```bash
-$ keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
+keytool -importcert -v -trustcacerts -file proxy.cer -alias aliascert -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar" -storetype BKS -storepass password
 ```
 
 To list certificates in the BKS truststore use the following command:
 
 ```bash
-$ keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
+keytool -list -keystore "res/raw/truststore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "providerpath/bcprov-jdk15on-164.jar"  -storetype BKS -storepass password
 ```
 
 After making these modifications, repackage the application using apktool and install it on your device.

@@ -131,18 +131,18 @@ Start by identifying the network APIs used by the app and see if it mainly uses 
 
 If it uses low-level APIs such as [`Network`](https://developer.apple.com/documentation/network)) or [`CFNetwork`](https://developer.apple.com/documentation/cfnetwork) you should further investigate if they are being used securely. For apps using cross-platform frameworks (e.g. Flutter, Xamarin, ...) you should analyze if they're being configured and used securely according to the framework's best practices.
 
-#### Testing Network API Usage
+#### Testing for Cleartext Traffic
 
 You should verify if the app allows cleartext traffic. If the source code is available, open then `Info.plist` file in the application bundle directory and look for any exceptions within the [`NSAppTransportSecurity`](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) optional key.
 
 The following listing is an example of an exception configured to disable ATS restrictions globally.
 
 ```xml
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
 ```
 
 If the source code is not available, then the `Info.plist` file should be either obtained from a jailbroken device or by extracting the application IPA file. Convert it to a human readable format if needed (e.g. `plutil -convert xml1 Info.plist`) as explained in the chapter "iOS Basic Security Testing", section "The Info.plist File".
@@ -184,7 +184,7 @@ Consider the following when inspecting ATS:
 
 - If connections to 3rd party domains are made (that are not under control of the app owner) it should be evaluated what ATS settings are not supported by the 3rd party domain and if they can be deactivated.
 - If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views.
-- If the application only needs to limit ATS exceptions to a single domain e.g. to access the insecure server http://example.com, it can set `NSExceptionAllowsInsecureHTTPLoads` to YES in order to maintain all the benefits of ATS for all other domains.
+- If the application only needs to limit ATS exceptions to a single domain e.g. to access the insecure server `http://example.com`, it can set `NSExceptionAllowsInsecureHTTPLoads` to YES in order to maintain all the benefits of ATS for all other domains.
 
 It is possible to verify which ATS settings can be used when communicating to a certain endpoint. On macOS the command line utility `nscurl` can be used. A permutation of different settings will be executed and verified against the specified endpoint. If the default ATS secure connection test is passing, ATS can be used in its default secure configuration. If there are any fails in the nscurl output, please change the server side configuration of TLS to make the serverside more secure, rather than weakening the configuration in ATS on the client. See the article "Identifying the Source of Blocked Connections" in the [Apple Developer Documentation](https://developer.apple.com/documentation/security/preventing_insecure_network_connections/identifying_the_source_of_blocked_connections) for more details.
 
