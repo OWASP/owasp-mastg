@@ -48,32 +48,34 @@ In this section, we will learn about some approaches and tools for collecting ba
 
 #### Application Binary
 
-You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
+You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms.
+
+Unzip the app and run [otool](0x08-Testing-Tools.md#otool):
 
 ```bash
-$ unzip DamnVulnerableiOSApp.ipa
-
-$ cd Payload/DamnVulnerableIOSApp.app
-
-$ otool -hv DamnVulnerableIOSApp
-
-DamnVulnerableIOSApp (architecture armv7):
-Mach header
-     magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-  MH_MAGIC     ARM         V7  0x00     EXECUTE    38       4292   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
-DamnVulnerableIOSApp (architecture arm64):
-Mach header
-     magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
+unzip DamnVulnerableiOSApp.ipa
+cd Payload/DamnVulnerableIOSApp.app
+otool -hv DamnVulnerableIOSApp
 ```
 
-Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an application to be deployed on all devices.
+The output will look like this:
+
+```bash
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+      magic  cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC      ARM         V7  0x00     EXECUTE    33       3684   NOUNDEFS DYLDLINK TWOLEVEL PIE
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+      magic  cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64    ARM64        ALL  0x00     EXECUTE    33       4192   NOUNDEFS DYLDLINK TWOLEVEL PIE
+```
+
+Note the architectures: `armv7` (32-bit) and `arm64` (64-bit). This design of a fat binary allows an application to be deployed on all devices.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
 ```bash
-iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
+lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
 ```
 
 And then we can proceed to performing class-dump:
@@ -91,7 +93,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method that returns a BOOL type.
 A minus sign would mean that this is an instance method. Refer to later sections to understand the practical difference between these.
 
-> Some commercial disassemblers (such as [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
+> Some commercial disassemblers (such as [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool)) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
 
 The following command is listing shared libraries:
 

@@ -425,8 +425,8 @@ Start using the app and trigger its functions. You should see HTTP messages show
 
 Refer to the corresponding chapters for more information:
 
-- [Android Network Communication](Document/0x05g-Testing-Network-Communication.md#testing-data-encryption-on-the-network-mstg-network-1)
-- [iOS Network Communication](Document/0x06g-Testing-Network-Communication.md#testing-data-encryption-on-the-network-mstg-network-1)
+- [Android Network Communication](0x05g-Testing-Network-Communication.md#testing-data-encryption-on-the-network-mstg-network-1)
+- [iOS Network Communication](0x06g-Testing-Network-Communication.md#testing-data-encryption-on-the-network-mstg-network-1)
 
 ## Verifying the TLS Settings (MSTG-NETWORK-2)
 
