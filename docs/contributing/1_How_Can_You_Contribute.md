@@ -1,6 +1,6 @@
 # How Can You Contribute?
 
-A direct contribution to the MASVS can be done in many different ways. First of all **Create a GitHub account** (a free one is enough) by following [these steps](https://help.github.com/en/articles/signing-up-for-a-new-github-account "Signing up for a new GitHub account").
+A direct contribution to the MASVS can be done in many different ways. First of all **Create a GitHub account** (a free one is enough) by following [these steps](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account "Signing up for a new GitHub account").
 
 ## ⭐ Give us a Star
 

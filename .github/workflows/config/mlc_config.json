@@ -47,6 +47,9 @@
         },
         {
             "pattern": "http://owaspsummit.org"
+        },
+        {
+            "pattern": "^https://docs.github.com"
         }
     ],
     "httpHeaders": [
