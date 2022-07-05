@@ -181,7 +181,7 @@ Realm realm = Realm.getInstance(config);
 
 ```
 
-If the database is not encrypted, you should be able to obtain the data. If the database *is* encrypted, determine whether the key is hard-coded in the source or resources and whether it is stored unprotected in shared preferences or some other location.
+If the database _is not_ encrypted, you should be able to obtain the data. If the database _is_ encrypted, determine whether the key is hard-coded in the source or resources and whether it is stored unprotected in shared preferences or some other location.
 
 ### Internal Storage
 
@@ -363,14 +363,14 @@ When defining the KeyDescription AuthorizationList, the following parameters wil
 
 #### Older KeyStore Implementations
 
-Older Android versions don't include KeyStore, but they *do* include the KeyStore interface from JCA (Java Cryptography Architecture). You can use KeyStores that implement this interface to ensure the secrecy and integrity of keys stored with KeyStore; BouncyCastle KeyStore (BKS) is recommended. All implementations are based on the fact that files are stored on the filesystem; all files are password-protected.
+Older Android versions don't include KeyStore, but they _do_ include the KeyStore interface from JCA (Java Cryptography Architecture). You can use KeyStores that implement this interface to ensure the secrecy and integrity of keys stored with KeyStore; BouncyCastle KeyStore (BKS) is recommended. All implementations are based on the fact that files are stored on the filesystem; all files are password-protected.
 To create one, you can use the `KeyStore.getInstance("BKS", "BC") method`, where "BKS" is the KeyStore name (BouncyCastle Keystore) and "BC" is the provider (BouncyCastle). You can also use SpongyCastle as a wrapper and initialize the KeyStore as follows: `KeyStore.getInstance("BKS", "SC")`.
 
 Be aware that not all KeyStores properly protect the keys stored in the KeyStore files.
 
 #### KeyChain
 
-The [KeyChain class](https://developer.android.com/reference/android/security/KeyChain.html "Android KeyChain") is used to store and retrieve *system-wide* private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if something is being imported into the KeyChain for the first time. Note that the KeyChain is system-wide, every application can access the materials stored in the KeyChain.
+The [KeyChain class](https://developer.android.com/reference/android/security/KeyChain.html "Android KeyChain") is used to store and retrieve _system-wide_ private keys and their corresponding certificates (chain). The user will be prompted to set a lock screen pin or password to protect the credential storage if something is being imported into the KeyChain for the first time. Note that the KeyChain is system-wide, every application can access the materials stored in the KeyChain.
 
 Inspect the source code to determine whether native Android mechanisms identify sensitive information. Sensitive information should be encrypted, not stored in clear text. For sensitive information that must be stored on the device, several API calls are available to protect the data via the `KeyChain` class. Complete the following steps:
 
@@ -725,7 +725,7 @@ Many application developers still use `System.out.println` or `printStackTrace` 
 Remember that you can target a specific app by filtering the Logcat output as follows:
 
 ```bash
-$ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
+adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
 > If you already know the app PID you may give it directly using `--pid` flag.
@@ -1160,13 +1160,13 @@ To check for key/value backup implementations, look for these classes in the sou
 After executing all available app functions, attempt to back up via `adb`. If the backup is successful, inspect the backup archive for sensitive data. Open a terminal and run the following command:
 
 ```bash
-$ adb backup -apk -nosystem <package-name>
+adb backup -apk -nosystem <package-name>
 ```
 
 ADB should respond now with "Now unlock your device and confirm the backup operation" and you should be asked on the Android phone for a password. This is an optional step and you don't need to provide one. If the phone does not prompt this message, try the following command including the quotes:
 
 ```bash
-$ adb backup "-apk -nosystem <package-name>"
+adb backup "-apk -nosystem <package-name>"
 ```
 
 The problem happens when your device has an adb version prior to 1.0.31. If that's the case you must use an adb version of 1.0.31 also on your host computer. Versions of adb after 1.0.32 [broke the backwards compatibility.](https://issuetracker.google.com/issues/37096097 "adb backup is broken since ADB version 1.0.32")
@@ -1175,37 +1175,37 @@ Approve the backup from your device by selecting the _Back up my data_ option. A
 Run the following command to convert the .ab file to tar.
 
 ```bash
-$ dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
+dd if=mybackup.ab bs=24 skip=1|openssl zlib -d > mybackup.tar
 ```
 
 In case you get the error `openssl:Error: 'zlib' is an invalid command.` you can try to use Python instead.
 
 ```bash
-$ dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
+dd if=backup.ab bs=1 skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
 ```
 
 The [_Android Backup Extractor_](https://github.com/nelenkov/android-backup-extractor "Android Backup Extractor") is another alternative backup tool. To make the tool to work, you have to download the Oracle JCE Unlimited Strength Jurisdiction Policy Files for [JRE7](https://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE7") or [JRE8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "Oracle JCE Unlimited Strength Jurisdiction Policy Files JRE8") and place them in the JRE lib/security folder. Run the following command to convert the tar file:
 
 ```bash
-$ java -jar abe.jar unpack backup.ab
+java -jar abe.jar unpack backup.ab
 ```
 
 if it shows some Cipher information and usage, which means it hasn't unpacked successfully. In this case you can give a try with more arguments:
 
 ```bash
-$ abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
+abe [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
 ```
 
 [password]: is the password when your android device asked you earlier. For example here is: 123
 
 ```bash
-$ java -jar abe.jar unpack backup.ab backup.tar 123
+java -jar abe.jar unpack backup.ab backup.tar 123
 ```
 
 Extract the tar file to your working directory.
 
 ```bash
-$ tar xvf mybackup.tar
+tar xvf mybackup.tar
 ```
 
 ## Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
@@ -1605,7 +1605,7 @@ For more advanced analysis of the memory dump, use the [Eclipse Memory Analyzer 
 To analyze the dump in MAT, use the _hprof-conv_ platform tool, which comes with the Android SDK.
 
 ```bash
-$ ./hprof-conv memory.hprof memory-mat.hprof
+./hprof-conv memory.hprof memory-mat.hprof
 ```
 
 MAT provides several tools for analyzing the memory dump. For example, the _Histogram_ provides an estimate of the number of objects that have been captured from a given type, and the _Thread Overview_ shows processes' threads and stack frames. The _Dominator Tree_ provides information about keep-alive dependencies between objects. You can use regular expressions to filter the results these tools provide.

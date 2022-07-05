@@ -23,7 +23,7 @@ We will validate this status according to these categories:
      - etc.
 3. **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
-*NOTE: You don't need to fulfill each and every bullet point (they are examples). However, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so.*
+_NOTE: You don't need to fulfill each and every bullet point (they are examples). However, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
 
 ### 🎁 Benefits
 
@@ -35,11 +35,11 @@ We will validate this status according to these categories:
 
 ### 📝 How to Apply
 
-If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application. Please be sure to include sufficient evidence (usually in the form of a *contribution report* including URLs linking to the corresponding elements) showing what you've done in the 6 months period that goes inline with the three categories described above.
+If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application. Please be sure to include sufficient evidence (usually in the form of a _contribution report_ including URLs linking to the corresponding elements) showing what you've done in the 6 months period that goes inline with the three categories described above.
 
 ### ❗ Important Disclaimers
 
-- If the "MSTG Advocate" status is granted and you'd like to maintain it, the aforementioned contributions must remain consistent after the initial period as well. You should keep collecting this evidence and send us a *contribution report* yearly.
+- If the "MSTG Advocate" status is granted and you'd like to maintain it, the aforementioned contributions must remain consistent after the initial period as well. You should keep collecting this evidence and send us a _contribution report_ yearly.
 - [Financial donations](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) are not part of the eligibility criteria but will be listed for completion.
 - Re-shared publications and blog posts linked in MSTG text must be **educational** and focus on mobile security or MASVS/MSTG and **not endorse company products/services**.
 - Advocate Companies may use the logo and links to MASVS/MSTG resources as part of their communication but cannot use them as an endorsement by OWASP as a preferred provider of software and services.
@@ -90,7 +90,7 @@ A special mention goes for the **contribution to the MASVS Refactoring**:
 - Feedback on each category proposal
 - Statistics from internal analysis
 
-In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](Crackmes/Android/Level_04/).
+In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_04).
 
 **Spreading the Word:**
 
@@ -165,6 +165,6 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Donators
 
-While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://owasp.org/www-project-mobile-security-testing-guide/#donation-packagess "OWASP Mobile Security Testing Guide Donation Packages").
 
 <img src="Images/Donators/donators.png"/>

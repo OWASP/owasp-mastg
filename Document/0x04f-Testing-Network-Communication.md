@@ -4,7 +4,7 @@ Practically every network-connected mobile app uses the Hypertext Transfer Proto
 
 ## Intercepting HTTP(S) Traffic
 
-In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an *interception proxy* running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
+In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an _interception proxy_ running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
@@ -87,7 +87,7 @@ Following scenarios are possible:
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
 
 ```bash
-$ iw list | grep AP
+iw list | grep AP
 ```
 
 The scenario with a separate access point requires access to the configuration of the AP and you should check first if the AP supports either:
@@ -120,8 +120,8 @@ For all major Linux and Unix operating systems you need tools such as:
 For Kali Linux you can install these tools with `apt-get`:
 
 ```bash
-$ apt-get update
-$ apt-get install hostapd dnsmasq aircrack-ng
+apt-get update
+apt-get install hostapd dnsmasq aircrack-ng
 ```
 
 > iptables and wpa_supplicant are installed by default on Kali Linux.
@@ -248,7 +248,7 @@ When testing a Xamarin app and when you are trying to set the system proxy in th
 - For Linux systems you can use `iptables`:
 
     ```bash
-    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8080
     ```
 
 - As last step, you need to set the option 'Support invisible proxy' in the listener settings of Burp Suite.

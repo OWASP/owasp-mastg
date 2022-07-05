@@ -28,7 +28,7 @@ If you don't have access to a jailbroken device, you can apply the workarounds d
 
 #### Testing on the iOS Simulator
 
-Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
+Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level _simulation_ of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
 
 #### Testing on an Emulator
 
@@ -58,7 +58,7 @@ End users often jailbreak their devices to tweak the iOS system's appearance, ad
 
 ##### Jailbreak Types
 
-There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
+There are _tethered_, _semi-tethered_, _semi-untethered_, and _untethered_ jailbreaks.
 
 - Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
 
@@ -133,7 +133,7 @@ It is also possible to get the UDID via various command line tools on macOS whil
 - By using instruments:
 
     ```sh
-    $ instruments -s devices
+    instruments -s devices
     ```
 
 ## Basic Testing Operations
@@ -208,7 +208,7 @@ iPhone:~ root#
 
 While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/ "NewTerm 2") via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
 
-In addition, there are a few jailbreaks that explicitly disable incoming SSH *for security reasons*. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
+In addition, there are a few jailbreaks that explicitly disable incoming SSH _for security reasons_. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
 
 Opening a reverse shell over SSH can be done by running the command `ssh -R <remote_port>:localhost:22 <username>@<host_computer_ip>`.
 
@@ -221,7 +221,7 @@ ssh -R 2222:localhost:22 mstg@192.168.197.235
 On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
 
 ```bash
-$ ssh -p 2222 root@localhost
+ssh -p 2222 root@localhost
 ```
 
 ### Host-Device Data Transfer
@@ -295,7 +295,7 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPA from an OTA distribution URL. Install it via npm:
 
 ```bash
-$ npm install -g itms-services
+npm install -g itms-services
 ```
 
 Save the IPA file locally with the following command:
@@ -469,8 +469,8 @@ On Linux and also macOS, you can alternatively use [libimobiledevice](https://ww
 The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
 
 ```bash
-$ brew install libimobiledevice
-$ brew install ideviceinstaller
+brew install libimobiledevice
+brew install ideviceinstaller
 ```
 
 After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
@@ -491,7 +491,7 @@ $ idevicedebug -d run OWASP.iGoat-Swift
 The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute ipainstaller with the IPA's filename:
 
 ```bash
-$ ipainstaller App_name.ipa
+ipainstaller App_name.ipa
 ```
 
 #### ios-deploy
@@ -499,14 +499,14 @@ $ ipainstaller App_name.ipa
 On macOS you can also use the [ios-deploy](0x08-Testing-Tools.md#ios-deploy) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
-$ unzip Name.ipa
-$ ios-deploy --bundle 'Payload/Name.app' -W -d -v
+unzip Name.ipa
+ios-deploy --bundle 'Payload/Name.app' -W -d -v
 ```
 
 After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the app again.
 
 ```bash
-$ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
+ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
 ```
 
 #### Xcode
@@ -636,21 +636,21 @@ The file might be formatted in XML or binary (bplist). You can convert it to XML
 - On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
 
   ```bash
-  $ plutil -convert xml1 Info.plist
+  plutil -convert xml1 Info.plist
   ```
 
 - On Linux:
 
   ```bash
-  $ apt install libplist-utils
-  $ plistutil -i Info.plist -o Info_xml.plist
+  apt install libplist-utils
+  plistutil -i Info.plist -o Info_xml.plist
   ```
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
 - App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Exported/imported *custom document types*: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network APIs](0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
@@ -945,7 +945,7 @@ Keychain Data: WOg1DfuH
 ```
 
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
-Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
+Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to _all_ items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
 ## Setting Up a Network Testing Environment
 
@@ -1002,7 +1002,7 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 The last step would be to set the proxy globally on your iOS device:
 
 1. Go to **Settings** -> **Wi-Fi**
-2. Connect to *any* Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+2. Connect to _any_ Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
 3. Once connected click on the small blue icon on the right side of the connect Wi-Fi
 4. Configure your Proxy by selecting **Manual**
 5. Type in 127.0.0.1 as **Server**

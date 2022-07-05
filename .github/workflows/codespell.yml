@@ -1,5 +1,12 @@
 name: codespell
-on: [pull_request, push]
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
 jobs:
   codespell:
     runs-on: ubuntu-latest
