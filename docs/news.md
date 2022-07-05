@@ -146,7 +146,7 @@ The Mobile Security Testing Guide version 1.0.1 has been released using our auto
 
 ## September 1st, 2018: Mobile Security Testing Guide mentioned in NIST SP-163r1
 
-The Mobile Security Testing Guide is now reference in [NIST SP 800-163 Revision 1](https://csrc.nist.gov/CSRC/media/Publications/sp/800-163/rev-1/error/documents/sp800-163r1-draft.pdf) .
+The Mobile Security Testing Guide is now reference in [NIST SP 800-163 Revision 1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-163r1.pdf).
 
 ## Augustus 2nd, 2018: Mobile App Security Verification Standard Releases
 
@@ -227,7 +227,7 @@ One of these three already has a [documented solution](https://github.com/OWASP/
 
 ### We Need More Authors and Contributors!
 
-Maybe you have noticed that [the reverse engineering sections in the Mobile Testing Guide are incomplete](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). The reason: We're still in the starting stages and don't have a lot of authors and contributors (in fact, 99% of the reversing content was produced by one guy). We'd love to welcome *you* as a contributor of crackmes, tutorials, writeups, or simply new ideas for this project.
+Maybe you have noticed that the reverse engineering sections in the Mobile Testing Guide are incomplete. The reason: We're still in the starting stages and don't have a lot of authors and contributors (in fact, 99% of the reversing content was produced by one guy). We'd love to welcome _you_ as a contributor of crackmes, tutorials, writeups, or simply new ideas for this project.
 
 #### What You Can Do
 
