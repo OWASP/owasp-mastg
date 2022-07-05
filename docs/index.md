@@ -32,7 +32,7 @@ The OWASP MASVS (Mobile Application Security Verification Standard) is a standar
 
 <br>
 
-- <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
+- <a href="https://github.com/OWASP/owasp-masvs/"><img src="assets/GitHub_logo.png" width="18px"> GitHub Repo</a>
 - 📖 [Read the MASVS on Gitbook](https://mobile-security.gitbook.io/masvs/) (English Version, see more languages [here](https://github.com/OWASP/owasp-masvs#masvs-translations))
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-masvs/releases/latest)
 
@@ -73,8 +73,3 @@ Its features include:
 - Multi language
 
 <br><br>
-
-## Docs
-
-- ["Contribute to the OWASP Mobile Security Project"](contributing/1_How_Can_You_Contribute.md)
-- ["Learn about the MASVS and MSTG Releases"](releasing/1_How_to_Release.md)

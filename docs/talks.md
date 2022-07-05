@@ -19,7 +19,7 @@ Below you can find a list of upcoming and previous talks:
 | May 2020 | OWASP Dutch Virtual chapter meetup | MSTG Update | [Recording](https://youtu.be/cuB8TNT0rMw?t=1999) | N/A |
 | February 2020 | OWASP New Zealand Day | [Building Secure Mobile Apps (you don’t have to learn it the hard way!)](https://www.owasp.org/index.php/OWASP_New_Zealand_Day_2020#tab=Conference_-_21_February) |  N/A | N/A |
 | January 2020 | iOS Conf Singapore | Building Secure iOS Apps (you don’t have to learn it the hard way!) | [Recording](https://engineers.sg/video/building-secure-ios-apps-you-don-t-have-to-learn-it-the-hard-way-ios-conf-sg-2020--3932) | [Slides](http://bit.ly/2QRrSZ2) |
-| October 2019 | OWASP AppSec Day Melbourne | [Fixing Mobile AppSec](https://appsecday.io/schedule/#session-7) | [Recording](https://youtu.be/Jm_i6I5B1HM) | N/A |
+| October 2019 | OWASP AppSec Day Melbourne | Fixing Mobile AppSec | [Recording](https://youtu.be/Jm_i6I5B1HM) | N/A |
 | September 2019 | OWASP Global AppSec Amsterdam | [Fast Forwarding mobile security with the OWASP Mobile Security Testing Guide](https://sched.co/TepC) | N/A | N/A |
 | September 2019 | r2con in Barcelona | radare2 and Frida in the OWASP Mobile Security Testing Guide | [Recording](https://www.youtube.com/watch?v=BXwWBoRmh_4) | [Slides](https://github.com/radareorg/r2con2019/tree/master/talks/r2_and_frida_owasp_mstg) |
 | Summer 2019 | Open Security summit 2019 | [Open Security summit 2019](https://drive.google.com/file/d/1IS610Y-M8kVC4bTgE2qrB2ikl_A85k-M/view?usp=sharing) | N/A | [Outcomes](https://drive.google.com/file/d/1NNK5iLXX3taRjRd6HhNzyUMomO3g8WmC/view?usp=sharing) |

@@ -1135,7 +1135,7 @@ You can also use apktool to repackage decoded resources back to binary APK/JAR. 
 apkx is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
 
 ```bash
-git clone https://github.com/b-mueller/apkx
+git clone https://github.com/muellerberndt/apkx
 cd apkx
 sudo ./install.sh
 ```

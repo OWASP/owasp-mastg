@@ -90,7 +90,7 @@ A special mention goes for the **contribution to the MASVS Refactoring**:
 - Feedback on each category proposal
 - Statistics from internal analysis
 
-In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](Crackmes/Android/Level_04/).
+In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_04).
 
 **Spreading the Word:**
 
@@ -165,6 +165,6 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Donators
 
-While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://www.owasp.org/index.php/OWASP_Mobile_Security_Testing_Guide#tab=Sponsorship_Packages "OWASP Mobile Security Testing Guide Donation Packages").
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://owasp.org/www-project-mobile-security-testing-guide/#donation-packagess "OWASP Mobile Security Testing Guide Donation Packages").
 
 <img src="Images/Donators/donators.png"/>
