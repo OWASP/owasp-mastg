@@ -11,8 +11,8 @@ jobs:
         with:
           fetch-depth: 1
       - name: markdownlint-cli
-        uses: nosborn/github-action-markdown-cli@v2.0.0
+        uses: nosborn/github-action-markdown-cli@v3.0.1
         with:
           files: Document
-          config_file: ".markdownlint.json"
+          config_file: ".markdownlint.jsonc"
           ignore_files: "Tools, node_modules, Crackmes, Samples"
