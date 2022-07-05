@@ -61,7 +61,7 @@ Both Android and iOS offer means to extend trust, i.e. include additional CAs so
 
 However, remember that the device users are always able to include additional CAs (on Android by adding certificates to the user Trust Store and on iOS by installing so-called profiles and trusting them). Therefore, depending on the threat model of the app it might be necessary to avoid trusting any certificates added to the user trust store or even go further and only trust a pre-defined specific certificate or set of certificates.
 
-For many apps, the "default behaviour" provided by the mobile platform will be surely enough for their use case (in the rare case that a system-trusted CA could get compromised the data that they handle is not considered sensitive or the take other mean to secure it which is resilient even to such a CA breach). However, for other apps such as financial or health apps, the risk of a CA brach, even if rare, must be considered.
+For many apps, the "default behaviour" provided by the mobile platform will be surely enough for their use case (in the rare case that a system-trusted CA could get compromised the data that they handle is not considered sensitive or the take other mean to secure it which is resilient even to such a CA breach). However, for other apps such as financial or health apps, the risk of a CA breach, even if rare, must be considered.
 
 ### Restricting Trust: Identity Pinning
 
