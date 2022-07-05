@@ -6,6 +6,8 @@ on:
     paths:
       - 'Document/**.md'
   push:
+    branches:
+      - master
     paths:
       - 'Document/**.md'
 

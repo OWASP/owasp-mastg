@@ -267,7 +267,7 @@ As an example we illustrate how to locate the use of a hardcoded encryption key.
 Now search the files for the usage of the `SecretKeySpec` class, e.g. by simply recursively grepping on them or using jadx search function:
 
 ```bash
-$ grep -r "SecretKeySpec"
+grep -r "SecretKeySpec"
 ```
 
 This will return all classes using the `SecretKeySpec` class. Now examine those files and trace which variables are used to pass the key material. The figure below shows the result of performing this assessment on a production ready application. We can clearly locate the use of a static encryption key that is hardcoded and initialized in the static byte array `Encrypt.keyBytes`.

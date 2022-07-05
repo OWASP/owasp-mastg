@@ -22,9 +22,9 @@ The OWASP MASVS and MSTG are trusted by the following platform providers and sta
 
 ## 🥇 MSTG Advocates
 
-MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02a-Acknowledgements.md#our-mstg-advocates).
+MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02c-Acknowledgements.md#our-mstg-advocates).
 
-<a href="0x02a-Acknowledgements.md#our-mstg-advocates">
+<a href="0x02c-Acknowledgements.md#our-mstg-advocates">
 <img src="Images/Other/nowsecure-logo.png" width="200px;"/>
 </a>
 
