@@ -14,4 +14,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: codespell-project/actions-codespell@master
         with:
-          ignore_words_list: ba,compliancy,firt,ist,KeyPair,ligh,ser,synopsys,zuser
+          ignore_words_list: ba,compliancy,firt,ist,keypair,ligh,ser,synopsys,zuser
