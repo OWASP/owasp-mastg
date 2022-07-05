@@ -295,7 +295,7 @@ If you don't have access to the source, you can try binary patching:
 It is also possible to bypass SSL Pinning on non-jailbroken devices by using Frida and Objection (this also works on jailbroken devices). After repackaging your application with Objection as described in "iOS Basic Security Testing", you can use the following command in Objection to disable common SSL Pinning implementations:
 
 ```bash
-$ ios sslpinning disable
+ios sslpinning disable
 ```
 
 You can look into the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts "pinning.ts") file to understand how the bypass works.

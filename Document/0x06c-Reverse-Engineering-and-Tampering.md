@@ -91,12 +91,12 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method that returns a BOOL type.
 A minus sign would mean that this is an instance method. Refer to later sections to understand the practical difference between these.
 
-Alternatively, you can easily decompile the application with [Hopper Disassembler](https://www.hopperapp.com/ "Hopper Disassembler"). All these steps would be executed automatically, and you'd be able to see the disassembled binary and class information.
+> Some commercial disassemblers (such as [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
 
 The following command is listing shared libraries:
 
 ```bash
-$ otool -L <binary>
+otool -L <binary>
 ```
 
 #### Retrieving Strings
@@ -262,13 +262,13 @@ To reproduce the steps listed below, download [UnCrackable iOS App Level 1](http
 
 #### Getting a Developer Provisioning Profile and Certificate
 
-The *provisioning profile* is a plist file signed by Apple, which adds your code-signing certificate to its list of accepted certificates on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the *entitlements* granted to your app. The *certificate* contains the private key you'll use to sign.
+The _provisioning profile_ is a plist file signed by Apple, which adds your code-signing certificate to its list of accepted certificates on one or more devices. In other words, this represents Apple explicitly allowing your app to run for certain reasons, such as debugging on selected devices (development profile). The provisioning profile also includes the _entitlements_ granted to your app. The _certificate_ contains the private key you'll use to sign.
 
 Depending on whether you're registered as an iOS developer, you can obtain a certificate and provisioning profile in one of the following ways:
 
 **With an iOS developer account:**
 
-If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the *security* tool to list your signing identities:
+If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the [`security`](0x08-Testing-Tools.md#security) command (macOS only) to list your signing identities:
 
 ```bash
 $ security find-identity -v
@@ -276,7 +276,7 @@ $ security find-identity -v
  2) 8004380F331DCA22CC1B47FB1A805890AE41C938 "iPhone Developer: Bernhard Müller (RV852WND79)"
 ```
 
-Log into the Apple Developer portal to issue a new App ID, then issue and download the profile. An App ID is a two-part string: a Team ID supplied by Apple and a bundle ID search string that you can set to an arbitrary value, such as `com.example.myapp`. Note that you can use a single App ID to re-sign multiple apps. Make sure you create a *development* profile and not a *distribution* profile so that you can debug the app.
+Log into the Apple Developer portal to issue a new App ID, then issue and download the profile. An App ID is a two-part string: a Team ID supplied by Apple and a bundle ID search string that you can set to an arbitrary value, such as `com.example.myapp`. Note that you can use a single App ID to re-sign multiple apps. Make sure you create a _development_ profile and not a _distribution_ profile so that you can debug the app.
 
 In the examples below, I use my signing identity, which is associated with my company's development team. I created the App ID "sg.vp.repackaged" and the provisioning profile "AwesomeRepackaging" for these examples. I ended up with the file `AwesomeRepackaging.mobileprovision`-replace this with your own filename in the shell commands below.
 
@@ -284,7 +284,7 @@ In the examples below, I use my signing identity, which is associated with my co
 
 Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
 
-Once you've obtained the provisioning profile, you can check its contents with the *security* tool. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
+Once you've obtained the provisioning profile, you can check its contents with the [`security`](0x08-Testing-Tools.md#security) command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
 ```bash
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
@@ -312,7 +312,7 @@ Note the application identifier, which is a combination of the Team ID (LRUD9L35
 
 ### Basic Information Gathering
 
-On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via *procfs*. Thus, any information about a target process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command line tools for exploring process information, for instance lsof and vmmap, are removed to reduce the firmware size.
+On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via _procfs_. Thus, any information about a target process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command line tools for exploring process information, for instance lsof and vmmap, are removed to reduce the firmware size.
 
 In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using [Cydia](0x08-Testing-Tools.md#cydia) (the executable is not the latest version available, but nevertheless addresses our purpose).
 
@@ -407,14 +407,14 @@ You'll find the debugserver executable in the `/usr/bin/` directory on the mount
 Apply the entitlement with codesign:
 
 ```bash
-$ codesign -s - --entitlements entitlements.plist -f debugserver
+codesign -s - --entitlements entitlements.plist -f debugserver
 ```
 
 Copy the modified binary to any directory on the test device. The following examples use usbmuxd to forward a local port through USB.
 
 ```bash
-$ iproxy 2222 22
-$ scp -P 2222 debugserver root@localhost:/tmp/
+iproxy 2222 22
+scp -P 2222 debugserver root@localhost:/tmp/
 ```
 
 Note: On iOS 12 and higher, use the following procedure to sign the debugserver binary obtained from the XCode image.
@@ -464,13 +464,13 @@ Note: On iOS 12 and higher, use the following procedure to sign the debugserver 
 3) Type the following command to sign the debugserver binary:
 
     ```bash
-    $ ldid -Sentitlements.xml debugserver
+    ldid -Sentitlements.xml debugserver
     ```
 
 4) Verify that the debugserver binary can be executed via the following command:
 
     ```bash
-    $ ./debugserver
+    ./debugserver
     ```
 
 You can now attach debugserver to any process running on the device.
@@ -582,7 +582,7 @@ Next, navigate to a new website in Safari. You should see traced function calls 
 As discussed earlier in this chapter, iOS applications can also contain native code (C/C++ code) and it can be traced using the `frida-trace` CLI as well. For example, you can trace calls to the `open` function by running the following command:
 
 ```bash
-$ frida-trace -U -i "open" sg.vp.UnCrackable1
+frida-trace -U -i "open" sg.vp.UnCrackable1
 ```
 
 The overall approach and further improvisation for tracing native code using Frida is similar to the one discussed in the Android "[Tracing](0x05c-Reverse-Engineering-and-Tampering.md#tracing "Tracing")" section.
@@ -745,7 +745,7 @@ Above, Angr executed an ARM64 code in an execution environment provided by one o
 Time to get serious! As you already know, IPA files are actually ZIP archives, so you can use any ZIP tool to unpack the archive.
 
 ```bash
-$ unzip UnCrackable_Level1.ipa
+unzip UnCrackable_Level1.ipa
 ```
 
 #### Patching Example: Installing Frida Gadget
@@ -753,7 +753,7 @@ $ unzip UnCrackable_Level1.ipa
 IF you want to use Frida on non-jailbroken devices you'll need to include `FridaGadget.dylib`. Download it first:
 
 ```bash
-$ curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
+curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
 Copy `FridaGadget.dylib` into the app directory and use [optool](0x08-Testing-Tools.md#optool) to add a load command to the "UnCrackable Level 1" binary.
@@ -785,16 +785,16 @@ Of course, tampering an app invalidates the main executable's code signature, so
 First, let's add our own provisioning profile to the package:
 
 ```bash
-$ cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
+cp AwesomeRepackaging.mobileprovision Payload/UnCrackable\ Level\ 1.app/embedded.mobileprovision
 ```
 
 Next, we need to make sure that the Bundle ID in `Info.plist` matches the one specified in the profile because the codesign tool will read the Bundle ID from `Info.plist` during signing; the wrong value will lead to an invalid signature.
 
 ```bash
-$ /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
+/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier sg.vantagepoint.repackage" Payload/UnCrackable\ Level\ 1.app/Info.plist
 ```
 
-Finally, we use the codesign tool to re-sign both binaries. You need to use *your* signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
+Finally, we use the codesign tool to re-sign both binaries. You need to use _your own_ signing identity (in this example 8004380F331DCA22CC1B47FB1A805890AE41C938), which you can output by executing the command `security find-identity -v`.
 
 ```bash
 $ rm -rf Payload/UnCrackable\ Level\ 1.app/_CodeSignature
@@ -812,7 +812,7 @@ Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signatur
 Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](0x08-Testing-Tools.md#ios-deploy):
 
 ```bash
-$ ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
+ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
 ```
 
 If everything went well, the app should start in debugging mode with LLDB attached. Frida should then be able to attach to the app as well. You can verify this via the frida-ps command:
@@ -846,7 +846,7 @@ Use the following approach to patch the JavaScript file:
 2. Copy the contents of the file `Payload/[APP].app/main.jsbundle` to a temporary file.
 3. Use `JStillery` to beautify and de-obfuscate the contents of the temporary file.
 4. Identify the code in the temporary file that should be patched and patch it.
-5. Put the *patched code* on a single line and copy it into the original `Payload/[APP].app/main.jsbundle` file.
+5. Put the _patched code_ on a single line and copy it into the original `Payload/[APP].app/main.jsbundle` file.
 6. Close and restart the application.
 
 ### Dynamic Instrumentation
@@ -1033,7 +1033,7 @@ As you can see, these tasks are rather supportive and/or passive, they'll help u
 In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. iGoat-Swift) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
-$ r2 frida://usb//iGoat-Swift
+r2 frida://usb//iGoat-Swift
 ```
 
 ##### Memory Maps and Inspection

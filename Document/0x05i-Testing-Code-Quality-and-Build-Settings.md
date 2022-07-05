@@ -175,20 +175,20 @@ Symbols are usually stripped during the build process, so you need the compiled 
 First, find the `nm` binary in your Android NDK and export it (or create an alias).
 
 ```bash
-export $NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
+export NM = $ANDROID_NDK_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm
 ```
 
 To display debug symbols:
 
 ```bash
-$ $NM -a libfoo.so
+$NM -a libfoo.so
 /tmp/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-nm: libfoo.so: no symbols
 ```
 
 To display dynamic symbols:
 
 ```bash
-$ $NM -D libfoo.so
+$NM -D libfoo.so
 ```
 
 Alternatively, open the file in your favorite disassembler and check the symbol tables manually.
@@ -310,8 +310,8 @@ apply plugin: 'org.owasp.dependencycheck'
 Once gradle has invoked the plugin, you can create a report by running:
 
 ```bash
-$ gradle assemble
-$ gradle dependencyCheckAnalyze --info
+gradle assemble
+gradle dependencyCheckAnalyze --info
 ```
 
 The report will be in `build/reports` unless otherwise configured. Use the report in order to analyze the vulnerabilities found. See remediation on what to do given the vulnerabilities found with the libraries.
@@ -346,8 +346,8 @@ plugins {
 Now, after the plugin is picked up, use the following commands:
 
 ```bash
-$ gradle assemble
-$ gradle downloadLicenses
+gradle assemble
+gradle downloadLicenses
 ```
 
 Now a license-report will be generated, which can be used to consult the licenses used by the third party libraries. Please check the license agreements to see whether a copyright notice needs to be included into the app and whether the license type requires to open-source the code of the application.
