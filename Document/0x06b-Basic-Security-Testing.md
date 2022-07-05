@@ -1048,7 +1048,7 @@ ios sslpinning disable
 
 Here's an example of the output:
 
-![objection iOS SSL Pinning Bypass](Images/Chapters/0x06b/ios_ssl_pinning_bypass.png)
+<img src="Images/Chapters/0x06b/ios_ssl_pinning_bypass.png" width="100%" />
 
 See also [Objection's help on Disabling SSL Pinning for iOS](https://github.com/sensepost/objection/blob/master/objection/console/helpfiles/ios.sslpinning.disable.txt) for further information and inspect the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts "pinning.ts") file to understand how the bypass works.
 
