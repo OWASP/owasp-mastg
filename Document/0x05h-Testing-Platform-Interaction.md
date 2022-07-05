@@ -43,7 +43,7 @@ The [following changes](https://developer.android.com/about/versions/pie/android
 
 - **Restricted access to call logs**: `READ_CALL_LOG`, `WRITE_CALL_LOG`, and `PROCESS_OUTGOING_CALLS` (dangerous) permissions are moved from `PHONE` to the new `CALL_LOG` permission group. This means that being able to make phone calls (e.g. by having the permissions of the `PHONE` group granted) is not sufficient to get access to the call logs.
 - **Restricted access to phone numbers**: apps wanting to read the phone number require the `READ_CALL_LOG` permission when running on Android 9 (API level 28).
-- **Restricted access to Wi-Fi location and connection information**: SSID and BSSID values cannot be retrieved (e.g. via [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo%28%29 "WifiManager.getConnectionInfo") unless *all* of the following is true:
+- **Restricted access to Wi-Fi location and connection information**: SSID and BSSID values cannot be retrieved (e.g. via [`WifiManager.getConnectionInfo`](https://developer.android.com/reference/android/net/wifi/WifiManager#getConnectionInfo%28%29 "WifiManager.getConnectionInfo") unless _all_ of the following is true:
   - The `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION` permission.
   - The `ACCESS_WIFI_STATE` permission.
   - Location services are enabled (under **Settings** -> **Location**).
@@ -100,7 +100,7 @@ This allows a common capability-style model where user interaction drives ad-hoc
 
 Android allows apps to expose their services/components to other apps. Custom permissions are required for app access to the exposed components. You can define [custom permissions](https://developer.android.com/guide/topics/permissions/defining.html "Custom Permissions") in `AndroidManifest.xml` by creating a permission tag with two mandatory attributes: `android:name` and `android:protectionLevel`.
 
-It is crucial to create custom permissions that adhere to the *Principle of Least Privilege*: permission should be defined explicitly for its purpose, with a meaningful and accurate label and description.
+It is crucial to create custom permissions that adhere to the _Principle of Least Privilege_: permission should be defined explicitly for its purpose, with a meaningful and accurate label and description.
 
 Below is an example of a custom permission called `START_MAIN_ACTIVITY`, which is required when launching the `TEST_ACTIVITY` Activity.
 
@@ -316,9 +316,9 @@ install permissions:
 
 The output shows all permissions using the following categories:
 
-- **declared permissions**: list of all *custom* permissions.
-- **requested and install permissions**: list of all install-time permissions including *normal* and *signature* permissions.
-- **runtime permissions**: list of all *dangerous* permissions.
+- **declared permissions**: list of all _custom_ permissions.
+- **requested and install permissions**: list of all install-time permissions including _normal_ and _signature_ permissions.
+- **runtime permissions**: list of all _dangerous_ permissions.
 
 When doing the dynamic analysis:
 
@@ -350,7 +350,7 @@ The following portions of the source code should be checked if any app functiona
 
 An example of a vulnerable IPC mechanism is shown below.
 
-You can use *ContentProviders* to access database information, and you can probe services to see if they return data. If data is not validated properly, the content provider may be prone to SQL injection while other apps are interacting with it. See the following vulnerable implementation of a *ContentProvider*.
+You can use _ContentProviders_ to access database information, and you can probe services to see if they return data. If data is not validated properly, the content provider may be prone to SQL injection while other apps are interacting with it. See the following vulnerable implementation of a _ContentProvider_.
 
 ```xml
 <provider
@@ -579,7 +579,7 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 ### Overview
 
-*Deep links* are URIs of any scheme that take users directly to specific content in an app. An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to navigate users to the correct activity.
+_Deep links_ are URIs of any scheme that take users directly to specific content in an app. An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to navigate users to the correct activity.
 
 Android supports two types of deep links:
 
@@ -932,7 +932,7 @@ In the "Sieve" app, we find three exported activities, identified by `<activity>
 
 ```
 
-#### Inspect the source code
+#### Inspect the Source Code
 
 By inspecting the `PWList.java` activity, we see that it offers options to list all keys, add, delete, etc. If we invoke it directly, we will be able to bypass the LoginActivity. More on this can be found in the dynamic analysis below.
 
@@ -947,7 +947,7 @@ In the "Sieve" app, we find two exported services, identified by `<service>`:
 <service android:exported="true" android:name=".CryptoService" android:process=":remote" />
 ```
 
-#### Inspect the source code
+#### Inspect the Source Code
 
 Check the source code for the class `android.app.Service`:
 
@@ -984,7 +984,7 @@ By reversing the target application, we can see that the service `AuthService` p
    }
 ```
 
-#### Broadcast Receivers
+### Broadcast Receivers
 
 #### Inspect the AndroidManifest
 
@@ -998,7 +998,7 @@ In the "Android Insecure Bank" app, we find a broadcast receiver in the manifest
 </receiver>
 ```
 
-#### Inspect the source code
+#### Inspect the Source Code
 
 Search the source code for strings like `sendBroadcast`, `sendOrderedBroadcast`, and `sendStickyBroadcast`. Make sure that the application doesn't send any sensitive data.
 

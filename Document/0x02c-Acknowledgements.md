@@ -23,7 +23,7 @@ We will validate this status according to these categories:
      - etc.
 3. **Spreading the word** and promoting the project with many presentations each year, public trainings, high social media involvement (e.g. liking, re-sharing, doing own posting specifically to promote the project).
 
-*NOTE: You don't need to fulfill each and every bullet point (they are examples). However, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so.*
+_NOTE: You don't need to fulfill each and every bullet point (they are examples). However, you must be able to clearly show the continuity of your contributions and high impact for the project. For example, to fulfill "2." you could demonstrate that you've been sending high-impact Pull Request in the initial 6 months period and intend to continue to do so._
 
 ### 🎁 Benefits
 
@@ -35,11 +35,11 @@ We will validate this status according to these categories:
 
 ### 📝 How to Apply
 
-If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application. Please be sure to include sufficient evidence (usually in the form of a *contribution report* including URLs linking to the corresponding elements) showing what you've done in the 6 months period that goes inline with the three categories described above.
+If you'd like to apply please contact the project leaders by sending an email to [Sven Schleier](mailto:sven.schleier@owasp.org) and [Carlos Holguera](mailto:carlos.holguera@owasp.org) who will validate your application. Please be sure to include sufficient evidence (usually in the form of a _contribution report_ including URLs linking to the corresponding elements) showing what you've done in the 6 months period that goes inline with the three categories described above.
 
 ### ❗ Important Disclaimers
 
-- If the "MSTG Advocate" status is granted and you'd like to maintain it, the aforementioned contributions must remain consistent after the initial period as well. You should keep collecting this evidence and send us a *contribution report* yearly.
+- If the "MSTG Advocate" status is granted and you'd like to maintain it, the aforementioned contributions must remain consistent after the initial period as well. You should keep collecting this evidence and send us a _contribution report_ yearly.
 - [Financial donations](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) are not part of the eligibility criteria but will be listed for completion.
 - Re-shared publications and blog posts linked in MSTG text must be **educational** and focus on mobile security or MASVS/MSTG and **not endorse company products/services**.
 - Advocate Companies may use the logo and links to MASVS/MSTG resources as part of their communication but cannot use them as an endorsement by OWASP as a preferred provider of software and services.

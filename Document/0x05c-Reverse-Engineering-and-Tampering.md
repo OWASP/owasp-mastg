@@ -84,7 +84,7 @@ It is worth highlighting that analyzing disassembled native code is much more ch
 In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```bash
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 ```
 
 > This app is not exactly spectacular, all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support, which is just enough to show the basic principles of JNI calls.
@@ -160,7 +160,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ##### radare2
 
-To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in [radare2](0x08-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -210,17 +210,17 @@ Usage: aa[0*?]   # see also 'af' and 'afna'
 | aav [sat]           find values referencing a specific section or map
 ```
 
-There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from an [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) pretty summarizes this.
+There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from this [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) offers a good summary.
 
 > Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
 >
-> People that are used to IDA or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
+> People that are used to [IDA](0x08-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
 This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
 
 ##### IDA Pro
 
-If you own an IDA Pro license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+If you own an [IDA Pro](0x08-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
 <img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
 
@@ -616,7 +616,7 @@ Dalvik and ART support the JDWP, a protocol for communication between the debugg
 
 A JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll use a JDWP debugger most of the time you debug "normal" Android apps (i.e., apps that don't make many calls to native libraries).
 
-In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with jdb alone. Note that this is not an *efficient* way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
+In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with jdb alone. Note that this is not an _efficient_ way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
 
 #### Debugging with jdb
 
@@ -804,13 +804,13 @@ Native code on Android is packed into ELF shared libraries and runs just like an
 You'll now set up your JNI demo app, HelloWorld-JNI.apk, for debugging. It's the same APK you downloaded in "Statically Analyzing Native Code". Use `adb install` to install it on your device or on an emulator.
 
 ```bash
-$ adb install HelloWorld-JNI.apk
+adb install HelloWorld-JNI.apk
 ```
 
 If you followed the instructions at the beginning of this chapter, you should already have the Android NDK. It contains prebuilt versions of gdbserver for various architectures. Copy the gdbserver binary to your device:
 
 ```bash
-$ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
+adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
 
 The `gdbserver --attach` command causes gdbserver to attach to the running process and bind to the IP address and port specified in `comm`, which in this case is a HOST:PORT descriptor. Start HelloWorldJNI on the device, then connect to the device and determine the PID of the HelloWorldJNI process (sg.vantagepoint.helloworldjni). Then switch to the root user and attach `gdbserver`:
@@ -828,7 +828,7 @@ Listening on port 1234
 The process is now suspended, and `gdbserver` is listening for debugging clients on port `1234`. With the device connected via USB, you can forward this port to a local port on the host with the `abd forward` command:
 
 ```bash
-$ adb forward tcp:1234 tcp:1234
+adb forward tcp:1234 tcp:1234
 ```
 
 You'll now use the prebuilt version of `gdb` included in the NDK toolchain.
@@ -931,7 +931,7 @@ Strace is a standard Linux utility that is not included with Android by default,
 If the "Wait for debugger" feature in **Settings > Developer options** is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
 
 ```bash
-$ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e "!read" -ff -p "$pid"; break; fi; done
+while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e "!read" -ff -p "$pid"; break; fi; done
 ```
 
 ##### Ftrace
@@ -941,7 +941,7 @@ Ftrace is a tracing utility built directly into the Linux kernel. On a rooted de
 Conveniently, the stock Android kernel on both Lollipop and Marshmallow include ftrace functionality. The feature can be enabled with the following command:
 
 ```bash
-$ echo 1 > /proc/sys/kernel/ftrace_enabled
+echo 1 > /proc/sys/kernel/ftrace_enabled
 ```
 
 The `/sys/kernel/debug/tracing` directory holds all control and output files related to ftrace. The following files are found in this directory:
@@ -971,7 +971,7 @@ Native methods tracing can be performed with relative ease than compared to Java
 In order to use `frida-trace`, a Frida server should be running on the device. An example for tracing libc's `open` function using `frida-trace` is demonstrated below, where `-U` connects to the USB device and `-i` specifies the function to be included in the trace.
 
 ```bash
-$ frida-trace -U -i "open" com.android.chrome
+frida-trace -U -i "open" com.android.chrome
 ```
 
 <img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="100%" />
@@ -1009,13 +1009,13 @@ Another thing to notice in the output above is that it's colorized. An applicati
 - Tracing functions by address when no function name symbols are available (stripped binaries), e.g. `-a "libjpeg.so!0x4793c"`.
 
 ```bash
-$ frida-trace -U -i "Java_*" com.android.chrome
+frida-trace -U -i "Java_*" com.android.chrome
 ```
 
 Many binaries are stripped and don't have function name symbols available with them. In such cases, a function can be traced using its address as well.
 
 ```bash
-$ frida-trace -p 1372 -a "libjpeg.so!0x4793c"
+frida-trace -p 1372 -a "libjpeg.so!0x4793c"
 ```
 
 Frida 12.10 introduces a new useful syntax to query Java classes and methods as well as Java method tracing support for frida-trace via `-j` (starting on frida-tools 8.0).
@@ -1034,7 +1034,7 @@ As detailed in section [Reviewing Disassembled Native Code](#reviewing-disassemb
 You can easily install it by running `pip install jnitrace` and run it straight away as follows:
 
 ```bash
-$ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
+jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 ```
 
 > The `-l` option can be provided multiple times to trace multiple libraries, or `*` can be provided to trace all libraries. This, however, may provide a lot of output.
@@ -1054,7 +1054,7 @@ The Android emulator is based on QEMU, a generic and open source machine emulato
 Because the Android emulator is a fork of QEMU, it comes with all QEMU features, including monitoring, debugging, and tracing facilities. QEMU-specific parameters can be passed to the emulator with the `-qemu` command line flag. You can use QEMU's built-in tracing facilities to log executed instructions and virtual register values. Starting QEMU with the `-d` command line flag will cause it to dump the blocks of guest code, micro operations, or host instructions being executed. With the `-d_asm` flag, QEMU logs all basic blocks of guest code as they enter QEMU's translation function. The following command logs all translated blocks to a file:
 
 ```bash
-$ emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-save -qemu -d in_asm,cpu 2>/tmp/qemu.log
+emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-save -qemu -d in_asm,cpu 2>/tmp/qemu.log
 ```
 
 Unfortunately, generating a complete guest instruction trace with QEMU is impossible because code blocks are written to the log only at the time they are translated, not when they're taken from the cache. For example, if a block is repeatedly executed in a loop, only the first iteration will be printed to the log. There's no way to disable TB caching in QEMU (besides hacking the source code). Nevertheless, the functionality is sufficient for basic tasks, such as reconstructing the disassembly of a natively executed cryptographic algorithm.
@@ -1274,7 +1274,7 @@ To conclude, learning symbolic execution might look a bit intimidating at first,
 
 ## Tampering and Runtime Instrumentation
 
-First, we'll look at some simple ways to modify and instrument mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile application security however, the term loosely refers to all kinds of runtime manipulation, including overriding methods to change behavior.
+First, we'll look at some simple ways to modify and instrument mobile apps. _Tampering_ means making patches or runtime changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. _Runtime Instrumentation_ encompasses adding hooks and runtime patches to observe the app's behavior. In mobile application security however, the term loosely refers to all kinds of runtime manipulation, including overriding methods to change behavior.
 
 ### Patching, Repackaging, and Re-Signing
 
@@ -1288,7 +1288,7 @@ In most cases, both issues can be fixed by making minor changes to the app (aka.
 The first step is unpacking and disassembling the APK with `apktool`:
 
 ```bash
-$ apktool d target_apk.apk
+apktool d target_apk.apk
 ```
 
 > Note: To save time, you may use the flag `--no-src` if you only want to unpack the APK but not disassemble the code. For example, when you only want to modify the Android Manifest and repack immediately.
@@ -1328,7 +1328,7 @@ This modification will break the APK signature, so you'll also have to re-sign t
 
 Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` flag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
 
-When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the runtime state of a program makes understanding the program *a lot* easier.
+When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged, that's the purpose of _debug builds_. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the runtime state of a program makes understanding the program _a lot_ easier.
 
 To _convert_ a release build into a debuggable build, you need to modify a flag in the Android Manifest file (AndroidManifest.xml). Once you've unpacked the app (e.g. `apktool d --no-src UnCrackable-Level1.apk`) and decoded the Android Manifest, add `android:debuggable="true"` to it using a text editor:
 
@@ -1343,9 +1343,9 @@ Even if we haven't altered the source code, this modification also breaks the AP
 You can easily repackage an app by doing the following:
 
 ```bash
-$ cd UnCrackable-Level1
-$ apktool b
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+cd UnCrackable-Level1
+apktool b
+zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
 Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
@@ -1357,26 +1357,26 @@ Before re-signing, you first need a code-signing certificate. If you have built 
 The standard Java distribution includes `keytool` for managing KeyStores and certificates. You can create your own signing certificate and key, then add it to the debug KeyStore:
 
 ```bash
-$ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
+keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
 ```
 
 After the certificate is available, you can re-sign the APK with it. Be sure that `apksigner` is in the path and that you run it from the folder where your repackaged APK is located.
 
 ```bash
-$ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
+apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
 ```
 
 Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` must be called **after** signing.
 
 ```bash
-$ jarsigner -verbose -keystore ~/.android/debug.keystore ../UnCrackable-Repackaged.apk signkey
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+jarsigner -verbose -keystore ~/.android/debug.keystore ../UnCrackable-Repackaged.apk signkey
+zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
 Now you may reinstall the app:
 
 ```bash
-$ adb install UnCrackable-Repackaged.apk
+adb install UnCrackable-Repackaged.apk
 ```
 
 #### The "Wait For Debugger" Feature
@@ -1403,7 +1403,7 @@ The following approach can be used in order to patch the JavaScript file:
 2. Copy the content of the file `assets/index.android.bundle` into a temporary file.
 3. Use `JStillery` to beautify and deobfuscate the content of the temporary file.
 4. Identify where the code should be patched in the temporary file and implement the changes.
-5. Put the *patched code* on a single line and copy it in the original `assets/index.android.bundle` file.
+5. Put the _patched code_ on a single line and copy it in the original `assets/index.android.bundle` file.
 6. Repack the APK archive using `apktool` tool and sign it before to install it on the target device/emulator.
 
 #### Library Injection
@@ -1460,7 +1460,7 @@ As the [ld.so man page](http://man7.org/linux/man-pages/man8/ld.so.8.html "LD.SO
 On Android, setting `LD_PRELOAD` is slightly different compared to other Linux distributions. If you recall from the "[Platform Overview](0x05a-Platform-Overview.md#zygote "Platform Overview")" section, every application in Android is forked from Zygote, which is started very early during the Android boot-up. Thus, setting `LD_PRELOAD` on Zygote is not possible. As a workaround for this problem, Android supports the `setprop` (set property) functionality. Below you can see an example for an application with package name `com.foo.bar` (note the additional `wrap.` prefix):
 
 ```bash
-$ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
+setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
 > Please note that if the library to be preloaded does not have SELinux context assigned, from Android 5.0 (API level 21) onwards, you need to disable SELinux to make `LD_PRELOAD` work, which may require root.
@@ -1724,7 +1724,7 @@ Wrap your code in the function `setImmediate` to prevent timeouts (you may or ma
 Save the above script as `uncrackable1.js` and load it:
 
 ```bash
-$ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
+frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 ```
 
 After you see the "MainActivity.a modified" message and the app will not exit anymore.
@@ -1814,7 +1814,7 @@ $ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 
 The hooked function outputted the decrypted string. You extracted the secret string without having to dive too deep into the application code and its decryption routines.
 
-You've now covered the basics of static/dynamic analysis on Android. Of course, the only way to *really* learn it is hands-on experience: build your own projects in Android Studio, observe how your code gets translated into bytecode and native code, and try to crack our challenges.
+You've now covered the basics of static/dynamic analysis on Android. Of course, the only way to _really_ learn it is hands-on experience: build your own projects in Android Studio, observe how your code gets translated into bytecode and native code, and try to crack our challenges.
 
 In the remaining sections, we'll introduce a few advanced subjects, including process exploration, kernel modules and dynamic execution.
 
@@ -1833,7 +1833,7 @@ As you can see, these passive tasks help us collect information. This Informatio
 In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
-$ r2 frida://usb//sg.vantagepoint.helloworldjni
+r2 frida://usb//sg.vantagepoint.helloworldjni
 ```
 
 > See all options with `r2 frida://?`.
@@ -2224,19 +2224,19 @@ Setting `ro.debuggable` to "1" makes all running apps debuggable (i.e., the debu
 To modify initrd on any Android device, back up the original boot image with TWRP or dump it with the following command:
 
 ```bash
-$ adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
-$ adb pull /mnt/sdcard/boot.img /tmp/boot.img
+adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
+adb pull /mnt/sdcard/boot.img /tmp/boot.img
 ```
 
 To extract the contents of the boot image, use the abootimg tool as described in Krzysztof Adamski's how-to :
 
 ```bash
-$ mkdir boot
-$ cd boot
-$ ../abootimg -x /tmp/boot.img
-$ mkdir initrd
-$ cd initrd
-$ cat ../initrd.img | gunzip | cpio -vid
+mkdir boot
+cd boot
+../abootimg -x /tmp/boot.img
+mkdir initrd
+cd initrd
+cat ../initrd.img | gunzip | cpio -vid
 ```
 
 Note the boot parameters written to bootimg.cfg; you'll need them when booting your new kernel and ramdisk.
@@ -2256,8 +2256,8 @@ cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=3
 Modify default.prop and package your new ramdisk:
 
 ```bash
-$ cd initrd
-$ find . | cpio --create --format='newc' | gzip > ../myinitd.img
+cd initrd
+find . | cpio --create --format='newc' | gzip > ../myinitd.img
 ```
 
 ### Customizing the Android Kernel
@@ -2275,13 +2275,13 @@ For hacking, I recommend an AOSP-supported device. Google's Nexus smartphones an
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the `msm` repository and check out one of the `android-msm-hammerhead` branches (hammerhead is the codename of the Nexus 5, and finding the right branch is confusing). Once you have downloaded the sources, create the default kernel config with the command `make hammerhead_defconfig` (replacing "hammerhead" with your target device).
 
 ```bash
-$ git clone https://android.googlesource.com/kernel/msm.git
-$ cd msm
-$ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
-$ export ARCH=arm
-$ export SUBARCH=arm
-$ make hammerhead_defconfig
-$ vim .config
+git clone https://android.googlesource.com/kernel/msm.git
+cd msm
+git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
+export ARCH=arm
+export SUBARCH=arm
+make hammerhead_defconfig
+vim .config
 ```
 
 I recommend using the following settings to add loadable module support, enable the most important tracing facilities, and open kernel memory for patching.
@@ -2305,25 +2305,25 @@ CONFIG KDB=Y
 Once you're finished editing save the .config file, build the kernel.
 
 ```bash
-$ export ARCH=arm
-$ export SUBARCH=arm
-$ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
-$ make
+export ARCH=arm
+export SUBARCH=arm
+export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
+make
 ```
 
 You can now create a standalone toolchain for cross-compiling the kernel and subsequent tasks. To create a toolchain for Android 7.0 (API level 24), run make-standalone-toolchain.sh from the Android NDK package:
 
 ```bash
-$ cd android-ndk-rXXX
-$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
+cd android-ndk-rXXX
+build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
 ```
 
 Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
 the kernel.
 
 ```bash
-$ export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
-$ make
+export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
+make
 ```
 
 ### Booting the Custom Environment
@@ -2343,14 +2343,14 @@ lrwxrwxrwx root     root              1970-08-30 22:31 userdata -> /dev/block/mm
 Then dump the whole thing into a file:
 
 ```bash
-$ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
-$ adb pull /data/local/tmp/boot.img
+adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
+adb pull /data/local/tmp/boot.img
 ```
 
 Next, extract the ramdisk and information about the structure of the boot image. There are various tools that can do this;  I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
 
 ```bash
-$ abootimg -x boot.img
+abootimg -x boot.img
 ```
 
 This should create the files bootimg.cfg, initrd.img, and zImage (your original kernel) in the local directory.
@@ -2358,13 +2358,13 @@ This should create the files bootimg.cfg, initrd.img, and zImage (your original 
 You can now use fastboot to test the new kernel. The `fastboot boot` command allows you to run the kernel without actually flashing it (once you're sure everything works, you can make the changes permanent with fastboot flash, but you don't have to). Restart the device in fastboot mode with the following command:
 
 ```bash
-$ adb reboot bootloader
+adb reboot bootloader
 ```
 
 Then use the `fastboot boot` command to boot Android with the new kernel. Specify the kernel offset, ramdisk offset, tags offset, and command line (use the values listed in your extracted bootimg.cfg) in addition to the newly built kernel and the original ramdisk.
 
 ```bash
-$ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
+fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
 ```
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to **Settings** -> **About phone** and check the **kernel version** field.
@@ -2529,9 +2529,9 @@ int main(int argc, char *argv[]) {
 Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device:
 
 ```bash
-$ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
-$ adb push kmem_util /data/local/tmp/
-$ adb shell chmod 755 /data/local/tmp/kmem_util
+/tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
+adb push kmem_util /data/local/tmp/
+adb shell chmod 755 /data/local/tmp/kmem_util
 ```
 
 Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The `openat` system call is defined in unistd.h, which is in the kernel sources:
@@ -2551,7 +2551,7 @@ bf000000 t new_openat    [kernel_hook]
 Now you have everything you need to overwrite the `sys_call_table` entry. The syntax for kmem_util is:
 
 ```bash
-$ ./kmem_util <syscall_table_base_address> <offset> <func_addr>
+./kmem_util <syscall_table_base_address> <offset> <func_addr>
 ```
 
 The following command patches the `openat` system call table so that it points to your new function.
