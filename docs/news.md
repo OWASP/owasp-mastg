@@ -219,11 +219,11 @@ A key goal of the OWASP Mobile Testing Project is to build the ultimate learning
 
 Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes) to the [GitHub repo](https://github.com/OWASP/owasp-mstg) that will then be used as examples throughout the guide. The goal is to collect enough resources for demonstrating the most important tools and techniques in our guide, plus additional crackmes for practicing. For starters there are three challenges:
 
-- [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/01_License_Validation)
+- [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01)
 - [Uncrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01/)
 - [Uncrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/)
 
-One of these three already has a [documented solution](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Reverse-Engineering-and-Tampering-Android.md#symbolicexec) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md).
+One of these three already has a [documented solution](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md).
 
 ### We Need More Authors and Contributors!
 
@@ -233,23 +233,23 @@ Maybe you have noticed that [the reverse engineering sections in the Mobile Test
 
 The OWASP MSTG is an open project and there's a lot of flexibility - it mostly depends on your skill set and willingness to commit your time. That said, the some areas that need help are:
 
-- Solving crackmes and contributing a tutorial to the guide (preferable a technique that's not already documented. Check the [TOC](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) first).
+- Solving crackmes and contributing a tutorial to the guide (preferable a technique that's not already documented).
 - Writing and adding new crackmes along with solutions (should also describe something not already in the guide. Cracking white-boxes, dynamic analysis using an emulator / introspection, etc. etc.).
 - General reversing write-ups to describe specific processes and techniques
-- Help us figure out r[esiliency testing processes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x07b-Assessing_Software_Protections.md) and [obfuscation metrics](https://github.com/muellerberndt/obfuscation-metrics)
+- Help us figure out resiliency testing processes and [obfuscation metrics](https://github.com/muellerberndt/obfuscation-metrics)
 The reversing part of the guide consists of the following chapters:
 
-- [Tampering and Reverse Engineering - General Overview](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05-Testing-Processes-and-Techniques.md#tampering-and-reverse-engineering)
-- [Tampering and Reverse Engineering on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Reverse-Engineering-and-Tampering-Android.md#tampering-and-reverse-engineering-on-android)
-- [Tampering and Reverse Engineering on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md#tampering-and-reverse-engineering-on-ios)
+- Tampering and Reverse Engineering - General Overview
+- Tampering and Reverse Engineering on Android
+- Tampering and Reverse Engineering on iOS
 
 #### How To Join
 
-Read the [author's guide](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
+Read the [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
 
 ## January 22nd, 2017: Mobile Testing Guide TOC Available
 
-As of now, we'll be auto-generating a [table of contents](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) out of the current MSTG master branch. This reflects the current state of the guide, and should make it easier to coordinate work between authors. A short-term goal is to finalize the structure of the guide so we get a clearer picture of what will be included in the final document. Lead authors are encouraged to complete the outline of their respective chapters.
+As of now, we'll be auto-generating a table of contents out of the current MSTG master branch. This reflects the current state of the guide, and should make it easier to coordinate work between authors. A short-term goal is to finalize the structure of the guide so we get a clearer picture of what will be included in the final document. Lead authors are encouraged to complete the outline of their respective chapters.
 
 **On another note, we still need additional authors to help with all sections of the guide, including mobile operating system overviews, testing processes and techniques, and reverse engineering.** Especially iOS authors are in short supply! As usual, ping us on the Slack Channel if you want to contribute.
 
@@ -274,12 +274,6 @@ All of this is unpaid, volunteer work. However, depending on your contribution, 
 
 ### Where do I sign up?
 
-First of all, have a look at the existing RE chapters outline:
-
-- [Generic / Introduction](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05-Testing-Processes-and-Techniques.md#tampering-and-reverse-engineering)
-- [Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Reverse-Engineering-and-Tampering-Android.md)
-- [iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md#tampering-and-reverse-engineering-on-ios)
-
-You'll probably immediately have ideas on how you can contribute. If that's the case, read the [author's guide](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md) first.
+First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md) first.
 
 Then contact [Bernhard Mueller](https://github.com/muellerberndt) - ideally directly on the OWASP Mobile Security Project Slack Channel, where you'll find all the other project members. You can sign up for an account here.
