@@ -11,7 +11,7 @@ Most modern mobile apps use variants of HTTP-based web services, as these protoc
 Starting on Android 7.0 (API level 24), Android apps can customize their network security settings using the so-called [Network Security Configuration](https://developer.android.com/training/articles/security-config) feature which offers the following key capabilities:
 
 - **Cleartext traffic**: Protect apps from accidental usage of cleartext traffic (or enables it).
-- **Custom trust anchors**: Customize which Certificate Authorities (CA) are trusted for an app's secure connections. For example, trusting particular self-signed certificates or restricting the set of public CAs that the app trusts.
+- **Custom trust anchors**: Customize which Certificate Authorities (CAs) are trusted for an app's secure connections. For example, trusting particular self-signed certificates or restricting the set of public CAs that the app trusts.
 - **Certificate pinning**: Restrict an app's secure connection to particular certificates.
 - **Debug-only overrides**: Safely debug secure connections in an app without added risk to the installed base.
 
@@ -32,14 +32,14 @@ The Network Security Configuration is [XML-based](https://developer.android.com/
 - `base-config` applies to all connections that the app attempts to make.
 - `domain-config` overrides `base-config` for specific domains (it can contain multiple `domain` entries).
 
-For example, the following configuration uses the `base-config` to prevent cleartext traffic for all domains. But it overrides that rule using a `domain-config`, explicitly allowing cleartext traffic for `localhost` and its subdomains.
+For example, the following configuration uses the `base-config` to prevent cleartext traffic for all domains. But it overrides that rule using a `domain-config`, explicitly allowing cleartext traffic for `localhost`.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <base-config cleartextTrafficPermitted="false" />
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
+        <domain>localhost</domain>
     </domain-config>
 </network-security-config>
 ```
@@ -145,14 +145,14 @@ Make sure that the hostname and the certificate itself are verified correctly. E
 
 Applications targeting Android 7.0 (API level 24) or higher will use a **default Network Security Configuration that doesn't trust any user supplied CAs**, reducing the possibility of MITM attacks by luring users to install malicious CAs.
 
-[Decode the app using apktool](0x05b-Basic-Security_Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal or higher than `24`.
+[Decode the app using apktool](0x05b-Basic-Security_Testing.md#exploring-the-app-package) and verify that the `targetSdkVersion` in apktool.yml is equal to or higher than `24`.
 
 ```txt
 grep targetSdkVersion UnCrackable-Level3/apktool.yml
   targetSdkVersion: '28'
 ```
 
-However, even if `targetSdkVersion >=24`, the developers can disable default protection can be disabled by using a custom Network Security Configuration defining a custom trust anchor **forcing the app to trust user supplied CAs**. See ["Analyzing Custom Trust Anchors"](#analyzing-custom-trust-anchors).
+However, even if `targetSdkVersion >=24`, the developer can disable default protections by using a custom Network Security Configuration defining a custom trust anchor **forcing the app to trust user supplied CAs**. See ["Analyzing Custom Trust Anchors"](#analyzing-custom-trust-anchors).
 
 #### Analyzing Custom Trust Anchors
 
@@ -491,7 +491,7 @@ However, keep in mind that:
 - the APIs might not be complete.
 - if nothing is hooked, that doesn't necessarily mean that the app doesn't implement pinning.
 
-In both cases, the app or some of its components might implement pinning on a very custom way that it's [not implemented in objection](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts).
+In both cases, the app or some of its components might implement custom pinning in a way that is [supported by objection](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts). Please check the static analysis section for specific pinning indicators and more in-depth testing.
 
 ## Testing the Security Provider (MSTG-NETWORK-6)
 

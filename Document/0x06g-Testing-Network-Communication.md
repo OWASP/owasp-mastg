@@ -8,7 +8,7 @@ Most modern mobile apps use variants of HTTP-based web services, as these protoc
 
 ### iOS App Transport Security
 
-Starting on iOS 9, Apple introduced [App Transport Security (ATS)](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) which is a set of security checks enforced by the operating system for connections made using the [URL Loading System](https://developer.apple.com/documentation/foundation/url_loading_system) (typically via `URLSession`) to always use HTTPS. Apps should follow [Apple's best practices](https://developer.apple.com/news/?id=jxky8h89) to properly secure their connections.
+Starting with iOS 9, Apple introduced [App Transport Security (ATS)](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity) which is a set of security checks enforced by the operating system for connections made using the [URL Loading System](https://developer.apple.com/documentation/foundation/url_loading_system) (typically via `URLSession`) to always use HTTPS. Apps should follow [Apple's best practices](https://developer.apple.com/news/?id=jxky8h89) to properly secure their connections.
 
 > [Watch ATS Introductory Video from the Apple WWDC 2015](https://developer.apple.com/videos/play/wwdc2015/711/?time=321).
 
@@ -16,7 +16,7 @@ ATS performs default server trust evaluation and requires a minimum set of secur
 
 **Default Server Trust Evaluation:**
 
-When an app connects to a remote server, the server provides its identity using an X.509 digital certificate. The ATS default server trust evaluation includes checking that the certificate:
+When an app connects to a remote server, the server provides its identity using an X.509 digital certificate. The ATS default server trust evaluation includes validating that the certificate:
 
 - Isn’t expired.
 - Has a name that matches the server’s DNS name.
@@ -34,7 +34,7 @@ ATS will block connections that further fail to meet a set of [minimum security 
 
 **Certificate validity checking:**
 
-[According to Apple](https://support.apple.com/en-gb/guide/security/sec100a75d12/web#sec8b087b1f7), evaluating the trusted status of a TLS certificate is performed in accordance with established industry standards, as set out in RFC 5280, and incorporates emerging standards such as RFC 6962 (Certificate Transparency). In iOS 11 or later, Apple devices are periodically updated with a current list of revoked and constrained certificates. The list is aggregated from certificate revocation lists (CRLs), which are published by each of the built-in root certificate authorities trusted by Apple, as well as by their subordinate CA issuers. The list may also include other constraints at Apple’s discretion. This information is consulted whenever a network API function is used to make a secure connection. If there are too many revoked certificates from a CA to list individually, a trust evaluation may instead require that an online certificate status response (OCSP) is needed, and if the response isn’t available, the trust evaluation will fail.
+[According to Apple](https://support.apple.com/en-gb/guide/security/sec100a75d12/web#sec8b087b1f7), "evaluating the trusted status of a TLS certificate is performed in accordance with established industry standards, as set out in RFC 5280, and incorporates emerging standards such as RFC 6962 (Certificate Transparency). In iOS 11 or later, Apple devices are periodically updated with a current list of revoked and constrained certificates. The list is aggregated from certificate revocation lists (CRLs), which are published by each of the built-in root certificate authorities trusted by Apple, as well as by their subordinate CA issuers. The list may also include other constraints at Apple’s discretion. This information is consulted whenever a network API function is used to make a secure connection. If there are too many revoked certificates from a CA to list individually, a trust evaluation may instead require that an online certificate status response (OCSP) is needed, and if the response isn’t available, the trust evaluation will fail."
 
 #### When does ATS not apply?
 
@@ -156,7 +156,7 @@ TLS 1.3 is enabled by default in the `Network` framework, if the argument `using
 
 `URLSession` was built upon the `Network` framework and utilizes the same transport services. The class also uses TLS 1.3 by default, if the endpoint is HTTPS.
 
-**`URLSession` should be used for HTTP and HTTPS connections, instead of utilizing the `Network` framework directly.** The `URLSession` class natively supports both URL schemes and is optimized for such connections. It requires less boilerplate code, reducing the propensity for errors and ensuring secure connections by default. The `Network` framework should only be used when there are low-level and/or advanced networking requirements.
+**`URLSession` should be used for HTTP and HTTPS connections, instead of utilizing the `Network` framework directly.** The `URLSession` class natively supports both URL schemes and is optimized for such connections. It requires less boilerplate code, reducing the possibility for errors and ensuring secure connections by default. The `Network` framework should only be used when there are low-level and/or advanced networking requirements.
 
 The official Apple documentation includes examples of using the `Network` framework to [implement netcat](https://developer.apple.com/documentation/network/implementing_netcat_with_network_framework "Implementing netcat with Network Framework") and `URLSession` to [fetch website data into memory](https://developer.apple.com/documentation/foundation/url_loading_system/fetching_website_data_into_memory "Fetching Website Data into Memory").
 
@@ -178,7 +178,7 @@ First, you should identify all network requests in the source code and ensure th
 
 Identify the network APIs used by the app and see if it uses any low-level networking APIs.
 
-> **Apple Recommendation: Prefer High-Level Frameworks in Your App**: ATS doesn’t apply to calls your app makes to lower-level networking interfaces like the Network framework or CFNetwork. In these cases, you take responsibility for ensuring the security of the connection. You can construct a secure connection this way, but mistakes are both easy to make and costly. It’s typically safest to rely on the URL Loading System instead.
+> **Apple Recommendation: Prefer High-Level Frameworks in Your App**: "ATS doesn’t apply to calls your app makes to lower-level networking interfaces like the Network framework or CFNetwork. In these cases, you take responsibility for ensuring the security of the connection. You can construct a secure connection this way, but mistakes are both easy to make and costly. It’s typically safest to rely on the URL Loading System instead" (see [source](https://developer.apple.com/documentation/security/preventing_insecure_network_connections)).
 
 If the app uses any low-level APIs such as [`Network`](https://developer.apple.com/documentation/network) or [`CFNetwork`](https://developer.apple.com/documentation/cfnetwork), you should carefully investigate if they are being used securely. For apps using cross-platform frameworks (e.g. Flutter, Xamarin, ...) and third party frameworks (e.g. Alamofire) you should analyze if they're being configured and used securely according to their best practices.
 
@@ -198,9 +198,9 @@ Ensure that the app is not allowing cleartext HTTP traffic. Since iOS 9.0 cleart
 - [Retrieve the `Info.plist`](0x06b-Basic-Security-Testing.md#the-infoplist-file)
 - Check that `NSAllowsArbitraryLoads` is not set to `true` globally of for any domain.
 
-- If the application opens third party web sites in web views, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views.
+- If the application opens third party web sites in WebViews, then from iOS 10 onwards `NSAllowsArbitraryLoadsInWebContent` can be used to disable ATS restrictions for the content loaded in web views.
 
-> **Apple warns:** Disabling ATS means that unsecured HTTP connections are allowed. HTTPS connections are also allowed, and are still subject to default server trust evaluation. However, extended security checks—like requiring a minimum Transport Layer Security (TLS) protocol version—are disabled. Without ATS, you’re also free to loosen the default server trust requirements, as described in Performing Manual Server Trust Authentication.
+> **Apple warns:** Disabling ATS means that unsecured HTTP connections are allowed. HTTPS connections are also allowed, and are still subject to default server trust evaluation. However, extended security checks—like requiring a minimum Transport Layer Security (TLS) protocol version—are disabled. Without ATS, you’re also free to loosen the default server trust requirements, as described in ["Performing Manual Server Trust Authentication"](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication).
 
 The following snippet shows a **vulnerable example** of an app disabling ATS restrictions globally.
 
@@ -321,15 +321,15 @@ In both cases, the app or some of its components might implement pinning on a ve
 
 #### Client certificate validation
 
-Some applications use two-way SSL handshake, meaning that application verifies server's certificate and server verifies client's certificate. You can notice this if there is an error in Burp 'Alerts' tab indicating that client failed to negotiate connection.
+Some applications use mTLS (mutual TLS), meaning that the application verifies the server's certificate and the server verifies the client's certificate. You can notice this if there is an error in Burp **Alerts** tab indicating that client failed to negotiate connection.
 
-There is a couple of things worth noting:
+There are a couple of things worth noting:
 
 1. The client certificate contains a private key that will be used for the key exchange.
 2. Usually the certificate would also need a password to use (decrypt) it.
 3. The certificate can be stored in the binary itself, data directory or in the Keychain.
 
-The most common and improper way of doing two-way handshake is to store the client certificate within the application bundle and hardcode the password. This obviously does not bring much security, because all clients will share the same certificate.
+The most common and improper way of using mTLS is to store the client certificate within the application bundle and hardcode the password. This obviously does not bring much security, because all clients will share the same certificate.
 
 Second way of storing the certificate (and possibly password) is to use the Keychain. Upon first login, the application should download the personal certificate and store it securely in the Keychain.
 
