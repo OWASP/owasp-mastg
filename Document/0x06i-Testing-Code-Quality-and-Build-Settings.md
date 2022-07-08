@@ -624,7 +624,7 @@ Although Xcode enables all binary security features by default, it may be releva
 - [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
   - Both pure Objective-C, Swift and hybrid binaries should have ARC (Automatic Reference Counting) enabled.
   - For C/C++ libraries, the developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
-- [**SSP (Stack Smashing Protection)**](0x04h-Testing-Code-Quality.md#stack-smashing-protection): For pure Objective-C binaries, this should always be enabled. Since Swift is designed to be memory safe, if a library is purely written in Swift, and stack canaries weren’t enabled, the risk will be minimal.
+- [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection): For pure Objective-C binaries, this should always be enabled. Since Swift is designed to be memory safe, if a library is purely written in Swift, and stack canaries weren’t enabled, the risk will be minimal.
 
 Learn more:
 

@@ -77,7 +77,7 @@ Over the past decades many tools have perfected the process of disassembly and d
 
 Obfuscation is the process of transforming code and data to make it more difficult to comprehend (and sometimes even difficult to disassemble). It is usually an integral part of the software protection scheme. Obfuscation isn't something that can be simply turned on or off, programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
 
-> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
+> Note: All presented techniques below will not stop someone with enough time and budget from reverse engineering your app. However, combining these techniques will make their job significantly harder. The aim is thus to discourage reverse engineers from performing further analysis and not making it worth the effort.
 
 The following techniques can be used to obfuscate an application:
 
@@ -90,7 +90,7 @@ The following techniques can be used to obfuscate an application:
 
 #### Name Obfuscation
 
-The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation was applied, symbol names remain meaningful and can be easily read straight from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the Damn Vulnerable iOS App (DVIA-v2).
+The standard compiler generates binary symbols based on class and function names from the source code. Therefore, if no obfuscation is applied, symbol names remain meaningful and can easily be extracted from the app binary. For instance, a function which detects a jailbreak can be located by searching for relevant keywords (e.g. "jailbreak"). The listing below shows the disassembled function `JailbreakDetectionViewController.jailbreakTest4Tapped` from the Damn Vulnerable iOS App (DVIA-v2).
 
 ```assembly
 __T07DVIA_v232JailbreakDetectionViewControllerC20jailbreakTest4TappedyypF:
@@ -110,7 +110,7 @@ Nevertheless, this only applies to the names of functions, classes and fields. T
 
 #### Instruction Substitution
 
-This technique replaces standard binary operators like addition or subtraction with more complex representations. For example an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. This technique is vulnerable to deobfuscation, but depending on the complexity and depth of the substitutions, applying it can still be time consuming.
+This technique replaces standard binary operators like addition or subtraction with more complex representations. For example, an addition `x = a + b` can be represented as `x = -(-a) - (-b)`. However, using the same replacement representation could be easily reversed, so it is recommended to add multiple substitution techniques for a single case and introduce a random factor. This technique can be reversed during decompilation, but depending on the complexity and depth of the substitutions, reversing it can still be time consuming.
 
 #### Control Flow Flattening
 
@@ -122,7 +122,7 @@ The image shows how control flow flattening alters code (see "[Obfuscating C++ p
 
 #### Dead Code Injection
 
-This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behaviour but increases the overhead for the reverse engineering process.
+This technique makes the program's control flow more complex by injecting dead code into the program. Dead code is a stub of code that doesn’t affect the original program’s behavior but increases the overhead of the reverse engineering process.
 
 #### String Encryption
 

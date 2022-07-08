@@ -672,7 +672,7 @@ iOS apps can make their codebase modular by using different elements. In the MST
 - [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
 - [Swift Packages](https://developer.apple.com/documentation/swift_packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
 
-You can easily visualize native libraries from Passionfruit by clicking on "Modules":
+You can visualize native libraries in Passionfruit by clicking on "Modules":
 
 <img src="Images/Chapters/0x06b/passionfruit_modules.png" width="100%" />
 

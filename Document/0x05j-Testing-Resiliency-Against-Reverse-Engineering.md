@@ -1018,7 +1018,8 @@ Developers use the build.gradle file to enable obfuscation. In the example below
 
 Further information on how to shrink, obfuscate, and optimize your app can be found in the [Android developer documentation](https://developer.android.com/studio/build/shrink-code "Shrink, obfuscate, and optimize your app").
 
-> When you build you project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin works with the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
+> When you build your project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin uses the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
+
 
 R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
 
@@ -1105,7 +1106,7 @@ For native code:
 
 Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind and in the ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) presentation by Eduardo Novella.
 
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. There are some tools such as [APKiD](0x08-Testing-Tools.md#apkid) that might be able to give you some indications about the kind of techniques were used for the target app such as obfuscators, packers, anti debug.
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as [APKiD](0x08-Testing-Tools.md#apkid) may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
 
 ### Dynamic Analysis
 

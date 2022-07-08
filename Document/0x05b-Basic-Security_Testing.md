@@ -529,7 +529,7 @@ adb root
 adb pull /data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/oat/arm64/base.odex
 ```
 
-Note that you must execute adb with root privileges. If the above doesn't work because the file cannot be found, try exploring yourself using `adb shell` and `cd` to that path until you find the `base.odex`.
+Note that the exact directory will be different based on your Android version. If the `/oat/arm64/base.odex` file can't be found, manually search in the directory returned by `pm path`.
 
 ##### Native Libraries
 
