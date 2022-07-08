@@ -20,7 +20,7 @@ SafetyNet is an Android API that provides a set of services and creates profiles
 
 How exactly SafetyNet works is not well documented and may change at any time. When you call this API, SafetyNet downloads a binary package containing the device validation code provided from Google, and the code is then dynamically executed via reflection. An [analysis by John Kozyrakis](https://koz.io/inside-safetynet/ "SafetyNet: Google's tamper detection for Android") showed that SafetyNet also attempts to detect whether the device is rooted, but exactly how that's determined is unclear.
 
-To use the API, an app may call the `SafetyNetApi.attest` method (which returns a JWS message with the *Attestation Result*) and then check the following fields:
+To use the API, an app may call the `SafetyNetApi.attest` method (which returns a JWS message with the _Attestation Result_) and then check the following fields:
 
 - `ctsProfileMatch`: If 'true', the device profile matches one of Google's listed devices.
 - `basicIntegrity`: If 'true', the device running the app likely hasn't been tampered with.
@@ -82,7 +82,7 @@ Perhaps the most widely used method of programmatic detection is checking for fi
 /system/xbin/daemonsu
 ```
 
-Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the *su* binary at different locations:
+Detection code also often looks for binaries that are usually installed once a device has been rooted. These searches include checking for busybox and attempting to open the _su_ binary at different locations:
 
 ```default
 /sbin/su
@@ -568,7 +568,7 @@ The following methods describe different approaches to bypass debugger detection
 
 When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in level 2 of the "UnCrackable App for Android".
 
-At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a *native* method.
+At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
 
 ```java
 package sg.vantagepoint.uncrackable2;
@@ -769,7 +769,7 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 ### Effectiveness Assessment
 
-#### For application-source integrity checks
+**Application-source integrity checks:**
 
 Run the app in an unmodified state and make sure that everything works. Apply simple patches to `classes.dex` and any .so libraries in the app package. Re-package and re-sign the app as described in the "Basic Security Testing" chapter, then run the app. The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate. Work on bypassing the defenses and answer the following questions:
 
@@ -778,7 +778,7 @@ Run the app in an unmodified state and make sure that everything works. Apply si
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-#### For storage integrity checks
+**Storage integrity checks:**
 
 An approach similar to that for application-source integrity checks applies. Answer the following questions:
 
@@ -826,9 +826,9 @@ Looking at these two _traces_ that Frida _lefts behind_, you might already imagi
 | **Check The Environment For Related Artifacts**  |  Artifacts can be package files, binaries, libraries, processes, and temporary files. For Frida, this could be the frida-server running in the target (rooted) system (the daemon responsible for exposing Frida over TCP). Inspect the running services ([`getRunningServices`](https://developer.android.com/reference/android/app/ActivityManager.html#getRunningServices%28int%29 "getRunningServices")) and processes (`ps`) searching for one whose name is "frida-server". You could also walk through the list of loaded libraries and check for suspicious ones (e.g. those including "frida" in their names). | Since Android 7.0 (API level 24), inspecting the running services/processes won't show you daemons like the frida-server as it is not being started by the app itself. Even if it would be possible, bypassing this would be as easy just renaming the corresponding Frida artifact (frida-server/frida-gadget/frida-agent). |
 | **Checking For Open TCP Ports** | The frida-server process binds to TCP port 27042 by default. Check whether this port is open is another method of detecting the daemon. | This method detects frida-server in its default mode, but the listening port can be changed via a command line argument, so bypassing this is a little too trivial. |
 | **Checking For Ports Responding To D-Bus Auth** | `frida-server` uses the D-Bus protocol to communicate, so you can expect it to respond to D-Bus AUTH. Send a D-Bus AUTH message to every open port and check for an answer, hoping that `frida-server` will reveal itself. | This is a fairly robust method of detecting `frida-server`, but Frida offers alternative modes of operation that don't require frida-server. |
-| **Scanning Process Memory for Known Artifacts** | Scan the memory for artifacts found in Frida's libraries, e.g. the string "LIBFRIDA" present in all versions of frida-gadget and frida-agent. For example, use `Runtime.getRuntime().exec` and iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) searching for the string. | This method is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added and if multiple artifacts are being scanned. However, the chosen artifacts might be patched in the Frida binaries. Find the source code on [Berdhard Mueller's GitHub](https://github.com/b-mueller/frida-detection-demo/blob/master/AntiFrida/app/src/main/cpp/native-lib.cpp "frida-detection-demo"). |
+| **Scanning Process Memory for Known Artifacts** | Scan the memory for artifacts found in Frida's libraries, e.g. the string "LIBFRIDA" present in all versions of frida-gadget and frida-agent. For example, use `Runtime.getRuntime().exec` and iterate through the memory mappings listed in `/proc/self/maps` or `/proc/<pid>/maps` (depending on the Android version) searching for the string. | This method is a bit more effective, and it is difficult to bypass with Frida only, especially if some obfuscation has been added and if multiple artifacts are being scanned. However, the chosen artifacts might be patched in the Frida binaries. Find the source code on [Berdhard Mueller's GitHub](https://github.com/muellerberndt/frida-detection-demo/blob/master/AntiFrida/app/src/main/cpp/native-lib.cpp "frida-detection-demo"). |
 
-Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would _help_ detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques, as discussed below in section "[Testing Resiliency Against Reverse Engineering](#testing-obfuscation-mstg-resilience-9 "Testing Resiliency Against Reverse Engineering")". At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
+Please remember that this table is far from exhaustive. We could start talking about [named pipes](https://en.wikipedia.org/wiki/Named_pipe "Named Pipes") (used by frida-server for external communication), detecting [trampolines](https://en.wikipedia.org/wiki/Trampoline_%28computing%29 "Trampolines") (indirect jump vectors inserted at the prologue of functions), which would help detecting Substrate or Frida's Interceptor but, for example, won't be effective against Frida's Stalker; and many other, more or less, effective detection methods. Each of them will depend on whether you're using a rooted device, the specific version of the rooting method and/or the version of the tool itself. Further, the app can try to make it harder to detect the implemented protection mechanisms by using various obfuscation techniques, as discussed below in section "[Testing Resiliency Against Reverse Engineering](#testing-obfuscation-mstg-resilience-9 "Testing Resiliency Against Reverse Engineering")". At the end, this is part of the cat and mouse game of protecting data being processed on an untrusted environment (an app running in the user device).
 
 > It is important to note that these controls are only increasing the complexity of the reverse engineering process. If used, the best approach is to combine the controls cleverly instead of using them individually. However, none of them can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win! You also have to consider that integrating some of the controls into your app might increase the complexity of your app and even have an impact on its performance.
 
@@ -979,13 +979,13 @@ catch(Exception e) {
 
 By using ELF binaries, native function hooks can be installed by overwriting function pointers in memory (e.g., Global Offset Table or PLT hooking) or patching parts of the function code itself (inline hooking). Checking the integrity of the respective memory regions is one way to detect this kind of hook.
 
-The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. *GOT hooks* overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points to a legitimately loaded library.
+The Global Offset Table (GOT) is used to resolve library functions. During runtime, the dynamic linker patches this table with the absolute addresses of global symbols. _GOT hooks_ overwrite the stored function addresses and redirect legitimate function calls to adversary-controlled code. This type of hook can be detected by enumerating the process memory map and verifying that each GOT entry points to a legitimately loaded library.
 
 In contrast to GNU `ld`, which resolves symbol addresses only after they are needed for the first time (lazy binding), the Android linker resolves all external functions and writes the respective GOT entries immediately after a library is loaded (immediate binding). You can therefore expect all GOT entries to point to valid memory locations in the code sections of their respective libraries during runtime. GOT hook detection methods usually walk the GOT and verify this.
 
-*Inline hooks* work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. You can detect inline hooks by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
+_Inline hooks_ work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. You can detect inline hooks by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
 
-### Bypass and Effectiveness Assessment
+### Effectiveness Assessment
 
 Make sure that all file-based detection of reverse engineering tools is disabled. Then, inject code by using Xposed, Frida, and Substrate, and attempt to install native hooks and Java method hooks. The app should detect the "hostile" code in its memory and respond accordingly.
 

@@ -198,7 +198,7 @@ In case [Swift Package Manager](https://swift.org/package-manager "Swift Package
 First, at the root of the project, where the Package.swift file is located, type
 
 ```bash
-$ swift build
+swift build
 ```
 
 Next, check the file Package.resolved for the actual versions used and inspect the given libraries for known vulnerabilities.
@@ -206,7 +206,7 @@ Next, check the file Package.resolved for the actual versions used and inspect t
 You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/ "OWASP Dependency-Check")'s experimental [Swift Package Manager Analyzer](https://jeremylong.github.io/DependencyCheck/analyzers/swift.html "dependency-check - SWIFT Package Manager Analyzer") to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries. Scan the application's Package.swift file and generate a report of known vulnerable libraries with the following command:
 
 ```bash
-$ dependency-check  --enableExperimental --out . --scan Package.swift
+dependency-check  --enableExperimental --out . --scan Package.swift
 ```
 
 ##### CocoaPods
@@ -216,15 +216,15 @@ In case [CocoaPods](https://cocoapods.org "CocoaPods.org") is used for managing 
 First, at the root of the project, where the Podfile is located, execute the following commands:
 
 ```bash
-$ sudo gem install cocoapods
-$ pod install
+sudo gem install cocoapods
+pod install
 ```
 
 Next, now that the dependency tree has been built, you can create an overview of the dependencies and their versions by running the following commands:
 
 ```bash
-$ sudo gem install cocoapods-dependencies
-$ pod dependencies
+sudo gem install cocoapods-dependencies
+pod dependencies
 ```
 
 The result of the steps above can now be used as input for searching different vulnerability feeds for known vulnerabilities.
@@ -239,7 +239,7 @@ You can utilize the [OWASP Dependency-Check](https://owasp.org/www-project-depen
 to identify the [Common Platform Enumeration (CPE)](https://nvd.nist.gov/products/cpe "CPE") naming scheme of all dependencies and any corresponding [Common Vulnerability and Exposure (CVE)](https://cve.mitre.org/ "CVE") entries. Scan the application's \*.podspec and/or Podfile.lock files and generate a report of known vulnerable libraries with the following command:
 
 ```bash
-$ dependency-check  --enableExperimental --out . --scan Podfile.lock
+dependency-check  --enableExperimental --out . --scan Podfile.lock
 ```
 
 ##### Carthage
@@ -249,8 +249,8 @@ In case [Carthage](https://github.com/Carthage/Carthage "Carthage on GitHub") is
 First, at the root of the project, where the Cartfile is located, type
 
 ```bash
-$ brew install carthage
-$ carthage update --platform iOS
+brew install carthage
+carthage update --platform iOS
 ```
 
 Next, check the Cartfile.resolved for actual versions used and inspect the given libraries for known vulnerabilities.
@@ -284,7 +284,7 @@ In order to ensure that the copyright laws are not infringed, one can best check
 When the application sources are available and Swift Package Manager is used, execute the following code in the root directory of the project, where the Package.swift file is located:
 
 ```bash
-$ swift build
+swift build
 ```
 
 The sources of each of the dependencies have now been downloaded to `/.build/checkouts/` folder in the project. Here you can find the license for each of the libraries in their respective folder.
@@ -295,8 +295,8 @@ When the application sources are available and CocoaPods is used, then execute t
 First, at the root of the project, where the Podfile is located, type
 
 ```bash
-$ sudo gem install CocoaPods
-$ pod install
+sudo gem install CocoaPods
+pod install
 ```
 
 This will create a Pods folder where all libraries are installed, each in their own folder. You can now check the licenses for each of the libraries by inspecting the license files in each of the folders.
@@ -306,8 +306,8 @@ This will create a Pods folder where all libraries are installed, each in their 
 When the application sources are available and Carthage is used, execute the following code in the root directory of the project, where the Cartfile is located:
 
 ```bash
-$ brew install carthage
-$ carthage update --platform iOS
+brew install carthage
+carthage update --platform iOS
 ```
 
 The sources of each of the dependencies have now been downloaded to `Carthage/Checkouts` folder in the project. Here you can find the license for each of the libraries in their respective folder.

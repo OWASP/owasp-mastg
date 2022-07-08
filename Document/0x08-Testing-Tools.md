@@ -19,7 +19,7 @@ Angr allows for disassembly, program instrumentation, symbolic execution, contro
 Since version 8, Angr is based on Python 3, and can be installed with pip on \*nix operating systems, macOS and Windows:
 
 ```bash
-$ pip install angr
+pip install angr
 ```
 
 > Some of angr's dependencies contain forked versions of the Python modules Z3 and PyVEX, which would overwrite the original versions. If you're using those modules for anything else, you should create a dedicated virtual environment with [Virtualenv](https://docs.python.org/3/tutorial/venv.html "Virtualenv documentation"). Alternatively, you can always use the provided docker container. See the [installation guide](https://docs.angr.io/introductory-errata/install "angr Installation Guide") for more details.
@@ -35,7 +35,7 @@ You can use angr from a Python REPL - such as iPython - or script your approache
 To install Frida locally, simply run:
 
 ```bash
-$ pip install frida-tools
+pip install frida-tools
 ```
 
 Or refer to the [installation page](https://www.frida.re/docs/installation/ "Frida Installation") for more details.
@@ -50,7 +50,7 @@ In contrast, Frida implements code injection by writing code directly into the p
 
 <img src="Images/Chapters/0x04/frida.png" width="100%" />
 
-- *Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")*
+- _Frida Architecture, source: [https://www.frida.re/docs/hacking/](https://www.frida.re/docs/hacking "Frida - Hacking")_
 
 Frida offers three modes of operation:
 
@@ -117,21 +117,21 @@ In order to set up Frida on your Android device:
 We assume a rooted device here unless otherwise noted. Download the frida-server binary from the [Frida releases page](https://github.com/frida/frida/releases). Make sure that you download the right frida-server binary for the architecture of your Android device or emulator: x86, x86_64, arm or arm64. Make sure that the server version (at least the major version number) matches the version of your local Frida installation. PyPI usually installs the latest version of Frida. If you're unsure which version is installed, you can check with the Frida command line tool:
 
 ```bash
-$ frida --version
+frida --version
 ```
 
 Or you can run the following command to automatically detect Frida version and download the right frida-server binary:
 
 ```bash
-$ wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
+wget https://github.com/frida/frida/releases/download/$(frida --version)/frida-server-$(frida --version)-android-arm.xz
 ```
 
 Copy frida-server to the device and run it:
 
 ```bash
-$ adb push frida-server /data/local/tmp/
-$ adb shell "chmod 755 /data/local/tmp/frida-server"
-$ adb shell "su -c /data/local/tmp/frida-server &"
+adb push frida-server /data/local/tmp/
+adb shell "chmod 755 /data/local/tmp/frida-server"
+adb shell "su -c /data/local/tmp/frida-server &"
 ```
 
 ##### Using Frida on Android
@@ -176,7 +176,7 @@ This will show the names and identifiers of all apps, if they are currently runn
 To trace specific (low-level) library calls, you can use the `frida-trace` command line tool:
 
 ```bash
-$ frida-trace -U com.android.chrome -i "open"
+frida-trace -U com.android.chrome -i "open"
 ```
 
 This generates a little JavaScript in `__handlers__/libc.so/open.js`, which Frida injects into the process. The script traces all calls to the `open` function in `libc.so`. You can modify the generated script according to your needs with Frida [JavaScript API](https://www.frida.re/docs/javascript-api/).
@@ -188,13 +188,13 @@ Unfortunately tracing high-level methods of Java classes is not yet supported (b
 Use the Frida CLI tool (`frida`) to work with Frida interactively. It hooks into a process and gives you a command line interface to Frida's API.
 
 ```bash
-$ frida -U com.android.chrome
+frida -U com.android.chrome
 ```
 
 With the `-l` option, you can also use the Frida CLI to load scripts , e.g., to load `myscript.js`:
 
 ```bash
-$ frida -U -l myscript.js com.android.chrome
+frida -U -l myscript.js com.android.chrome
 ```
 
 Frida also provides a [Java API](https://www.frida.re/docs/javascript-api/#java "Frida - Java API"), which is especially helpful for dealing with Android apps. It lets you work with Java classes and objects directly. Here is a script to overwrite the `onResume` function of an Activity class:
@@ -283,7 +283,7 @@ Remember that on iOS, you can also benefit from the built-in tools provided when
 There's a `frida-trace` feature exclusive on iOS worth highlighting: tracing Objective-C APIs using the `-m` flag and wildcards. For example, tracing all methods including "HTTP" in their name and belonging to any class whose name starts with "NSURL" is as easy as running:
 
 ```bash
-$ frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
+frida-trace -U YourApp -m "*[NSURL* *HTTP*]"
 ```
 
 For a quick start you can go through the [iOS examples](https://www.frida.re/docs/examples/ios/ "Frida iOS examples").
@@ -405,7 +405,7 @@ In the end, it is up to you to decide where would you like to work with the data
 Using them is as simple as including the `--codeshare <handler>` flag and a handler when using the Frida CLI. For example, to use "ObjC method observer", enter the following:
 
 ```bash
-$ frida --codeshare mrmacete/objc-method-observer -f YOUR_BINARY
+frida --codeshare mrmacete/objc-method-observer -f YOUR_BINARY
 ```
 
 ### Ghidra
@@ -453,8 +453,8 @@ The purpose of LIEF is to provide a cross platform library to parse, modify and 
 [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF") (Mobile Security Framework) is an automated, all-in-one mobile application pentesting framework capable of performing static and dynamic analysis. The easiest way of getting MobSF started is via Docker.
 
 ```bash
-$ docker pull opensecurity/mobile-security-framework-mobsf
-$ docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+docker pull opensecurity/mobile-security-framework-mobsf
+docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
 
 Or install and start it locally on your host computer by running:
@@ -532,7 +532,7 @@ Objection achieves this goal by providing you with the tools to easily inject th
 Objection can be installed through pip as described on [Objection's Wiki](https://github.com/sensepost/objection/wiki/Installation "Objection Wiki - Installation").
 
 ```bash
-$ pip3 install objection
+pip3 install objection
 ```
 
 #### Objection for Android
@@ -551,7 +551,7 @@ The ability to perform advanced dynamic analysis on non-rooted devices is one of
 Finally, in case you do have access to a rooted device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-rooted device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-Android-Applications "Patching Android Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an APK by calling the objection command:
 
 ```bash
-$ objection patchapk --source app-release.apk
+objection patchapk --source app-release.apk
 ```
 
 The patched application then needs to be installed using adb, as explained in "Basic Testing Operations - Installing Apps".
@@ -615,13 +615,13 @@ The ability to perform advanced dynamic analysis on non-jailbroken devices is on
 Finally, in case you do have access to a jailbroken device, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, if you want to test on a non-jailbroken device, you will first need to include the Frida gadget in the application. The [Objection Wiki](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications "Patching iOS Applications") describes the needed steps in detail, but after making the right preparations, you'll be able to patch an IPA by calling the objection command:
 
 ```bash
-$ objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
 ```
 
 Finally, the application needs to be sideloaded and run with debugging communication enabled. Detailed steps can be found on the [Objection Wiki](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications "Running Patched iOS Applications"), but for macOS users it can easily be done by using ios-deploy:
 
 ```bash
-$ ios-deploy --bundle Payload/my-app.app -W -d
+ios-deploy --bundle Payload/my-app.app -W -d
 ```
 
 ##### Using Objection on iOS
@@ -676,7 +676,7 @@ Please refer to [r2frida's official installation instructions](https://github.co
 With frida-server running, you should now be able to attach to it using the pid, spawn path, host and port, or device-id. For example, to attach to PID 1234:
 
 ```bash
-$ r2 frida://1234
+r2 frida://1234
 ```
 
 For more examples on how to connect to frida-server, [see the usage section in the r2frida's README page](https://github.com/nowsecure/r2frida/blob/master/README.md#usage "r2frida usage").
@@ -864,7 +864,7 @@ Usage: rabin2 [-AcdeEghHiIjlLMqrRsSUvVxzZ] [-@ at] [-a arch] [-b bits] [-B addr]
 Use the main `r2` utility to access the **r2 shell**. You can load DEX binaries just like any other binary:
 
 ```bash
-$ r2 classes.dex
+r2 classes.dex
 ```
 
 Enter `r2 -h` to see all available options. A very commonly used flag is `-A`, which triggers an analysis after loading the target binary. However, this should be used sparingly and with small binaries as it is very time and resource consuming. You can learn more about this in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)".
@@ -1032,7 +1032,7 @@ emulator-5554    device product:sdk_google_phone_x86 model:Android_SDK_built_for
 adb provides other useful commands such as `adb shell` to start an interactive shell on a target and `adb forward` to forward traffic on a specific host port to a different port on a connect device.
 
 ```bash
-$ adb forward tcp:<host port> tcp:<device port>
+adb forward tcp:<host port> tcp:<device port>
 ```
 
 ```bash
@@ -1067,13 +1067,13 @@ One possibility for setting up the build system is exporting the compiler path a
 To set up a standalone toolchain, download the [latest stable version of the NDK](https://developer.android.com/ndk/downloads/index.html#stable-downloads "Android NDK Downloads"). Extract the ZIP file, change into the NDK root directory, and run the following command:
 
 ```bash
-$ ./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
+./build/tools/make_standalone_toolchain.py --arch arm --api 24 --install-dir /tmp/android-7-toolchain
 ```
 
 This creates a standalone toolchain for Android 7.0 (API level 24) in the directory `/tmp/android-7-toolchain`. For convenience, you can export an environment variable that points to your toolchain directory, (we'll be using this in the examples). Run the following command or add it to your `.bash_profile` or other startup script:
 
 ```bash
-$  export TOOLCHAIN=/tmp/android-7-toolchain
+export TOOLCHAIN=/tmp/android-7-toolchain
 ```
 
 ### Android SDK
@@ -1146,9 +1146,9 @@ You can also use apktool to repackage decoded resources back to binary APK/JAR. 
 apkx is a Python wrapper to popular free DEX converters and Java decompilers. It automates the extraction, conversion, and decompilation of APKs. Install it as follows:
 
 ```bash
-$ git clone https://github.com/b-mueller/apkx
-$ cd apkx
-$ sudo ./install.sh
+git clone https://github.com/muellerberndt/apkx
+cd apkx
+sudo ./install.sh
 ```
 
 This should copy apkx to `/usr/local/bin`. See section "[Decompiling Java Code](0x05c-Reverse-Engineering-and-Tampering.md#decompiling-java-code "Decompiling Java Code")" of the "Reverse Engineering and Tampering" chapter for more information about usage.
@@ -1175,12 +1175,12 @@ You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Dro
 
 Before you can start using drozer, you'll also need the drozer agent that runs on the Android device itself. Download the latest drozer agent [from the GitHub releases page](https://github.com/FSecureLABS/drozer/releases/ "drozer GitHub releases") and install it with `adb install drozer.apk`.
 
-Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. This is called direct mode and you can see the full instructions in the [User Guide in section "Starting a Session"](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Starting a Session"). An alternative is to run Drozer in infrastructure mode, where, you are running a drozer server that can handle multiple consoles and agents, and routes sessions between them. You can find the details of how to setup drozer in this mode in the ["Infrastructure Mode"](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Infrastructure Mode") section of the User Guide.
+Once the setup is completed you can start a session to an emulator or a device connected per USB by running `adb forward tcp:31415 tcp:31415` and `drozer console connect`. This is called direct mode and you can see the full instructions in the [User Guide in section "Starting a Session"](https://labs.withsecure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Starting a Session"). An alternative is to run Drozer in infrastructure mode, where, you are running a drozer server that can handle multiple consoles and agents, and routes sessions between them. You can find the details of how to setup drozer in this mode in the ["Infrastructure Mode"](https://labs.withsecure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Infrastructure Mode") section of the User Guide.
 
 Now you are ready to begin analyzing apps. A good first step is to enumerate the attack surface of an app which can be done easily with the following command:
 
 ```bash
-$ dz> run app.package.attacksurface <package>
+dz> run app.package.attacksurface <package>
 ```
 
 Again, without drozer this would have required several steps. The module `app.package.attacksurface` lists activities, broadcast receivers, content providers and services that are exported, hence, they are public and can be accessed through other apps. Once we have identified our attack surface, we can interact with the IPC endpoints through drozer without having to write a separate standalone app as it would be required for certain tasks such as communicating with a content provider.
@@ -1188,7 +1188,7 @@ Again, without drozer this would have required several steps. The module `app.pa
 For example, if the app has an exported Activity that leaks sensitive information we can invoke it with the Drozer module `app.activity.start`:
 
 ```bash
-$ dz> run app.activity.start --component <package> <component name>
+dz> run app.activity.start --component <package> <component name>
 ```
 
 This previous command will start the activity, hopefully leaking some sensitive information. Drozer has modules for every type of IPC mechanism. Download [InsecureBankv2](https://github.com/dineshshetty/Android-InsecureBankv2 "InsecureBankv2 APK") if you would like to try the modules with an intentionally vulnerable application that illustrates common problems related to IPC endpoints. Pay close attention to the modules in the scanner category as they are very helpful automatically detecting vulnerabilities even in system packages, specially if you are using a ROM provided by your cellphone company. Even [SQL injection vulnerabilities in system packages by Google](https://issuetracker.google.com/u/0/issues/36965126 "SQL injection in Android") have been identified in the past with drozer.
@@ -1230,7 +1230,7 @@ $ dz> run scanner.provider.injection -a (package name)
 
 Other resources where you might find useful information are:
 
-- [Official drozer User Guide](https://labs.f-secure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
+- [Official drozer User Guide](https://labs.withsecure.com/assets/BlogFiles/mwri-drozer-user-guide-2015-03-23.pdf "Drozer User Guide").
 - [drozer GitHub page](https://github.com/FSecureLABS/drozer "GitHub repo")
 - [drozer Wiki](https://github.com/FSecureLABS/drozer/wiki "drozer Wiki")
 
@@ -1505,8 +1505,8 @@ Besides Cydia there are several other open source tools available and should be 
 Besides Cydia you can also ssh into your iOS device and you can install the packages directly via apt-get, like for example adv-cmds.
 
 ```bash
-$ apt-get update
-$ apt-get install adv-cmds
+apt-get update
+apt-get install adv-cmds
 ```
 
 ### dsdump
@@ -1584,18 +1584,18 @@ Blackbox tool to help understand what an iOS application is doing at runtime and
 With [ios-deploy](https://github.com/ios-control/ios-deploy "ios-deploy") you can install and debug iOS apps from the command line, without using Xcode. It can be installed via brew on macOS:
 
 ```bash
-$ brew install ios-deploy
+brew install ios-deploy
 ```
 
 Alternatively:
 
 ```bash
-$ git clone https://github.com/ios-control/ios-deploy.git
-$ cd ios-deploy/
-$ xcodebuild
-$ cd build/Release
-$ ./ios-deploy
-$ ln -s <your-path-to-ios-deploy>/build/Release/ios-deploy /usr/local/bin/ios-deploy
+git clone https://github.com/ios-control/ios-deploy.git
+cd ios-deploy/
+xcodebuild
+cd build/Release
+./ios-deploy
+ln -s <your-path-to-ios-deploy>/build/Release/ios-deploy /usr/local/bin/ios-deploy
 ```
 
 The last line creates a symbolic link and makes the executable available system-wide. Reload your shell to make the new commands available:
@@ -1642,11 +1642,11 @@ A debugger by Apple’s Xcode used for debugging iOS applications - <https://lld
 To install it:
 
 ```bash
-$ git clone https://github.com/alexzielenski/optool.git
-$ cd optool/
-$ git submodule update --init --recursive
-$ xcodebuild
-$ ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
+git clone https://github.com/alexzielenski/optool.git
+cd optool/
+git submodule update --init --recursive
+xcodebuild
+ln -s <your-path-to-optool>/build/Release/optool /usr/local/bin/optool
 ```
 
 The last line creates a symbolic link and makes the executable available system-wide. Reload your shell to make the new commands available:
@@ -1689,6 +1689,10 @@ With Passionfruit it's possible to explore different kinds of information concer
 
 A program that can convert .plist files between a binary version and an XML version - <https://www.theiphonewiki.com/wiki/Plutil>
 
+### security
+
+[`security`](https://ss64.com/osx/security.html) is a macOS command to administer Keychains, keys, certificates and the Security framework.
+
 ### Sileo
 
 Since iOS 11 jailbreaks are introducing [Sileo](https://cydia-app.com/sileo/ "Sileo"), which is a new jailbreak app-store for iOS devices. The jailbreak [Chimera](https://chimera.sh/ "Chimera") for iOS 12 is also relying on Sileo as a package manager.
@@ -1726,7 +1730,7 @@ Xcode is an Integrated Development Environment (IDE) for macOS that contains a s
 After installing [Xcode](#xcode), in order to make all development tools available systemwide, it is recommended to install the Xcode Command Line Tools package. This will be handy during testing of iOS apps as some of the tools (e.g. objection) are also relying on the availability of this package. You can [download it from the official Apple website](https://developer.apple.com/download/more/ "Apple iOS SDK") or install it straight away from your terminal:
 
 ```bash
-$ xcode-select --install
+xcode-select --install
 ```
 
 ### xcrun
@@ -1748,14 +1752,14 @@ A powerful framework which aims to offer to security researchers and reverse eng
 bettercap is available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms. You need to install it on your host computer that will act as the MITM. On macOS it can be installed by using brew.
 
 ```bash
-$ brew install bettercap
+brew install bettercap
 ```
 
 For Kali Linux you can install bettercap with `apt-get`:
 
 ```bash
-$ apt-get update
-$ apt-get install bettercap
+apt-get update
+apt-get install bettercap
 ```
 
 There are installation instructions as well for Ubuntu Linux 18.04 on [LinuxHint](https://linuxhint.com/install-bettercap-on-ubuntu-18-04-and-use-the-events-stream/ "Install Bettercap on Ubuntu 18.04").

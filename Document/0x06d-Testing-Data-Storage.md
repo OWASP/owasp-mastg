@@ -8,7 +8,7 @@ As little sensitive data as possible should be saved in permanent local storage.
 
 ### Data Protection API
 
-App developers can leverage the iOS *Data Protection* APIs to implement fine-grained access control for user data stored in flash memory. The APIs are built on top of the Secure Enclave Processor (SEP), which was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key-the device UID (Unique ID)-is embedded in the secure enclave, ensuring the integrity of data protection even when the operating system kernel is compromised.
+App developers can leverage the iOS _Data Protection_ APIs to implement fine-grained access control for user data stored in flash memory. The APIs are built on top of the Secure Enclave Processor (SEP), which was introduced with the iPhone 5S. The SEP is a coprocessor that provides cryptographic operations for data protection and key management. A device-specific hardware key-the device UID (Unique ID)-is embedded in the secure enclave, ensuring the integrity of data protection even when the operating system kernel is compromised.
 
 The data protection architecture is based on a hierarchy of keys. The UID and the user passcode key (which is derived from the user's passphrase via the PBKDF2 algorithm) sit at the top of this hierarchy. Together, they can be used to "unlock" so-called class keys, which are associated with different device states (e.g., device locked/unlocked).
 
@@ -312,7 +312,7 @@ awk '{print $9}' | sed -n '1!p')/data/Containers/Data/Application
 The command above will automatically find the UUID of the latest simulator started. Now you still need to grep for your app name or a keyword in your app. This will show you the UUID of the app.
 
 ```bash
-$ grep -iRn keyword .
+grep -iRn keyword .
 ```
 
 Then you can monitor and verify the changes in the filesystem of the app and investigate if any sensitive information is stored within the files while using the app.
@@ -371,7 +371,7 @@ DocumentDirectory  /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-87
 LibraryDirectory   /var/mobile/Containers/Data/Application/264C23B8-07B5-4B5D-8701-C020C301C151/Library
 ```
 
-Go to Documents directory and list files there by *ls* command.
+Go to the Documents directory and list all files using `ls`.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ls
@@ -386,7 +386,7 @@ Unknown           384  n/a                                   True    True     mo
 Readable: True  Writable: True
 ```
 
-Execute the *ios plist cat userInfo.plist* command to inspect the content of userInfo.plist file.
+Execute the `ios plist cat` command to inspect the content of userInfo.plist file.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios plist cat userInfo.plist
@@ -765,8 +765,8 @@ Therefore, it's not straightforward to navigate through it and you will not find
 Without iMazing or similar software you may need to resort to using grep to identify sensitive data. This is not the most thorough approach but you can try searching for sensitive data that you have keyed in while using the app before you made the backup. For example: the username, password, credit card data, PII or any data that is considered sensitive in the context of the app.
 
 ```bash
-$ ~/Library/Application Support/MobileSync/Backup/<UDID>
-$ grep -iRn "password" .
+~/Library/Application Support/MobileSync/Backup/<UDID>
+grep -iRn "password" .
 ```
 
 As described in the Static Analysis section, any sensitive data that you're able to find should be excluded from the backup, encrypted properly by using the Keychain or not stored on the device in the first place.

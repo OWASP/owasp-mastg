@@ -26,7 +26,7 @@ Android apps are usually written in Java and compiled to Dalvik bytecode, which 
 
 The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine (DVM). The key difference between Dalvik and ART is the way the bytecode is executed.
 
-In the DVM, bytecode is translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation. To further improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of *ahead-of-time* (AOT), JIT and profile-guided compilation. Apps are recompiled on the device when they are installed, or when the OS undergoes a major update. While the code is being recompiled, device-specific and advanced code optimizations techniques can be applied. The final recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
+In the DVM, bytecode is translated into machine code at execution time, a process known as _just-in-time_ (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation. To further improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of _ahead-of-time_ (AOT), JIT and profile-guided compilation. Apps are recompiled on the device when they are installed, or when the OS undergoes a major update. While the code is being recompiled, device-specific and advanced code optimizations techniques can be applied. The final recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
 
 ![OWASP MSTG](Images/Chapters/0x05a/java2oat.png) \
 
@@ -242,7 +242,7 @@ Android applications can be shipped in two forms: the Android Package Kit (APK) 
 If you have an Android App Bundle, you can best use the [bundletool](https://developer.android.com/studio/command-line/bundletool "bundletool") command line tool from Google to build unsigned APKs in order to use the existing tooling on the APK. You can create an APK from an AAB file by running the following command:
 
 ```bash
-$ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
+bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 ```
 
 If you want to create signed APKs ready for deployment to a test device, use:
@@ -403,7 +403,7 @@ Services are Android OS components (based on the Service class) that perform tas
 
 As we've already learned, every Android process has its own sandboxed address space. Inter-process communication facilities allow apps to exchange signals and data securely. Instead of relying on the default Linux IPC facilities, Android's IPC is based on Binder, a custom implementation of OpenBinder. Most Android system services and all high-level IPC services depend on Binder.
 
-The term *Binder* stands for a lot of different things, including:
+The term _Binder_ stands for a lot of different things, including:
 
 - Binder Driver: the kernel-level driver
 - Binder Protocol: low-level ioctl-based protocol used to communicate with the binder driver
@@ -412,13 +412,13 @@ The term *Binder* stands for a lot of different things, including:
 - Binder service: implementation of the Binder object; for example, location service, and sensor service
 - Binder client: an object using the Binder service
 
-The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently *marshall* the call parameters into a *parcel* and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call, all the heavy lifting is done by the Binder framework.
+The Binder framework includes a client-server communication model. To use IPC, apps call IPC methods in proxy objects. The proxy objects transparently _marshall_ the call parameters into a _parcel_ and send a transaction to the Binder server, which is implemented as a character driver (/dev/binder). The server holds a thread pool for handling incoming requests and delivers messages to the destination object. From the perspective of the client app, all of this seems like a regular method call, all the heavy lifting is done by the Binder framework.
 
 <img src="Images/Chapters/0x05a/binder.jpg" width="400px" />
 
-*Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.6498&rep=rep1&type=pdf "Android Binder")*
+- _Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.6498&rep=rep1&type=pdf "Android Binder")_
 
-Services that allow other applications to bind to them are called *bound services*. These services must provide an IBinder interface to clients. Developers use the Android Interface Descriptor Language (AIDL) to write interfaces for remote services.
+Services that allow other applications to bind to them are called _bound services_. These services must provide an IBinder interface to clients. Developers use the Android Interface Descriptor Language (AIDL) to write interfaces for remote services.
 
 ServiceManager is a system daemon that manages the registration and lookup of system services. It maintains a list of name/Binder pairs for all registered services. Services are added with `addService` and retrieved by name with the static `getService` method in `android.os.ServiceManager`:
 
@@ -470,7 +470,7 @@ Found 99 services:
 
 #### Intents
 
-*Intent messaging* is an asynchronous communication framework built on top of Binder. This framework allows both point-to-point and publish-subscribe messaging. An *Intent* is a messaging object that can be used to request an action from another app component. Although intents facilitate inter-component communication in several ways, there are three fundamental use cases:
+_Intent messaging_ is an asynchronous communication framework built on top of Binder. This framework allows both point-to-point and publish-subscribe messaging. An _Intent_ is a messaging object that can be used to request an action from another app component. Although intents facilitate inter-component communication in several ways, there are three fundamental use cases:
 
 - Starting an activity
   - An activity represents a single screen in an app. You can start a new instance of an activity by passing an intent to `startActivity`. The intent describes the activity and carries necessary data.
@@ -507,7 +507,7 @@ Example in Kotlin:
 var intent = Intent(Intent.MY_ACTION, Uri.parse("https://www.owasp.org"))
 ```
 
-An *intent filter* is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
+An _intent filter_ is an expression in Android Manifest files that specifies the type of intents the component would like to receive. For instance, by declaring an intent filter for an activity, you make it possible for other apps to directly start your activity with a certain kind of intent. Likewise, your activity can only be started with an explicit intent if you don't declare any intent filters for it.
 
 Android uses intents to broadcast messages to apps (such as an incoming call or SMS) important power supply information (low battery, for example), and network changes (loss of connection, for instance). Extra data may be added to intents (through `putExtra`/`getExtras`).
 
@@ -644,7 +644,7 @@ App creators can either reuse an existing private/public key pair that is in an 
 In the Android SDK, a new key pair is generated with the `keytool` command. The following command creates a RSA key pair with a key length of 2048 bits and an expiry time of 7300 days = 20 years. The generated key pair is stored in the file 'myKeyStore.jks', which is in the current directory):
 
 ```bash
-$ keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
+keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
 ```
 
 Safely storing your secret key and making sure it remains secret during its entire life cycle is of paramount importance. Anyone who gains access to the key will be able to publish updates to your apps with content that you don't control (thereby adding insecure features or accessing shared content with signature-based permissions). The trust that a user places in an app and its developers is based totally on such certificates; certificate protection and secure management are therefore vital for reputation and customer retention, and secret keys must never be shared with other individuals. Keys are stored in a binary file that can be protected with a password; such files are referred to as _KeyStores_. KeyStore passwords should be strong and known only to the key creator. For this reason, keys are usually stored on a dedicated build machine that developers have limited access to.
@@ -658,7 +658,7 @@ Many Integrated Development Environments (IDE) integrate the app signing process
 Apps can be signed from the command line with the 'apksigner' tool provided by the Android SDK (API level 24 and higher). It is located at `[SDK-Path]/build-tools/[version]`. For API 24.0.2 and below, you can use 'jarsigner', which is part of the Java JDK. Details about the whole process can be found in official Android documentation; however, an example is given below to illustrate the point.
 
 ```bash
-$ apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
+apksigner sign --out mySignedApp.apk --ks myKeyStore.jks myUnsignedApp.apk
 ```
 
 In this example, an unsigned app ('myUnsignedApp.apk') will be signed with a private key from the developer KeyStore 'myKeyStore.jks' (located in the current directory). The app will become a signed app called 'mySignedApp.apk' and will be ready to release to stores.
@@ -685,7 +685,7 @@ The Android application attack surface consists of all components of the applica
 
 - Validate all input by means of IPC communication or URL schemes, see also:
   - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4 "Testing for Sensitive Functionality Exposure Through IPC")
-  - [Testing Custom URL Schemes](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3 "Testing Custom URL Schemes")
+  - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3 "Testing Deep Links")
 - Validate all input by the user in input fields.
 - Validate the content loaded inside a WebView, see also:
   - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5 "Testing JavaScript Execution in WebViews")
