@@ -20,7 +20,7 @@ The following is the most basic iOS app testing setup:
 
 #### Getting the UDID of an iOS device
 
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Just select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
 
 <img src="Images/Chapters/0x06b/UDID-Finder.png" width="100%" />
 
@@ -107,21 +107,20 @@ There are _tethered_, _semi-tethered_, _semi-untethered_, and _untethered_ jailb
 
 ##### Caveats and Considerations
 
-Jailbreaking an iOS device is becoming more and more complicated because Apple keeps hardening the system and patching the exploited vulnerabilities. Jailbreaking has become a very time-sensitive procedure because Apple stops signing these vulnerable versions relatively soon after releasing a fix (unless the jailbreak benefits from hardware-based vulnerabilities, such as the [limera1n exploit](https://www.theiphonewiki.com/wiki/Limera1n "limera1n exploit") affecting the BootROM of the iPhone 4 and iPad 1). This means that you can't downgrade to a specific iOS version once Apple stops signing the firmware.
+Developing a jailbreak for iOS is becoming more and more complicated as Apple continues to harden their OS. Whenever Apple becomes aware of a vulnerability, it is patched and a system update is pushed out to all users. As it is not possible to downgrade to a specific version of iOS, and since Apple only allows you to update to the latest iOS version, it is a challenge to have a device which is running a version of iOS for which a jailbreak is available. Some vulnerabilities cannot be patched by software, such as the [checkm8 exploit](https://www.theiphonewiki.com/wiki/Checkm8_Exploit "Checkm8 exploit") affecting the BootROM of all CPUs until A12.
 
-If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
+If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you only have a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
 
 iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
 
 ##### Which Jailbreaking Tool to Use
 
-Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://canijailbreak.com/ "Can I Jailbreak"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
+Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://appledb.dev/ "Apple DB"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
-The jailbreak Pangu 1.3.0 is available for 64-bit devices running iOS 9.0. If you have a device that's running an iOS version for which no jailbreak is available, you can still jailbreak the device if you downgrade or upgrade to the target _jailbreakable_ iOS version (via IPSW download or the iOS update mechanism). However, this may not be possible if the required iOS version is no longer signed by Apple.
 
 The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
 
-- [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
+- [AppleDB](https://appledb.dev/ "AppleDB")
 - [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
 - [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
 - [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
