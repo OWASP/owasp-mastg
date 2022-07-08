@@ -22,9 +22,13 @@ Nevertheless, if the code has been purposefully obfuscated (or some tool-breakin
 
 #### Decompiling Java Code
 
-If you don't mind looking at Smali instead of Java, you can simply [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the Welcome screen (even if you don't intend to debug it you can take a look at the smali code).
+**Java Disassembled Code (smali):**
 
-Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to Smali. apktool allows you to reassemble the package, which is useful for patching and applying changes to e.g. the Android Manifest.
+If you want to inspect the app's smali code (instead of Java), you can [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the "Welcome screen" (even if you don't intend to debug it you can take a look at the smali code).
+
+Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to smali. apktool allows you to reassemble the package, which is useful for [patching](#patching-repackaging-and-re-signing) the app or applying changes to e.g. the Android Manifest.
+
+**Java Decompiled Code:**
 
 If you want to look directly into Java source code on a GUI, simply open your APK using [jadx](0x08-Testing-Tools.md#jadx) or [Bytecode Viewer](0x08-Testing-Tools.md#bytecode-viewer).
 
@@ -40,7 +44,7 @@ Alternatively run [apkx](0x08-Testing-Tools.md#apkx) on your APK or use the expo
 
 In the following example we'll be using [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk "UnCrackable App for Android Level 1"). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
-![OWASP MSTG](Images/Chapters/0x05c/crackme-1.png) \
+<img src="Images/Chapters/0x05c/crackme-1.png" width="400px" />
 
 Seems like we're expected to find some kind of secret code!
 
@@ -52,21 +56,21 @@ The easiest way to run CFR is through [apkx](0x08-Testing-Tools.md#apkx), which 
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because IntelliJ uses the package name to identify the correct process.
 
-![OWASP MSTG](Images/Chapters/0x05c/intellij_new_project.jpg) \
+<img src="Images/Chapters/0x05c/intellij_new_project.jpg" width="100%" />
 
 In the next dialog, pick any API number; you don't actually want to compile the project, so the number doesn't matter. Click "next" and choose "Add no Activity", then click "finish".
 
 Once you have created the project, expand the "1: Project" view on the left and navigate to the folder `app/src/main/java`. Right-click and delete the default package "sg.vantagepoint.uncrackable1" created by IntelliJ.
 
-![OWASP MSTG](Images/Chapters/0x05c/delete_package.jpg) \
+<img src="Images/Chapters/0x05c/delete_package.jpg" width="400px" />
 
 Now, open the `Uncrackable-Level1/src` directory in a file browser and drag the `sg` directory into the now empty `Java` folder in the IntelliJ project view (hold the "alt" key to copy the folder instead of moving it).
 
-![OWASP MSTG](Images/Chapters/0x05c/drag_code.jpg) \
+<img src="Images/Chapters/0x05c/drag_code.jpg" width="100%" />
 
 You'll end up with a structure that resembles the original Android Studio project from which the app was built.
 
-![OWASP MSTG](Images/Chapters/0x05c/final_structure.jpg) \
+<img src="Images/Chapters/0x05c/final_structure.jpg" width="400px" />
 
 See the section "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" below to learn on how to proceed when inspecting the decompiled Java code.
 
@@ -84,12 +88,12 @@ It is worth highlighting that analyzing disassembled native code is much more ch
 In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```bash
-$ wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 ```
 
 > This app is not exactly spectacular, all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support, which is just enough to show the basic principles of JNI calls.
 
-![OWASP MSTG](Images/Chapters/0x05c/helloworld.png) \
+<img src="Images/Chapters/0x05c/helloworld.png" width="200px" />
 
 Decompile the APK with `apkx`.
 
@@ -130,7 +134,7 @@ JNIEXPORT jstring JNICALL Java_sg_vantagepoint_helloworld_MainActivity_stringFro
 
 So where is the native implementation of this function? If you look into the "lib" directory of the unzipped APK archive, you'll see several subdirectories (one per supported processor architecture), each of them containing a version of the native library, in this case `libnative-lib.so`. When `System.loadLibrary` is called, the loader selects the correct version based on the device that the app is running on. Before moving ahead, pay attention to the first parameter passed to the current JNI function. It is the same `JNIEnv` data structure which was discussed earlier in this section.
 
-![OWASP MSTG](Images/Chapters/0x05c/archs.jpg) \
+<img src="Images/Chapters/0x05c/archs.jpg" width="300px" />
 
 Following the naming convention mentioned above, you can expect the library to export a symbol called `Java_sg_vantagepoint_helloworld_MainActivity_stringFromJNI`. On Linux systems, you can retrieve the list of symbols with `readelf` (included in GNU binutils) or `nm`. Do this on macOS with the `greadelf` tool, which you can install via Macports or Homebrew. The following example uses `greadelf`:
 
@@ -160,7 +164,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ##### radare2
 
-To open the file in radare2 you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in [radare2](0x08-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -210,19 +214,19 @@ Usage: aa[0*?]   # see also 'af' and 'afna'
 | aav [sat]           find values referencing a specific section or map
 ```
 
-There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from an [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) pretty summarizes this.
+There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from this [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) offers a good summary.
 
 > Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
 >
-> People that are used to IDA or Hopper just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
+> People that are used to [IDA](0x08-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
 This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
 
 ##### IDA Pro
 
-If you own an IDA Pro license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+If you own an [IDA Pro](0x08-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
-![OWASP MSTG](Images/Chapters/0x05c/IDA_open_file.jpg) \
+<img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
 
 > The freeware version of IDA Pro unfortunately does not support the ARM processor type.
 
@@ -248,7 +252,7 @@ With Ghidra, strings can be obtained by simply loading the DEX file and selectin
 
 > Loading an APK file directly into Ghidra might lead to inconsistencies. Thus it is recommended to extract the DEX file by unzipping the APK file and then loading it into Ghidra.
 
-![OWASP MSTG](Images/Chapters/0x05c/ghidra_dex_strings.png) \
+<img src="Images/Chapters/0x05c/ghidra_dex_strings.png" width="100%" />
 
 With Dextra, you can dump all the strings using the following command:
 
@@ -299,15 +303,15 @@ Remember that in most of the cases, just using static analysis will not be enoug
 
 #### Reviewing Decompiled Java Code
 
-Following the example from "Decompiling Java Code", we assume that you've successfully decompiled and opened the crackme app in IntelliJ. As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of obfuscation that makes the bytecode a little more difficult to read, but with a fairly simple app like this one, it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
+Following the example from ["Decompiling Java Code"](#decompiling-java-code), we assume that you've successfully decompiled and opened the crackme app in IntelliJ. As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of [obfuscation](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) that makes the bytecode a little more difficult to read, but with a fairly simple app like this one, it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
 
 When analyzing obfuscated code, annotating class names, method names, and other identifiers as you go along is a good practice. Open the `MainActivity` class in the package `sg.vantagepoint.uncrackable1`. The method `verify` is called when you tap the "verify" button. This method passes the user input to a static method called `a.a`, which returns a boolean value. It seems plausible that `a.a` verifies user input, so we'll refactor the code to reflect this.
 
-![OWASP MSTG](Images/Chapters/0x05c/check_input.jpg) \
+<img src="Images/Chapters/0x05c/check_input.jpg" width="100%" />
 
 Right-click the class name (the first `a` in `a.a`) and select Refactor -> Rename from the drop-down menu (or press Shift-F6). Change the class name to something that makes more sense given what you know about the class so far. For example, you could call it "Validator" (you can always revise the name later). `a.a` now becomes `Validator.a`. Follow the same procedure to rename the static method `a` to `check_input`.
 
-![OWASP MSTG](Images/Chapters/0x05c/refactored.jpg) \
+<img src="Images/Chapters/0x05c/refactored.jpg" width="100%" />
 
 Congratulations, you just learned the fundamentals of static analysis! It is all about theorizing, annotating, and gradually revising theories about the analyzed program until you understand it completely or, at least, well enough for whatever you want to achieve.
 
@@ -414,11 +418,11 @@ The workflow can be further improved by using [r2ghidra-dec](https://github.com/
 
 We assume that you've successfully opened `lib/armeabi-v7a/libnative-lib.so` in IDA pro. Once the file is loaded, click into the "Functions" window on the left and press `Alt+t` to open the search dialog. Enter "java" and hit enter. This should highlight the `Java_sg_vantagepoint_helloworld_ MainActivity_stringFromJNI` function. Double-click the function to jump to its address in the disassembly Window. "Ida View-A" should now show the disassembly of the function.
 
-![OWASP MSTG](Images/Chapters/0x05c/helloworld_stringfromjni.jpg) \
+<img src="Images/Chapters/0x05c/helloworld_stringfromjni.jpg" width="400px" />
 
 Not a lot of code there, but you should analyze it. The first thing you need to know is that the first argument passed to every JNI function is a JNI interface pointer. An interface pointer is a pointer to a pointer. This pointer points to a function table: an array of even more pointers, each of which points to a JNI interface function (is your head spinning yet?). The function table is initialized by the Java VM and allows the native function to interact with the Java environment.
 
-![OWASP MSTG](Images/Chapters/0x05c/JNI_interface.png) \
+<img src="Images/Chapters/0x05c/JNI_interface.png" width="100%" />
 
 With that in mind, let's have a look at each line of assembly code.
 
@@ -464,7 +468,7 @@ After opening the library in Ghidra we can see all the functions defined in the 
 
 Inside the current function there is a call to another function, whose address is obtained by accessing an offset in the `JNIEnv` pointer (found as `plParm1`). This logic has been diagrammatically demonstrated above as well. The corresponding C code for the disassembled function is shown in the **Decompiler** window. This decompiled C code makes it much easier to understand the function call being made. Since this function is small and extremely simple, the decompilation output is very accurate, this can change drastically when dealing with complex functions.
 
-![OWASP MSTG](Images/Chapters/0x05c/Ghidra_decompiled_function.png) \
+<img src="Images/Chapters/0x05c/Ghidra_decompiled_function.png" width="100%" />
 
 ### Automated Static Analysis
 
@@ -616,7 +620,7 @@ Dalvik and ART support the JDWP, a protocol for communication between the debugg
 
 A JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll use a JDWP debugger most of the time you debug "normal" Android apps (i.e., apps that don't make many calls to native libraries).
 
-In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with jdb alone. Note that this is not an *efficient* way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
+In the following section, we'll show how to solve the UnCrackable App for Android Level 1 with jdb alone. Note that this is not an _efficient_ way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
 
 #### Debugging with jdb
 
@@ -735,33 +739,33 @@ To set up IDE debugging, first create your Android project in IntelliJ and copy 
 
 Once you tap the Uncrackable app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
-![OWASP MSTG](Images/Chapters/0x05c/waitfordebugger.png) \
+<img src="Images/Chapters/0x05c/waitfordebugger.png" width="300px" />
 
 Now you can set breakpoints and attach to the Uncrackable1 app process with the "Attach Debugger" toolbar button.
 
-![OWASP MSTG](Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png) \
+<img src="Images/Chapters/0x05c/set_breakpoint_and_attach_debugger.png" width="100%" />
 
 Note that only method breakpoints work when debugging an app from decompiled sources. Once a method breakpoint is reached, you'll get the chance to single step during the method execution.
 
-![OWASP MSTG](Images/Chapters/0x05c/Choose_Process.png) \
+<img src="Images/Chapters/0x05c/Choose_Process.png" width="300px" />
 
 After you choose the Uncrackable1 application from the list, the debugger will attach to the app process and you'll reach the breakpoint that was set on the `onCreate` method. Uncrackable1 app triggers anti-debugging and anti-tampering controls within the `onCreate` method. That's why setting a breakpoint on the `onCreate` method just before the anti-tampering and anti-debugging checks are performed is a good idea.
 
 Next, single-step through the `onCreate` method by clicking "Force Step Into" in Debugger view. The "Force Step Into" option allows you to debug the Android framework functions and core Java classes that are normally ignored by debuggers.
 
-![OWASP MSTG](Images/Chapters/0x05c/Force_Step_Into.png) \
+<img src="Images/Chapters/0x05c/Force_Step_Into.png" width="100%" />
 
 Once you "Force Step Into", the debugger will stop at the beginning of the next method, which is the `a` method of the class `sg.vantagepoint.a.c`.
 
-![OWASP MSTG](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png) \
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="100%" />
 
 This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
 
-![OWASP MSTG](Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png) \
+<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="100%" />
 
 You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a` method.
 
-![OWASP MSTG](Images/Chapters/0x05c/step_over.png) \
+<img src="Images/Chapters/0x05c/step_over.png" width="100%" />
 
 Step into the `System.getenv` method with the "Force Step Into" feature.
 
@@ -769,33 +773,33 @@ After you get the colon-separated directory names, the debugger cursor will retu
 
 If you don't want to debug core Java and Android classes, you can step out of the function by clicking "Step Out" in the Debugger view. Using "Force Step Into" might be a good idea once you reach the decompiled sources and "Step Out" of the core Java and Android classes. This will help speed up debugging while you keep an eye on the return values of the core class functions.
 
-![OWASP MSTG](Images/Chapters/0x05c/step_out.png) \
+<img src="Images/Chapters/0x05c/step_out.png" width="100%" />
 
 After the `a` method gets the directory names,  it will search for the `su` binary within these directories. To defeat this check, step through the detection method and inspect the variable content. Once execution reaches a location where the `su` binary would be detected, modify one of the variables holding the file name or directory name by pressing F2 or right-clicking and choosing "Set Value".
 
-![OWASP MSTG](Images/Chapters/0x05c/set_value.png) \
+<img src="Images/Chapters/0x05c/set_value.png" width="100%" />
 
-![OWASP MSTG](Images/Chapters/0x05c/modified_binary_name.png) \
+<img src="Images/Chapters/0x05c/modified_binary_name.png" width="100%" />
 
 Once you modify the binary name or the directory name, `File.exists` should return `false`.
 
-![OWASP MSTG](Images/Chapters/0x05c/file_exists_false.png) \
+<img src="Images/Chapters/0x05c/file_exists_false.png" width="100%" />
 
 This defeats the first root detection control of UnCrackable App for Android Level 1. The remaining anti-tampering and anti-debugging controls can be defeated in similar ways so that you can finally reach the secret string verification functionality.
 
-![OWASP MSTG](Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png) \
+<img src="Images/Chapters/0x05c/anti_debug_anti_tamper_defeated.png" width="400px" />
 
-![OWASP MSTG](Images/Chapters/0x05c/MainActivity_verify.png) \
+<img src="Images/Chapters/0x05c/MainActivity_verify.png" width="100%" />
 
 The secret code is verified by the method `a` of class `sg.vantagepoint.uncrackable1.a`. Set a breakpoint on method `a` and "Force Step Into" when you reach the breakpoint. Then, single-step until you reach the call to `String.equals`. This is where user input is compared with the secret string.
 
-![OWASP MSTG](Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png) \
+<img src="Images/Chapters/0x05c/sg_vantagepoint_uncrackable1_a_function_a.png" width="100%" />
 
 You can see the secret string in the "Variables" view when you reach the `String.equals` method call.
 
-![OWASP MSTG](Images/Chapters/0x05c/secret_code.png) \
+<img src="Images/Chapters/0x05c/secret_code.png" width="100%" />
 
-![OWASP MSTG](Images/Chapters/0x05c/success.png) \
+<img src="Images/Chapters/0x05c/success.png" width="400px" />
 
 #### Debugging Native Code
 
@@ -804,13 +808,13 @@ Native code on Android is packed into ELF shared libraries and runs just like an
 You'll now set up your JNI demo app, HelloWorld-JNI.apk, for debugging. It's the same APK you downloaded in "Statically Analyzing Native Code". Use `adb install` to install it on your device or on an emulator.
 
 ```bash
-$ adb install HelloWorld-JNI.apk
+adb install HelloWorld-JNI.apk
 ```
 
 If you followed the instructions at the beginning of this chapter, you should already have the Android NDK. It contains prebuilt versions of gdbserver for various architectures. Copy the gdbserver binary to your device:
 
 ```bash
-$ adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
+adb push $NDK/prebuilt/android-arm/gdbserver/gdbserver /data/local/tmp
 ```
 
 The `gdbserver --attach` command causes gdbserver to attach to the running process and bind to the IP address and port specified in `comm`, which in this case is a HOST:PORT descriptor. Start HelloWorldJNI on the device, then connect to the device and determine the PID of the HelloWorldJNI process (sg.vantagepoint.helloworldjni). Then switch to the root user and attach `gdbserver`:
@@ -828,7 +832,7 @@ Listening on port 1234
 The process is now suspended, and `gdbserver` is listening for debugging clients on port `1234`. With the device connected via USB, you can forward this port to a local port on the host with the `abd forward` command:
 
 ```bash
-$ adb forward tcp:1234 tcp:1234
+adb forward tcp:1234 tcp:1234
 ```
 
 You'll now use the prebuilt version of `gdb` included in the NDK toolchain.
@@ -931,7 +935,7 @@ Strace is a standard Linux utility that is not included with Android by default,
 If the "Wait for debugger" feature in **Settings > Developer options** is unavailable, you can use a shell script to launch the process and immediately attach strace (not an elegant solution, but it works):
 
 ```bash
-$ while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e "!read" -ff -p "$pid"; break; fi; done
+while true; do pid=$(pgrep 'target_process' | head -1); if [[ -n "$pid" ]]; then strace -s 2000 - e "!read" -ff -p "$pid"; break; fi; done
 ```
 
 ##### Ftrace
@@ -941,7 +945,7 @@ Ftrace is a tracing utility built directly into the Linux kernel. On a rooted de
 Conveniently, the stock Android kernel on both Lollipop and Marshmallow include ftrace functionality. The feature can be enabled with the following command:
 
 ```bash
-$ echo 1 > /proc/sys/kernel/ftrace_enabled
+echo 1 > /proc/sys/kernel/ftrace_enabled
 ```
 
 The `/sys/kernel/debug/tracing` directory holds all control and output files related to ftrace. The following files are found in this directory:
@@ -971,10 +975,10 @@ Native methods tracing can be performed with relative ease than compared to Java
 In order to use `frida-trace`, a Frida server should be running on the device. An example for tracing libc's `open` function using `frida-trace` is demonstrated below, where `-U` connects to the USB device and `-i` specifies the function to be included in the trace.
 
 ```bash
-$ frida-trace -U -i "open" com.android.chrome
+frida-trace -U -i "open" com.android.chrome
 ```
 
-![OWASP MSTG](Images/Chapters/0x05c/frida_trace_native_functions.png) \
+<img src="Images/Chapters/0x05c/frida_trace_native_functions.png" width="100%" />
 
 Note how, by default, only the arguments passed to the function are shown, but not the return values. Under the hood, `frida-trace` generates one little JavaScript handler file per matched function in the auto-generated `__handlers__` folder, which Frida then injects into the process. You can edit these files for more advanced usage such as obtaining the return value of the functions, their input parameters, accessing the memory, etc. Check Frida's [JavaScript API](https://www.frida.re/docs/javascript-api/ "JavaScript API") for more details.
 
@@ -1009,16 +1013,16 @@ Another thing to notice in the output above is that it's colorized. An applicati
 - Tracing functions by address when no function name symbols are available (stripped binaries), e.g. `-a "libjpeg.so!0x4793c"`.
 
 ```bash
-$ frida-trace -U -i "Java_*" com.android.chrome
+frida-trace -U -i "Java_*" com.android.chrome
 ```
 
 Many binaries are stripped and don't have function name symbols available with them. In such cases, a function can be traced using its address as well.
 
 ```bash
-$ frida-trace -p 1372 -a "libjpeg.so!0x4793c"
+frida-trace -p 1372 -a "libjpeg.so!0x4793c"
 ```
 
-Frida 12.10 introduces a new useful syntax to query Java classes and methods as well as Java method tracing support for frida-trace via `-j` ((starting on frida-tools 8.0).
+Frida 12.10 introduces a new useful syntax to query Java classes and methods as well as Java method tracing support for frida-trace via `-j` (starting on frida-tools 8.0).
 
 - In Frida scripts: e.g. `Java.enumerateMethods('*youtube*!on*')` uses globs to take all classes that include "youtube" as part of their name and enumerate all methods starting with "on".
 - In frida-trace: e.g. `-j '*!*certificate*/isu'` triggers a case-insensitive query (`i`), including method signatures (`s`) and excluding system classes (`u`).
@@ -1034,12 +1038,12 @@ As detailed in section [Reviewing Disassembled Native Code](#reviewing-disassemb
 You can easily install it by running `pip install jnitrace` and run it straight away as follows:
 
 ```bash
-$ jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
+jnitrace -l libnative-lib.so sg.vantagepoint.helloworldjni
 ```
 
 > The `-l` option can be provided multiple times to trace multiple libraries, or `*` can be provided to trace all libraries. This, however, may provide a lot of output.
 
-![OWASP MSTG](Images/Chapters/0x05c/jni_tracing_helloworldjni.png) \
+<img src="Images/Chapters/0x05c/jni_tracing_helloworldjni.png" width="100%" />
 
 In the output you can see the trace of a call to `NewStringUTF` made from the native code (its return value is then given back to Java code, see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code)" for more details). Note how similarly to frida-trace, the output is colorized helping to visually distinguish the different threads.
 
@@ -1054,7 +1058,7 @@ The Android emulator is based on QEMU, a generic and open source machine emulato
 Because the Android emulator is a fork of QEMU, it comes with all QEMU features, including monitoring, debugging, and tracing facilities. QEMU-specific parameters can be passed to the emulator with the `-qemu` command line flag. You can use QEMU's built-in tracing facilities to log executed instructions and virtual register values. Starting QEMU with the `-d` command line flag will cause it to dump the blocks of guest code, micro operations, or host instructions being executed. With the `-d_asm` flag, QEMU logs all basic blocks of guest code as they enter QEMU's translation function. The following command logs all translated blocks to a file:
 
 ```bash
-$ emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-save -qemu -d in_asm,cpu 2>/tmp/qemu.log
+emulator -show-kernel -avd Nexus_4_API_19 -snapshot default-boot -no-snapshot-save -qemu -d in_asm,cpu 2>/tmp/qemu.log
 ```
 
 Unfortunately, generating a complete guest instruction trace with QEMU is impossible because code blocks are written to the log only at the time they are translated, not when they're taken from the cache. For example, if a block is repeatedly executed in a loop, only the first iteration will be printed to the log. There's no way to disable TB caching in QEMU (besides hacking the source code). Nevertheless, the functionality is sufficient for basic tasks, such as reconstructing the disassembly of a natively executed cryptographic algorithm.
@@ -1087,11 +1091,11 @@ Incorrect serial (wrong format).
 
 So far so good, but we know nothing about what a valid license key looks like. To get started, open the ELF executable in a disassembler such as Cutter. The main function is located at offset `0x00001874` in the disassembly. It is important to note that this binary is PIE-enabled, and Cutter chooses to load the binary at `0x0` as image base address.
 
-![OWASP MSTG](Images/Chapters/0x05c/disass_main_1874.png) \
+<img src="Images/Chapters/0x05c/disass_main_1874.png" width="100%" />
 
 The function names have been stripped from the binary, but luckily there are enough debugging strings to provide us a context to the code. Moving forward,  we will start analyzing the binary from the entry function at offset `0x00001874`, and keep a note of all the information easily available to us. During this analysis, we will also try to identify the code regions which are suitable for symbolic execution.
 
-![OWASP MSTG](Images/Chapters/0x05c/graph_1874.png) \
+<img src="Images/Chapters/0x05c/graph_1874.png" width="100%" />
 
 `strlen` is called at offset `0x000018a8`, and the returned value is compared to 0x10 at offset `0x000018b0`. Immediately after that, the input string is passed to a Base32 decoding function at offset `0x00001340`. This provides us with valuable information that the input license key is a Base32-encoded 16-character string (which totals 10 bytes in raw). The decoded input is then passed to the function at offset `0x00001760`, which validates the license key. The disassembly of this function is shown below.
 
@@ -1187,17 +1191,17 @@ We can now use this information about the expected input to further look into th
 
 Discussing all the instructions in the function is beyond the scope of this chapter, instead we will discuss only the important points needed for the analysis. In the validation function, there is a loop present at `0x00001784` which performs a XOR operation at offset `0x00001798`. The loop is more clearly visible in the graph view below.
 
-![OWASP MSTG](Images/Chapters/0x05c/loop_1784.png) \
+<img src="Images/Chapters/0x05c/loop_1784.png" width="100%" />
 
 XOR is a very commonly used technique to _encrypt_ information where obfuscation is the goal rather than security. **XOR should not be used for any serious encryption**, as it can be cracked using frequency analysis. Therefore, the mere presence of XOR encryption in such a validation logic always requires special attention and analysis.
 
 Moving forward, at offset `0x000017dc`, the XOR decoded value obtained from above is being compared against the return value from a sub-function call at `0x000017e8`.
 
-![OWASP MSTG](Images/Chapters/0x05c/values_compare_17dc.png) \
+<img src="Images/Chapters/0x05c/values_compare_17dc.png" width="100%" />
 
 Clearly this function is not complex, and can be analyzed manually, but still remains a cumbersome task. Especially while working on a big code base, time can be a major constraint, and it is desirable to automate such analysis. Dynamic symbolic execution is helpful in exactly those situations. In the above crackme, the symbolic execution engine can determine the constraints on each byte of the input string by mapping a path between the first instruction of the license check (at `0x00001760`) and the code that prints the "Product activation passed" message (at `0x00001840`).
 
-![OWASP MSTG](Images/Chapters/0x05c/graph_ifelse_1760.png) \
+<img src="Images/Chapters/0x05c/graph_ifelse_1760.png" width="100%" />
 
 The constraints obtained from the above steps are passed to a solver engine, which finds an input that satisfies them - a valid license key.
 
@@ -1274,7 +1278,7 @@ To conclude, learning symbolic execution might look a bit intimidating at first,
 
 ## Tampering and Runtime Instrumentation
 
-First, we'll look at some simple ways to modify and instrument mobile apps. *Tampering* means making patches or runtime changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. *Runtime Instrumentation* encompasses adding hooks and runtime patches to observe the app's behavior. In mobile application security however, the term loosely refers to all kinds of runtime manipulation, including overriding methods to change behavior.
+First, we'll look at some simple ways to modify and instrument mobile apps. _Tampering_ means making patches or runtime changes to the app to affect its behavior. For example, you may want to deactivate SSL pinning or binary protections that hinder the testing process. _Runtime Instrumentation_ encompasses adding hooks and runtime patches to observe the app's behavior. In mobile application security however, the term loosely refers to all kinds of runtime manipulation, including overriding methods to change behavior.
 
 ### Patching, Repackaging, and Re-Signing
 
@@ -1288,7 +1292,7 @@ In most cases, both issues can be fixed by making minor changes to the app (aka.
 The first step is unpacking and disassembling the APK with `apktool`:
 
 ```bash
-$ apktool d target_apk.apk
+apktool d target_apk.apk
 ```
 
 > Note: To save time, you may use the flag `--no-src` if you only want to unpack the APK but not disassemble the code. For example, when you only want to modify the Android Manifest and repack immediately.
@@ -1328,7 +1332,7 @@ This modification will break the APK signature, so you'll also have to re-sign t
 
 Every debugger-enabled process runs an extra thread for handling JDWP protocol packets. This thread is started only for apps that have the `android:debuggable="true"` flag set in their manifest file's `<application>` element. This is the typical configuration of Android devices shipped to end users.
 
-When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged, that's the purpose of *debug builds*. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the runtime state of a program makes understanding the program *a lot* easier.
+When reverse engineering apps, you'll often have access to the target app's release build only. Release builds aren't meant to be debugged, that's the purpose of _debug builds_. If the system property `ro.debuggable` is set to "0", Android disallows both JDWP and native debugging of release builds. Although this is easy to bypass, you're still likely to encounter limitations, such as a lack of line breakpoints. Nevertheless, even an imperfect debugger is still an invaluable tool, being able to inspect the runtime state of a program makes understanding the program _a lot_ easier.
 
 To _convert_ a release build into a debuggable build, you need to modify a flag in the Android Manifest file (AndroidManifest.xml). Once you've unpacked the app (e.g. `apktool d --no-src UnCrackable-Level1.apk`) and decoded the Android Manifest, add `android:debuggable="true"` to it using a text editor:
 
@@ -1343,9 +1347,9 @@ Even if we haven't altered the source code, this modification also breaks the AP
 You can easily repackage an app by doing the following:
 
 ```bash
-$ cd UnCrackable-Level1
-$ apktool b
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+cd UnCrackable-Level1
+apktool b
+zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
 Note that the Android Studio build tools directory must be in the path. It is located at `[SDK-Path]/build-tools/[version]`. The `zipalign` and `apksigner` tools are in this directory.
@@ -1357,26 +1361,26 @@ Before re-signing, you first need a code-signing certificate. If you have built 
 The standard Java distribution includes `keytool` for managing KeyStores and certificates. You can create your own signing certificate and key, then add it to the debug KeyStore:
 
 ```bash
-$ keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
+keytool -genkey -v -keystore ~/.android/debug.keystore -alias signkey -keyalg RSA -keysize 2048 -validity 20000
 ```
 
 After the certificate is available, you can re-sign the APK with it. Be sure that `apksigner` is in the path and that you run it from the folder where your repackaged APK is located.
 
 ```bash
-$ apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
+apksigner sign --ks  ~/.android/debug.keystore --ks-key-alias signkey UnCrackable-Repackaged.apk
 ```
 
 Note: If you experience JRE compatibility issues with `apksigner`, you can use `jarsigner` instead. When you do this, `zipalign` must be called **after** signing.
 
 ```bash
-$ jarsigner -verbose -keystore ~/.android/debug.keystore ../UnCrackable-Repackaged.apk signkey
-$ zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
+jarsigner -verbose -keystore ~/.android/debug.keystore ../UnCrackable-Repackaged.apk signkey
+zipalign -v 4 dist/UnCrackable-Level1.apk ../UnCrackable-Repackaged.apk
 ```
 
 Now you may reinstall the app:
 
 ```bash
-$ adb install UnCrackable-Repackaged.apk
+adb install UnCrackable-Repackaged.apk
 ```
 
 #### The "Wait For Debugger" Feature
@@ -1385,11 +1389,11 @@ The UnCrackable App is not stupid: it notices that it has been run in debuggable
 
 Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
 
-![OWASP MSTG](Images/Chapters/0x05c/debugger_detection.png) \
+<img src="Images/Chapters/0x05c/debugger_detection.png" width="400px" />
 
 In the Developer options, pick `Uncrackable1` as the debugging application and activate the "Wait for Debugger" switch.
 
-![OWASP MSTG](Images/Chapters/0x05c/developer-options.png) \
+<img src="Images/Chapters/0x05c/developer-options.png" width="400px" />
 
 Note: Even with `ro.debuggable` set to "1" in `default.prop`, an app won't show up in the "debug app" list unless the `android:debuggable` flag is set to `"true"` in the Android Manifest.
 
@@ -1403,7 +1407,7 @@ The following approach can be used in order to patch the JavaScript file:
 2. Copy the content of the file `assets/index.android.bundle` into a temporary file.
 3. Use `JStillery` to beautify and deobfuscate the content of the temporary file.
 4. Identify where the code should be patched in the temporary file and implement the changes.
-5. Put the *patched code* on a single line and copy it in the original `assets/index.android.bundle` file.
+5. Put the _patched code_ on a single line and copy it in the original `assets/index.android.bundle` file.
 6. Repack the APK archive using `apktool` tool and sign it before to install it on the target device/emulator.
 
 #### Library Injection
@@ -1460,7 +1464,7 @@ As the [ld.so man page](http://man7.org/linux/man-pages/man8/ld.so.8.html "LD.SO
 On Android, setting `LD_PRELOAD` is slightly different compared to other Linux distributions. If you recall from the "[Platform Overview](0x05a-Platform-Overview.md#zygote "Platform Overview")" section, every application in Android is forked from Zygote, which is started very early during the Android boot-up. Thus, setting `LD_PRELOAD` on Zygote is not possible. As a workaround for this problem, Android supports the `setprop` (set property) functionality. Below you can see an example for an application with package name `com.foo.bar` (note the additional `wrap.` prefix):
 
 ```bash
-$ setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
+setprop wrap.com.foo.bar LD_PRELOAD=/data/local/tmp/libpreload.so
 ```
 
 > Please note that if the library to be preloaded does not have SELinux context assigned, from Android 5.0 (API level 21) onwards, you need to disable SELinux to make `LD_PRELOAD` work, which may require root.
@@ -1628,7 +1632,7 @@ We'll use Frida to solve the UnCrackable App for Android Level 1 and demonstrate
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 
-![OWASP MSTG](Images/Chapters/0x05c/crackme-frida-1.png) \
+<img src="Images/Chapters/0x05c/crackme-frida-1.png" width="400px" />
 
 Let's see how we can prevent this.
 
@@ -1724,7 +1728,7 @@ Wrap your code in the function `setImmediate` to prevent timeouts (you may or ma
 Save the above script as `uncrackable1.js` and load it:
 
 ```bash
-$ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
+frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 ```
 
 After you see the "MainActivity.a modified" message and the app will not exit anymore.
@@ -1814,7 +1818,7 @@ $ frida -U -f owasp.mstg.uncrackable1 -l uncrackable1.js --no-pause
 
 The hooked function outputted the decrypted string. You extracted the secret string without having to dive too deep into the application code and its decryption routines.
 
-You've now covered the basics of static/dynamic analysis on Android. Of course, the only way to *really* learn it is hands-on experience: build your own projects in Android Studio, observe how your code gets translated into bytecode and native code, and try to crack our challenges.
+You've now covered the basics of static/dynamic analysis on Android. Of course, the only way to _really_ learn it is hands-on experience: build your own projects in Android Studio, observe how your code gets translated into bytecode and native code, and try to crack our challenges.
 
 In the remaining sections, we'll introduce a few advanced subjects, including process exploration, kernel modules and dynamic execution.
 
@@ -1833,7 +1837,7 @@ As you can see, these passive tasks help us collect information. This Informatio
 In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
-$ r2 frida://usb//sg.vantagepoint.helloworldjni
+r2 frida://usb//sg.vantagepoint.helloworldjni
 ```
 
 > See all options with `r2 frida://?`.
@@ -2224,19 +2228,19 @@ Setting `ro.debuggable` to "1" makes all running apps debuggable (i.e., the debu
 To modify initrd on any Android device, back up the original boot image with TWRP or dump it with the following command:
 
 ```bash
-$ adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
-$ adb pull /mnt/sdcard/boot.img /tmp/boot.img
+adb shell cat /dev/mtd/mtd0 >/mnt/sdcard/boot.img
+adb pull /mnt/sdcard/boot.img /tmp/boot.img
 ```
 
 To extract the contents of the boot image, use the abootimg tool as described in Krzysztof Adamski's how-to :
 
 ```bash
-$ mkdir boot
-$ cd boot
-$ ../abootimg -x /tmp/boot.img
-$ mkdir initrd
-$ cd initrd
-$ cat ../initrd.img | gunzip | cpio -vid
+mkdir boot
+cd boot
+../abootimg -x /tmp/boot.img
+mkdir initrd
+cd initrd
+cat ../initrd.img | gunzip | cpio -vid
 ```
 
 Note the boot parameters written to bootimg.cfg; you'll need them when booting your new kernel and ramdisk.
@@ -2256,8 +2260,8 @@ cmdline = console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=3
 Modify default.prop and package your new ramdisk:
 
 ```bash
-$ cd initrd
-$ find . | cpio --create --format='newc' | gzip > ../myinitd.img
+cd initrd
+find . | cpio --create --format='newc' | gzip > ../myinitd.img
 ```
 
 ### Customizing the Android Kernel
@@ -2275,13 +2279,13 @@ For hacking, I recommend an AOSP-supported device. Google's Nexus smartphones an
 For example, to get kernel sources for Lollipop that are compatible with the Nexus 5, you need to clone the `msm` repository and check out one of the `android-msm-hammerhead` branches (hammerhead is the codename of the Nexus 5, and finding the right branch is confusing). Once you have downloaded the sources, create the default kernel config with the command `make hammerhead_defconfig` (replacing "hammerhead" with your target device).
 
 ```bash
-$ git clone https://android.googlesource.com/kernel/msm.git
-$ cd msm
-$ git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
-$ export ARCH=arm
-$ export SUBARCH=arm
-$ make hammerhead_defconfig
-$ vim .config
+git clone https://android.googlesource.com/kernel/msm.git
+cd msm
+git checkout origin/android-msm-hammerhead-3.4-lollipop-mr1
+export ARCH=arm
+export SUBARCH=arm
+make hammerhead_defconfig
+vim .config
 ```
 
 I recommend using the following settings to add loadable module support, enable the most important tracing facilities, and open kernel memory for patching.
@@ -2305,25 +2309,25 @@ CONFIG KDB=Y
 Once you're finished editing save the .config file, build the kernel.
 
 ```bash
-$ export ARCH=arm
-$ export SUBARCH=arm
-$ export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
-$ make
+export ARCH=arm
+export SUBARCH=arm
+export CROSS_COMPILE=/path_to_your_ndk/arm-eabi-4.8/bin/arm-eabi-
+make
 ```
 
 You can now create a standalone toolchain for cross-compiling the kernel and subsequent tasks. To create a toolchain for Android 7.0 (API level 24), run make-standalone-toolchain.sh from the Android NDK package:
 
 ```bash
-$ cd android-ndk-rXXX
-$ build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
+cd android-ndk-rXXX
+build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --install-dir=/tmp/my-android-toolchain
 ```
 
 Set the CROSS_COMPILE environment variable to point to your NDK directory and run "make" to build
 the kernel.
 
 ```bash
-$ export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
-$ make
+export CROSS_COMPILE=/tmp/my-android-toolchain/bin/arm-eabi-
+make
 ```
 
 ### Booting the Custom Environment
@@ -2343,14 +2347,14 @@ lrwxrwxrwx root     root              1970-08-30 22:31 userdata -> /dev/block/mm
 Then dump the whole thing into a file:
 
 ```bash
-$ adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
-$ adb pull /data/local/tmp/boot.img
+adb shell "su -c dd if=/dev/block/mmcblk0p19 of=/data/local/tmp/boot.img"
+adb pull /data/local/tmp/boot.img
 ```
 
 Next, extract the ramdisk and information about the structure of the boot image. There are various tools that can do this;  I used Gilles Grandou's abootimg tool. Install the tool and run the following command on your boot image:
 
 ```bash
-$ abootimg -x boot.img
+abootimg -x boot.img
 ```
 
 This should create the files bootimg.cfg, initrd.img, and zImage (your original kernel) in the local directory.
@@ -2358,24 +2362,24 @@ This should create the files bootimg.cfg, initrd.img, and zImage (your original 
 You can now use fastboot to test the new kernel. The `fastboot boot` command allows you to run the kernel without actually flashing it (once you're sure everything works, you can make the changes permanent with fastboot flash, but you don't have to). Restart the device in fastboot mode with the following command:
 
 ```bash
-$ adb reboot bootloader
+adb reboot bootloader
 ```
 
 Then use the `fastboot boot` command to boot Android with the new kernel. Specify the kernel offset, ramdisk offset, tags offset, and command line (use the values listed in your extracted bootimg.cfg) in addition to the newly built kernel and the original ramdisk.
 
 ```bash
-$ fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
+fastboot boot zImage-dtb initrd.img --base 0 --kernel-offset 0x8000 --ramdisk-offset 0x2900000 --tags-offset 0x2700000 -c "console=ttyHSL0,115200,n8 androidboot.hardware=hammerhead user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1"
 ```
 
 The system should now boot normally. To quickly verify that the correct kernel is running, navigate to **Settings** -> **About phone** and check the **kernel version** field.
 
-![OWASP MSTG](Images/Chapters/0x05c/custom_kernel.jpg) \
+<img src="Images/Chapters/0x05c/custom_kernel.jpg" width="400px" />
 
 ### System Call Hooking with Kernel Modules
 
 System call hooking allows you to attack any anti-reversing defenses that depend on kernel-provided functionality. With your custom kernel in place, you can now use an LKM to load additional code into the kernel. You also have access to the /dev/kmem interface, which you can use to patch kernel memory on-the-fly. This is a classic Linux rootkit technique that has been described for Android by Dong-Hoon You in Phrack Magazine - "Android platform based linux kernel rootkit" on 4 April 2011.
 
-![OWASP MSTG](Images/Chapters/0x05c/syscall_hooking.jpg) \
+<img src="Images/Chapters/0x05c/syscall_hooking.jpg" width="400px" />
 
 You first need the address of sys_call_table. Fortunately, it is exported as a symbol in the Android kernel (iOS reversers aren't so lucky). You can look up the address in the /proc/kallsyms file:
 
@@ -2529,9 +2533,9 @@ int main(int argc, char *argv[]) {
 Beginning with Android 5.0 (API level 21), all executables must be compiled with PIE support. Build kmem_util.c with the prebuilt toolchain and copy it to the device:
 
 ```bash
-$ /tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
-$ adb push kmem_util /data/local/tmp/
-$ adb shell chmod 755 /data/local/tmp/kmem_util
+/tmp/my-android-toolchain/bin/arm-linux-androideabi-gcc -pie -fpie -o kmem_util kmem_util.c
+adb push kmem_util /data/local/tmp/
+adb shell chmod 755 /data/local/tmp/kmem_util
 ```
 
 Before you start accessing kernel memory, you still need to know the correct offset into the system call table. The `openat` system call is defined in unistd.h, which is in the kernel sources:
@@ -2551,7 +2555,7 @@ bf000000 t new_openat    [kernel_hook]
 Now you have everything you need to overwrite the `sys_call_table` entry. The syntax for kmem_util is:
 
 ```bash
-$ ./kmem_util <syscall_table_base_address> <offset> <func_addr>
+./kmem_util <syscall_table_base_address> <offset> <func_addr>
 ```
 
 The following command patches the `openat` system call table so that it points to your new function.

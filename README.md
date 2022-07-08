@@ -17,7 +17,29 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 - ⚡ [Contribute!](#how-to-contribute)
 - 💥 [Play with our Crackmes](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md)
 
-> The MSTG and the MASVS are being adopted by many companies, standards, and various organizations. Want to find out more? Check our [users' document listing some of the adopters](Users.md).
+<br>
+
+## Trusted by ...
+
+The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](Document/0x02b-MASVS-MSTG-Adoption.md).
+
+<a href="Document/0x02b-MASVS-MSTG-Adoption.md">
+<img src="Document/Images/Other/trusted-by-logos.png"/>
+</a>
+
+<br>
+
+## 🥇 MSTG Advocates
+
+MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](Document/0x02c-Acknowledgements.md#our-mstg-advocates).
+
+<br>
+
+<a href="Document/0x02c-Acknowledgements.md#our-mstg-advocates">
+<img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
+</a>
+
+<br><br>
 
 ## Connect with Us
 
@@ -27,6 +49,8 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 <li><a href="https://twitter.com/OWASP_MSTG"><img src="Document/Images/twitter_logo.png" width="14px"> @OWASP_MSTG </a> (Official Account)</li>
 <li><a href="https://twitter.com/bsd_daemon"><img src="Document/Images/twitter_logo.png" width="14px"> @bsd_daemon </a> (Sven Schleier, Project Lead) <a href="https://twitter.com/grepharder"><img src="Document/Images/twitter_logo.png" width="14px"> @grepharder </a> (Carlos Holguera, Project Lead)</li>
 </ul>
+
+<br>
 
 ## How to Contribute
 
@@ -43,11 +67,11 @@ The MSTG is an open source effort and we welcome all kinds of contributions and 
 - 💡 [Propose ideas or suggest improvements](https://github.com/OWASP/owasp-mstg/discussions/categories/ideas) (if it qualifies we'll promote it to an [Issue](https://github.com/OWASP/owasp-mstg/issues "Github issues"))
 - 📄 [Create a Pull Request](https://github.com/OWASP/owasp-mstg/pulls) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
-Before you start contributing, please check our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md "Contribution Guide") which should get you started. If you have any doubts [please contact us](#connect-with-us).
+Before you start contributing, please check our pages ["How Can You Contribute?"](docs/contributing/1_How_Can_You_Contribute.md) and ["Getting Started"](docs/contributing/2_Getting_Started.md). If you have any doubts [please contact us](#connect-with-us).
 
 ### Contribution Credit / Acknowledgments
 
-Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowlegements are visible in the [official owasp.org Project Page](https://owasp.org/www-project-mobile-security-testing-guide/#div-acknowledgements), in [GitHub](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02-Frontispiece.md#acknowledgments), [GitBook](https://mobile-security.gitbook.io/mobile-security-testing-guide/0x02-frontispiece#acknowledgments) and in the [printed versions](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html).
+Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowledgements are visible in the [official owasp.org Project Page](https://owasp.org/www-project-mobile-security-testing-guide/#div-acknowledgements), in [GitHub](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02c-Acknowledgements.md), [GitBook](https://mobile-security.gitbook.io/mobile-security-testing-guide/0x02-frontispiece#acknowledgments) and in the [printed versions](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html).
 
 Contributors are categorized as follows:
 
@@ -61,6 +85,8 @@ Contributors are categorized as follows:
 
 [Contact us](#connect-with-us) (Sven Schleier (Slack: *Sven*) or Carlos Holguera (Slack: *Carlos*)) if you are planning to become an Author/Co-Author/Reviewer, are missing from the acknowledgements (note that we make updates frequently, but not in realtime).
 
+<br>
+
 ## MSTG Translations
 
 The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MSTG translations will be declined**, but you're free to do them on your own forks.
@@ -69,18 +95,24 @@ The MSTG is a living document that changes and adapts to the most recent securit
 
 That said, we **strongly encourage [further translations of the MASVS](https://github.com/OWASP/owasp-masvs/blob/master/README.md#masvs-translations)** as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MSTG for free.
 
+<br>
+
 ## Other Formats
 
 - Get the [printed version via lulu.com](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)
 - Get the [e-book on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview) (please consider purchasing it to support our project or [make a donation](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate))
 - Check our [Document generation scripts](tools/docker/README.md)
 
+<br>
+
 ## Table-of-Contents
 
 ### Introduction
 
 - [Foreword](Document/0x01-Foreword.md)
-- [Frontispiece](Document/0x02-Frontispiece.md)
+- [Frontispiece](Document/0x02a-Frontispiece.md)
+- [OWASP MASVS and MSTG Adoption](Document/0x02b-MASVS-MSTG-Adoption.md)
+- [Acknowledgements](Document/0x02c-Acknowledgements.md)
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
 - [Mobile App Security Testing](Document/0x04b-Mobile-App-Security-Testing.md)
@@ -124,6 +156,8 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 
 - [Testing Tools](Document/0x08-Testing-Tools.md)
 - [Suggested Reading](Document/0x09-Suggested-Reading.md)
+
+<br>
 
 ## About Hybrid Apps
 

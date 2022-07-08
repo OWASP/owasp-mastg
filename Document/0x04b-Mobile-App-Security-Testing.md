@@ -27,7 +27,7 @@ Vulnerability analysis is usually the process of looking for vulnerabilities in 
 ### Static versus Dynamic Analysis
 
 Static Application Security Testing (SAST) involves examining an application's components without executing them, by analyzing the source code either manually or automatically.
-OWASP provides information about [Static Code Analysis](https://www.owasp.org/index.php/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
+OWASP provides information about [Static Code Analysis](https://owasp.org/www-community/controls/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
 
 Dynamic Application Security Testing (DAST) involves examining the app during runtime. This type of analysis can be manual or automatic. It usually doesn't provide the information that static analysis provides, but it is a good way to detect interesting elements (assets, features, entry points, etc.) from a user's point of view.
 
@@ -114,7 +114,7 @@ Organizations may have different regulatory and legal obligations in certain ter
 
 Security goals/controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or application.
 
-![OWASP MSTG](Images/Chapters/0x03/mstg-preparation.png) \
+<img src="Images/Chapters/0x03/mstg-preparation.png" width="100%" />
 
 All involved parties must agree on the decisions and the scope in the checklist because these will define the baseline for all security testing.
 
@@ -164,7 +164,7 @@ Environmental information includes:
 - The organization's goals for the app. Functionality shapes users' interaction with the app and may make some surfaces more likely than others to be targeted by attackers.
 - The relevant industry. Different industries may have different risk profiles.
 - Stakeholders and investors; understanding who is interested in and responsible for the app.
-- Internal processes, workflows, and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic exploits](https://www.owasp.org/index.php/Testing_for_business_logic "Testing business logic").
+- Internal processes, workflows, and organizational structures. Organization-specific internal processes and workflows may create opportunities for [business logic vulnerabilities](https://owasp.org/www-community/vulnerabilities/Business_logic_vulnerability "Business logic vulnerability").
 
 ##### Architectural Information
 
@@ -184,7 +184,7 @@ DAST tools may support black-box testing and automatically scan the app: whereas
 
 Threat Modeling is an important artifact: documents from the workshop usually greatly support the identification of much of the information a security tester needs (entry points, assets, vulnerabilities, severity, etc.). Testers are strongly advised to discuss the availability of such documents with the client. Threat modeling should be a key part of the software development life cycle. It usually occurs in the early phases of a project.
 
-The [threat modeling guidelines defined in OWASP](https://www.owasp.org/index.php/Application_Threat_Modeling "OWASP Application Threat Modeling") are generally applicable to mobile apps.
+The [threat modeling guidelines defined in OWASP](https://owasp.org/www-community/Threat_Modeling "OWASP Threat Modeling") are generally applicable to mobile apps.
 
 #### Exploitation
 
@@ -248,7 +248,7 @@ You can use the [OWASP MASVS](https://mobile-security.gitbook.io/masvs/ "OWASP M
 
 The picture below illustrates all the phases and artifacts:
 
-![OWASP MSTG](Images/Chapters/0x04b/SDLCOverview.jpg) \
+<img src="Images/Chapters/0x04b/SDLCOverview.jpg" width="100%" />
 
 Based on the project's general risk profile, you may simplify (or even skip) some artifacts, and you may add others (formal intermediary approvals, formal documentation of certain points, etc.). **Always remember two things: an SDLC is meant to reduce risks associated with software development, and it is a framework that helps you set up controls to that end.** This is a generic description of SDLC; always tailor this framework to your projects.
 
@@ -299,7 +299,7 @@ Security is just as critical to business success as the overall quality, perform
 
 However, DevSecOps is not just a linear process oriented towards delivering the best possible software to operations; it is also a mandate that operations closely monitor software that's in production to identify issues and fix them by forming a quick and efficient feedback loop with development. DevSecOps is a process through which Continuous Improvement is heavily emphasized.
 
-![OWASP MSTG](Images/Chapters/0x04b/DevSecOpsProcess.JPG) \
+<img src="Images/Chapters/0x04b/DevSecOpsProcess.JPG" width="100%" />
 
 The human aspect of this emphasis is reflected in the creation of cross-functional teams that work together to achieve business outcomes. This section is focused on necessary interactions and integrating security into the development life cycle (which starts with project inception and ends with the delivery of value to users).
 
@@ -360,7 +360,7 @@ The security of an application developed with DevOps must be considered during o
 - Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
-![OWASP MSTG](Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg) \
+<img src="Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg" width="100%" />
 
 ## References
 

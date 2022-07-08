@@ -1,5 +1,12 @@
 name: codespell
-on: [pull_request, push]
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
 jobs:
   codespell:
     runs-on: ubuntu-latest
@@ -7,4 +14,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: codespell-project/actions-codespell@master
         with:
-          ignore_words_list: ba,compliancy,firt,ist,keypair,ligh,ser,synopsys,zuser
+          ignore_words_list: ba,compliancy,firt,ist,keypair,ligh,ser,synopsys,theses,zuser

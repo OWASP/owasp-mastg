@@ -4,7 +4,7 @@
 
 ### Overview
 
-In contrast to Android, where each app runs on its own user ID, iOS makes all third-party apps run under the non-privileged `mobile` user. Each app has a unique home directory and is sandboxed, so that they cannot access protected system resources or files stored by the system or by other apps. These restrictions are implemented via sandbox policies (aka. *profiles*), which are enforced by the [Trusted BSD (MAC) Mandatory Access Control Framework](http://www.trustedbsd.org/mac.html "TrustedBSD Mandatory Access Control (MAC) Framework") via a kernel extension. iOS applies a generic sandbox profile to all third-party apps called *container*. Access to protected resources or data (some also known as [app capabilities](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities")) is possible, but it's strictly controlled via special permissions known as *entitlements*.
+In contrast to Android, where each app runs on its own user ID, iOS makes all third-party apps run under the non-privileged `mobile` user. Each app has a unique home directory and is sandboxed, so that they cannot access protected system resources or files stored by the system or by other apps. These restrictions are implemented via sandbox policies (aka. _profiles_), which are enforced by the [Trusted BSD (MAC) Mandatory Access Control Framework](http://www.trustedbsd.org/mac.html "TrustedBSD Mandatory Access Control (MAC) Framework") via a kernel extension. iOS applies a generic sandbox profile to all third-party apps called _container_. Access to protected resources or data (some also known as [app capabilities](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities")) is possible, but it's strictly controlled via special permissions known as _entitlements_.
 
 Some permissions can be configured by the app's developers (e.g. Data Protection or Keychain Sharing) and will directly take effect after the installation. However, for others, the user will be explicitly asked the first time the app attempts to access a protected resource, [for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"):
 
@@ -57,7 +57,7 @@ Regarding testing, you can consider `UIRequiredDeviceCapabilities` as a mere ind
 
 For example, if BLE is a core feature of the app, Apple's [Core Bluetooth Programming Guide](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothOverview/CoreBluetoothOverview.html#//apple_ref/doc/uid/TP40013257-CH2-SW1 "Core Bluetooth Overview") explains the different things to be considered:
 
-- The `bluetooth-le` device capability can be set in order to *restrict* non-BLE capable devices from downloading their app.
+- The `bluetooth-le` device capability can be set in order to _restrict_ non-BLE capable devices from downloading their app.
 - App capabilities like `bluetooth-peripheral` or `bluetooth-central` (both `UIBackgroundModes`) should be added if [BLE background processing](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html "Core Bluetooth Background Processing for iOS Apps") is required.
 
 However, this is not yet enough for the app to get access to the Bluetooth peripheral, the `NSBluetoothPeripheralUsageDescription` key has to be included in the `Info.plist` file, meaning that the user has to actively give permission. See "Purpose Strings in the Info.plist File" below for more information.
@@ -116,9 +116,9 @@ Since iOS 10, these are the main areas which you need to inspect for permissions
 
 #### Purpose Strings in the Info.plist File
 
-[*Purpose strings*](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or *usage description strings* are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
+[_Purpose strings_](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc#3037322 "Provide a Purpose String") or_usage description strings_ are custom texts that are offered to users in the system's permission request alert when requesting permission to access protected data or resources.
 
-![OWASP MSTG](Images/Chapters/0x06h/permission_request_alert.png) \
+<img src="Images/Chapters/0x06h/permission_request_alert.png" width="400px" />
 
 If linking on or after iOS 10, developers are required to include purpose strings in their app's [`Info.plist`](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW5 "The Information Property List File") file. Otherwise, if the app attempts to access protected data or resources without having provided the corresponding purpose string, [the access will fail and the app might even crash](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources").
 
@@ -129,14 +129,14 @@ If having the original source code, you can verify the permissions included in t
 
 You may switch the view to display the raw values by right-clicking and selecting "Show Raw Keys/Values" (this way for example `"Privacy - Location When In Use Usage Description"` will turn into `NSLocationWhenInUseUsageDescription`).
 
-![OWASP MSTG](Images/Chapters/0x06h/purpose_strings_xcode.png) \
+<img src="Images/Chapters/0x06h/purpose_strings_xcode.png" width="100%" />
 
 If only having the IPA:
 
 - Unzip the IPA.
 - The `Info.plist` is located in `Payload/<appname>.app/Info.plist`.
 - Convert it if needed (e.g. `plutil -convert xml1 Info.plist`) as explained in the chapter "iOS Basic Security Testing", section "The Info.plist File".
-- Inspect all *purpose strings Info.plist keys*, usually ending with `UsageDescription`:
+- Inspect all _purpose strings Info.plist keys_, usually ending with `UsageDescription`:
 
     ```xml
     <plist version="1.0">
@@ -145,7 +145,7 @@ If only having the IPA:
         <string>Your location is used to provide turn-by-turn directions to your destination.</string>
     ```
 
-For an overview of the different *purpose strings Info.plist keys* available see Table 1-2 at the [Apple App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"). Click on the provided links to see the full description of each key in the [CocoaKeys reference](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Cocoa Keys").
+For an overview of the different _purpose strings Info.plist keys_ available see Table 1-2 at the [Apple App Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/ExpectedAppBehaviors/ExpectedAppBehaviors.html#//apple_ref/doc/uid/TP40007072-CH3-SW7 "Data and resources protected by system authorization settings"). Click on the provided links to see the full description of each key in the [CocoaKeys reference](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html "Cocoa Keys").
 
 Following these guidelines should make it relatively simple to evaluate each and every entry in the `Info.plist` file to check if the permission makes sense.
 
@@ -192,19 +192,19 @@ Depending on the data to-be-shared it might be more appropriate to share it usin
 
 #### Embedded Provisioning Profile File
 
-When you do not have the original source code, you should analyze the IPA and search inside for the *embedded provisioning profile* that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
+When you do not have the original source code, you should analyze the IPA and search inside for the _embedded provisioning profile_ that is usually located in the root app bundle folder (`Payload/<appname>.app/`) under the name `embedded.mobileprovision`.
 
 This file is not a `.plist`, it is encoded using [Cryptographic Message Syntax](https://en.wikipedia.org/wiki/Cryptographic_Message_Syntax "Cryptographic Message Syntax"). On macOS you can [inspect an embedded provisioning profile's entitlements](https://developer.apple.com/library/archive/technotes/tn2415/_index.html#//apple_ref/doc/uid/DTS40016427-CH1-PROFILESENTITLEMENTS "Inspecting a profile\'s entitlements") using the following command:
 
 ```bash
-$ security cms -D -i embedded.mobileprovision
+security cms -D -i embedded.mobileprovision
 ```
 
 and then search for the Entitlements key region (`<key>Entitlements</key>`).
 
 #### Entitlements Embedded in the Compiled App Binary
 
-If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (which you've previously obtained as explained in the "iOS Basic Security Testing" chapter, section "Acquiring the App Binary").
+If you only have the app's IPA or simply the installed app on a jailbroken device, you normally won't be able to find `.entitlements` files. This could be also the case for the `embedded.mobileprovision` file. Still, you should be able to extract the entitlements property lists from the app binary yourself (which you've previously obtained as explained in the "iOS Basic Security Testing" chapter, section ["Acquiring the App Binary"](0x06b-Basic-Security-Testing.md#acquiring-the-app-binary)).
 
 The following steps should work even when targeting an encrypted binary. If for some reason they don't, you'll have to decrypt and extract the app with e.g. Clutch (if compatible with your iOS version), frida-ios-dump or similar.
 
@@ -221,7 +221,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 1458814       0x16427E        XML document, version: "1.0"
 ```
 
-Or you can use radare2 (`-qc` to *quietly* run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
+Or you can use radare2 (`-qc` to _quietly_ run one command and exit) to search all strings on the app binary (`izz`) containing "PropertyList" (`~PropertyList`):
 
 ```bash
 $ r2 -qc 'izz~PropertyList' ./Telegram\ X
@@ -264,7 +264,7 @@ After having checked the `<appname>.entitlements` file and the `Info.plist` file
 
 When doing a source code review, pay attention to:
 
-- whether the *purpose strings* in the `Info.plist` file match the programmatic implementations.
+- whether the _purpose strings_ in the `Info.plist` file match the programmatic implementations.
 - whether the registered capabilities are used in such a way that no confidential information is leaking.
 
 Users can grant or revoke authorization at any time via "Settings", therefore apps normally check the authorization status of a feature before accessing it. This can be done by using dedicated APIs available for many system frameworks that provide access to protected resources.
@@ -307,14 +307,14 @@ In the following example we use Telegram to open the share dialog from a chat an
 First we launch Telegram and start a trace for all methods matching the string "authorizationStatus" (this is a general approach because more classes apart from `CLLocationManager` implement this method):
 
 ```bash
-$ frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
+frida-trace -U "Telegram" -m "*[* *authorizationStatus*]"
 ```
 
 > `-U` connects to the USB device. `-m` includes an Objective-C method to the traces. You can use a [glob pattern](https://en.wikipedia.org/wiki/Glob_%28programming%29 "Glob (programming)") (e.g. with the "*" wildcard, `-m "*[* *authorizationStatus*]"` means "include any Objective-C method of any class containing 'authorizationStatus'"). Type `frida-trace -h` for more information.
 
 Now we open the share dialog:
 
-![OWASP MSTG](Images/Chapters/0x06h/telegram_share_something.png) \
+<img src="Images/Chapters/0x06h/telegram_share_something.png" width="400px" />
 
 The following methods are displayed:
 
@@ -365,9 +365,9 @@ RET: 0x4
 
 We see that `+[CLLocationManager authorizationStatus]` returned `0x4` ([CLAuthorizationStatus.authorizedWhenInUse](https://developer.apple.com/documentation/corelocation/clauthorizationstatus/authorizedwheninuse "CLAuthorizationStatus.authorizedWhenInUse")) and was called by `+[TGLocationUtils requestWhenInUserLocationAuthorizationWithLocationManager:]`. As we anticipated before, you might use this kind of information as an entry point when reverse engineering the app and from there get inputs (e.g. names of classes or methods) to keep feeding the dynamic analysis.
 
-Next, there is a *visual* way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to *trigger* them in order to be listed on that screen.
+Next, there is a _visual_ way to inspect the status of some app permissions when using the iPhone/iPad by opening "Settings" and scrolling down until you find the app you're interested in. When clicking on it, this will open the "ALLOW APP_NAME TO ACCESS" screen. However, not all permissions might be displayed yet. You will have to trigger them in order to be listed on that screen.
 
-![OWASP MSTG](Images/Chapters/0x06h/settings_allow_screen.png) \
+<img src="Images/Chapters/0x06h/settings_allow_screen.png" width="100%" />
 
 For example, in the previous example, the "Location" entry was not being listed until we triggered the permission dialogue for the first time. Once we did it, no matter if we allowed the access or not, the the "Location" entry will be displayed.
 
@@ -402,7 +402,7 @@ For example, the Telegram app supports both custom URL schemes and universal lin
 
 Both result in the same action, the user will be redirected to the specified chat in Telegram ("fridadotre" in this case). However, universal links give several key benefits that are not applicable when using custom URL schemes and are the recommended way to implement deep linking, according to the [Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html "Universal Links"). Specifically, universal links are:
 
-- **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to *prevent* URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
+- **Unique**: Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to the app's website. They were introduced as a way to _prevent_ URL scheme hijacking attacks (an app installed after the original app may declare the same scheme and the system might target all new requests to the last installed app).
 - **Secure**: When users install the app, iOS downloads and checks a file (the Apple App Site Association or AASA) that was uploaded to the web server to make sure that the website allows the app to open URLs on its behalf. Only the legitimate owners of the URL can upload this file, so the association of their website with the app is secure.
 - **Flexible**: Universal links work even when the app is not installed. Tapping a link to the website would open the content in Safari, as users expect.
 - **Simple**: One URL works for both the website and the app.
@@ -444,7 +444,7 @@ Try to retrieve the `apple-app-site-association` file from the server using the 
 
 You can retrieve it yourself with your browser or use the [Apple App Site Association (AASA) Validator](https://branch.io/resources/aasa-validator/ "AASA"). After entering the domain, it will display the file, verify it for you and show the results (e.g. if it is not being properly served over HTTPS). See the following example from [apple.com](https://www.apple.com/.well-known/apple-app-site-association "Apple\'s apple-app-site-association file"):
 
-![OWASP MSTG](Images/Chapters/0x06h/apple-app-site-association-file_validation.png) \
+<img src="Images/Chapters/0x06h/apple-app-site-association-file_validation.png" width="100%" />
 
 ```json
 {
@@ -482,7 +482,7 @@ Remember that universal links verification occurs at installation time. iOS retr
 
 - The AASA file is not served over HTTPS.
 - The AASA is not available.
-- The `appID`s do not match (this would be the case of a *malicious* app). iOS would successfully prevent any possible hijacking attacks.
+- The `appID`s do not match (this would be the case of a _malicious_ app). iOS would successfully prevent any possible hijacking attacks.
 
 ##### Checking the Link Receiver Method
 
@@ -645,18 +645,18 @@ One of them should offer the "Open in app" option and the other should not.
 
 If we long press on the first one (`http://www.apple.com/shop/buy-iphone/iphone-xr`) it only offers the option to open it (in the browser).
 
-![OWASP MSTG](Images/Chapters/0x06h/forbidden_universal_link.png) \
+<img src="Images/Chapters/0x06h/forbidden_universal_link.png" width="400px" />
 
 If we long press on the second (`http://www.apple.com/today`) it shows options to open it in Safari and in "Apple Store":
 
-![OWASP MSTG](Images/Chapters/0x06h/allowed_universal_link.png) \
+<img src="Images/Chapters/0x06h/allowed_universal_link.png" width="400px" />
 
 > Note that there is a difference between a click and a long press. Once we long press a link and select an option, e.g. "Open in Safari", this will become the default option for all future clicks until we long press again and select another option.
 
 If we repeat the process on the method `application:continueUserActivity: restorationHandler:` by either hooking or tracing, we will see how it gets called as soon as we open the allowed universal link. For this you can use for example `frida-trace`:
 
 ```bash
-$ frida-trace -U "Apple Store" -m "*[* *restorationHandler*]"
+frida-trace -U "Apple Store" -m "*[* *restorationHandler*]"
 ```
 
 ##### Tracing the Link Receiver Method
@@ -694,12 +694,12 @@ This section explains how to trace the link receiver method and how to extract a
 In order to open the links we will also use the Notes app and frida-trace with the following pattern:
 
 ```bash
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]"
+frida-trace -U Telegram -m "*[* *restorationHandler*]"
 ```
 
 Write `https://t.me/addstickers/radare` (found through a quick Internet research) and open it from the Notes app.
 
-![OWASP MSTG](Images/Chapters/0x06h/telegram_add_stickers_universal_link.png) \
+<img src="Images/Chapters/0x06h/telegram_add_stickers_universal_link.png" width="400px" />
 
 First we let frida-trace generate the stubs in `__handlers__/`:
 
@@ -756,7 +756,7 @@ If you want to know more about which function actually opens the URL and how the
 Extend the previous command in order to find out if there are any other functions involved into opening the URL.
 
 ```bash
-$ frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
+frida-trace -U Telegram -m "*[* *restorationHandler*]" -i "*open*Url*"
 ```
 
 > `-i` includes any method. You can also use a glob pattern here (e.g. `-i "*open*Url*"` means "include any function containing 'open', then 'Url' and something else")
@@ -863,7 +863,7 @@ There you can observe the following:
 - `application:continueUserActivity:restorationHandler:` handles the URL but does not open it, it calls `TelegramUI.openExternalUrl` for that.
 - The URL being opened is `https://t.me/addstickers/radare`.
 
-You can now keep going and try to trace and verify how the data is being validated. For example, if you have two apps that *communicate* via universal links you can use this to see if the sending app is leaking sensitive data by hooking these methods in the receiving app. This is especially useful when you don't have the source code as you will be able to retrieve the full URL that you wouldn't see other way as it might be the result of clicking some button or triggering some functionality.
+You can now keep going and try to trace and verify how the data is being validated. For example, if you have two apps that _communicate_ via universal links you can use this to see if the sending app is leaking sensitive data by hooking these methods in the receiving app. This is especially useful when you don't have the source code as you will be able to retrieve the full URL that you wouldn't see other way as it might be the result of clicking some button or triggering some functionality.
 
 In some cases, you might find data in `userInfo` of the `NSUserActivity` object. In the previous case there was no data being transferred but it might be the case for other scenarios. To see this, be sure to hook the `userInfo` property or access it directly from the `continueUserActivity` object in your hook (e.g. by adding a line like this `log("userInfo:" + ObjC.Object(args[3]).userInfo().toString());`).
 
@@ -904,9 +904,9 @@ This knowledge should help you when testing apps supporting Handoff.
 
 #### Overview
 
-Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide *share activity sheet* that appears after clicking on the "Share" button.
+Starting on iOS 6 it is possible for third-party apps to share data (items) via specific mechanisms [like AirDrop, for example](https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW3 "Supporting AirDrop"). From a user perspective, this feature is the well-known system-wide "Share Activity Sheet" that appears after clicking on the "Share" button.
 
-![OWASP MSTG](Images/Chapters/0x06h/share_activity_sheet.png) \
+<img src="Images/Chapters/0x06h/share_activity_sheet.png" width="100%" />
 
 The available built-in sharing mechanisms (aka. Activity Types) include:
 
@@ -951,14 +951,14 @@ $ rabin2 -zq Telegram\ X.app/Telegram\ X | grep -i activityItems
 
 When receiving items, you should check:
 
-- if the app declares *custom document types* by looking into Exported/Imported UTIs ("Info" tab of the Xcode project). The list of all system declared UTIs (Uniform Type Identifiers) can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259 "System-Declared Uniform Type Identifiers").
-- if the app specifies any *document types that it can open* by looking into Document Types ("Info" tab of the Xcode project). If present, they consist of name and one or more UTIs that represent the data type (e.g. "public.png" for PNG files). iOS uses this to determine if the app is eligible to open a given document (specifying Exported/Imported UTIs is not enough).
-- if the app properly *verifies the received data* by looking into the implementation of [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc "UIApplicationDelegate application:openURL:options:") (or its deprecated version [`UIApplicationDelegate application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application?language=objc "UIApplicationDelegate application:openURL:sourceApplication:annotation:")) in the app delegate.
+- if the app declares _custom document types_ by looking into Exported/Imported UTIs ("Info" tab of the Xcode project). The list of all system declared UTIs (Uniform Type Identifiers) can be found in the [archived Apple Developer Documentation](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html#//apple_ref/doc/uid/TP40009259 "System-Declared Uniform Type Identifiers").
+- if the app specifies any _document types that it can open_ by looking into Document Types ("Info" tab of the Xcode project). If present, they consist of name and one or more UTIs that represent the data type (e.g. "public.png" for PNG files). iOS uses this to determine if the app is eligible to open a given document (specifying Exported/Imported UTIs is not enough).
+- if the app properly _verifies the received data_ by looking into the implementation of [`application:openURL:options:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application?language=objc "UIApplicationDelegate application:openURL:options:") (or its deprecated version [`UIApplicationDelegate application:openURL:sourceApplication:annotation:`](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623073-application?language=objc "UIApplicationDelegate application:openURL:sourceApplication:annotation:")) in the app delegate.
 
 If not having the source code you can still take a look into the `Info.plist` file and search for:
 
-- `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` if the app declares exported/imported *custom document types*.
-- `CFBundleDocumentTypes` to see if the app specifies any *document types that it can open*.
+- `UTExportedTypeDeclarations`/`UTImportedTypeDeclarations` if the app declares exported/imported _custom document types_.
+- `CFBundleDocumentTypes` to see if the app specifies any _document types that it can open_.
 
 A very complete explanation about the use of these keys can be found [on Stackoverflow](https://stackoverflow.com/questions/21937978/what-are-utimportedtypedeclarations-and-utexportedtypedeclarations-used-for-on-i "What are UTImportedTypeDeclarations and UTExportedTypeDeclarations used for on iOS?").
 
@@ -968,7 +968,7 @@ Let's see a real-world example. We will take a File Manager app and take a look 
 objection --gadget SomeFileManager run ios plist cat Info.plist
 ```
 
-> Note that this is the same as if we would retrieve the IPA from the phone or accessed via e.g. SSH and navigated to the corresponding folder in the IPA / app sandbox. However, with objection we are just *one command away* from our goal and this can be still considered static analysis.
+> Note that this is the same as if we would retrieve the IPA from the phone or accessed via e.g. SSH and navigated to the corresponding folder in the IPA / app sandbox. However, with objection we are just _one command away_ from our goal and this can be still considered static analysis.
 
 The first thing we noticed is that app does not declare any imported custom document types but we could find a couple of exported ones:
 
@@ -1085,7 +1085,7 @@ function printRet(retval) {
 You can store this as a JavaScript file, e.g. `inspect_send_activity_data.js` and load it like this:
 
 ```bash
-$ frida -U Telegram -l inspect_send_activity_data.js
+frida -U Telegram -l inspect_send_activity_data.js
 ```
 
 Now observe the output when you first share a picture:
@@ -1157,9 +1157,9 @@ RET @ 0x14797c3e0:
 
 ##### Receiving Items
 
-After performing the static analysis you would know the *document types that the app can open* and *if it declares any custom document types* and (part of) the methods involved. You can use this now to test the receiving part:
+After performing the static analysis you would know the _document types that the app can open_ and _if it declares any custom document types_ and (part of) the methods involved. You can use this now to test the receiving part:
 
-- *Share* a file with the app from another app or send it via AirDrop or e-mail. Choose the file so that it will trigger the "Open with..." dialogue (that is, there is no default app that will open the file, a PDF for example).
+- _Share_ a file with the app from another app or send it via AirDrop or e-mail. Choose the file so that it will trigger the "Open with..." dialogue (that is, there is no default app that will open the file, a PDF for example).
 - Hook `application:openURL:options:` and any other methods that were identified in a previous static analysis.
 - Observe the app behavior.
 - In addition, you could send specific malformed files and/or use a fuzzing technique.
@@ -1170,7 +1170,7 @@ To illustrate this with an example we have chosen the same real-world file manag
 2. Wait for the **AirDrop** popup to appear and click on **Accept**.
 3. As there is no default app that will open the file, it switches to the **Open with...** popup. There, we can select the app that will open our file. The next screenshot shows this (we have modified the display name using Frida to conceal the app's real name):
 
-    ![OWASP MSTG](Images/Chapters/0x06h/airdrop_openwith.png) \
+    <img src="Images/Chapters/0x06h/airdrop_openwith.png" width="400px" />
 
 4. After selecting **SomeFileManager** we can see the following:
 
@@ -1222,7 +1222,7 @@ A final thing worth noticing here is that this way of handling incoming files is
 
 Together with iOS 8, Apple introduced App Extensions. According to [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/index.html#//apple_ref/doc/uid/TP40014214-CH20-SW1 "App Extensions Increase Your Impact"), app extensions let apps offer custom functionality and content to users while they’re interacting with other apps or the system. In order to do this, they implement specific, well scoped tasks like, for example, define what happens after the user clicks on the "Share" button and selects some app or action, provide the content for a Today widget or enable a custom keyboard.
 
-Depending on the task, the app extension will have a particular type (and only one), the so-called *extension points*. Some notable ones are:
+Depending on the task, the app extension will have a particular type (and only one), the so-called _extension points_. Some notable ones are:
 
 - Custom Keyboard: replaces the iOS system keyboard with a custom keyboard for use in all apps.
 - Share: post to a sharing website or share content with others.
@@ -1236,9 +1236,9 @@ There are three important elements here:
 - Host app: is the (third-party) app that triggers the app extension of another app.
 - Containing app: is the app that contains the app extension bundled into it.
 
-For example, the user selects text in the *host app*, clicks on the "Share" button and selects one "app" or action from the list. This triggers the *app extension* of the *containing app*. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13 "An app extension can communicate indirectly with its containing app") which pretty good summarizes this:
+For example, the user selects text in the _host app_, clicks on the "Share" button and selects one "app" or action from the list. This triggers the _app extension_ of the _containing app_. The app extension displays its view within the context of the host app and uses the items provided by the host app, the selected text in this case, to perform a specific task (post it on a social network, for example). See this picture from the [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionOverview.html#//apple_ref/doc/uid/TP40014214-CH2-SW13 "An app extension can communicate indirectly with its containing app") which pretty good summarizes this:
 
-![OWASP MSTG](Images/Chapters/0x06h/app_extensions_communication.png) \
+<img src="Images/Chapters/0x06h/app_extensions_communication.png" width="100%" />
 
 ##### Security Considerations
 
@@ -1270,7 +1270,7 @@ The static analysis will take care of:
 
 If you have the original source code you can search for all occurrences of `NSExtensionPointIdentifier` with Xcode (cmd+shift+f) or take a look into "Build Phases / Embed App extensions":
 
-![OWASP MSTG](Images/Chapters/0x06h/xcode_embed_app_extensions.png) \
+<img src="Images/Chapters/0x06h/xcode_embed_app_extensions.png" width="100%" />
 
 There you can find the names of all embedded app extensions followed by `.appex`, now you can navigate to the individual app extensions in the project.
 
@@ -1332,7 +1332,7 @@ Only the data types present here and not having `0` as `MaxCount` will be suppor
 
 Remember that app extensions and their containing apps do not have direct access to each other’s containers. However, data sharing can be enabled. This is done via ["App Groups"](https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/EnablingAppSandbox.html#//apple_ref/doc/uid/TP40011195-CH4-SW19 "Adding an App to an App Group") and the [`NSUserDefaults`](https://developer.apple.com/documentation/foundation/nsuserdefaults "NSUserDefaults") API. See this figure from [Apple App Extension Programming Guide](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html#//apple_ref/doc/uid/TP40014214-CH21-SW11 "An app extension’s container is distinct from its containing app’s container"):
 
-![OWASP MSTG](Images/Chapters/0x06h/app_extensions_container_restrictions.png) \
+<img src="Images/Chapters/0x06h/app_extensions_container_restrictions.png" width="400px" />
 
 As also mentioned in the guide, the app must set up a shared container if the app extension uses the `NSURLSession` class to perform a background upload or download, so that both the extension and its containing app can access the transferred data.
 
@@ -1357,7 +1357,7 @@ For this we should hook `NSExtensionContext - inputItems` in the data originatin
 
 Following the previous example of Telegram we will now use the "Share" button on a text file (that was received from a chat) to create a note in the Notes app with it:
 
-![OWASP MSTG](Images/Chapters/0x06h/telegram_share_extension.png) \
+<img src="Images/Chapters/0x06h/telegram_share_extension.png" width="400px" />
 
 If we run a trace, we'd see the following output:
 
@@ -1423,7 +1423,7 @@ The [`UIPasteboard`](https://developer.apple.com/documentation/uikit/uipasteboar
 Some security considerations:
 
 - Users cannot grant or deny permission for apps to read the pasteboard.
-- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the *malicious* app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
+- Since iOS 9, apps [cannot access the pasteboard while in background](https://forums.developer.apple.com/thread/13760 "UIPasteboard returning null from Today extension"), this mitigates background pasteboard monitoring. However, if the _malicious_ app is brought to foreground again and the data remains in the pasteboard, it will be able to retrieve it programmatically without the knowledge nor the consent of the user.
 - [Apple warns about persistent named pasteboards](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc "Pasteboard Security and Privacy Changes in iOS 10") and discourages their use. Instead, shared containers should be used.
 - Starting in iOS 10 there is a new Handoff feature called Universal Clipboard that is enabled by default. It allows the general pasteboard contents to automatically transfer between devices. This feature can be disabled if the developer chooses to do so and it is also possible to set an expiration time and date for copied data.
 
@@ -1461,7 +1461,7 @@ When monitoring the pasteboards, there is several details that may be dynamicall
 - Get the first available pasteboard item: e.g. for strings use `string` method. Or use any of the other methods for the [standard data types](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#1654275 "Getting and Setting Pasteboard Items of Standard Data Types").
 - Get the number of items with `numberOfItems`.
 - Check for existence of standard data types with the [convenience methods](https://developer.apple.com/documentation/uikit/uipasteboard?language=objc#2107142 "Checking for Data Types on a Pasteboard"), e.g. `hasImages`, `hasStrings`, `hasURLs` (starting in iOS 10).
-- Check for other data types (typically UTIs) with [`containsPasteboardTypes: inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](http://web.archive.org/web/20190616231857/https://developer.apple.com/documentation/mobilecoreservices/uttype "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that *declare knowledge* of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#uiactivity-sharing "UIActivity Sharing")" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
+- Check for other data types (typically UTIs) with [`containsPasteboardTypes: inItemSet:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622100-containspasteboardtypes?language=objc "UIPasteboard containsPasteboardTypes:inItemSet:"). You may inspect for more concrete data types like, for example an picture as public.png and public.tiff ([UTIs](http://web.archive.org/web/20190616231857/https://developer.apple.com/documentation/mobilecoreservices/uttype "MobileCoreServices UTType")) or for custom data such as com.mycompany.myapp.mytype. Remember that, in this case, only those apps that _declare knowledge_ of the type are able to understand the data written to the pasteboard. This is the same as we have seen in the "[UIActivity Sharing](#uiactivity-sharing "UIActivity Sharing")" section. Retrieve them using [`itemSetWithPasteboardTypes:`](https://developer.apple.com/documentation/uikit/uipasteboard/1622071-itemsetwithpasteboardtypes?language=objc "UIPasteboard itemSetWithPasteboardTypes:") and setting the corresponding UTIs.
 - Check for excluded or expiring items by hooking `setItems:options:` and inspecting its options for `UIPasteboardOptionLocalOnly` or `UIPasteboardOptionExpirationDate`.
 
 If only looking for strings you may want to use objection's command `ios pasteboard monitor`:
@@ -1581,7 +1581,7 @@ The first step to test custom URL schemes is finding out whether an application 
 
 If you have the original source code and want to view registered protocol handlers, simply open the project in Xcode, go to the **Info** tab and open the **URL Types** section as presented in the screenshot below:
 
-![OWASP MSTG](Images/Chapters/0x06h/URL_scheme.png) \
+<img src="Images/Chapters/0x06h/URL_scheme.png" width="100%" />
 
 Also in Xcode you can find this by searching for the `CFBundleURLTypes` key in the app’s `Info.plist` file (example from [iGoat-Swift](https://github.com/OWASP/iGoat-Swift "iGoat-Swift")):
 
@@ -1781,7 +1781,7 @@ If only having the compiled application (IPA) you can still try to identify whic
 You can do that by first verifying that the app binary contains those strings by e.g. using unix `strings` command:
 
 ```bash
-$ strings <yourapp> | grep "someURLscheme://"
+strings <yourapp> | grep "someURLscheme://"
 ```
 
 or even better, use radare2's `iz/izz` command or rafind2, both will find strings where the unix `strings` command won't. Example from iGoat-Swift:
@@ -1827,13 +1827,13 @@ Once you've identified the custom URL schemes the app has registered, there are 
 
 ##### Using Safari
 
-To quickly test one URL scheme you can open the URLs on Safari and observe how the app behaves. For example, if you write `tel://123456789` in the address bar of Safari, a pop up will appear with the *telephone number* and the options "Cancel" and "Call". If you press "Call" it will open the Phone app and directly make the call.
+To quickly test one URL scheme you can open the URLs on Safari and observe how the app behaves. For example, if you write `tel://123456789` in the address bar of Safari, a pop up will appear with the _telephone number_ and the options "Cancel" and "Call". If you press "Call" it will open the Phone app and directly make the call.
 
 You may also know already about pages that trigger custom URL schemes, you can just navigate normally to those pages and Safari will automatically ask when it finds a custom URL scheme.
 
 ##### Using the Notes App
 
-As already seen in "Triggering Universal Links", you may use the Notes app and long press the links you've written in order to test custom URL schemes. Remember to exit the editing mode in order to be able to open them. Note that you can click or long press links including custom URL schemes only if the app is installed, if not they won't be highlighted as *clickable links*.
+As already seen in "Triggering Universal Links", you may use the Notes app and long press the links you've written in order to test custom URL schemes. Remember to exit the editing mode in order to be able to open them. Note that you can click or long press links including custom URL schemes only if the app is installed, if not they won't be highlighted as _clickable links_.
 
 ##### Using Frida
 
@@ -1927,7 +1927,7 @@ Now we know that:
 
 The call was successful and we see now that the iGoat app was open:
 
-![OWASP MSTG](Images/Chapters/0x06h/iGoat_opened_via_url_scheme.jpg) \
+<img src="Images/Chapters/0x06h/iGoat_opened_via_url_scheme.jpg" width="400px" />
 
 Notice that we can also see that the caller (source application) was Safari if we look in the upper-left corner of the screenshot.
 
@@ -1984,7 +1984,7 @@ The output is truncated for better readability. This time you see that `UIApplic
 
 You can now test the same situation when clicking on a link contained on a page. Safari will identify and process the URL scheme and choose which action to execute. Opening this link "<https://telegram.me/fridadotre>" will trigger this behavior.
 
-![OWASP MSTG](Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png) \
+<img src="Images/Chapters/0x06h/open_in_telegram_via_urlscheme.png" width="400px" />
 
 First of all we let frida-trace generate the stubs for us:
 
@@ -2067,7 +2067,7 @@ There you can observe the following:
 
 It is interesting to see that if you navigate again to "<https://telegram.me/fridadotre>", click on **cancel** and then click on the link offered by the page itself ("Open in the Telegram app"), instead of opening via custom URL scheme it will open via universal links.
 
-![OWASP MSTG](Images/Chapters/0x06h/open_in_telegram_via_universallink.png) \
+<img src="Images/Chapters/0x06h/open_in_telegram_via_universallink.png" width="400px" />
 
 You can try this while tracing both methods:
 
@@ -2143,7 +2143,7 @@ true
 nil
 ```
 
-Nothing happens. This tells us already that this method is not being used for that as we cannot find any *app-package-looking* string like `OWASP.iGoat-Swift` or `com.apple.mobilesafari` between the hook and the text of the tweet. However, consider that we are just probing one method, the app might be using other approach for the comparison.
+Nothing happens. This tells us already that this method is not being used for that as we cannot find any _app-package-looking_ string like `OWASP.iGoat-Swift` or `com.apple.mobilesafari` between the hook and the text of the tweet. However, consider that we are just probing one method, the app might be using other approach for the comparison.
 
 #### Fuzzing URL Schemes
 
@@ -2248,7 +2248,7 @@ A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). S
 - An Action ("Share") button.
 - A Done button, back and forward navigation buttons, and a "Safari" button to open the page directly in Safari.
 
-![OWASP MSTG](Images/Chapters/0x06h/sfsafariviewcontroller.png) \
+<img src="Images/Chapters/0x06h/sfsafariviewcontroller.png" width="400px" />
 
 There are a couple of things to consider:
 
@@ -2266,10 +2266,10 @@ Enabling the [Safari Web Inspector](https://developer.apple.com/library/archive/
 
 To activate the web inspection you have to follow these steps:
 
-1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on *Web Inspector*.
-2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable *Show Develop menu in menu bar*.
-3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the *Develop* menu.
-4. (If not yet trusted) On macOS's Safari, go to the *Develop* menu, click on the iOS device name, then on "Use for Development" and enable trust.
+1. On the iOS device open the Settings app: Go to **Safari -> Advanced** and toggle on _Web Inspector_.
+2. On the macOS device, open Safari: in the menu bar, go to **Safari -> Preferences -> Advanced** and enable _Show Develop menu in menu bar_.
+3. Connect your iOS device to the macOS device and unlock it: the iOS device name should appear in the _Develop_ menu.
+4. (If not yet trusted) On macOS's Safari, go to the _Develop_ menu, click on the iOS device name, then on "Use for Development" and enable trust.
 
 To open the web inspector and debug a WebView:
 
@@ -2458,7 +2458,7 @@ URL:  file:///var/mobile/Containers/Data/Application/A654D169-1DB7-429C-9DB9-A87
 We will extend this example in the following sections in order to get more information from the WebViews. We recommend to store this code to a file, e.g. webviews_inspector.js and run it like this:
 
 ```javascript
-$ frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
+frida -U com.authenticationfailure.WheresMyBrowser -l webviews_inspector.js
 ```
 
 #### Checking if JavaScript is Enabled
@@ -2874,7 +2874,7 @@ window.webkit.messageHandlers.javaScriptBridge.postMessage(["getSecret"]);
 
 Of course, you may also use the Exploitation Helper it provides:
 
-![OWASP MSTG](Images/Chapters/0x06h/exploit_javascript_bridge.png) \
+<img src="Images/Chapters/0x06h/exploit_javascript_bridge.png" width="400px" />
 
 See another example for a vulnerable iOS app and function that is exposed to a WebView in [#thiel2] page 156.
 
@@ -3015,7 +3015,7 @@ JSON itself can be stored anywhere, e.g., a (NoSQL) database or a file. You just
 
 #### Property Lists and Codable
 
-You can persist objects to *property lists* (also called plists in previous sections). You can find two examples below of how to use it:
+You can persist objects to _property lists_ (also called plists in previous sections). You can find two examples below of how to use it:
 
 ```default
 
@@ -3031,7 +3031,7 @@ if let data = NSUserDefaults.standardUserDefaults().objectForKey("customPoint") 
 
 ```
 
-In this first example, the `NSUserDefaults` are used, which is the primary *property list*. We can do the same with the `Codable` version:
+In this first example, the `NSUserDefaults` are used, which is the primary _property list_. We can do the same with the `Codable` version:
 
 ```default
 struct CustomPointStruct: Codable {

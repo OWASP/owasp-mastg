@@ -66,7 +66,7 @@ AVD supports some hardware emulation, such as [GPS](https://developer.android.co
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
 ```bash
-$ ./android avd
+./android avd
 ```
 
 Several tools and VMs that can be used to test an app within an emulator environment are available:
@@ -78,7 +78,7 @@ Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the e
 
 #### Getting Privileged Access
 
-*Rooting* (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.
+_Rooting_ (i.e., modifying the OS so that you can run commands as the root user) is recommended for testing on a real device. This gives you full control over the operating system and allows you to bypass restrictions such as app sandboxing. These privileges in turn allow you to use techniques like code injection and function hooking more easily.
 
 Note that rooting is risky, and three main consequences need to be clarified before you proceed. Rooting can have the following negative effects:
 
@@ -123,7 +123,7 @@ In order to connect to the shell of an Android device from your host computer, [
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
 ```bash
-$ adb shell
+adb shell
 ```
 
 > press Control + D or type `exit` to quit
@@ -179,7 +179,7 @@ While usually using an on-device shell (terminal emulator) such as [Termux](0x08
 You can copy files to and from a device by using the [adb](0x08-Testing-Tools.md#adb) commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```bash
-$ adb push foo.txt /sdcard/foo.txt
+adb push foo.txt /sdcard/foo.txt
 ```
 
 This approach is commonly used when you know exactly what you want to copy and from/to where and also supports bulk file transfer, e.g. you can pull (copy) a whole directory from the Android device to your host computer.
@@ -193,7 +193,7 @@ $ adb pull /sdcard
 
 Android Studio has a [built-in Device File Explorer](https://developer.android.com/studio/debug/device-file-explorer "Device File Explorer") which you can open by going to **View** -> **Tool Windows** -> **Device File Explorer**.
 
-![OWASP MSTG](Images/Chapters/0x05b/android-studio-file-device-explorer.png) \
+<img src="Images/Chapters/0x05b/android-studio-file-device-explorer.png" width="400px" />
 
 If you're using a rooted device you can now start exploring the whole file system. However, when using a non-rooted device accessing the app sandboxes won't work unless the app is debuggable and even then you are "jailed" within the app sandbox.
 
@@ -263,7 +263,7 @@ sg.vp.owasp_mobile.omtg_android
 
 Or simply by using an SFTP-capable client like [FileZilla](https://filezilla-project.org/download.php "Download FileZilla"):
 
-![OWASP MSTG](Images/Chapters/0x05b/sftp-with-filezilla.png) \
+<img src="Images/Chapters/0x05b/sftp-with-filezilla.png" width="400px" />
 
 Check the [Termux Wiki](https://wiki.termux.com/wiki/Remote_Access "Termux Remote Access") to learn more about remote file access methods.
 
@@ -307,19 +307,19 @@ Obtaining app packages from the device is the recommended method as we can guara
 Use `adb pull` to retrieve the APK. If you don't know the package name, the first step is to list all the applications installed on the device:
 
 ```bash
-$ adb shell pm list packages
+adb shell pm list packages
 ```
 
 Once you have located the package name of the application, you need the full path where it is stored on the system to download it.
 
 ```bash
-$ adb shell pm path <package name>
+adb shell pm path <package name>
 ```
 
 With the full path to the APK, you can now simply use `adb pull` to extract it.
 
 ```bash
-$ adb pull <apk path>
+adb pull <apk path>
 ```
 
 The APK will be downloaded in your working directory.
@@ -354,7 +354,7 @@ There are multiple ways to start the dynamic analysis of your instant app. In al
 The installation of instant app support is taken care off through the following command:
 
 ```bash
-$ cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
+cd path/to/android/sdk/tools/bin && ./sdkmanager 'extras;google;instantapps'
 ```
 
 Next, you have to add `path/to/android/sdk/extras/google/instantapps/ia` to your `$PATH`.
@@ -365,7 +365,7 @@ After the preparation, you can test instant apps locally on a device running And
   Deploy the app via Android Studio (and enable the `Deploy as instant app` checkbox in the Run/Configuration dialog) or deploy the app using the following command:
   
   ```bash
-  $ ia run output-from-build-command <app-artifact>
+  ia run output-from-build-command <app-artifact>
   ```
 
 - Test the app using the Play Console:
@@ -511,6 +511,26 @@ As seen above in "[Exploring the App Package](#exploring-the-app-package "Explor
 
 Refer to the section "[Reviewing Decompiled Java Code](0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)" for more information about how to reverse engineer DEX files.
 
+##### Compiled App Binary
+
+In some cases it might be useful to retrieve the compiled app binary (.odex).
+
+First get the path to the app's data directory:
+
+```bash
+adb shell pm path com.example.myapplication
+package:/data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/base.apk
+```
+
+Remove the `/base.apk` part, add `/oat/arm64/base.odex` and use the resulting path to pull the base.odex from the device:
+
+```bash
+adb root
+adb pull /data/app/~~DEMFPZh7R4qfUwwwh1czYA==/com.example.myapplication-pOslqiQkJclb_1Vk9-WAXg==/oat/arm64/base.odex
+```
+
+Note that the exact directory will be different based on your Android version. If the `/oat/arm64/base.odex` file can't be found, manually search in the directory returned by `pm path`.
+
 ##### Native Libraries
 
 You can inspect the `lib` folder in the APK:
@@ -609,18 +629,18 @@ On Android you can easily inspect the log of system messages by using [`Logcat`]
 
 - Logcat is part of _Dalvik Debug Monitor Server_ (DDMS) in Android Studio. If the app is running in debug mode, the log output will be shown in the Android Monitor on the Logcat tab. You can filter the app's log output by defining patterns in Logcat.
 
-![OWASP MSTG](Images/Chapters/0x05b/log_output_Android_Studio.png) \
+<img src="Images/Chapters/0x05b/log_output_Android_Studio.png" width="100%" />
 
 - You can execute Logcat with adb to store the log output permanently:
 
 ```bash
-$ adb logcat > logcat.log
+adb logcat > logcat.log
 ```
 
 With the following command you can specifically grep for the log output of the app in scope, just insert the package name. Of course your app needs to be running for `ps` to be able to get its PID.
 
 ```bash
-$ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
+adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 ```
 
 ## Setting up a Network Testing Environment
@@ -630,21 +650,21 @@ $ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 [Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with [tcpdump](0x08-Testing-Tools.md#tcpdump), netcat (nc), and [Wireshark](0x08-Testing-Tools.md#wireshark). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
 ```bash
-$ adb root
-$ adb remount
-$ adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
+adb root
+adb remount
+adb push /wherever/you/put/tcpdump /system/xbin/tcpdump
 ```
 
 If execution of `adb root` returns the error `adbd cannot run as root in production builds`, install tcpdump as follows:
 
 ```bash
-$ adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
-$ adb shell
-$ su
-$ mount -o rw,remount /system;
-$ cp /data/local/tmp/tcpdump /system/xbin/
-$ cd /system/xbin
-$ chmod 755 tcpdump
+adb push /wherever/you/put/tcpdump /data/local/tmp/tcpdump
+adb shell
+su
+mount -o rw,remount /system;
+cp /data/local/tmp/tcpdump /system/xbin/
+cd /system/xbin
+chmod 755 tcpdump
 ```
 
 In certain production builds, you might encounter an error `mount: '/system' not in /proc/mounts`.
@@ -671,7 +691,7 @@ listening on wlan0, link-type EN10MB (Ethernet), capture size 262144 bytes
 To remotely sniff the Android phone's network traffic, first execute `tcpdump` and pipe its output to `netcat` (nc):
 
 ```bash
-$ tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
+tcpdump -i wlan0 -s0 -w - | nc -l -p 11111
 ```
 
 The tcpdump command above involves
@@ -685,22 +705,22 @@ By using the pipe (`|`), we sent all output from tcpdump to netcat, which opens 
 To access port 11111, you need to forward the port to your host computer via adb.
 
 ```bash
-$ adb forward tcp:11111 tcp:11111
+adb forward tcp:11111 tcp:11111
 ```
 
 The following command connects you to the forwarded port via netcat and piping to Wireshark.
 
 ```bash
-$ nc localhost 11111 | wireshark -k -S -i -
+nc localhost 11111 | wireshark -k -S -i -
 ```
 
 Wireshark should start immediately (-k). It gets all data from stdin (-i -) via netcat, which is connected to the forwarded port. You should see all the phone's traffic from the wlan0 interface.
 
-![OWASP MSTG](Images/Chapters/0x05b/Android_Wireshark.png) \
+<img src="Images/Chapters/0x05b/Android_Wireshark.png" width="100%" />
 
 You can display the captured traffic in a human-readable format with Wireshark. Figure out which protocols are used and whether they are unencrypted. Capturing all traffic (TCP and UDP) is important, so you should execute all functions of the tested application and analyze it.
 
-![OWASP MSTG](Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png) \
+<img src="Images/Chapters/0x05b/tcpdump_and_wireshard_on_android.png" width="400px" />
 
 This neat little trick allows you now to identify what kind of protocols are used and to which endpoints the app is talking to. The questions is now, how can I test the endpoints if Burp is not capable of showing the traffic? There is no easy answer for this, but a few Burp plugins that can get you started.
 
@@ -708,7 +728,7 @@ This neat little trick allows you now to identify what kind of protocols are use
 
 Firebase Cloud Messaging (FCM), the successor to Google Cloud Messaging (GCM), is a free service offered by Google that allows you to send messages between an application server and client apps. The server and client app communicate via the FCM/GCM connection server, which handles downstream and upstream messages.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM-notifications-overview.png) \
+<img src="Images/Chapters/0x05b/FCM-notifications-overview.png" width="100%" />
 
 Downstream messages (push notifications) are sent from the application server to the client app; upstream messages are sent from the client app to the server.
 
@@ -755,7 +775,7 @@ The interception proxy must listen to the port specified in the port forwarding 
 
 Start the app and trigger a function that uses FCM. You should see HTTP messages in your interception proxy.
 
-![OWASP MSTG](Images/Chapters/0x05b/FCM_Intercept.png) \
+<img src="Images/Chapters/0x05b/FCM_Intercept.png" width="100%" />
 
 ##### End-to-End Encryption for Push Notifications
 
@@ -781,14 +801,14 @@ The following procedure, which works on the Android emulator that ships with And
     - Enter "127.0.0.1" in the **Host Name** field and your proxy port in the **Port number** field (e.g., "8080")
     - Tap **Apply**
 
-![OWASP MSTG](Images/Chapters/0x05b/emulator-proxy.png) \
+<img src="Images/Chapters/0x05b/emulator-proxy.png" width="100%" />
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 
 A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
 
 ```bash
-$ emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
+emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
 ```
 
 ##### Installing a CA Certificate on the Virtual Device
@@ -800,13 +820,20 @@ An easy way to install a CA certificate is to push the certificate to the device
 3. Push the file to the emulator:
 
     ```bash
-    $ adb push cacert.cer /sdcard/
+    adb push cacert.cer /sdcard/
     ```
 
 4. Navigate to **Settings** -> **Security** -> **Install from SD Card**.
 5. Scroll down and tap `cacert.cer`.
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
+
+This installs the certificate in the user certificate store (Tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
+
+1. Run adb as root with `adb root` and `adb shell`.
+2. Locate the newly installed certificate at `/data/misc/user/0/cacerts-added/`.
+3. Copy the certificate to the following folder `/system/etc/security/cacerts/`.
+4. Reboot the Android VM.
 
 For Android 7.0 (API level 24) and above follow the same procedure described in the "[Bypassing the Network Security Configuration](#bypassing-the-network-security-configuration "Bypassing the Network Security Configuration")" section.
 
@@ -881,14 +908,14 @@ To implement this new setting you must follow the steps below:
 - Decompile the app using a decompilation tool like apktool:
 
     ```bash
-    $ apktool d <filename>.apk
+    apktool d <filename>.apk
     ```
 
 - Make the application trust user certificates by creating a Network Security Configuration that includes `<certificates src="user" />` as explained above
 - Go into the directory created by apktool when decompiling the app and rebuild the app using apktool. The new apk will be in the `dist` directory.
 
     ```bash
-    $ apktool b
+    apktool b
     ```
 
 - You need to repackage the app, as explained in the "[Repackaging](0x05c-Reverse-Engineering-and-Tampering.md#repackaging "Repackaging")" section of the "Reverse Engineering and Tampering" chapter. For more details on the repackaging process you can also consult the [Android developer documentation](https://developer.android.com/studio/publish/app-signing#signing-manually), that explains the process as a whole.
@@ -988,7 +1015,7 @@ What to do if the Wi-Fi we need for testing has client isolation?
 You can configure the proxy on your Android device to point to 127.0.0.1:8080, connect your phone via USB to your host computer and use adb to make a reverse port forwarding:
 
 ```bash
-$ adb reverse tcp:8080 tcp:8080
+adb reverse tcp:8080 tcp:8080
 ```
 
 Once you have done this all proxy traffic on your Android phone will be going to port 8080 on 127.0.0.1 and it will be redirected via adb to 127.0.0.1:8080 on your host computer and you will see now the traffic in your Burp. With this trick you are able to test and intercept traffic also in Wi-Fis that have client isolation.
@@ -1011,7 +1038,7 @@ You could also use an access point that is under your control to redirect the tr
 You can use iptables on the Android device to redirect all traffic to your interception proxy. The following command would redirect port 80 to your proxy running on port 8080
 
 ```bash
-$ iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
+iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination <Your-Proxy-IP>:8080
 ```
 
 Verify the iptables settings and check the IP and port.
@@ -1041,7 +1068,7 @@ target     prot opt source               destination
 In case you want to reset the iptables configuration you can flush the rules:
 
 ```bash
-$ iptables -t nat -F
+iptables -t nat -F
 ```
 
 ##### bettercap

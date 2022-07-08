@@ -53,9 +53,9 @@ Check for files and directories typically associated with jailbreaks, such as:
 
 Another way to check for jailbreaking mechanisms is to try to write to a location that's outside the application's sandbox. You can do this by having the application attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the device has been jailbroken.
 
-Swift:
+**Swift:**
 
-```objectivec
+```swift
 do {
     let pathToFileInRestrictedDirectory = "/private/jailbreak.txt"
     try "This is a test.".write(toFile: pathToFileInRestrictedDirectory, atomically: true, encoding: String.Encoding.utf8)
@@ -66,7 +66,7 @@ do {
 }
 ```
 
-Objective-C:
+**Objective-C:**
 
 ```objectivec
 NSError *error;
@@ -86,15 +86,15 @@ if(error==nil){
 
 You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0x08-Testing-Tools.md#cydia) app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
-Swift:
+**Swift:**
 
-```objectivec
+```swift
 if let url = URL(string: "cydia://package/com.example.package"), UIApplication.shared.canOpenURL(url) {
     // Device is jailbroken
 }
 ```
 
-Objective-C:
+**Objective-C:**
 
 ```objectivec
 if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://package/com.example.package"]]){
@@ -104,18 +104,17 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 
 ### Bypassing Jailbreak Detection
 
-Once you start an application that has jailbreak detection enabled on a jailbroken device, you'll notice one of the following things:
+Once you start an application that has jailbreak detection enabled on a jailbroken device, you might notice one of the following things:
 
 1. The application closes immediately, without any notification.
 2. A pop-up window indicates that the application won't run on a jailbroken device.
 
 In the first case, make sure the application is fully functional on non-jailbroken devices. The application may be crashing or it may have a bug that causes it to terminate. This may happen while you're testing a preproduction version of the application.
 
-Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into Hopper, you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
+Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) (commercial tool), you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
 
-![OWASP MSTG](Images/Chapters/0x06b/HopperDisassembling.png) \
-
-![OWASP MSTG](Images/Chapters/0x06b/HopperDecompile.png) \
+<img src="Images/Chapters/0x06b/HopperDisassembling.png" width="300px" />
+<img src="Images/Chapters/0x06b/HopperDecompile.png" width="300px" />
 
 As you can see, there's a class method (`+[SFAntiPiracy isTheDeviceJailbroken]`) and an instance method (`-[JailbreakDetectionVC isJailbroken]`). The main difference is that we can inject Cycript in the app and call the class method directly, whereas the instance method requires first looking for instances of the target class. The function `choose` will look in the memory heap for known signatures of a given class and return an array of instances. Putting an application into a desired state (so that the class is indeed instantiated) is important.
 
@@ -143,7 +142,7 @@ cy# [a[0] isJailbroken]
 True
 ```
 
-![OWASP MSTG](Images/Chapters/0x06j/deviceISjailbroken.png) \
+<img src="Images/Chapters/0x06j/deviceISjailbroken.png" width="300px" />
 
 Now you understand why having your application in a desired state is important. At this point, bypassing jailbreak detection with Cycript is trivial. We can see that the function returns a boolean; we just need to replace the return value. We can replace the return value by replacing the function implementation with Cycript. Please note that this will actually replace the function under its given name, so beware of side effects if the function modifies anything in the application:
 
@@ -153,7 +152,7 @@ cy# [a[0] isJailbroken]
 false
 ```
 
-![OWASP MSTG](Images/Chapters/0x06j/deviceisNOTjailbroken.png) \
+<img src="Images/Chapters/0x06j/deviceisNOTjailbroken.png" width="300px" />
 
 In this case we have bypassed the jailbreak detection of the application!
 
@@ -167,7 +166,7 @@ One feature of Frida that we will use to bypass jailbreak detection is so-called
 4. Use `frida-trace` on your host computer:
 
 ```bash
-$ frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
+frida-trace -U -f /Applications/DamnVulnerableIOSApp.app/DamnVulnerableIOSApp  -m "-[JailbreakDetectionVC isJailbroken]"
 ```
 
 This will start DamnVulnerableIOSApp, trace calls to `-[JailbreakDetectionVC isJailbroken]`, and create a JavaScript hook with the `onEnter` and `onLeave` callback functions. Now, replacing the return value via `value.replace` is trivial, as shown in the following example:
@@ -199,7 +198,7 @@ Changing the return value to:0x0
 
 Note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
 
-One more way to bypass Jailbreak detection mechanisms that rely on file system checks is objection. You can find the implementation of the jailbreak bypass in the [jailbreak.ts script](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
+One more way to bypass Jailbreak detection mechanisms that rely on file system checks is [objection](0x08-Testing-Tools.md#objection). You can find the implementation of the jailbreak bypass in the [jailbreak.ts script](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
 
 See below a Python script for hooking Objective-C methods and native functions:
 
@@ -328,11 +327,11 @@ void anti_debug() {
 
 To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
 
-![OWASP MSTG](Images/Chapters/0x06j/ptraceDisassembly.png) \
+<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="100%" />
 
 Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
 
-![OWASP MSTG](Images/Chapters/0x06j/ptracePatched.png) \
+<img src="Images/Chapters/0x06j/ptracePatched.png" width="100%" />
 
 [Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
 
@@ -387,11 +386,11 @@ static bool AmIBeingDebugged(void)
 
 One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
 
-![OWASP MSTG](Images/Chapters/0x06j/sysctlOriginal.png) \
+<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="100%" />
 
 After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
 
-![OWASP MSTG](Images/Chapters/0x06j/sysctlPatched.png) \
+<img src="Images/Chapters/0x06j/sysctlPatched.png" width="100%" />
 
 You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
@@ -532,7 +531,8 @@ When verifying the HMAC with CC, follow these steps:
 
 ### Effectiveness Assessment
 
-*For the application source code integrity checks*
+**Application source code integrity checks:**
+
 Run the app on the device in an unmodified state and make sure that everything works. Then apply patches to the executable using optool, re-sign the app as described in the chapter "Basic Security Testing", and run it.
 The app should detect the modification and respond in some way. At the very least, the app should alert the user and/or terminate the app. Work on bypassing the defenses and answer the following questions:
 
@@ -541,7 +541,8 @@ The app should detect the modification and respond in some way. At the very leas
 - Did you need to write custom code to disable the defenses? How much time did you need?
 - What is your assessment of the difficulty of bypassing the mechanisms?
 
-*For the storage integrity checks*
+**Storage integrity checks:**
+
 A similar approach works. Answer the following questions:
 
 - Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value pair)?
@@ -640,7 +641,7 @@ However, this is not a concern on iOS. As discussed in the section [Testing on t
 
 ### Overview
 
-Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
+The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
 > Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
 
@@ -680,7 +681,7 @@ This technique replaces standard binary operators like addition or subtraction w
 
 Control flow flattening replaces original code with a more complex representation. The transformation breaks the body of a function into basic blocks and puts them all inside a single infinite loop with a switch statement that controls the program flow. This makes the program flow significantly harder to follow because it removes the natural conditional constructs that usually make the code easier to read.
 
-![control-flow-flattening](./Images/Chapters/0x06j/control-flow-flattening.png) \
+<img src="Images/Chapters/0x06j/control-flow-flattening.png" width="600px">
 
 The image shows how control flow flattening alters code (see "[Obfuscating C++ programs via control flow flattening](http://ac.inf.elte.hu/Vol_030_2009/003.pdf)")
 
@@ -697,7 +698,9 @@ Applications are often compiled with hardcoded keys, licences, tokens and endpoi
 - [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
-### How to use SwiftShield
+Learn more about iOS obfuscation techniques [here](https://faculty.ist.psu.edu/wu/papers/obf-ii.pdf).
+
+#### How to use SwiftShield
 
 > Warning: SwiftShield irreversibly overwrites all your source files. Ideally, you should have it run only on your CI server, and on release builds.
 
@@ -711,7 +714,7 @@ A sample Swift project is used to demonstrate the usage of SwiftShield.
 - Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
 
 ```bash
-$ cp swiftshield/swiftshield /usr/local/bin/
+cp swiftshield/swiftshield /usr/local/bin/
 ```
 
 - In your terminal go into the SwiftSecurity directory (which you checked out in step 1) and execute the command swiftshield (which you downloaded in step 3):
@@ -734,11 +737,11 @@ SwiftShield is now detecting class and method names and is replacing their ident
 
 In the original source code you can see all the class and method identifiers:
 
-![OWASP MSTG](Images/Chapters/0x06j/no_obfuscation.jpg) \
+<img src="Images/Chapters/0x06j/no_obfuscation.jpg" width="400px" />
 
 SwiftShield was now replacing all of them with encrypted values that leave no trace to their original name or intention of the class/method:
 
-![OWASP MSTG](Images/Chapters/0x06j/swiftshield_obfuscated.jpg) \
+<img src="Images/Chapters/0x06j/swiftshield_obfuscated.jpg" width="400px" />
 
 After executing `swiftshield` a new directory will be created called `swiftshield-output`. In this directory another directory is created with a timestamp in the folder name. This directory contains a text file called `conversionMap.txt`, that maps the encrypted strings to their original values.
 
@@ -763,7 +766,7 @@ This is needed for [deobfuscating encrypted crash logs](https://github.com/rockb
 
 Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
-### Effectiveness Assessment
+### Static Analysis
 
 Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
 
