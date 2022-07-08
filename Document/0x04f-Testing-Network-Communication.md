@@ -28,30 +28,6 @@ An app may want to trust a custom set of CAs instead of the platform default. Th
 
 ### About Trust Stores
 
-> By default, secure connections (using protocols like TLS and HTTPS) from all apps trust the pre-installed system CAs, and apps targeting Android 6.0 (API level 23) and lower also trust the user-added CA store by default. An app can customize its own connections using base-config (for app-wide customization) or domain-config (for per-domain customization). (EDIT)
-
-Android has 2 different Trust Stores, the system trust store and the user trust store.
-
-- Apps do not trust certificates in the user trust store by default. It must be configured in the Network Security Configuration as an additional trust anchor.
-- Adding certificates to the system trust store can only be done with root privileges.
-
-iOS has only one Trust Store, the system trust store. Any user-installed certificates are installed to the system trust store.
-
-- The user has to install a profile (installed profiles can be found in **Settings** -> **General** -> **Profiles**).
-- After that, the user has to **explicitly trust the profile** by going to "Enable Full Trust for the XXXX CA" in **Settings** -> **General** -> **About** -> **Certificate Trust Settings**.
-
-Both Android and iOS offer means to either extend or restrict trust by providing certificates and doing the pertinent configurations. Usually additional trusted CAs are added in PEM or DER format.
-
-> Note about WebViews:
-> By default, WebViews will use the system trust store.
->
-> - On Android WebViews do not trust the user trust store even if the app does (!).
-> - iOS has a specific parameter to disable trust evaluation on WebViews loading arbitrary websites.
->
-> it would be understandable that a web browser app meant to navigate to any arbitrary page would be unrestricted. But if that's not the case, the app should be careful because the. TO help with that the app should comply with the MASVS and the related MSTG tests to properly protect the WebViews. For instance, by loading only allow-listed content to prevent users to navigate to sites that are outside of the app control. Other protections include CSS which can be found in ["Android Testing Platform Interaction"](0x05h-Testing-Platform-Interaction.md) and ["iOS Testing Platform Interaction"](0x06h-Testing-Platform-Interaction.md).
-> See ["Testing for URL Loading in WebViews"](0x05h-Testing-Platform-Interaction.md#testing-for-url-loading-in-webviews-mstg-platform-2) for more information.
-
-Also, for testing purposes such as when performing traffic interception, you need the interceptor certificate to be in the system trust store so that WebViews are also proxied.
 
 ### Extending Trust
 
