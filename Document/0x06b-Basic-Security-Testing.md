@@ -121,7 +121,6 @@ iOS upgrades are based on a challenge-response process (generating the so-called
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://appledb.dev/ "Apple DB"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
 
-
 The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
 
 - [AppleDB](https://appledb.dev/ "AppleDB")
