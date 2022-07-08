@@ -641,7 +641,7 @@ However, this is not a concern on iOS. As discussed in the section [Testing on t
 
 ### Overview
 
-Obfuscation is a process of transforming code into a form that is difficult to disassemble and understand and is an integral part of every software protection scheme. The application preserves the original functionality after obfuscation. What's important to understand is that obfuscation isn't something that can be simply turned on or off. Programs can be made incomprehensible, in whole or in part, in many ways and to different degrees.
+The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
 > Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
 
@@ -698,7 +698,9 @@ Applications are often compiled with hardcoded keys, licences, tokens and endpoi
 - [SwiftShield](https://github.com/rockbruno/swiftshield) can be used to perform name obfuscation. It reads the source code of the Xcode project and replaces all names of classes, methods and fields with random values before the compiler is used.
 - [obfuscator-llvm](https://github.com/obfuscator-llvm) operates on the Intermediate Representation (IR) instead of the source code. It can be used for symbol obfuscation, string encryption and control flow flattening. Since it's based on IR, it can hide out significantly more information about the application as compared to SwiftShield.
 
-### How to use SwiftShield
+Learn more about iOS obfuscation techniques [here](https://faculty.ist.psu.edu/wu/papers/obf-ii.pdf).
+
+#### How to use SwiftShield
 
 > Warning: SwiftShield irreversibly overwrites all your source files. Ideally, you should have it run only on your CI server, and on release builds.
 
@@ -764,7 +766,7 @@ This is needed for [deobfuscating encrypted crash logs](https://github.com/rockb
 
 Another example project is available in SwiftShield's [Github repo](https://github.com/rockbruno/swiftshield/tree/master/ExampleProject "SwiftShieldExample"), that can be used to test the execution of SwiftShield.
 
-### Effectiveness Assessment
+### Static Analysis
 
 Attempt to disassemble the Mach-O in the IPA and any included library files in the "Frameworks" directory (.dylib or .framework files), and perform static analysis. At the very least, the app's core functionality (i.e., the functionality meant to be obfuscated) shouldn't be easily discerned. Verify that:
 

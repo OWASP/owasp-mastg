@@ -663,9 +663,16 @@ Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-En
 
 ##### Native Libraries
 
-iOS native libraries are known as Frameworks.
+iOS apps can make their codebase modular by using different elements. In the MSTG we will refer to all of them as native libraries, but they can come in different forms:
 
-You can easily visualize them from Passionfruit by clicking on "Modules":
+- [Static and Dynamic Libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html#//apple_ref/doc/uid/TP40001873-SW1):
+  - Static Libraries can be used and will be compiled in the app binary.
+  - Dynamic Libraries (typically having the `.dylib` extension) are also used but must be part of a framework bundle. Standalone Dynamic Libraries are [not supported](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) on iOS, watchOS, or tvOS, except for the system Swift libraries provided by Xcode.
+- [Frameworks](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) (since iOS 8). A Framework is a hierarchical directory that encapsulates a dynamic library, header files, and resources, such as storyboards, image files, and localized strings, into a single package.
+- [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
+- [Swift Packages](https://developer.apple.com/documentation/swift_packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
+
+You can visualize native libraries in Passionfruit by clicking on "Modules":
 
 <img src="Images/Chapters/0x06b/passionfruit_modules.png" width="100%" />
 

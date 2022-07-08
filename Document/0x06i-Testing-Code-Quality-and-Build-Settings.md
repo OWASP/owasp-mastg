@@ -614,15 +614,26 @@ There are various well written explanations which can help with taking care of m
 
 ### Overview
 
-Although Xcode enables all binary security features by default, it may be relevant to verify this for an old application or to check for the misconfiguration of compilation options. The following features are applicable:
+The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
-- **ARC** - Automatic Reference Counting - A memory management feature that adds retain and release messages when required
-- **Stack Canary** - Stack-smashing protection - Helps prevent buffer overflow attacks by means of having a small integer right before the return pointer. A buffer overflow attack often overwrites a region of memory in order to overwrite the return pointer and take over the process-control. In that case, the canary gets overwritten as well. Therefore, the value of the canary is always checked to make sure it has not changed before a routine uses the return pointer on the stack.
-- **PIE** - Position Independent Executable - enables full ASLR for the executable binary (not applicable for libraries).
+Although Xcode enables all binary security features by default, it may be relevant to verify this for old applications or to check for compiler flag misconfigurations. The following features are applicable:
 
-Tests to detect the presence of these protection mechanisms heavily depend on the language used for developing the application. For example, existing techniques for detecting the presence of stack canaries do not work for pure Swift apps. For more details, please check the online article "[On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/ "On iOS Binary Protection")".
+- [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
+  - PIE applies to executable binaries (Mach-O type `MH_EXECUTE`).
+  - However it's not applicable for libraries (Mach-O type `MH_DYLIB`).
+- [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
+  - Both pure Objective-C, Swift and hybrid binaries should have ARC (Automatic Reference Counting) enabled.
+  - For C/C++ libraries, the developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+- [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection): For pure Objective-C binaries, this should always be enabled. Since Swift is designed to be memory safe, if a library is purely written in Swift, and stack canaries weren’t enabled, the risk will be minimal.
 
-### Static Analysis
+Learn more:
+
+- [OS X ABI Mach-O File Format Reference](https://github.com/aidansteele/osx-abi-macho-file-format-reference)
+- [On iOS Binary Protections](https://sensepost.com/blog/2021/on-ios-binary-protections/)
+- [Security of runtime process in iOS and iPadOS](https://support.apple.com/en-gb/guide/security/sec15bfe098e/web)
+- [Mach-O Programming Topics - Position-Independent Code](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/MachOTopics/1-Articles/dynamic_code.html)
+
+Tests to detect the presence of these protection mechanisms heavily depend on the language used for developing the application. For example, existing techniques for detecting the presence of stack canaries do not work for pure Swift apps.
 
 #### Xcode Project Settings
 
@@ -652,9 +663,9 @@ ARC is automatically enabled for Swift apps by the `swiftc` compiler. However, f
 
 See the [Technical Q&A QA1788 Building a Position Independent Executable](https://developer.apple.com/library/mac/qa/qa1788/_index.html "Technical Q&A QA1788 Building a Position Independent Executable").
 
-#### With otool
+### Static Analysis
 
-Below are procedures for checking the binary security features described above. All the features are enabled in these examples.
+You can use [otool](0x08-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
 
 - PIE:
 

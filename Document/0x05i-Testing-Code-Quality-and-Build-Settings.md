@@ -484,87 +484,58 @@ There are various steps to take:
 
 ### Overview
 
-Because decompiling Java classes is trivial, applying some basic obfuscation to the release byte-code is recommended. [ProGuard](0x08-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the byte-code of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which is "free" in that it doesn't impact the program's performance.
+The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
-Since most Android applications are Java-based, they are [immune to buffer overflow vulnerabilities](https://owasp.org/www-community/vulnerabilities/Buffer_Overflow "Java Buffer Overflows"). Nevertheless, a buffer overflow vulnerability may still be applicable when you're using the Android NDK; therefore, consider secure compiler settings.
+In general all binaries should be tested, which includes both the main app executable as well as all libraries/dependencies. However, on Android we will focus on native libraries since the main executables are considered safe as we will see next.
+
+Android optimizes its Dalvik bytecode from the app DEX files (e.g. classes.dex) and generates a new file containing the native code, usually with an .odex, .oat extension. This [Android compiled binary](0x05b-Basic-Security_Testing.md#compiled-app-binary) is wrapped using the [ELF format](https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html) which is the format used by Linux and Android to package assembly code.
+
+The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-libraries) also [use the ELF format](https://developer.android.com/ndk/guides/abis).
+
+- [**PIE (Position Independent Executable)**](0x04h-Testing-Code-Quality.md#position-independent-code):
+  - Since Android 7.0 (API level 24), PIC compilation is [enabled by default](https://source.android.com/devices/tech/dalvik/configure) for the main executables.
+  - With Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
+- [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
+  - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
+  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+- [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection):
+  - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
+  - It must be enabled for Android native libraries but it might be difficult to fully determine it.
+    - NDK libraries should have it enabled since the compiler does it by default.
+    - Other custom C/C++ libraries might not have it enabled.
+
+Learn more:
+
+- [Android executable formats](https://lief-project.github.io/doc/latest/tutorials/10_android_formats.html)
+- [Android runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works)
+- [Android NDK](https://developer.android.com/ndk/guides)
+- [Android linker changes for NDK developers](https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md)
 
 ### Static Analysis
 
-If source code is provided, you can check the build.gradle file to see whether obfuscation settings have been applied. In the example below, you can see that `minifyEnabled` and `proguardFiles` are set. Creating exceptions to protect some classes from obfuscation (with `-keepclassmembers` and `-keep class`) is common. Therefore, auditing the ProGuard configuration file to see what classes are exempted is important. The `getDefaultProguardFile('proguard-android.txt')` method gets the default ProGuard settings from the `<Android SDK>/tools/proguard/` folder.
+Test the app native libraries to determine if they have the PIE and stack smashing protections enabled.
 
-Further information on how to shrink, obfuscate, and optimize your app can be found in the [Android developer documentation](https://developer.android.com/studio/build/shrink-code "Shrink, obfuscate, and optimize your app").
+You can use [radare2's rabin2](0x08-Testing-Tools.md#radare2) to get the binary information. We'll use [r2pay-v1.0.apk](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk) as an example.
 
-> When you build you project using Android Studio 3.4 or Android Gradle plugin 3.4.0 or higher, the plugin no longer uses ProGuard to perform compile-time code optimization. Instead, the plugin works with the R8 compiler. R8 works with all of your existing ProGuard rules files, so updating the Android Gradle plugin to use R8 should not require you to change your existing rules.
+All native libraries must have `canary` and `pic` both set to `true`.
 
-R8 is the new code shrinker from Google and was introduced in Android Studio 3.3 beta. By default, R8 removes attributes that are useful for debugging, including line numbers, source file names, and variable names. R8 is a free Java class file shrinker, optimizer, obfuscator, and pre-verifier and is faster than ProGuard, see also an [Android Developer blog post for further details](https://android-developers.googleblog.com/2018/11/r8-new-code-shrinker-from-google-is.html "R8"). It is shipped with Android's SDK tools. To activate shrinking for the release build, add the following to build.gradle:  
+That's the case for `libnative-lib.so`:
 
-```default
-android {
-    buildTypes {
-        release {
-            // Enables code shrinking, obfuscation, and optimization for only
-            // your project's release build type.
-            minifyEnabled true
-
-            // Includes the default ProGuard rules files that are packaged with
-            // the Android Gradle plugin. To learn more, go to the section about
-            // R8 configuration files.
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-        }
-    }
-    ...
-}
+```sh
+rabin2 -I lib/x86_64/libnative-lib.so | grep -E "canary|pic"
+canary   true
+pic      true
 ```
 
-The file `proguard-rules.pro` is where you define custom ProGuard rules. With the flag `-keep` you can keep certain code that is not being removed by R8, which might otherwise produce errors. For example to keep common Android classes, as in our sample configuration `proguard-rules.pro` file:
+But not for `libtool-checker.so`:
 
-```default
-...
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
-...
+```sh
+rabin2 -I lib/x86_64/libtool-checker.so | grep -E "canary|pic"
+canary   false
+pic      true
 ```
 
-You can define this more granularly on specific classes or libraries in your project with the [following syntax](https://developer.android.com/studio/build/shrink-code#configuration-files "Customize which code to keep"):
-
-```default
--keep public class MyClass
-```
-
-### Dynamic Analysis
-
-If source code has not been provided, an APK can be decompiled to determine whether the codebase has been obfuscated. Several tools are available for converting DEX code to a JAR file (e.g. dex2jar). The JAR file can be opened with tools such as JD-GUI that can be used to make sure that class, method, and variable names are not human-readable.
-
-Below you can find a sample for an obfuscated code block:
-
-```java
-package com.a.a.a;
-
-import com.a.a.b.a;
-import java.util.List;
-
-class a$b
-  extends a
-{
-  public a$b(List paramList)
-  {
-    super(paramList);
-  }
-
-  public boolean areAllItemsEnabled()
-  {
-    return true;
-  }
-
-  public boolean isEnabled(int paramInt)
-  {
-    return true;
-  }
-}
-```
+In this example, `libtool-checker.so` must be recompiled with stack smashing protection support.
 
 ## References
 
