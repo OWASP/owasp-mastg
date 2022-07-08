@@ -31,10 +31,8 @@ The [National Institute of Standards and Technology (NIST)](https://www.nist.gov
 
 BSI stands for "Federal Office for Information Security", it has the goal to promote IT security in Germany and is the central IT security service provider for the federal government.
 
-- [Technical Guideline BSI TR-03161 Security requirements for eHealth applications v1.0, 2020](https://drive.google.com/file/d/1srN7MYrQMoHbTDHhq4Od6IGWpJL0oc3Q/view?usp=sharing)
-  - Original available at `https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TR03161/TR-03161.pdf`
-- [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://drive.google.com/file/d/1925BKRbedDG6krc5LWZPfkJWVbV2z-iS/view?usp=sharing)
-  - Original available at `https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf`
+- [Technical Guideline BSI TR-03161 Security requirements for eHealth applications v1.0, 2020](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TR03161/TR-03161.pdf)
+- [Prüfvorschrift für den Produktgutachter des „ePA-Frontend des Versicherten“ und des „E-Rezept-Frontend des Versicherten v2.0, 2021](https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/DigitaleGesellschaft/Pruefvorschrift_Produktgutachter_ePA-Frontend.pdf)
 
 ### ioXt
 

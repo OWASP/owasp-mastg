@@ -56,6 +56,9 @@
         },
         {
             "pattern": "^https://oauth.net"
+        },
+        {
+            "pattern": "^https://www.bsi.bund.de"
         }
     ],
     "httpHeaders": [
