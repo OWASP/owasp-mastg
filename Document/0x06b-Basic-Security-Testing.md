@@ -119,7 +119,6 @@ iOS upgrades are based on a challenge-response process (generating the so-called
 
 For some devices and iOS versions, it is possible to downgrade to older versions in case the SHSH blobs for that device were collected when the signing window was active. More information on this can be found on the [cfw iOS Guide - Saving Blobs](https://ios.cfw.guide/saving-blobs/)
 
-
 ##### Which Jailbreaking Tool to Use
 
 Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://appledb.dev/ "Apple DB"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
