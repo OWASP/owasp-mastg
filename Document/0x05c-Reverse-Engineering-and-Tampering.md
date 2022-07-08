@@ -500,7 +500,7 @@ Thanks to tools like [objection](0x08-Testing-Tools.md#objection), you can patch
 
 Now you can use objection to dynamically analyze the application on non-rooted devices.
 
-The following commands summarize the patching and starting of dynamic analysis with objection:
+The following commands summarize how to patch and start dynamic analysis using objection:
 
 ```bash
 # Download the Uncrackable APK

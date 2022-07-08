@@ -1036,7 +1036,7 @@ Some applications will implement SSL Pinning, which prevents the application fro
 
 For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
 
-This section describes various ways to bypass SSL Pinning and gives guidance about what you should do when the existing tools don't help.
+This section describes various ways to bypass SSL Pinning and gives guidance about what you should do when the existing tools don't work.
 
 #### Methods for Jailbroken and Non-jailbroken Devices
 
@@ -1063,10 +1063,11 @@ If you have a jailbroken device you can try one of the following tools that can 
 
 Technologies and systems change over time, and some bypass techniques might not work eventually. Hence, it's part of the tester work to do some research, since not every tool is able to keep up with OS versions quickly enough.
 
-Some apps might implement custom SSL pinning methods, so the tester could also develop new bypass scripts making use of existing ones as a base or inspiration and using similar techniques but targeting the app's custom APIs. Here you can inspect two good examples of such scripts:
+Some apps might implement custom SSL pinning methods, so the tester could also develop new bypass scripts making use of existing ones as a base or inspiration and using similar techniques but targeting the app's custom APIs. Here you can inspect three good examples of such scripts:
 
 - ["objection - Pinning Bypass Module" (pinning.ts)](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts)
 - ["Frida CodeShare - ios10-ssl-bypass"](https://codeshare.frida.re/@dki/ios10-ssl-bypass/) by @dki
+- ["Circumventing SSL Pinning in obfuscated apps with OkHttp"](https://blog.nviso.eu/2019/04/02/circumventing-ssl-pinning-in-obfuscated-apps-with-okhttp) by Jeroen Beckers
 
 **Other Techniques:**
 

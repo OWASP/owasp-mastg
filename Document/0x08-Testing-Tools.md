@@ -546,9 +546,9 @@ Objection offers several features specific to Android. You can find the [full li
 - List the Activities, Services and Broadcast receivers
 - Start Activities
 
-If you have a rooted device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to jailbreak the latest version of iOS or the app may contain advanced RASP controls for rooting detection, so injecting a frida-gadget may be the easiest way to bypass those controls.
+If you have a rooted device with frida-server installed, Objection can connect directly to the running Frida server to provide all its functionality without needing to repackage the application. However, it is not always possible to root an Android device or the app may contain advanced RASP controls for root detection, so injecting a frida-gadget may be the easiest way to bypass those controls.
 
-The ability to **perform advanced dynamic analysis on non-rooted devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x05b-Basic-Security_Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or get around basic security controls.
+The ability to **perform advanced dynamic analysis on non-rooted devices** is one of the features that makes Objection incredibly useful. After following the [repackaging process](0x05b-Basic-Security_Testing.md#repackaging-apps) you will be able to run all the aforementioned commands which make it very easy to quickly analyze an application, or bypass basic security controls.
 
 ##### Using Objection on Android
 

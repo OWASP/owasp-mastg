@@ -71,7 +71,7 @@ Mach header
 MH_MAGIC_64    ARM64        ALL  0x00     EXECUTE    33       4192   NOUNDEFS DYLDLINK TWOLEVEL PIE
 ```
 
-Note the architectures: `armv7` (32-bit) and `arm64` (64-bit). This design of a fat binary allows an application to be deployed on all devices.
+Note the architectures: `armv7` (32-bit) and `arm64` (64-bit). This design of a fat binary allows an application to be deployed on different architectures.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
 ```bash
@@ -129,7 +129,7 @@ From here on you can use this information to derive more insights which might be
 
 The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks.
 
-Remember that in most cases, only using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, so please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-Basic-Security-Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "iOS Basic Security Testing" chapter and check out the test cases in the chapter "[iOS Network Communication](0x06g-Testing-Network-Communication.md)" for further information.
+Remember that in most cases, using only static analysis will not be enough and might even turn out to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interception proxy). In this section we've only touched the surface, so please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-Basic-Security-Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "iOS Basic Security Testing" chapter and check out the test cases in the chapter "[iOS Network Communication](0x06g-Testing-Network-Communication.md)" for further information.
 
 ### Manual (Reversed) Code Review
 
@@ -244,13 +244,13 @@ Life is easy with a jailbroken device: not only do you gain easy privileged acce
 
 ### Dynamic Analysis on Non-Jailbroken Devices
 
-If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup (e.g. the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") to enable dynamic testing with Frida and related tools such as objection). This way, you can instrument the app and do pretty much everything you need to do for a dynamic analysis (of course, you can't break out of the sandbox this way, but you won't often need to). However, this technique works only if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
+If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup (e.g. the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") to enable dynamic testing with Frida and related tools such as objection). This way, you can instrument the app and do everything you need to do for  dynamic analysis (of course, you can't break out of the sandbox this way). However, this technique only works if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
 
 #### Automated Repackaging
 
 [Objection](0x08-Testing-Tools.md#objection) automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
 
-Using objection's repackaging feature is sufficient for most of the cases. However, in some complex scenarios you might need more fine-grained access or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
+Using objection's repackaging feature is sufficient for most of use cases. However, in some complex scenarios you might need more fine-grained control or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
 
 #### Manual Repackaging
 

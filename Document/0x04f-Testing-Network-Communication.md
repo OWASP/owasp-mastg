@@ -4,26 +4,26 @@ Practically every network-connected mobile app uses the Hypertext Transfer Proto
 
 ## Secure Connections
 
-The time has long passed since it was reasonable to use cleartext HTTP alone and it's usually trivial to secure HTTP connections using HTTPS. HTTPS is essentially HTTP layered on top of another protocol known as transport layer security. And transport layer security performs a multi-leg handshake using public key cryptography and, when complete, creates a secure connection.
+The time has long passed since it was reasonable to use cleartext HTTP alone and it's usually trivial to secure HTTP connections using HTTPS. HTTPS is essentially HTTP layered on top of another protocol known as Transport Layer Security (TLS). And TLS performs a handshake using public key cryptography and, when complete, creates a secure connection.
 
-An HTTPS connection is considered secure because of three properties. The first being that the data that's leaving your app goes over the network encrypted. So it can't be read.
-The second that it provides message integrity so the message can't be altered without detection.
-And finally, the third, it provides authentication so you can actually prove the identity of exactly who you are talking to.
+An HTTPS connection is considered secure because of three properties:
 
-it important to use HTTPS? Well, it's essentially, it comes down to this: your customers trust you with their data and their privacy.
+- **Confidentiality:** TLS encrypts data before sending it over the network, which means it can't be read by an intermediary.
+- **Integrity:** the data can't be altered without detection.
+- **Authentication:** the client can validate the identity of the server to make sure the connection is established with the correct server.
 
 ## Server Trust Evaluation
 
-Certificate Authorities are an integral part of a secure client server communication and they are predefined in the trust store of each operating system. For instance, on iOS you are automatically trusting an enormous amount of certificates which you can look up in detail in the Apple documentation, that will show you [lists of available trusted root certificates for each iOS version](https://support.apple.com/en-gb/HT204132 "Lists of available trusted root certificates in iOS").
+Certificate Authorities (CAs) are an integral part of a secure client server communication and they are predefined in the trust store of each operating system. For instance, on iOS there are more than 200 root certificates installed (see Apple documentation - Available trusted root certificates for Apple operating systems](https://support.apple.com/en-gb/HT204132 "Lists of available trusted root certificates in iOS"))
 
-CAs can be added to the trust store, either manually through the user, by an MDM that manages your enterprise device or through malware. The question is then: "can you trust all of those CAs and should your app rely on the default trust store?". After all, there are well-known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors. A detailed timeline of CA breaches and failures can be found at [sslmate.com](https://sslmate.com/certspotter/failures "Timeline of PKI Security Failures").
+CAs can be added to the trust store, either manually by the user, by an MDM that manages the enterprise device or through malware. The question is then: "can you trust all of those CAs and should your app rely on the default trust store?". After all, there are well-known cases where certificate authorities have been compromised or tricked into issuing certificates to impostors. A detailed timeline of CA breaches and failures can be found at [sslmate.com](https://sslmate.com/certspotter/failures "Timeline of PKI Security Failures").
 
-Both Android and iOS allow to customize trusted CAs or trust anchors.
+Both Android and iOS allow the user to install additional CAs or trust anchors.
 
-An app may want to trust a custom set of CAs instead of the platform default. The most common reasons of this are:
+An app may want to trust a custom set of CAs instead of the platform default. The most common reasons for this are:
 
 - Connecting to a host with a custom certificate authority (a CA that isn't known or trusted by the system yet), such as a CA that is self-signed or is issued internally within a company.
-- Limiting the set of CAs to only the CAs you trust instead of every pre-installed CA.
+- Limiting the set of CAs to a specific list of trusted CAs.
 - Trusting additional CAs not included in the system.
 
 ### About Trust Stores
@@ -55,21 +55,21 @@ Also, for testing purposes such as when performing traffic interception, you nee
 
 ### Extending Trust
 
-Whenever the app connects to a server whose certificate is self-signed or unknown to the system. This is typically the case for any non public CAs, for instance those issued by an organization such as a government, corporation, or education institution for their own use.
+Whenever the app connects to a server whose certificate is self-signed or unknown to the system, the secure connection will fail. This is typically the case for any non public CAs, for instance those issued by an organization such as a government, corporation, or education institution for their own use.
 
 Both Android and iOS offer means to extend trust, i.e. include additional CAs so that the app trusts the system's built-in ones plus the custom ones.
 
-However, remember that the device users are always able to include additional CAs (on Android by adding certificates to the user Trust Store and on iOS by installing so-called profiles and trusting them). Therefore, depending on the threat model of the app it might be necessary to avoid trusting any certificates added to the user trust store or even go further and only trust a pre-defined specific certificate or set of certificates.
+However, remember that the device users are always able to include additional CAs. Therefore, depending on the threat model of the app it might be necessary to avoid trusting any certificates added to the user trust store or even go further and only trust a pre-defined specific certificate or set of certificates.
 
-For many apps, the "default behaviour" provided by the mobile platform will be surely enough for their use case (in the rare case that a system-trusted CA could get compromised the data that they handle is not considered sensitive or the take other mean to secure it which is resilient even to such a CA breach). However, for other apps such as financial or health apps, the risk of a CA breach, even if rare, must be considered.
+For many apps, the "default behavior" provided by the mobile platform will be secure enough for their use case (in the rare case that a system-trusted CA is compromised the data handled by the app is not considered sensitive or other security measures are taken which are resilient even to such a CA breach). However, for other apps such as financial or health apps, the risk of a CA breach, even if rare, must be considered.
 
 ### Restricting Trust: Identity Pinning
 
-Some apps might require to further increase their security by restricting the number of CAs that they trust. Typically to those under the control of the app developers or explicitly trusted by them because they are an integral part of the functioning of their apps. This trust restriction is known as _Identity Pinning_ usually implemented as _Certificate Pinning_ or _Public Key Pinning_.
+Some apps might need to further increase their security by restricting the number of CAs that they trust. Typically only the CAs which are used by the developer are explicitly trusted, while disregarding all others. This trust restriction is known as _Identity Pinning_ usually implemented as _Certificate Pinning_ or _Public Key Pinning_.
 
 > In the OWASP MSTG we will be referring to this term as "Identity Pinning", "Certificate Pinning", "Public Key Pinning" or simply "Pinning".
 
-Pinning is the process of associating a remote endpoint with a particular identity, such as a X.509 certificate or public key, instead of accepting any certificate signed by a trusted certificate authority. After pinning the server identity (or a certain set, aka. _pinset_), the mobile app will subsequently connect to those known remote endpoints only. Withdrawing trust from external CAs reduces the app attack surface.
+Pinning is the process of associating a remote endpoint with a particular identity, such as a X.509 certificate or public key, instead of accepting any certificate signed by a trusted CA. After pinning the server identity (or a certain set, aka. _pinset_), the mobile app will subsequently connect to those remote endpoints only if the identity matches. Withdrawing trust from unnecessary CAs reduces the app's attack surface.
 
 #### General Guidelines
 
@@ -90,7 +90,8 @@ Pinning has gained a bad reputation since its introduction several years ago. We
 - The bad reputation is due to operational reasons (e.g. implementation/pin management complexity) not lack of security.
 - If an app does not implement pinning, this shouldn't be reported as a vulnerability. However, if the app must verify against MASVS-L2 it must be implemented.
 - Both Android and iOS make implementing pinning very easy and follow the best practices.
-- Pinning can be bypassed (usually very easily) and therefore the app shouldn't solely rely on it (it's defense in depth).
+- Pinning protects against a compromised CA or a malicious CA that is installed on the device. In those cases, pinning will prevent the OS from establishing a secure connection from being established with a malicious server. However, if an attacker is in control of the device, they can easily disable any pinning logic and thus still allow the connection to happen. As a result, this will not prevent an attacker from accessing your backend and abusing server-side vulnerabilities.
+- Pinning in mobile apps is not the same as HTTP Public Key Pinning (HPKP). The HPKP header is no longer recommended on websites as it can lead to users being locked out of the website without any way to revert the lockout. For mobile apps, this is not an issue, as the app can always be updated via an out-of-band channel (i.e. the app store) in case there are any issues.
 
 #### About Pinning Recommendations in Android Developers
 
@@ -102,7 +103,7 @@ They also include this [note](https://developer.android.com/training/articles/se
 
 > Note that, when using certificate pinning, you should always include a backup key so that if you are forced to switch to new keys or change CAs (when pinning to a CA certificate or an intermediate of that CA), your app's connectivity is unaffected. Otherwise, you must push out an update to the app to restore connectivity.
 
-The first statement can be mistakenly interpreted as they'd be saying that they "do not recommend certificate pinning". The second statement clarifies it: the actual recommendation is that if developers want to implement pinning they have to do it right.
+The first statement can be mistakenly interpreted as saying that they "do not recommend certificate pinning". The second statement clarifies this: the actual recommendation is that if developers want to implement pinning they have to take the necessary precautions.
 
 #### About Pinning Recommendations in Apple Developers
 
@@ -145,7 +146,7 @@ Note that this setup can sometimes become very tedious and is not as straightfor
 
 ## Intercepting Traffic from the App Process
 
-Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or once it arrives to the app.
+Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or when the responses are received in the app.
 
 You don't need to deploy a fully fledged MITM attack if you simply want to know if a certain piece of sensitive data is being transmitted to the network. In this case you wouldn't even have to bypass pinning, if implemented. You just have to hook the right functions, e.g. `SSL_write` and `SSL_read` from openssl.
 

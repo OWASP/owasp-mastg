@@ -495,7 +495,7 @@ The following files are unpacked:
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
-As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, you better unpack the APK using [apktool](0x08-Testing-Tools.md#apktool).
+As unzipping with the standard `unzip` utility leaves some files such as the `AndroidManifest.xml` unreadable, it's better to unpack the APK using [apktool](0x08-Testing-Tools.md#apktool).
 
 ```bash
 $ ls -alh
@@ -1104,7 +1104,7 @@ This section describes various ways to bypass SSL Pinning and gives guidance abo
 There are several ways to bypass certificate pinning for a black box test, depending on the frameworks available on the device:
 
 - Cydia Substrate: Install the [Android-SSL-TrustKiller](https://github.com/iSECPartners/Android-SSL-TrustKiller "Android-SSL-TrustKiller") package.
-- Frida: Use the [Universal Android SSL Pinning Bypass with Frida](https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/ "Universal Android SSL Pinning Bypass with Frida") script.
+- Frida: Use the [frida-multiple-unpinning](https://codeshare.frida.re/@akabe1/frida-multiple-unpinning/ "Project: frida-multiple-unpinning") script.
 - Objection: Use the `android sslpinning disable` command.
 - Xposed: Install the [TrustMeAlready](https://github.com/ViRb3/TrustMeAlready "TrustMeAlready") or [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed "SSLUnpinning") module.
 
@@ -1159,7 +1159,7 @@ Bypassing the pinning logic dynamically makes it more convenient as there is no 
 
 Finding the correct method to hook is typically the hardest part and can take quite some time depending on the level of obfuscation. As developers typically reuse existing libraries, it is a good approach to search for strings and license files that identify the used library. Once the library has been identified, examine the non-obfuscated source code to find methods which are suited for dynamic instrumentation.
 
-As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the CertificatePinner.Builder class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways:
+As an example, let's say that you find an application which uses an obfuscated OkHTTP3 library. The [documentation](https://square.github.io/okhttp/3.x/okhttp/ "OkHTTP3 documentation") shows that the `CertificatePinner.Builder` class is responsible for adding pins for specific domains. If you can modify the arguments to the [Builder.add method](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.Builder.html#add-java.lang.String-java.lang.String...- "Builder.add method"), you can change the hashes to the correct hashes belonging to your certificate. Finding the correct method can be done in either two ways, as explained in [this blog post](https://blog.nviso.eu/2019/04/02/circumventing-ssl-pinning-in-obfuscated-apps-with-okhttp/) by Jeroen Beckers:
 
 - Search for hashes and domain names as explained in the previous section. The actual pinning method will typically be used or defined in close proximity to these strings
 - Search for the method signature in the SMALI code
