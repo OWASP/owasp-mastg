@@ -4,7 +4,7 @@
     "MD004": {"style": "dash"},                   // ul-style
     "MD013": false,                               // line-length
     "MD024": {"allow_different_nesting": true},   // no-duplicate-header
-    "MD026": {"punctuation": "!?"},               // no-trailing-punctuation
+    "MD026": {"punctuation": ".,;:"},             // no-trailing-punctuation (allows !?)
     "MD033": false,                               // no-inline-html
     "MD035": {"style": "---"},                    // hr-style
     "MD036": {"punctuation": ".,;:!。"},          // no-emphasis-as-header
