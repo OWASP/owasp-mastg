@@ -20,11 +20,15 @@ The following is the most basic iOS app testing setup:
 
 #### Getting the UDID of an iOS device
 
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Open Finder and select the connected iOS device in the sidebar.
 
-<img src="Images/Chapters/0x06b/UDID-Finder.png" width="100%" />
+<img src="Images/Chapters/0x06b/finder_ipad_view.png" width="100%" />
 
-If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
+Click on the text containing the model, storage capacity, and battery information, and it will display the serial number, UDID, and model instead:
+
+<img src="Images/Chapters/0x06b/finder_unveil_udid.png" width="100%" />
+
+You can copy the UDID by right clicking on it.
 
 It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
 
