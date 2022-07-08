@@ -317,7 +317,7 @@ However, keep in mind that:
 - the APIs might not be complete.
 - if nothing is hooked, that doesn't necessarily mean that the app doesn't implement pinning.
 
-In both cases, the app or some of its components might implement pinning on a very custom way that it's [not implemented in objection](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts). Please check the static analysis section for specific pinning indicators and more in-depth testing.
+In both cases, the app or some of its components might implement custom pinning in a way that is [supported by objection](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts). Please check the static analysis section for specific pinning indicators and more in-depth testing.
 
 #### Client certificate validation
 
