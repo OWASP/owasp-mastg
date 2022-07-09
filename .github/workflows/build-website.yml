@@ -23,7 +23,7 @@ jobs:
       - run: mkdir docs/assets/Images/MASVS
       - uses: actions/checkout@v2
         with:
-          repository: "OWASP/owasp-masvs.git"
+          repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
       - run: mv owasp-masvs/Document/0x0*.md docs/MASVS
