@@ -12,8 +12,20 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install -r requirements.txt
+
       - run: mkdir docs/MSTG
       - run: mv Document/0x0*.md docs/MSTG
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MSTG/*.md
+      
+      - run: mkdir docs/MASVS
+      - run: mkdir docs/assets/Images/MASVS
+      - uses: actions/checkout@v2
+        with:
+          repository: "OWASP/owasp-masvs.git"
+          fetch-depth: 1
+      - run: mv owasp-masvs/Document/0x0*.md docs/MASVS
+      - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
+      - run: sed -i "s#images/#../assets/Images/MASVS/#g" docs/MASVS/*.md
+      
       - run: mkdocs gh-deploy --force --clean --verbose
