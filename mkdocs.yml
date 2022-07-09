@@ -24,12 +24,13 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
+    - toc.integrate
     - navigation.instant
-    - navigation.expand
+    # - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
-    - toc.integrate
     - navigation.top
+    - navigation.tracking
 
   palette:
     # - primary: #499FFF 
