@@ -2,6 +2,7 @@ site_name: OWASP Mobile Security Project
 repo_url: https://github.com/OWASP/owasp-mstg
 repo_name: OWASP/owasp-mstg
 # use_directory_urls: false # only set for mkdocs build
+edit_uri: "" # disable edit button
 
 copyright: |
   <div style="float: left; padding-right: 1em;">
