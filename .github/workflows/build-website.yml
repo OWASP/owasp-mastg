@@ -1,5 +1,6 @@
 name: Build GitHub Pages
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -24,6 +25,7 @@ jobs:
         with:
           repository: "OWASP/owasp-masvs.git"
           fetch-depth: 1
+          path: owasp-masvs/
       - run: mv owasp-masvs/Document/0x0*.md docs/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
       - run: sed -i "s#images/#../assets/Images/MASVS/#g" docs/MASVS/*.md
