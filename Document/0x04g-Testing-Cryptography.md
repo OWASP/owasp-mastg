@@ -169,7 +169,7 @@ Note: given the ease of memory dumping, never share the same key among accounts 
 
 ### Protecting Keys in Transport
 
-When keys need to be transported from one device to another, or from the app to a backend, make sure that proper key protection is in place, by means of an transport keypair or another mechanism. Often, keys are shared with obfuscation methods which can be easily reversed. Instead, make sure asymmetric cryptography or wrapping keys are used. For example, we may encrypt key from symmetric encryption with the public key from asymmetric key-pair. 
+When keys need to be transported from one device to another, or from the app to a backend, make sure that proper key protection is in place, by means of a transport keypair or another mechanism. Often, keys are shared with obfuscation methods which can be easily reversed. Instead, make sure asymmetric cryptography or wrapping keys are used. For example, a symmetric key can be encrypted with the public key from an asymmetric key pair. 
 
 ## Cryptographic APIs on Android and iOS
 
