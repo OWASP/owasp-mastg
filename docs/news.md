@@ -50,7 +50,7 @@ Thanks to the great support of our community we have now 9 different languages a
 - Russian - Eugen Martynov, Gall Maxim, Chelnokov Vladislav (Review), Oprya Egor (Review) and Tereshin Dmitry (Review)
 - Spanish - Martin Marsicano and Carlos Holguera
 
-The MASVS and its translations are available in PDF, Mobile, ePub, docx and you can also read it via Gitbook. See here for details: <https://github.com/OWASP/owasp-masvs#getting-the-masvs>
+The MASVS and its translations are available in PDF, Mobile, ePub, docx and you can also read it via Gitbook. See here for details: <https://github.com/OWASP/owasp-masvs/releases>
 
 The project team (Sven Schleier, Jeroen Willemsen and Carlos Holguera) would like to thank all the contributors, translators and those who build the improved automation around it and all their hard work and support in the last few months! New releases will be much faster thanks to our GitHub actions and Docker containers. Next to that, we are happy to add Korean and Chinese Simplified to our ever growing list of translations! We will finalize the document generation system and then apply the same build system to the Mobile Security Testing Guide (MSTG) in order to speed up the release process and release more frequently.
 
@@ -104,7 +104,7 @@ After many changes, we decided it was time to create a new release in order to i
 
 ## April 15th, 2019: Book version, project promotion & preparation for the summit
 
-Given that most news is already shared via OWASP Slack over the last quarter, we still see that it is good to share a summary of all of the good things outside of Slack using this news section. In this update we have a lot to share! While we started off this year with an improved version of the MASVS and MSTG, things have not been quiet: there has been a huge development in master of the MSTG and many issues have been raised and fixed. In the meantime, we have worked on an actual print of the book! While an early version is available through Hulu (no link supplied, google and buy at your own risk), we are working on making a better version of that book. In the mean time we have filed for a project promotion to Flagship! Next a lot more cool things happened: with the now official publication of [NIST Special Publication (SP) 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1), the MASVS and MSTG are getting more mainstream ;-). The MASVS & MSTG are mentioned in various other upcoming programs/standards/recommendations as well, which is really a recognition of the hard work put in by the community. We are proud to be part of such a great project! Next, we are preparing to join the [Open Security Summit](https://opensecsummit.org/tracks/mobile/) again! Already three people will be on site, and at least one remote, but we would love to work with more people at the project again! Want to know more? Please get in touch via Slack and join the #project-mobile_omtg channel or follow us on [Twitter](https://twitter.com/OWASP_MSTG).
+Given that most news is already shared via OWASP Slack over the last quarter, we still see that it is good to share a summary of all of the good things outside of Slack using this news section. In this update we have a lot to share! While we started off this year with an improved version of the MASVS and MSTG, things have not been quiet: there has been a huge development in master of the MSTG and many issues have been raised and fixed. In the meantime, we have worked on an actual print of the book! While an early version is available through Hulu (no link supplied, google and buy at your own risk), we are working on making a better version of that book. In the mean time we have filed for a project promotion to Flagship! Next a lot more cool things happened: with the now official publication of [NIST Special Publication (SP) 800-163 Revision 1](https://csrc.nist.gov/news/2019/nist-publishes-sp-800-163-rev-1), the MASVS and MSTG are getting more mainstream ;-). The MASVS & MSTG are mentioned in various other upcoming programs/standards/recommendations as well, which is really a recognition of the hard work put in by the community. We are proud to be part of such a great project! Next, we are preparing to join the Open Security Summit again! Already three people will be on site, and at least one remote, but we would love to work with more people at the project again! Want to know more? Please get in touch via Slack and join the #project-mobile_omtg channel or follow us on [Twitter](https://twitter.com/OWASP_MSTG).
 
 ## January 15th, 2019: Release of improved checklist
 
@@ -146,7 +146,7 @@ The Mobile Security Testing Guide version 1.0.1 has been released using our auto
 
 ## September 1st, 2018: Mobile Security Testing Guide mentioned in NIST SP-163r1
 
-The Mobile Security Testing Guide is now reference in [NIST SP 800-163 Revision 1](https://csrc.nist.gov/CSRC/media/Publications/sp/800-163/rev-1/error/documents/sp800-163r1-draft.pdf) .
+The Mobile Security Testing Guide is now reference in [NIST SP 800-163 Revision 1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-163r1.pdf).
 
 ## Augustus 2nd, 2018: Mobile App Security Verification Standard Releases
 
@@ -170,12 +170,11 @@ Version 0.9.4 of the MASVS is now [available for download](https://github.com/OW
 
 ## July 5th, 2017: Sponsorship Packages Announced
 
-We are happy to announce that a limited amount of [sponsorship packages](assets/pdfs/mstg-sponsor-packages.pdf) will be made available shortly through our crowdfunding campaign. With these packages, we offer companies opportunities to create brand awareness and maximize visibility in the mobile security space. 100% of the funds raised go directly into the project budget and will be used to fund production of the final release.
+We are happy to announce that a limited amount of sponsorship packages will be made available shortly through our crowdfunding campaign. With these packages, we offer companies opportunities to create brand awareness and maximize visibility in the mobile security space. 100% of the funds raised go directly into the project budget and will be used to fund production of the final release.
 
 ## June 17th, 2017: The OWASP Mobile Security Testing Guide - Summit Preview
 
 The MSTG Summit Preview is an experimental proof-of-concept book created on the OWASP Summit 2017 in London. The goal was to improve the authoring process and book deployment pipeline, as well as to demonstrate the viability of the project. Note that the content is not final and will likely change significantly in subsequent releases.
-Download the ebook [here](https://github.com/OWASP/owasp-mstg/releases/download/1.0/owasp-mstg-summit-edition.epub).
 
 ## Mobile Security Testing Workshop on the OWASP Summit 2017
 
@@ -216,42 +215,41 @@ The MASVS is a community effort to establish security requirements for designing
 
 ## January 28th, 2017: Mobile Crackmes and Reversing Tutorials
 
-![Uncrackable](/assets/immages/uncrackable250.png)
 A key goal of the OWASP Mobile Testing Project is to build the ultimate learning resource and reference guide for mobile app reversers. As hands-on hacking is by far the best way to learn, we'd like to link most of the content to practical examples.
 
 Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes) to the [GitHub repo](https://github.com/OWASP/owasp-mstg) that will then be used as examples throughout the guide. The goal is to collect enough resources for demonstrating the most important tools and techniques in our guide, plus additional crackmes for practicing. For starters there are three challenges:
 
-- [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/OMTG-Files/02_Crackmes/01_Android/01_License_Validation)
+- [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01)
 - [Uncrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01/)
 - [Uncrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/)
 
-One of these three already has a [documented solution](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Reverse-Engineering-and-Tampering-Android.md#symbolicexec) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mstg/blob/master/OMTG-Files/02_Crackmes/List_of_Crackmes.md).
+One of these three already has a [documented solution](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md).
 
 ### We Need More Authors and Contributors!
 
-Maybe you have noticed that [the reverse engineering sections in the Mobile Testing Guide are incomplete](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html). The reason: We're still in the starting stages and don't have a lot of authors and contributors (in fact, 99% of the reversing content was produced by one guy). We'd love to welcome *you* as a contributor of crackmes, tutorials, writeups, or simply new ideas for this project.
+Maybe you have noticed that the reverse engineering sections in the Mobile Testing Guide are incomplete. The reason: We're still in the starting stages and don't have a lot of authors and contributors (in fact, 99% of the reversing content was produced by one guy). We'd love to welcome _you_ as a contributor of crackmes, tutorials, writeups, or simply new ideas for this project.
 
 #### What You Can Do
 
 The OWASP MSTG is an open project and there's a lot of flexibility - it mostly depends on your skill set and willingness to commit your time. That said, the some areas that need help are:
 
-- Solving crackmes and contributing a tutorial to the guide (preferable a technique that's not already documented. Check the [TOC](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) first).
+- Solving crackmes and contributing a tutorial to the guide (preferable a technique that's not already documented).
 - Writing and adding new crackmes along with solutions (should also describe something not already in the guide. Cracking white-boxes, dynamic analysis using an emulator / introspection, etc. etc.).
 - General reversing write-ups to describe specific processes and techniques
-- Help us figure out r[esiliency testing processes](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x07b-Assessing_Software_Protections.md) and [obfuscation metrics](https://github.com/b-mueller/obfuscation-metrics)
+- Help us figure out resiliency testing processes and [obfuscation metrics](https://github.com/muellerberndt/obfuscation-metrics)
 The reversing part of the guide consists of the following chapters:
 
-- [Tampering and Reverse Engineering - General Overview](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05-Testing-Processes-and-Techniques.md#tampering-and-reverse-engineering)
-- [Tampering and Reverse Engineering on Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Reverse-Engineering-and-Tampering-Android.md#tampering-and-reverse-engineering-on-android)
-- [Tampering and Reverse Engineering on iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md#tampering-and-reverse-engineering-on-ios)
+- Tampering and Reverse Engineering - General Overview
+- Tampering and Reverse Engineering on Android
+- Tampering and Reverse Engineering on iOS
 
 #### How To Join
 
-Read the [author's guide](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
+Read the [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
 
 ## January 22nd, 2017: Mobile Testing Guide TOC Available
 
-As of now, we'll be auto-generating a [table of contents](https://rawgit.com/OWASP/owasp-mstg/master/Generated/OWASP-MSTG-Table-of-Contents.html) out of the current MSTG master branch. This reflects the current state of the guide, and should make it easier to coordinate work between authors. A short-term goal is to finalize the structure of the guide so we get a clearer picture of what will be included in the final document. Lead authors are encouraged to complete the outline of their respective chapters.
+As of now, we'll be auto-generating a table of contents out of the current MSTG master branch. This reflects the current state of the guide, and should make it easier to coordinate work between authors. A short-term goal is to finalize the structure of the guide so we get a clearer picture of what will be included in the final document. Lead authors are encouraged to complete the outline of their respective chapters.
 
 **On another note, we still need additional authors to help with all sections of the guide, including mobile operating system overviews, testing processes and techniques, and reverse engineering.** Especially iOS authors are in short supply! As usual, ping us on the Slack Channel if you want to contribute.
 
@@ -276,12 +274,6 @@ All of this is unpaid, volunteer work. However, depending on your contribution, 
 
 ### Where do I sign up?
 
-First of all, have a look at the existing RE chapters outline:
+First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md) first.
 
-- [Generic / Introduction](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05-Testing-Processes-and-Techniques.md#tampering-and-reverse-engineering)
-- [Android](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05b-Reverse-Engineering-and-Tampering-Android.md)
-- [iOS](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Reverse-Engineering-and-Tampering-iOS.md#tampering-and-reverse-engineering-on-ios)
-
-You'll probably immediately have ideas on how you can contribute. If that's the case, read the [author's guide](https://github.com/OWASP/owasp-mstg/blob/master/authors_guide.md) first.
-
-Then contact [Bernhard Mueller](https://github.com/b-mueller) - ideally directly on the OWASP Mobile Security Project Slack Channel, where you'll find all the other project members. You can sign up for an account here.
+Then contact [Bernhard Mueller](https://github.com/muellerberndt) - ideally directly on the OWASP Mobile Security Project Slack Channel, where you'll find all the other project members. You can sign up for an account here.

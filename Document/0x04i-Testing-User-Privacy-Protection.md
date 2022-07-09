@@ -21,7 +21,7 @@ There are two main dimensions to consider here:
   - **Principle of Least Privilege** ("Every program and every user of the system should operate using the least set of privileges necessary to complete the job.")
 - **User Education**: Users need to be educated about their sensitive data and informed about how to use the application properly (to ensure secure handling and processing of their information).
 
-> Note: More often than not apps will claim to handle certain data, but in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://www.researchgate.net/publication/339349349_Engineering_Privacy_in_Smartphone_Apps_A_Technical_Guideline_Catalog_for_App_Developers) gives a very nice introduction to this topic.
+> Note: More often than not apps will claim to handle certain data, but in reality that's not the case. The IEEE article ["Engineering Privacy in Smartphone Apps: A Technical Guideline Catalog for App Developers" by Majid Hatamian](https://drive.google.com/file/d/1cp7zrqJuVkftJ0DARNN40Ga_m_tEhIrQ/view?usp=sharing) gives a very nice introduction to this topic.
 
 ### Protection Goals for Data Protection
 
@@ -53,9 +53,21 @@ Most parts of the processes derived from the protection goals are traditionally 
 In order to address these challenges and help users easily understand how their data is being collected, handled, and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf):
 
 - the App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
-- the Google Play [Data Safety Labels](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
+- the Google Play [Data Safety Section](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
 
 As a new requirement on both platforms, it's vital that these labels are accurate in order to provide user assurance and mitigate abuse.
+
+### Google ADA MASA program
+
+Performing regular security testing can help developers identify key vulnerabilities in their apps. Google Play will allow developers who have completed independent security validation to showcase this on their Data safety section. This helps users feel more confident about an app's commitment to security and privacy.
+
+In order to provide more transparency into the app's security architecture, Google has introduced the [MASA (Mobile Application Security Assessment)](https://appdefensealliance.dev/masa) program as part of the [App Defense Alliance (ADA)](https://appdefensealliance.dev/). With MASA, Google has acknowledged the importance of leveraging a globally recognized standard for mobile app security to the mobile app ecosystem. Developers can work directly with an Authorized Lab partner to initiate a security assessment. Google will recognize developers who have had their applications independently validated against a set of MASVS Level 1 requirements and will showcase this on their Data safety section.
+
+<img src="Images/Chapters/0x04i/masa_framework.png" width="100%"/>
+
+> If you are a developer and would like to participate, you should complete this [form](https://docs.google.com/forms/d/e/1FAIpQLSdBl_eCNcUeUVDiB2duiJLZ5s4AV5AhDVuOz_1u8S9qhcXF5g/viewform).
+
+Note that the limited nature of testing does not guarantee complete safety of the application. This independent review may not be scoped to verify the accuracy and completeness of a developer's Data safety declarations. Developers remain solely responsible for making complete and accurate declarations in their app's Play store listing.
 
 ### How this Relates to Testing Other MASVS Categories
 
@@ -79,6 +91,7 @@ You can learn more about this and other privacy related topics here:
 - [iOS Privacy Best Practices](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy)
 - [Android App Privacy Policy](https://support.google.com/googleplay/android-developer/answer/9859455#privacy_policy)
 - [Android Data Safety Section on Google Play](https://support.google.com/googleplay/android-developer/answer/10787469)
+- [Preparing your app for the new Data safety section in Google Play](https://www.youtube.com/watch?v=J7TM0Yy0aTQ)
 - [Android Privacy Best Practices](https://developer.android.com/privacy/best-practices)
 
 ## Testing User Education (MSTG-STORAGE-12)

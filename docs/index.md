@@ -73,8 +73,3 @@ Its features include:
 - Multi language
 
 <br><br>
-
-## Docs
-
-- ["Contribute to the OWASP Mobile Security Project"](contributing/1_How_Can_You_Contribute.md)
-- ["Learn about the MASVS and MSTG Releases"](releasing/1_How_to_Release.md)

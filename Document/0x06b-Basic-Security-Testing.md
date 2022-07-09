@@ -10,100 +10,25 @@ Although you can use a Linux or Windows host computer for testing, you'll find t
 
 The following is the most basic iOS app testing setup:
 
-- Ideally macOS host computer with admin rights.
-  - [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools).
-  - An interception proxy tool such as [Burp Suite](0x08-Testing-Tools.md#burp-suite).
-  - [Frida via python-pip](0x08-Testing-Tools.md#frida)
-- At least one jailbroken iOS device (with the target iOS version installed).
-  - [Frida for iOS](0x08-Testing-Tools.md#frida-for-ios)
-- A Wi-Fi network that permits client-to-client traffic.
+- Ideally macOS host computer with admin rights
+- [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools) installed.
+- Wi-Fi network that permits client-to-client traffic.
+- At least one jailbroken iOS device (of the desired iOS version).
+- [Burp Suite](0x08-Testing-Tools.md#burp-suite) or other interception proxy tool.
 
 ### Testing Device
 
-#### Testing on a Real Device
-
-We recommend having a jailbroken iPhone or iPad for testing. These devices allow root access and tool installation, making the security testing process more straightforward. See the next section ["Getting Privileged Access"](#getting-privileged-access) for more information.
-
-If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
-
-#### Testing on the iOS Simulator
-
-Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level *simulation* of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
-
-#### Testing on an Emulator
-
-[Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
-
-#### Getting Privileged Access
-
-iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
-
-- **Rooting**: This typically involves installing the `su` binary on the system or replacing the whole system with a rooted custom ROM. Exploits aren't required to obtain root access as long as the bootloader is accessible.
-- **Flashing custom ROMs**: This allows you to replace the OS that's running on the device after you unlock the bootloader. The bootloader may require an exploit to unlock it.
-
-On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
-
-The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08-Testing-Tools.md#cydia) or [Sileo](0x08-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
-
-Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
-
-##### Benefits of Jailbreaking
-
-End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
-
-- Root access to the file system.
-- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
-- Unrestricted debugging and dynamic analysis.
-- Access to the Objective-C or Swift runtime.
-
-##### Jailbreak Types
-
-There are *tethered*, *semi-tethered*, *semi-untethered*, and *untethered* jailbreaks.
-
-- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
-
-- Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
-
-- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
-
-- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken. They are usually rare and benefit from vulnerabilities allowing an exploit to write persistent code on the device. Examples include [limera1n](https://www.theiphonewiki.com/wiki/Limera1n), [Pangu9](https://www.theiphonewiki.com/wiki/Pangu9) and [Fugu14](https://github.com/LinusHenze/Fugu14).
-
-##### Jailbreak Device Strategy
-
-Jailbreaking an iOS device has become more and more challenging and a very time-sensitive procedure, which is understandable since Apple keeps hardening the system, patching the exploited vulnerabilities and quickly releasing upgrades.
-
-iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
-
-**Recommendation:** if you have a jailbroken device that you use for security testing, keep it as-is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version.
-
-Also consider getting one or more spare devices (which you will be updating with every major iOS release) and wait for new jailbreak software to be released publicly (see next section). Apple is usually quick to release a patch once a jailbreak has been released publicly, so you have only a couple of days to downgrade to the affected iOS version and apply the jailbreak.
-
-##### Jailbreak Software
-
-The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is very challenging. At the time of this writing we can recommend using the very complete ["Jailbreak Chart by the r/jailbreak Reddit community"](https://docs.google.com/spreadsheets/u/0/d/11DABHIIqwYQKj1L83AK9ywk_hYMjEkcaxpIg6phbTf0/htmlview#).
-
-Other sources that have been, and might still be, reliable include:
-
-- [r/jailbreak Reddit Community Page](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
-- [Can I Jailbreak?](https://canijailbreak.com/ "Can I Jailbreak?")
-- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
-
-> **IMPORTANT NOTE**:
-> Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
->
-> Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
-
-##### Testing Jailbreak Detection
-
-Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapter ["iOS Anti-Reversing Defenses"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md).
-
 #### Getting the UDID of an iOS device
 
-The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Select the connected iOS device in Finder and click on the information under the name of the iOS device to iterate through it. Besides the UDID, you can find the serial number, IMEI and other useful information.
+The UDID is a 40-digit unique sequence of letters and numbers to identify an iOS device. You can find the UDID of your iOS device on macOS Catalina onwards in the Finder app, as iTunes is not available anymore in Catalina. Open Finder and select the connected iOS device in the sidebar.
 
-<img src="Images/Chapters/0x06b/UDID-Finder.png" width="400px" />
+<img src="Images/Chapters/0x06b/finder_ipad_view.png" width="100%" />
 
-If you are using a macOS version before Catalina, you can find the [UDID of your iOS device via iTunes](http://www.iclarified.com/52179/how-to-find-your-iphones-udid "How to Find Your iPhone\'s UDID"), by selecting your device and clicking on "Serial Number" in the summary tab. When clicking on this you will iterate through different metadata of the iOS device including its UDID.
+Click on the text containing the model, storage capacity, and battery information, and it will display the serial number, UDID, and model instead:
+
+<img src="Images/Chapters/0x06b/finder_unveil_udid.png" width="100%" />
+
+You can copy the UDID by right clicking on it.
 
 It is also possible to get the UDID via various command line tools on macOS while the device is attached via USB:
 
@@ -133,8 +58,79 @@ It is also possible to get the UDID via various command line tools on macOS whil
 - By using instruments:
 
     ```sh
-    $ instruments -s devices
+    instruments -s devices
     ```
+
+#### Testing on a real device (Jailbroken)
+
+You should have a jailbroken iPhone or iPad for running tests. These devices allow root access and tool installation, making the security testing process more straightforward. If you don't have access to a jailbroken device, you can apply the workarounds described later in this chapter, but be prepared for a more difficult experience.
+
+#### Testing on the iOS Simulator
+
+Unlike the Android emulator, which fully emulates the hardware of an actual Android device, the iOS SDK simulator offers a higher-level _simulation_ of an iOS device. Most importantly, emulator binaries are compiled to x86 code instead of ARM code. Apps compiled for a real device don't run, making the simulator useless for black box analysis and reverse engineering.
+
+#### Testing on an Emulator
+
+[Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium) is the only publicly available iOS emulator. It is an enterprise SaaS solution with a per user license model and does not offer community licenses.
+
+#### Getting Privileged Access
+
+iOS jailbreaking is often compared to Android rooting, but the process is actually quite different. To explain the difference, we'll first review the concepts of "rooting" and "flashing" on Android.
+
+- **Rooting**: This typically involves installing the `su` binary on the system or replacing the whole system with a rooted custom ROM. Exploits aren't required to obtain root access as long as the bootloader is accessible.
+- **Flashing custom ROMs**: This allows you to replace the OS that's running on the device after you unlock the bootloader. The bootloader may require an exploit to unlock it.
+
+On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
+
+The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08-Testing-Tools.md#cydia) or [Sileo](0x08-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
+
+Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
+
+Some apps attempt to detect whether the iOS device on which they're running is jailbroken. This is because jailbreaking deactivates some of iOS' default security mechanisms. However, there are several ways to get around these detections, and we'll introduce them in the chapter ["iOS Anti-Reversing Defenses"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md).
+
+##### Benefits of Jailbreaking
+
+End users often jailbreak their devices to tweak the iOS system's appearance, add new features, and install third-party apps from unofficial app stores. For a security tester, however, jailbreaking an iOS device has even more benefits. They include, but aren't limited to, the following:
+
+- Root access to the file system.
+- Possibility of executing applications that haven't been signed by Apple (which includes many security tools).
+- Unrestricted debugging and dynamic analysis.
+- Access to the Objective-C or Swift runtime.
+
+##### Jailbreak Types
+
+There are _tethered_, _semi-tethered_, _semi-untethered_, and _untethered_ jailbreaks.
+
+- Tethered jailbreaks don't persist through reboots, so re-applying jailbreaks requires the device to be connected (tethered) to a computer during every reboot. The device may not reboot at all if the computer is not connected.
+
+- Semi-tethered jailbreaks can't be re-applied unless the device is connected to a computer during reboot. The device can also boot into non-jailbroken mode on its own.
+
+- Semi-untethered jailbreaks allow the device to boot on its own, but the kernel patches (or user-land modifications) for disabling code signing aren't applied automatically. The user must re-jailbreak the device by starting an app or visiting a website (not requiring a connection to a computer, hence the term untethered).
+
+- Untethered jailbreaks are the most popular choice for end users because they need to be applied only once, after which the device will be permanently jailbroken.
+
+##### Caveats and Considerations
+
+Developing a jailbreak for iOS is becoming more and more complicated as Apple continues to harden their OS. Whenever Apple becomes aware of a vulnerability, it is patched and a system update is pushed out to all users. As it is not possible to downgrade to a specific version of iOS, and since Apple only allows you to update to the latest iOS version, it is a challenge to have a device which is running a version of iOS for which a jailbreak is available. Some vulnerabilities cannot be patched by software, such as the [checkm8 exploit](https://www.theiphonewiki.com/wiki/Checkm8_Exploit "Checkm8 exploit") affecting the BootROM of all CPUs until A12.
+
+If you have a jailbroken device that you use for security testing, keep it as is unless you're 100% sure that you can re-jailbreak it after upgrading to the latest iOS version. Consider getting one (or multiple) spare device(s) (which will be updated with every major iOS release) and waiting for a jailbreak to be released publicly. Apple is usually quick to release a patch once a jailbreak has been released publicly, so you only have a couple of days to downgrade (if it is still signed by Apple) to the affected iOS version and apply the jailbreak.
+
+iOS upgrades are based on a challenge-response process (generating the so-called SHSH blobs as a result). The device will allow the OS installation only if the response to the challenge is signed by Apple. This is what researchers call a "signing window", and it is the reason you can't simply store the OTA firmware package you downloaded and load it onto the device whenever you want to. During minor iOS upgrades, two versions may both be signed by Apple (the latest one, and the previous iOS version). This is the only situation in which you can downgrade the iOS device. You can check the current signing window and download OTA firmware from the [IPSW Downloads website](https://ipsw.me "IPSW Downloads").
+
+For some devices and iOS versions, it is possible to downgrade to older versions in case the SHSH blobs for that device were collected when the signing window was active. More information on this can be found on the [cfw iOS Guide - Saving Blobs](https://ios.cfw.guide/saving-blobs/)
+
+##### Which Jailbreaking Tool to Use
+
+Different iOS versions require different jailbreaking techniques. [Determine whether a public jailbreak is available for your version of iOS](https://appledb.dev/ "Apple DB"). Beware of fake tools and spyware, which are often hiding behind domain names that are similar to the name of the jailbreaking group/author.
+
+The iOS jailbreak scene evolves so rapidly that providing up-to-date instructions is difficult. However, we can point you to some sources that are currently reliable.
+
+- [AppleDB](https://appledb.dev/ "AppleDB")
+- [The iPhone Wiki](https://www.theiphonewiki.com/ "The iPhone Wiki")
+- [Redmond Pie](https://www.redmondpie.com/ "Redmone Pie")
+- [Reddit Jailbreak](https://www.reddit.com/r/jailbreak/ "Reddit Jailbreak")
+
+> Note that any modification you make to your device is at your own risk. While jailbreaking is typically safe, things can go wrong and you may end up bricking your device. No other party except yourself can be held accountable for any damage.
 
 ## Basic Testing Operations
 
@@ -208,7 +204,7 @@ iPhone:~ root#
 
 While usually using an on-device shell (terminal emulator) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration. For example, you can install [NewTerm 2](https://repo.chariz.io/package/ws.hbang.newterm2/ "NewTerm 2") via Cydia for this purpose (it supports iOS 6.0 to 12.1.2 at the time of this writing).
 
-In addition, there are a few jailbreaks that explicitly disable incoming SSH *for security reasons*. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
+In addition, there are a few jailbreaks that explicitly disable incoming SSH _for security reasons_. In those cases, it is very convenient to have an on-device shell app, which you can use to first SSH out of the device with a reverse shell, and then connect from your host computer to it.
 
 Opening a reverse shell over SSH can be done by running the command `ssh -R <remote_port>:localhost:22 <username>@<host_computer_ip>`.
 
@@ -221,7 +217,7 @@ ssh -R 2222:localhost:22 mstg@192.168.197.235
 On your host computer run the following command and, when asked, enter the password of the `root` user of the iOS device:
 
 ```bash
-$ ssh -p 2222 root@localhost
+ssh -p 2222 root@localhost
 ```
 
 ### Host-Device Data Transfer
@@ -295,7 +291,7 @@ itms-services://?action=download-manifest&url=https://s3-ap-southeast-1.amazonaw
 You can use the [ITMS services asset downloader](https://www.npmjs.com/package/itms-services "ITMS services asset downloader") tool to download the IPA from an OTA distribution URL. Install it via npm:
 
 ```bash
-$ npm install -g itms-services
+npm install -g itms-services
 ```
 
 Save the IPA file locally with the following command:
@@ -469,8 +465,8 @@ On Linux and also macOS, you can alternatively use [libimobiledevice](https://ww
 The package for libimobiledevice will be available in your Linux package manager. On macOS you can install libimobiledevice via brew:
 
 ```bash
-$ brew install libimobiledevice
-$ brew install ideviceinstaller
+brew install libimobiledevice
+brew install ideviceinstaller
 ```
 
 After the installation you have several new command line tools available, such as `ideviceinfo`, `ideviceinstaller` or `idevicedebug`.
@@ -491,7 +487,7 @@ $ idevicedebug -d run OWASP.iGoat-Swift
 The IPA can also be directly installed on the iOS device via the command line with [ipainstaller](https://github.com/autopear/ipainstaller "IPA Installer"). After copying the file over to the device, for example via scp, you can execute ipainstaller with the IPA's filename:
 
 ```bash
-$ ipainstaller App_name.ipa
+ipainstaller App_name.ipa
 ```
 
 #### ios-deploy
@@ -499,14 +495,14 @@ $ ipainstaller App_name.ipa
 On macOS you can also use the [ios-deploy](0x08-Testing-Tools.md#ios-deploy) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
-$ unzip Name.ipa
-$ ios-deploy --bundle 'Payload/Name.app' -W -d -v
+unzip Name.ipa
+ios-deploy --bundle 'Payload/Name.app' -W -d -v
 ```
 
 After the app is installed on the iOS device, you can simply start it by adding the `-m` flag which will directly start debugging without installing the app again.
 
 ```bash
-$ ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
+ios-deploy --bundle 'Payload/Name.app' -W -d -v -m
 ```
 
 #### Xcode
@@ -636,21 +632,21 @@ The file might be formatted in XML or binary (bplist). You can convert it to XML
 - On macOS with `plutil`, which is a tool that comes natively with macOS 10.2 and above versions (no official online documentation is currently available):
 
   ```bash
-  $ plutil -convert xml1 Info.plist
+  plutil -convert xml1 Info.plist
   ```
 
 - On Linux:
 
   ```bash
-  $ apt install libplist-utils
-  $ plistutil -i Info.plist -o Info_xml.plist
+  apt install libplist-utils
+  plistutil -i Info.plist -o Info_xml.plist
   ```
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the `Info.plist` file by just inspecting the file or by using `grep -i <keyword> Info.plist`:
 
 - App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- Exported/imported *custom document types*: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
+- Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network APIs](0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
@@ -663,9 +659,16 @@ Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-En
 
 ##### Native Libraries
 
-iOS native libraries are known as Frameworks.
+iOS apps can make their codebase modular by using different elements. In the MSTG we will refer to all of them as native libraries, but they can come in different forms:
 
-You can easily visualize them from Passionfruit by clicking on "Modules":
+- [Static and Dynamic Libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html#//apple_ref/doc/uid/TP40001873-SW1):
+  - Static Libraries can be used and will be compiled in the app binary.
+  - Dynamic Libraries (typically having the `.dylib` extension) are also used but must be part of a framework bundle. Standalone Dynamic Libraries are [not supported](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) on iOS, watchOS, or tvOS, except for the system Swift libraries provided by Xcode.
+- [Frameworks](https://developer.apple.com/library/archive/technotes/tn2435/_index.html#//apple_ref/doc/uid/DTS40017543-CH1-PROJ_CONFIG-APPS_WITH_DEPENDENCIES_BETWEEN_FRAMEWORKS) (since iOS 8). A Framework is a hierarchical directory that encapsulates a dynamic library, header files, and resources, such as storyboards, image files, and localized strings, into a single package.
+- [Binary Frameworks (`XCFrameworks`)](https://developer.apple.com/videos/play/wwdc2019/416/): Xcode 11 supports distributing binary libraries using the `XCFrameworks` format which is a new way to bundle up multiple variants of a Framework, e.g. for any of the platforms that Xcode supports (including simulator and devices). They can also bundle up static libraries (and their corresponding headers) and support binary distribution of Swift and C-based code. `XCFrameworks` can be [distributed as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
+- [Swift Packages](https://developer.apple.com/documentation/swift_packages): Xcode 11 add supports for Swift packages, which are reusable components of Swift, Objective-C, Objective-C++, C, or C++ code that developers can use in their projects and are distributed as source code. Since Xcode 12 they can also [bundle resources](https://developer.apple.com/videos/play/wwdc2020/10169/), such as images, storyboards, and other files. Since Package libraries are [static by default](https://developer.apple.com/videos/play/wwdc2019/408/?time=739). Xcode compiles them, and the packages they depend on, and then links and combines everything into the application.
+
+You can visualize native libraries in Passionfruit by clicking on "Modules":
 
 <img src="Images/Chapters/0x06b/passionfruit_modules.png" width="100%" />
 
@@ -945,7 +948,7 @@ Keychain Data: WOg1DfuH
 ```
 
 In newer versions of iOS (iOS 11 and up), additional steps are necessary. See the README.md for more details.
-Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to *all* items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
+Note that this binary is signed with a self-signed certificate that has a "wildcard" entitlement. The entitlement grants access to _all_ items in the Keychain. If you are paranoid or have very sensitive private data on your test device, you may want to build the tool from source and manually sign the appropriate entitlements into your build; instructions for doing this are available in the GitHub repository.
 
 ## Setting Up a Network Testing Environment
 
@@ -954,7 +957,7 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have [Wireshark](0x08-Testing-Tools.md#wireshark) installed on your macOS host computer.
 
 1. Connect your iOS device to your macOS host computer via USB.
-2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section "Getting the UDID of an iOS device" on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
+2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section ["Getting the UDID of an iOS device"](#getting-the-udid-of-an-ios-device) on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
 
 ```bash
 $ rvictl -s <UDID>
@@ -1002,7 +1005,7 @@ You should now be able to reach Burp on your iOS device. Open Safari on iOS and 
 The last step would be to set the proxy globally on your iOS device:
 
 1. Go to **Settings** -> **Wi-Fi**
-2. Connect to *any* Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
+2. Connect to _any_ Wi-Fi (you can literally connect to any Wi-Fi as the traffic for port 80 and 443 will be routed through USB, as we are just using the Proxy Setting for the Wi-Fi so we can set a global Proxy)
 3. Once connected click on the small blue icon on the right side of the connect Wi-Fi
 4. Configure your Proxy by selecting **Manual**
 5. Type in 127.0.0.1 as **Server**
