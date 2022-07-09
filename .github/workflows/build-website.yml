@@ -26,7 +26,7 @@ jobs:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
-      - run: mv owasp-masvs/Document/0x0*.md docs/MASVS
+      - run: mv owasp-masvs/Document/0x*.md docs/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
       - run: sed -i "s#images/#../assets/Images/MASVS/#g" docs/MASVS/*.md
       
