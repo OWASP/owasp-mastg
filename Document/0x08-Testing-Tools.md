@@ -1169,7 +1169,7 @@ The advantage of using drozer consists on its ability to automate several tasks 
 
 #### Installing Drozer
 
-You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://fi5t.xyz/en/posts/drozer-on-mac/ "(not)Unique experience blog - Installing Drozer on macOS Catalina")) and the [drozer website](https://labs.f-secure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
+You can refer to [drozer GitHub page](https://github.com/FSecureLABS/drozer "Drozer on GitHub") (for Linux and Windows, for macOS please refer to this [blog post](https://fi5t.xyz/en/posts/drozer-on-mac/ "(not)Unique experience blog - Installing Drozer on macOS Catalina")) and the [drozer website](https://labs.withsecure.com/tools/drozer/ "Drozer Website") for prerequisites and installation instructions.
 
 #### Using Drozer
 
