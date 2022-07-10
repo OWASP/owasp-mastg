@@ -1,8 +1,7 @@
-name: URLs Checker
+name: URL Checker
 
 on:
   workflow_dispatch:
-  pull_request:
   push:
     branches:
       - master

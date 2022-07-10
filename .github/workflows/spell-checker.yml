@@ -1,4 +1,4 @@
-name: codespell
+name: Spell Checker
 
 on:
   workflow_dispatch:
