@@ -6,7 +6,7 @@ A direct contribution to the MASVS can be done in many different ways. First of 
 
 Show your interest and support to the project by [_starring_ it](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars#starring-a-repository).
 
-<img src="https://docs.github.com/assets/cb-13889/images/help/stars/starring-a-repository.png" width="300px"/>
+<img src="../assets/starring.png" width="300px"/>
 
 <br>
 
