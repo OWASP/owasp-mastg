@@ -293,11 +293,11 @@ Most of the apps you might encounter connect to remote endpoints. Even before yo
 Typically these domains will be present as strings within the binary of the application. One way to achieve this is by using automated tools such as [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration") or [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"). Alternatively, you can _grep_ for the domain names by using regular expressions. For this you can target the app binary directly or reverse engineer it and target the disassembled or decompiled code. The latter option has a clear advantage: it can provide you with **context**, as you'll be able to see in which context each domain is being used (e.g. class and method).
 ``
 
-From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the Network Security Configuration file or perform further reconnaissance on domain names to know more about the target environment. When evaluating an application it is important to check the Network Security Configuration file, as often (less secure) debug configurations might be pushed into final release builds by mistake.
+From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the [Network Security Configuration](0x05g-Testing-Network-Communication.md#android-network-security-configuration) file or perform further reconnaissance on domain names to know more about the target environment. When evaluating an application it is important to check the Network Security Configuration file, as often (less secure) debug configurations might be pushed into final release builds by mistake.
 
 The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation or an inherently wrong security network configuration.
 
-Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x05b-Basic-Security_Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "Android Basic Security Testing" chapter and also check the test cases in the chapter "[Android Network APIs](0x05g-Testing-Network-Communication.md "Android Network APIs")".
+Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x05b-Basic-Security_Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "Android Basic Security Testing" chapter and also check the test cases in the "[Android Network Communication](0x05g-Testing-Network-Communication.md)" chapter.
 
 ### Manual (Reversed) Code Review
 
@@ -498,14 +498,13 @@ Analysis can be assisted by automated tools, such as [MobSF](https://github.com/
 
 ### Dynamic Analysis on Non-Rooted Devices
 
-Non-rooted devices provide the tester with two benefits:
+Non-rooted devices have the benefit of replicating an environment that the application is intended to run on.
 
-- Replicate an environment that the application is intended to run on.
-- Thanks to tools like objection, you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app).
+Thanks to tools like [objection](0x08-Testing-Tools.md#objection), you can patch the app in order to test it like if you were on a rooted device (but of course being jailed to that one app). To do that you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library.
 
-In order to dynamically analyze the application, you can also rely on [objection](https://github.com/sensepost/objection "objection") which is leveraging Frida. However, in order to be able to use objection on non-rooted devices you have to perform one additional step: [patch the APK](https://github.com/sensepost/objection/wiki/Patching-Android-Applications#patching---patching-an-apk "patching - patching an APK") to include the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") library. Objection communicates then using a Python API with the mobile phone through the installed Frida gadget.
+Now you can use objection to dynamically analyze the application on non-rooted devices.
 
-In order to accomplish this, the following commands can set you up and running:
+The following commands summarize how to patch and start dynamic analysis using objection:
 
 ```bash
 # Download the Uncrackable APK

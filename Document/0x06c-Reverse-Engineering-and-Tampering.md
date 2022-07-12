@@ -48,32 +48,34 @@ In this section, we will learn about some approaches and tools for collecting ba
 
 #### Application Binary
 
-You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
+You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://github.com/prateek147/DVIA "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms.
+
+Unzip the app and run [otool](0x08-Testing-Tools.md#otool):
 
 ```bash
-$ unzip DamnVulnerableiOSApp.ipa
-
-$ cd Payload/DamnVulnerableIOSApp.app
-
-$ otool -hv DamnVulnerableIOSApp
-
-DamnVulnerableIOSApp (architecture armv7):
-Mach header
-     magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-  MH_MAGIC     ARM         V7  0x00     EXECUTE    38       4292   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
-DamnVulnerableIOSApp (architecture arm64):
-Mach header
-     magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
-MH_MAGIC_64   ARM64        ALL  0x00     EXECUTE    38       4856   NOUNDEFS DYLDLINK TWOLEVEL WEAK_DEFINES BINDS_TO_WEAK PIE
-
+unzip DamnVulnerableiOSApp.ipa
+cd Payload/DamnVulnerableIOSApp.app
+otool -hv DamnVulnerableIOSApp
 ```
 
-Note the architectures: `armv7` (which is 32-bit) and `arm64`. This design of a fat binary allows an application to be deployed on all devices.
+The output will look like this:
+
+```bash
+DamnVulnerableIOSApp (architecture armv7):
+Mach header
+      magic  cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+   MH_MAGIC      ARM         V7  0x00     EXECUTE    33       3684   NOUNDEFS DYLDLINK TWOLEVEL PIE
+DamnVulnerableIOSApp (architecture arm64):
+Mach header
+      magic  cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
+MH_MAGIC_64    ARM64        ALL  0x00     EXECUTE    33       4192   NOUNDEFS DYLDLINK TWOLEVEL PIE
+```
+
+Note the architectures: `armv7` (32-bit) and `arm64` (64-bit). This design of a fat binary allows an application to be deployed on different architectures.
 To analyze the application with class-dump, we must create a so-called thin binary, which contains one architecture only:
 
 ```bash
-iOS8-jailbreak:~ root# lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
+lipo -thin armv7 DamnVulnerableIOSApp -output DVIA32
 ```
 
 And then we can proceed to performing class-dump:
@@ -91,7 +93,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method that returns a BOOL type.
 A minus sign would mean that this is an instance method. Refer to later sections to understand the practical difference between these.
 
-> Some commercial disassemblers (such as [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
+> Some commercial disassemblers (such as [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool)) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
 
 The following command is listing shared libraries:
 
@@ -127,7 +129,7 @@ From here on you can use this information to derive more insights which might be
 
 The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks.
 
-Remember that in most cases, only using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, so please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-Basic-Security-Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "iOS Basic Security Testing" chapter and check out the test cases in the chapter "[iOS Network APIs](0x06g-Testing-Network-Communication.md "iOS Network APIs")" for further information.
+Remember that in most cases, using only static analysis will not be enough and might even turn out to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interception proxy). In this section we've only touched the surface, so please refer to the section "[Basic Network Monitoring/Sniffing](0x06b-Basic-Security-Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "iOS Basic Security Testing" chapter and check out the test cases in the chapter "[iOS Network Communication](0x06g-Testing-Network-Communication.md)" for further information.
 
 ### Manual (Reversed) Code Review
 
@@ -242,14 +244,15 @@ Life is easy with a jailbroken device: not only do you gain easy privileged acce
 
 ### Dynamic Analysis on Non-Jailbroken Devices
 
-#### Automated Repackaging with Objection
+If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup (e.g. the [Frida gadget](https://www.frida.re/docs/gadget/ "Frida Gadget") to enable dynamic testing with Frida and related tools such as objection). This way, you can instrument the app and do everything you need to do for  dynamic analysis (of course, you can't break out of the sandbox this way). However, this technique only works if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
 
-[Objection](https://github.com/sensepost/objection "Objection") is a mobile runtime exploration toolkit based on Frida. One of the biggest advantages about Objection is that it enables testing with non-jailbroken devices. It does this by automating the process of app repackaging with the `FridaGadget.dylib` library. A detailed explanation of the repackaging and resigning process can be found in the next chapter "Manual Repackaging".
-We won't cover Objection in detail in this guide, as you can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+#### Automated Repackaging
+
+[Objection](0x08-Testing-Tools.md#objection) automates the process of app repackaging. You can find exhaustive documentation on the official [wiki pages](https://github.com/sensepost/objection/wiki "Objection - Documentation").
+
+Using objection's repackaging feature is sufficient for most of use cases. However, in some complex scenarios you might need more fine-grained control or a more customizable repackaging process. In that case, you can read a detailed explanation of the repackaging and resigning process in ["Manual Repackaging"](#manual-repackaging).
 
 #### Manual Repackaging
-
-If you don't have access to a jailbroken device, you can patch and repackage the target app to load a dynamic library at startup. This way, you can instrument the app and do pretty much everything you need to do for a dynamic analysis (of course, you can't break out of the sandbox this way, but you won't often need to). However, this technique works only if the app binary isn't FairPlay-encrypted (i.e., obtained from the App Store).
 
 Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, Bundle IDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
 
