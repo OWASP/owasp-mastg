@@ -62,6 +62,9 @@
         },
         {
             "pattern": "^https://www.bsi.bund.de"
+        },
+        {
+            "pattern": "^https://secrary.com/"
         }
     ],
     "httpHeaders": [
