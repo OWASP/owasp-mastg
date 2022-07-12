@@ -32,13 +32,13 @@ An insecure Android app from 2015 - <https://github.com/CSPF-Founder/DodoVulnera
 
 A vulnerable Android app made for security enthusiasts and developers to learn the Android insecurities by testing a vulnerable application. It has been updated in 2018 and contains a lot of vulnerabilities - <https://github.com/dineshshetty/Android-InsecureBankv2>
 
-### MSTG Android app
+### MSTG Android app (Java)
 
-Java - A vulnerable Android app with vulnerabilities similar to the test cases described in this document - <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
+A vulnerable Android app with vulnerabilities similar to the test cases described in this document - <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
 
-### MSTG Android app
+### MSTG Android app (Kotlin)
 
-Kotlin - A vulnerable Android app with vulnerabilities similar to the test cases described in this document - <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
+A vulnerable Android app with vulnerabilities similar to the test cases described in this document - <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
 
 ## iOS
 
