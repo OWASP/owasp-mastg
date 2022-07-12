@@ -163,7 +163,7 @@ Android apps interact with system services via the Android Framework, an abstrac
 
 The framework also offers common security functions, such as cryptography.
 
-The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 8.1 (API level 27) and the current Android version is Android 10 (API level 29).
+The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well.
 
 Noteworthy API versions:
 
@@ -175,7 +175,25 @@ Noteworthy API versions:
 - Android 7.0 (API level 24-25) in August 2016 (new JIT compiler on ART)
 - Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
 - Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
-- Android 10 (API level 29) in September 2019 (notification bubbles, project Mainline)
+- **Android 10 (API level 29)** in September 2019 (access location "only while using the app", device tracking prevention, improve secure external storage,)
+  - Privacy ([overview](https://developer.android.com/about/versions/10/highlights#privacy_for_users), [details 1](https://developer.android.com/about/versions/10/privacy), [details 2](https://developer.android.com/about/versions/10/privacy/changes))
+  - Security ([overview](https://developer.android.com/about/versions/10/highlights#security), [details](https://developer.android.com/about/versions/10/behavior-changes-all#security))
+- **Android 11 (API level 30)** in September 2020 (scoped storage enforcement, Permissions auto-reset, [reduced package visibility](https://developer.android.com/training/package-visibility), APK Signature Scheme v4)
+  - Privacy ([overview](https://developer.android.com/about/versions/11/privacy))
+  - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all)
+  - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security)
+  - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy)
+  - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security)
+- **Android 12 (API level 31-32)** in August 2021 (Material You, Web intent resolution, Privacy Dashboard)
+  - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy)
+  - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy)
+  - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy)
+- [BETA] **Android 13 (API level 33)** in 2022 (Safer exporting of context-registered receivers, new photo picker)
+  - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security)
+  - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy)
+  - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security)
+  - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy)
+  - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security)
 
 ### The App Sandbox
 
@@ -641,7 +659,7 @@ It is no longer possible to sign APKs independently, because the proof-of-rotati
 
 #### APK Signature Scheme (v4 Scheme)
 
-The APK Signature Scheme v4 was introduced along with Android 11.0 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
+The APK Signature Scheme v4 was introduced along with Android 11 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
 
 The v4 signature requires a complementary v2 or v3 signature and in contrast to previous signature schemes, the v4 signature is stored in a separate file `<apk name>.apk.idsig`. Remember to specify it using the `--v4-signature-file` flag when verifying a v4-signed APK with `apksigner verify`.
 
