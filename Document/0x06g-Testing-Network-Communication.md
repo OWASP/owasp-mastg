@@ -268,8 +268,8 @@ There are various ways to bypass SSL Pinning and the following section will desc
 
 If you have a jailbroken device you can try one of the following tools that can automatically disable SSL Pinning:
 
-- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the [Cydia](0x08-Testing-Tools.md#cydia) store. It will hook on to all high-level API calls and bypass certificate pinning.
-- The [Burp Suite Mobile Assistant](0x08-Testing-Tools.md#burp-suite-mobile-assistant) app can also be used to bypass certificate pinning.
+- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the [Cydia](0x08a-Testing-Tools.md#cydia) store. It will hook on to all high-level API calls and bypass certificate pinning.
+- The [Burp Suite Mobile Assistant](0x08a-Testing-Tools.md#burp-suite-mobile-assistant) app can also be used to bypass certificate pinning.
 
 In some cases, certificate pinning is tricky to bypass. Look for the following when you can access the source code and recompile the app:
 

@@ -665,7 +665,7 @@ See the [Technical Q&A QA1788 Building a Position Independent Executable](https:
 
 ### Static Analysis
 
-You can use [otool](0x08-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
+You can use [otool](0x08a-Testing-Tools.md#otool) to check the binary security features described above. All the features are enabled in these examples.
 
 - PIE:
 
@@ -722,7 +722,7 @@ You can use [otool](0x08-Testing-Tools.md#otool) to check the binary security fe
 
 ### Dynamic Analysis
 
-These checks can be performed dynamically using [objection](0x08-Testing-Tools.md#objection). Here's one example:
+These checks can be performed dynamically using [objection](0x08a-Testing-Tools.md#objection). Here's one example:
 
 ```bash
 com.yourcompany.PPClient on (iPhone: 13.2.3) [usb] # ios info binary

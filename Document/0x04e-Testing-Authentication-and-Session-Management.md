@@ -153,7 +153,7 @@ Additional brute force mitigation techniques are described on the OWASP page [Bl
 
 Automated password guessing attacks can be performed using a number of tools. For HTTP(S) services, using an interception proxy is a viable option. For example, you can use [Burp Suite Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using "Using Burp Suite Intruder") to perform both wordlist-based and brute-force attacks.
 
-> Please keep in mind that the Burp Suite Community Edition has significant limitations apart from not being able to save projects. For example, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap).
+> Please keep in mind that the Burp Suite Community Edition has significant limitations apart from not being able to save projects. For example, a throttling mechanism will be activated after several requests that will slow down your attacks with Burp Intruder dramatically. Also no built-in password lists are available in this version. If you want to execute a real brute force attack use either [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap).
 
 Execute the following steps for a wordlist based brute force attack with Burp Intruder:
 
@@ -326,7 +326,7 @@ To test this, the captured request should be sent 10-15 times to the endpoint wi
 
 > A OTP should be valid for only a certain amount of time (usually 30 seconds) and after keying in the OTP wrongly several times (usually 3 times) the provided OTP should be invalidated and the user should be redirected to the landing page or logged out.
 
-You should check if the app relies on static responses from the remote endpoint such as `"message":"Success"` to grant access to app internal sensitive data or functions. If that's the case, an attacker could easily bypass the 2FA implementation by manipulating the server response e.g. by using an interception proxy such as [Burp Suite](0x08-Testing-Tools.md#burp-suite) and modifying the response to be `"message":"Success"`.
+You should check if the app relies on static responses from the remote endpoint such as `"message":"Success"` to grant access to app internal sensitive data or functions. If that's the case, an attacker could easily bypass the 2FA implementation by manipulating the server response e.g. by using an interception proxy such as [Burp Suite](0x08a-Testing-Tools.md#burp-suite) and modifying the response to be `"message":"Success"`.
 
 To prevent these kind of attacks, the application should always verify some kind of user token or other dynamic information related to the user that was previously securely stored (e.g. in the Keychain/KeyStore).
 

@@ -48,5 +48,6 @@
 
 ## Appendix
 
-- [Testing Tools](0x08-Testing-Tools.md)
+- [Testing Tools](0x08a-Testing-Tools.md)
+- [Reference Applications](0x08b-Reference-Apps.md)
 - [Suggested Reading](0x09-Suggested-Reading.md)

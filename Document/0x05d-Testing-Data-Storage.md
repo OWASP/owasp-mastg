@@ -661,7 +661,7 @@ Applications will often use the [Log Class](https://developer.android.com/refere
   - logging
   - logs
 
-While preparing the production release, you can use tools like [ProGuard](0x08-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
+While preparing the production release, you can use tools like [ProGuard](0x08a-Testing-Tools.md#proguard) (included in Android Studio). To determine whether all logging functions from the `android.util.Log` class have been removed, check the ProGuard configuration file (proguard-rules.pro) for the following options (according to this [example of removing logging code](https://www.guardsquare.com/en/products/proguard/manual/examples#logging "ProGuard\'s example of removing logging code") and this article about [enabling ProGuard in an Android Studio project](https://developer.android.com/studio/build/shrink-code#enable "Android Developer - Enable shrinking, obfuscation, and optimization")):
 
 ```java
 -assumenosideeffects class android.util.Log
@@ -776,7 +776,7 @@ Search for any usage of the `NotificationManager` class which might be an indica
 #### Third-party Services Embedded in the App
 
 Check all requests to external services for embedded sensitive information.
-To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
 #### App Notifications
 
@@ -1585,7 +1585,7 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 
 #### Runtime Memory Analysis
 
-Instead of dumping the memory to your host computer, you can alternatively use [r2frida](0x08-Testing-Tools.md#r2frida). With it, you can analyze and inspect the app's memory while it's running.
+Instead of dumping the memory to your host computer, you can alternatively use [r2frida](0x08a-Testing-Tools.md#r2frida). With it, you can analyze and inspect the app's memory while it's running.
 For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
 For more information, options and approaches, please refer to section "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android".

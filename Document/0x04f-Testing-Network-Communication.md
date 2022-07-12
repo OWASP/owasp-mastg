@@ -8,8 +8,8 @@ In many cases, it is most practical to configure a system proxy on the mobile de
 
 Several free and commercial proxy tools are available. Here are some of the most popular:
 
-- [Burp Suite](0x08-Testing-Tools.md#burp-suite)
-- [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap)
+- [Burp Suite](0x08a-Testing-Tools.md#burp-suite)
+- [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap)
 
 To use the interception proxy, you'll need run it on your host computer and configure the mobile app to route HTTP(S) requests to your proxy. In most cases, it is enough to set a system-wide proxy in the network settings of the mobile device - if the app uses standard HTTP APIs or popular libraries such as `okhttp`, it will automatically use the system settings.
 
@@ -39,8 +39,8 @@ Dynamic analysis by using an interception proxy can be straight forward if stand
 
 In these cases you need to monitor and analyze the network traffic first in order to decide what to do next. Luckily, there are several options for redirecting and intercepting network communication:
 
-- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](0x08-Testing-Tools.md#wireshark) to sniff any traffic from the mobile device.
-- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](0x08-Testing-Tools.md#bettercap) or use your own access point to redirect network traffic from the mobile device to your host computer (see below).
+- Route the traffic through the host computer. You can set up host computer as the network gateway, e.g. by using the built-in Internet Sharing facilities of your operating system. You can then use [Wireshark](0x08a-Testing-Tools.md#wireshark) to sniff any traffic from the mobile device.
+- Sometimes you need to execute a MITM attack to force the mobile device to talk to you. For this scenario you should consider [bettercap](0x08a-Testing-Tools.md#bettercap) or use your own access point to redirect network traffic from the mobile device to your host computer (see below).
 - On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
 - On macOS, you can create a "Remote Virtual Interface" for sniffing all traffic on an iOS device. We'll describe this method in the chapter "Basic Security Testing on iOS".
 
@@ -52,7 +52,7 @@ To be able to get a man-in-the-middle position your host computer should be in t
 
 #### MITM Attack
 
-Start your preferred network analyzer tool first, then start [bettercap](0x08-Testing-Tools.md#bettercap) with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
+Start your preferred network analyzer tool first, then start [bettercap](0x08a-Testing-Tools.md#bettercap) with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
 ```bash
 $ sudo bettercap -eval "set arp.spoof.targets X.X.X.X; arp.spoof on; set arp.spoof.internal true; set arp.spoof.fullduplex true;"
@@ -418,7 +418,7 @@ Finally, verify that the server or termination proxy at which the HTTPS connecti
 
 Intercept the tested app's incoming and outgoing network traffic and make sure that this traffic is encrypted. You can intercept network traffic in any of the following ways:
 
-- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
+- Capture all HTTP(S) and Websocket traffic with an interception proxy like [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) or [Burp Suite](0x08a-Testing-Tools.md#burp-suite) and make sure all requests are made via HTTPS instead of HTTP.
 - Interception proxies like Burp and OWASP ZAP will show HTTP(S) traffic only. You can, however, use a Burp plugin such as [Burp-non-HTTP-Extension](https://github.com/summitt/Burp-Non-HTTP-Extension "Burp-non-HTTP-Extension") or the tool [mitm-relay](https://github.com/jrmdev/mitm_relay "mitm-relay") to decode and visualize communication via XMPP and other protocols.
 
 > Some applications may not work with proxies like Burp and OWASP ZAP because of Certificate Pinning. In such a scenario, please check "Testing Custom Certificate Stores and Certificate Pinning".

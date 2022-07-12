@@ -170,7 +170,7 @@ if (status == noErr){
 }
 ```
 
-The usage of frameworks in an app can also be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](0x08-Testing-Tools.md#otool):
+The usage of frameworks in an app can also be detected by analyzing the app binary's list of shared dynamic libraries. This can be done by using [otool](0x08a-Testing-Tools.md#otool):
 
 ```bash
 otool -L <AppName>.app/<AppName>

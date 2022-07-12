@@ -8,11 +8,11 @@ You can set up a fully functioning test environment on almost any machine runnin
 
 ### Host Device
 
-At the very least, you'll need [Android Studio](0x08-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08-Testing-Tools.md#android-sdk)) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
+At the very least, you'll need [Android Studio](0x08a-Testing-Tools.md#android-studio) (which comes with the [Android SDK](0x08a-Testing-Tools.md#android-sdk)) platform tools, an emulator, and an app to manage the various SDK versions and framework components. Android Studio also comes with an Android Virtual Device (AVD) Manager application for creating emulator images. Make sure that the newest [SDK tools](https://developer.android.com/studio/releases/sdk-tools) and [platform tools](https://developer.android.com/studio/releases/platform-tools) packages are installed on your system.
 
-In addition, you may want to complete your host setup by installing the [Android NDK](0x08-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
+In addition, you may want to complete your host setup by installing the [Android NDK](0x08a-Testing-Tools.md#android-ndk) if you're planning to work with apps containing native libraries (it will be also relevant in the chapter "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engineering-and-Tampering.md)").
 
-Sometimes it can be useful to display or control devices from the computer. To achieve this, you can use [Scrcpy](0x08-Testing-Tools.md#scrcpy).
+Sometimes it can be useful to display or control devices from the computer. To achieve this, you can use [Scrcpy](0x08a-Testing-Tools.md#scrcpy).
 
 ### Testing Device
 
@@ -43,7 +43,7 @@ Alternatively, Google's [Android One](https://www.android.com/one/ "Android One"
 
 Devices that are supported by the [LineageOS](https://lineageos.org/ "LineageOS") project are also very good candidates for test devices. They have an active community, easy to follow flashing and rooting instructions and the latest Android versions are typically quickly available as a Lineage installation. LineageOS also continues support for new Android versions long after the OEM has stopped distributing updates.
 
-When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the [ADB](0x08-Testing-Tools.md#adb) debugging interface. Since Android 4.2 (API level 16), the **Developer options** sub menu in the Settings app is hidden by default. To activate it, tap the **Build number** section of the **About phone** view seven times. Note that the build number field's location varies slightly by device. For example, on LG Phones, it is under **About phone** -> **Software information**. Once you have done this, **Developer options** will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the **USB debugging** switch.
+When working with an Android physical device, you'll want to enable Developer Mode and USB debugging on the device in order to use the [ADB](0x08a-Testing-Tools.md#adb) debugging interface. Since Android 4.2 (API level 16), the **Developer options** sub menu in the Settings app is hidden by default. To activate it, tap the **Build number** section of the **About phone** view seven times. Note that the build number field's location varies slightly by device. For example, on LG Phones, it is under **About phone** -> **Software information**. Once you have done this, **Developer options** will be shown at bottom of the Settings menu. Once developer options are activated, you can enable debugging with the **USB debugging** switch.
 
 #### Testing on an Emulator
 
@@ -74,7 +74,7 @@ Several tools and VMs that can be used to test an app within an emulator environ
 - [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF")
 - [Nathan](https://github.com/mseclab/nathan "Nathan") (not updated since 2016)
 
-Please also verify the "[Testing Tools](0x08-Testing-Tools.md)" chapter at the end of this book.
+Please also verify the "[Testing Tools](0x08a-Testing-Tools.md)" chapter at the end of this book.
 
 #### Getting Privileged Access
 
@@ -118,7 +118,7 @@ One of the most common things you do when testing an app is accessing the device
 
 #### Remote Shell
 
-In order to connect to the shell of an Android device from your host computer, [adb](0x08-Testing-Tools.md#adb) is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
+In order to connect to the shell of an Android device from your host computer, [adb](0x08a-Testing-Tools.md#adb) is usually your tool of choice (unless you prefer to use remote SSH access, e.g. [via Termux](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server")).
 
 For this section we assume that you've properly enabled Developer Mode and USB debugging as explained in "Testing on a Real Device". Once you've connected your Android device via USB, you can access the remote device's shell by running:
 
@@ -166,17 +166,17 @@ See the full instructions and considerations in the [Android Developers Document
 
 ##### Connect to a Device via SSH
 
-If you prefer, you can also enable SSH access. A convenient option is to use [Termux](0x08-Testing-Tools.md#termux), which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
+If you prefer, you can also enable SSH access. A convenient option is to use [Termux](0x08a-Testing-Tools.md#termux), which you can easily [configure to offer SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") (with password or public key authentication) and start it with the command `sshd` (starts by default on port 8022). In order to connect to the Termux via SSH you can simply run the command `ssh -p 8022 <ip_address>` (where `ip_address` is the actual remote device IP). This option has some additional benefits as it allows to access the file system via SFTP also on port 8022.
 
 #### On-device Shell App
 
-While usually using an on-device shell (terminal emulator) such as [Termux](0x08-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
+While usually using an on-device shell (terminal emulator) such as [Termux](0x08a-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
 
 ### Host-Device Data Transfer
 
 #### Using adb
 
-You can copy files to and from a device by using the [adb](0x08-Testing-Tools.md#adb) commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
+You can copy files to and from a device by using the [adb](0x08a-Testing-Tools.md#adb) commands `adb pull <remote> <local>` and `adb push <local> <remote>` [commands](https://developer.android.com/studio/command-line/adb#copyfiles "Copy files to/from a device"). Their usage is very straightforward. For example, the following will copy `foo.txt` from your current directory (local) to the `sdcard` folder (remote):
 
 ```bash
 adb push foo.txt /sdcard/foo.txt
@@ -248,7 +248,7 @@ The downside is that, at the time of this writing, objection does not support bu
 
 #### Using Termux
 
-If you have a rooted device, have [Termux](0x08-Testing-Tools.md#termux) installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
+If you have a rooted device, have [Termux](0x08a-Testing-Tools.md#termux) installed and have [properly configured SSH access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server "Using the SSH server") on it, you should have an SFTP (SSH File Transfer Protocol) server already running on port 8022. You may access it from your terminal:
 
 ```bash
 $ sftp -P 8022 root@localhost
@@ -282,7 +282,7 @@ Beware that you do not have control over these sites and you cannot guarantee wh
 
 #### Using gplaycli
 
-You can use [gplaycli](0x08-Testing-Tools.md#gplaycli) to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
+You can use [gplaycli](0x08a-Testing-Tools.md#gplaycli) to download (`-d`) the selected APK by specifying its AppID (add `-p` to show a progress bar and `-v` for verbosity):
 
 ```bash
 $ gplaycli -p -v -d com.google.android.keep
@@ -647,7 +647,7 @@ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 ### Basic Network Monitoring/Sniffing
 
-[Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with [tcpdump](0x08-Testing-Tools.md#tcpdump), netcat (nc), and [Wireshark](0x08-Testing-Tools.md#wireshark). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
+[Remotely sniffing all Android traffic in real-time is possible](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/ "Android remote sniffing using Tcpdump, nc and Wireshark") with [tcpdump](0x08a-Testing-Tools.md#tcpdump), netcat (nc), and [Wireshark](0x08a-Testing-Tools.md#wireshark). First, make sure that you have the latest version of [Android tcpdump](https://www.androidtcpdump.com/) on your phone. Here are the [installation steps](https://wladimir-tm4pda.github.io/porting/tcpdump.html "Installing tcpdump"):
 
 ```bash
 adb root
@@ -783,7 +783,7 @@ As an additional layer of security, push notifications can be encrypted by using
 
 ### Setting Up an Interception Proxy
 
-Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) and [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
+Several tools support the network analysis of applications that rely on the HTTP(S) protocol. The most important tools are the so-called interception proxies; [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) and [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional are the most famous. An interception proxy gives the tester a man-in-the-middle position. This position is useful for reading and/or modifying all app requests and endpoint responses, which are used for testing Authorization, Session, Management, etc.
 
 #### Interception Proxy for a Virtual Device
 
@@ -849,7 +849,7 @@ Once you've configured the network and established a connection between the test
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
 
-> A video of setting up [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap) with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
+> A video of setting up [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) with an Android device can be found on [secure.force.com](https://security.secure.force.com/security/tools/webapp/zapandroidsetup "Setting up ZAP for Android").
 
 A few other differences: from Android 8.0 (API level 26) onward, the network behavior of the app changes when HTTPS traffic is tunneled through another connection. And from Android 9 (API level 28) onward, the SSLSocket and SSLEngine will behave a little bit different in terms of error handling when something goes wrong during the handshakes.
 

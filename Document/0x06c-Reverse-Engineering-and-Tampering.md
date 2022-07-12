@@ -48,7 +48,7 @@ In this section, we will learn about some approaches and tools for collecting ba
 
 #### Application Binary
 
-You can use [class-dump](0x08-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
+You can use [class-dump](0x08a-Testing-Tools.md#class-dump) to get information about methods in the application's source code. The example below uses the [Damn Vulnerable iOS App](https://damnvulnerableiosapp.com/ "Damn Vulnerable iOS App") to demonstrate this. Our binary is a so-called fat binary, which means that it can be executed on 32- and 64-bit platforms:
 
 ```bash
 $ unzip DamnVulnerableiOSApp.ipa
@@ -91,7 +91,7 @@ iOS8-jailbreak:~ root# class-dump DVIA32
 Note the plus sign, which means that this is a class method that returns a BOOL type.
 A minus sign would mean that this is an instance method. Refer to later sections to understand the practical difference between these.
 
-> Some commercial disassemblers (such as [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
+> Some commercial disassemblers (such as [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) execute these steps automatically, and you'd be able to see the disassembled binary and class information.
 
 The following command is listing shared libraries:
 
@@ -253,7 +253,7 @@ If you don't have access to a jailbroken device, you can patch and repackage the
 
 Thanks to Apple's confusing provisioning and code-signing system, re-signing an app is more challenging than you would expect. iOS won't run an app unless you get the provisioning profile and code signature header exactly right. This requires learning many concepts-certificate types, Bundle IDs, application IDs, team identifiers, and how Apple's build tools connect them. Getting the OS to run a binary that hasn't been built via the default method (Xcode) can be a daunting process.
 
-We'll use [optool](0x08-Testing-Tools.md#optool), Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
+We'll use [optool](0x08a-Testing-Tools.md#optool), Apple's build tools, and some shell commands. Our method is inspired by [Vincent Tan's Swizzler project](https://github.com/vtky/Swizzler2/ "Swizzler"). [The NCC group](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "NCC blog - iOS instrumentation without jailbreak") has described an alternative repackaging method.
 
 To reproduce the steps listed below, download [UnCrackable iOS App Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01 "Crackmes - iOS Level 1") from the OWASP Mobile Testing Guide repository. Our goal is to make the UnCrackable app load `FridaGadget.dylib` during startup so we can instrument the app with Frida.
 
@@ -267,7 +267,7 @@ Depending on whether you're registered as an iOS developer, you can obtain a cer
 
 **With an iOS developer account:**
 
-If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the [`security`](0x08-Testing-Tools.md#security) command (macOS only) to list your signing identities:
+If you've developed and deployed iOS apps with Xcode before, you already have your own code-signing certificate installed. Use the [`security`](0x08a-Testing-Tools.md#security) command (macOS only) to list your signing identities:
 
 ```bash
 $ security find-identity -v
@@ -283,7 +283,7 @@ In the examples below, I use my signing identity, which is associated with my co
 
 Apple will issue a free development provisioning profile even if you're not a paying developer. You can obtain the profile via Xcode and your regular Apple account: simply create an empty iOS project and extract `embedded.mobileprovision` from the app container, which is in the Xcode subdirectory of your home directory: `~/Library/Developer/Xcode/DerivedData/<ProjectName>/Build/Products/Debug-iphoneos/<ProjectName>.app/`. The [NCC blog post "iOS instrumentation without jailbreak"](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/ "iOS instrumentation without jailbreak") explains this process in great detail.
 
-Once you've obtained the provisioning profile, you can check its contents with the [`security`](0x08-Testing-Tools.md#security) command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
+Once you've obtained the provisioning profile, you can check its contents with the [`security`](0x08a-Testing-Tools.md#security) command. You'll find the entitlements granted to the app in the profile, along with the allowed certificates and devices. You'll need these for code-signing, so extract them to a separate plist file as shown below. Have a look at the file contents to make sure everything is as expected.
 
 ```bash
 $ security cms -D -i AwesomeRepackaging.mobileprovision > profile.plist
@@ -313,7 +313,7 @@ Note the application identifier, which is a combination of the Team ID (LRUD9L35
 
 On iOS, collecting basic information about a running process or an application can be slightly more challenging than compared to Android. On Android (or any Linux-based OS), process information is exposed as readable text files via _procfs_. Thus, any information about a target process can be obtained on a rooted device by parsing these text files. In contrast, on iOS there is no procfs equivalent present. Also, on iOS many standard UNIX command line tools for exploring process information, for instance lsof and vmmap, are removed to reduce the firmware size.
 
-In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using [Cydia](0x08-Testing-Tools.md#cydia) (the executable is not the latest version available, but nevertheless addresses our purpose).
+In this section, we will learn how to collect process information on iOS using command line tools like lsof. Since many of these tools are not present on iOS by default, we need to install them via alternative methods. For instance, lsof can be installed using [Cydia](0x08a-Testing-Tools.md#cydia) (the executable is not the latest version available, but nevertheless addresses our purpose).
 
 #### Open Files
 
@@ -336,7 +336,7 @@ iOweApp 2828 mobile  txt    REG    1,2   664848 234595 /usr/lib/dyld
 
 #### Loaded Native Libraries
 
-You can use the `list_frameworks` command in [objection](0x08-Testing-Tools.md#objection) to list all the application's bundles that represent Frameworks.
+You can use the `list_frameworks` command in [objection](0x08a-Testing-Tools.md#objection) to list all the application's bundles that represent Frameworks.
 
 ```bash
 ...itudehacks.DVIAswiftv2.develop on (iPhone: 13.2.3) [usb] # ios bundles list_frameworks
@@ -698,7 +698,7 @@ To summarize, using Unicorn do require some additional setup before executing th
 
 ### Angr
 
-[Angr](0x08-Testing-Tools.md#angr) is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
+[Angr](0x08a-Testing-Tools.md#angr) is a very versatile tool, providing multiple techniques to facilitate binary analysis, while supporting various file formats and hardware instructions sets.
 
 > The Mach-O backend in Angr is not well-supported, but it works perfectly fine for our case.
 
@@ -755,7 +755,7 @@ IF you want to use Frida on non-jailbroken devices you'll need to include `Frida
 curl -O https://build.frida.re/frida/ios/lib/FridaGadget.dylib
 ```
 
-Copy `FridaGadget.dylib` into the app directory and use [optool](0x08-Testing-Tools.md#optool) to add a load command to the "UnCrackable Level 1" binary.
+Copy `FridaGadget.dylib` into the app directory and use [optool](0x08a-Testing-Tools.md#optool) to add a load command to the "UnCrackable Level 1" binary.
 
 ```bash
 $ unzip UnCrackable_Level1.ipa
@@ -808,7 +808,7 @@ $ /usr/bin/codesign --force --sign 8004380F331DCA22CC1B47FB1A805890AE41C938 --en
 Payload/UnCrackable Level 1.app/UnCrackable Level 1: replacing existing signature
 ```
 
-Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](0x08-Testing-Tools.md#ios-deploy):
+Now you should be ready to run the modified app. Deploy and run the app on the device using [ios-deploy](0x08a-Testing-Tools.md#ios-deploy):
 
 ```bash
 ios-deploy --debug --bundle Payload/UnCrackable\ Level\ 1.app/
@@ -1029,7 +1029,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these tasks are rather supportive and/or passive, they'll help us collect data and information that will support other techniques. Therefore, they're normally used in combination with other techniques such as method hooking.
 
-In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. iGoat-Swift) that should be running on your iPhone (connected per USB). Use the following command:
+In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. First start by opening an r2frida session to the target app (e.g. iGoat-Swift) that should be running on your iPhone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//iGoat-Swift
@@ -1184,7 +1184,7 @@ In-memory search can be very useful to quickly know if certain data is located i
 
 ##### Memory Dump
 
-You can dump the app's process memory with [objection](0x08-Testing-Tools.md#objection) and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices"). To use these tools on a jailbroken phone, simply have frida-server installed and running.
+You can dump the app's process memory with [objection](0x08a-Testing-Tools.md#objection) and [Fridump](https://github.com/Nightbringer21/fridump "Fridump"). To take advantage of these tools on a non-jailbroken device, the Android app must be repackaged with `frida-gadget.so` and re-signed. A detailed explanation of this process is in the section "[Dynamic Analysis on Non-Jailbroken Devices](#dynamic-analysis-on-non-jailbroken-devices "Dynamic Analysis on Non-Jailbroken Devices"). To use these tools on a jailbroken phone, simply have frida-server installed and running.
 
 With objection it is possible to dump all memory of the running process on the device by using the command `memory dump all`.
 

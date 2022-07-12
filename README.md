@@ -154,7 +154,7 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 
 ### Appendix
 
-- [Testing Tools](Document/0x08-Testing-Tools.md)
+- [Testing Tools](Document/0x08a-Testing-Tools.md)
 - [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
 <br>

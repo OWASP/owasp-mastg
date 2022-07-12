@@ -84,7 +84,7 @@ if(error==nil){
 
 #### Checking Protocol Handlers
 
-You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0x08-Testing-Tools.md#cydia) app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
+You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0x08a-Testing-Tools.md#cydia) app store, which practically every jailbreaking tool installs by default, installs the cydia:// protocol handler.
 
 **Swift:**
 
@@ -111,7 +111,7 @@ Once you start an application that has jailbreak detection enabled on a jailbrok
 
 In the first case, make sure the application is fully functional on non-jailbroken devices. The application may be crashing or it may have a bug that causes it to terminate. This may happen while you're testing a preproduction version of the application.
 
-Let's look at bypassing jailbreak detection using the Damn Vulnerable iOS application as an example again. After loading the binary into [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) (commercial tool), you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
+Let's look at bypassing jailbreak detection using the [Damn Vulnerable iOS application](0x08b-Reference-Apps.md#dvia-v2) as an example again. After loading the binary into [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) (commercial tool), you need to wait until the application is fully disassembled (look at the top bar to check the status). Then look for the "jail" string in the search box. You'll see two classes: `SFAntiPiracy` and `JailbreakDetectionVC`. You may want to decompile the functions to see what they are doing and, in particular, what they return.
 
 <img src="Images/Chapters/0x06b/HopperDisassembling.png" width="300px" />
 <img src="Images/Chapters/0x06b/HopperDecompile.png" width="300px" />
@@ -198,7 +198,7 @@ Changing the return value to:0x0
 
 Note the two calls to `-[JailbreakDetectionVC isJailbroken]`, which correspond to two physical taps on the app's GUI.
 
-One more way to bypass Jailbreak detection mechanisms that rely on file system checks is [objection](0x08-Testing-Tools.md#objection). You can find the implementation of the jailbreak bypass in the [jailbreak.ts script](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
+One more way to bypass Jailbreak detection mechanisms that rely on file system checks is [objection](0x08a-Testing-Tools.md#objection). You can find the implementation of the jailbreak bypass in the [jailbreak.ts script](https://github.com/sensepost/objection/blob/master/agent/src/ios/jailbreak.ts "jailbreak.ts").
 
 See below a Python script for hooking Objective-C methods and native functions:
 
@@ -822,7 +822,7 @@ Take the following steps when you want to verify app-binding with two jailbroken
 3. Retrieve the data from the jailbroken device:
     - You can SSH into your device and extract the data (as with a simulator, either use debugging or `find /private/var/mobile/Containers/Data/Application/ |grep <name of app>`). The directory is in `/private/var/mobile/Containers/Data/Application/<Application uuid>`.
     - SSH into the directory indicated by the given command's output or use SCP (`scp <ipaddress>:/<folder_found_in_previous_step> targetfolder`) to copy the folders and it's data. You can use an FTP client like Filezilla as well.
-    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using [Keychain-dumper](0x08-Testing-Tools.md#keychain-dumper).
+    - Retrieve the data from the keychain, which is stored in `/private/var/Keychains/keychain-2.db`, which you can retrieve using [Keychain-dumper](0x08a-Testing-Tools.md#keychain-dumper).
 4. Install the application on the second jailbroken device.
 5. Overwrite the application data extracted during step 3. The Keychain data must be added manually.
 6. Can you continue in an authenticated state? If so, then binding may not be working properly.

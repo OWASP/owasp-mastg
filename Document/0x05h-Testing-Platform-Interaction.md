@@ -669,7 +669,7 @@ It might seem as though this supports only `https://www.example.com` and `app://
 
 **Using Dumpsys:**
 
-Use [adb](0x08-Testing-Tools.md#adb) to run the following command that will show all schemes:
+Use [adb](0x08a-Testing-Tools.md#adb) to run the following command that will show all schemes:
 
 ```bash
 adb shell dumpsys package com.example.package
@@ -700,7 +700,7 @@ Use the [Android "App Link Verification" Tester](https://github.com/inesmartins/
 
 **Only on Android 12 (API level 31) or higher:**
 
-You can use [adb](0x08-Testing-Tools.md#adb) to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This feature allows you to:
+You can use [adb](0x08a-Testing-Tools.md#adb) to test the verification logic regardless of whether the app targets Android 12 (API level 31) or not. This feature allows you to:
 
 - [invoke the verification process manually](https://developer.android.com/training/app-links/verify-site-associations#manual-verification).
 - [reset the state of the target app's Android App Links on your device](https://developer.android.com/training/app-links/verify-site-associations#reset-state).
@@ -821,17 +821,17 @@ In addition, we recommend to search and read public reports (search term: `"deep
 
 ### Dynamic Analysis
 
-Here you will use the list of deep links from the static analysis to iterate and determine each handler method and the processed data, if any. You will first start a [Frida](0x08-Testing-Tools.md#frida) hook and then begin invoking the deep links.
+Here you will use the list of deep links from the static analysis to iterate and determine each handler method and the processed data, if any. You will first start a [Frida](0x08a-Testing-Tools.md#frida) hook and then begin invoking the deep links.
 
 The following example assumes a target app that accepts this deep link: `deeplinkdemo://load.html`. However, we don't know the corresponding handler method yet, nor the parameters it potentially accepts.
 
 **[Step 1] Frida Hooking:**
 
-You can use the script ["Android Deep Link Observer"](https://codeshare.frida.re/@leolashkevych/android-deep-link-observer/) from [Frida CodeShare](0x08-Testing-Tools.md#frida-codeshare) to monitor all invoked deep links triggering a call to `Intent.getData`. You can also use the script as a base to include your own modifications depending on the use case at hand. In this case we [included the stack trace](https://github.com/FrenchYeti/frida-trick/blob/master/README.md) in the script since we are interested in the method which calls `Intent.getData`.
+You can use the script ["Android Deep Link Observer"](https://codeshare.frida.re/@leolashkevych/android-deep-link-observer/) from [Frida CodeShare](0x08a-Testing-Tools.md#frida-codeshare) to monitor all invoked deep links triggering a call to `Intent.getData`. You can also use the script as a base to include your own modifications depending on the use case at hand. In this case we [included the stack trace](https://github.com/FrenchYeti/frida-trick/blob/master/README.md) in the script since we are interested in the method which calls `Intent.getData`.
 
 **[Step 2] Invoking Deep Links:**
 
-Now you can invoke any of the deep links using [adb](0x08-Testing-Tools.md#adb) and the [Activity Manager (am)](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") which will send intents within the Android device. For example:
+Now you can invoke any of the deep links using [adb](0x08a-Testing-Tools.md#adb) and the [Activity Manager (am)](https://developer.android.com/training/app-links/deep-linking#testing-filters "Activity Manager") which will send intents within the Android device. For example:
 
 ```bash
 adb shell am start -W -a android.intent.action.VIEW -d "deeplinkdemo://load.html/?message=ok#part1"
@@ -1044,7 +1044,7 @@ BroadcastReceivers should use the `android:permission` attribute;  otherwise, ot
 
 ### Dynamic Analysis
 
-You can enumerate IPC components with [MobSF](0x08-Testing-Tools.md#mobsf "MobSF"). To list all exported IPC components, upload the APK file and the components collection will be displayed in the following screen:
+You can enumerate IPC components with [MobSF](0x08a-Testing-Tools.md#mobsf "MobSF"). To list all exported IPC components, upload the APK file and the components collection will be displayed in the following screen:
 
 <img src="Images/Chapters/0x05h/MobSF_Show_Components.png" width="100%" />
 
@@ -1058,7 +1058,7 @@ Provider{34a20d5 com.mwr.example.sieve/.FileBackupProvider}
 Provider{64f10ea com.mwr.example.sieve/.DBContentProvider}
 ```
 
-Once identified, you can use [jadx](0x08-Testing-Tools.md#jadx "jadx") to reverse engineer the app and analyze the source code of the exported content providers to identify potential vulnerabilities.
+Once identified, you can use [jadx](0x08a-Testing-Tools.md#jadx "jadx") to reverse engineer the app and analyze the source code of the exported content providers to identify potential vulnerabilities.
 
 To identify the corresponding class of a content provider, use the following information:
 
@@ -1139,7 +1139,7 @@ You can identify an exported activity using one of the following properties:
 - It have an `intent-filter` sub declaration.
 - It have the attribute `android:exported` to `0xffffffff`.
 
-You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported activities in the file `AndroidManifest.xml` using the criteria described above:
+You can also use [jadx](0x08a-Testing-Tools.md#jadx "jadx") to identify exported activities in the file `AndroidManifest.xml` using the criteria described above:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -1239,7 +1239,7 @@ You can identify an exported broadcast receiver using one of the following prope
 - It has an `intent-filter` sub declaration.
 - It has the attribute `android:exported` set to `0xffffffff`.
 
-You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported broadcast receivers in the file `AndroidManifest.xml` using the criteria described above:
+You can also use [jadx](0x08a-Testing-Tools.md#jadx "jadx") to identify exported broadcast receivers in the file `AndroidManifest.xml` using the criteria described above:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -1261,9 +1261,9 @@ You can also use [jadx](0x08-Testing-Tools.md#jadx "jadx") to identify exported 
 </manifest>
 ```
 
-The above example from the vulnerable banking application [InsecureBankv2](0x08-Testing-Tools.md#android "Vulnerable applications for Android") shows that only the broadcast receiver named `com.android.insecurebankv2.MyBroadCastReceiver` is exported.
+The above example from the vulnerable banking application [InsecureBankv2](0x08b-Reference-Apps.md#insecurebankv2 "Vulnerable applications for Android") shows that only the broadcast receiver named `com.android.insecurebankv2.MyBroadCastReceiver` is exported.
 
-Now that you know that there is an exported broadcast receiver, you can dive deeper and reverse engineer the app using [jadx](0x08-Testing-Tools.md#jadx "jadx"). This will allow you to analyze the source code searching for potential vulnerabilities that you could later try to exploit. The source code of the exported broadcast receiver is the following:
+Now that you know that there is an exported broadcast receiver, you can dive deeper and reverse engineer the app using [jadx](0x08a-Testing-Tools.md#jadx "jadx"). This will allow you to analyze the source code searching for potential vulnerabilities that you could later try to exploit. The source code of the exported broadcast receiver is the following:
 
 ```java
 package com.android.insecurebankv2;

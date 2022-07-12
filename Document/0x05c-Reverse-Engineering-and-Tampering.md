@@ -26,11 +26,11 @@ Nevertheless, if the code has been purposefully obfuscated (or some tool-breakin
 
 If you want to inspect the app's smali code (instead of Java), you can [open your APK in Android Studio](https://developer.android.com/studio/debug/apk-debugger "Debug pre-built APKs") by clicking **Profile or debug APK** from the "Welcome screen" (even if you don't intend to debug it you can take a look at the smali code).
 
-Alternatively you can use [apktool](0x08-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to smali. apktool allows you to reassemble the package, which is useful for [patching](#patching-repackaging-and-re-signing) the app or applying changes to e.g. the Android Manifest.
+Alternatively you can use [apktool](0x08a-Testing-Tools.md#apktool) to extract and disassemble resources directly from the APK archive and disassemble Java bytecode to smali. apktool allows you to reassemble the package, which is useful for [patching](#patching-repackaging-and-re-signing) the app or applying changes to e.g. the Android Manifest.
 
 **Java Decompiled Code:**
 
-If you want to look directly into Java source code on a GUI, simply open your APK using [jadx](0x08-Testing-Tools.md#jadx) or [Bytecode Viewer](0x08-Testing-Tools.md#bytecode-viewer).
+If you want to look directly into Java source code on a GUI, simply open your APK using [jadx](0x08a-Testing-Tools.md#jadx) or [Bytecode Viewer](0x08a-Testing-Tools.md#bytecode-viewer).
 
 Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
 
@@ -40,7 +40,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 - [Procyon](https://github.com/mstrobel/procyon "Procyon")
 - [CFR](https://www.benf.org/other/cfr/ "CFR")
 
-Alternatively run [apkx](0x08-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such as an IDE.
+Alternatively run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such as an IDE.
 
 In the following example we'll be using [UnCrackable App for Android Level 1](https://github.com/OWASP/owasp-mstg/raw/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk "UnCrackable App for Android Level 1"). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
@@ -52,7 +52,7 @@ We're looking for a secret string stored somewhere inside the app, so the next s
 
 Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the [CFR decompiler](https://www.benf.org/other/cfr/ "CFR decompiler"). CFR is under active development, and brand-new releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
 
-The easiest way to run CFR is through [apkx](0x08-Testing-Tools.md#apkx), which also packages `dex2jar` and automates extraction, conversion, and decompilation. Run it on the APK and you should find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
+The easiest way to run CFR is through [apkx](0x08a-Testing-Tools.md#apkx), which also packages `dex2jar` and automates extraction, conversion, and decompilation. Run it on the APK and you should find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
 
 Open IntelliJ and select "Android" as the project type in the left tab of the "New Project" dialog. Enter "Uncrackable1" as the application name and "vantagepoint.sg" as the company name. This results in the package name "sg.vantagepoint.uncrackable1", which matches the original package name. Using a matching package name is important if you want to attach the debugger to the running app later on because IntelliJ uses the package name to identify the correct process.
 
@@ -164,7 +164,7 @@ Most disassemblers can handle any of those architectures. Below, we'll be viewin
 
 ##### radare2
 
-To open the file in [radare2](0x08-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
+To open the file in [radare2](0x08a-Testing-Tools.md#radare2) you only have to run `r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so`. The chapter "[Android Basic Security Testing](0x05b-Basic-Security_Testing.md "Android Basic Security Testing")" already introduced radare2. Remember that you can use the flag `-A` to run the `aaa` command right after loading the binary in order to analyze all referenced code.
 
 ```bash
 $ r2 -A HelloWord-JNI/lib/armeabi-v7a/libnative-lib.so
@@ -218,13 +218,13 @@ There is a thing that is worth noticing about radare2 vs other disassemblers lik
 
 > Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
 >
-> People that are used to [IDA](0x08-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
+> People that are used to [IDA](0x08a-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
 This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
 
 ##### IDA Pro
 
-If you own an [IDA Pro](0x08-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
+If you own an [IDA Pro](0x08a-Testing-Tools.md#ida-pro-commercial-tool) license, open the file and once in the "Load new file" dialog, choose "ELF for ARM (Shared Object)" as the file type (IDA should detect this automatically), and "ARM Little-Endian" as the processor type.
 
 <img src="Images/Chapters/0x05c/IDA_open_file.jpg" width="100%" />
 
@@ -272,7 +272,7 @@ In order to extract strings from native code used in an Android application, you
 
 ##### Java and Kotlin
 
-There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage**](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx - find-usage") in [jadx](0x08-Testing-Tools.md#jadx).
+There are many RE tools that support retrieving Java cross references. For many of the GUI-based ones, this is usually done by right clicking on the desired function and selecting the corresponding option, e.g. **Show References to** in Ghidra or [**Find Usage**](https://github.com/skylot/jadx/wiki/jadx-gui-features-overview#find-usage "jadx - find-usage") in [jadx](0x08a-Testing-Tools.md#jadx).
 
 ##### Native Code
 
@@ -483,7 +483,7 @@ There are several open source tools for automated security analysis of an APK.
 
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
 - [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
-- [MobSF](0x08-Testing-Tools.md#mobsf)
+- [MobSF](0x08a-Testing-Tools.md#mobsf)
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 
 ## Dynamic Analysis
@@ -522,7 +522,7 @@ $ objection explore
 
 As mentioned previously, Android runs on top of a modified Linux kernel and retains the [proc filesystem](https://www.kernel.org/doc/Documentation/filesystems/proc.txt "procfs") (procfs) from Linux, which is mounted at `/proc`. Procfs provides a directory-based view of a process running on the system, providing detailed information about the process itself, its threads, and other system-wide diagnostics. Procfs is arguably one of the most important filesystems on Android, where many OS native tools depend on it as their source of information.
 
-Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using [BusyBox](0x08-Testing-Tools.md#busybox). We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
+Many command line tools are not shipped with the Android firmware to reduce the size, but can be easily installed on a rooted device using [BusyBox](0x08a-Testing-Tools.md#busybox). We can also create our own custom scripts using commands like `cut`, `grep`, `sort` etc, to parse the proc filesystem information.
 
 In this section, we will be using information from procfs directly or indirectly to gather information about a running process.
 
@@ -966,7 +966,7 @@ The stock Android kernel comes without loadable module support, which is a probl
 
 In contrast to method profiling, which tells you how frequently a method is being called, method tracing helps you to also determine its input and output values. This technique can prove to be very useful when dealing with applications that have a big codebase and/or are obfuscated.
 
-As we will discuss shortly in the next section, `frida-trace` offers out-of-the-box support for Android/iOS native code tracing and iOS high level method tracing. If you prefer a GUI-based approach you can use tools such as [RMS - Runtime Mobile Security](0x08-Testing-Tools.md#RMS-Runtime-Mobile-Security) which enables a more visual experience as well as include several convenience [tracing options](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#3-hook-on-the-fly-classesmethods-and-trace-their-args-and-return-values).
+As we will discuss shortly in the next section, `frida-trace` offers out-of-the-box support for Android/iOS native code tracing and iOS high level method tracing. If you prefer a GUI-based approach you can use tools such as [RMS - Runtime Mobile Security](0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security) which enables a more visual experience as well as include several convenience [tracing options](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#3-hook-on-the-fly-classesmethods-and-trace-their-args-and-return-values).
 
 #### Native Code Tracing
 
@@ -1069,7 +1069,7 @@ Binary analysis frameworks give you powerful ways to automate tasks that would b
 
 #### Symbolic Execution
 
-Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.
+Symbolic execution is a very useful technique to have in your toolbox, especially while dealing with problems where you need to find a correct input for reaching a certain block of code. In this section, we will solve a simple Android crackme by using the [Angr](0x08a-Testing-Tools.md#angr) binary analysis framework as our symbolic execution engine.
 
 The target crackme is a simple [Android license key validation](https://github.com/angr/angr-doc/tree/master/examples/android_arm_license_validation "Android license key validation") executable. As we will soon observe, the key validation logic in the crackme is implemented in native code. It is a common notion that analyzing compiled native code is tougher than analyzing an equivalent compiled Java code, and hence, critical business logic is often written in native. The current sample application may not represent a real world problem, but nevertheless it helps getting some basic notions about symbolic execution that you can use in a real situation. You can use the same techniques on Android apps that ship with obfuscated native libraries (in fact, obfuscated code is often put into native libraries specifically to make de-obfuscation more difficult).
 
@@ -1443,7 +1443,7 @@ A well-known use case of this technique is loading the Frida gadget to an applic
 
 Many Android applications use native code in addition to Java code for various performance and security reasons. The native code is present in the form of ELF shared libraries. An ELF executable includes a list of shared libraries (dependencies) that are linked to the executable for it to function optimally. This list can be modified to insert an additional library to be injected into the process.
 
-Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](0x08-Testing-Tools.md#LIEF) (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
+Modifying the ELF file structure manually to inject a library can be cumbersome and prone to errors. However, this task can be performed with relative ease using [LIEF](0x08a-Testing-Tools.md#LIEF) (Library to Instrument Executable Formats). Using it requires only a few lines of Python code as shown below:
 
 ```python
 import lief
@@ -1834,7 +1834,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these passive tasks help us collect information. This Information is often used for other techniques, such as method hooking.
 
-In the following sections you will be using [r2frida](0x08-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
+In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//sg.vantagepoint.helloworldjni

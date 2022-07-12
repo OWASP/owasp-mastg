@@ -515,7 +515,7 @@ All data that's sent to third-party services should be anonymized to prevent exp
 ### Dynamic Analysis
 
 Check all requests to external services for embedded sensitive information.
-To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
+To intercept traffic between the client and server, you can perform dynamic analysis by launching a man-in-the-middle (MITM) attack with [Burp Suite](0x08a-Testing-Tools.md#burp-suite) Professional or [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap). Once you route the traffic through the interception proxy, you can try to sniff the traffic that passes between the app and server. All app requests that aren't sent directly to the server on which the main function is hosted should be checked for sensitive information, such as PII in a tracker or ad service.
 
 ## Finding Sensitive Data in the Keyboard Cache (MSTG-STORAGE-5)
 
@@ -788,7 +788,7 @@ To identify if a backup is encrypted, you can check the key named "IsEncrypted" 
 
 In case you need to work with an encrypted backup, there are some Python scripts in [DinoSec's GitHub repo](https://github.com/dinosec/iphone-dataprotection/tree/master/python_scripts "iphone-dataprotection"), such as backup_tool.py and backup_passwd.py, that will serve as a good starting point. However, note that they might not work with the latest iTunes/Finder versions and might need to be tweaked.
 
-You can also use the tool [iOSbackup](0x08-Testing-Tools.md#iosbackup) to easily read and extract files from a password-encrypted iOS backup.
+You can also use the tool [iOSbackup](0x08a-Testing-Tools.md#iosbackup) to easily read and extract files from a password-encrypted iOS backup.
 
 #### Proof of Concept: Removing UI Lock with Tampered Backup
 
@@ -990,7 +990,7 @@ Usage: /[!bf] [arg]  Search stuff (see 'e??search' for options)
 
 #### Runtime Memory Analysis
 
-By using [r2frida](0x08-Testing-Tools.md#r2frida) you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
+By using [r2frida](0x08a-Testing-Tools.md#r2frida) you can analyze and inspect the app's memory while running and without needing to dump it. For example, you may run the previous search commands from r2frida and search the memory for a string, hexadecimal values, etc. When doing so, remember to prepend the search command (and any other r2frida specific commands) with a backslash `\` after starting the session with `r2 frida://usb//<name_of_your_app>`.
 
 For more information, options and approaches, please refer to section "[In-Memory Search](0x06c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on iOS".
 

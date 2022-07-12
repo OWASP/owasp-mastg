@@ -11,10 +11,10 @@ Although you can use a Linux or Windows host computer for testing, you'll find t
 The following is the most basic iOS app testing setup:
 
 - Ideally macOS host computer with admin rights
-- [Xcode](0x08-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08-Testing-Tools.md#xcode-command-line-tools) installed.
+- [Xcode](0x08a-Testing-Tools.md#xcode) and [Xcode Command Line Tools](0x08a-Testing-Tools.md#xcode-command-line-tools) installed.
 - Wi-Fi network that permits client-to-client traffic.
 - At least one jailbroken iOS device (of the desired iOS version).
-- [Burp Suite](0x08-Testing-Tools.md#burp-suite) or other interception proxy tool.
+- [Burp Suite](0x08a-Testing-Tools.md#burp-suite) or other interception proxy tool.
 
 ### Testing Device
 
@@ -82,7 +82,7 @@ iOS jailbreaking is often compared to Android rooting, but the process is actual
 
 On iOS devices, flashing a custom ROM is impossible because the iOS bootloader only allows Apple-signed images to be booted and flashed. This is why even official iOS images can't be installed if they aren't signed by Apple, and it makes iOS downgrades only possible for as long as the previous iOS version is still signed.
 
-The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08-Testing-Tools.md#cydia) or [Sileo](0x08-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
+The purpose of jailbreaking is to disable iOS protections (Apple's code signing mechanisms in particular) so that arbitrary unsigned code can run on the device (e.g. custom code or downloaded from alternative app stores such as [Cydia](0x08a-Testing-Tools.md#cydia) or [Sileo](0x08a-Testing-Tools.md#sileo)). The word "jailbreak" is a colloquial reference to all-in-one tools that automate the disabling process.
 
 Developing a jailbreak for a given version of iOS is not easy. As a security tester, you'll most likely want to use publicly available jailbreak tools. Still, we recommend studying the techniques that have been used to jailbreak various versions of iOS-you'll encounter many interesting exploits and learn a lot about OS internals. For example, Pangu9 for iOS 9.x [exploited at least five vulnerabilities](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits "Jailbreak Exploits"), including a use-after-free kernel bug (CVE-2015-6794) and an arbitrary file system access vulnerability in the Photos app (CVE-2015-7037).
 
@@ -140,7 +140,7 @@ One of the most common things you do when testing an app is accessing the device
 
 #### Remote Shell
 
-In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08-Testing-Tools.md#cydia) (see screenshot below) or [Sileo](0x08-Testing-Tools.md#sileo) installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
+In contrast to Android where you can easily access the device shell using the adb tool, on iOS you only have the option to access the remote shell via SSH. This also means that your iOS device must be jailbroken in order to connect to its shell from your host computer. For this section we assume that you've properly jailbroken your device and have either [Cydia](0x08a-Testing-Tools.md#cydia) (see screenshot below) or [Sileo](0x08a-Testing-Tools.md#sileo) installed. In the rest of the guide we will reference to Cydia, but the same packages should be available in Sileo.
 
 <img src="Images/Chapters/0x06b/cydia.png" width="300px" />
 
@@ -178,9 +178,9 @@ If you forget your password and want to reset it to the default `alpine`:
 
 ##### Connect to a Device via SSH over USB
 
-During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](0x08-Testing-Tools.md#usbmuxd) to connect to your device's SSH server via USB.
+During a real black box test, a reliable Wi-Fi connection may not be available. In this situation, you can use [usbmuxd](0x08a-Testing-Tools.md#usbmuxd) to connect to your device's SSH server via USB.
 
-Connect macOS to an iOS device by installing and starting [iproxy](0x08-Testing-Tools.md#iproxy):
+Connect macOS to an iOS device by installing and starting [iproxy](0x08a-Testing-Tools.md#iproxy):
 
 ```bash
 $ brew install libimobiledevice
@@ -236,7 +236,7 @@ $ scp -P 2222 root@localhost:/tmp/data.tgz .
 
 #### Passionfruit
 
-After starting [Passionfruit](0x08-Testing-Tools.md#passionfruit) you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
+After starting [Passionfruit](0x08a-Testing-Tools.md#passionfruit) you can select the app that is in scope for testing. There are various functions available, of which one is called "Files". When selecting it, you will get a listing of the directories of the app sandbox.
 
 <img src="Images/Chapters/0x06b/passionfruit_data_dir.png" width="100%" />
 
@@ -312,7 +312,7 @@ Save the IPA file locally with the following command:
 
     If you don't have the original IPA, then you need a jailbroken device where you will install the app (e.g. via App Store). Once installed, you need to extract the app binary from memory and rebuild the IPA file. Because of DRM, the app binary file is encrypted when it is stored on the iOS device, so simply pulling it from the Bundle (either through SSH or Objection) will not be sufficient to reverse engineer it.
 
-The following shows the output of running [class-dump](0x08-Testing-Tools.md#class-dump) on the Telegram app, which was directly pulled from the installation directory of the iPhone:
+The following shows the output of running [class-dump](0x08a-Testing-Tools.md#class-dump) on the Telegram app, which was directly pulled from the installation directory of the iPhone:
 
 ```bash
 $ class-dump Telegram
@@ -344,13 +344,13 @@ $ class-dump Telegram
 //
 ```
 
-In order to retrieve the unencrypted version, you can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") (all iOS versions) or [Clutch](0x08-Testing-Tools.md#clutch) (only up to iOS 11; for iOS 12 and above, it requires a patch). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and frida-ios-dump can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary.
+In order to retrieve the unencrypted version, you can use tools such as [frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump "frida-ios-dump") (all iOS versions) or [Clutch](0x08a-Testing-Tools.md#clutch) (only up to iOS 11; for iOS 12 and above, it requires a patch). Both will extract the unencrypted version from memory while the application is running on the device. The stability of both Clutch and frida-ios-dump can vary depending on your iOS version and Jailbreak method, so it's useful to have multiple ways of extracting the binary.
 
 >**IMPORTANT NOTE:** In the United States, the Digital Millennium Copyright Act 17 U.S.C. 1201, or DMCA, makes it illegal and actionable to circumvent certain types of DRM. However, the DMCA also provides exemptions, such as for certain kinds of security research. A qualified attorney can help you determine if your research qualifies under the DMCA exemptions. (Source: [Corellium](https://support.corellium.com/en/articles/6181345-testing-third-party-ios-apps))
 
 ##### Using Clutch
 
-Build [Clutch](0x08-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through `scp`. Run Clutch with the `-i` flag to list all installed applications:
+Build [Clutch](0x08a-Testing-Tools.md#clutch) as explained on the Clutch GitHub page and push it to the iOS device through `scp`. Run Clutch with the `-i` flag to list all installed applications:
 
 ```bash
 root# ./Clutch -i
@@ -381,7 +381,7 @@ DONE: /private/var/mobile/Documents/Dumped/ph.telegra.Telegraph-iOS9.0-(Clutch-(
 Finished dumping ph.telegra.Telegraph in 20.5 seconds
 ```
 
-After copying the IPA file over to the host system and unzipping it, you can see that the Telegram app binary can now be parsed by [class-dump](0x08-Testing-Tools.md#class-dump), indicating that it is no longer encrypted:
+After copying the IPA file over to the host system and unzipping it, you can see that the Telegram app binary can now be parsed by [class-dump](0x08a-Testing-Tools.md#class-dump), indicating that it is no longer encrypted:
 
 ```bash
 $ class-dump Telegram
@@ -405,11 +405,11 @@ struct CGPoint {
 ...
 ```
 
-Note: when you use [Clutch](0x08-Testing-Tools.md#clutch) on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
+Note: when you use [Clutch](0x08a-Testing-Tools.md#clutch) on iOS 12, please check [Clutch Github issue 228](https://github.com/KJCracks/Clutch/issues/228 "Getting Clutch to run on iOS 12")
 
 ##### Using Frida-ios-dump
 
-First, make sure that the configuration in [Frida-ios-dump](0x08-Testing-Tools.md#frida-ios-dump) `dump.py` is set to either localhost with port 2222 when using [iproxy](0x08-Testing-Tools.md#iproxy), or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
+First, make sure that the configuration in [Frida-ios-dump](0x08a-Testing-Tools.md#frida-ios-dump) `dump.py` is set to either localhost with port 2222 when using [iproxy](0x08a-Testing-Tools.md#iproxy), or to the actual IP address and port of the device from which you want to dump the binary. Next, change the default username (`User = 'root'`) and password (`Password = 'alpine'`) in `dump.py` to the ones you use.
 
 Now you can safely use the tool to enumerate the apps installed:
 
@@ -444,7 +444,7 @@ libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00
 0.00B [00:00, ?B/s]Generating "Telegram.ipa"
 ```
 
-After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using [ios-deploy](0x08-Testing-Tools.md#ios-deploy) `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
+After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using [ios-deploy](0x08a-Testing-Tools.md#ios-deploy) `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
 ### Installing Apps
 
@@ -492,7 +492,7 @@ ipainstaller App_name.ipa
 
 #### ios-deploy
 
-On macOS you can also use the [ios-deploy](0x08-Testing-Tools.md#ios-deploy) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
+On macOS you can also use the [ios-deploy](0x08a-Testing-Tools.md#ios-deploy) tool to install iOS apps from the command line. You'll need to unzip your IPA since ios-deploy uses the app bundles to install apps.
 
 ```bash
 unzip Name.ipa
@@ -915,13 +915,13 @@ Finally, since the keychain dumper is executed from within the application conte
 
 ##### Passionfruit (Jailbroken / non-Jailbroken)
 
-With [Passionfruit](0x08-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
+With [Passionfruit](0x08a-Testing-Tools.md#passionfruit) it's possible to access the keychain data of the app you have selected. Click on **Storage** -> **Keychain** and you can see a listing of the stored Keychain information.
 
 <img src="Images/Chapters/0x06b/Passionfruit_Keychain.png" width="100%" />
 
 ##### Keychain-dumper (Jailbroken)
 
-You can use [Keychain-dumper](0x08-Testing-Tools.md#keychain-dumper) dump the jailbroken device's KeyChain contents. Once you have it running on your device:
+You can use [Keychain-dumper](0x08a-Testing-Tools.md#keychain-dumper) dump the jailbroken device's KeyChain contents. Once you have it running on your device:
 
 ```bash
 iPhone:~ root# /tmp/keychain_dumper
@@ -954,7 +954,7 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 
 ### Basic Network Monitoring/Sniffing
 
-You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have [Wireshark](0x08-Testing-Tools.md#wireshark) installed on your macOS host computer.
+You can remotely sniff all traffic in real-time on iOS by [creating a Remote Virtual Interface](https://stackoverflow.com/questions/9555403/capturing-mobile-phone-traffic-on-wireshark/33175819#33175819 "Wireshark + OSX + iOS") for your iOS device. First make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your macOS host computer.
 
 1. Connect your iOS device to your macOS host computer via USB.
 2. You would need to know the UDID of your iOS device, before you can start sniffing. Check the section ["Getting the UDID of an iOS device"](#getting-the-udid-of-an-ios-device) on how to retrieve it. Open the Terminal on macOS and enter the following command, filling in the UDID of your iOS device.
@@ -977,7 +977,7 @@ The documentation of Wireshark offers many examples for [Capture Filters](https:
 
 ### Setting up an Interception Proxy
 
-[Burp Suite](0x08-Testing-Tools.md#burp-suite) is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
+[Burp Suite](0x08a-Testing-Tools.md#burp-suite) is an integrated platform for security testing mobile and web applications. Its tools work together seamlessly to support the entire testing process, from initial mapping and analysis of attack surfaces to finding and exploiting security vulnerabilities. Burp Proxy operates as a web proxy server for Burp Suite, which is positioned as a man-in-the-middle between the browser and web server(s). Burp Suite allows you to intercept, inspect, and modify incoming and outgoing raw HTTP traffic.
 
 Setting up Burp to proxy your traffic is pretty straightforward. We assume that both your iOS device and host computer are connected to a Wi-Fi network that permits client-to-client traffic. If client-to-client traffic is not permitted, you can use usbmuxd to connect to Burp via USB.
 
@@ -985,7 +985,7 @@ PortSwigger provides a good [tutorial on setting up an iOS device to work with B
 
 #### Using Burp via USB on a Jailbroken Device
 
-In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use [iproxy](0x08-Testing-Tools.md#iproxy) to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
+In the section [Accessing the Device Shell](0x06b-Basic-Security-Testing.md#accessing-the-device-shell) we've already learned how we can use [iproxy](0x08a-Testing-Tools.md#iproxy) to use SSH via USB. When doing dynamic analysis, it's interesting to use the SSH connection to route our traffic to Burp that is running on our computer. Let's get started:
 
 First we need to use iproxy to make SSH from iOS available on localhost.
 
