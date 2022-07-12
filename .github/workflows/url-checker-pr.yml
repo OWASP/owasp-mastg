@@ -1,11 +1,7 @@
-name: URLs Checker
+name: URLs Checker (PR)
 
 on:
-  workflow_dispatch:
   pull_request:
-  push:
-    branches:
-      - master
 
 jobs:
   markdown-link-check:
@@ -22,3 +18,4 @@ jobs:
           use-verbose-mode: 'yes'
           config-file: '.github/workflows/config/mlc_config.json'
           folder-path: '.'
+          check-modified-files-only: 'yes'

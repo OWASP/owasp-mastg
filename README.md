@@ -6,8 +6,8 @@
 [![Creative Commons License](https://img.shields.io/github/license/OWASP/owasp-mstg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
 
 [![Document Build](https://github.com/OWASP/owasp-mstg/workflows/Document%20Build/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Document+Build%22)
-[![Check Markdown Markup](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Markup/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Markup%22)
-[![Check Markdown Links](https://github.com/OWASP/owasp-mstg/workflows/Check%20Markdown%20Links/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Check+Markdown+Links%22)
+[![Markdown Linter](https://github.com/OWASP/owasp-mstg/workflows/Markdown%20Linter/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Markdown+Linter%22)
+[![URL Checker](https://github.com/OWASP/owasp-mstg/workflows/URL%20Checker/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22URL+Checker%22)
 
 This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 
@@ -133,7 +133,7 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 - [Data Storage on Android](Document/0x05d-Testing-Data-Storage.md)
 - [Android Cryptographic APIs](Document/0x05e-Testing-Cryptography.md)
 - [Local Authentication on Android](Document/0x05f-Testing-Local-Authentication.md)
-- [Android Network APIs](Document/0x05g-Testing-Network-Communication.md)
+- [Android Network Communication](Document/0x05g-Testing-Network-Communication.md)
 - [Android Platform APIs](Document/0x05h-Testing-Platform-Interaction.md)
 - [Code Quality and Build Settings for Android Apps](Document/0x05i-Testing-Code-Quality-and-Build-Settings.md)
 - [Tampering and Reverse Engineering on Android](Document/0x05c-Reverse-Engineering-and-Tampering.md)
@@ -146,7 +146,7 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 - [Data Storage on iOS](Document/0x06d-Testing-Data-Storage.md)
 - [iOS Cryptographic APIs](Document/0x06e-Testing-Cryptography.md)
 - [Local Authentication on iOS](Document/0x06f-Testing-Local-Authentication.md)
-- [iOS Network APIs](Document/0x06g-Testing-Network-Communication.md)
+- [iOS Network Communication](Document/0x06g-Testing-Network-Communication.md)
 - [iOS Platform APIs](Document/0x06h-Testing-Platform-Interaction.md)
 - [Code Quality and Build Settings for iOS Apps](Document/0x06i-Testing-Code-Quality-and-Build-Settings.md)
 - [Tampering and Reverse Engineering on iOS](Document/0x06c-Reverse-Engineering-and-Tampering.md)

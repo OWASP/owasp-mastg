@@ -697,17 +697,17 @@ Publishing an app is quite straightforward; the main operation is making the sig
 The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
 
 - Validate all input by means of IPC communication or URL schemes, see also:
-  - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4 "Testing for Sensitive Functionality Exposure Through IPC")
-  - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3 "Testing Deep Links")
+  - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
+  - [Testing Custom URL Schemes](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3)
 - Validate all input by the user in input fields.
 - Validate the content loaded inside a WebView, see also:
-  - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5 "Testing JavaScript Execution in WebViews")
-  - [Testing WebView Protocol Handlers](0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6 "Testing WebView Protocol Handlers")
-  - [Determining Whether Java Objects Are Exposed Through WebViews](0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Java Objects Are Exposed Through WebViews")
+  - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5)
+  - [Testing WebView Protocol Handlers](0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6)
+  - [Determining Whether Java Objects Are Exposed Through WebViews](0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7)
 - Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application, see also:
-  - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication")
-  - [Android Network APIs](0x05g-Testing-Network-Communication.md#android-network-apis "Android Network APIs")
+  - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication)
+  - [Android Network Communication](0x05g-Testing-Network-Communication.md)
 - Securely stores all local data, or loads untrusted data from storage, see also:
-  - [Data Storage on Android](0x05d-Testing-Data-Storage.md#data-storage-on-android "Data Storage on Android")
+  - [Data Storage on Android](0x05d-Testing-Data-Storage.md#data-storage-on-android)
 - Protect itself against compromised environments, repackaging or other local attacks, see also:
-  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")
+  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses)
