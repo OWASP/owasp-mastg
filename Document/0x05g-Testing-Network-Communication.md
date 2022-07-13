@@ -119,12 +119,12 @@ Intercept the tested app's incoming and outgoing network traffic and make sure t
 
 For more details refer to:
 
-- "Intercepting Traffic on the Network Layer" from chapter ["Testing Network Communication"](0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer)
-- "Setting up a Network Testing Environment" from chapter [Android Basic Security Testing](0x05b-Basic-Security_Testing.md#setting-up-a-network-testing-environment)
+- ["Intercepting Traffic on the Network Layer"](0x04f-Testing-Network-Communication.md#intercepting-traffic-on-the-network-layer) from chapter "Mobile App Network Communication"
+- ["Setting up a Network Testing Environment"](0x05b-Basic-Security_Testing.md#setting-up-a-network-testing-environment) from chapter "Android Basic Security Testing"
 
 ## Testing the TLS Settings (MSTG-NETWORK-2)
 
-Refer to section "Verifying the TLS Settings" in chapter [Testing Network Communication](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings-mstg-network-2) for details.
+Refer to section ["Verifying the TLS Settings"](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings-mstg-network-2) in chapter "Mobile App Network Communication" for details.
 
 ## Testing Endpoint Identify Verification (MSTG-NETWORK-3)
 
@@ -292,7 +292,7 @@ If you're still not able to see any decrypted HTTPS traffic, your application mi
 
 This test verifies if the app properly implements identity pinning (certificate or public key pinning).
 
-For more details refer to section "Identity Pinning" in the general chapter ["Mobile App Network Communication"](0x04f-Testing-Network-Communication.md#identity-pinning).
+For more details refer to section ["Identity Pinning"](0x04f-Testing-Network-Communication.md#identity-pinning) in the general chapter "Mobile App Network Communication".
 
 ### Static Analysis
 
