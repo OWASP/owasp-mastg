@@ -8,6 +8,27 @@ The applications listed below can be used as training materials. Note: only the 
 
 A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
 
+#### UnCrackable App for Android Level 1
+
+Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_01>
+
+#### UnCrackable App for Android Level 2
+
+Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_02>
+
+#### UnCrackable App for Android Level 3
+
+Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_03>
+
+#### UnCrackable App for Android Level 4: Radare2 Pay v0.9
+
+Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04>
+
+#### Android License Validator
+
+Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/License_01>
+
+
 ### AndroGoat
 
 An open source vulnerable/insecure app using Kotlin. This app has a wide range of vulnerabilities related to certificate pinning, custom URL schemes, Android Network Security Configuration, WebViews, root detection and over 20 other vulnerabilities - <https://github.com/satishpatnayak/AndroGoat>
@@ -32,19 +53,31 @@ An insecure Android app from 2015 - <https://github.com/CSPF-Founder/DodoVulnera
 
 A vulnerable Android app made for security enthusiasts and developers to learn the Android insecurities by testing a vulnerable application. It has been updated in 2018 and contains a lot of vulnerabilities - <https://github.com/dineshshetty/Android-InsecureBankv2>
 
-### MSTG Android app (Java)
+### MSTG Hacking Playground
 
-A vulnerable Android app with vulnerabilities similar to the test cases described in this document - <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
+A vulnerable Android app with vulnerabilities similar to the test cases described in this document
 
-### MSTG Android app (Kotlin)
+#### MSTG Hacking Playground (Java)
 
-A vulnerable Android app with vulnerabilities similar to the test cases described in this document - <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
+Available at <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
+
+### MSTG Hacking Playground (Kotlin)
+
+Available at <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
 
 ## iOS
 
 ### iOS Crackmes
 
 A set of applications to test your iOS application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
+
+#### UnCrackable App for iOS Level 1
+
+Available at <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01>
+
+#### UnCrackable App for iOS Level 2
+
+Available at  <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02>
 
 ### Myriam
 

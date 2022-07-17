@@ -620,7 +620,7 @@ The most relevant items are:
 - `_CodeSignature/` contains a plist file with a signature over all files in the bundle.
 - `Frameworks/` contains the app native libraries as .dylib or .framework files.
 - `PlugIns/` may contain app extensions as .appex files (not present in the example).
-- `iGoat-Swift` is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
+- [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift) is the app binary containing the app’s code. Its name is the same as the bundle's name minus the .app extension.
 - Various resources such as images/icons, `*.nib` files (storing the user interfaces of iOS app), localized content (`<language>.lproj`), text files, audio files, etc.
 
 ##### The Info.plist File
@@ -792,7 +792,7 @@ Data directory:
   - Content in this directory is not backed up.
   - The OS may delete this directory's files automatically when the app is not running and storage space is running low.
 
-Let's take a closer look at iGoat-Swift's Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
+Let's take a closer look at [iGoat-Swift](0x08b-Reference-Apps.md#igoat-swift)'s Application Bundle (.app) directory inside the Bundle directory (`/var/containers/Bundle/Application/3ADAF47D-A734-49FA-B274-FBCA66589E67/iGoat-Swift.app`):
 
 ```bash
 OWASP.iGoat-Swift on (iPhone: 11.1.2) [usb] # ls

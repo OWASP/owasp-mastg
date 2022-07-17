@@ -912,7 +912,7 @@ Once you identify a list of IPC mechanisms, review the source code to see whethe
 In the following, we use two example apps and give examples of identifying vulnerable IPC components:
 
 - ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve: Vulnerable Password Manager")
-- ["Android Insecure Bank"](https://github.com/dineshshetty/Android-InsecureBankv2 "Android Insecure Bank V2")
+- ["Android Insecure Bank"](0x08b-Reference-Apps.md#insecurebankv2)
 
 ### Activities
 
