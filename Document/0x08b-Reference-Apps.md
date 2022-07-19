@@ -28,7 +28,6 @@ Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/L
 
 Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/License_01>
 
-
 ### AndroGoat
 
 An open source vulnerable/insecure app using Kotlin. This app has a wide range of vulnerabilities related to certificate pinning, custom URL schemes, Android Network Security Configuration, WebViews, root detection and over 20 other vulnerabilities - <https://github.com/satishpatnayak/AndroGoat>
