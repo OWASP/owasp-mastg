@@ -566,7 +566,7 @@ The following methods describe different approaches to bypass debugger detection
 
 #### Bypassing Example: UnCrackable App for Android Level 2
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in level 2 of the "UnCrackable App for Android".
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-2).
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
 
@@ -1002,7 +1002,7 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 
 The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
-Android apps can implement some of those obfuscation techniques using different tooling. For example, [ProGuard](0x08-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
+Android apps can implement some of those obfuscation techniques using different tooling. For example, [ProGuard](0x08a-Testing-Tools.md#proguard) offers an easy way to shrink and obfuscate code and to strip unneeded debugging information from the bytecode of Android Java apps. It replaces identifiers, such as class names, method names, and variable names, with meaningless character strings. This is a type of layout obfuscation, which doesn't impact the program's performance.
 
 > Decompiling Java classes is trivial, therefore it is recommended to always applying some basic obfuscation to the production bytecode.
 
@@ -1105,11 +1105,11 @@ For native code:
 
 Some of these techniques are discussed and analyzed in the blog post ["Security hardening of Android native code"](https://darvincitech.wordpress.com/2020/01/07/security-hardening-of-android-native-code/) by Gautam Arvind and in the ["APKiD: Fast Identification of AppShielding Products"](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf) presentation by Eduardo Novella.
 
-For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as [APKiD](0x08-Testing-Tools.md#apkid) may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
+For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used. Tools such as [APKiD](0x08a-Testing-Tools.md#apkid) may give you additional indications about which techniques were used for the target app such as obfuscators, packers and anti-debug measures.
 
 ### Dynamic Analysis
 
-You can use [APKiD](0x08-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
+You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
 
 Example using the [Android Crackme Level 4](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk):
 
