@@ -53,6 +53,18 @@
         },
         {
             "pattern": "^https://busybox.net"
+        },
+        {
+            "pattern": "http://newandroidbook.com/"
+        },
+        {
+            "pattern": "^https://oauth.net"
+        },
+        {
+            "pattern": "^https://www.bsi.bund.de"
+        },
+        {
+            "pattern": "^https://secrary.com/"
         }
     ],
     "httpHeaders": [

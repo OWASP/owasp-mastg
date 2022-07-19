@@ -52,10 +52,12 @@ Apps targeting Android 9 (API level 28) or higher [are affected](https://develop
 
 - **Build serial number deprecation**: device's hardware serial number cannot be read (e.g. via [`Build.getSerial`](https://developer.android.com/reference/android/os/Build.html#getSerial%28%29 "getSerial")) unless the `READ_PHONE_STATE` (dangerous) permission is granted.
 
-#### Android 10 Changes (Beta)
+#### Android 10 (API level 29) Changes
 
-Android 10 Beta introduces several [user privacy enhancements](https://developer.android.com/preview/privacy/permissions "Android Q privacy: Changes to permissions"). The changes regarding permissions affect to all apps running on Android 10, including those targeting lower API levels.
+Android 10 (API level 29) introduces several [user privacy enhancements](https://developer.android.com/about/versions/10/highlights#privacy_for_users "Android 10 for Developers: Privacy for users"). The changes regarding permissions affect to all apps running on Android 10 (API level 29), including those targeting lower API levels.
 
+- **Restricted Location access**: new permission option for location access "only while using the app".
+- **Scoped storage by default**: apps targeting Android 10 (API level 29) don't need to declare any storage permission to access their files in the app specific directory in external storage as well as for files creates from the media store.
 - **Restricted access to screen contents**: `READ_FRAME_BUFFER`, `CAPTURE_VIDEO_OUTPUT`, and `CAPTURE_SECURE_VIDEO_OUTPUT` permissions are now signature-access only, which prevents silent access to the device's screen contents.
 - **User-facing permission check on legacy apps**: when running an app targeting Android 5.1 (API level 22) or lower for the first time, users will be prompted with a permissions screen where they can revoke access to specific _legacy permissions_ (which previously would be automatically granted at installation time).
 

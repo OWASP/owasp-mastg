@@ -446,6 +446,26 @@ libswiftCoreData.dylib.fid: 100%|██████████| 82.5k/82.5k [00
 
 After this, the `Telegram.ipa` file will be created in your current directory. You can validate the success of the dump by removing the app and reinstalling it (e.g. using [ios-deploy](0x08a-Testing-Tools.md#ios-deploy) `ios-deploy -b Telegram.ipa`). Note that this will only work on jailbroken devices, as otherwise the signature won't be valid.
 
+### Repackaging Apps
+
+If you need to test on a non-jailbroken device you should learn how to repackage an app to enable dynamic testing on it.
+
+Use a computer with macOS to perform all the steps indicated in the article ["Patching iOS Applications"](https://github.com/sensepost/objection/wiki/Patching-iOS-Applications) from the objection Wiki. Once you're done you'll be able to patch an IPA by calling the objection command:
+
+```bash
+objection patchipa --source my-app.ipa --codesign-signature 0C2E8200Dxxxx
+```
+
+Finally, the app needs to be installed (sideloaded) and run with debugging communication enabled. Perform the steps from the article ["Running Patched iOS Applications"](https://github.com/sensepost/objection/wiki/Running-Patched-iOS-Applications) from the objection Wiki (using ios-deploy).
+
+```bash
+ios-deploy --bundle Payload/my-app.app -W -d
+```
+
+Refer to ["Installing Apps"](#installing-apps) to learn about other installation methods. Some of them doesn't require you to have a macOS.
+
+> This repackaging method is enough for most use cases. For more advanced repackaging, refer to ["iOS Tampering and Reverse Engineering - Patching, Repackaging and Re-Signing"](0x06c-Reverse-Engineering-and-Tampering.md#patching-repackaging-and-re-signing).
+
 ### Installing Apps
 
 When you install an application without using Apple's App Store, this is called sideloading. There are various ways of sideloading which are described below. On the iOS device, the actual installation process is then handled by the installd daemon, which will unpack and install the application. To integrate app services or be installed on an iOS device, all applications must be signed with a certificate issued by Apple. This means that the application can be installed only after successful code signature verification. On a jailbroken phone, however, you can circumvent this security feature with [AppSync](http://repo.hackyouriphone.org/appsyncunified "AppSync"), a package available in the Cydia store. It contains numerous useful applications that leverage jailbreak-provided root privileges to execute advanced functionality. AppSync is a tweak that patches installd, allowing the installation of fake-signed IPA packages.
@@ -647,7 +667,7 @@ Here's a non-exhaustive list of some info and the corresponding keywords that yo
 - App permissions Purpose Strings: `UsageDescription` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - Custom URL schemes: `CFBundleURLTypes` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
 - Exported/imported _custom document types_: `UTExportedTypeDeclarations` / `UTImportedTypeDeclarations` (see "[iOS Platform APIs](0x06h-Testing-Platform-Interaction.md)")
-- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network APIs](0x06g-Testing-Network-Communication.md)")
+- App Transport Security (ATS) configuration: `NSAppTransportSecurity` (see "[iOS Network Communication](0x06g-Testing-Network-Communication.md)")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
@@ -1013,11 +1033,52 @@ The last step would be to set the proxy globally on your iOS device:
 
 Open Safari and go to any webpage, you should see now the traffic in Burp. Thanks @hweisheimer for the [initial idea](https://twitter.com/hweisheimer/status/1095383526885724161 "Port Forwarding via USB on iOS")!
 
-### Certificate Pinning
+### Bypassing Certificate Pinning
 
 Some applications will implement SSL Pinning, which prevents the application from accepting your intercepting certificate as a valid certificate. This means that you will not be able to monitor the traffic between the application and the server.
 
-For information on disabling SSL Pinning both statically and dynamically, refer to "Bypassing SSL Pinning" in the "Testing Network Communication" chapter.
+For most applications, certificate pinning can be bypassed within seconds, but only if the app uses the API functions that are covered by these tools. If the app is implementing SSL Pinning with a custom framework or library, the SSL Pinning must be manually patched and deactivated, which can be time-consuming.
+
+This section describes various ways to bypass SSL Pinning and gives guidance about what you should do when the existing tools don't work.
+
+#### Methods for Jailbroken and Non-jailbroken Devices
+
+If you have a jailbroken device with frida-server installed, you can bypass SSL pinning by running the following [Objection](0x08a-Testing-Tools.md#objection) command ([repackage your app](#repackaging-apps) if you're using a non-jailbroken device):
+
+```bash
+ios sslpinning disable
+```
+
+Here's an example of the output:
+
+<img src="Images/Chapters/0x06b/ios_ssl_pinning_bypass.png" width="100%" />
+
+See also [Objection's help on Disabling SSL Pinning for iOS](https://github.com/sensepost/objection/blob/master/objection/console/helpfiles/ios.sslpinning.disable.txt) for further information and inspect the [pinning.ts](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts "pinning.ts") file to understand how the bypass works.
+
+#### Methods for Jailbroken Devices Only
+
+If you have a jailbroken device you can try one of the following tools that can automatically disable SSL Pinning:
+
+- "[SSL Kill Switch 2](https://github.com/nabla-c0d3/ssl-kill-switch2 "SSL Kill Switch 2")" is one way to disable certificate pinning. It can be installed via the [Cydia](0x08a-Testing-Tools.md#cydia) store. It will hook on to all high-level API calls and bypass certificate pinning.
+- The [Burp Suite Mobile Assistant](0x08a-Testing-Tools.md#burp-suite-mobile-assistant) app can also be used to bypass certificate pinning.
+
+#### When the Automated Bypasses Fail
+
+Technologies and systems change over time, and some bypass techniques might not work eventually. Hence, it's part of the tester work to do some research, since not every tool is able to keep up with OS versions quickly enough.
+
+Some apps might implement custom SSL pinning methods, so the tester could also develop new bypass scripts making use of existing ones as a base or inspiration and using similar techniques but targeting the app's custom APIs. Here you can inspect three good examples of such scripts:
+
+- ["objection - Pinning Bypass Module" (pinning.ts)](https://github.com/sensepost/objection/blob/master/agent/src/ios/pinning.ts)
+- ["Frida CodeShare - ios10-ssl-bypass"](https://codeshare.frida.re/@dki/ios10-ssl-bypass/) by @dki
+- ["Circumventing SSL Pinning in obfuscated apps with OkHttp"](https://blog.nviso.eu/2019/04/02/circumventing-ssl-pinning-in-obfuscated-apps-with-okhttp) by Jeroen Beckers
+
+**Other Techniques:**
+
+If you don't have access to the source, you can try binary patching:
+
+- If OpenSSL certificate pinning is used, you can try [binary patching](https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2015/january/bypassing-openssl-certificate-pinning-in-ios-apps/ "Bypassing OpenSSL Certificate Pinning in iOS Apps").
+- Sometimes, the certificate is a file in the application bundle. Replacing the certificate with Burp's certificate may be sufficient, but beware of the certificate's SHA sum. If it's hardcoded into the binary, you must replace it too!
+- If you can access the source code you could try to disable certificate pinning and recompile the app, look for API calls for `NSURLSession`, `CFStream`, and `AFNetworking` and methods/strings containing words like "pinning", "X.509", "Certificate", etc.
 
 ## References
 

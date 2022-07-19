@@ -12,27 +12,37 @@ Visit the official [Android developer documentation website](https://developer.a
 
 ## Android Architecture
 
-Android is a Linux-based open source platform developed by Google, which serves as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other "smart" devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
+[Android](https://en.wikipedia.org/wiki/Android_(operating_system)) is a Linux-based open source platform developed by the [Open Handset Alliance](https://www.openhandsetalliance.com/) (a consortium lead by Google), which serves as a mobile operating system (OS). Today the platform is the foundation for a wide variety of modern technology, such as mobile phones, tablets, wearable tech, TVs, and other smart devices. Typical Android builds ship with a range of pre-installed ("stock") apps and support installation of third-party apps through the Google Play store and other marketplaces.
 
 Android's software stack is composed of several different layers. Each layer defines interfaces and offers specific services.
 
 <img src="Images/Chapters/0x05a/android_software_stack.png" width="400px" />
 
-At the lowest level, Android is based on a variation of the Linux Kernel. On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware. For example, it allows a stock phone application to use a device's microphone and speaker.
+**Kernel:** At the lowest level, Android is based on a [variation of the Linux Kernel](https://source.android.com/devices/architecture/kernel) containing some significant additions, including [Low Memory Killer](https://source.android.com/devices/tech/perf/lmkd), wake locks, the [Binder IPC](https://source.android.com/devices/architecture/hidl/binder-ipc) driver, etc. For the purpose of the MSTG, we'll focus on the user-mode part of the OS, where Android significantly differs from a typical Linux distribution. The two most important components for us are the managed runtime used by applications (ART/Dalvik) and [Bionic](https://en.wikipedia.org/wiki/Bionic_(software)), Android’s version of glibc, the GNU C library.
 
-Android apps are usually written in Java and compiled to Dalvik bytecode, which is somewhat different from the traditional Java bytecode. Dalvik bytecode is created by first compiling the Java code to .class files, then converting the JVM bytecode to the Dalvik .dex format with the `d8` tool.
+**HAL:** On top of the kernel, the Hardware Abstraction Layer (HAL) defines a standard interface for interacting with built-in hardware components. Several HAL implementations are packaged into shared library modules that the Android system calls when required. This is the basis for allowing applications to interact with the device's hardware. For example, it allows a stock phone application to use a device's microphone and speaker.
+
+**Runtime Environment:** Android apps are written in Java and Kotlin and then compiled to [Dalvik bytecode](https://source.android.com/devices/tech/dalvik/dalvik-bytecode) which can be then executed using a runtime that interprets the bytecode instructions and executes them on the target device. For Android, this is the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works). This is similar to the [JVM (Java Virtual Machine)](https://en.wikipedia.org/wiki/Java_virtual_machine) for Java applications, or the Mono Runtime for .NET applications.
+
+Dalvik bytecode is an optimized version of Java bytecode. It is created by first compiling the Java or Kotlin code to Java bytecode, using the javac and kotlinc compilers respectively, producing .class files. Finally, the Java bytecode is converted to Dalvik bytecode using the d8 tool. Dalvik bytecode is packed within APK and AAB files in the form of .dex files and is used by a managed runtime on Android to execute it on the device.
 
 <img src="Images/Chapters/0x05a/java_vs_dalvik.png" width="400px" />
 
-The current version of Android executes this bytecode on the Android runtime (ART). ART is the successor to Android's original runtime, the Dalvik Virtual Machine (DVM). The key difference between Dalvik and ART is the way the bytecode is executed.
+Before Android 5.0 (API level 21), Android executed bytecode on the Dalvik Virtual Machine (DVM), where it was translated into machine code at execution time, a process known as *just-in-time* (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation.
 
-In the DVM, bytecode is translated into machine code at execution time, a process known as _just-in-time_ (JIT) compilation. This enables the runtime to benefit from the speed of compiled code while maintaining the flexibility of code interpretation. To further improve performance, Android introduced the [Android Runtime (ART)](https://source.android.com/devices/tech/dalvik/configure#how_art_works) to replace the DVM. ART uses a hybrid combination of _ahead-of-time_ (AOT), JIT and profile-guided compilation. Apps are recompiled on the device when they are installed, or when the OS undergoes a major update. While the code is being recompiled, device-specific and advanced code optimizations techniques can be applied. The final recompiled code is then used for all subsequent executions. AOT improves performance by a factor of two while reducing power consumption, due to the device-specific optimizations.
+Since Android 5.0 (API level 21), Android executes bytecode on the Android Runtime (ART) which is the successor of the DVM. ART provides improved performance as well as context information in app native crash reports, by including both Java and native stack information. It uses the same Dalvik bytecode input to maintain backward compatibility. However, ART executes the Dalvik bytecode differently, using a hybrid combination of *ahead-of-time* (AOT), *just-in-time* (JIT) and profile-guided compilation.
 
-![OWASP MSTG](Images/Chapters/0x05a/java2oat.png) \
+- **AOT** pre-compiles Dalvik bytecode into native code, and the generated code will be saved on disk with the .oat extension (ELF binary). The dex2oat tool can be used to perform the compilation and can be found at /system/bin/dex2oat on Android devices. AOT compilation is executed during the installation of the app. This makes the application start faster, as no compilation is needed anymore. However, this also means that the install time increases as compared to JIT compilation. Additionally, since applications are always optimized against the current version of the OS, this means that software updates will recompile all previously compiled applications, resulting in a significant increase in the system update time. Finally, AOT compilation will compile the entire application, even if certain parts are never used by the user.
+- **JIT** happens at runtime.
+- **Profile-guided compilation** is a hybrid approach that was introduced in Android 7 (API level 24) to combat the downsides of AOT. At first, the application will use JIT compilation, and Android keeps track of all the parts of the application that are frequently used. This information is stored in an application profile and when the device is idle, a compilation (dex2oat) daemon runs which AOT compiles the identified frequent code paths from the profile.
+
+<img src="Images/Chapters/0x05a/java2oat.png" width="100%" />
 
 Source: <https://lief-project.github.io/doc/latest/tutorials/10_android_formats.html>
 
-Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape its own runtime and read the memory of a victim application on the same device. In the following section we take a closer look at the different defense layers in the Android operating system.
+**Sandboxing:** Android apps don't have direct access to hardware resources, and each app runs in its own virtual machine or sandbox. This enables the OS to have precise control over resources and memory access on the device. For instance, a crashing app doesn't affect other apps running on the same device. Android controls the maximum number of system resources allocated to apps, preventing any one app from monopolizing too many resources. At the same time, this sandbox design can be considered as one of the many principles in Android's global defense-in-depth strategy. A malicious third-party application, with low privileges, shouldn't be able to escape its own runtime and read the memory of a victim application on the same device. In the following section we take a closer look at the different defense layers in the Android operating system. Learn more in the section ["Software Isolation"](#software-isolation).
+
+You can find more detailed information in the Google Source article ["Android Runtime (ART)"](https://source.android.com/devices/tech/dalvik/configure#how_art_works) , the ["Android Internals" by Jonathan Levin](http://newandroidbook.com/) and the [blog post "Android 101" by @_qaz_qaz](https://secrary.com/android-reversing/android101/).
 
 ## Android Security: Defense-in-Depth Approach
 
@@ -153,7 +163,7 @@ Android apps interact with system services via the Android Framework, an abstrac
 
 The framework also offers common security functions, such as cryptography.
 
-The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well. The oldest Android version supported at the time of writing is Android 8.1 (API level 27) and the current Android version is Android 10 (API level 29).
+The API specifications change with every new Android release. Critical bug fixes and security patches are usually applied to earlier versions as well.
 
 Noteworthy API versions:
 
@@ -165,7 +175,25 @@ Noteworthy API versions:
 - Android 7.0 (API level 24-25) in August 2016 (new JIT compiler on ART)
 - Android 8.0 (API level 26-27) in August 2017 (a lot of security improvements)
 - Android 9 (API level 28) in August 2018 (restriction of background usage of mic or camera, introduction of lockdown mode, default HTTPS for all apps)
-- Android 10 (API level 29) in September 2019 (notification bubbles, project Mainline)
+- **Android 10 (API level 29)** in September 2019 (access location "only while using the app", device tracking prevention, improve secure external storage,)
+  - Privacy ([overview](https://developer.android.com/about/versions/10/highlights#privacy_for_users), [details 1](https://developer.android.com/about/versions/10/privacy), [details 2](https://developer.android.com/about/versions/10/privacy/changes))
+  - Security ([overview](https://developer.android.com/about/versions/10/highlights#security), [details](https://developer.android.com/about/versions/10/behavior-changes-all#security))
+- **Android 11 (API level 30)** in September 2020 (scoped storage enforcement, Permissions auto-reset, [reduced package visibility](https://developer.android.com/training/package-visibility), APK Signature Scheme v4)
+  - Privacy ([overview](https://developer.android.com/about/versions/11/privacy))
+  - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all)
+  - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/11/behavior-changes-all#security)
+  - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#privacy)
+  - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/11/behavior-changes-11#security)
+- **Android 12 (API level 31-32)** in August 2021 (Material You, Web intent resolution, Privacy Dashboard)
+  - [Security and privacy](https://developer.android.com/about/versions/12/features#security-privacy)
+  - [Behavior changes (all apps)](https://developer.android.com/about/versions/12/behavior-changes-all#security-privacy)
+  - [Behavior changes (apps targeting version)](https://developer.android.com/about/versions/12/behavior-changes-12#security-privacy)
+- [BETA] **Android 13 (API level 33)** in 2022 (Safer exporting of context-registered receivers, new photo picker)
+  - [Security and privacy](https://developer.android.com/about/versions/13/features#privacy-security)
+  - [Privacy Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#privacy)
+  - [Security Behavior changes (all apps)](https://developer.android.com/about/versions/13/behavior-changes-all#security)
+  - [Privacy Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#privacy)
+  - [Security Behavior changes (apps targeting version)](https://developer.android.com/about/versions/13/behavior-changes-13#security)
 
 ### The App Sandbox
 
@@ -631,7 +659,7 @@ It is no longer possible to sign APKs independently, because the proof-of-rotati
 
 #### APK Signature Scheme (v4 Scheme)
 
-The APK Signature Scheme v4 was introduced along with Android 11.0 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
+The APK Signature Scheme v4 was introduced along with Android 11 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
 
 The v4 signature requires a complementary v2 or v3 signature and in contrast to previous signature schemes, the v4 signature is stored in a separate file `<apk name>.apk.idsig`. Remember to specify it using the `--v4-signature-file` flag when verifying a v4-signed APK with `apksigner verify`.
 
@@ -684,17 +712,17 @@ Publishing an app is quite straightforward; the main operation is making the sig
 The Android application attack surface consists of all components of the application, including the supportive material necessary to release the app and to support its functioning. The Android application may be vulnerable to attack if it does not:
 
 - Validate all input by means of IPC communication or URL schemes, see also:
-  - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4 "Testing for Sensitive Functionality Exposure Through IPC")
-  - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3 "Testing Deep Links")
+  - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
+  - [Testing Custom URL Schemes](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3)
 - Validate all input by the user in input fields.
 - Validate the content loaded inside a WebView, see also:
-  - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5 "Testing JavaScript Execution in WebViews")
-  - [Testing WebView Protocol Handlers](0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6 "Testing WebView Protocol Handlers")
-  - [Determining Whether Java Objects Are Exposed Through WebViews](0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Java Objects Are Exposed Through WebViews")
+  - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5)
+  - [Testing WebView Protocol Handlers](0x05h-Testing-Platform-Interaction.md#testing-webview-protocol-handlers-mstg-platform-6)
+  - [Determining Whether Java Objects Are Exposed Through WebViews](0x05h-Testing-Platform-Interaction.md#determining-whether-java-objects-are-exposed-through-webviews-mstg-platform-7)
 - Securely communicate with backend servers or is susceptible to man-in-the-middle attacks between the server and the mobile application, see also:
-  - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication "Testing Network Communication")
-  - [Android Network APIs](0x05g-Testing-Network-Communication.md#android-network-apis "Android Network APIs")
+  - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication)
+  - [Android Network Communication](0x05g-Testing-Network-Communication.md)
 - Securely stores all local data, or loads untrusted data from storage, see also:
-  - [Data Storage on Android](0x05d-Testing-Data-Storage.md#data-storage-on-android "Data Storage on Android")
+  - [Data Storage on Android](0x05d-Testing-Data-Storage.md#data-storage-on-android)
 - Protect itself against compromised environments, repackaging or other local attacks, see also:
-  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses "Android Anti-Reversing Defenses")
+  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses)
