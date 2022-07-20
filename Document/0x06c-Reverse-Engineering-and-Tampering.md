@@ -150,7 +150,7 @@ There are no hard written rules for performing static analysis, but there are fe
 
 In addition to the techniques learned in the "[Disassembling and Decompiling](#disassembling-and-decompiling "Disassembling and Decompiling")" section, for this section you'll need some understanding of the [Objective-C runtime](https://developer.apple.com/documentation/objectivec/objective-c_runtime "Objective-C runtime"). For instance, functions like `_objc_msgSend` or `_objc_release` are specially meaningful for the Objective-C runtime.
 
-We will be using the [UnCrackable Level 1 crackme app](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
+We will be using the [UnCrackable App for iOS Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1), which has the simple goal of finding a _secret string_ hidden somewhere in the binary. The application has a single home screen and a user can interact via inputting custom strings in the provided text field.
 
 <img src="Images/Chapters/0x06c/manual_reversing_app_home_screen2.png" width="400px" />
 
@@ -506,7 +506,7 @@ Typing `image list` gives a list of main executable and all dependent libraries.
 
 #### Debugging Release Apps
 
-In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable Level 1 crackme app](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1) and solve it using a debugger.
+In the previous section we learned about how to setup a debugging environment on an iOS device using LLDB. In this section we will use this information and learn how to debug a 3rd party release application. We will continue using the [UnCrackable App for iOS Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1) and solve it using a debugger.
 
 In contrast to a debug build, the code compiled for a release build is optimized to achieve maximum performance and minimum binary build size. As a general best practice, most of the debug symbols are stripped for a release build, adding a layer of complexity when reverse engineering and debugging the binaries.
 
@@ -611,11 +611,11 @@ Note that in order to install an IPA on Corellium devices it has to be unencrypt
 
 An introduction to binary analysis using binary analysis frameworks has already been discussed in the "[Dynamic Analysis](0x05c-Reverse-Engineering-and-Tampering.md#dynamic-analysis "Dynamic analysis")" section for Android. We recommend you to revisit this section and refresh the concepts on this subject.
 
-For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will firstly use Unicorn to solve [UnCrackable Level 1 crackme app](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1) challenge and then we will revisit the Angr binary analysis framework to analyze the challenge but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
+For Android, we used Angr's symbolic execution engine to solve a challenge. In this section, we will firstly use Unicorn to solve the [UnCrackable App for iOS Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1) challenge and then we will revisit the Angr binary analysis framework to analyze the challenge but instead of symbolic execution we will use its concrete execution (or dynamic execution) features.
 
 ### Unicorn
 
-[Unicorn](http://www.unicorn-engine.org/ "Unicorn") is a lightweight, multi-architecture CPU emulator framework based on [QEMU](https://www.qemu.org/ "QEMU") and [goes beyond it](https://www.unicorn-engine.org/docs/beyond_qemu.html "Beyond QEMU") by adding useful features especially made for CPU emulation. Unicorn provides the basic infrastructure needed to execute processor instructions. In this section we will use [Unicorn's Python bindings](https://github.com/unicorn-engine/unicorn/tree/master/bindings/python "Unicorn Python bindings") to solve the [UnCrackable App for iOS Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1).
+[Unicorn](http://www.unicorn-engine.org/ "Unicorn") is a lightweight, multi-architecture CPU emulator framework based on [QEMU](https://www.qemu.org/ "QEMU") and [goes beyond it](https://www.unicorn-engine.org/docs/beyond_qemu.html "Beyond QEMU") by adding useful features especially made for CPU emulation. Unicorn provides the basic infrastructure needed to execute processor instructions. In this section we will use [Unicorn's Python bindings](https://github.com/unicorn-engine/unicorn/tree/master/bindings/python "Unicorn Python bindings") to solve the [UnCrackable App for iOS Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-ios-level-1) challenge.
 
 To use Unicorn's _full power_, we would need to implement all the necessary infrastructure which generally is readily available from the operating system, e.g. binary loader, linker and other dependencies or use another higher level frameworks such as [Qiling](https://qiling.io "Qiling") which leverages Unicorn to emulate CPU instructions, but understands the OS context. However, this is superfluous for this very localized challenge where only executing a small part of the binary will suffice.
 

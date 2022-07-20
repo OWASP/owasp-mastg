@@ -20,7 +20,7 @@ Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/L
 
 Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_03>
 
-#### UnCrackable App for Android Level 4: Radare2 Pay v0.9
+#### UnCrackable App for Android Level 4
 
 Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04>
 

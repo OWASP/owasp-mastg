@@ -10,7 +10,7 @@ For Android, we define "root detection" a bit more broadly, including custom ROM
 
 ### Common Root Detection Methods
 
-In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [crackme examples](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes "OWASP Mobile Crackmes") that accompany the OWASP Mobile Testing Guide.
+In the following section, we list some common root detection methods you'll encounter. You'll find some of these methods implemented in the [OWASP UnCrackable Apps for Android](0x08b-Reference-Apps.md#android-crackmes) that accompany the OWASP Mobile Testing Guide.
 
 Root detection can also be implemented through libraries such as [RootBeer](https://github.com/scottyab/rootbeer "RootBeer").
 
@@ -1111,7 +1111,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
 
-Example using the [Android Crackme Level 4](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk):
+Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-4):
 
 ```sh
 apkid owasp-mstg/Crackmes/Android/Level_04/r2pay-v1.0.apk
