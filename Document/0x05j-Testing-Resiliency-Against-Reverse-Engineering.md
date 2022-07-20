@@ -1111,7 +1111,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
 
-Example using the [Android Crackme Level 4](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04/r2pay-v1.0.apk):
+Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-4):
 
 ```sh
 apkid owasp-mstg/Crackmes/Android/Level_04/r2pay-v1.0.apk
