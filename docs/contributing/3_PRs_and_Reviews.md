@@ -37,11 +37,11 @@ If you'd like to review an open PR please follow these steps:
 
 You can enter single or multi-line comments (click and drag to select the range of lines):
 
-<img src="../assets/hover-comment-icon.gif" width="500px"/>
+<img src="../../assets/hover-comment-icon.gif" width="500px"/>
 
 **Always prefer making "Suggested Changes"** using the `±` button:
 
-<img src="../assets/suggestion-block.png" width="500px"/>
+<img src="../../assets/suggestion-block.png" width="500px"/>
 
 If the suggestion you'd like to make cannot be expressed using "suggested changes" please enter a clear comment explaining what should be fixed (e.g. some paragraphs don't link properly or some essential information cannot be found and should be added).
 
