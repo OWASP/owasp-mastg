@@ -4,9 +4,9 @@ A direct contribution to the MASVS can be done in many different ways. First of 
 
 ## ⭐ Give us a Star
 
-Show your interest and support to the project by [_starring_ it](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars#starring-a-repository).
+Show your interest and support to the project by [_starring_ it](https://github.com/OWASP/owasp-mstg).
 
-<img src="../assets/starring.png" width="300px"/>
+<a href="https://github.com/OWASP/owasp-mstg"><img src="../assets/starring.png" width="300px"/></a>
 
 <br>
 
