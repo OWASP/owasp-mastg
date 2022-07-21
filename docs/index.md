@@ -1,4 +1,10 @@
-# Welcome
+---
+hide:
+  - navigation
+  - toc
+title: "Home"
+---
+# OWASP Mobile Application Security
 
 <img align="right" style="padding: 10px;" width="350px" src="assets/logo_circle.png" />
 

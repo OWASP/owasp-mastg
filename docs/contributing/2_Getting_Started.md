@@ -26,7 +26,7 @@ If you just have an **specific question** you can post it to (you need a [GitHub
 
 Once you get your answer please [mark it as answered](https://docs.github.com/en/discussions/collaborating-with-your-community-using-discussions/participating-in-a-discussion#marking-a-comment-as-an-answer). When you mark a question as an answer, GitHub will highlight the comment and replies to the comment to help visitors quickly find the answer.
 
-![Answer](https://docs.github.com/assets/cb-62285/images/help/discussions/comment-marked-as-answer.png)
+<img src="../assets/comment-marked-as-answer.png" width="500px"/>
 
 ## Contribute Online
 

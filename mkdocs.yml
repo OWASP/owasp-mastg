@@ -1,4 +1,4 @@
-site_name: OWASP Mobile Security Project
+site_name: OWASP Mobile Application Security
 repo_url: https://github.com/OWASP/owasp-mstg
 repo_name: OWASP/owasp-mstg
 # use_directory_urls: false # only set for mkdocs build
