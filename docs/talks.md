@@ -10,6 +10,7 @@ Below you can find a list of upcoming and previous talks:
 
 | Date | Event | Title | Recording | Slides |
 |---|-------|------------------|-----|-----|
+| July 2022 | droidCon Berlin | Securing Mobile Apps with the OWASP MASVS & MSTG | [Recording](https://www.droidcon.com/2022/08/02/securing-mobile-apps-with-owasp-masvs-mstg-3/) | [Slides](https://drive.google.com/file/d/1ZWZ-6W08nMOGpi-7vAhwnS09HvMFqExw/view?usp=sharing) |
 | June 2022 | OWASP Tunisia | Securing Mobile Apps with the MASVS. Our Journey to v2.0 | [Recording](https://www.youtube.com/watch?v=mQbYm1UKNXE) | [Slides](https://drive.google.com/file/d/1EhRjS8eW8s-RrQRatFXnsoZqNYTZsHm0/view?usp=sharing) |
 | June 2022 | OWASP AppSec EU | “Mobile Wanderlust”! Our journey to Version 2.0! | Soon | [Slides](https://drive.google.com/file/d/1XD29n2Rtu3hEjcm235ZqQpelQ0sJvgTw/view?usp=sharing) |
 | February 2022 | OWASP Toronto | Insider's Guide to Mobile AppSec with OWASP MASVS | [Recording](https://youtu.be/qddf7MSpdK4) | N/A |
