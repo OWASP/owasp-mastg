@@ -165,6 +165,6 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Donators
 
-While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on the [OWASP Project Wiki](https://owasp.org/www-project-mobile-security-testing-guide/#donation-packagess "OWASP Mobile Security Testing Guide Donation Packages").
+While both the MASVS and the MSTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MSTG in any way. The Donation Packages are described on our [OWASP Project page](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate "OWASP Mobile Security Testing Guide Donation Packages").
 
 <img src="Images/Donators/donators.png"/>
