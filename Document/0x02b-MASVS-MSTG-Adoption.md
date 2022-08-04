@@ -14,6 +14,22 @@ With MASA, Google has acknowledged the importance of leveraging a globally recog
 
 We thank Google, the ADA and all its members for their support and for their excellent work on protecting the mobile app ecosystem.
 
+## Certification Institutions
+
+### CREST
+
+<img src="Images/Other/crest-logo.png" width="250px"/>
+
+CREST is an international not-for-profit, membership body who quality assures its members and delivering professional certifications to the cyber security industry. CREST works with governments, regulators, academe, training partners, professional bodies and other stakeholders around the world.
+
+In August 2022, CREST has launched the OWASP Verification Standard (OVS) Programme. CREST OVS sets new standards for application security. Underpinned by OWASP's Application Security Verification Standard (ASVS) and Mobile Application Security Verification Standard (MASVS), CREST is leveraging the open-source community to build and maintain global standards to deliver a global web and mobile application security framework. This will provide assurance to the buying community that developers using CREST OVS accredited providers, always know that they are engaged with ethical and capable organisations with skilled and competent security testers by leveraging the OWASP ASVS and MASVS standards.
+
+- [CREST OVS Programme](https://www.crest-approved.org/membership/crest-ovs-programme/)
+- [CREST OVS Accreditation Process](https://www.crest-approved.org/membership/crest-ovs-programme/ovs-programme-accreditation-process/)
+- [CREST OVS Introductory Video](https://www.youtube.com/watch?v=th1l6-e4hcg)
+
+We thank CREST for their consulation regarding the OVS programme and its support to the open-source community to build and maintain global cyber security standards.
+
 ## Standardization Institutions
 
 ### NIST (National Institute of Standards and Technology, United States)
