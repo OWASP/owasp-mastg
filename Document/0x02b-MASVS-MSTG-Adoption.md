@@ -18,7 +18,7 @@ We thank Google, the ADA and all its members for their support and for their exc
 
 ### CREST
 
-<img src="Images/Other/crest-logo.png" width="250px"/>
+<img src="Images/Other/crest-logo.jpg" width="250px"/>
 
 CREST is an international not-for-profit, membership body who quality assures its members and delivering professional certifications to the cyber security industry. CREST works with governments, regulators, academe, training partners, professional bodies and other stakeholders around the world.
 
