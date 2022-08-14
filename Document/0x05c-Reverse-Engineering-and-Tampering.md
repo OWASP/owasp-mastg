@@ -34,6 +34,7 @@ If you want to look directly into Java source code on a GUI, simply open your AP
 
 Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
 
+- [APKLab](https://github.com/APKLab/APKLab "APKLab")
 - [JD](http://jd.benow.ca/ "JD")
 - [JAD](http://www.javadecompilers.com/jad "JAD")
 - [jadx](https://github.com/skylot/jadx "jadx")
