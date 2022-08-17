@@ -635,7 +635,7 @@ Refer to the chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-E
 
 The goal of emulator detection is to increase the difficulty of running the app on an emulated device. This forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
 
-As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator, hence _simulation_ protection was not so much a concern regarding iOS apps in contrast to Android with a wide range of _emulation_ choices available. 
+As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator, hence _simulation_ protection was not so much a concern regarding iOS apps in contrast to Android with a wide range of _emulation_ choices available.
 
 However, since its release, [Corellium](https://www.corellium.com/) (commercial tool) has enabled real emulation, [setting itself apart from the iOS simulator](https://www.corellium.com/compare/ios-simulator). In addition to that, being a SaaS solution, Corellium enables large-scale device analysis with the limiting factor just being available funds.
 
