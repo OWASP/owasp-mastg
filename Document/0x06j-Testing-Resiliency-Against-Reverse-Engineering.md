@@ -641,7 +641,7 @@ However, since its release, [Corellium](https://www.corellium.com/) (commercial 
 
 With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu)). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
 
-Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module) (Open Source), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a No-Code solution such as [Appdome](https://www.appdome.com/) will provide a good line of defense against attacks utilizing emulators. 
+Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) https://www.ibm.com/products/trusteer-mobile-sdk/details or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators. 
 
 ## Testing Obfuscation (MSTG-RESILIENCE-9)
 
