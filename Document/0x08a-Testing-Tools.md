@@ -1111,8 +1111,7 @@ For more information on what this tool can be used for, check out:
 
 ### APKLab
 
-[APKLab](https://github.com/APKLab/APKLab "APKLab") is a Visual Studio Code extension that can unpack APKs, decompile DEX, apply patch, and rebuild APKs.  
-Internally it uses [apktool](https://github.com/iBotPeaches/Apktool "apktool") and [jadx](https://github.com/skylot/jadx "jadx"), so you can use those features in Visual Studio Code.
+[APKLab](https://github.com/APKLab/APKLab "APKLab") is a convenient Visual Studio Code extension leveraging tools such as [apktool](#apktool) and [jadx](#jadx) to enable features including app unpacking, decompilation, code patching (e.g. for MITM), and repackaging straight from the IDE.
 
 In addition, APKLab provides various features such as signing APKs, MITM Patch, and more.  
 For more information, you can refer to [APKLab's official documentation](https://apklab.surendrajat.xyz/).
