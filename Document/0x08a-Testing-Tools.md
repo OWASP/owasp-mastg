@@ -1109,6 +1109,12 @@ For more information on what this tool can be used for, check out:
 - [APKiD: PEiD for Android Apps](https://github.com/enovella/cve-bio-enovella/blob/master/slides/bheu18-enovella-APKID.pdf)
 - [APKiD: Fast Identification of AppShielding Products](https://github.com/enovella/cve-bio-enovella/blob/master/slides/APKiD-NowSecure-Connect19-enovella.pdf)
 
+### APKLab
+
+[APKLab](https://github.com/APKLab/APKLab "APKLab") is a convenient Visual Studio Code extension leveraging tools such as [apktool](#apktool) and [jadx](#jadx) to enable features including app unpacking, decompilation, code patching (e.g. for MITM), and repackaging straight from the IDE.
+
+For more information, you can refer to [APKLab's official documentation](https://apklab.surendrajat.xyz/).
+
 ### Apktool
 
 [Apktool](https://github.com/iBotPeaches/Apktool) is used to unpack Android app packages (APKs). Simply unzipping APKs with the standard `unzip` utility leaves some files unreadable. `AndroidManifest.xml` is encoded into binary XML format which isn’t readable with a text editor. Also, the app resources are still packaged into a single archive file.
