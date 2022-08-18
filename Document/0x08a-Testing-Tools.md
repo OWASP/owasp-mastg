@@ -1115,9 +1115,7 @@ For more information on what this tool can be used for, check out:
 Internally it uses [apktool](https://github.com/iBotPeaches/Apktool "apktool") and [jadx](https://github.com/skylot/jadx "jadx"), so you can use those features in Visual Studio Code.
 
 In addition, APKLab provides various features such as signing APKs, MITM Patch, and more.  
-For more information, you can refer to the following documentation.
-
-- APKLab - <https://apklab.surendrajat.xyz/>
+For more information, you can refer to [APKLab's official documentation](https://apklab.surendrajat.xyz/).
 
 ### Apktool
 
