@@ -34,14 +34,13 @@ If you want to look directly into Java source code on a GUI, simply open your AP
 
 Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
 
-- [APKLab](https://github.com/APKLab/APKLab "APKLab")
 - [JD](http://jd.benow.ca/ "JD")
 - [JAD](http://www.javadecompilers.com/jad "JAD")
 - [jadx](https://github.com/skylot/jadx "jadx")
 - [Procyon](https://github.com/mstrobel/procyon "Procyon")
 - [CFR](https://www.benf.org/other/cfr/ "CFR")
 
-Alternatively run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such as an IDE.
+Alternatively you can use the [APKLab](https://github.com/APKLab/APKLab) extension for Visual Studio Code or run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the reversed source code on your preferred IDE.
 
 In the following example we'll be using [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
