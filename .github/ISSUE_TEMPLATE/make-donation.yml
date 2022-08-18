@@ -66,7 +66,7 @@ body:
     id: paperback
     attributes:
       label: 📘 MSTG Paperback Copies
-      description: Would you like to receive the paperback copie(s) of the MSTG as indicated in your Donation Package?
+      description: Would you like to receive the paperback copies of the MSTG as indicated in your Donation Package?
       options:
         - 🌱 No, please save the money for the project and help the environment and climate.
         - 📮 Yes, please send them to me.
