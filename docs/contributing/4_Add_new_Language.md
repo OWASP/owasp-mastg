@@ -1,12 +1,12 @@
 # Add a New Language
 
-## MSTG Translations
+## MASTG Translations
 
-The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MSTG translations will be declined**, but you're free to do them on your own forks.
+The MASTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MASTG translations will be declined**, but you're free to do them on your own forks.
 
-> 🇯🇵 A translation of the MSTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
+> 🇯🇵 A translation of the MASTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
 
-That said, we **strongly encourage further translations of the MASVS as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MSTG for free.
+That said, we **strongly encourage further translations of the MASVS as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MASTG for free.
 
 ## MASVS Translations
 
@@ -20,7 +20,7 @@ To add a new language you have to follow the steps from both sections below.
 6. Extend the `../README.md` with the newly available language.
 7. Release the MASVS.
 
-## In the MSTG
+## In the MASTG
 
 IMPORTANT: only after releasing the MASVS!
 

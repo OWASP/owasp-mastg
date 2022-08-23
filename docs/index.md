@@ -12,13 +12,13 @@ title: "Home"
 
 > "Define the industry standard for mobile application security."
 
-This OWASP flagship project provides a security standard for mobile apps (OWASP MASVS) and a comprehensive testing guide (OWASP MSTG) that covers the processes, techniques, and tools used during a mobile app security test, as well as an exhaustive set of test cases that enables testers to deliver consistent and complete results.
+This OWASP flagship project provides a security standard for mobile apps (OWASP MASVS) and a comprehensive testing guide (OWASP MASTG) that covers the processes, techniques, and tools used during a mobile app security test, as well as an exhaustive set of test cases that enables testers to deliver consistent and complete results.
 
 <br><br><br>
 
 ## Trusted by ...
 
-The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MSTG-Adoption.md).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MSTG-Adoption.md).
 
 <a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MSTG-Adoption.md">
 <img src="assets/trusted-by-logos.png"/>
@@ -44,11 +44,13 @@ The OWASP MASVS (Mobile Application Security Verification Standard) is a standar
 
 <br><br><br><br>
 
-### OWASP MSTG
+### OWASP MASTG
 
 <img align="right" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="300px" src="assets/mstg_cover.png" />
 
-The OWASP MSTG (Mobile Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs).
+_Previously known as OWASP MSTG (Mobile Security Testing Guide)_
+
+The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs).
 
 <br>
 
@@ -66,15 +68,15 @@ Feel free to [download the EPUB or Mobi](https://leanpub.com/mobile-security-tes
 
 <img align="right" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="450px" src="assets/checklist_en_filled.png" />
 
-A checklist is available for use in security assessments based on the MASVS and MSTG. It contains links to the MSTG test case for each MASVS requirement.
+A checklist is available for use in security assessments based on the MASVS and MASTG. It contains links to the MASTG test case for each MASVS requirement.
 
-- <a href="https://github.com/OWASP/owasp-mstg/releases/latest">:material-github: GitHub Repo (MSTG Releases)</a>
+- <a href="https://github.com/OWASP/owasp-mstg/releases/latest">:material-github: GitHub Repo (MASTG Releases)</a>
 
 Its features include:
 
 - Unifies all MASVS categories into a single sheet
-- Traceable via exact MASVS and MSTG versions and commit IDs
-- Always up to date with the latest MSTG and MASVS versions
+- Traceable via exact MASVS and MASTG versions and commit IDs
+- Always up to date with the latest MASTG and MASVS versions
 - Enables user to add more columns or sheets as needed
 - Multi language
 

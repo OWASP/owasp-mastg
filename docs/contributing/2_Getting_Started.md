@@ -5,10 +5,10 @@ First of all **Create a GitHub account** (a free one is enough) by following [th
 Our workflow is like this:
 
 1. **Open a [Discussion](https://docs.github.com/en/discussions)** (for ideas and proposals)
-If your proposal qualifies for the MSTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
+If your proposal qualifies for the MASTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
 
 - MASVS Example: "Add a MASVS-CRYPTO requirement on Key rotation"
-- MSTG Example: "Add a Test case for key rotation"
+- MASTG Example: "Add a Test case for key rotation"
 
 2. **Open an Issue** (for concrete actionable things that have to / could be done)
 For instance, there's a typo, or it's clear that a certain Test case doesn't have e.g. "Dynamic Analysis" and it should be added.

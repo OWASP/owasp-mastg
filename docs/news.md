@@ -1,5 +1,75 @@
 # News
 
+## August 23rd, 2022: Project Rebranding
+
+Until now our project was called the “OWASP Mobile Security Testing Guide (MSTG)” project. Unfortunately, this was a source of confusion since we happen to have a resource with the same name, the OWASP MSTG. Not only that, that name doesn’t reflect the full scope and reach of our project. Have you ever wondered why the MSTG is called MSTG and not MASTG? Both documents are about Mobile Application Security and we'd like to make that clear.
+
+Today we are rebranding our project to “OWASP Mobile App Security (MAS)”. The OWASP MAS project includes:
+
+- OWASP MASVS -> MAS Verification Standard
+- OWASP MASTG -> MAS Testing Guide
+- OWASP MAS Checklists
+- OWASP MAS Crackmes (incl. Hacking playground)
+
+<img src="../assets/news/mas-rebranding.png"/>
+
+We see MAS reflecting all the consistency, structure and transparency that we’re bringing with our 2.0 versions.
+
+**The rebranding will happen gradually so expect changes to be rolled out over the upcoming days/weeks.**
+
+## February 7th, 2022: NIST 800-218 - Recommendations for Mitigating the Risk of Software Vulnerabilities
+
+We're happy to share the new NIST 800-218 (Feb 2022) mapping to the latest MASVS v1.4.2 (Jan 2022) especially MASVS-ARCH and MASVS-CODE:
+
+> "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities"
+
+![NIST 800-218.png](https://user-images.githubusercontent.com/29175115/152760895-36549d83-11f4-45a7-a78e-072047ac4985.png)
+
+<https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf>
+
+## November 17th, 2021: From Slack to GitHub Discussions
+
+Hello everyone,
+
+times change, our project evolves and being able to hear you and discuss with you all is key for the OWASP MSTG project.
+
+`TL;DR: we deprecate Slack in favor of GitHub Discussions as our primary communication channel.`
+
+https://github.com/OWASP/owasp-mstg/discussions/
+https://github.com/OWASP/owasp-masvs/discussions/
+
+### Removing obstacles
+
+Until now we've driven all discussion on the MSTG Slack channel, to participate you had to get Slack, find the invite link (hope that it's still valid, else report it), go to our channel and post your question. It could really be a hurdle some times and some questions might be missed, there was also no way to up-vote them or keep track.
+
+All our contributors do have a GitHub account (or should! now you have a reason :) ). So, **from today on we move to GitHub discussions and deprecate Slack as the primary communication channel**. You can still reach us there for private messages though and we will try to [relay the discussions to Slack ASAP](https://github.com/github/feedback/discussions/2844), but just as notifications (no Q&A over there).
+
+> Discussions provides a place to bring all those conversations together right next to your code. Whether it’s asking questions, sharing announcements, or featuring important information, it’s all in one place and easily accessible to contributors and community members alike.
+
+### Separation
+
+We want to separation regarding actionable things to do (issues) and ideas/proposals (now "Ideas" Discussion). Having it all in GitHub makes it sooo much easier for us to manage, reference, etc. 
+
+> Think of it this way: Discussions are for talking and GitHub Issues are for doing. This helps minimize distractions, keep teams on track, and address topics and questions clearly in a dedicated forum. Plus, you can move seamlessly between the two as well by converting an issue to a discussion and vice versa with a simple click.
+
+### Insights
+
+Soon we will be able to see insights regarding the discussions. You guessed it, we'll take that into account and acknowledge your contribution to the discussions as we do with the content itself. More details on this once we can test the feature.
+
+### Roadmap
+
+- [X] Deprecate Slack
+- [X] Relay Discussions to Slack
+- [X] Discussion contribution acknowledgement info
+
+### Be sure to subscribe
+
+<img src="https://user-images.githubusercontent.com/29175115/142167295-0124fbe8-d98c-4ea3-ab7a-0d4eaa482e90.png" width="400" />
+or:
+<img src="https://user-images.githubusercontent.com/29175115/142167464-aae0badc-d662-4c51-a8dd-61da9545e32d.png" width="400" />
+
+_For this announcement we partially mapped this nice GitHub article to our project (recommended read): https://github.blog/2021-11-10-7-unique-software-collaboration-features-in-github-discussions/_
+
 ## May 23rd 2020: New build system and release upcoming!
 
 As already shared during the virtual Dutch Chapter meetup: we are going to release a new version of the MSTG soon. We have been quite busy with moving it to the new build system first as the document got too large for our old tooling. This is a great incentive as well to think of how we can make the guide more focused so that the size does not matter ;-)

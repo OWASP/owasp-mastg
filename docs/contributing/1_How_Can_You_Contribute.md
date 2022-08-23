@@ -26,7 +26,7 @@ flowchart LR
 
 ## 💬 Participate in Discussions
 
-Our GitHub [Discussions](https://docs.github.com/en/discussions) are the first place to go for asking questions, giving us feedback and proposing new ideas. If your proposal qualifies for the MSTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
+Our GitHub [Discussions](https://docs.github.com/en/discussions) are the first place to go for asking questions, giving us feedback and proposing new ideas. If your proposal qualifies for the MASTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
 
 ## 🎯 Create Issues
 
