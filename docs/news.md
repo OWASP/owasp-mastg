@@ -1,6 +1,6 @@
 # News
 
-## August 23rd, 2022: Project Rebranding
+## August 23rd, 2022: Project Rebranding to OWASP MAS
 
 Until now our project was called the “OWASP Mobile Security Testing Guide (MSTG)” project. Unfortunately, this was a source of confusion since we happen to have a resource with the same name, the OWASP MSTG. Not only that, that name doesn’t reflect the full scope and reach of our project. Have you ever wondered why the MSTG is called MSTG and not MASTG? Both documents are about Mobile Application Security and we'd like to make that clear.
 

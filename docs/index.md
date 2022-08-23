@@ -18,9 +18,9 @@ This OWASP flagship project provides a security standard for mobile apps (OWASP 
 
 ## Trusted by ...
 
-The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MSTG-Adoption.md).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MASTG-Adoption.md).
 
-<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MSTG-Adoption.md">
+<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MASTG-Adoption.md">
 <img src="assets/trusted-by-logos.png"/>
 </a>
 

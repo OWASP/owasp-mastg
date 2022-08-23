@@ -44,15 +44,15 @@ There are three things you should never bring up in polite conversations: religi
 
 ## The OWASP Mobile AppSec Verification Standard
 
-This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. The MSTG maps to the same basic set of security requirements offered by the MASVS and depending on the context they can be used individually or combined to achieve different objectives.
+This guide is closely related to the OWASP Mobile Application Security Verification Standard (MASVS). The MASVS defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define and understand the qualities of a secure mobile app. The MASTG maps to the same basic set of security requirements offered by the MASVS and depending on the context they can be used individually or combined to achieve different objectives.
 
 <img src="Images/Chapters/0x03/owasp-mobile-overview.jpg" width="100%" />
 
-For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the "[Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)" chapter we'll describe how you can apply the checklist and MSTG to a mobile app penetration test.
+For example, the MASVS requirements can be used in an app's planning and architecture design stages while the checklist and testing guide may serve as a baseline for manual security testing or as a template for automated security tests during or after development. In the "[Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)" chapter we'll describe how you can apply the checklist and MASTG to a mobile app penetration test.
 
 ## Navigating the Mobile Security Testing Guide
 
-The MSTG contains descriptions of all requirements specified in the MASVS. The MSTG contains the following main sections:
+The MASTG contains descriptions of all requirements specified in the MASVS. The MASTG contains the following main sections:
 
 1. The [General Testing Guide](0x04a-Mobile-App-Taxonomy.md) contains a mobile app security testing methodology and general vulnerability analysis techniques as they apply to mobile app security. It also contains additional technical test cases that are OS-independent, such as authentication and session management, network communications, and cryptography.
 

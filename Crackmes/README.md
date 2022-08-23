@@ -12,7 +12,7 @@ This app holds a secret inside. Can you find it?
 
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller").
-- Maintained by the OWASP MSTG leaders.
+- Maintained by the OWASP MAS leaders.
 
 #### Installation
 
@@ -40,7 +40,7 @@ This app holds a secret inside. May include traces of native code.
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller").
 - Special thanks to Michael Helwig for finding and fixing an oversight in the anti-tampering mechanism.
-- Maintained by the OWASP MSTG leaders.
+- Maintained by the OWASP MAS leaders.
 
 #### Installation
 
@@ -66,7 +66,7 @@ The crackme from hell!
 - Objective: A secret string is hidden somewhere in this app. Find a way to extract it.
 - Author: [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller").
 - Special thanks to Eduardo Novella for testing, feedback and pointing out flaws in the initial build(s).
-- Maintained by the OWASP MSTG leaders.
+- Maintained by the OWASP MAS leaders.
 
 #### Installation
 
@@ -104,9 +104,9 @@ $ adb install r2pay-v0.9.apk
 ```
 
 #### Versions
-- `v0.9` - Release for `OWASP MSTG`.
+- `v0.9` - Release for OWASP MAS.
   - Source code is available and the compilation has been softened in many ways to make the challenge easier and more enjoyable for newcomers.
-- `v1.0` - Release for `R2con CTF 2020`.
+- `v1.0` - Release for R2con CTF 2020.
   - No source code is available and many extra protections are in place.
 
 #### Solutions R2pay v0.9
@@ -123,7 +123,7 @@ A brand new Android app sparks your interest. Of course, you are planning to pur
 
 - Objective: Generate a valid serial key that is accepted by this app.
 - Author: [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller").
-- Maintained by the OWASP MSTG leaders.
+- Maintained by the OWASP MAS leaders.
 
 #### Installation
 
@@ -156,7 +156,7 @@ This app holds a secret inside. Can you find it?
 
 - Objective: A secret string is hidden somewhere in this binary. Find a way to extract it. The app will give you a hint when started.
 - Author: [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller")
-- Maintained by the OWASP MSTG leaders.
+- Maintained by the OWASP MAS leaders.
 
 #### Installation
 
@@ -177,7 +177,7 @@ This app holds a secret inside - and this time it won't be tampered with!
 
 - Objective: Find the secret code - it is related to alcoholic beverages.
 - Author: [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller").
-- Maintained by the OWASP MSTG leaders.
+- Maintained by the OWASP MAS leaders.
 
 Note: Due to its anti-tampering the app won't run correctly if the main executable is modified and/or re-signed. You'll need to trust the developer run it the standard way on a non-jailbroken device (General Settings -> Profile & Device Management) and to verify the solution.
 
@@ -192,10 +192,10 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 - [Solution by Ryan Teoh](http://www.ryantzj.com/cracking-owasp-mstg-ios-crackme-the-uncrackable.html "Solution by Ryan Teoh").
 - [Solution by Pietro Oliva](https://0xsysenter.github.io/ios/reversing/arm64/mobile/ipa/frida/instrumentation/crackme/2021/02/08/ios-apps-reverse-engineering-solving-crackmes-part-2.html "Solution by Pietro Oliva").
 
-## MSTG Hacking Playground
+## MASTG Hacking Playground
 
-Did you enjoy working with the Crackmes? There is more! Go to [the MSTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground "MSTG-playground") and find out!
+Did you enjoy working with the Crackmes? There is more! Go to [the MASTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground "MASTG-playground") and find out!
 
 ## Issues with the Crackmes
 
-If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to (SPOILER ALERT!)](https://github.com/OWASP/mstg-crackmes "OWASP MSTG Crackmes").
+If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to (SPOILER ALERT!)](https://github.com/OWASP/mstg-crackmes "OWASP MASTG Crackmes").

@@ -1,6 +1,6 @@
-# OWASP MASVS and MSTG Adoption
+# OWASP MASVS and MASTG Adoption
 
-The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions.
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions.
 
 ## Mobile Platform Providers
 
@@ -8,7 +8,7 @@ The OWASP MASVS and MSTG are trusted by the following platform providers and sta
 
 <img src="Images/Other/android-logo.png" width="300px"/>
 
-Since 2021 Google has shown their support for the OWASP Mobile Security project (MSTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
+Since 2021 Google has shown their support for the OWASP Mobile Security project (MASTG/MASVS) and has started providing continuous and high value feedback to the MASVS refactoring process via the [App Defense Alliance (ADA)](https://appdefensealliance.dev/) and its [MASA (Mobile Application Security Assessment) program](https://appdefensealliance.dev/masa).
 
 With MASA, Google has acknowledged the importance of leveraging a globally recognized standard for mobile app security to the mobile app ecosystem. Developers can work directly with an Authorized Lab partner to initiate a security assessment. Google will recognize developers who have had their applications independently validated against a set of MASVS Level 1 requirements and will showcase this on their Data safety section.
 

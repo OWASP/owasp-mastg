@@ -1,6 +1,6 @@
 # Reference applications
 
-The applications listed below can be used as training materials. Note: only the MSTG apps and Crackmes are tested and maintained by the MSTG project.
+The applications listed below can be used as training materials. Note: only the MASTG apps and Crackmes are tested and maintained by the MAS project.
 
 ## Android
 
@@ -52,15 +52,15 @@ An insecure Android app from 2015 - <https://github.com/CSPF-Founder/DodoVulnera
 
 A vulnerable Android app made for security enthusiasts and developers to learn the Android insecurities by testing a vulnerable application. It has been updated in 2018 and contains a lot of vulnerabilities - <https://github.com/dineshshetty/Android-InsecureBankv2>
 
-### MSTG Hacking Playground
+### MASTG Hacking Playground
 
 A vulnerable Android app with vulnerabilities similar to the test cases described in this document
 
-#### MSTG Hacking Playground (Java)
+#### MASTG Hacking Playground (Java)
 
 Available at <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
 
-### MSTG Hacking Playground (Kotlin)
+### MASTG Hacking Playground (Kotlin)
 
 Available at <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
 

@@ -42,7 +42,7 @@ For many apps, the "default behavior" provided by the mobile platform will be se
 
 Some apps might need to further increase their security by restricting the number of CAs that they trust. Typically only the CAs which are used by the developer are explicitly trusted, while disregarding all others. This trust restriction is known as _Identity Pinning_ usually implemented as _Certificate Pinning_ or _Public Key Pinning_.
 
-> In the OWASP MSTG we will be referring to this term as "Identity Pinning", "Certificate Pinning", "Public Key Pinning" or simply "Pinning".
+> In the OWASP MASTG we will be referring to this term as "Identity Pinning", "Certificate Pinning", "Public Key Pinning" or simply "Pinning".
 
 Pinning is the process of associating a remote endpoint with a particular identity, such as a X.509 certificate or public key, instead of accepting any certificate signed by a trusted CA. After pinning the server identity (or a certain set, aka. _pinset_), the mobile app will subsequently connect to those remote endpoints only if the identity matches. Withdrawing trust from unnecessary CAs reduces the app's attack surface.
 
@@ -84,7 +84,7 @@ The first statement can be mistakenly interpreted as saying that they "do not re
 
 Apple recommends [thinking long-term](https://developer.apple.com/news/?id=g9ejcf8y) and [creating a proper server authentication strategy](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication#2956135).
 
-#### OWASP MSTG Recommendation
+#### OWASP MASTG Recommendation
 
 Pinning is a recommended practice, especially for MASVS-L2 apps. However, developers must implement it exclusively for the endpoints under their control and be sure to include backup keys (aka. backup pins) and have a proper app update strategy.
 

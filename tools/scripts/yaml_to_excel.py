@@ -5,7 +5,7 @@ from openpyxl.drawing.image import Image
 
 import excel_styles_and_validation
 
-""" Tool for exporting the MASVS requirements as a checklist including MSTG coverage.
+""" Tool for exporting the MASVS requirements as a checklist including MASTG coverage.
 
     By Carlos Holguera
 

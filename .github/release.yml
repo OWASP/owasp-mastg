@@ -3,16 +3,16 @@ changelog:
     labels:
       - "ignore-for-release"
   categories:
-    - title: 🧪 MSTG Test Cases
+    - title: 🧪 MASTG Test Cases
       labels:
         - "tests"
-    - title: 📖 MSTG Testing Fundamentals
+    - title: 📖 MASTG Testing Fundamentals
       labels:
         - "fundamentals"
-    - title: ✨ MSTG Testing Techniques
+    - title: ✨ MASTG Testing Techniques
       labels:
         - "techniques"
-    - title: 🪄 MSTG Testing Tools
+    - title: 🪄 MASTG Testing Tools
       labels:
         - "tools"
     - title: 🐞 Errata Corrections
