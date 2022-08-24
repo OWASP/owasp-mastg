@@ -360,7 +360,7 @@ When a library contains a license in which the application IP needs to be open-s
 
 Note: In case of a hybrid app, please check the build tools used: most of them do have a license enumeration plugin to find the licenses being used.
 
-When the sources are not available, one can decompile the app and check the JAR files. When Dexguard or [ProGuard](0x08a-Testing-Tools.md#proguard) are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
+When the sources are not available, one can decompile the app and check the [JAR files](https://www.scaler.com/topics/jar-file-in-java/). When Dexguard or [ProGuard](0x08a-Testing-Tools.md#proguard) are applied properly, then version information about the library is often gone. Otherwise you can still find it very often in the comments of the Java files of given libraries. Tools such as MobSF can help in analyzing the possible libraries packed with the application. If you can retrieve the version of the library, either via comments, or via specific methods used in certain versions, you can look them up for their licenses being used by hand.
 
 ### Dynamic Analysis
 
