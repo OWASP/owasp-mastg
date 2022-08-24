@@ -1,6 +1,6 @@
 <a href="https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring"><img width="180px" align="right" style="float: right;" src="Document/Images/masvs_refactor.png"></a>
 
-# OWASP Mobile Security Testing Guide (MSTG)
+# OWASP Mobile Application Security Testing Guide (MASTG)
 
 [![OWASP Flagship](https://img.shields.io/badge/owasp-flagship%20project-48A646.svg)](https://owasp.org/projects/)
 [![Creative Commons License](https://img.shields.io/github/license/OWASP/owasp-mstg)](https://creativecommons.org/licenses/by-sa/4.0/ "CC BY-SA 4.0")
@@ -9,7 +9,7 @@
 [![Markdown Linter](https://github.com/OWASP/owasp-mstg/workflows/Markdown%20Linter/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22Markdown+Linter%22)
 [![URL Checker](https://github.com/OWASP/owasp-mstg/workflows/URL%20Checker/badge.svg)](https://github.com/OWASP/owasp-mstg/actions?query=workflow%3A%22URL+Checker%22)
 
-This is the official GitHub Repository of the OWASP Mobile Security Testing Guide (MSTG). The MSTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
+This is the official GitHub Repository of the OWASP Mobile Application Security Testing Guide (MASTG). The MASTG is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the [OWASP Mobile Application Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs "MASVS").
 
 - 📖 [Read it on Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/)
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mstg/releases/latest)
@@ -21,21 +21,21 @@ This is the official GitHub Repository of the OWASP Mobile Security Testing Guid
 
 ## Trusted by ...
 
-The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](Document/0x02b-MASVS-MSTG-Adoption.md).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](Document/0x02b-MASVS-MASTG-Adoption.md).
 
-<a href="Document/0x02b-MASVS-MSTG-Adoption.md">
+<a href="Document/0x02b-MASVS-MASTG-Adoption.md">
 <img src="Document/Images/Other/trusted-by-logos.png"/>
 </a>
 
 <br>
 
-## 🥇 MSTG Advocates
+## 🥇 MAS Advocates
 
-MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](Document/0x02c-Acknowledgements.md#our-mstg-advocates).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](Document/0x02c-Acknowledgements.md#our-mastg-advocates).
 
 <br>
 
-<a href="Document/0x02c-Acknowledgements.md#our-mstg-advocates">
+<a href="Document/0x02c-Acknowledgements.md#our-mastg-advocates">
 <img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
 </a>
 
@@ -54,7 +54,7 @@ MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invest
 
 ## How to Contribute
 
-The MSTG is an open source effort and we welcome all kinds of contributions and feedback.
+The MASTG is an open source effort and we welcome all kinds of contributions and feedback.
 
 **Help us improve & join our community:**
 
@@ -87,13 +87,13 @@ Contributors are categorized as follows:
 
 <br>
 
-## MSTG Translations
+## MASTG Translations
 
-The MSTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MSTG translations will be declined**, but you're free to do them on your own forks.
+The MASTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MASTG translations will be declined**, but you're free to do them on your own forks.
 
-> 🇯🇵 A translation of the MSTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
+> 🇯🇵 A translation of the MASTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
 
-That said, we **strongly encourage [further translations of the MASVS](https://github.com/OWASP/owasp-masvs/blob/master/README.md#masvs-translations)** as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MSTG for free.
+That said, we **strongly encourage [further translations of the MASVS](https://github.com/OWASP/owasp-masvs/blob/master/README.md#masvs-translations)** as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MASTG for free.
 
 <br>
 
@@ -111,7 +111,7 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 
 - [Foreword](Document/0x01-Foreword.md)
 - [Frontispiece](Document/0x02a-Frontispiece.md)
-- [OWASP MASVS and MSTG Adoption](Document/0x02b-MASVS-MSTG-Adoption.md)
+- [OWASP MASVS and MASTG Adoption](Document/0x02b-MASVS-MASTG-Adoption.md)
 - [Acknowledgements](Document/0x02c-Acknowledgements.md)
 - [Introduction to the Mobile Security Testing Guide](Document/0x03-Overview.md)
 - [Mobile App Taxonomy](Document/0x04a-Mobile-App-Taxonomy.md)
@@ -155,11 +155,11 @@ That said, we **strongly encourage [further translations of the MASVS](https://g
 ### Appendix
 
 - [Testing Tools](Document/0x08a-Testing-Tools.md)
-- [Reference Applications](0x08b-Reference-Apps.md)
+- [Reference Applications](Document/0x08b-Reference-Apps.md)
 - [Suggested Reading](Document/0x09-Suggested-Reading.md)
 
 <br>
 
 ## About Hybrid Apps
 
-Please note that the MSTG focuses primarily on native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Apps using frameworks such as Nativescript, React-native, Xamarin, Cordova, etc. are not within the main focus of the MSTG. However, some essential controls, such as certificate pinning, have been explained already for some of these platforms. For now, you can take a look and contribute to the work-in-progress being made in the discussions ["Hybrid application checklist experiments"](https://github.com/OWASP/owasp-mstg/discussions/1971) and ["Basic Guidelines for Hybrid Apps"](https://github.com/OWASP/owasp-masvs/discussions/557).
+Please note that the MASTG focuses primarily on native apps. These are apps built with Java or Kotlin using the Android SDK for Android or built with Swift or Objective-C using the Apple SDKs for iOS. Apps using frameworks such as Nativescript, React-native, Xamarin, Cordova, etc. are not within the main focus of the MASTG. However, some essential controls, such as certificate pinning, have been explained already for some of these platforms. For now, you can take a look and contribute to the work-in-progress being made in the discussions ["Hybrid application checklist experiments"](https://github.com/OWASP/owasp-mstg/discussions/1971) and ["Basic Guidelines for Hybrid Apps"](https://github.com/OWASP/owasp-masvs/discussions/557).

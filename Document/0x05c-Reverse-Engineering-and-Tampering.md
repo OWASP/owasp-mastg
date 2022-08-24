@@ -85,7 +85,7 @@ When reversing an Android application containing native code, we need to underst
 
 It is worth highlighting that analyzing disassembled native code is much more challenging than disassembled Java code. When reversing the native code in an Android application we will need a disassembler.
 
-In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
+In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MASTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```bash
 wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
@@ -2031,7 +2031,7 @@ $ r2 /Users/foo/memory_Android/memory
 1136 0x00065270 0x00065270  14  15 () ascii Hello from C++
 ```
 
-Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the [MSTG Hacking Playground](0x08b-Reference-Apps.md#mstg-hacking-playground) app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
+Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the [MASTG Hacking Playground](0x08b-Reference-Apps.md#mastg-hacking-playground) app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
 
 ```bash
 python3 fridump.py -U sg.vp.owasp_mobile.omtg_android -s

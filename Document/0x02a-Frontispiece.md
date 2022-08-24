@@ -2,29 +2,29 @@
 
 <img src="Images/OWASP_logo.png" width="100%" />
 
-## About the OWASP Mobile Security Testing Guide
+## About the OWASP Mobile Application Security Testing Guide
 
-The OWASP Mobile Security Testing Guide (MSTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs), and provides a baseline for complete and consistent security tests.
+The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs), and provides a baseline for complete and consistent security tests.
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MSTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw# "Slack channel sign up").
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MASTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw# "Slack channel sign up").
 
 > Please open an issue in our Github Repo if the invite has expired.
 
-## OWASP MASVS and MSTG Adoption
+## OWASP MASVS and MASTG Adoption
 
-The OWASP MASVS and MSTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MSTG-Adoption.md).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 
-<a href="0x02b-MASVS-MSTG-Adoption.md">
+<a href="0x02b-MASVS-MASTG-Adoption.md">
 <img src="Images/Other/trusted-by-logos.png"/>
 </a>
 
 <br>
 
-## 🥇 MSTG Advocates
+## 🥇 MAS Advocates
 
-MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02c-Acknowledgements.md#our-mstg-advocates).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02c-Acknowledgements.md#our-mstg-advocates).
 
-<a href="0x02c-Acknowledgements.md#our-mstg-advocates">
+<a href="0x02c-Acknowledgements.md#our-mastg-advocates">
 <img src="Images/Other/nowsecure-logo.png" width="200px;"/>
 </a>
 
@@ -32,7 +32,7 @@ MSTG Advocates are industry adopters of the OWASP MASVS and MSTG who have invest
 
 ## Disclaimer
 
-Please consult the laws in your country before executing any tests against mobile apps by utilizing the MSTG materials. Refrain from violating the laws with anything described in the MSTG.
+Please consult the laws in your country before executing any tests against mobile apps by utilizing the MASTG materials. Refrain from violating the laws with anything described in the MASTG.
 
 Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md) has further details.
 
@@ -44,7 +44,7 @@ Copyright © The OWASP Foundation. This work is licensed under a [Creative Commo
 
 ## ISBN
 
-Our ISBN Number is 978-1-257-96636-3 and a hard copy of the MSTG can be ordered at [lulu.com](https://www.lulu.com/search?adult_audience_rating=00&page=1&pageSize=10&q=mobile+security+testing+guide).
+Our ISBN Number is 978-1-257-96636-3 and a hard copy of the MASTG can be ordered at [lulu.com](https://www.lulu.com/search?adult_audience_rating=00&page=1&pageSize=10&q=mobile+security+testing+guide).
 
 ## Authors
 

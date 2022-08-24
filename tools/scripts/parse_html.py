@@ -113,7 +113,7 @@ def get_links_to_tools_per_section(chapter):
 
 def write_file(masvs_file, input_file, output_file):
     """
-    Parses the MSTG and completes the MASVS file with information from the MSTG.
+    Parses the MASTG and completes the MASVS file with information from the MASTG.
     """
 
     # enhanced_masvs_dict = {}

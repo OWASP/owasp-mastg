@@ -2,7 +2,7 @@
 
 - [Changelog](CHANGELOG.md)
 - [Frontispiece](0x02a-Frontispiece.md)
-- [OWASP MASVS and MSTG Adoption](0x02b-MASVS-MSTG-Adoption.md)
+- [OWASP MASVS and MASTG Adoption](0x02b-MASVS-MASTG-Adoption.md)
 - [Acknowledgments](0x02c-Acknowledgements.md)
 
 ## Overview
