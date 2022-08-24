@@ -68,6 +68,9 @@ markdown_extensions:
   - pymdownx.progressbar
 
 extra:
+  analytics:
+    provider: google
+    property: G-KWZRJV0S4P
   social:
     - icon: fontawesome/brands/slack
       link: https://owasp.slack.com/messages/project-mobile_omtg/details/
