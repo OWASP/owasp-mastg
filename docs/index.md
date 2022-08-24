@@ -46,7 +46,7 @@ The OWASP MASVS (Mobile Application Security Verification Standard) is a standar
 
 ### OWASP MASTG
 
-<img align="right" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="300px" src="assets/mstg_cover.png" />
+<img align="right" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="300px" src="assets/mastg_cover.png" />
 
 _Previously known as OWASP MSTG (Mobile Security Testing Guide)_
 
