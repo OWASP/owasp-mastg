@@ -26,6 +26,18 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 <br>
 
+## 🥇 MAS Advocates
+
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02c-Acknowledgements.md#our-mastg-advocates).
+
+<br>
+
+<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02c-Acknowledgements.md#our-mastg-advocates">
+<img src="https://github.com/OWASP/owasp-mstg/blob/master/Document/Images/Other/nowsecure-logo.png" width="200px;" />
+</a>
+
+<br><br>
+
 ## Main Deliverables
 
 <br>
