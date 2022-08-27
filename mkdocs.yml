@@ -75,7 +75,7 @@ extra:
     - icon: fontawesome/brands/slack
       link: https://owasp.slack.com/messages/project-mobile_omtg/details/
     - icon: fontawesome/brands/twitter 
-      link: https://twitter.com/OWASP_MSTG
+      link: https://twitter.com/OWASP_MAS
     - icon: fontawesome/brands/github
       link: https://github.com/OWASP/owasp-mstg/discussions
     # - icon: fontawesome/solid/paper-plane
