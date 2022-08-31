@@ -18,9 +18,9 @@ The OWASP Mobile Application Security (MAS) flagship project provides a security
 
 ## Trusted by ...
 
-The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MASTG-Adoption.md).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](MASTG/0x02b-MASVS-MASTG-Adoption/).
 
-<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02b-MASVS-MASTG-Adoption.md">
+<a href="MASTG/0x02b-MASVS-MASTG-Adoption/">
 <img src="assets/trusted-by-logos.png"/>
 </a>
 
@@ -28,12 +28,12 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## 🥇 MAS Advocates
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02c-Acknowledgements.md#our-mastg-advocates).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](MASTG/0x02c-Acknowledgements/#our-mas-advocates).
 
 <br>
 
-<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02c-Acknowledgements.md#our-mastg-advocates">
-<img src="https://github.com/OWASP/owasp-mstg/blob/master/Document/Images/Other/nowsecure-logo.png" width="200px;" />
+<a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
+<img src="https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Document/Images/Other/nowsecure-logo.png" width="200px;" />
 </a>
 
 <br><br>
