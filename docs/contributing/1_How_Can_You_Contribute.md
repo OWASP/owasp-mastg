@@ -72,6 +72,26 @@ Refer to Google Technical Writing trainings for more info:
 - [Google Technical Writing One](https://developers.google.com/tech-writing/one)
 - [Google Technical Writing Two](https://developers.google.com/tech-writing/two)
 
+## Contribution Credit / Acknowledgments
+
+Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowledgements are visible in:
+
+- [OWASP MASTG Authors & Co-Authors sections](MASTG/0x02a-Frontispiece/#authors)
+- [OWASP MASTG Contributors section](MASTG/0x02c-Acknowledgements/#contributors)
+- [OWASP MASTG printed version](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)
+
+Contributors are categorized as follows:
+
+- **Project Leader / Author**: Manage the development of the guide continuously and write a large amount of new content. Project Leadership cannot be achieved if any violations of the Code of Conduct occurred in the past. Be aware that you'll be expected to invest lots of time over several months.
+- **Reviewer**: People that continuously monitor and review our [Pull Requests](https://github.com/OWASP/owasp-mstg/pulls) or given useful feedback and suggesting changes.
+- **Most Helpful Discussions contributor**: actively participate in our GitHub Discussions. Contributors with the most answers marked as "The Answer" will get recognized as "Most Helpful" in our official repos.
+- **Co-Author**: Consistently contribute quality content, [at least 2,000 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors "Co-author").
+- **Top Contributor**: Consistently contribute quality content, [at least 500 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors "Top Contributor").
+- **Contributor**: Any form of contribution, [at least 50 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors "Contributor").
+- **Mini-contributor**: Everything below 50 additions, e.g. committing a single word or sentence.
+
+[Contact us](#connect-with-us) (Sven Schleier (Slack: *Sven*) or Carlos Holguera (Slack: *Carlos*)) if you are planning to become an Author/Co-Author/Reviewer, are missing from the acknowledgements (note that we make updates frequently, but not in realtime).
+
 ## 🌐 Translating the MASVS
 
 Translating the MASVS in a new language is another great way to contribute. This helps the project to reach to more people around the world.

@@ -69,38 +69,12 @@ The MASTG is an open source effort and we welcome all kinds of contributions and
 
 Before you start contributing, please check our pages ["How Can You Contribute?"](docs/contributing/1_How_Can_You_Contribute.md) and ["Getting Started"](docs/contributing/2_Getting_Started.md). If you have any doubts [please contact us](#connect-with-us).
 
-### Contribution Credit / Acknowledgments
-
-Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowledgements are visible in the [official owasp.org Project Page](https://owasp.org/www-project-mobile-security-testing-guide/#div-acknowledgements), in [GitHub](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x02c-Acknowledgements.md), [GitBook](https://mobile-security.gitbook.io/mobile-security-testing-guide/0x02-frontispiece#acknowledgments) and in the [printed versions](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html).
-
-Contributors are categorized as follows:
-
-- **Project Leader / Author**: Manage the development of the guide continuously and write a large amount of new content. Project Leadership cannot be achieved if any violations of the Code of Conduct occurred in the past. Be aware that you'll be expected to invest lots of time over several months.
-- **Reviewer**: People that continuously monitor and review our [Pull Requests](https://github.com/OWASP/owasp-mstg/pulls) or given useful feedback and suggesting changes.
-- **Most Helpful Discussions contributor**: actively participate in our GitHub Discussions. Contributors with the most answers marked as "The Answer" will get recognized as "Most Helpful" in our official repos.
-- **Co-Author**: Consistently contribute quality content, [at least 2,000 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors "Co-author").
-- **Top Contributor**: Consistently contribute quality content, [at least 500 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors "Top Contributor").
-- **Contributor**: Any form of contribution, [at least 50 additions logged](https://github.com/OWASP/owasp-mstg/graphs/contributors "Contributor").
-- **Mini-contributor**: Everything below 50 additions, e.g. committing a single word or sentence.
-
-[Contact us](#connect-with-us) (Sven Schleier (Slack: *Sven*) or Carlos Holguera (Slack: *Carlos*)) if you are planning to become an Author/Co-Author/Reviewer, are missing from the acknowledgements (note that we make updates frequently, but not in realtime).
-
-<br>
-
-## MASTG Translations
-
-The MASTG is a living document that changes and adapts to the most recent security recommendations every day. While we do want to reach the maximum audience possible, our past experience shows that **maintaining translations has proven to be an extremely challenging task**. Therefore, please understand that **any PRs containing MASTG translations will be declined**, but you're free to do them on your own forks.
-
-> 🇯🇵 A translation of the MASTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
-
-That said, we **strongly encourage [further translations of the MASVS](https://github.com/OWASP/owasp-masvs/blob/master/README.md#masvs-translations)** as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MASTG for free.
-
 <br>
 
 ## Other Formats
 
 - Get the [printed version via lulu.com](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)
-- Get the [e-book on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview) (please consider purchasing it to support our project or [make a donation](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate))
+- Get the [e-book on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview) (please consider purchasing it to support our project or [make a donation](https://mas.owasp.org/donate/#make-your-donation))
 - Check our [Document generation scripts](tools/docker/README.md)
 
 <br>
