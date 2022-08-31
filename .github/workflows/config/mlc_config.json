@@ -65,6 +65,9 @@
         },
         {
             "pattern": "^https://secrary.com/"
+        },
+        {
+            "pattern": "^MASTG/"
         }
     ],
     "httpHeaders": [
