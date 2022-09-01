@@ -43,7 +43,7 @@ Files:
 
 6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mastg/actions>
 7. Verify the new release <https://github.com/OWASP/owasp-mastg/releases>
-8. Update OWASP Wiki if necessary <https://github.com/OWASP/mas>
+8. Update OWASP Wiki if necessary <https://owasp.org/mas>
 9. Update the files at Lulu with the created files from the release page.
 10. Update the files at Leanpub with the created files from the release page.
 11. Tweet about it with @OWASP_MAS, Linkedin and OWASP Slack
