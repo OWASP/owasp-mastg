@@ -6,7 +6,7 @@ The MASTG is a living document that changes and adapts to the most recent securi
 
 > 🇯🇵 A translation of the MASTG into Japanese is available on Github: <https://github.com/coky-t/owasp-mstg-ja>. Thanks to @coky-t for pushing this forward!
 
-That said, we **strongly encourage further translations of the MASVS as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mstg/releases/latest) mapping to the MASTG for free.
+That said, we **strongly encourage further translations of the MASVS as it is much easier to maintain and you'll get a translated [Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest) mapping to the MASTG for free.
 
 ## MASVS Translations
 

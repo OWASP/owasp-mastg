@@ -194,8 +194,8 @@ Note: The IPA is signed with an Enterprise distribution certificate. You'll need
 
 ## MASTG Hacking Playground
 
-Did you enjoy working with the Crackmes? There is more! Go to [the MASTG Hacking Playground](https://github.com/OWASP/MSTG-Hacking-Playground "MASTG-playground") and find out!
+Did you enjoy working with the Crackmes? There is more! Go to [the MASTG Hacking Playground](https://github.com/OWASP/MASTG-Hacking-Playground "MASTG-playground") and find out!
 
 ## Issues with the Crackmes
 
-If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to (SPOILER ALERT!)](https://github.com/OWASP/mstg-crackmes "OWASP MASTG Crackmes").
+If the app does not boot, or if there is another bug: file an issue at this repository or at [the one you should not go to (SPOILER ALERT!)](https://github.com/OWASP/mastg-crackmes "OWASP MASTG Crackmes").

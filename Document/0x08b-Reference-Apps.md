@@ -6,27 +6,27 @@ The applications listed below can be used as training materials. Note: only the 
 
 ### Android Crackmes
 
-A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
+A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes>
 
 #### UnCrackable App for Android Level 1
 
-Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_01>
+Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_01>
 
 #### UnCrackable App for Android Level 2
 
-Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_02>
+Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_02>
 
 #### UnCrackable App for Android Level 3
 
-Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_03>
+Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_03>
 
 #### UnCrackable App for Android Level 4
 
-Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/Level_04>
+Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_04>
 
 #### Android License Validator
 
-Available at <https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/Android/License_01>
+Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/License_01>
 
 ### AndroGoat
 
@@ -58,25 +58,25 @@ A vulnerable Android app with vulnerabilities similar to the test cases describe
 
 #### MASTG Hacking Playground (Java)
 
-Available at <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
+Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
 
 ### MASTG Hacking Playground (Kotlin)
 
-Available at <https://github.com/OWASP/MSTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
+Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
 
 ## iOS
 
 ### iOS Crackmes
 
-A set of applications to test your iOS application hacking skills - <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes>
+A set of applications to test your iOS application hacking skills - <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes>
 
 #### UnCrackable App for iOS Level 1
 
-Available at <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01>
+Available at <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_01>
 
 #### UnCrackable App for iOS Level 2
 
-Available at  <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02>
+Available at  <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_02>
 
 ### Myriam
 

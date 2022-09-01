@@ -35,7 +35,7 @@ times change, our project evolves and being able to hear you and discuss with yo
 
 `TL;DR: we deprecate Slack in favor of GitHub Discussions as our primary communication channel.`
 
-https://github.com/OWASP/owasp-mstg/discussions/
+https://github.com/OWASP/owasp-mastg/discussions/
 https://github.com/OWASP/owasp-masvs/discussions/
 
 ### Removing obstacles
@@ -88,11 +88,11 @@ If you can close 5 issues that we marked with the tag #StayHome we will sent you
 
 If you are interested, do the following:
 
-1. Go through the open issues in our Github repo with the tag [#StayHome](https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aopen+label%3AStayHome).
+1. Go through the open issues in our Github repo with the tag [#StayHome](https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aopen+label%3AStayHome).
 
 2. Make a comment on the issue that you would like to take care of, which will be assigned on a first come first serve basis. For any clarifications you can ping either Carlos or Sven in OWASP Slack. If you don't have an account yet, please check here on how to register.
 
-3. Work on the issue and create a Pull Request (PR). If you are new to Git(hub), check out our [contribution guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md#how-to-contribute) for further details.
+3. Work on the issue and create a Pull Request (PR). If you are new to Git(hub), check out our [contribution guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md#how-to-contribute) for further details.
 
 4. We will review the PR and merge once all comments are addressed/resolved.
 
@@ -134,7 +134,7 @@ Want more training apps? We hear you! We just released the MSTG-Android-Java & M
 
 ## October 2nd, 2019: MSTG Project joins Hacktoberfest!
 
-We are joining the #hacktoberfest October 2-31. Check out our issues [at Github](https://github.com/OWASP/owasp-mstg/labels/Hacktoberfest). Register at [https://hacktoberfest.digitalocean.com](https://hacktoberfest.digitalocean.com).
+We are joining the #hacktoberfest October 2-31. Check out our issues [at Github](https://github.com/OWASP/owasp-mastg/labels/Hacktoberfest). Register at [https://hacktoberfest.digitalocean.com](https://hacktoberfest.digitalocean.com).
 
 ## September 17th, 2019: Xamarin experiment!
 
@@ -154,7 +154,7 @@ We are happy to announce that Carlos Holguera joins us as an official MSTG Autho
 
 ## August 4th, 2019: OSS Release!
 
-After a lot of work, we finally have a new release of the MSTG! Want to know more? Head over to the Github [release page](https://github.com/OWASP/owasp-mstg/releases).
+After a lot of work, we finally have a new release of the MSTG! Want to know more? Head over to the Github [release page](https://github.com/OWASP/owasp-mastg/releases).
 
 ## August 2nd, 2019: Project promoted to Flagship status!
 
@@ -166,11 +166,11 @@ As the summit is progressing, so are we! We have just released a new version of 
 
 ## May 21nd, 2019: New release of the MSTG
 
-As part of the preparations for the Open Security Summit, we have released a new version of the MSTG. Want to know more? Head over to the Github [release page](https://github.com/OWASP/owasp-mstg/releases)!
+As part of the preparations for the Open Security Summit, we have released a new version of the MSTG. Want to know more? Head over to the Github [release page](https://github.com/OWASP/owasp-mastg/releases)!
 
 ## May 7th, 2019: New release of the MSTG
 
-After many changes, we decided it was time to create a new release in order to improve the book version! Want to know more? Head over to the Github [release page](https://github.com/OWASP/owasp-mstg/releases).
+After many changes, we decided it was time to create a new release in order to improve the book version! Want to know more? Head over to the Github [release page](https://github.com/OWASP/owasp-mastg/releases).
 
 ## April 15th, 2019: Book version, project promotion & preparation for the summit
 
@@ -178,7 +178,7 @@ Given that most news is already shared via OWASP Slack over the last quarter, we
 
 ## January 15th, 2019: Release of improved checklist
 
-We released a new version of the checklist! This version has adaptable references so that it can be used with newer versions of the MSTG as well. This version is currently available in French and English and we hope to add the Russian, Japanese, German and Spanish version soon! Want to know more? Take a look at [our release page](https://github.com/OWASP/owasp-mstg/releases/tag/1.1-excel)!. We would like to thank our volunteers for their effort to deliver these easy to use checklists!
+We released a new version of the checklist! This version has adaptable references so that it can be used with newer versions of the MSTG as well. This version is currently available in French and English and we hope to add the Russian, Japanese, German and Spanish version soon! Want to know more? Take a look at [our release page](https://github.com/OWASP/owasp-mastg/releases/tag/1.1-excel)!. We would like to thank our volunteers for their effort to deliver these easy to use checklists!
 
 ## January 3rd, 2019: Multilanguage Release 1.1.2 of the MASVS
 
@@ -228,7 +228,7 @@ Jeroen Willemsen has joined as a project leader for the OMTG project.
 
 ## June 15th, 2018: Mobile Security Testing Guide - Release 1.0
 
-The Mobile Security Testing Guide is [now available for download in various formats](https://github.com/OWASP/owasp-mstg#reading-the-mobile-security-testing-guide). This is the first release of the MSTG and is a great community effort. We want to thank [all contributors](https://github.com/OWASP/owasp-mstg/graphs/contributors) through this great journey. Thank you!
+The Mobile Security Testing Guide is [now available for download in various formats](https://github.com/OWASP/owasp-mastg#reading-the-mobile-security-testing-guide). This is the first release of the MSTG and is a great community effort. We want to thank [all contributors](https://github.com/OWASP/owasp-mastg/graphs/contributors) through this great journey. Thank you!
 
 ## January 13th, 2018: Mobile App Security Verification Standard Release 1.0
 
@@ -287,13 +287,13 @@ The MASVS is a community effort to establish security requirements for designing
 
 A key goal of the OWASP Mobile Testing Project is to build the ultimate learning resource and reference guide for mobile app reversers. As hands-on hacking is by far the best way to learn, we'd like to link most of the content to practical examples.
 
-Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes) to the [GitHub repo](https://github.com/OWASP/owasp-mstg) that will then be used as examples throughout the guide. The goal is to collect enough resources for demonstrating the most important tools and techniques in our guide, plus additional crackmes for practicing. For starters there are three challenges:
+Starting now, we'll be adding [crackmes for Android and iOS](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes) to the [GitHub repo](https://github.com/OWASP/owasp-mastg) that will then be used as examples throughout the guide. The goal is to collect enough resources for demonstrating the most important tools and techniques in our guide, plus additional crackmes for practicing. For starters there are three challenges:
 
-- [Android License Validator](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/License_01)
-- [Uncrackable App for iOS Level 1](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_01/)
-- [Uncrackable App for iOS Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/iOS/Level_02/)
+- [Android License Validator](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/Android/License_01)
+- [Uncrackable App for iOS Level 1](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_01/)
+- [Uncrackable App for iOS Level 2](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_02/)
 
-One of these three already has a [documented solution](https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mstg/blob/master/Crackmes/README.md).
+One of these three already has a [documented solution](https://github.com/OWASP/owasp-mastg/blob/master/Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution) in the guide. Tutorials for solving the other two [still need to be added](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md).
 
 ### We Need More Authors and Contributors!
 
@@ -315,7 +315,7 @@ The reversing part of the guide consists of the following chapters:
 
 #### How To Join
 
-Read the [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
+Read the [Contribution Guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md) first, and join the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/), where you'll find all the other project members.
 
 ## January 22nd, 2017: Mobile Testing Guide TOC Available
 
@@ -344,6 +344,6 @@ All of this is unpaid, volunteer work. However, depending on your contribution, 
 
 ### Where do I sign up?
 
-First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/owasp-mstg/blob/master/CONTRIBUTING.md) first.
+First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md) first.
 
 Then contact [Bernhard Mueller](https://github.com/muellerberndt) - ideally directly on the OWASP Mobile Security Project Slack Channel, where you'll find all the other project members. You can sign up for an account here.

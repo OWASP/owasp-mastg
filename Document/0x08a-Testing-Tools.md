@@ -1415,7 +1415,7 @@ cy# a.delegate
 Let's try to trigger an alert message on SpringBoard with Cycript.
 
 ```bash
-cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MSTG" message:@"Mobile Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
+cy# alertView = [[UIAlertView alloc] initWithTitle:@"OWASP MASTG" message:@"Mobile Application Security Testing Guide"  delegate:nil cancelButtonitle:@"OK" otherButtonTitles:nil]
 #"<UIAlertView: 0x1645c550; frame = (0 0; 0 0); layer = <CALayer: 0x164df160>>"
 cy# [alertView show]
 cy# [alertView release]

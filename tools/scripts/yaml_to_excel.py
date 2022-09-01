@@ -58,7 +58,7 @@ WS_BASE_CONFIG = {
     "start_col": 2,
     "columns": [
         {"col": "B", "position": 2, "name": "ID", "width": 10, "style": "gray_header"},
-        {"col": "C", "position": 3, "name": "MSTG-ID", "width": 25, "style": "gray_header"},
+        {"col": "C", "position": 3, "name": "MASVS-ID", "width": 25, "style": "gray_header"},
         {"col": "D", "position": 4, "name": "Detailed Verification Requirement",  "width": 80, "style": "gray_header"},
         {"col": "E", "position": 5, "name": "L1", "width": 5, "style": "gray_header"},
         {"col": "F", "position": 6, "name": "L2", "width": 5, "style": "gray_header"},
@@ -89,7 +89,7 @@ def write_header(ws):
     ws["D2"].value = "Mobile Application Security Verification Standard"
     ws["D2"].style = "big_title"
 
-    ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mstg/releases/tag/{MSTGVERSION}", "OWASP MSTG {MSTGVERSION} (commit: {MSTGCOMMIT})")'
+    ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mastg/releases/tag/{MSTGVERSION}", "OWASP MASTG {MSTGVERSION} (commit: {MSTGCOMMIT})")'
     ws["D3"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
     ws["D4"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
     ws["D4"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
@@ -239,7 +239,7 @@ def create_about_sheet(wb):
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP Mobile Security Testing Guide is an OWASP flagship project led by Carlos Holguera and Sven Schleier which defines the industry standard for mobile application security."
+    ws.cell(row=row, column=first_col).value = "The OWASP Mobile Application Security (MAS) flagship project led by Carlos Holguera and Sven Schleier defines the industry standard for mobile application security."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
@@ -254,12 +254,12 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mstg/"
+    url = "https://github.com/OWASP/owasp-mastg/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
 
-    ws.cell(row=row, column=first_col).value = "The OWASP MSTG (Mobile Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
+    ws.cell(row=row, column=first_col).value = "The OWASP MASTG (Mobile Application Security Testing Guide) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the controls listed in the MASVS."
     ws.merge_cells(start_row=row, end_row=row, start_column=first_col, end_column=last_col)
     ws.cell(row=row, column=first_col).style = "text"
 
@@ -278,7 +278,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mstg/discussions/categories/ideas"
+    url = "https://github.com/OWASP/owasp-mastg/discussions/categories/ideas"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -292,7 +292,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mstg/blob/master/License.md"
+    url = "https://github.com/OWASP/owasp-mastg/blob/master/License.md"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
 
@@ -330,7 +330,7 @@ def main():
     MASVSVERSION = args.masvsversion
     MASVSCOMMIT = args.masvscommit
 
-    print(f"Generating {LANG.upper()} Checklist for MSTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
+    print(f"Generating {LANG.upper()} Checklist for MASTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
     generate_spreadsheet(args.outputfile)
 

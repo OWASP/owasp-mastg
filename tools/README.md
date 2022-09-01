@@ -41,12 +41,12 @@ Files:
 
     > The letter `v` need to be part of the tag name to trigger the release Github action. The tag name will become the version title of the release. The content of the RECENT_CHANGES file will become the body text of the release (be sure it includes the actual title of the release).
 
-6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mstg/actions>
-7. Verify the new release <https://github.com/OWASP/owasp-mstg/releases>
-8. Update OWASP Wiki if necessary <https://github.com/OWASP/www-project-mobile-security-testing-guide>
+6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mastg/actions>
+7. Verify the new release <https://github.com/OWASP/owasp-mastg/releases>
+8. Update OWASP Wiki if necessary <https://owasp.org/mas>
 9. Update the files at Lulu with the created files from the release page.
 10. Update the files at Leanpub with the created files from the release page.
-11. Tweet about it with @OWASP-MSTG, Linkedin and OWASP Slack
+11. Tweet about it with @OWASP_MAS, Linkedin and OWASP Slack
 
 In case something went wrong and we need to remove the release:
 
