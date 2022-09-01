@@ -19,6 +19,8 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 </a>
 </center>
 
+<br>
+
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest)
 - ⚡ [Contribute!](#how-to-contribute)
