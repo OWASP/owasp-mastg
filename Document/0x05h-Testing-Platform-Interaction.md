@@ -594,7 +594,7 @@ Using unverified deep links can cause a significant issue- any other apps instal
 
 In recent versions of Android this results in a so-called _disambiguation dialog_ shown to the user that asks them to select the application that should handle the deep link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
 
-![OWASP_MSTG](https://developer.android.com/training/app-links/images/app-disambiguation_2x.png)
+<img src="https://developer.android.com/training/app-links/images/app-disambiguation_2x.png"/>
 
 #### Android App Links
 

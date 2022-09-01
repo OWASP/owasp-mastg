@@ -88,7 +88,7 @@ It is worth highlighting that analyzing disassembled native code is much more ch
 In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MASTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```bash
-wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+wget https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 ```
 
 > This app is not exactly spectacular, all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support, which is just enough to show the basic principles of JNI calls.
@@ -508,7 +508,7 @@ The following commands summarize how to patch and start dynamic analysis using o
 
 ```bash
 # Download the Uncrackable APK
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 # Patch the APK with the Frida Gadget
 $ objection patchapk --source UnCrackable-Level1.apk
 # Install the patched APK on the android phone
@@ -1833,7 +1833,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these passive tasks help us collect information. This Information is often used for other techniques, such as method hooking.
 
-In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
+In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//sg.vantagepoint.helloworldjni

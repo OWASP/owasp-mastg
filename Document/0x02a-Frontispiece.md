@@ -22,7 +22,7 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## 🥇 MAS Advocates
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02c-Acknowledgements.md#our-mstg-advocates).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02c-Acknowledgements.md#our-mastg-advocates).
 
 <a href="0x02c-Acknowledgements.md#our-mastg-advocates">
 <img src="Images/Other/nowsecure-logo.png" width="200px;"/>
@@ -34,7 +34,7 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 Please consult the laws in your country before executing any tests against mobile apps by utilizing the MASTG materials. Refrain from violating the laws with anything described in the MASTG.
 
-Our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md) has further details.
+Our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/CODE_OF_CONDUCT.md) has further details.
 
 ## Copyright and License
 

@@ -32,7 +32,7 @@ When you click on the DONATE button and fill in the form be sure to verify that 
 
 ### Register your Donation Package (optional)
 
-If you'd like to opt-in for a Donation Package please fill out the [MASTG Donation Form](https://github.com/OWASP/owasp-mstg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation) (which will create a new Issue in the MASTG).
+If you'd like to opt-in for a Donation Package please fill out the [MASTG Donation Form](https://github.com/OWASP/owasp-mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation) (which will create a new Issue in the MASTG).
 <img style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="800px" src="../assets/donations/mstg_donation_form.png" />
 
 Once the issue is created, please copy its URL and send it to [Sven Schleier](mailto:sven.schleier@owasp.org) or [Carlos Holguera](mailto:carlos.holguera@owasp.org) to verify your donation. We will then, together with the OWASP Foundation, verify and process it.

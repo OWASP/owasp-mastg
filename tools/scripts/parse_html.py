@@ -41,7 +41,7 @@ def get_testcases_info(chapter_file_name, chapter):
     for testcase in testcases:
         title = testcase.find("h2").get_text()
         mstg_id = testcase.get("id")
-        link = f"https://github.com/OWASP/owasp-mstg/blob/master/Document/{chapter_file_name}#{mstg_id}"
+        link = f"https://github.com/OWASP/owasp-mastg/blob/master/Document/{chapter_file_name}#{mstg_id}"
         platform = "android" if chapter_file_name.startswith("0x05") else "ios"
         mstg_ids = re.findall(r"MSTG-\w+-\d+", title)
         tools = get_all_links_to_tools(testcase)

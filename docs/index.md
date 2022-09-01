@@ -33,7 +33,7 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 <br>
 
 <a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
-<img src="https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Document/Images/Other/nowsecure-logo.png" width="200px;" />
+<img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" width="200px;" />
 </a>
 
 <br><br>
@@ -41,10 +41,10 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 ## Connect with Us
 
 <ul>
-<li><a href="https://github.com/OWASP/owasp-mstg/discussions"><img src="assets/GitHub_logo.png" width="14px"> GitHub Discussions</a></li>
-<li><a href="https://owasp.slack.com/messages/project-mobile_omtg/details/"><img src="https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a> (<a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Get Invitation</a>)</li>
-<li><a href="https://twitter.com/OWASP_MAS"><img src="https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Document/Images/twitter_logo.png" width="14px"> @OWASP_MAS </a> (Official Account)</li>
-<li><a href="https://twitter.com/bsd_daemon"><img src="https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Document/Images/twitter_logo.png" width="14px"> @bsd_daemon </a> (Sven Schleier, Project Lead) <a href="https://twitter.com/grepharder"><img src="https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Document/Images/twitter_logo.png" width="14px"> @grepharder </a> (Carlos Holguera, Project Lead)</li>
+<li><a href="https://github.com/OWASP/owasp-mastg/discussions"><img src="assets/GitHub_logo.png" width="14px"> GitHub Discussions</a></li>
+<li><a href="https://owasp.slack.com/messages/project-mobile_omtg/details/"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a> (<a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Get Invitation</a>)</li>
+<li><a href="https://twitter.com/OWASP_MAS"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/twitter_logo.png" width="14px"> @OWASP_MAS </a> (Official Account)</li>
+<li><a href="https://twitter.com/bsd_daemon"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/twitter_logo.png" width="14px"> @bsd_daemon </a> (Sven Schleier, Project Lead) <a href="https://twitter.com/grepharder"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/twitter_logo.png" width="14px"> @grepharder </a> (Carlos Holguera, Project Lead)</li>
 </ul>
 
 <br>
@@ -77,9 +77,9 @@ The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive m
 
 <br>
 
-- <a href="https://github.com/OWASP/owasp-mstg/">:material-github: GitHub Repo</a>
+- <a href="https://github.com/OWASP/owasp-mastg/">:material-github: GitHub Repo</a>
 - 📖 [Read it on Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/)
-- ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mstg/releases/latest)
+- ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
 
 <br>
 
@@ -93,7 +93,7 @@ Feel free to [download the EPUB or Mobi](https://leanpub.com/mobile-security-tes
 
 A checklist is available for use in security assessments based on the MASVS and MASTG. It contains links to the MASTG test case for each MASVS requirement.
 
-- <a href="https://github.com/OWASP/owasp-mstg/releases/latest">:material-github: GitHub Repo (MASTG Releases)</a>
+- <a href="https://github.com/OWASP/owasp-mastg/releases/latest">:material-github: GitHub Repo (MASTG Releases)</a>
 
 Its features include:
 

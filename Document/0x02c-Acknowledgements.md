@@ -79,7 +79,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 **High-impact Contributions (time/dedicated resources):**
 
-- [Content PRs](https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+%22%28by+%40NowSecure%29%22)
+- [Content PRs](https://github.com/OWASP/owasp-mastg/pulls?q=is%3Apr+%22%28by+%40NowSecure%29%22)
 - Technical Reviews for PRs
 - Participation in GitHub Discussions
 
@@ -109,7 +109,7 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
 
 ## Contributors
 
-**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mstg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mstg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
+**Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
 
 ### Top Contributors
 

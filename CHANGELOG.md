@@ -2,18 +2,18 @@
 
 ## V1.2.1 and newer
 
-All our Changelogs are available online at the OWASP MSTG GitHub repository, see the [Releases page](https://github.com/OWASP/owasp-mstg/releases).
+All our Changelogs are available online at the OWASP MSTG GitHub repository, see the [Releases page](https://github.com/OWASP/owasp-mastg/releases).
 
 ## v1.2 - 25th July 2021
 
-167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mstg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-25>.
+167 issues were closed since the last release. A full overview can be seen in Github Issues <https://github.com/OWASP/owasp-mastg/issues?q=is%3Aissue+is%3Aclosed+closed%3A2019-08-03..2021-07-25>.
 
-326 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mstg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2021-07-25>
+326 pull requests were merged since the last release. A full overview can be seen in Github Pull Requests <https://github.com/OWASP/owasp-mastg/pulls?q=is%3Apr+is%3Aclosed+closed%3A2019-08-03..2021-07-25>
 
 Major changes include:
 
 - Migrating the new document build pipeline from MASVS to MSTG. This allows us to build consistently the whole OWASP MSTG documents (PDF, docx etc.) in minutes, without any manual work.
-- Besides numerous changes for the test cases we have a new Crackme - Android Level 4 <https://github.com/OWASP/owasp-mstg/tree/master/Crackmes/Android/Level_04> and also new write-ups for the Crackmes.
+- Besides numerous changes for the test cases we have a new Crackme - Android Level 4 <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/Android/Level_04> and also new write-ups for the Crackmes.
 - We removed all references to Needle and IDB tool, as both tools are outdated.
 - References of OWASP Mobile Top 10 and MSTG-IDs are completely moved to MASVS
 - Reworking of information gathering (static analysis) for Android Apps
