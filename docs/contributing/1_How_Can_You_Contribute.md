@@ -77,7 +77,7 @@ Refer to Google Technical Writing trainings for more info:
 Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowledgements are visible in:
 
 - [OWASP MASTG Authors & Co-Authors sections](MASTG/0x02a-Frontispiece/#authors)
-- [OWASP MASTG Contributors section](MASTG/0x02c-Acknowledgements/#contributors)
+- [OWASP MASTG Contributors section](../../Document/0x02c-Acknowledgements.md#contributors)
 - [OWASP MASTG printed version](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)
 
 Contributors are categorized as follows:
