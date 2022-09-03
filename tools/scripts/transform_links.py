@@ -13,5 +13,5 @@ for root, dirname, filenames in os.walk("docs"):
             file_text = file_obj.read_text()
             found = re.findall(r'(\((?:../)*Document/.*\.md/*)', file_text)
             print(f"    Found: {found}")
-            new_text = re.sub(r"\((?:../)*Document/(.*)\.md/*",r"(MASTG/\1/", file_text)
+            new_text = re.sub(r"\(((?:../)*)Document/(.*)\.md/*",r"(\1MASTG/\2/", file_text)
             file_obj.write_text(new_text)
