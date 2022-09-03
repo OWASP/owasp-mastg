@@ -9,7 +9,7 @@ Channels:
 - Gitbook: currently using @sushi2k's repository (<https://github.com/sushi2k/owasp-mstg-1>) which is synced automatically via <https://github.com/apps/pull>.
 - Github actions & Github releases: We use Github actions to build and verify the documents in an automated fashion as well as build releases.
 - Leanpub: The book can be bought via Leanpub <https://leanpub.com/mobile-security-testing-guide> as PDF to support OWASP and the MAS project financially.
-- Lulu: The book can be bought via Lulu <https://www.lulu.com/en/en/shop/bernhard-müller-and-jeroen-willemsen-and-sven-schleier/owasp-mobile-security-testing-guide/paperback/product-1q2rerwp.html> as hard-copy to support OWASP and the MAS project financially.
+- Lulu: The book can be bought via Lulu <https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html> as hard-copy to support OWASP and the MAS project financially.
 
 Files:
 
