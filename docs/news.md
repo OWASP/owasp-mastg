@@ -84,7 +84,7 @@ we are all in more or less restrictive lock-down situations, but the guideline i
 
 The OWASP Mobile Security Testing Guide (MSTG) project team wants to encourage people to #StayHome and also use this time to share your knowledge with the community. So if you want to either share your knowledge in mobile security or are just keen in doing some research in this area, we have many open issues where we are still looking for volunteers.
 
-If you can close 5 issues that we marked with the tag #StayHome we will sent you in return a hard copy of the [OWASP MSTG](http://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)! We are giving away a total of 5 books on a first come first serve basis.
+If you can close 5 issues that we marked with the tag #StayHome we will sent you in return a hard copy of the [OWASP MSTG](https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html)! We are giving away a total of 5 books on a first come first serve basis.
 
 If you are interested, do the following:
 

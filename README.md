@@ -82,7 +82,7 @@ Before you start contributing, please check our pages ["How Can You Contribute?"
 
 ## Other Formats
 
-- Get the [printed version via lulu.com](https://www.lulu.com/shop/sven-schleier-and-jeroen-willemsen-and-bernhard-m%C3%BCller/owasp-mobile-security-testing-guide/paperback/product-24198359.html)
+- Get the [printed version via lulu.com](https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html)
 - Get the [e-book on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview) (please consider purchasing it to support our project or [make a donation](https://mas.owasp.org/donate/#make-your-donation))
 - Check our [Document generation scripts](tools/docker/README.md)
 
