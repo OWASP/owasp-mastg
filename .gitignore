@@ -5,6 +5,7 @@ node_modules
 .idea
 Generated
 tmp_*
+build
 *-temp
 OWASP_MSTG-SNAPSHOT-*
 logs

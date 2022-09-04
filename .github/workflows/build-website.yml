@@ -14,7 +14,7 @@ jobs:
           python-version: 3.x
       - run: pip install -r requirements.txt
 
-      - run: python3 tools/scripts/transform_links.py
+      - run: python3 tools/scripts/transform_files.py
       - run: mkdir docs/MASTG
       - run: mkdir docs/MASTG/General
       - run: mkdir docs/MASTG/Android
