@@ -42,7 +42,7 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 <ul>
 <li><a href="https://github.com/OWASP/owasp-mastg/discussions"><img src="assets/GitHub_logo.png" width="14px"> GitHub Discussions</a></li>
-<li><a href="https://owasp.slack.com/messages/project-mobile_omtg/details/"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/slack_logo.png" width="14px">  #project-mobile_omtg</a> (<a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Get Invitation</a>)</li>
+<li><a href="https://owasp.slack.com/archives/C1M6ZVC6S"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/slack_logo.png" width="14px">  #project-mobile-app-security</a> (<a href="https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw#//">Get Invitation</a>)</li>
 <li><a href="https://twitter.com/OWASP_MAS"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/twitter_logo.png" width="14px"> @OWASP_MAS </a> (Official Account)</li>
 <li><a href="https://twitter.com/bsd_daemon"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/twitter_logo.png" width="14px"> @bsd_daemon </a> (Sven Schleier, Project Lead) <a href="https://twitter.com/grepharder"><img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/twitter_logo.png" width="14px"> @grepharder </a> (Carlos Holguera, Project Lead)</li>
 </ul>
