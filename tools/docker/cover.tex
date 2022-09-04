@@ -1,5 +1,6 @@
 % IMPORTANT NOTE this file requires latex-header.tex
 % cover.svg is in the root folder (owasp-mastg/) and must be Width = 2480px and Height = 3508px
+% If this error appears "LaTeX Error: Cannot determine size of graphic in cover.svg (no BoundingBox)" you must modify the svg to include the size info: "<svg version="1.1" width="2480" height="3508" viewBox...".
 % Version text is written at (X,Y), where (0, 0) is the lower left corner of the page.
 
 % This file requires the following pandoc metadata variables:
@@ -11,4 +12,4 @@
 % https://tex.stackexchange.com/questions/136900/insert-a-full-page-image
 \incgraph[documentpaper, 
     overlay={\node[white] at (12.6,10.3) {\Large Version $version$};}]
-    [width=\paperwidth,height=\paperheight]{cover.svg}
+    [width=\paperwidth,height=\paperheight]{cover.pdf}

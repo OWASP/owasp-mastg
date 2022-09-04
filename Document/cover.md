@@ -1,1 +1,1 @@
-<img src='../cover.svg' id="cover" class="cover" />
+<img src='../cover.pdf' id="cover" class="cover" />
