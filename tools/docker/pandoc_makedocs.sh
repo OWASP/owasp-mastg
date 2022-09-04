@@ -13,7 +13,7 @@ cp -R $FOLDER "build"
 IMG=${IMG:-dalibo/pandocker}
 TAG=${TAG:-21.02} # /!\ use stable-full for non-european languages
 LATEX_TEMPLATE=${LATEX_TEMPLATE:-eisvogel}
-TITLE=${TITLE:-OWASP Mobile Security Testing Guide ${VERSION}}
+TITLE=${TITLE:-OWASP Mobile Application Security Testing Guide ${VERSION}}
 
 PANDOC_PARAMS=${PANDOC_PARAMS:-}
 PANDOC_PARAMS+="--resource-path=.:build "
@@ -35,7 +35,7 @@ PANDOC=${PANDOC:-${PANDOCKER}}
 
 METADATA="build/metadata.md"
 CHAPTERS="build/0x*.md build/CHANGELOG.md"
-OUTPUT_BASE_NAME="OWASP_MSTG-${VERSION}"
+OUTPUT_BASE_NAME="OWASP_MASTG-${VERSION}"
 
 [ ! -z "${VERBOSE}" ] && echo "Create PDF"
 
