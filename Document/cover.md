@@ -1,1 +1,1 @@
-<img src='../Document/Images/cover.jpg' id="cover" class="cover" />
+<img src='../cover.png' id="cover" class="cover" />
