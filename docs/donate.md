@@ -1,6 +1,12 @@
 # ♡ Donations
 
-While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. If you'd like to support the Mobile Security Testing project we'll be happy to accept your donations. You may donate 5, 500, 5000 (USD/EUR/GBP) or any custom amount. Certain amounts allow you to opt-in for a "[Donation Package](#donation-packages)" (see below).
+While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. If you'd like to support the OWASP MAS project we'll be happy to accept your donations.
+
+1. You may donate 5, 500, 5000 (USD/EUR/GBP) or any custom amount. Certain amounts allow you to opt-in for a "[Donation Package](#donation-packages)" (see below).
+
+2. Purchase the [OWASP MASTG e-book version on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview).
+
+3. Consider becoming a [MAS Advocate](../Document/0x02c-Acknowledgements.md#our-mas-advocates).
 
 100% of the funds raised go directly to the OWASP foundation and allow us to ask for budget to fund our project activities:
 
@@ -23,17 +29,16 @@ We thank our donators for providing the funds to support us on our project activ
 
 ### Make your Donation
 
-Make your donation directly from the OWASP website by clicking the **DONATE** button above.
-
-When you click on the DONATE button and fill in the form be sure to verify that it has the line:
-> "Publicly list me as a supporter of OWASP Mobile Security Testing Guide"
+You can make a donation by opening this [link at the official OWASP website](https://owasp.org/donate/?reponame=www-project-mobile-app-security&title=OWASP+Mobile+Application+Security). Fill in the form and be sure to **select the option**:
+> "Publicly list me as a supporter of OWASP Mobile Application Security"
 
 <img style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="800px" src="../assets/donations/owasp_donation_form.png" />
 
 ### Register your Donation Package (optional)
 
-If you'd like to opt-in for a Donation Package please fill out the [MASTG Donation Form](https://github.com/OWASP/owasp-mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation) (which will create a new Issue in the MASTG).
-<img style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="800px" src="../assets/donations/mstg_donation_form.png" />
+If your donation is above USD 500 you may opt-in for a [Donation Package](#donation-packages). Please fill out the [MASTG Donation Form](https://github.com/OWASP/owasp-mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation) (which will create a new Issue in the MASTG).
+
+<img style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="800px" src="../assets/donations/mastg_donation_form.png" />
 
 Once the issue is created, please copy its URL and send it to [Sven Schleier](mailto:sven.schleier@owasp.org) or [Carlos Holguera](mailto:carlos.holguera@owasp.org) to verify your donation. We will then, together with the OWASP Foundation, verify and process it.
 
@@ -64,6 +69,10 @@ Once the issue is created, please copy its URL and send it to [Sven Schleier](ma
 - Duration: 3 years
 - Optional: 5 Paperback Books
 
-## Other Forms of Donation
+## Other Forms of Donation / Support
 
-If you still want to help out the project you can always contribute with content for the MASVS or the MASTG and end up at our [acknowledgement section](../Document/0x02c-Acknowledgements.md "MASTG acknowledgements") or you can buy digital copies of the MASTG at [Leanpub](https://leanpub.com/mobile-security-testing-guide "MASTG at Leanpub"). Donators can be mentioned in the acknowledgement section as well, from 25 USD onward. Note that you are anonymous to us when you buy via Leanpub. Therefore, if you want to get listed, submit your payment receipt to [Sven Schleier](mailto:sven.schleier@owasp.org) or [Carlos Holguera](mailto:carlos.holguera@owasp.org).
+If you still want to support the project you can always [contribute with content](contributing/1_How_Can_You_Contribute.md) for the MASVS or the MASTG and end up at our [acknowledgement section](../Document/0x02c-Acknowledgements.md "MASTG acknowledgements").
+
+If you're a company, consider becoming a [MAS Advocate](../Document/0x02c-Acknowledgements.md#our-mas-advocates) which is the highest status that companies can achieve in the project acknowledging that they've gone above and beyond to support the project.
+
+If you have any questions please feel free to [reach out](https://mas.owasp.org/#connect-with-us) anytime.
