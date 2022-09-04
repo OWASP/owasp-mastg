@@ -71,7 +71,7 @@ Once the issue is created, please copy its URL and send it to [Sven Schleier](ma
 
 ## Other Forms of Donation / Support
 
-If you still want to support the project you can always [contribute with content](contributing/1_How_Can_You_Contribute/) for the MASVS or the MASTG and end up at our [acknowledgement section](../Document/0x02c-Acknowledgements.md "MASTG acknowledgements").
+If you still want to support the project you can always [contribute with content](contributing/1_How_Can_You_Contribute.md) for the MASVS or the MASTG and end up at our [acknowledgement section](../Document/0x02c-Acknowledgements.md "MASTG acknowledgements").
 
 If you're a company, consider becoming a [MAS Advocate](../Document/0x02c-Acknowledgements.md#our-mas-advocates) which is the highest status that companies can achieve in the project acknowledging that they've gone above and beyond to support the project.
 
