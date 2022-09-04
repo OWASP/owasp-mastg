@@ -76,7 +76,7 @@ ${PANDOC} \
 ${PANDOC} \
   --metadata title="${TITLE}" \
   --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
-  --epub-cover-image=cover.png \
+  --epub-cover-image=cover.pdf \
   -o ${OUTPUT_BASE_NAME}.epub \
   ${METADATA} \
   ${CHAPTERS}
@@ -86,17 +86,17 @@ ${PANDOC} \
 #kindlegen ${OUTPUT_BASE_NAME}.epub
 
 # DOCX
-${PANDOC} \
-  --metadata title="${TITLE}" \
-  --toc \
-  --number-sections \
-  --columns 10000 \
-  --self-contained \
-  --standalone \
-  --reference-doc tools/custom-reference.docx \
-  -o ${OUTPUT_BASE_NAME}_WIP_.docx \
-  ${METADATA} \
-  ${CHAPTERS}
+# ${PANDOC} \
+#   --metadata title="${TITLE}" \
+#   --toc \
+#   --number-sections \
+#   --columns 10000 \
+#   --self-contained \
+#   --standalone \
+#   --reference-doc tools/custom-reference.docx \
+#   -o ${OUTPUT_BASE_NAME}_WIP_.docx \
+#   ${METADATA} \
+#   ${CHAPTERS}
 
 
 # clean temp files
