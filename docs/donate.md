@@ -23,16 +23,14 @@ We thank our donators for providing the funds to support us on our project activ
 
 ### Make your Donation
 
-Make your donation directly from the OWASP website by clicking the **DONATE** button above.
-
-When you click on the DONATE button and fill in the form be sure to verify that it has the line:
-> "Publicly list me as a supporter of OWASP Mobile Security Testing Guide"
+You can make a donation by opening this [link at the official OWASP website](https://owasp.org/donate/?reponame=www-project-mobile-app-security&title=OWASP+Mobile+Application+Security). Fill in the form and be sure to **select the option**:
+> "Publicly list me as a supporter of OWASP Mobile Application Security"
 
 <img style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="800px" src="../assets/donations/owasp_donation_form.png" />
 
 ### Register your Donation Package (optional)
 
-If you'd like to opt-in for a Donation Package please fill out the [MASTG Donation Form](https://github.com/OWASP/owasp-mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation) (which will create a new Issue in the MASTG).
+If your donation is above USD 500 you may opt-in for a [Donation Package](#donation-packages). Please fill out the [MASTG Donation Form](https://github.com/OWASP/owasp-mastg/issues/new?assignees=cpholguera%2Csushi2k&labels=org%2Cdonation&template=make-donation.yml&title=%F0%9F%92%B2%F0%9F%8E%89+New+Donation) (which will create a new Issue in the MASTG).
 <img style="margin: 1.3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="800px" src="../assets/donations/mstg_donation_form.png" />
 
 Once the issue is created, please copy its URL and send it to [Sven Schleier](mailto:sven.schleier@owasp.org) or [Carlos Holguera](mailto:carlos.holguera@owasp.org) to verify your donation. We will then, together with the OWASP Foundation, verify and process it.
