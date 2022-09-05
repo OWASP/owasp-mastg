@@ -190,14 +190,14 @@ def create_security_requirements_sheet(wb):
         if req["R"]:
             ws.cell(row=row, column=col_r).style = "orange"
 
-        ws.cell(row=row, column=col_link_common).value = "N/A"
-        ws.cell(row=row, column=col_link_common).style = "gray_header"
+        # ws.cell(row=row, column=col_link_common).value = "N/A"
+        # ws.cell(row=row, column=col_link_common).style = "gray_header"
         
-        ws.cell(row=row, column=col_link_android).value = "N/A"
-        ws.cell(row=row, column=col_link_android).style = "gray_header"
+        # ws.cell(row=row, column=col_link_android).value = "N/A"
+        # ws.cell(row=row, column=col_link_android).style = "gray_header"
 
-        ws.cell(row=row, column=col_link_ios).value = "N/A"
-        ws.cell(row=row, column=col_link_ios).style = "gray_header"
+        # ws.cell(row=row, column=col_link_ios).value = "N/A"
+        # ws.cell(row=row, column=col_link_ios).style = "gray_header"
 
         if req.get("links"):
             link_common = get_link_for(req["links"], "0x04")

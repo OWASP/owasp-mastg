@@ -60,7 +60,7 @@ In the following example we will save the string "test_strong_password" to the k
 
 #### Swift
 
-```swift
+```default
 // 1. Create the AccessControl object that will represent authentication settings
 
 var error: Unmanaged<CFError>?
