@@ -941,7 +941,7 @@ There's some overlap with the category "detecting reverse engineering tools and 
 
 #### Runtime Integrity Check Examples
 
-##### Detecting tampering with the Java Runtime**
+##### Detecting tampering with the Java Runtime
 
 This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
