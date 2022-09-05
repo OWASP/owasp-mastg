@@ -55,7 +55,7 @@ Another way to check for jailbreaking mechanisms is to try to write to a locatio
 
 **Swift:**
 
-```swift
+```default
 do {
     let pathToFileInRestrictedDirectory = "/private/jailbreak.txt"
     try "This is a test.".write(toFile: pathToFileInRestrictedDirectory, atomically: true, encoding: String.Encoding.utf8)
@@ -88,7 +88,7 @@ You can check protocol handlers by attempting to open a Cydia URL. The [Cydia](0
 
 **Swift:**
 
-```swift
+```default
 if let url = URL(string: "cydia://package/com.example.package"), UIApplication.shared.canOpenURL(url) {
     // Device is jailbroken
 }
