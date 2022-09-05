@@ -736,8 +736,8 @@ FraudForce            dylib    False        False  True   True      False       
 
 ## References
 
-- Codesign - <https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html>
-- Building Your App to Include Debugging Information - <https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information>
+- Codesign - [https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html)
+- Building Your App to Include Debugging Information - [https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information](https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information)
 
 ### Memory management - dynamic analysis examples
 

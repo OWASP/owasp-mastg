@@ -996,7 +996,7 @@ For more information, options and approaches, please refer to section "[In-Memor
 
 ## References
 
-- [#mandt] Tarjei Mandt, Mathew Solnik  and  David Wang, Demystifying the Secure Enclave Processor - <https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf>
+- [#mandt] Tarjei Mandt, Mathew Solnik  and  David Wang, Demystifying the Secure Enclave Processor - [https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf](https://www.blackhat.com/docs/us-16/materials/us-16-Mandt-Demystifying-The-Secure-Enclave-Processor.pdf)
 
 ### OWASP MASVS
 

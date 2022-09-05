@@ -668,14 +668,14 @@ When you do not have the source code:
 
 ### Android Developer Documentation
 
-- Network Security Configuration - <https://developer.android.com/training/articles/security-config>
-- Network Security Configuration (cached alternative) - <https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl>
+- Network Security Configuration - [https://developer.android.com/training/articles/security-config](https://developer.android.com/training/articles/security-config)
+- Network Security Configuration (cached alternative) - [https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl](https://webcache.googleusercontent.com/search?q=cache:hOONLxvMTwYJ:https://developer.android.com/training/articles/security-config+&cd=10&hl=nl&ct=clnk&gl=nl)
 
 ### Xamarin Certificate Pinning
 
-- Certificate and Public Key Pinning with Xamarin - <https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin>
-- ServicePointManager - <https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx>
+- Certificate and Public Key Pinning with Xamarin - [https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin](https://thomasbandt.com/certificate-and-public-key-pinning-with-xamarin)
+- ServicePointManager - [https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx](https://msdn.microsoft.com/en-us/library/system.net.servicepointmanager(v=vs.110).aspx)
 
 ### Cordova Certificate Pinning
 
-- PhoneGap SSL Certificate Checker plugin - <https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin>
+- PhoneGap SSL Certificate Checker plugin - [https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin](https://github.com/EddyVerbruggen/SSLCertificateChecker-PhoneGap-Plugin)
