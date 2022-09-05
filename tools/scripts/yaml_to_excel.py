@@ -197,7 +197,7 @@ def create_security_requirements_sheet(wb):
             link_ios = get_link_for(req["links"], "0x06")
 
             if link_common:
-                write_testcase(ws, row, col_link_common, link_android)
+                write_testcase(ws, row, col_link_common, link_common)
             else:
                 ws.cell(row=row, column=col_link_common).value = "N/A"
                 ws.cell(row=row, column=col_link_common).style = "gray_header"
