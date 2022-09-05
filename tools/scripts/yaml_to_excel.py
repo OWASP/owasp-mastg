@@ -244,7 +244,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://owasp.org/www-project-mobile-security-testing-guide/"
+    url = "https://owasp.org/mas/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -254,7 +254,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mastg/"
+    url = "https://mas.owasp.org/MASTG/0x01-Foreword/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -264,7 +264,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-masvs/"
+    url = "https://mas.owasp.org/MASVS/0x01-Foreword/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2

@@ -96,7 +96,7 @@ Before you start contributing, please check our pages ["How Can You Contribute?"
 - [Frontispiece](https://mas.owasp.org/MASTG/0x02a-Frontispiece)
 - [OWASP MASVS and MASTG Adoption](https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption)
 - [Acknowledgements](https://mas.owasp.org/MASTG/0x02c-Acknowledgements)
-- [Introduction to the Mobile Security Testing Guide](https://mas.owasp.org/MASTG/0x03-Overview)
+- [Introduction to the OWASP Mobile Application Security Project](https://mas.owasp.org/MASTG/0x03-Overview)
 - [Mobile App Taxonomy](https://mas.owasp.org/MASTG/General/0x04a-Mobile-App-Taxonomy)
 - [Mobile App Security Testing](https://mas.owasp.org/MASTG/General/0x04b-Mobile-App-Security-Testing)
 

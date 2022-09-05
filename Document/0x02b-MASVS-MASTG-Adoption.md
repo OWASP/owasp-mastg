@@ -79,7 +79,7 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 | University of Adelaide, Australia and Queen Mary University of London, United Kingdom | [An Empirical Assessment of Global COVID-19 Contact Tracing Applications](https://arxiv.org/pdf/2006.10933.pdf) | 2021 |
 | School of Information Technology, Mapúa University, Philippines | [A Vulnerability Assessment on the Parental Control Mobile Applications Security: Status based on the OWASP Security Requirements](http://www.ieomsociety.org/singapore2021/papers/1104.pdf) | 2021 |
 
-## Application in scientific research
+## Application in Scientific Research
 
 - [STAMBA: Security Testing for Android Mobile Banking Apps](https://link.springer.com/chapter/10.1007/978-3-319-28658-7_57 "Advances in Signal Processing and Intelligent Recognition Systems pp 671-683")
 

@@ -1,50 +1,16 @@
 # Frontispiece
 
-<img src="Images/OWASP_logo.png" width="100%" />
+<img src="Images/owasp_mas_header.png" width="100%" />
 
 ## About the OWASP Mobile Application Security Testing Guide
 
-The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [Mobile Application Security Verification Standard (MASVS)](https://github.com/OWASP/owasp-masvs), and provides a baseline for complete and consistent security tests.
-
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions on the Mobile Security Testing Guide, please join the discussion around MASVS and MASTG in the [OWASP Mobile Security Project Slack Channel](https://owasp.slack.com/messages/project-mobile_omtg/details/ "OWASP Mobile Security Project Slack Channel"). You can sign up for the Slack channel yourself using [this URL](https://owasp.slack.com/join/shared_invite/zt-g398htpy-AZ40HOM1WUOZguJKbblqkw# "Slack channel sign up").
-
-> Please open an issue in our Github Repo if the invite has expired.
-
-## OWASP MASVS and MASTG Adoption
+The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.org/MASTG/0x01-Foreword) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [OWASP Mobile Application Security Verification Standard (MASVS)](https://mas.owasp.org/MASVS/0x01-Foreword), and provides a baseline for complete and consistent security tests.
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 
 <a href="0x02b-MASVS-MASTG-Adoption.md">
 <img src="Images/Other/trusted-by-logos.png"/>
 </a>
-
-<br>
-
-## 🥇 MAS Advocates
-
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](0x02c-Acknowledgements.md#our-mastg-advocates).
-
-<a href="0x02c-Acknowledgements.md#our-mastg-advocates">
-<img src="Images/Other/nowsecure-logo.png" width="200px;"/>
-</a>
-
-<br>
-
-## Disclaimer
-
-Please consult the laws in your country before executing any tests against mobile apps by utilizing the MASTG materials. Refrain from violating the laws with anything described in the MASTG.
-
-Our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/CODE_OF_CONDUCT.md) has further details.
-
-## Copyright and License
-
-Copyright © The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
-
-<img src="Images/CC-license.png" width="150px" />
-
-## ISBN
-
-Our ISBN Number is 978-1-257-96636-3 and a hard copy of the MASTG can be ordered at [lulu.com](https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html).
 
 ## Authors
 
@@ -95,3 +61,26 @@ The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. T
 | Authors | Reviewers | Top Contributors |
 | --- | --- | --- |
 | Milan Singh Thakur, Abhinav Sejpal, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh | Andrew Muller, Jonathan Carter | Jim Manico, Paco Hope, Yair Amit, Amin Lalji, OWASP Mobile Team  |
+
+
+## Changelog
+
+All our Changelogs are available online at the OWASP MASTG GitHub repository, see the Releases page:
+
+<https://github.com/OWASP/owasp-mastg/releases>
+
+## Disclaimer
+
+Please consult the laws in your country before executing any tests against mobile apps by utilizing the MASTG materials. Refrain from violating the laws with anything described in the MASTG.
+
+Our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/CODE_OF_CONDUCT.md) has further details.
+
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions, please connect with us at <https://mas.owasp.org/#connect-with-us>.
+
+If you find any inconsistencies or typos please open an issue in [the OWASP MASTG Github Repo: <https://github.com/OWASP/owasp-mastg>.
+
+## Copyright and License
+
+Copyright © The OWASP Foundation. This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/ "Creative Commons Attribution-ShareAlike 4.0 International License"). For any reuse or distribution, you must make clear to others the license terms of this work.
+
+<img src="Images/CC-license.png" width="150px" />

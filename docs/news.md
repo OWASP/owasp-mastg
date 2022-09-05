@@ -106,7 +106,7 @@ Sven, Jeroen and Carlos
 
 ## March 17th, 2020: International release of MASVS 1.2
 
-A new version of the OWASP Mobile Application Security Standard (MASVS) was released! The MASVS establishes baseline security requirements for mobile apps and summarizes them in one standard. With this new release we achieved a significant alignment and coverage with existing mobile security documents from ENISA, older NIST documents, OWASP Mobile top 10, and others. The new version 1.2 is available in Github Releases: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.2>. For more details please look into our Changelog for Version 1.2 and Version 1.2-RC <https://github.com/OWASP/owasp-masvs/blob/master/Document/CHANGELOG.md>.
+A new version of the OWASP Mobile Application Security Standard (MASVS) was released! The MASVS establishes baseline security requirements for mobile apps and summarizes them in one standard. With this new release we achieved a significant alignment and coverage with existing mobile security documents from ENISA, older NIST documents, OWASP Mobile top 10, and others. The new version 1.2 is available in Github Releases: <https://github.com/OWASP/owasp-masvs/releases/tag/v1.2>. For more details please look into our Release Notes for Version 1.2 and Version 1.2-RC <https://github.com/OWASP/owasp-mastg/releases/tag/v1.2>.
 
 Thanks to the great support of our community we have now 9 different languages available in total for the MASVS and would like to thank all of our translators for their great work and support throughout:
 
@@ -212,7 +212,7 @@ Now that the document generation process for the MSTG has been optimized enough 
 
 ## September 16th, 2018: MSTG 1.0.1 released
 
-The Mobile Security Testing Guide version 1.0.1 has been released using our automated release system (based on tagging). See the CHANGELOG.md for all the changes. We now have added pdf support and improved our .docx quiet a lot. We will further improve the release process for the pdf and epubs after milestone 1.1.0.
+The Mobile Security Testing Guide version 1.0.1 has been released using our automated release system (based on tagging). See the [Release Notes](https://github.com/OWASP/owasp-mastg/releases/tag/1.0.1) for all the changes. We now have added pdf support and improved our .docx quiet a lot. We will further improve the release process for the pdf and epubs after milestone 1.1.0.
 
 ## September 1st, 2018: Mobile Security Testing Guide mentioned in NIST SP-163r1
 

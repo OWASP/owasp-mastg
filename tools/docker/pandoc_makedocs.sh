@@ -34,7 +34,7 @@ docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c '
 PANDOC=${PANDOC:-${PANDOCKER}}
 
 METADATA="build/metadata.md"
-CHAPTERS="build/0x*.md build/CHANGELOG.md"
+CHAPTERS="build/0x*.md"
 OUTPUT_BASE_NAME="OWASP_MASTG-${VERSION}"
 
 [ ! -z "${VERBOSE}" ] && echo "Create PDF"
