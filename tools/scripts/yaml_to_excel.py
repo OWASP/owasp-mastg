@@ -191,7 +191,6 @@ def create_security_requirements_sheet(wb):
             ws.cell(row=row, column=col_r).style = "orange"
         
         if req.get("links"):
-            # We only get the first link because there should be actually only one per platform.
             link_common = get_link_for(req["links"], "0x04")
             link_android = get_link_for(req["links"], "0x05")
             link_ios = get_link_for(req["links"], "0x06")
