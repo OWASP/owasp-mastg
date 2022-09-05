@@ -196,23 +196,20 @@ def create_security_requirements_sheet(wb):
             link_android = get_link_for(req["links"], "0x05")
             link_ios = get_link_for(req["links"], "0x06")
 
+            ws.cell(row=row, column=col_link_common).value = "N/A"
+            ws.cell(row=row, column=col_link_common).style = "gray_header"
             if link_common:
                 write_testcase(ws, row, col_link_common, link_common)
-            else:
-                ws.cell(row=row, column=col_link_common).value = "N/A"
-                ws.cell(row=row, column=col_link_common).style = "gray_header"
 
+            ws.cell(row=row, column=col_link_android).value = "N/A"
+            ws.cell(row=row, column=col_link_android).style = "gray_header"
             if link_android:
                 write_testcase(ws, row, col_link_android, link_android)
-            else:
-                ws.cell(row=row, column=col_link_android).value = "N/A"
-                ws.cell(row=row, column=col_link_android).style = "gray_header"
-            
+
+            ws.cell(row=row, column=col_link_ios).value = "N/A"
+            ws.cell(row=row, column=col_link_ios).style = "gray_header"
             if link_ios:
                 write_testcase(ws, row, col_link_ios, link_ios)
-            else:
-                ws.cell(row=row, column=col_link_ios).value = "N/A"
-                ws.cell(row=row, column=col_link_ios).style = "gray_header"
 
         ws.row_dimensions[row].height = 55  # points
         
