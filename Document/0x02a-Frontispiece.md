@@ -62,7 +62,6 @@ The Mobile Security Testing Guide was initiated by Milan Singh Thakur in 2015. T
 | --- | --- | --- |
 | Milan Singh Thakur, Abhinav Sejpal, Pragati Singh, Mohammad Hamed Dadpour, David Fern, Mirza Ali, Rahil Parikh | Andrew Muller, Jonathan Carter | Jim Manico, Paco Hope, Yair Amit, Amin Lalji, OWASP Mobile Team  |
 
-
 ## Changelog
 
 All our Changelogs are available online at the OWASP MASTG GitHub repository, see the Releases page:
