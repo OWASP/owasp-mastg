@@ -146,10 +146,10 @@ Testing this might be especially challenging if you intend to automate it. We re
 
 ## References
 
-- Open-Source Licenses and Android - <https://www.bignerdranch.com/blog/open-source-licenses-and-android/>
-- Software Licenses in Plain English - <https://tldrlegal.com/>
-- Apple Human Interface Guidelines - <https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/>
-- Android App permissions best practices - <https://developer.android.com/training/permissions/requesting.html#explain>
+- Open-Source Licenses and Android - [https://www.bignerdranch.com/blog/open-source-licenses-and-android/](https://www.bignerdranch.com/blog/open-source-licenses-and-android/)
+- Software Licenses in Plain English - [https://tldrlegal.com/](https://tldrlegal.com/)
+- Apple Human Interface Guidelines - [https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/)
+- Android App permissions best practices - [https://developer.android.com/training/permissions/requesting.html#explain](https://developer.android.com/training/permissions/requesting.html#explain)
 
 ### OWASP MASVS
 

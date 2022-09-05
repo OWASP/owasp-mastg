@@ -223,10 +223,12 @@ When using (A), be sure to escape special characters such as apostrophe (\') or 
 [UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID")
 ```
 
-When adding links to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
+When adding links to the **"References"** section at the end of the chapters use `- Title - [url](url)`. This is needed to force latex to print URLs properly for the PDF.
+
+For example:
 
 ```markdown
-- adb - <https://developer.android.com/studio/command-line/adb>
+- adb - [https://developer.android.com/studio/command-line/adb](https://developer.android.com/studio/command-line/adb)
 ```
 
 ### Books and Papers

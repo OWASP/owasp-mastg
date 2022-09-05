@@ -1385,12 +1385,12 @@ To learn more, please refer to the [r2frida wiki](https://github.com/enovella/r2
 
 ## References
 
-- Apple's Entitlements Troubleshooting - <https://developer.apple.com/library/content/technotes/tn2415/_index.html>
-- Apple's Code Signing - <https://developer.apple.com/support/code-signing/>
-- Cycript Manual - <http://www.cycript.org/manual/>
-- iOS Instrumentation without Jailbreak - <https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/>
-- Frida iOS Tutorial - <https://www.frida.re/docs/ios/>
-- Frida iOS Examples - <https://www.frida.re/docs/examples/ios/>
-- r2frida Wiki - <https://github.com/enovella/r2frida-wiki/blob/master/README.md>
-- [#miller] - Charlie Miller, Dino Dai Zovi. The iOS Hacker's Handbook. Wiley, 2012 - <https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122>
-- [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - <http://newosxbook.com/MOXiI.pdf>
+- Apple's Entitlements Troubleshooting - [https://developer.apple.com/library/content/technotes/tn2415/_index.html](https://developer.apple.com/library/content/technotes/tn2415/_index.html)
+- Apple's Code Signing - [https://developer.apple.com/support/code-signing/](https://developer.apple.com/support/code-signing/)
+- Cycript Manual - [http://www.cycript.org/manual/](http://www.cycript.org/manual/)
+- iOS Instrumentation without Jailbreak - [https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/](https://www.nccgroup.trust/au/about-us/newsroom-and-events/blogs/2016/october/ios-instrumentation-without-jailbreak/)
+- Frida iOS Tutorial - [https://www.frida.re/docs/ios/](https://www.frida.re/docs/ios/)
+- Frida iOS Examples - [https://www.frida.re/docs/examples/ios/](https://www.frida.re/docs/examples/ios/)
+- r2frida Wiki - [https://github.com/enovella/r2frida-wiki/blob/master/README.md](https://github.com/enovella/r2frida-wiki/blob/master/README.md)
+- [#miller] - Charlie Miller, Dino Dai Zovi. The iOS Hacker's Handbook. Wiley, 2012 - [https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122](https://www.wiley.com/en-us/iOS+Hacker%27s+Handbook-p-9781118204122)
+- [#levin] Jonathan Levin. Mac OS X and iOS Internals: To the Apple's Core. Wiley, 2013 - [http://newosxbook.com/MOXiI.pdf](http://newosxbook.com/MOXiI.pdf)

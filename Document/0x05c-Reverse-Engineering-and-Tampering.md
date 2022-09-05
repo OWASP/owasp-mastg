@@ -2578,9 +2578,9 @@ File-hiding is of course only the tip of the iceberg: you can accomplish a lot u
 
 ## References
 
-- Bionic - <https://github.com/android/platform_bionic>
-- Attacking Android Applications with Debuggers (19 January 2015) - <https://blog.netspi.com/attacking-android-applications-with-debuggers/>
-- [#josse] Sébastien Josse, Dynamic Malware Recompilation (6 January 2014) - <http://ieeexplore.ieee.org/document/6759227/>
-- Update on Development of Xposed for Nougat - <https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/>
+- Bionic - [https://github.com/android/platform_bionic](https://github.com/android/platform_bionic)
+- Attacking Android Applications with Debuggers (19 January 2015) - [https://blog.netspi.com/attacking-android-applications-with-debuggers/](https://blog.netspi.com/attacking-android-applications-with-debuggers/)
+- [#josse] Sébastien Josse, Dynamic Malware Recompilation (6 January 2014) - [http://ieeexplore.ieee.org/document/6759227/](http://ieeexplore.ieee.org/document/6759227/)
+- Update on Development of Xposed for Nougat - [https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/](https://www.xda-developers.com/rovo89-updates-on-the-situation-regarding-xposed-for-nougat/)
 - Android Platform based Linux kernel rootkit (4 April 2011 - Phrack Magazine)
-- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - <https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf>
+- [#mueller] Bernhard Mueller, Hacking Soft Tokens. Advanced Reverse Engineering on Android (2016) - [https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf](https://packetstormsecurity.com/files/138504/HITB_Hacking_Soft_Tokens_v1.2.pdf)
