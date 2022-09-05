@@ -3,6 +3,9 @@ changelog:
     labels:
       - "ignore-for-release"
   categories:
+    - title: 📢 News
+      labels:
+        - "news"
     - title: 🧪 MASTG Test Cases
       labels:
         - "tests"
@@ -15,9 +18,6 @@ changelog:
     - title: 🪄 MASTG Testing Tools
       labels:
         - "tools"
-    - title: 🐞 Errata Corrections
-      labels:
-        - "errata"
     - title: ⚡ Automation
       labels:
         - "automation"
@@ -27,6 +27,9 @@ changelog:
     - title: 🎉 New Donators
       labels:
         - "donation"
+    - title: 🐞 Errata Corrections
+      labels:
+        - "errata"
     - title: Other Changes
       labels:
         - "*"
