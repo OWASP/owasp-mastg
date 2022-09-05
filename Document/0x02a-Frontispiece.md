@@ -2,9 +2,9 @@
 
 <img src="Images/owasp_mas_header.png" width="100%" />
 
-## About the OWASP Mobile Application Security Testing Guide
+## About the OWASP MASTG
 
-The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.org/MASTG/0x01-Foreword) is a comprehensive manual for testing the security of mobile apps. It describes processes and techniques for verifying the requirements listed in the [OWASP Mobile Application Security Verification Standard (MASVS)](https://mas.owasp.org/MASVS/0x01-Foreword), and provides a baseline for complete and consistent security tests.
+The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.org/MASTG/0x01-Foreword), which is part of the [OWASP Mobile Application Security (MAS)](https://mas.owasp.org/) flagship project, is a comprehensive manual covering the processes, techniques, and tools used during mobile application security analysis, as well as an exhaustive set of test cases for verifying the requirements listed in the [OWASP Mobile Application Security Verification Standard (MASVS)](https://mas.owasp.org/MASVS/0x01-Foreword), providing a baseline for complete and consistent security tests.
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 

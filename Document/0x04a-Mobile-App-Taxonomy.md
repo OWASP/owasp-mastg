@@ -1,6 +1,6 @@
-# Mobile App Taxonomy
+# Mobile Application Taxonomy
 
-The term "mobile app" refers to a self-contained computer program designed to execute on a mobile device. Today, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os). Additionally, mobile Internet usage has surpassed desktop usage for the first time in history, making mobile browsing and apps the [most widespread kind of Internet-capable applications](https://www.idc.com/promo/smartphone-market-share/os).
+The term "mobile application" or "mobile app" refers to a self-contained computer program designed to execute on a mobile device. Today, the Android and iOS operating systems cumulatively comprise [more than 99% of the mobile OS market share](https://www.idc.com/promo/smartphone-market-share/os). Additionally, mobile Internet usage has surpassed desktop usage for the first time in history, making mobile browsing and apps the [most widespread kind of Internet-capable apps](https://www.idc.com/promo/smartphone-market-share/os).
 
 > In this guide, we'll use the term "app" as a general term for referring to any kind of application running on popular mobile OSes.
 
@@ -8,7 +8,7 @@ In a basic sense, apps are designed to run either directly on the platform for w
 
 ## Native App
 
-Mobile operating systems, including Android and iOS, come with a Software Development Kit (SDK) for developing applications specific to the OS. Such applications are referred to as _native_ to the system for which they have been developed. When discussing an app, the general assumption is that it is a native app implemented in a standard programming language for the respective operating system - Objective-C or Swift for iOS, and Java or Kotlin for Android.
+Mobile operating systems, including Android and iOS, come with a Software Development Kit (SDK) for developing apps specific to the OS. Such apps are referred to as _native_ to the system for which they have been developed. When discussing an app, the general assumption is that it is a native app implemented in a standard programming language for the respective operating system - Objective-C or Swift for iOS, and Java or Kotlin for Android.
 
 Native apps inherently have the capability to provide the fastest performance with the highest degree of reliability. They usually adhere to platform-specific design principles (e.g. the [Android Design Principles](https://developer.android.com/design "Android Design Principles")), which tends to result in a more consistent user interface (UI) compared to _hybrid_ or _web_ apps. Due to their close integration with the operating system, native apps can directly access almost every component of the device (camera, sensors, hardware-backed key stores, etc.).
 
@@ -20,7 +20,7 @@ The most obvious downside of _native apps_ is that they target only one specific
 - [Google Flutter](https://flutter.dev/ "Google Flutter")
 - [React Native](https://reactnative.dev/ "React Native")
 
-Applications developed using these frameworks internally use the APIs native to the system and offer performance equivalent to native applications. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed _native apps_, apps developed using these frameworks can also be considered as _native apps_.
+Apps developed using these frameworks internally use the APIs native to the system and offer performance equivalent to native apps. Also, these apps can make use of all device capabilities, including the GPS, accelerometer, camera, the notification system, etc. Since the final output is very similar to previously discussed _native apps_, apps developed using these frameworks can also be considered as _native apps_.
 
 ## Web App
 
@@ -32,7 +32,7 @@ Web apps have limited integration with the general components of the device as t
 
 Hybrid apps attempt to fill the gap between _native_ and _web apps_. A _hybrid app_ executes like a _native app_, but a majority of the processes rely on web technologies, meaning a portion of the app runs in an embedded web browser (commonly called "WebView"). As such, hybrid apps inherit both pros and cons of _native_ and _web apps_.
 
-A web-to-native abstraction layer enables access to device capabilities for _hybrid apps_ not accessible to a pure _web app_. Depending on the framework used for development, one code base can result in multiple applications that target different platforms, with a UI closely resembling that of the original platform for which the app was developed.
+A web-to-native abstraction layer enables access to device capabilities for _hybrid apps_ not accessible to a pure _web app_. Depending on the framework used for development, one code base can result in multiple apps that target different platforms, with a UI closely resembling that of the original platform for which the app was developed.
 
 Following is a non-exhaustive list of more popular frameworks for developing _hybrid apps_:
 

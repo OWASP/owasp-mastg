@@ -7,8 +7,8 @@
 ## Overview
 
 - [Introduction to the OWASP Mobile Application Security Project](0x03-Overview.md)
-- [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
-- [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
+- [Mobile Application Taxonomy](0x04a-Mobile-App-Taxonomy.md)
+- [Mobile Application Security Testing](0x04b-Mobile-App-Security-Testing.md)
 
 ## General Mobile App Testing Guide
 

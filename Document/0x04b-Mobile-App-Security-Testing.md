@@ -1,4 +1,4 @@
-# Mobile App Security Testing
+# Mobile Application Security Testing
 
 In the following sections we'll provide a brief overview of general security testing principles and key terminology. The concepts introduced are largely identical to those found in other types of penetration testing, so if you are an experienced tester you may be familiar with some of the content.
 
@@ -26,7 +26,7 @@ Vulnerability analysis is usually the process of looking for vulnerabilities in 
 
 ### Static versus Dynamic Analysis
 
-Static Application Security Testing (SAST) involves examining an application's components without executing them, by analyzing the source code either manually or automatically.
+Static Application Security Testing (SAST) involves examining an app's components without executing them, by analyzing the source code either manually or automatically.
 OWASP provides information about [Static Code Analysis](https://owasp.org/www-community/controls/Static_Code_Analysis "OWASP Static Code Analysis") that may help you understand techniques, strengths, weaknesses, and limitations.
 
 Dynamic Application Security Testing (DAST) involves examining the app during runtime. This type of analysis can be manual or automatic. It usually doesn't provide the information that static analysis provides, but it is a good way to detect interesting elements (assets, features, entry points, etc.) from a user's point of view.
@@ -39,13 +39,13 @@ During static analysis, the mobile app's source code is reviewed to ensure appro
 
 #### Manual Code Review
 
-A tester performs manual code review by manually analyzing the mobile application's source code for security vulnerabilities. Methods range from a basic keyword search via the 'grep' command to a line-by-line examination of the source code. IDEs (Integrated Development Environments) often provide basic code review functions and can be extended with various tools.
+A tester performs manual code review by manually analyzing the mobile app's source code for security vulnerabilities. Methods range from a basic keyword search via the 'grep' command to a line-by-line examination of the source code. IDEs (Integrated Development Environments) often provide basic code review functions and can be extended with various tools.
 
 A common approach to manual code analysis entails identifying key security vulnerability indicators by searching for certain APIs and keywords, such as database-related method calls like "executeStatement" or "executeQuery". Code containing these strings is a good starting point for manual analysis.
 
 In contrast to automatic code analysis, manual code review is very good for identifying vulnerabilities in the business logic, standards violations, and design flaws, especially when the code is technically secure but logically flawed. Such scenarios are unlikely to be detected by any automatic code analysis tool.
 
-A manual code review requires an expert code reviewer who is proficient in both the language and the frameworks used for the mobile application. Full code review can be a slow, tedious, time-consuming process for the reviewer, especially given large code bases with many dependencies.
+A manual code review requires an expert code reviewer who is proficient in both the language and the frameworks used for the mobile app. Full code review can be a slow, tedious, time-consuming process for the reviewer, especially given large code bases with many dependencies.
 
 #### Automated Source Code Analysis
 
@@ -70,7 +70,7 @@ Dynamic analysis is usually used to check for security mechanisms that provide s
 
 Automated testing tools' lack of sensitivity to app context is a challenge. These tools may identify a potential issue that's irrelevant. Such results are called "false positives".
 
-For example, security testers commonly report vulnerabilities that are exploitable in a web browser but aren't relevant to the mobile app. This false positive occurs because automated tools used to scan the backend service are based on regular browser-based web applications. Issues such as CSRF (Cross-site Request Forgery) and Cross-Site Scripting (XSS) are reported accordingly.
+For example, security testers commonly report vulnerabilities that are exploitable in a web browser but aren't relevant to the mobile app. This false positive occurs because automated tools used to scan the backend service are based on regular browser-based web apps. Issues such as CSRF (Cross-site Request Forgery) and Cross-Site Scripting (XSS) are reported accordingly.
 
 Let's take CSRF as an example. A successful CSRF attack requires the following:
 
@@ -112,7 +112,7 @@ The security level at which the app will be tested must be decided before testin
 
 Organizations may have different regulatory and legal obligations in certain territories. Even if an app doesn't handle sensitive data, some L2 requirements may be relevant (because of industry regulations or local laws). For example, two-factor authentication (2FA) may be obligatory for a financial app and enforced by a country's central bank and/or financial regulatory authorities.
 
-Security goals/controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or application.
+Security goals/controls defined earlier in the development process may also be reviewed during the discussion with stakeholders. Some controls may conform to MASVS controls, but others may be specific to the organization or app.
 
 All involved parties must agree on the decisions and the scope in the checklist because these will define the baseline for all security testing.
 
@@ -135,10 +135,10 @@ Classifications of sensitive information differ by industry and country. In addi
 There are three general states from which data may be accessible:
 
 - **At rest** - the data is sitting in a file or data store
-- **In use** - an application has loaded the data into its address space
+- **In use** - an app has loaded the data into its address space
 - **In transit** - data has been exchanged between mobile app and endpoint or consuming processes on the device, e.g., during IPC (Inter-Process Communication)
 
-The degree of scrutiny that's appropriate for each state may depend on the data's importance and likelihood of being accessed. For example, data held in application memory may be more vulnerable than data on web servers to access via core dumps because attackers are more likely to gain physical access to mobile devices than to web servers.
+The degree of scrutiny that's appropriate for each state may depend on the data's importance and likelihood of being accessed. For example, data held in app memory may be more vulnerable than data on web servers to access via core dumps because attackers are more likely to gain physical access to mobile devices than to web servers.
 
 When no data classification policy is available, use the following list of information that's generally considered sensitive:
 
@@ -147,7 +147,7 @@ When no data classification policy is available, use the following list of infor
 - device identifiers that may identify a person
 - highly sensitive data whose compromise would lead to reputational harm and/or financial costs
 - any data whose protection is a legal obligation
-- any technical data generated by the application (or its related systems) and used to protect other data or the system itself (e.g., encryption keys).
+- any technical data generated by the app (or its related systems) and used to protect other data or the system itself (e.g., encryption keys).
 
  A definition of "sensitive data" must be decided before testing begins because detecting sensitive data leakage without a definition may be impossible.
 
@@ -234,9 +234,9 @@ Security wasn't originally an integral part of software development. It was an a
 
 SDLCs always consist of the same steps (the overall process is sequential in the Waterfall paradigm and iterative in the Agile paradigm):
 
-- Perform a **risk assessment** for the application and its components to identify their risk profiles. These risk profiles typically depend on the organization's risk appetite and applicable regulatory requirements. The risk assessment is also based on factors, including whether the application is accessible via the Internet and the kind of data the application processes and stores. All kinds of risks must be taken into account: financial, marketing, industrial, etc. Data classification policies specify which data is sensitive and how it must be secured.
+- Perform a **risk assessment** for the app and its components to identify their risk profiles. These risk profiles typically depend on the organization's risk appetite and applicable regulatory requirements. The risk assessment is also based on factors, including whether the app is accessible via the Internet and the kind of data the app processes and stores. All kinds of risks must be taken into account: financial, marketing, industrial, etc. Data classification policies specify which data is sensitive and how it must be secured.
 - **Security Requirements** are determined at the beginning of a project or development cycle, when functional requirements are being gathered. **Abuse Cases** are added as use cases are created. Teams (including development teams) may be given security training (such as Secure Coding) if they need it.
-You can use the [OWASP MASVS](https://mas.owasp.org/MASVS/0x01-Foreword "OWASP MASVS") to determine the security requirements of mobile applications on the basis of the risk assessment phase. Iteratively reviewing requirements when features and data classes are added is common, especially with Agile projects.
+You can use the [OWASP MASVS](https://mas.owasp.org/MASVS/0x01-Foreword "OWASP MASVS") to determine the security requirements of mobile apps on the basis of the risk assessment phase. Iteratively reviewing requirements when features and data classes are added is common, especially with Agile projects.
 - **Threat Modeling**, which is basically the identification, enumeration, prioritization, and initial handling of threats, is a foundational artifact that must be performed as architecture development and design progress. **Security Architecture**, a Threat Model factor, can be refined (for both software and hardware aspects) after the Threat Modeling phase. **Secure Coding rules** are established and the list of **Security tools** that will be used is created. The strategy for **Security testing** is clarified.
 - All security requirements and design considerations should be stored in the Application Life Cycle Management (ALM) system (also known as the issue tracker) that the development/ops team uses to ensure tight integration of security requirements into the development workflow. The security requirements should contain relevant source code snippets so that developers can quickly reference the snippets. Creating a dedicated repository that's under version control and contains only these code snippets is a secure coding strategy that's more beneficial than the traditional approach (storing the guidelines in word documents or PDFs).
 - **Securely develop the software**. To increase code security, you must complete activities such as **Security Code Reviews**, **Static Application Security Testing**, and **Security Unit Testing**. Although quality analogues of these security activities exist, the same logic must be applied to security, e.g., reviewing, analyzing, and testing code for security defects (for example, missing input validation, failing to free all resources, etc.).
@@ -293,7 +293,7 @@ People may assume that the term "DevOps" represents collaboration between develo
 
 In other words, DevOps collaboration includes quality teams, security teams, and many other teams related to the project. When you hear "DevOps" today, you should probably be thinking of something like [DevOpsQATestInfoSec](https://techbeacon.com/evolution-devops-new-thinking-gene-kim "The evolution of DevOps: Gene Kim on getting to continuous delivery"). Indeed, DevOps values pertain to increasing not only speed but also quality, security, reliability, stability, and resilience.
 
-Security is just as critical to business success as the overall quality, performance, and usability of an application. As development cycles are shortened and delivery frequencies increased, making sure that quality and security are built in from the very beginning becomes essential. **DevSecOps** is all about adding security to DevOps processes. Most defects are identified during production. DevOps specifies best practices for identifying as many defects as possible early in the life cycle and for minimizing the number of defects in the released application.
+Security is just as critical to business success as the overall quality, performance, and usability of an app. As development cycles are shortened and delivery frequencies increased, making sure that quality and security are built in from the very beginning becomes essential. **DevSecOps** is all about adding security to DevOps processes. Most defects are identified during production. DevOps specifies best practices for identifying as many defects as possible early in the life cycle and for minimizing the number of defects in the released app.
 
 However, DevSecOps is not just a linear process oriented towards delivering the best possible software to operations; it is also a mandate that operations closely monitor software that's in production to identify issues and fix them by forming a quick and efficient feedback loop with development. DevSecOps is a process through which Continuous Improvement is heavily emphasized.
 
@@ -319,8 +319,8 @@ Instead of manually provisioning computing resources (physical servers, virtual 
 
 Infrastructure as Code practices facilitate collaboration between development and operations teams, with the following results:
 
-- Devs better understand infrastructure from a familiar point of view and can prepare resources that the running application will require.
-- Ops operate an environment that better suits the application, and they share a language with Devs.
+- Devs better understand infrastructure from a familiar point of view and can prepare resources that the running app will require.
+- Ops operate an environment that better suits the app, and they share a language with Devs.
 
 Infrastructure as Code also facilitates the construction of the environments required by classical software creation projects, for **development** ("DEV"), **integration** ("INT"), **testing** ("PPR" for Pre-Production. Some tests are usually performed in earlier environments, and PPR tests mostly pertain to non-regression and performance with data that's similar to data used in production), and **production** ("PRD"). The value of infrastructure as code lies in the possible similarity between environments (they should be the same).
 
@@ -330,7 +330,7 @@ The main tools in this domain are [Puppet](https://puppet.com/ "Puppet"), [Terra
 
 ##### Deployment
 
-The deployment pipeline's sophistication depends on the maturity of the project organization or development team. In its simplest form, the deployment pipeline consists of a commit phase. The commit phase usually involves running simple compiler checks and the unit test suite as well as creating a deployable artifact of the application. A release candidate is the latest version that has been checked into the trunk of the version control system. Release candidates are evaluated by the deployment pipeline for conformity to standards they must fulfill for deployment to production.
+The deployment pipeline's sophistication depends on the maturity of the project organization or development team. In its simplest form, the deployment pipeline consists of a commit phase. The commit phase usually involves running simple compiler checks and the unit test suite as well as creating a deployable artifact of the app. A release candidate is the latest version that has been checked into the trunk of the version control system. Release candidates are evaluated by the deployment pipeline for conformity to standards they must fulfill for deployment to production.
 
 The commit phase is designed to provide instant feedback to developers and is therefore run on every commit to the trunk. Time constraints exist because of this frequency. The commit phase should usually be complete within five minutes, and it shouldn't take longer than ten. Adhering to this time constraint is quite challenging when it comes to security because many security tools can't be run quickly enough (#paul, #mcgraw).
 
@@ -340,7 +340,7 @@ CI/CD means "Continuous Integration/Continuous Delivery" in some contexts and "C
 - Continuous Delivery candidate releases can proceed to the pre-production environment. If the release can then be validated (either manually or automatically), deployment can continue. If not, the project team will be notified and proper action(s) must be taken.
 - Continuous Deployment releases are directly transitioned from integration to production, e.g., they become accessible to the user. However, no release should go to production if significant defects have been identified during previous activities.
 
-The delivery and deployment of applications with low or medium sensitivity may be merged into a single step, and validation may be performed after delivery. However, keeping these two actions separate and using strong validation are strongly advised for sensitive applications.
+The delivery and deployment of apps with low or medium sensitivity may be merged into a single step, and validation may be performed after delivery. However, keeping these two actions separate and using strong validation are strongly advised for sensitive apps.
 
 ##### Security
 
@@ -349,13 +349,13 @@ At this point, the big question is: now that other activities required for deliv
 Once again, the answer is automation and tooling: by implementing these two concepts throughout the project life cycle, you can maintain and improve security. The higher the expected level of security, the more controls, checkpoints, and emphasis will take place. The following are examples:
 
 - Static Application Security Testing can take place during the development phase, and it can be integrated into the Continuous Integration process with more or less emphasis on scan results. You can establish more or less demanding Secure Coding Rules and use SAST tools to check the effectiveness of their implementation.
-- Dynamic Application Security Testing may be automatically performed after the application has been built (e.g., after Continuous Integration has taken place) and before delivery, again, with more or less emphasis on results.
+- Dynamic Application Security Testing may be automatically performed after the app has been built (e.g., after Continuous Integration has taken place) and before delivery, again, with more or less emphasis on results.
 - You can add manual validation checkpoints between consecutive phases, for example, between delivery and deployment.
 
-The security of an application developed with DevOps must be considered during operations. The following are examples:
+The security of an app developed with DevOps must be considered during operations. The following are examples:
 
 - Scanning should take place regularly (at both the infrastructure and application level).
-- Pentesting may take place regularly. (The version of the application used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
+- Pentesting may take place regularly. (The version of the app used in production is the version that should be pentested, and the testing should take place in a dedicated environment and include data that's similar to the production version data. See the section on Penetration Testing for more details.)
 - Active monitoring should be performed to identify issues and remediate them as soon as possible via the feedback loop.
 
 <img src="Images/Chapters/0x04b/ExampleOfADevSecOpsProcess.jpg" width="100%" />
