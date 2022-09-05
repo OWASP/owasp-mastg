@@ -39,7 +39,7 @@ There is one exception: We are still using "man in the middle", as it is simply 
 
 ### Timeliness of Content
 
-Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
+Keeping accurate and timely content establishes the OWASP MAS deliverables as a credible and trustworthy source of information.
 
 When using statistical data on your page, ensure that the information is current and up-to-date and is accompanied by the source from which it was derived, along with the date the data was compiled.
 

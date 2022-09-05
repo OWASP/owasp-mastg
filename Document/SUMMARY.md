@@ -1,15 +1,14 @@
 # Summary
 
-- [Changelog](CHANGELOG.md)
 - [Frontispiece](0x02a-Frontispiece.md)
 - [OWASP MASVS and MASTG Adoption](0x02b-MASVS-MASTG-Adoption.md)
 - [Acknowledgments](0x02c-Acknowledgements.md)
 
 ## Overview
 
-- [Introduction to the Mobile Security Testing Guide](0x03-Overview.md)
-- [Mobile App Taxonomy](0x04a-Mobile-App-Taxonomy.md)
-- [Mobile App Security Testing](0x04b-Mobile-App-Security-Testing.md)
+- [Introduction to the OWASP Mobile Application Security Project](0x03-Overview.md)
+- [Mobile Application Taxonomy](0x04a-Mobile-App-Taxonomy.md)
+- [Mobile Application Security Testing](0x04b-Mobile-App-Security-Testing.md)
 
 ## General Mobile App Testing Guide
 

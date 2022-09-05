@@ -1,4 +1,4 @@
-Thank you for submitting a Pull Request to the Mobile Security Testing Guide. Please make sure that:
+Thank you for submitting a Pull Request to the OWASP MASTG. Please make sure that:
 
 - [ ] Your contribution is written in the 2nd person (e.g. you)
 - [ ] Your contribution is written in an active present form for as much as possible.

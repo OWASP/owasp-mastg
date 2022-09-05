@@ -47,8 +47,8 @@ MASVS_TITLES = {
 
 MASVS = None
 LANG = ""
-MSTGVERSION = ""
-MSTGCOMMIT = ""
+MASTGVERSION = ""
+MASTGCOMMIT = ""
 MASVSVERSION = ""
 MASVSCOMMIT = ""
 TEST_CASE_ALIAS = "Test Case"
@@ -63,9 +63,10 @@ WS_BASE_CONFIG = {
         {"col": "E", "position": 5, "name": "L1", "width": 5, "style": "gray_header"},
         {"col": "F", "position": 6, "name": "L2", "width": 5, "style": "gray_header"},
         {"col": "G", "position": 7, "name": "R", "width": 5, "style": "gray_header"},
-        {"col": "H", "position": 8, "name": "Android", "width": 10, "style": "gray_header"},
-        {"col": "I", "position": 9, "name": "iOS", "width": 10, "style": "gray_header"},
-        {"col": "J", "position": 10, "name": "Status", "width": 10, "style": "gray_header"},
+        {"col": "H", "position": 8, "name": "Common", "width": 10, "style": "gray_header"},
+        {"col": "I", "position": 9, "name": "Android", "width": 10, "style": "gray_header"},
+        {"col": "J", "position": 10, "name": "iOS", "width": 10, "style": "gray_header"},
+        {"col": "K", "position": 11, "name": "Status", "width": 10, "style": "gray_header"},
     ]
         
 }
@@ -89,7 +90,7 @@ def write_header(ws):
     ws["D2"].value = "Mobile Application Security Verification Standard"
     ws["D2"].style = "big_title"
 
-    ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mastg/releases/tag/{MSTGVERSION}", "OWASP MASTG {MSTGVERSION} (commit: {MSTGCOMMIT})")'
+    ws["D3"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-mastg/releases/tag/{MASTGVERSION}", "OWASP MASTG {MASTGVERSION} (commit: {MASTGCOMMIT})")'
     ws["D3"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
     ws["D4"].value = f'=HYPERLINK("https://github.com/OWASP/owasp-masvs/releases/tag/{MASVSVERSION}", "OWASP MASVS {MASVSVERSION} (commit: {MASVSCOMMIT})")'
     ws["D4"].font = Font(name=excel_styles_and_validation.FONT, color="00C0C0C0")
@@ -133,7 +134,7 @@ def create_security_requirements_sheet(wb):
     write_header(ws)
     set_columns_width(ws)
 
-    status_cells = 'J11:J400'
+    status_cells = 'K11:K400'
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_fail)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_pass)
     ws.conditional_formatting.add(status_cells, excel_styles_and_validation.rule_na)
@@ -145,9 +146,10 @@ def create_security_requirements_sheet(wb):
     col_l1 = 5
     col_l2 = 6
     col_r = 7
-    col_link_android = 8
-    col_link_ios = 9
-    col_status = 10
+    col_link_common = 8
+    col_link_android = 9
+    col_link_ios = 10
+    col_status = 11
 
     for mstg_id, req in MASVS.items():
         req_id = req["id"].split(".")
@@ -187,34 +189,27 @@ def create_security_requirements_sheet(wb):
             ws.cell(row=row, column=col_l2).style = "green"
         if req["R"]:
             ws.cell(row=row, column=col_r).style = "orange"
+
+        ws.cell(row=row, column=col_link_common).value = "N/A"
+        ws.cell(row=row, column=col_link_common).style = "gray_header"
         
+        ws.cell(row=row, column=col_link_android).value = "N/A"
+        ws.cell(row=row, column=col_link_android).style = "gray_header"
+
+        ws.cell(row=row, column=col_link_ios).value = "N/A"
+        ws.cell(row=row, column=col_link_ios).style = "gray_header"
+
         if req.get("links"):
-            # We only get the first link because there should be actually only one per platform.
             link_common = get_link_for(req["links"], "0x04")
             link_android = get_link_for(req["links"], "0x05")
             link_ios = get_link_for(req["links"], "0x06")
 
+            if link_common:
+                write_testcase(ws, row, col_link_common, link_common)
             if link_android:
                 write_testcase(ws, row, col_link_android, link_android)
-            else:
-                ws.cell(row=row, column=col_link_android).value = "N/A"
-                ws.cell(row=row, column=col_link_android).style = "gray_header"
-            
             if link_ios:
                 write_testcase(ws, row, col_link_ios, link_ios)
-
-            else:
-                ws.cell(row=row, column=col_link_ios).value = "N/A"
-                ws.cell(row=row, column=col_link_ios).style = "gray_header"
-
-            # If 0x04 link exists, and a cell is None or "N/A", then write the link as common test case.
-            if link_common:
-                if  ws.cell(row=row, column=col_link_android).value is None \
-                    or ws.cell(row=row, column=col_link_android).value == "N/A":
-                    write_testcase(ws, row, col_link_android, link_common)
-                if  ws.cell(row=row, column=col_link_ios).value is None \
-                    or ws.cell(row=row, column=col_link_ios).value == "N/A":
-                    write_testcase(ws, row, col_link_ios, link_common)
 
         ws.row_dimensions[row].height = 55  # points
         
@@ -244,7 +239,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://owasp.org/www-project-mobile-security-testing-guide/"
+    url = "https://owasp.org/mas/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -254,7 +249,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-mastg/"
+    url = "https://mas.owasp.org/MASTG/0x01-Foreword/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -264,7 +259,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://github.com/OWASP/owasp-masvs/"
+    url = "https://mas.owasp.org/MASVS/0x01-Foreword/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -308,15 +303,15 @@ def generate_spreadsheet(output_file):
 
 
 def main():
-    global MASVS, LANG, MSTGVERSION, MSTGCOMMIT, MASVSVERSION, MASVSCOMMIT
+    global MASVS, LANG, MASTGVERSION, MASTGCOMMIT, MASVSVERSION, MASVSCOMMIT
     import argparse
 
     parser = argparse.ArgumentParser(description="Export the MASVS requirements as Excel. Default language is en.")
     parser.add_argument("-m", "--masvs", required=True)
     parser.add_argument("-l", "--lang", required=True)
     parser.add_argument("-o", "--outputfile", required=True)
-    parser.add_argument("-v1", "--mstgversion", required=True)
-    parser.add_argument("-c1", "--mstgcommit", required=True)
+    parser.add_argument("-v1", "--mastgversion", required=True)
+    parser.add_argument("-c1", "--mastgcommit", required=True)
     parser.add_argument("-v2", "--masvsversion", required=True)
     parser.add_argument("-c2", "--masvscommit", required=True)
 
@@ -325,12 +320,12 @@ def main():
     # set global vars
     MASVS = yaml.safe_load(open(args.masvs))
     LANG = args.lang
-    MSTGVERSION = args.mstgversion
-    MSTGCOMMIT = args.mstgcommit
+    MASTGVERSION = args.mastgversion
+    MASTGCOMMIT = args.mastgcommit
     MASVSVERSION = args.masvsversion
     MASVSCOMMIT = args.masvscommit
 
-    print(f"Generating {LANG.upper()} Checklist for MASTG {MSTGVERSION} ({MSTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
+    print(f"Generating {LANG.upper()} Checklist for MASTG {MASTGVERSION} ({MASTGCOMMIT}) and MASVS {MASVSVERSION} ({MASVSCOMMIT})")
 
     generate_spreadsheet(args.outputfile)
 

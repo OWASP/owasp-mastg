@@ -1,6 +1,6 @@
 # Acknowledgments
 
-## MAS Advocates
+## 🥇 MAS Advocates
 
 MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word.
 
@@ -40,12 +40,12 @@ If you'd like to apply please contact the project leaders by sending an email to
 ### ❗ Important Disclaimers
 
 - If the "MAS Advocate" status is granted and you'd like to maintain it, the aforementioned contributions must remain consistent after the initial period as well. You should keep collecting this evidence and send us a _contribution report_ yearly.
-- [Financial donations](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate) are not part of the eligibility criteria but will be listed for completion.
+- [Financial donations](https://mas.owasp.org/donate/) are not part of the eligibility criteria but will be listed for completion.
 - Re-shared publications and blog posts linked in MASTG text must be **educational** and focus on mobile security or MASVS/MASTG and **not endorse company products/services**.
 - Advocate Companies may use the logo and links to MASVS/MASTG resources as part of their communication but cannot use them as an endorsement by OWASP as a preferred provider of software and services.
   - Example of what's ok: list MAS Advocate” status on website home page, in about company slides in sales presentations, on sales collateral.
   - Example of what's not ok: an MAS Advocate” cannot claim they are OWASP certified.
-- The quality of the application of the MASVS/MASTG by these companies [has not been vetted by the MAS team](https://github.com/OWASP/owasp-masvs/blob/master/Document/0x04-Assessment_and_Certification.md#owasps-stance-on-masvs-certifications-and-trust-marks).
+- The quality of the application of the MASVS/MASTG by these companies [has not been vetted by the MAS team](https://mas.owasp.org/MASVS/0x04-Assessment_and_Certification/#owasps-stance-on-masvs-certifications-and-trust-marks).
 
 > The OWASP Foundation is very grateful for the support by the individuals and organizations listed. However please note, the OWASP Foundation is strictly vendor neutral and does not endorse any of its supporters. MAS Advocates do not influence the content of the MASVS or MASTG in any way.
 
@@ -53,17 +53,14 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 <br>
 
-<a href="https://www.nowsecure.com">
-<img src="Images/Other/nowsecure-logo.png" width="200px;"/>
-</a>
-
+<img src="Images/Other/nowsecure-logo.png" width="200px" />
 <br>
 
 [NowSecure](https://www.nowsecure.com) has provided consistent high-impact contributions to the project and has successfully helped spread the word.
 
 **We'd like to thank NowSecure for its exemplary contribution which sets a blueprint for other potential contributors wanting to push the project forward.**
 
-### MASVS/MASTG Adopter
+### NowSecure as a MASVS/MASTG Adopter
 
 - Services / Products:
   - [NowSecure Debuts New OWASP MASVS Mobile Pen Tests](https://www.nowsecure.com/blog/2022/03/22/nowsecure-debuts-new-owasp-masvs-mobile-pen-tests/)
@@ -75,7 +72,7 @@ If you'd like to apply please contact the project leaders by sending an email to
   - [OWASP MASVS & MASTG Updates](https://academy.nowsecure.com/owasp-masvs-mstg-updates)
   - [Intro to Mobile App Security](https://academy.nowsecure.com/intro-to-mobile-app-security)
 
-### MASVS/MASTG Contributions
+### NowSecure's Contributions to the MAS Project
 
 **High-impact Contributions (time/dedicated resources):**
 
@@ -165,6 +162,6 @@ Reviewers have consistently provided useful feedback through GitHub issues and p
 
 ### Donators
 
-While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MASTG in any way. The Donation Packages are described on our [OWASP Project page](https://owasp.org/www-project-mobile-security-testing-guide/#div-donate "OWASP Mobile Security Testing Guide Donation Packages").
+While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. We therefore thank our donators for providing the funds to be able to hire technical editors. Note that their donation does not influence the content of the MASVS or MASTG in any way. The Donation Packages are described on our [OWASP Project page](https://mas.owasp.org/donate/ "OWASP MAS Donation Packages").
 
 <img src="Images/Donators/donators.png"/>
