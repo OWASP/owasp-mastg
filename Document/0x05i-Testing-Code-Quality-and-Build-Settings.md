@@ -553,10 +553,10 @@ In this example, `libtool-checker.so` must be recompiled with stack smashing pro
 
 ### Memory Analysis References
 
-- A brief history of Android deserialization vulnerabilities - [https://securitylab.github.com/research/android-deserialization-vulnerabilities](https://securitylab.github.com/research/android-deserialization-vulnerabilities)
-- 9 ways to avoid memory leaks in Android - [https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e](https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e)
-- Memory Leak Patterns in Android - [https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570](https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570)
+- A brief history of Android deserialization vulnerabilities - <https://securitylab.github.com/research/android-deserialization-vulnerabilities>
+- 9 ways to avoid memory leaks in Android - <https://android.jlelse.eu/9-ways-to-avoid-memory-leaks-in-android-b6d81648e35e>
+- Memory Leak Patterns in Android - <https://android.jlelse.eu/memory-leak-patterns-in-android-4741a7fcb570>
 
 ### Android Documentation
 
-- APK signature scheme with key rotation - [https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation](https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation)
+- APK signature scheme with key rotation - <https://developer.android.com/about/versions/pie/android-9.0#apk-key-rotation>

@@ -845,8 +845,8 @@ Any scheme based on these methods will be more secure the moment a passcode and/
 
 ## References
 
-- [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - [https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf](https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf)
-- Jan Seredynski. A security review of 1,300 AppStore applications (5 April 2020) - [https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html)
+- [#geist] Dana Geist, Marat Nigmatullin. Jailbreak/Root Detection Evasion Study on iOS and Android - <https://github.com/crazykid95/Backup-Mobile-Security-Report/blob/master/Jailbreak-Root-Detection-Evasion-Study-on-iOS-and-Android.pdf>
+- Jan Seredynski. A security review of 1,300 AppStore applications (5 April 2020) - <https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html>
 
 ### OWASP MASVS
 

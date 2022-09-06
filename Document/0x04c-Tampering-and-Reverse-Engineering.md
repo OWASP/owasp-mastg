@@ -198,5 +198,5 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 ## References
 
-- [#vadla] Ole André Vadla Ravnås, Anatomy of a code tracer - [https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8](https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8)
-- [#salwan] Jonathan Salwan and Romain Thomas, How Triton can help to reverse virtual machine based software protections - [https://drive.google.com/file/d/1EzuddBA61jEMy8XbjQKFF3jyoKwW7tLq/view?usp=sharing](https://drive.google.com/file/d/1EzuddBA61jEMy8XbjQKFF3jyoKwW7tLq/view?usp=sharing)
+- [#vadla] Ole André Vadla Ravnås, Anatomy of a code tracer - <https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8>
+- [#salwan] Jonathan Salwan and Romain Thomas, How Triton can help to reverse virtual machine based software protections - <https://drive.google.com/file/d/1EzuddBA61jEMy8XbjQKFF3jyoKwW7tLq/view?usp=sharing>

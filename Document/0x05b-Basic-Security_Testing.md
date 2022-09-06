@@ -1192,20 +1192,20 @@ Hook each method with Frida and print the arguments. One of them will print out 
 
 ## References
 
-- Signing Manually (Android developer documentation) - [https://developer.android.com/studio/publish/app-signing#signing-manually](https://developer.android.com/studio/publish/app-signing#signing-manually)
-- Custom Trust - [https://developer.android.com/training/articles/security-config#CustomTrust](https://developer.android.com/training/articles/security-config#CustomTrust)
-- Android Network Security Configuration training - [https://developer.android.com/training/articles/security-config](https://developer.android.com/training/articles/security-config)
-- Security Analyst’s Guide to Network Security Configuration in Android P - [https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/](https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/)
-- Android developer documentation - [https://developer.android.com/studio/publish/app-signing#signing-manually](https://developer.android.com/studio/publish/app-signing#signing-manually)
-- Android 8.0 Behavior Changes - [https://developer.android.com/about/versions/oreo/android-8.0-changes](https://developer.android.com/about/versions/oreo/android-8.0-changes)
-- Android 9.0 Behavior Changes - [https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes](https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes)
-- Codenames, Tags and Build Numbers - [https://source.android.com/setup/start/build-numbers](https://source.android.com/setup/start/build-numbers)
-- Create and Manage Virtual Devices - [https://developer.android.com/studio/run/managing-avds.html](https://developer.android.com/studio/run/managing-avds.html)
-- Guide to rooting mobile devices - [https://www.xda-developers.com/root/](https://www.xda-developers.com/root/)
-- API Levels - [https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels)
-- AssetManager - [https://developer.android.com/reference/android/content/res/AssetManager](https://developer.android.com/reference/android/content/res/AssetManager)
-- SharedPreferences APIs - [https://developer.android.com/training/basics/data-storage/shared-preferences.html](https://developer.android.com/training/basics/data-storage/shared-preferences.html)
-- Debugging with Logcat - [https://developer.android.com/tools/debugging/debugging-log.html](https://developer.android.com/tools/debugging/debugging-log.html)
-- Android's APK format - [https://en.wikipedia.org/wiki/Android_application_package](https://en.wikipedia.org/wiki/Android_application_package)
-- Android remote sniffing using Tcpdump, nc and Wireshark - [https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/](https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/)
-- Wireless Client Isolation - [https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation](https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation)
+- Signing Manually (Android developer documentation) - <https://developer.android.com/studio/publish/app-signing#signing-manually>
+- Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
+- Android Network Security Configuration training - <https://developer.android.com/training/articles/security-config>
+- Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
+- Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
+- Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
+- Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
+- Codenames, Tags and Build Numbers - <https://source.android.com/setup/start/build-numbers>
+- Create and Manage Virtual Devices - <https://developer.android.com/studio/run/managing-avds.html>
+- Guide to rooting mobile devices - <https://www.xda-developers.com/root/>
+- API Levels - <https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels>
+- AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
+- SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
+- Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
+- Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
+- Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>
