@@ -82,24 +82,6 @@ ${PANDOC} \
   ${METADATA} \
   ${CHAPTERS}
 
-# MOBI
-# kindlegen is deprecated
-#kindlegen ${OUTPUT_BASE_NAME}.epub
-
-# DOCX
-# ${PANDOC} \
-#   --metadata title="${TITLE}" \
-#   --toc \
-#   --number-sections \
-#   --columns 10000 \
-#   --self-contained \
-#   --standalone \
-#   --reference-doc tools/custom-reference.docx \
-#   -o ${OUTPUT_BASE_NAME}_WIP_.docx \
-#   ${METADATA} \
-#   ${CHAPTERS}
-
-
 # clean temp files
 rm -f tmp_latex-header.latex tmp_cover.latex tmp_first_page.latex
 rm -rf build
