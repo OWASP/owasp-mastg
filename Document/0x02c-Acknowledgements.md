@@ -51,7 +51,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 ## Our MAS Advocates
 
-<img src="Images/Other/nowsecure-logo.png" width="200px" />
+<img src="Images/Other/nowsecure-logo.png" width="350px" />
 
 [NowSecure](https://www.nowsecure.com) has provided consistent high-impact contributions to the project and has successfully helped spread the word.
 
