@@ -4,7 +4,8 @@ set -eo pipefail
 
 # Input variables
 FOLDER=${1:-Document}
-VERSION=${2:-SNAPSHOT}
+MASTG_VERSION=${2:-SNAPSHOT}
+MASVS_VERSION=${3:-SNAPSHOT}
 
 rm -rf build
 cp -R $FOLDER "build"
@@ -13,11 +14,11 @@ cp -R $FOLDER "build"
 IMG=${IMG:-dalibo/pandocker}
 TAG=${TAG:-21.02} # /!\ use stable-full for non-european languages
 LATEX_TEMPLATE=${LATEX_TEMPLATE:-eisvogel}
-TITLE=${TITLE:-OWASP Mobile Application Security Testing Guide ${VERSION}}
+TITLE=${TITLE:-OWASP Mobile Application Security Testing Guide ${MASTG_VERSION}}
 
 PANDOC_PARAMS=${PANDOC_PARAMS:-}
 PANDOC_PARAMS+="--resource-path=.:build "
-PANDOC_PARAMS+="--metadata version=${VERSION} "
+PANDOC_PARAMS+="--metadata mastg_version=${MASTG_VERSION} --metadata masvs_version=${MASVS_VERSION}"
 
 [ ! -z "${VERBOSE}" ] && PANDOC_PARAMS+="--verbose "
 
@@ -35,7 +36,7 @@ PANDOC=${PANDOC:-${PANDOCKER}}
 
 METADATA="build/metadata.md"
 CHAPTERS="build/0x*.md"
-OUTPUT_BASE_NAME="OWASP_MASTG-${VERSION}"
+OUTPUT_BASE_NAME="OWASP_MASTG-${MASTG_VERSION}"
 
 [ ! -z "${VERBOSE}" ] && echo "Create PDF"
 
@@ -73,13 +74,13 @@ ${PANDOC} \
   ${CHAPTERS}
 
 # EPUB
-${PANDOC} \
-  --metadata title="${TITLE}" \
-  --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
-  --epub-cover-image=cover.pdf \
-  -o ${OUTPUT_BASE_NAME}.epub \
-  ${METADATA} \
-  ${CHAPTERS}
+# ${PANDOC} \
+#   --metadata title="${TITLE}" \
+#   --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
+#   --epub-cover-image=cover.pdf \
+#   -o ${OUTPUT_BASE_NAME}.epub \
+#   ${METADATA} \
+#   ${CHAPTERS}
 
 # MOBI
 # kindlegen is deprecated
