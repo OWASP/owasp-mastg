@@ -74,13 +74,13 @@ ${PANDOC} \
   ${CHAPTERS}
 
 # EPUB
-# ${PANDOC} \
-#   --metadata title="${TITLE}" \
-#   --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
-#   --epub-cover-image=cover.pdf \
-#   -o ${OUTPUT_BASE_NAME}.epub \
-#   ${METADATA} \
-#   ${CHAPTERS}
+${PANDOC} \
+  --metadata title="${TITLE}" \
+  --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
+  --epub-cover-image=cover.pdf \
+  -o ${OUTPUT_BASE_NAME}.epub \
+  ${METADATA} \
+  ${CHAPTERS}
 
 # MOBI
 # kindlegen is deprecated
