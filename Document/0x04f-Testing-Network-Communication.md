@@ -380,9 +380,6 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
-<br/>
-<br/>
-
 #### CA Certificates
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
@@ -548,25 +545,25 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 ### Android
 
-- Android supported Cipher suites - [https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites](https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites)
-- Android documentation: Android 10 Changes - [https://developer.android.com/about/versions/10/behavior-changes-all](https://developer.android.com/about/versions/10/behavior-changes-all)
+- Android supported Cipher suites - <https://developer.android.com/reference/javax/net/ssl/SSLSocket#Cipher%20suites>
+- Android documentation: Android 10 Changes - <https://developer.android.com/about/versions/10/behavior-changes-all>
 
 ### iOS
 
-- iOS supported Cipher suites - [https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc](https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc)
+- iOS supported Cipher suites - <https://developer.apple.com/documentation/security/1550981-ssl_cipher_suite_values?language=objc>
 
 ### IANA Transport Layer Security (TLS) Parameters
 
-- TLS Cipher Suites - [https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4](https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4)
+- TLS Cipher Suites - <https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4>
 
 ### OWASP TLS Cipher String Cheat Sheet
 
-- Recommendations for a cipher string - [https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md)
+- Recommendations for a cipher string - <https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/TLS_Cipher_String_Cheat_Sheet.md>
 
 ### SIM Swapping attacks
 
-- The SIM Hijackers - [https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin](https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin)
-- SIM swapping: how the mobile security feature can lead to a hacked bank account - [https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/](https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/)
+- The SIM Hijackers - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
+- SIM swapping: how the mobile security feature can lead to a hacked bank account - <https://www.fintechnews.org/sim-swapping-how-the-mobile-security-feature-can-lead-to-a-hacked-bank-account/>
 
 ### NIST
 
@@ -575,36 +572,33 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 ### SIM Swap Fraud
 
 - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
-- How to protect yourself against a SIM swap attack - [https://www.wired.com/story/sim-swap-attack-defend-phone/](https://www.wired.com/story/sim-swap-attack-defend-phone/)
-
-<br/>
-<br/>
+- How to protect yourself against a SIM swap attack - <https://www.wired.com/story/sim-swap-attack-defend-phone/>
 
 ### IETF
 
-- RFC 6176 - [https://tools.ietf.org/html/rfc6176](https://tools.ietf.org/html/rfc6176)
-- RFC 6101 - [https://tools.ietf.org/html/rfc6101](https://tools.ietf.org/html/rfc6101)
-- RFC 2246 - [https://www.ietf.org/rfc/rfc2246](https://www.ietf.org/rfc/rfc2246)
-- RFC 4346 - [https://tools.ietf.org/html/rfc4346](https://tools.ietf.org/html/rfc4346)
-- RFC 5246 - [https://tools.ietf.org/html/rfc5246](https://tools.ietf.org/html/rfc5246)
-- RFC 8446 - [https://tools.ietf.org/html/rfc8446](https://tools.ietf.org/html/rfc8446)
-- RFC 6979 - [https://tools.ietf.org/html/rfc6979](https://tools.ietf.org/html/rfc6979)
-- RFC 8017 - [https://tools.ietf.org/html/rfc8017](https://tools.ietf.org/html/rfc8017)
-- RFC 2631 - [https://tools.ietf.org/html/rfc2631](https://tools.ietf.org/html/rfc2631)
-- RFC 7919 - [https://tools.ietf.org/html/rfc7919](https://tools.ietf.org/html/rfc7919)
-- RFC 4492 - [https://tools.ietf.org/html/rfc4492](https://tools.ietf.org/html/rfc4492)
-- RFC 4279 - [https://tools.ietf.org/html/rfc4279](https://tools.ietf.org/html/rfc4279)
-- RFC 2631 - [https://tools.ietf.org/html/rfc2631](https://tools.ietf.org/html/rfc2631)
-- RFC 8422 - [https://tools.ietf.org/html/rfc8422](https://tools.ietf.org/html/rfc8422)
-- RFC 5489 - [https://tools.ietf.org/html/rfc5489](https://tools.ietf.org/html/rfc5489)
-- RFC 4772 - [https://tools.ietf.org/html/rfc4772](https://tools.ietf.org/html/rfc4772)
-- RFC 1829 - [https://tools.ietf.org/html/rfc1829](https://tools.ietf.org/html/rfc1829)
-- RFC 2420 - [https://tools.ietf.org/html/rfc2420](https://tools.ietf.org/html/rfc2420)
-- RFC 3268 - [https://tools.ietf.org/html/rfc3268](https://tools.ietf.org/html/rfc3268)
-- RFC 5288 - [https://tools.ietf.org/html/rfc5288](https://tools.ietf.org/html/rfc5288)
-- RFC 7465 - [https://tools.ietf.org/html/rfc7465](https://tools.ietf.org/html/rfc7465)
-- RFC 7905 - [https://tools.ietf.org/html/rfc7905](https://tools.ietf.org/html/rfc7905)
-- RFC 7539 - [https://tools.ietf.org/html/rfc7539](https://tools.ietf.org/html/rfc7539)
-- RFC 6151 - [https://tools.ietf.org/html/rfc6151](https://tools.ietf.org/html/rfc6151)
-- RFC 6234 - [https://tools.ietf.org/html/rfc6234](https://tools.ietf.org/html/rfc6234)
-- RFC 8447 - [https://tools.ietf.org/html/rfc8447#section-8](https://tools.ietf.org/html/rfc8447#section-8)
+- RFC 6176 - <https://tools.ietf.org/html/rfc6176>
+- RFC 6101 - <https://tools.ietf.org/html/rfc6101>
+- RFC 2246 - <https://www.ietf.org/rfc/rfc2246>
+- RFC 4346 - <https://tools.ietf.org/html/rfc4346>
+- RFC 5246 - <https://tools.ietf.org/html/rfc5246>
+- RFC 8446 - <https://tools.ietf.org/html/rfc8446>
+- RFC 6979 - <https://tools.ietf.org/html/rfc6979>
+- RFC 8017 - <https://tools.ietf.org/html/rfc8017>
+- RFC 2631 - <https://tools.ietf.org/html/rfc2631>
+- RFC 7919 - <https://tools.ietf.org/html/rfc7919>
+- RFC 4492 - <https://tools.ietf.org/html/rfc4492>
+- RFC 4279 - <https://tools.ietf.org/html/rfc4279>
+- RFC 2631 - <https://tools.ietf.org/html/rfc2631>
+- RFC 8422 - <https://tools.ietf.org/html/rfc8422>
+- RFC 5489 - <https://tools.ietf.org/html/rfc5489>
+- RFC 4772 - <https://tools.ietf.org/html/rfc4772>
+- RFC 1829 - <https://tools.ietf.org/html/rfc1829>
+- RFC 2420 - <https://tools.ietf.org/html/rfc2420>
+- RFC 3268 - <https://tools.ietf.org/html/rfc3268>
+- RFC 5288 - <https://tools.ietf.org/html/rfc5288>
+- RFC 7465 - <https://tools.ietf.org/html/rfc7465>
+- RFC 7905 - <https://tools.ietf.org/html/rfc7905>
+- RFC 7539 - <https://tools.ietf.org/html/rfc7539>
+- RFC 6151 - <https://tools.ietf.org/html/rfc6151>
+- RFC 6234 - <https://tools.ietf.org/html/rfc6234>
+- RFC 8447 - <https://tools.ietf.org/html/rfc8447#section-8>

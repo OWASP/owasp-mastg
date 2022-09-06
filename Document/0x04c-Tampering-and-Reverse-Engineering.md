@@ -162,9 +162,6 @@ In simple words, an emulator is a much closer imitation of the targeted platform
 
 Running an app in the emulator gives you powerful ways to monitor and manipulate its environment. For some reverse engineering tasks, especially those that require low-level instruction tracing, emulation is the best (or only) choice. Unfortunately, this type of analysis is only viable for Android, because no free or open source emulator exists for iOS (the iOS simulator is not an emulator, and apps compiled for an iOS device don't run on it). The only iOS emulator available is a commercial SaaS solution - [Corellium](0x06c-Reverse-Engineering-and-Tampering.md#corellium). We'll provide an overview of popular emulation-based analysis frameworks for Android in the "Tampering and Reverse Engineering on Android" chapter.
 
-<br/>
-<br/>
-
 ### Custom Tooling with Reverse Engineering Frameworks
 
 Even though most professional GUI-based disassemblers feature scripting facilities and extensibility, they are simply not well-suited to solving particular problems. Reverse engineering frameworks allow you to perform and automate any kind of reversing task without depending on a heavy-weight GUI. Notably, most reversing frameworks are open source and/or available for free. Popular frameworks with support for mobile architectures include [radare2](0x08a-Testing-Tools.md#radare2) and [Angr](0x08a-Testing-Tools.md#angr).
@@ -198,5 +195,5 @@ In the Android section, you'll find a walkthrough for cracking a simple license 
 
 ## References
 
-- [#vadla] Ole André Vadla Ravnås, Anatomy of a code tracer - [https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8](https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8)
-- [#salwan] Jonathan Salwan and Romain Thomas, How Triton can help to reverse virtual machine based software protections - [https://drive.google.com/file/d/1EzuddBA61jEMy8XbjQKFF3jyoKwW7tLq/view?usp=sharing](https://drive.google.com/file/d/1EzuddBA61jEMy8XbjQKFF3jyoKwW7tLq/view?usp=sharing)
+- [#vadla] Ole André Vadla Ravnås, Anatomy of a code tracer - <https://medium.com/@oleavr/anatomy-of-a-code-tracer-b081aadb0df8>
+- [#salwan] Jonathan Salwan and Romain Thomas, How Triton can help to reverse virtual machine based software protections - <https://drive.google.com/file/d/1EzuddBA61jEMy8XbjQKFF3jyoKwW7tLq/view?usp=sharing>

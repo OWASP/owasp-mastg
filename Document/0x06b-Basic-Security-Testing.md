@@ -1082,12 +1082,12 @@ If you don't have access to the source, you can try binary patching:
 
 ## References
 
-- Jailbreak Exploits - [https://www.theiphonewiki.com/wiki/Jailbreak_Exploits](https://www.theiphonewiki.com/wiki/Jailbreak_Exploits)
-- limera1n exploit - [https://www.theiphonewiki.com/wiki/Limera1n](https://www.theiphonewiki.com/wiki/Limera1n)
-- IPSW Downloads website - [https://ipsw.me](https://ipsw.me)
-- Can I Jailbreak? - [https://canijailbreak.com/](https://canijailbreak.com/)
-- The iPhone Wiki - [https://www.theiphonewiki.com/](https://www.theiphonewiki.com/)
-- Redmond Pie - [https://www.redmondpie.com/](https://www.redmondpie.com/)
-- Reddit Jailbreak - [https://www.reddit.com/r/jailbreak/](https://www.reddit.com/r/jailbreak/)
-- Information Property List - [https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc](https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc)
-- UIDeviceFamily - [https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11)
+- Jailbreak Exploits - <https://www.theiphonewiki.com/wiki/Jailbreak_Exploits>
+- limera1n exploit - <https://www.theiphonewiki.com/wiki/Limera1n>
+- IPSW Downloads website - <https://ipsw.me>
+- Can I Jailbreak? - <https://canijailbreak.com/>
+- The iPhone Wiki - <https://www.theiphonewiki.com/>
+- Redmond Pie - <https://www.redmondpie.com/>
+- Reddit Jailbreak - <https://www.reddit.com/r/jailbreak/>
+- Information Property List - <https://developer.apple.com/documentation/bundleresources/information_property_list?language=objc>
+- UIDeviceFamily - <https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW11>

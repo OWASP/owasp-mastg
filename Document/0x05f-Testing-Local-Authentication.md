@@ -321,4 +321,4 @@ Please take a look at this detailed [blog article about the Android KeyStore and
 
 ### Request App Permissions
 
-- Runtime Permissions - [https://developer.android.com/training/permissions/requesting](https://developer.android.com/training/permissions/requesting)
+- Runtime Permissions - <https://developer.android.com/training/permissions/requesting>
