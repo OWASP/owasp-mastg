@@ -38,7 +38,7 @@ METADATA="build/metadata.md"
 CHAPTERS="build/0x*.md"
 OUTPUT_BASE_NAME="OWASP_MASTG-${MASTG_VERSION}"
 
-[ ! -z "${VERBOSE}" ] && echo "Create PDF"
+[ ! -z "${VERBOSE}" ] && echo "[*] Creating PDF"
 
 # header
 ${PANDOC} \
@@ -74,10 +74,12 @@ ${PANDOC} \
   ${CHAPTERS}
 
 # EPUB
+echo "[*] Creating epub"
+
 ${PANDOC} \
   --metadata title="${TITLE}" \
   --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
-  --epub-cover-image=cover.pdf \
+  --epub-cover-image=cover.png \
   -o ${OUTPUT_BASE_NAME}.epub \
   ${METADATA} \
   ${CHAPTERS}
