@@ -4,7 +4,7 @@ While both the MASVS and the MASTG are created and maintained by the community o
 
 1. You may donate 5, 500, 5000 (USD/EUR/GBP) or any custom amount. Certain amounts allow you to opt-in for a "[Donation Package](#donation-packages)" (see below).
 
-2. Purchase the [OWASP MASTG e-book version on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview).
+2. Purchase the [OWASP MASTG on leanpub.com](https://leanpub.com/owasp-mastg).
 
 3. Consider becoming a [MAS Advocate](../Document/0x02c-Acknowledgements.md#our-mas-advocates).
 
