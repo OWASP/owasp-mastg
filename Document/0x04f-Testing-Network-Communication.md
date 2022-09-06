@@ -380,9 +380,6 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
-<br/>
-<br/>
-
 #### CA Certificates
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
@@ -576,9 +573,6 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
 - How to protect yourself against a SIM swap attack - <https://www.wired.com/story/sim-swap-attack-defend-phone/>
-
-<br/>
-<br/>
 
 ### IETF
 

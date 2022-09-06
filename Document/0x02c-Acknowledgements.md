@@ -51,10 +51,7 @@ If you'd like to apply please contact the project leaders by sending an email to
 
 ## Our MAS Advocates
 
-<br>
-
 <img src="Images/Other/nowsecure-logo.png" width="200px" />
-<br>
 
 [NowSecure](https://www.nowsecure.com) has provided consistent high-impact contributions to the project and has successfully helped spread the word.
 
@@ -102,8 +99,6 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
   - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
   - and more
 
-<br><br>
-
 ## Contributors
 
 **Note**: This contributor table is generated based on our [GitHub contribution statistics](https://github.com/OWASP/owasp-mastg/graphs/contributors "GitHub contribution statistics"). For more information on these stats, see the [GitHub Repository README](https://github.com/OWASP/owasp-mastg/blob/master/README.md "GitHub Repository README"). We manually update the table, so be patient if you're not listed immediately.
@@ -128,9 +123,6 @@ Top contributors have consistently contributed quality content and have at least
 - Slawomir Kosowski
 - Bolot Kerimbaev
 - Lukasz Wierzbicki
-
-<br/>
-<br/>
 
 ### Contributors
 

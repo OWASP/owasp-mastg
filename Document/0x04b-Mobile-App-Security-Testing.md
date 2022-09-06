@@ -61,9 +61,6 @@ The focus of DAST is the testing and evaluation of apps via their real-time exec
 
 Dynamic analysis is usually used to check for security mechanisms that provide sufficient protection against the most prevalent types of attack, such as disclosure of data in transit, authentication and authorization issues, and server configuration errors.
 
-<br/>
-<br/>
-
 ### Avoiding False Positives
 
 #### Automated Scanning Tools
