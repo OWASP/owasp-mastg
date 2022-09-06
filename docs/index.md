@@ -62,7 +62,7 @@ The OWASP MASVS (Mobile Application Security Verification Standard) is a standar
 <br>
 
 - <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
-- 📖 [Read the MASVS on Gitbook](https://mobile-security.gitbook.io/masvs/) (English Version, see more languages [here](https://github.com/OWASP/owasp-masvs#masvs-translations))
+- 📖 [Read the MASVS](https://mas.owasp.org/MASVS/0x01-Foreword/) (English Version, see more languages [here](https://github.com/OWASP/owasp-masvs#masvs-translations))
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-masvs/releases/latest)
 
 <br><br><br><br>
@@ -78,12 +78,12 @@ The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive m
 <br>
 
 - <a href="https://github.com/OWASP/owasp-mastg/">:material-github: GitHub Repo</a>
-- 📖 [Read it on Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/)
+- 📖 [Read the MASTG](https://mas.owasp.org/MASTG/0x01-Foreword/)
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
 
 <br>
 
-Feel free to [download the EPUB or Mobi](https://leanpub.com/mobile-security-testing-guide) for any amount you like. All funds raised through sales of this book go directly into the project budget and will be used to for technical editing and designing the book and fund production of future releases.
+:blue_heart: Support the project by purchasing the [OWASP MASTG on leanpub.com](https://leanpub.com/owasp-mastg). All funds raised through sales of this book go directly into the project budget and will be used to for technical editing and designing the book and fund production of future releases.
 
 <br><br>
 
