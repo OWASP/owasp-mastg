@@ -62,7 +62,7 @@ The OWASP MASVS (Mobile Application Security Verification Standard) is a standar
 <br>
 
 - <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
-- 📖 [Read the MASVS on Gitbook](https://mobile-security.gitbook.io/masvs/) (English Version, see more languages [here](https://github.com/OWASP/owasp-masvs#masvs-translations))
+- 📖 [Read the MASVS](https://mas.owasp.org/MASVS/0x01-Foreword/) (English Version, see more languages [here](https://github.com/OWASP/owasp-masvs#masvs-translations))
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-masvs/releases/latest)
 
 <br><br><br><br>
@@ -78,7 +78,7 @@ The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive m
 <br>
 
 - <a href="https://github.com/OWASP/owasp-mastg/">:material-github: GitHub Repo</a>
-- 📖 [Read it on Gitbook](https://mobile-security.gitbook.io/mobile-security-testing-guide/)
+- 📖 [Read the MASTG](https://mas.owasp.org/MASTG/0x01-Foreword/)
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
 
 <br>
