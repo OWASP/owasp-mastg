@@ -13,6 +13,9 @@ on:
     paths:
       - 'Document/**.md'
 
+permissions:
+  contents: read
+
 jobs:
 
   Generate-MASTG-Documents:
