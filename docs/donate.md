@@ -1,4 +1,4 @@
-# ♡ Donations
+# &#128153; Donations
 
 While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required. If you'd like to support the OWASP MAS project we'll be happy to accept your donations.
 
