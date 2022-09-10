@@ -1,4 +1,4 @@
-# News
+# &#128478; News
 
 ## August 23rd, 2022: Project Rebranding to OWASP MAS
 
