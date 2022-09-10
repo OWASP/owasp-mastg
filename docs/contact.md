@@ -18,6 +18,8 @@ If you'd like to contribute, take a look at our [Contributions page](contributin
 
 <br>
 
+## OWASP MAS Project Leaders
+
 ## Carlos Holguera
 
 <img src="../assets/carlos.jpg" width="150px" style="border-radius: 50%; margin-left: 4em;" align="right">
