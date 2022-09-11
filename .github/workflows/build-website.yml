@@ -15,26 +15,19 @@ jobs:
       - run: pip install -r requirements.txt
 
       - run: python3 tools/scripts/transform_files.py
-      - run: mkdir docs/MASTG
-      - run: mkdir docs/MASTG/General
-      - run: mkdir docs/MASTG/Android
-      - run: mkdir docs/MASTG/iOS
-      - run: mv Document/0x0*.md docs/MASTG
-      - run: mv docs/MASTG/0x04*.md docs/MASTG/General
-      - run: mv docs/MASTG/0x05*.md docs/MASTG/Android
-      - run: mv docs/MASTG/0x06*.md docs/MASTG/iOS
+      - run: ./tools/scripts/structure_mastg.sh
+
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MASTG/*.md
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/*/*.md
       
-      - run: mkdir docs/MASVS
-      - run: mkdir docs/assets/Images/MASVS
       - uses: actions/checkout@v2
         with:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
-      - run: mv owasp-masvs/Document/0x*.md docs/MASVS
+      - run: ./tools/scripts/structure_masvs.sh
+      - run: mkdir docs/assets/Images/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
       - run: sed -i "s#images/#../assets/Images/MASVS/#g" docs/MASVS/*.md
       
