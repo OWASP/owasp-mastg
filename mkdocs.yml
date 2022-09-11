@@ -4,6 +4,30 @@ repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
 edit_uri: "" # disable edit button
 
+nav:
+  - Home: index.md
+  - MASTG:
+      - MASTG.md
+      - Intro: MASTG/Intro
+      - Common: MASTG/General
+      - Android: MASTG/Android
+      - iOS: MASTG/iOS
+      - MASTG/0x08a-Testing-Tools.md
+      - MASTG/0x08b-Reference-Apps.md
+      - References: MASTG/References
+  - MASVS:
+      - MASVS.md
+      - Intro: MASVS/Intro
+      - Controls: MASVS/Controls
+      - Appendix: MASVS/Appendix
+  - "MAS Checklist": MAS_checklist.md
+  - news.md
+  - talks.md
+  - "&#11088; Contributing":
+      - contributing.md
+      - contributing
+  - donate.md
+
 copyright: |
   <div style="float: left; padding-right: 1em;">
     <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
@@ -50,6 +74,7 @@ extra_javascript:
   - javascripts/tablesort.js
 plugins:
   - search
+  - include_dir_to_nav
   - mermaid2
 markdown_extensions:
   - meta
