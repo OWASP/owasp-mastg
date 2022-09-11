@@ -68,6 +68,12 @@
         },
         {
             "pattern": "^MASTG/"
+        },
+        {
+            "pattern": "^MASVS/"
+        },
+        {
+            "pattern": "^https://linkedin.com/in/"
         }
     ],
     "httpHeaders": [
