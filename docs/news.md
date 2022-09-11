@@ -92,7 +92,7 @@ If you are interested, do the following:
 
 2. Make a comment on the issue that you would like to take care of, which will be assigned on a first come first serve basis. For any clarifications you can ping either Carlos or Sven in OWASP Slack. If you don't have an account yet, please check here on how to register.
 
-3. Work on the issue and create a Pull Request (PR). If you are new to Git(hub), check out our [contribution guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md#how-to-contribute) for further details.
+3. Work on the issue and create a Pull Request (PR). If you are new to Git(hub), check out our [contribution guide](https://mas.owasp.org/contributing) for further details.
 
 4. We will review the PR and merge once all comments are addressed/resolved.
 
