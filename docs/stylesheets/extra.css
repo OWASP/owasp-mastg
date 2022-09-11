@@ -5,3 +5,17 @@
 .md-footer__inner:not([hidden]){
   display: none;
 }
+
+@keyframes pump {
+  0%, 40%, 80%, 100% {
+    transform: scale(1);
+  }
+  20%, 60% {
+    transform: scale(1.15);
+  }
+}
+.pump {
+  animation: pump 1000ms ease-out;
+}
+
+.grow:hover { transform: scale(1.05); transition: 0.2s;}
