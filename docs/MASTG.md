@@ -16,6 +16,6 @@ The **OWASP Mobile Application Security Testing Guide (MASTG)** is a comprehensi
 
 :blue_heart:{ .pump } Support the project by purchasing the [OWASP MASTG on leanpub.com](https://leanpub.com/owasp-mastg). All funds raised through sales of this book go directly into the project budget and will be used to for technical editing and designing the book and fund production of future releases.
 
-> :material-translate: The OWASP MASTG is only available in English but you can get both the [OWASP MASVS](../MASVS/) and the [MAS Checklist](checklist.md) in other languages.
+> :material-translate: The OWASP MASTG is only available in English but you can get both the [OWASP MASVS](../MASVS/) and the [MAS Checklist](MAS_checklist.md) in other languages.
 
 <br>

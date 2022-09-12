@@ -8,7 +8,7 @@ You can follow and reach out to the OWASP MAS team in many ways.
 - Stay always up-to-date by following us on Twitter.
 - Join our Slack community
 
-If you'd like to contribute, take a look at our [Contributions page](contributing/1_How_Can_You_Contribute.md) or reach out to the project leaders Carlos or Sven.
+If you'd like to contribute, take a look at our [Contributions page](contributing.md) or reach out to the project leaders Carlos or Sven.
 
 [:material-github:](https://github.com/OWASP/owasp-mastg/discussions)
 [:material-twitter:](https://twitter.com/OWASP_MAS)

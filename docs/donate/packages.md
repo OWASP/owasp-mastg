@@ -14,4 +14,4 @@ These types of public recognition shall be online no less than one year, or no l
 
 > Please note that the OWASP Donation Policy has changed since 22-Sept-2020. All details can be found in [OWASP Donations Policy](https://owasp.org/www-policy/operational/donations) page.
 > 
-> [Contact us](contact.md) if you have any questions regarding your donation.
+> [Contact us](../contact.md) if you have any questions regarding your donation.
