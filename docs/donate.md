@@ -2,7 +2,7 @@
 
 While both the MASVS and the MASTG are created and maintained by the community on a voluntary basis, sometimes a little bit of outside help is required.
 
-**Monetary Donations:** You can donate any amount you like, no matter how small, anyone can help. From 500$ up you may select a [Donation Package](packages/) and be listed as a donator.
+**Monetary Donations:** You can donate any amount you like, no matter how small, anyone can help. From 500$ up you may select a [Donation Package](donate/packages.md) and be listed as a donator.
 
 100% of the funds go to the OWASP Foundation and allow us funding our project activities such as contracting technical editors, graphic designers, software developers, purchasing test devices, creating swag, etc.
 
