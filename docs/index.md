@@ -5,23 +5,32 @@ hide:
 title: "Home"
 ---
 
-<img align="right" style="padding: 10px;" width="250px" src="assets/logo_circle.png" />
 
 # OWASP Mobile Application Security
 
 ## Our Mission
 
-> "Define the industry standard for mobile application security."
+<div class="mas-flex-container">
 
-The OWASP Mobile Application Security (MAS) flagship project provides a security standard for mobile apps (OWASP MASVS) and a comprehensive testing guide (OWASP MASTG) that covers the processes, techniques, and tools used during a mobile app security test, as well as an exhaustive set of test cases that enables testers to deliver consistent and complete results.
+<div>
+<blockquote>"Define the industry standard for mobile application security."</blockquote>
 
-<div style="display: flex; margin-top: 2em;">
+<p style="padding-right: 4em;">The OWASP Mobile Application Security (MAS) flagship project provides a security standard for mobile apps (OWASP MASVS) and a comprehensive testing guide (OWASP MASTG) that covers the processes, techniques, and tools used during a mobile app security test, as well as an exhaustive set of test cases that enables testers to deliver consistent and complete results.</p>
+</div>
+
+<center>
+<img style="padding: 10px; max-width: 250px" src="assets/logo_circle.png" />
+</center>
+
+</div>
+
+<div class="mas-flex-container" style="margin-top: 2em;">
 
 <center>
 
 <h2>OWASP MASVS</h2>
 
-<a href="../MASVS"><img style="border-radius: 3px; margin: 2.5em;" width="300px" class="grow" src="assets/masvs_cover.png"></a>
+<a href="../MASVS"><img style="border-radius: 3px; margin: 2em;" width="300px" class="grow" src="assets/masvs_cover.png"></a>
 
 <br>
 
@@ -32,7 +41,7 @@ The OWASP Mobile Application Security (MAS) flagship project provides a security
 
 <h2>OWASP MASTG</h2>
 
-<a href="../MASTG"><img style="border-radius: 3px; margin: 2.5em;" width="300px" class="grow"  src="assets/mastg_cover.png" /></a>
+<a href="../MASTG"><img style="border-radius: 3px; margin: 2em;" width="300px" class="grow"  src="assets/mastg_cover.png" /></a>
 
 <br>
 
@@ -46,7 +55,7 @@ The OWASP Mobile Application Security (MAS) flagship project provides a security
 
 <br><br>
 
-<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2.5em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/checklist_en_filled.png" /></a>
+<a href="../MAS_checklist"><img style="border-radius: 3px; margin: 2em; box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;" width="450px" class="grow" src="assets/checklist_en_filled.png" /></a>
 
 <br><br><br>
 
