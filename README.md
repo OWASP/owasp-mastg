@@ -73,16 +73,16 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 ### Introduction
 
-- [Foreword](https://mas.owasp.org/MASTG/0x01-Foreword)
-- [Frontispiece](https://mas.owasp.org/MASTG/0x02a-Frontispiece)
-- [OWASP MASVS and MASTG Adoption](https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption)
-- [Acknowledgements](https://mas.owasp.org/MASTG/0x02c-Acknowledgements)
-- [Introduction to the OWASP Mobile Application Security Project](https://mas.owasp.org/MASTG/0x03-Overview)
-- [Mobile Application Taxonomy](https://mas.owasp.org/MASTG/General/0x04a-Mobile-App-Taxonomy)
-- [Mobile Application Security Testing](https://mas.owasp.org/MASTG/General/0x04b-Mobile-App-Security-Testing)
+- [Foreword](https://mas.owasp.org/MASTG/Intro/0x01-Foreword)
+- [Frontispiece](https://mas.owasp.org/MASTG/Intro/0x02a-Frontispiece)
+- [OWASP MASVS and MASTG Adoption](https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption)
+- [Acknowledgements](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements)
+- [Introduction to the OWASP Mobile Application Security Project](https://mas.owasp.org/MASTG/Intro/0x03-Overview)
 
 ### General Testing Guide
 
+- [Mobile Application Taxonomy](https://mas.owasp.org/MASTG/General/0x04a-Mobile-App-Taxonomy)
+- [Mobile Application Security Testing](https://mas.owasp.org/MASTG/General/0x04b-Mobile-App-Security-Testing)
 - [Mobile App Authentication Architectures](https://mas.owasp.org/MASTG/General/0x04e-Testing-Authentication-and-Session-Management)
 - [Testing Network Communication](https://mas.owasp.org/MASTG/General/0x04f-Testing-Network-Communication)
 - [Cryptography in Mobile Apps](https://mas.owasp.org/MASTG/General/0x04g-Testing-Cryptography)
