@@ -45,3 +45,5 @@ Sven is an experienced web and mobile penetration tester and assessed everything
 [:material-slack:](https://owasp.slack.com/team/U1M6X5WCU)
 [:material-email:](mailto:Sven.Schleier@owasp.org)
 [:material-linkedin:](https://linkedin.com/in/sven-schleier)
+
+<br>

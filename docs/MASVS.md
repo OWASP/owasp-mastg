@@ -28,3 +28,5 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 > [Русский](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ko.pdf) |
 > [中文 (cn)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptbr.pdf) |
 > [中文 (tw)](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-ptpt.pdf)
+
+<br>

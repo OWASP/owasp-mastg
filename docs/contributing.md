@@ -49,3 +49,5 @@ Although we greatly appreciate any and all contributions to the project, there a
 - **No unnecessary self-promotion of tools or blog posts**: If you have a relation with one of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
 
 Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mastg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](../../README.md#connect-with-us) in case of doubt.
+
+<br>

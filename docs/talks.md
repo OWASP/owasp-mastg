@@ -6,8 +6,6 @@ hide:
 
 # &#127897; Talks
 
-Below you can find a list of upcoming and previous talks:
-
 | Date | Event | Title | Recording | Slides |
 |---|-------|------------------|-----|-----|
 | September 2022 | OWASP Global AppSec APAC | Securing Mobile Apps with the OWASP MASVS and MASTG. Our journey to Version 2.0! | Soon | [:material-file-presentation-box: Slides](https://drive.google.com/file/d/1jXBIOw0Tqsi2VvumtMHFGhwkh3nzLgS7/view?usp=sharing) |
@@ -39,3 +37,5 @@ Below you can find a list of upcoming and previous talks:
 | 2017 | OWASP Day Indonesia 2017 | Fixing Mobile AppSec | N/A | N/A |
 | 2017 | OWASP Poland Day 2017 | Testing Mobile Applications  | N/A | [:material-file-presentation-box: Slides](https://www.slideshare.net/OWASP_Poland/owasp-poland-day-owasp-for-testing-mobile-applications) |
 | 2017 | OWASP AppSec EU 2017 | [Fixing Mobile AppSec](http://sched.co/A66j) | [:octicons-play-24: Recording](https://www.youtube.com/watch?v=THJVzf-u7Iw) | [:material-file-presentation-box: Slides](https://2017.appsec.eu/presos/Developer/Fixing%20Mobile%20AppSec%20The%20OWASP%20Mobile%20Project-%20Bernhard%20Mueller%20and%20Sven%20Schleier%20-%20OWASP_AppSec-Eu_2017.pdf) |
+
+<br>
