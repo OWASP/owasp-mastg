@@ -19,7 +19,7 @@ jobs:
 
       - run: mv Document/Images/ docs/assets/Images/
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MASTG/*.md
-      - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/*/*.md
+      - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
       
       - uses: actions/checkout@v2
         with:
@@ -29,6 +29,6 @@ jobs:
       - run: ./tools/scripts/structure_masvs.sh
       - run: mkdir docs/assets/Images/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
-      - run: sed -i "s#images/#../assets/Images/MASVS/#g" docs/MASVS/*.md
+      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
       
       - run: mkdocs gh-deploy --force --clean --verbose
