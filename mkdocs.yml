@@ -26,7 +26,10 @@ nav:
   - "&#11088; Contributing":
       - contributing.md
       - contributing
-  - donate.md
+  - "&#128153; Donations":
+      - donate.md
+      - donate
+  - contact.md
 
 copyright: |
   <div style="float: left; padding-right: 1em;">
