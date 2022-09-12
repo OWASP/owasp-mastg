@@ -30,9 +30,9 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 
 ## Trusted by ...
 
-The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption/).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption/).
 
-<a href="https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption/">
+<a href="https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption/">
 <img src="Document/Images/Other/trusted-by-logos.png"/>
 </a>
 
@@ -40,11 +40,11 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## 🥇 MAS Advocates
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](https://mas.owasp.org/MASTG/0x02c-Acknowledgements).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements).
 
 <br>
 
-<a href="https://mas.owasp.org/MASTG/0x02c-Acknowledgements#our-mastg-advocates">
+<a href="https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements#our-mastg-advocates">
 <img src="Document/Images/Other/nowsecure-logo.png" width="200px;" />
 </a>
 
@@ -73,16 +73,16 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 ### Introduction
 
-- [Foreword](https://mas.owasp.org/MASTG/0x01-Foreword)
-- [Frontispiece](https://mas.owasp.org/MASTG/0x02a-Frontispiece)
-- [OWASP MASVS and MASTG Adoption](https://mas.owasp.org/MASTG/0x02b-MASVS-MASTG-Adoption)
-- [Acknowledgements](https://mas.owasp.org/MASTG/0x02c-Acknowledgements)
-- [Introduction to the OWASP Mobile Application Security Project](https://mas.owasp.org/MASTG/0x03-Overview)
-- [Mobile Application Taxonomy](https://mas.owasp.org/MASTG/General/0x04a-Mobile-App-Taxonomy)
-- [Mobile Application Security Testing](https://mas.owasp.org/MASTG/General/0x04b-Mobile-App-Security-Testing)
+- [Foreword](https://mas.owasp.org/MASTG/Intro/0x01-Foreword)
+- [Frontispiece](https://mas.owasp.org/MASTG/Intro/0x02a-Frontispiece)
+- [OWASP MASVS and MASTG Adoption](https://mas.owasp.org/MASTG/Intro/0x02b-MASVS-MASTG-Adoption)
+- [Acknowledgements](https://mas.owasp.org/MASTG/Intro/0x02c-Acknowledgements)
+- [Introduction to the OWASP Mobile Application Security Project](https://mas.owasp.org/MASTG/Intro/0x03-Overview)
 
 ### General Testing Guide
 
+- [Mobile Application Taxonomy](https://mas.owasp.org/MASTG/General/0x04a-Mobile-App-Taxonomy)
+- [Mobile Application Security Testing](https://mas.owasp.org/MASTG/General/0x04b-Mobile-App-Security-Testing)
 - [Mobile App Authentication Architectures](https://mas.owasp.org/MASTG/General/0x04e-Testing-Authentication-and-Session-Management)
 - [Testing Network Communication](https://mas.owasp.org/MASTG/General/0x04f-Testing-Network-Communication)
 - [Cryptography in Mobile Apps](https://mas.owasp.org/MASTG/General/0x04g-Testing-Cryptography)
@@ -120,7 +120,7 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 - [Testing Tools](https://mas.owasp.org/MASTG/0x08a-Testing-Tools)
 - [Reference Applications](https://mas.owasp.org/MASTG/0x08b-Reference-Apps)
-- [Suggested Reading](https://mas.owasp.org/MASTG/0x09-Suggested-Reading)
+- [Suggested Reading](https://mas.owasp.org/MASTG/References/0x09-Suggested-Reading)
 
 <br>
 

@@ -15,12 +15,6 @@
   display: none;
 }
 
-.pump {
-  animation: pump 1000ms ease-out;
-}
-
-.grow:hover { transform: scale(1.05); transition: 0.2s;}
-
 .mas-flex-container {
   display: flex;
   flex-direction: row;
@@ -31,3 +25,9 @@
     flex-direction: column;
   }
 }
+
+.pump {
+  animation: pump 1000ms ease-out;
+}
+
+.grow:hover { transform: scale(1.05); transition: 0.2s;}

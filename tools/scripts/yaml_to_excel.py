@@ -249,7 +249,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://mas.owasp.org/MASTG/0x01-Foreword/"
+    url = "https://mas.owasp.org/MASTG/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
@@ -259,7 +259,7 @@ def create_about_sheet(wb):
     ws.cell(row=row, column=first_col).style = "text"
 
     row = row + 2
-    url = "https://mas.owasp.org/MASVS/0x01-Foreword/"
+    url = "https://mas.owasp.org/MASVS/"
     ws.cell(row=row, column=first_col).value = f'=HYPERLINK("{url}", "{url}")'
 
     row = row + 2
