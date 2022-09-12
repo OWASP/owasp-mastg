@@ -14,7 +14,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 <br>
 
 <center>
-<a href="https://mas.owasp.org/MASTG/0x01-Foreword/">
+<a href="https://mas.owasp.org/MASTG/">
 <img width="250px" src="Document/Images/open_website.png"/>
 </a>
 </center>
