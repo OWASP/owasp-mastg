@@ -49,9 +49,9 @@ After your PR or issue has been submitted, we will review it as quickly as possi
 If you do proof-reading, these are the things we’re looking for:
 
 - Content [cohesion & coherence](https://writing.chalmers.se/chalmers-writing-guide/writing-a-text/coherence-cohesion/)
-  - is there a good linkage of ideas?
-  - does the paragraph make sense?
-  - does it make sense with the next one? think that hundreds of people have written in here, often without considering the surroundings of the text they were including).
+    - is there a good linkage of ideas?
+    - does the paragraph make sense?
+    - does it make sense with the next one? think that hundreds of people have written in here, often without considering the surroundings of the text they were including).
 - Reducing the content to a minimum (people tend to be very verbose/wordy) and in such a document we need clear and short/concise statements
 - Optimize for _scannability_ (maybe instead of a big paragraph it would be better to have a bullet point list).
 - Any passive voice sentences? Convert to active voice.
