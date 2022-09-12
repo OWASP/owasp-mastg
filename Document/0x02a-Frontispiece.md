@@ -4,7 +4,7 @@
 
 ## About the OWASP MASTG
 
-The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.org/MASTG/0x01-Foreword), which is part of the [OWASP Mobile Application Security (MAS)](https://mas.owasp.org/) flagship project, is a comprehensive manual covering the processes, techniques, and tools used during mobile application security analysis, as well as an exhaustive set of test cases for verifying the requirements listed in the [OWASP Mobile Application Security Verification Standard (MASVS)](https://mas.owasp.org/MASVS/0x01-Foreword), providing a baseline for complete and consistent security tests.
+The [OWASP Mobile Application Security Testing Guide (MASTG)](https://mas.owasp.org/MASTG/), which is part of the [OWASP Mobile Application Security (MAS)](https://mas.owasp.org/) flagship project, is a comprehensive manual covering the processes, techniques, and tools used during mobile application security analysis, as well as an exhaustive set of test cases for verifying the requirements listed in the [OWASP Mobile Application Security Verification Standard (MASVS)](https://mas.owasp.org/MASVS/), providing a baseline for complete and consistent security tests.
 
 The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](0x02b-MASVS-MASTG-Adoption.md).
 
@@ -76,7 +76,7 @@ Please consult the laws in your country before executing any tests against mobil
 
 Our [Code of Conduct] has further details: <https://github.com/OWASP/owasp-mastg/blob/master/CODE_OF_CONDUCT.md>
 
-OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions, please connect with us: <https://mas.owasp.org/#connect-with-us>
+OWASP thanks the many authors, reviewers, and editors for their hard work in developing this guide. If you have any comments or suggestions, please connect with us: <https://mas.owasp.org/contact>
 
 If you find any inconsistencies or typos please open an issue in the OWASP MASTG Github Repo: <https://github.com/OWASP/owasp-mastg>
 

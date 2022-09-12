@@ -1,8 +1,13 @@
 # &#128478; News
 
+!!! tip "Tip: Follow us on Twitter!"
+
+    Follow [:material-twitter: @OWASP_MAS](https://twitter.com/OWASP_MAS) to get the latest updates instantly.
+    
+
 ## August 23rd, 2022: Project Rebranding to OWASP MAS
 
-Until now our project was called the “OWASP Mobile Security Testing Guide (MSTG)” project. Unfortunately, this was a source of confusion since we happen to have a resource with the same name, the OWASP MSTG. Not only that, that name doesn’t reflect the full scope and reach of our project. Have you ever wondered why the MSTG is called MSTG and not MASTG? Both documents are about Mobile Application Security and we'd like to make that clear.
+Until now our project was called the "OWASP Mobile Security Testing Guide (MSTG)" project. Unfortunately, this was a source of confusion since we happen to have a resource with the same name, the OWASP MSTG. Not only that, that name doesn't reflect the full scope and reach of our project. Have you ever wondered why the MSTG is called MSTG and not MASTG? Both documents are about Mobile Application Security and we'd like to make that clear.
 
 Today we are rebranding our project to “OWASP Mobile App Security (MAS)”. The OWASP MAS project includes:
 
@@ -11,7 +16,9 @@ Today we are rebranding our project to “OWASP Mobile App Security (MAS)”. Th
 - OWASP MAS Checklists
 - OWASP MAS Crackmes (incl. Hacking playground)
 
-<img src="../assets/news/mas-rebranding.png"/>
+<center>
+<img style="width: 80%; border-radius: 5px" src="../assets/news/mas-rebranding.png"/>
+</center>
 
 We see MAS reflecting all the consistency, structure and transparency that we’re bringing with our 2.0 versions.
 
@@ -23,9 +30,12 @@ We're happy to share the new NIST 800-218 (Feb 2022) mapping to the latest MASVS
 
 > "Secure Software Development Framework (SSDF) v1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities"
 
-![NIST 800-218.png](https://user-images.githubusercontent.com/29175115/152760895-36549d83-11f4-45a7-a78e-072047ac4985.png)
+<center>
+<img style="width: 80%; border-radius: 5px" src="https://user-images.githubusercontent.com/29175115/152760895-36549d83-11f4-45a7-a78e-072047ac4985.png"/>
 
 <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf>
+
+</center>
 
 ## November 17th, 2021: From Slack to GitHub Discussions
 
@@ -92,7 +102,7 @@ If you are interested, do the following:
 
 2. Make a comment on the issue that you would like to take care of, which will be assigned on a first come first serve basis. For any clarifications you can ping either Carlos or Sven in OWASP Slack. If you don't have an account yet, please check here on how to register.
 
-3. Work on the issue and create a Pull Request (PR). If you are new to Git(hub), check out our [contribution guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md#how-to-contribute) for further details.
+3. Work on the issue and create a Pull Request (PR). If you are new to Git(hub), check out our [contribution guide](https://mas.owasp.org/contributing) for further details.
 
 4. We will review the PR and merge once all comments are addressed/resolved.
 
@@ -347,3 +357,5 @@ All of this is unpaid, volunteer work. However, depending on your contribution, 
 First of all, have a look at the existing RE chapters outline. You'll probably immediately have ideas on how you can contribute. If that's the case, read the [Contribution Guide](https://github.com/OWASP/owasp-mastg/blob/master/CONTRIBUTING.md) first.
 
 Then contact [Bernhard Mueller](https://github.com/muellerberndt) - ideally directly on the OWASP Mobile Security Project Slack Channel, where you'll find all the other project members. You can sign up for an account here.
+
+<br>

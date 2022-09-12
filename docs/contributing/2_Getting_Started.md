@@ -15,7 +15,7 @@ For instance, there's a typo, or it's clear that a certain Test case doesn't hav
 3. **Open a PR** (to add actual content)
 This could be the fix for the mentioned typo, a whole new section or some other content. Usually a PR has a "closes" sentence in its description. For example "Closes #543" so that we (and GitHub) know which Issue(s) is being addressed on that PR.
 
-Normally, contributors should follow the whole flow. But sometimes it's clear what's needed so we directly go to 2 (open an issue) or even to 3 (open a PR). **We recommend starting with a discussion or directly [contacting us](https://github.com/OWASP/owasp-mastg#connect-with-us)** to save you the hurdle of writing and submitting new content that does not qualify so we have to reject it after the work is done.
+Normally, contributors should follow the whole flow. But sometimes it's clear what's needed so we directly go to 2 (open an issue) or even to 3 (open a PR). **We recommend starting with a discussion or directly [contacting us](../contact.md)** to save you the hurdle of writing and submitting new content that does not qualify so we have to reject it after the work is done.
 
 If you just have an **specific question** you can post it to (you need a [GitHub Account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)):
 

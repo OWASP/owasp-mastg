@@ -14,7 +14,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 <br>
 
 <center>
-<a href="https://mas.owasp.org/MASTG/0x01-Foreword/">
+<a href="https://mas.owasp.org/MASTG/">
 <img width="250px" src="Document/Images/open_website.png"/>
 </a>
 </center>
@@ -23,7 +23,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest)
-- ⚡ [Contribute!](#how-to-contribute)
+- ⚡ [Contribute!](https://mas.owasp.org/contributing)
 - 💥 [Play with our Crackmes](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md)
 
 <br>
@@ -61,29 +61,10 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 <br>
 
-## How to Contribute
-
-The MASTG is an open source effort and we welcome all kinds of contributions and feedback.
-
-**Help us improve & join our community:**
-
-- 🐞 [Report an error (typos, grammar)](https://github.com/OWASP/owasp-mastg/issues) or [fix it on a Pull Request](https://github.com/OWASP/owasp-mastg/pulls).
-- 💬 [Give feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/general).
-- 🙏 [Ask questions](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a)
-
-**Contribute with content:**
-
-- 💡 [Propose ideas or suggest improvements](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas) (if it qualifies we'll promote it to an [Issue](https://github.com/OWASP/owasp-mastg/issues "Github issues"))
-- 📄 [Create a Pull Request](https://github.com/OWASP/owasp-mastg/pulls) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
-
-Before you start contributing, please check our pages ["How Can You Contribute?"](docs/contributing/1_How_Can_You_Contribute.md) and ["Getting Started"](docs/contributing/2_Getting_Started.md). If you have any doubts [please contact us](#connect-with-us).
-
-<br>
-
 ## Other Formats
 
 - Get the [printed version via lulu.com](https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html)
-- Get the [e-book on leanpub.com](https://leanpub.com/mobile-security-testing-guide-preview) (please consider purchasing it to support our project or [make a donation](https://mas.owasp.org/donate/#make-your-donation))
+- Get the [e-book on leanpub.com](https://leanpub.com/owasp-mastg) (please consider purchasing it to support our project or [make a donation](https://mas.owasp.org/donate/#make-your-donation))
 - Check our [Document generation scripts](tools/docker/README.md)
 
 <br>
