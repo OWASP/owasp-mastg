@@ -6,18 +6,18 @@ _First of all,_ [⭐ Give us a Star in GitHub](https://github.com/OWASP/owasp-ma
 
 <br>
 
-The MASTG is an open source effort and we welcome all kinds of contributions and feedback.
+The MAS project is an open source effort and we welcome all kinds of contributions and feedback.
 
 **Help us improve & join our community:**
 
-- 🐞 [Report an error (typos, grammar)](https://github.com/OWASP/owasp-mastg/issues) or [fix it on a Pull Request](https://github.com/OWASP/owasp-mastg/pulls).
-- 💬 [Give feedback](https://github.com/OWASP/owasp-mastg/discussions/categories/general).
-- 🙏 [Ask questions](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a)
+- 🐞 [Report an error (typos, grammar)](contributing/1_How_Can_You_Contribute.md#🎯-create-issues) or [fix it on a Pull Request](contributing/1_How_Can_You_Contribute.md#📝-open-a-pull-request).
+- 💬 Give feedback ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/general)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/general)).
+- 🙏 Ask questions ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/q-a)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/q-a)).
 
 **Contribute with content:**
 
-- 💡 [Propose ideas or suggest improvements](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas) (if it qualifies we'll promote it to an [Issue](https://github.com/OWASP/owasp-mastg/issues "Github issues"))
-- 📄 [Create a Pull Request](https://github.com/OWASP/owasp-mastg/pulls) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
+- 💡 Propose ideas or suggest improvements ([MASTG](https://github.com/OWASP/owasp-mastg/discussions/categories/ideas)/[MASVS](https://github.com/OWASP/owasp-masvs/discussions/categories/ideas)). If it qualifies we'll promote it to an Issue.
+- 📄 [Create a Pull Request](contributing/1_How_Can_You_Contribute.md#📝-open-a-pull-request) for concrete fixes (e.g. grammar/typos) or content already approved by the core team.
 
 Before you start contributing, please check our pages ["How Can You Contribute?"](contributing/1_How_Can_You_Contribute.md) and ["Getting Started"](contributing/2_Getting_Started.md). If you have any doubts [please contact us](contact.md).
 

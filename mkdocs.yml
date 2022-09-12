@@ -9,7 +9,7 @@ nav:
   - MASTG:
       - MASTG.md
       - Intro: MASTG/Intro
-      - Common: MASTG/General
+      - General Guide: MASTG/General
       - Android: MASTG/Android
       - iOS: MASTG/iOS
       - MASTG/0x08a-Testing-Tools.md
