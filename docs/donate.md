@@ -11,9 +11,9 @@ While both the MASVS and the MASTG are created and maintained by the community o
 <a href="https://leanpub.com/owasp-mastg" class="md-button md-button--primary" style="margin: 5px;">:material-book-heart: Purchase the MASTG</a>
 </center>
 
-**Effort Based:** You can instead support the project by contributing with your work and end up at our [acknowledgement section](../Document/0x02c-Acknowledgements.md "MASTG acknowledgements").
+**Effort Based:** You can instead support the project by contributing with your work and end up at our [acknowledgement section](MASTG/Intro/0x02c-Acknowledgements.md "MASTG acknowledgements").
 
-If you're a company, consider becoming a ["MAS Advocate"](../Document/0x02c-Acknowledgements.md#our-mas-advocates) which is the highest status that companies can achieve in the project acknowledging that they've gone above and beyond to support the project.
+If you're a company, consider becoming a ["MAS Advocate"](MASTG/Intro/0x02c-Acknowledgements.md#our-mas-advocates) which is the highest status that companies can achieve in the project acknowledging that they've gone above and beyond to support the project.
 
 <center>
 <a href="../contributing/" class="md-button md-button--primary" style="margin: 5px;">:material-text-box-edit: Contribute</a>
