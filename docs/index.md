@@ -69,9 +69,9 @@ title: "Home"
 
 ## Trusted by ...
 
-The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](../Document/0x02b-MASVS-MASTG-Adoption.md).
+The OWASP MASVS and MASTG are trusted by the following platform providers and standardization, governmental and educational institutions. [Learn more](MASTG/Intro/0x02b-MASVS-MASTG-Adoption.md).
 
-<a href="MASTG/0x02b-MASVS-MASTG-Adoption/">
+<a href="MASTG/Intro/0x02b-MASVS-MASTG-Adoption/">
 <img style="border-radius: 1em;" src="assets/trusted-by-logos.png"/>
 </a>
 
@@ -79,10 +79,10 @@ The OWASP MASVS and MASTG are trusted by the following platform providers and st
 
 ## 🥇 MAS Advocates
 
-<a href="MASTG/0x02c-Acknowledgements/#our-mas-advocates">
+<a href="MASTG/Intro/0x02c-Acknowledgements/#our-mas-advocates">
 <img src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/nowsecure-logo.png" align="right" style="margin: 0em 5em" width="200px;" />
 </a>
 
-MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](../Document/0x02c-Acknowledgements.md#our-mas-advocates).
+MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invested a significant and consistent amount of resources to push the project forward by providing consistent high-impact contributions and continuously spreading the word. [Learn more](MASTG/Intro/0x02c-Acknowledgements.md#our-mas-advocates).
 
 <br>

@@ -25,8 +25,8 @@ Before you start contributing, please check our pages ["How Can You Contribute?"
 
 Contributors are added to the acknowledgments section based on their contributions logged by GitHub and/or by applying to a certain role and consistently demonstrating their commitment. Acknowledgements are visible in:
 
-- [OWASP MASTG Authors & Co-Authors sections](../Document/0x02a-Frontispiece.md#authors)
-- [OWASP MASTG Contributors section](../Document/0x02c-Acknowledgements.md#contributors)
+- [OWASP MASTG Authors & Co-Authors sections](MASTG/Intro/0x02a-Frontispiece.md#authors)
+- [OWASP MASTG Contributors section](MASTG/Intro/0x02c-Acknowledgements.md#contributors)
 - [OWASP MASTG printed version](https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html)
 
 Contributors are categorized as follows:
