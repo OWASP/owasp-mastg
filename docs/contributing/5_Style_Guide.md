@@ -8,11 +8,11 @@ The following rules are meant to ensure consistency of the MASTG:
 
 
 !!! tip
+    
+    We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
 
-We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
-
-- [Technical Writing One](https://developers.google.com/tech-writing/one)
-- [Technical Writing Two](https://developers.google.com/tech-writing/two)
+    - [Technical Writing One](https://developers.google.com/tech-writing/one)
+    - [Technical Writing Two](https://developers.google.com/tech-writing/two)
 
 ## 1. How to Write Content
 
