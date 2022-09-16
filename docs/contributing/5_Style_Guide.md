@@ -7,7 +7,7 @@ The following rules are meant to ensure consistency of the MASTG:
 3. When giving technical instructions, address the reader in the second person.
 
 
-!!! tip
+!!! tip ""
     
     We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
 
