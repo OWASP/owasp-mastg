@@ -6,6 +6,14 @@ The following rules are meant to ensure consistency of the MASTG:
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person.
 
+
+!!! tip
+
+We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
+
+- [Technical Writing One](https://developers.google.com/tech-writing/one)
+- [Technical Writing Two](https://developers.google.com/tech-writing/two)
+
 ## 1. How to Write Content
 
 ### Amount of Content
