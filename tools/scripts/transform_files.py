@@ -7,7 +7,14 @@ def transform_links(file_text):
     print("[*] Regex Substitutions ../Document to MASTG/")
     found = re.findall(r'(\((?:../)*Document/.*\.md/*)', file_text)
     print(f"    Found: {found}")
-    return re.sub(r"\(((?:../)*)Document/(.*)\.md/*", r"(\1MASTG/\2/", file_text)
+
+    file_text = re.sub(r"\(((?:../)*)Document/(0x0[1-3].*)\.md/*", r"(\1MASTG/Intro/\2/", file_text)
+    file_text = re.sub(r"\(((?:../)*)Document/(0x04.*)\.md/*", r"(\1MASTG/General/\2/", file_text)
+    file_text = re.sub(r"\(((?:../)*)Document/(0x05.*)\.md/*", r"(\1MASTG/Android/\2/", file_text)
+    file_text = re.sub(r"\(((?:../)*)Document/(0x06.*)\.md/*", r"(\1MASTG/iOS/\2/", file_text)
+    file_text = re.sub(r"\(((?:../)*)Document/(0x09.*)\.md/*", r"(\1MASTG/References\2/", file_text)
+
+    return file_text
 
 def remove_emojis(file_text):
     print("[*] Regex Substitutions for emojis")
