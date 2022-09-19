@@ -5,14 +5,15 @@ EMOJIS_regex = r"🥇 |🎁 |📝 |❗ "
 
 def transform_links(file_text):
     print("[*] Regex Substitutions ../Document to MASTG/")
-    found = re.findall(r'(\((?:../)*Document/.*\.md/*)', file_text)
+    found = re.findall(r'(\(0x.*\.md/*)', file_text)
     print(f"    Found: {found}")
 
-    file_text = re.sub(r"\(((?:../)*)Document/(0x0[1-3].*)\.md/*", r"(\1MASTG/Intro/\2/", file_text)
-    file_text = re.sub(r"\(((?:../)*)Document/(0x04.*)\.md/*", r"(\1MASTG/General/\2/", file_text)
-    file_text = re.sub(r"\(((?:../)*)Document/(0x05.*)\.md/*", r"(\1MASTG/Android/\2/", file_text)
-    file_text = re.sub(r"\(((?:../)*)Document/(0x06.*)\.md/*", r"(\1MASTG/iOS/\2/", file_text)
-    file_text = re.sub(r"\(((?:../)*)Document/(0x09.*)\.md/*", r"(\1MASTG/References\2/", file_text)
+    file_text = re.sub(r"\(0x0[1-3].*)\.md/*", r"(../Intro/\1/", file_text)
+    file_text = re.sub(r"\(0x04.*)\.md/*", r"(../General/\1/", file_text)
+    file_text = re.sub(r"\(0x05.*)\.md/*", r"(../Android/\1/", file_text)
+    file_text = re.sub(r"\(0x06.*)\.md/*", r"(../iOS/\1/", file_text)
+    file_text = re.sub(r"\(0x08.*)\.md/*", r"(../\1/", file_text)
+    file_text = re.sub(r"\(0x09.*)\.md/*", r"(../References/\1/", file_text)
 
     return file_text
 
