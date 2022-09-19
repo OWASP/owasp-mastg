@@ -8,12 +8,12 @@ def transform_links(file_text):
     found = re.findall(r'(\(0x.*\.md/*)', file_text)
     print(f"    Found: {found}")
 
-    file_text = re.sub(r"\(0x0[1-3].*)\.md/*", r"(../Intro/\1/", file_text)
-    file_text = re.sub(r"\(0x04.*)\.md/*", r"(../General/\1/", file_text)
-    file_text = re.sub(r"\(0x05.*)\.md/*", r"(../Android/\1/", file_text)
-    file_text = re.sub(r"\(0x06.*)\.md/*", r"(../iOS/\1/", file_text)
-    file_text = re.sub(r"\(0x08.*)\.md/*", r"(../\1/", file_text)
-    file_text = re.sub(r"\(0x09.*)\.md/*", r"(../References/\1/", file_text)
+    file_text = re.sub(r"\((0x0[1-3].*)\.md/*", r"(../Intro/\1/", file_text)
+    file_text = re.sub(r"\((0x04.*)\.md/*", r"(../General/\1/", file_text)
+    file_text = re.sub(r"\((0x05.*)\.md/*", r"(../Android/\1/", file_text)
+    file_text = re.sub(r"\((0x06.*)\.md/*", r"(../iOS/\1/", file_text)
+    file_text = re.sub(r"\((0x08.*)\.md/*", r"(../\1/", file_text)
+    file_text = re.sub(r"\((0x09.*)\.md/*", r"(../References/\1/", file_text)
 
     return file_text
 
