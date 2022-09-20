@@ -14,13 +14,12 @@ jobs:
           python-version: 3.x
       - run: pip install -r requirements.txt
 
-      - run: python3 tools/scripts/transform_files.py
       - run: ./tools/scripts/structure_mastg.sh
+      - run: python3 tools/scripts/transform_files.py
 
       - run: mv Document/Images/ docs/assets/Images/
-      - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MASTG/*.md
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
-      
+
       - uses: actions/checkout@v2
         with:
           repository: "OWASP/owasp-masvs"

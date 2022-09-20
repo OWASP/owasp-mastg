@@ -12,8 +12,7 @@ nav:
       - General Guide: MASTG/General
       - Android: MASTG/Android
       - iOS: MASTG/iOS
-      - MASTG/0x08a-Testing-Tools.md
-      - MASTG/0x08b-Reference-Apps.md
+      - Tools: MASTG/Tools
       - References: MASTG/References
   - MASVS:
       - MASVS.md
