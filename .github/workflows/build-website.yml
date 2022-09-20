@@ -18,7 +18,6 @@ jobs:
       - run: ./tools/scripts/structure_mastg.sh
 
       - run: mv Document/Images/ docs/assets/Images/
-      - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MASTG/*.md
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
       
       - name: link-check
