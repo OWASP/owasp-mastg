@@ -21,6 +21,14 @@ jobs:
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MASTG/*.md
       - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
       
+      - name: link-check
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: '.github/workflows/config/mlc_config.json'
+          folder-path: 'docs/MASTG'
+
       - uses: actions/checkout@v2
         with:
           repository: "OWASP/owasp-masvs"
