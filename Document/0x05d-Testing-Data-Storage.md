@@ -798,7 +798,19 @@ In the layout definition of an activity, you can define `TextViews` that have XM
         android:inputType="textNoSuggestions" />
 ```
 
-The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions").
+The code for all input fields that take sensitive information should include this XML attribute to [disable the keyboard suggestions](https://developer.android.com/reference/android/text/InputType.html#TYPE_TEXT_FLAG_NO_SUGGESTIONS "Disable keyboard suggestions"). Alternatively, the developer can use [`textPassword`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_PASSWORD "Text password input type"), [`textVisiblePassword`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_VISIBLE_PASSWORD "Text visible password input type"), or [`textWebPassword`](https://developer.android.com/reference/android/text/InputType#TYPE_TEXT_VARIATION_WEB_PASSWORD "Text web password input type").
+
+In addition to a properly set input type in the layout file, the minimum required SDK version in the app manifest must support it. Otherwise, the compiled app would contain layout versions for older SDKs without unsupported features, i.e., allowing keyboard caching. Android SDK version 11 is required for `textWebPassword` and version 3 for the rest of recommended options.
+
+```xml
+   <uses-sdk android:minSdkVersion="11"/>
+```
+
+Finally, the absence of input type overwriting should be checked in the application source code. In the example below, the input type of the input field `KeyBoardCache` is set to `text` enabling the keyboard cache:
+
+```java
+    findViewById(R.id.KeyBoardCache).setInputType(InputType.TYPE_CLASS_TEXT);
+```
 
 ### Dynamic Analysis
 
