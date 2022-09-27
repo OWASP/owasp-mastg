@@ -490,7 +490,7 @@ enum RequestError: Error {
 }
 
 func getMSTGInfo() {
-    guard let url = URL(string: "https://raw.githubusercontent.com/OWASP/owasp-mstg/master/book.json") else {
+    guard let url = URL(string: "https://raw.githubusercontent.com/OWASP/owasp-mastg/master/book.json") else {
         return
     }
 

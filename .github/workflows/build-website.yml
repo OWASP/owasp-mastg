@@ -14,27 +14,20 @@ jobs:
           python-version: 3.x
       - run: pip install -r requirements.txt
 
-      - run: mkdir docs/MSTG
-      - run: mkdir docs/MSTG/General
-      - run: mkdir docs/MSTG/Android
-      - run: mkdir docs/MSTG/iOS
-      - run: mv Document/0x0*.md docs/MSTG
-      - run: mv docs/MSTG/0x04*.md docs/MSTG/General
-      - run: mv docs/MSTG/0x05*.md docs/MSTG/Android
-      - run: mv docs/MSTG/0x06*.md docs/MSTG/iOS
+      - run: ./tools/scripts/structure_mastg.sh
+      - run: python3 tools/scripts/transform_files.py
+
       - run: mv Document/Images/ docs/assets/Images/
-      - run: sed -i "s#<img src=\"Images/#<img src=\"../../assets/Images/#g" docs/MSTG/*.md
-      - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MSTG/*/*.md
-      
-      - run: mkdir docs/MASVS
-      - run: mkdir docs/assets/Images/MASVS
+      - run: sed -i "s#<img src=\"Images/#<img src=\"../../../assets/Images/#g" docs/MASTG/**/*.md
+
       - uses: actions/checkout@v2
         with:
           repository: "OWASP/owasp-masvs"
           fetch-depth: 1
           path: owasp-masvs/
-      - run: mv owasp-masvs/Document/0x*.md docs/MASVS
+      - run: ./tools/scripts/structure_masvs.sh
+      - run: mkdir docs/assets/Images/MASVS
       - run: mv owasp-masvs/Document/images/* docs/assets/Images/MASVS
-      - run: sed -i "s#images/#../assets/Images/MASVS/#g" docs/MASVS/*.md
+      - run: sed -i "s#images/#../../assets/Images/MASVS/#g" docs/MASVS/**/*.md
       
       - run: mkdocs gh-deploy --force --clean --verbose

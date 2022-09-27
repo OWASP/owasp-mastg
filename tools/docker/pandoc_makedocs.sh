@@ -4,7 +4,8 @@ set -eo pipefail
 
 # Input variables
 FOLDER=${1:-Document}
-VERSION=${2:-SNAPSHOT}
+MASTG_VERSION=${2:-SNAPSHOT}
+MASVS_VERSION=${3:-SNAPSHOT}
 
 rm -rf build
 cp -R $FOLDER "build"
@@ -13,11 +14,11 @@ cp -R $FOLDER "build"
 IMG=${IMG:-dalibo/pandocker}
 TAG=${TAG:-21.02} # /!\ use stable-full for non-european languages
 LATEX_TEMPLATE=${LATEX_TEMPLATE:-eisvogel}
-TITLE=${TITLE:-OWASP Mobile Security Testing Guide ${VERSION}}
+TITLE=${TITLE:-OWASP Mobile Application Security Testing Guide ${MASTG_VERSION}}
 
 PANDOC_PARAMS=${PANDOC_PARAMS:-}
 PANDOC_PARAMS+="--resource-path=.:build "
-PANDOC_PARAMS+="--metadata version=${VERSION} "
+PANDOC_PARAMS+="--metadata mastg_version=${MASTG_VERSION} --metadata masvs_version=${MASVS_VERSION}"
 
 [ ! -z "${VERBOSE}" ] && PANDOC_PARAMS+="--verbose "
 
@@ -34,10 +35,10 @@ docker run --rm --entrypoint '/bin/sh' --volume `pwd`:/pandoc ${IMG}:${TAG} -c '
 PANDOC=${PANDOC:-${PANDOCKER}}
 
 METADATA="build/metadata.md"
-CHAPTERS="build/0x*.md build/CHANGELOG.md"
-OUTPUT_BASE_NAME="OWASP_MSTG-${VERSION}"
+CHAPTERS="build/0x*.md"
+OUTPUT_BASE_NAME="OWASP_MASTG-${MASTG_VERSION}"
 
-[ ! -z "${VERBOSE}" ] && echo "Create PDF"
+[ ! -z "${VERBOSE}" ] && echo "[*] Creating PDF"
 
 # header
 ${PANDOC} \
@@ -73,31 +74,15 @@ ${PANDOC} \
   ${CHAPTERS}
 
 # EPUB
+echo "[*] Creating epub"
+
 ${PANDOC} \
   --metadata title="${TITLE}" \
   --metadata author="Bernhard Mueller, Sven Schleier, Jeroen Willemsen, and Carlos Holguera" \
-  --epub-cover-image=cover.jpg \
+  --epub-cover-image=cover.png \
   -o ${OUTPUT_BASE_NAME}.epub \
   ${METADATA} \
   ${CHAPTERS}
-
-# MOBI
-# kindlegen is deprecated
-#kindlegen ${OUTPUT_BASE_NAME}.epub
-
-# DOCX
-${PANDOC} \
-  --metadata title="${TITLE}" \
-  --toc \
-  --number-sections \
-  --columns 10000 \
-  --self-contained \
-  --standalone \
-  --reference-doc tools/custom-reference.docx \
-  -o ${OUTPUT_BASE_NAME}_WIP_.docx \
-  ${METADATA} \
-  ${CHAPTERS}
-
 
 # clean temp files
 rm -f tmp_latex-header.latex tmp_cover.latex tmp_first_page.latex

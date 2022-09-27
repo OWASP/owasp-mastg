@@ -42,7 +42,7 @@ For many apps, the "default behavior" provided by the mobile platform will be se
 
 Some apps might need to further increase their security by restricting the number of CAs that they trust. Typically only the CAs which are used by the developer are explicitly trusted, while disregarding all others. This trust restriction is known as _Identity Pinning_ usually implemented as _Certificate Pinning_ or _Public Key Pinning_.
 
-> In the OWASP MSTG we will be referring to this term as "Identity Pinning", "Certificate Pinning", "Public Key Pinning" or simply "Pinning".
+> In the OWASP MASTG we will be referring to this term as "Identity Pinning", "Certificate Pinning", "Public Key Pinning" or simply "Pinning".
 
 Pinning is the process of associating a remote endpoint with a particular identity, such as a X.509 certificate or public key, instead of accepting any certificate signed by a trusted CA. After pinning the server identity (or a certain set, aka. _pinset_), the mobile app will subsequently connect to those remote endpoints only if the identity matches. Withdrawing trust from unnecessary CAs reduces the app's attack surface.
 
@@ -84,7 +84,7 @@ The first statement can be mistakenly interpreted as saying that they "do not re
 
 Apple recommends [thinking long-term](https://developer.apple.com/news/?id=g9ejcf8y) and [creating a proper server authentication strategy](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication#2956135).
 
-#### OWASP MSTG Recommendation
+#### OWASP MASTG Recommendation
 
 Pinning is a recommended practice, especially for MASVS-L2 apps. However, developers must implement it exclusively for the endpoints under their control and be sure to include backup keys (aka. backup pins) and have a proper app update strategy.
 
@@ -190,7 +190,7 @@ A simple way to simulate a man-in-the-middle (MITM) attack is to configure a net
 Following scenarios are possible:
 
 - Use your host computer's built-in WiFi card as an access point and use your wired connection to connect to the target network.
-- Use an external USB WiFi card as an access point and user your host computer built-in WiFi to connect to the target network (can be vice-versa).
+- Use an external USB WiFi card as an access point and use your host computer's built-in WiFi to connect to the target network (can be vice-versa).
 - Use a separate access point and redirect the traffic to your host computer.
 
 The scenario with an external USB WiFi card require that the card has the capability to create an access point. Additionally, you need to install some tools and/or configure the network to enforce a man-in-the-middle position (see below). You can verify if your WiFi card has AP capabilities by using the command `iwconfig` on Kali Linux:
@@ -379,9 +379,6 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
     - Set 'Force use of SSL' (when HTTPS is used) and set 'Support invisible proxy'.
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
-
-<br/>
-<br/>
 
 #### CA Certificates
 
@@ -576,9 +573,6 @@ Identify all of the tested application's critical operations (e.g., user enrollm
 
 - <https://motherboard.vice.com/en_us/article/vbqax3/hackers-sim-swapping-steal-phone-numbers-instagram-bitcoin>
 - How to protect yourself against a SIM swap attack - <https://www.wired.com/story/sim-swap-attack-defend-phone/>
-
-<br/>
-<br/>
 
 ### IETF
 

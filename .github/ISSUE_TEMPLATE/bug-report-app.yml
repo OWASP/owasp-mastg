@@ -1,5 +1,5 @@
-name: 🪲📲 Bug in MSTG crackmes / challenges Apps
-description: Create a report to help us improve the MSTG.
+name: 🪲📲 Bug in MASTG crackmes / challenges Apps
+description: Create a report to help us improve the MASTG.
 title: "[Bug] "
 labels: ["bug"]
 
@@ -23,7 +23,7 @@ body:
     id: where
     attributes:
       label: App Name
-      description: Name of crackme or challenge app that is broken. See all apps [here](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes).
+      description: Name of crackme or challenge app that is broken. See all apps [here](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes).
       placeholder: e.g. UnCrackable App for Android Level 1
     validations:
       required: true

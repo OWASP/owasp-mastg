@@ -1,14 +1,6 @@
 # How Can You Contribute?
 
-A direct contribution to the MASVS can be done in many different ways. First of all **Create a GitHub account** (a free one is enough) by following [these steps](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account "Signing up for a new GitHub account").
-
-## ⭐ Give us a Star
-
-Show your interest and support to the project by [_starring_ it](https://github.com/OWASP/owasp-mstg).
-
-<a href="https://github.com/OWASP/owasp-mstg"><img src="../../assets/starring.png" width="300px"/></a>
-
-<br>
+A direct contribution to the MASVS or the MASTG can be done in many different ways. First of all **Create a GitHub account** (a free one is enough) by following [these steps](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account "Signing up for a new GitHub account").
 
 ## Contribution Flow
 
@@ -26,7 +18,7 @@ flowchart LR
 
 ## 💬 Participate in Discussions
 
-Our GitHub [Discussions](https://docs.github.com/en/discussions) are the first place to go for asking questions, giving us feedback and proposing new ideas. If your proposal qualifies for the MSTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
+Our GitHub [Discussions](https://docs.github.com/en/discussions) are the first place to go for asking questions, giving us feedback and proposing new ideas. If your proposal qualifies for the MASTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
 
 ## 🎯 Create Issues
 
@@ -57,9 +49,9 @@ After your PR or issue has been submitted, we will review it as quickly as possi
 If you do proof-reading, these are the things we’re looking for:
 
 - Content [cohesion & coherence](https://writing.chalmers.se/chalmers-writing-guide/writing-a-text/coherence-cohesion/)
-  - is there a good linkage of ideas?
-  - does the paragraph make sense?
-  - does it make sense with the next one? think that hundreds of people have written in here, often without considering the surroundings of the text they were including).
+    - is there a good linkage of ideas?
+    - does the paragraph make sense?
+    - does it make sense with the next one? think that hundreds of people have written in here, often without considering the surroundings of the text they were including).
 - Reducing the content to a minimum (people tend to be very verbose/wordy) and in such a document we need clear and short/concise statements
 - Optimize for _scannability_ (maybe instead of a big paragraph it would be better to have a bullet point list).
 - Any passive voice sentences? Convert to active voice.
@@ -82,12 +74,3 @@ Before starting a translation please consider the following:
 - We need your commitment. After the first translation is done, we will ask for your help to translate any new changes, so your translation can remain up to date.
 - We need a second translator who can verify that the English version of the MASVS has been translated properly.
 - Once you are all set, go to your fork and follow [these steps](4_Add_new_Language.md).
-
-## 🚫 What not to do
-
-Although we greatly appreciate any and all contributions to the project, there are a few things that you should take into consideration:
-
-- **No advertisement**: The OWASP mobile Security Project cannot be used as a platform for advertisement of commercial tools, companies or individuals. Technical content such as the implementation of certain techniques or tests should be written with free and open-source tools in mind. Commercial tools are typically not accepted, but might be referenced in some specific cases.
-- **No unnecessary self-promotion of tools or blog posts**: If you have a relation with one of the URLs or tools you are referencing, please state so in the PR so that we can verify that the reference is in line with the rest of the guide.
-
-Please be sure to take a careful look at our [Code of Conduct](https://github.com/OWASP/owasp-mstg/blob/master/CODE_OF_CONDUCT.md "Code of Conduct") for all the details and [ask us](../../README.md#connect-with-us) in case of doubt.

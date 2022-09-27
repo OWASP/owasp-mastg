@@ -40,7 +40,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 - [Procyon](https://github.com/mstrobel/procyon "Procyon")
 - [CFR](https://www.benf.org/other/cfr/ "CFR")
 
-Alternatively run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the Java source code in another tool such as an IDE.
+Alternatively you can use the [APKLab](0x08a-Testing-Tools.md#apklab) extension for Visual Studio Code or run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the reversed source code on your preferred IDE.
 
 In the following example we'll be using [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
@@ -85,10 +85,10 @@ When reversing an Android application containing native code, we need to underst
 
 It is worth highlighting that analyzing disassembled native code is much more challenging than disassembled Java code. When reversing the native code in an Android application we will need a disassembler.
 
-In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MSTG repository. Installing and running it in an emulator or Android device is optional.
+In the next example we'll reverse the HelloWorld-JNI.apk from the OWASP MASTG repository. Installing and running it in an emulator or Android device is optional.
 
 ```bash
-wget https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
+wget https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk
 ```
 
 > This app is not exactly spectacular, all it does is show a label with the text "Hello from C++". This is the app Android generates by default when you create a new project with C/C++ support, which is just enough to show the basic principles of JNI calls.
@@ -508,7 +508,7 @@ The following commands summarize how to patch and start dynamic analysis using o
 
 ```bash
 # Download the Uncrackable APK
-$ wget https://raw.githubusercontent.com/OWASP/owasp-mstg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
+$ wget https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Crackmes/Android/Level_01/UnCrackable-Level1.apk
 # Patch the APK with the Frida Gadget
 $ objection patchapk --source UnCrackable-Level1.apk
 # Install the patched APK on the android phone
@@ -1833,7 +1833,7 @@ When testing an app, process exploration can provide the tester with deep insigh
 
 As you can see, these passive tasks help us collect information. This Information is often used for other techniques, such as method hooking.
 
-In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mstg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
+In the following sections you will be using [r2frida](0x08a-Testing-Tools.md#r2frida) to retrieve information straight from the app runtime. Please refer to [r2frida's official installation instructions](https://github.com/nowsecure/r2frida/blob/master/README.md#installation "r2frida installation instructions"). First start by opening an r2frida session to the target app (e.g. [HelloWorld JNI](https://github.com/OWASP/owasp-mastg/raw/master/Samples/Android/01_HelloWorld-JNI/HelloWord-JNI.apk "HelloWorld JNI") APK) that should be running on your Android phone (connected per USB). Use the following command:
 
 ```bash
 r2 frida://usb//sg.vantagepoint.helloworldjni
@@ -2031,7 +2031,7 @@ $ r2 /Users/foo/memory_Android/memory
 1136 0x00065270 0x00065270  14  15 () ascii Hello from C++
 ```
 
-Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the [MSTG Hacking Playground](0x08b-Reference-Apps.md#mstg-hacking-playground) app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
+Alternatively you can use Fridump. This time, we will input a string and see if we can find it in the memory dump. For this, open the [MASTG Hacking Playground](0x08b-Reference-Apps.md#mastg-hacking-playground) app, navigate to "OMTG_DATAST_002_LOGGING" and enter "owasp-mstg" to the password field. Next, run Fridump:
 
 ```bash
 python3 fridump.py -U sg.vp.owasp_mobile.omtg_android -s

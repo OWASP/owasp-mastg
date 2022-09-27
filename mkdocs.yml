@@ -1,17 +1,44 @@
 site_name: OWASP Mobile Application Security
-repo_url: https://github.com/OWASP/owasp-mstg
-repo_name: OWASP/owasp-mstg
+repo_url: https://github.com/OWASP/owasp-mastg
+repo_name: OWASP/owasp-mastg
 # use_directory_urls: false # only set for mkdocs build
 edit_uri: "" # disable edit button
 
+nav:
+  - Home: index.md
+  - MASTG:
+      - MASTG.md
+      - Intro: MASTG/Intro
+      - General Guide: MASTG/General
+      - Android: MASTG/Android
+      - iOS: MASTG/iOS
+      - Tools: MASTG/Tools
+      - References: MASTG/References
+  - MASVS:
+      - MASVS.md
+      - Intro: MASVS/Intro
+      - Controls: MASVS/Controls
+      - Appendix: MASVS/Appendix
+  - "MAS Checklist": MAS_checklist.md
+  - news.md
+  - talks.md
+  - "&#11088; Contributing":
+      - contributing.md
+      - contributing
+  - "&#128153; Donations":
+      - donate.md
+      - donate
+  - contact.md
+
 copyright: |
   <div style="float: left; padding-right: 1em;">
-    <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mstg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
+    <a href="https://www.owasp.org"><img src="https://github.com/OWASP/owasp-mastg/blob/master/Document/Images/OWASP_logo_white.png?raw=true" width="100px" /></a>
   </div>
   <span>
     &#169; OWASP Foundation 2022. This work is licensed under 
     <a href="https://creativecommons.org/licenses/by/4.0">CC-BY-4.0</a>. For any reuse or distribution, you must make clear to others the license terms of this work.
-  </span>
+  </span><br><span>OWASP &#174; is a registered trademark of the OWASP Foundation, Inc.</span>
+  <div style="color: #6a6868"><span>Made with</span> <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>  | <i>Website designed by Carlos Holguera.</i></div>
 
 theme:
   name: material
@@ -50,31 +77,39 @@ extra_javascript:
   - javascripts/tablesort.js
 plugins:
   - search
+  - include_dir_to_nav
   - mermaid2
 markdown_extensions:
   - meta
   - toc:
       permalink: true
+  - attr_list
   - admonition
+  - tables
   - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.progressbar
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-  - pymdownx.progressbar
 
 extra:
+  generator: false # removed but recreated in copyright above
+  analytics:
+    provider: google
+    property: G-KWZRJV0S4P
   social:
     - icon: fontawesome/brands/slack
       link: https://owasp.slack.com/messages/project-mobile_omtg/details/
     - icon: fontawesome/brands/twitter 
-      link: https://twitter.com/OWASP_MSTG
+      link: https://twitter.com/OWASP_MAS
     - icon: fontawesome/brands/github
-      link: https://github.com/OWASP/owasp-mstg/discussions
+      link: https://github.com/OWASP/owasp-mastg/discussions
     # - icon: fontawesome/solid/paper-plane
     #   link: mailto:carlos.holguera@owasp.org
     #   name: Carlos Holguera

@@ -1,6 +1,6 @@
 # Mobile App User Privacy Protection
 
-**IMPORTANT DISCLAIMER:** The MSTG is not a legal handbook. Therefore, we will not deep dive into the GDPR or other possibly relevant legislation here. This chapter is meant to introduce you to the topics and provide you with essential references that you can use to continue researching by yourself. We'll also do our best effort to provide you with tests or guidelines for testing the privacy-related requirements listed in the OWASP MASVS.
+**IMPORTANT DISCLAIMER:** The MASTG is not a legal handbook. Therefore, we will not deep dive into the GDPR or other possibly relevant legislation here. This chapter is meant to introduce you to the topics and provide you with essential references that you can use to continue researching by yourself. We'll also do our best effort to provide you with tests or guidelines for testing the privacy-related requirements listed in the OWASP MASVS.
 
 ## Overview
 
@@ -110,7 +110,7 @@ You can follow these steps:
 2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (Google Play).
 3. Verify if there's any information available at all.
 
-The test passes if the developer has complied with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
+The test passes if the developer has compiled with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
 
 ### Dynamic analysis
 

@@ -1,10 +1,18 @@
 # Style Guide
 
-The following rules are meant to ensure consistency of the MSTG:
+The following rules are meant to ensure consistency of the MASTG:
 
 1. Keep the content factual, brief and focused. Avoid duplicating other sections of the guide;
 2. Refrain from advertising commercial tools or services;
 3. When giving technical instructions, address the reader in the second person.
+
+
+!!! tip ""
+    
+    We recommend you to take these free Google courses when writing or reviewing content for the MAS project:
+
+    - [Technical Writing One](https://developers.google.com/tech-writing/one)
+    - [Technical Writing Two](https://developers.google.com/tech-writing/two)
 
 ## 1. How to Write Content
 
@@ -22,7 +30,7 @@ Consider creating a supporting document and linking to it from the page rather t
 
 ### Gender Neutrality
 
-The MSTG reaches all kind of people all over the world. To ensure inclusiveness and diversity, please refrain from using the following throughout the book:
+The MASTG reaches all kind of people all over the world. To ensure inclusiveness and diversity, please refrain from using the following throughout the book:
 
 - she / her / hers / herself
 - he / him / his / himself
@@ -39,7 +47,7 @@ There is one exception: We are still using "man in the middle", as it is simply 
 
 ### Timeliness of Content
 
-Keeping accurate and timely content establishes the 'Mobile Security Testing Guide' as a credible and trustworthy source of information.
+Keeping accurate and timely content establishes the OWASP MAS deliverables as a credible and trustworthy source of information.
 
 When using statistical data on your page, ensure that the information is current and up-to-date and is accompanied by the source from which it was derived, along with the date the data was compiled.
 
@@ -129,7 +137,7 @@ When in doubt, you can verify proper capitalization on [https://titlecaseconvert
 
 ### Standardization
 
-This is a list of words/abbreviations that are used inconsistently at the moment in the MSTG and need standardization:
+This is a list of words/abbreviations that are used inconsistently at the moment in the MASTG and need standardization:
 
 - man-in-the-middle attack (MITM)
 
@@ -162,7 +170,7 @@ Use the following common contractions:
 
 Abbreviations include acronyms, initialisms, shortened words, and contractions.
 
-- Spell out the term the first time it's used, followed by the abbreviation in parentheses. Example: Mobile Security Testing Guide (MSTG). Subsequent usages in the same chapter may include the abbreviation only.
+- Spell out the term the first time it's used, followed by the abbreviation in parentheses. Example: OWASP Mobile Application Security Testing Guide (MASTG). Subsequent usages in the same chapter may include the abbreviation only.
 - If it only appears once in the content, spell out the term instead of using the abbreviation.
 - In titles and headings, use the abbreviation but be sure to properly introduce it (see above) in the text that follows.
 - Use "a" or "an" depending on the pronunciation of the acronym. Example: a DLL, an APK, a URL, a SQL.
@@ -223,7 +231,9 @@ When using (A), be sure to escape special characters such as apostrophe (\') or 
 [UDID of your iOS device via iTunes](https://medium.com/@igor_marques/how-to-find-an-iphones-udid-2d157f1cf2b9 "How to Find Your iPhone\'s UDID")
 ```
 
-When adding links to the **"References"** section at the end of the chapters use `- Title - <url>`, for example:
+When adding links to the **"References"** section at the end of the chapters use `- Title - <url>`. This is needed to force latex to print URLs properly for the PDF.
+
+For example:
 
 ```markdown
 - adb - <https://developer.android.com/studio/command-line/adb>
@@ -279,7 +289,7 @@ e.g.
 
 ## 4. References Within The Guide
 
-For references to other chapters in the MSTG, simply name the chapter, e.g.: `See also the chapter "Basic Security Testing"`, `See the section "Apktool" in the chapter "Basic Security Testing"` etc. The MSTG should be convenient to read as a printed book, so use internal references sparingly. Alternatively you can create a link for the specific section:
+For references to other chapters in the MASTG, simply name the chapter, e.g.: `See also the chapter "Basic Security Testing"`, `See the section "Apktool" in the chapter "Basic Security Testing"` etc. The MASTG should be convenient to read as a printed book, so use internal references sparingly. Alternatively you can create a link for the specific section:
 
 ```markdown
 See the section "[App Bundles](0x05a-Platform-Overview.md#app-bundles)" in the chapter ...

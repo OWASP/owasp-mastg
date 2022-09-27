@@ -8,8 +8,8 @@ Channels:
 
 - Gitbook: currently using @sushi2k's repository (<https://github.com/sushi2k/owasp-mstg-1>) which is synced automatically via <https://github.com/apps/pull>.
 - Github actions & Github releases: We use Github actions to build and verify the documents in an automated fashion as well as build releases.
-- Leanpub: The book can be bought via Leanpub <https://leanpub.com/mobile-security-testing-guide> as PDF to support OWASP and the MSTG project financially.
-- Lulu: The book can be bought via Lulu <https://www.lulu.com/en/en/shop/bernhard-müller-and-jeroen-willemsen-and-sven-schleier/owasp-mobile-security-testing-guide/paperback/product-1q2rerwp.html> as hard-copy to support OWASP and the MSTG project financially.
+- Leanpub: The book can be bought via Leanpub <https://leanpub.com/owasp-mastg> as PDF to support OWASP and the MAS project financially.
+- Lulu: The book can be bought via Lulu <https://www.lulu.com/shop/jeroen-willemsen-and-sven-schleier-and-bernhard-müller-and-carlos-holguera/owasp-mobile-security-testing-guide/paperback/product-1kw4dp4k.html> as hard-copy to support OWASP and the MAS project financially.
 
 Files:
 
@@ -17,7 +17,7 @@ Files:
 - `Apply_Lint_Check.sh`: Tool to inspect the markdown files their markup in the document folders for every language.
 - `contributors.py`: Python script to retrieve current contributors and group them into our different categories according to their additions.
 - `custom-reference.docx`: Template file used for generating the word document.
-- `pandoc_makedocs.sh`: Script that is being used to generate PDF, ePub and docx version of the MSTG. This script can be used to generate the documents locally and is also used in Github Actions.
+- `pandoc_makedocs.sh`: Script that is being used to generate PDF, ePub and docx version of the MASTG. This script can be used to generate the documents locally and is also used in Github Actions.
 - `updateLeanpub.sh` is in the making: for now it contains only instructions.
 
 ## Release process
@@ -41,12 +41,12 @@ Files:
 
     > The letter `v` need to be part of the tag name to trigger the release Github action. The tag name will become the version title of the release. The content of the RECENT_CHANGES file will become the body text of the release (be sure it includes the actual title of the release).
 
-6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mstg/actions>
-7. Verify the new release <https://github.com/OWASP/owasp-mstg/releases>
-8. Update OWASP Wiki if necessary <https://github.com/OWASP/www-project-mobile-security-testing-guide>
+6. Verify that Github Action was triggered and successfully completed <https://github.com/OWASP/owasp-mastg/actions>
+7. Verify the new release <https://github.com/OWASP/owasp-mastg/releases>
+8. Update OWASP Wiki if necessary <https://owasp.org/mas>
 9. Update the files at Lulu with the created files from the release page.
 10. Update the files at Leanpub with the created files from the release page.
-11. Tweet about it with @OWASP-MSTG, Linkedin and OWASP Slack
+11. Tweet about it with @OWASP_MAS, Linkedin and OWASP Slack
 
 In case something went wrong and we need to remove the release:
 

@@ -679,7 +679,7 @@ Refer to the chapter [Tampering and Reverse Engineering on iOS](0x06c-Reverse-En
 
 ##### Native Libraries
 
-iOS apps can make their codebase modular by using different elements. In the MSTG we will refer to all of them as native libraries, but they can come in different forms:
+iOS apps can make their codebase modular by using different elements. In the MASTG we will refer to all of them as native libraries, but they can come in different forms:
 
 - [Static and Dynamic Libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html#//apple_ref/doc/uid/TP40001873-SW1):
   - Static Libraries can be used and will be compiled in the app binary.

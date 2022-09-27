@@ -591,7 +591,7 @@ public class CodeCheck {
     }
 ```
 
-Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mstg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in GitHub.
+Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in GitHub.
 
 ### Effectiveness Assessment
 
@@ -941,7 +941,7 @@ There's some overlap with the category "detecting reverse engineering tools and 
 
 #### Runtime Integrity Check Examples
 
-##### Detecting tampering with the Java Runtime**
+##### Detecting tampering with the Java Runtime
 
 This detection code is from the [dead && end blog](https://d3adend.org/blog/?p=589 "dead && end blog - Android Anti-Hooking Techniques in Java").
 
@@ -1114,9 +1114,9 @@ You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been 
 Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-4):
 
 ```sh
-apkid owasp-mstg/Crackmes/Android/Level_04/r2pay-v1.0.apk
+apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk
 [+] APKiD 2.1.2 :: from RedNaga :: rednaga.io
-[*] owasp-mstg/Crackmes/Android/Level_04/r2pay-v1.0.apk!classes.dex
+[*] owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk!classes.dex
  |-> anti_vm : Build.TAGS check, possible ro.secure check
  |-> compiler : r8
  |-> obfuscator : unreadable field names, unreadable method names
