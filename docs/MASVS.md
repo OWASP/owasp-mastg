@@ -1,6 +1,6 @@
 # OWASP MASVS
 
-<a href="https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="../assets/masvs_cover.png"></a>
+<a href="../MASVS/Intro/0x01-Foreword"><img align="right" style="border-radius: 3px; margin: 3em; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" width="350px" class="grow" src="../assets/masvs_cover.png"></a>
 
 <a href="https://github.com/OWASP/owasp-masvs/">:material-github: GitHub Repo</a>
 
@@ -9,6 +9,12 @@ The **OWASP MASVS (Mobile Application Security Verification Standard)** is the i
 <br>
 
 [:material-download: Download the MASVS](https://github.com/OWASP/owasp-masvs/releases/latest/download/OWASP_MASVS-v1.4.2-en.pdf){ .md-button .md-button--primary }
+
+<br>
+
+<span>:warning:</span> <span style="color: #fb8323;"> <b>HELP WANTED:</b> We're currently refactoring the MASVS to bring it to version 2.0. This is a community effort and you can also participate. Take a look at it and give your feedback using the button below.</span>
+
+[:material-open-in-new: MASVS Refactoring](https://github.com/OWASP/owasp-masvs/discussions/categories/big-masvs-refactoring){ .md-button }
 
 <br>
 
