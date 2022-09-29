@@ -1,6 +1,6 @@
 # How Can You Contribute?
 
-A direct contribution to the MASVS or the MASTG can be done in many different ways. First of all **Create a GitHub account** (a free one is enough) by following [these steps](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account "Signing up for a new GitHub account").
+You can directly contribute to the MASVS or MASTG in many different ways! First, go ahead and create a GitHub account for free on the [GitHub homepage](https://github.com/).
 
 ## Contribution Flow
 
@@ -18,14 +18,14 @@ flowchart LR
 
 ## 💬 Participate in Discussions
 
-Our GitHub [Discussions](https://docs.github.com/en/discussions) are the first place to go for asking questions, giving us feedback and proposing new ideas. If your proposal qualifies for the MASTG/MASVS we'll convert it into an "Issue" (the discussion might take a while).
+Our GitHub [Discussions](https://github.com/OWASP/owasp-mastg/discussions) are the first place to go to ask questions, give feedback, and propose new ideas. If your proposal qualifies for the MASTG/MASVS, we'll convert it into an "Issue" (the discussion might take a while).
 
 ## 🎯 Create Issues
 
-You can create [Issues](https://github.com/OWASP/owasp-masvs/issues "MASVS Issues") first for missing requirements, content or errors so that it can be discussed **before** creating a PR.
+Before creating a PR, first create an [Issue](https://github.com/OWASP/owasp-masvs/issues "MASVS Issues") to be discussed for missing requirements, content or errors.
 
-- In order to avoid conflicts that several people are working on the same issue without knowing it, the issue will be assigned to one or more people by the project leaders.
-- Explain what you think is missing in the issue, including references (if available) and give a suggestion as to where it could be added.
+- To avoid multiple people duplicating effort on the same issue, project leaders will assign it to only a few that will own it.
+- Explain what you think is missing in the issue, including references (if available) and suggest where it could be added.
 
 ## 📝 Open a Pull Request
 
