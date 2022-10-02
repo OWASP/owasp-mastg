@@ -6,27 +6,27 @@ The applications listed below can be used as training materials. Note: only the 
 
 ### Android Crackmes
 
-A set of apps to test your Android application hacking skills - <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes>
+A set of apps to test your Android application hacking skills - <https://mas.owasp.org/Crackmes>
 
-#### UnCrackable App for Android Level 1
+#### Android UnCrackable L1
 
-Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_01>
+Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l1>
 
-#### UnCrackable App for Android Level 2
+#### Android UnCrackable L2
 
-Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_02>
+Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l2>
 
-#### UnCrackable App for Android Level 3
+#### Android UnCrackable L3
 
-Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_03>
+Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l3>
 
-#### UnCrackable App for Android Level 4
+#### Android UnCrackable L4
 
-Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/Level_04>
+Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l4>
 
 #### Android License Validator
 
-Available at <https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/Android/License_01>
+Available at <https://mas.owasp.org/Crackmes/Android#android-license-validator>
 
 ### AndroGoat
 
@@ -68,15 +68,15 @@ Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Andr
 
 ### iOS Crackmes
 
-A set of applications to test your iOS application hacking skills - <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes>
+A set of applications to test your iOS application hacking skills - <https://mas.owasp.org/Crackmes>
 
-#### UnCrackable App for iOS Level 1
+#### iOS UnCrackable L1
 
-Available at <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_01>
+Available at <https://mas.owasp.org/Crackmes/iOS#ios-uncrackable-l1>
 
-#### UnCrackable App for iOS Level 2
+#### iOS UnCrackable L2
 
-Available at  <https://github.com/OWASP/owasp-mastg/tree/master/Crackmes/iOS/Level_02>
+Available at <https://mas.owasp.org/Crackmes/iOS#ios-uncrackable-l2>
 
 ### Myriam
 
