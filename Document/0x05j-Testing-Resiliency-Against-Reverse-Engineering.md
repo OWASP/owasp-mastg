@@ -566,7 +566,7 @@ The following methods describe different approaches to bypass debugger detection
 
 #### Bypassing Example: UnCrackable App for Android Level 2
 
-When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-2).
+When dealing with obfuscated apps, you'll often find that developers purposely "hide away" data and functionality in native libraries. You'll find an example of this in [level 2 of the "UnCrackable App for Android"](0x08b-Reference-Apps.md#android-uncrackable-l2).
 
 At first glance, the code looks like the prior challenge. A class called `CodeCheck` is responsible for verifying the code entered by the user. The actual check appears to occur in the `bar` method, which is declared as a _native_ method.
 
@@ -591,7 +591,7 @@ public class CodeCheck {
     }
 ```
 
-Please see [different proposed solutions for the Android Crackme Level 2](https://github.com/OWASP/owasp-mastg/tree/master/Crackmes#uncrackable-app-for-android-level-2 "Solutions Android Crackme Level 2") in GitHub.
+Please see [different proposed solutions for the Android Crackme Level 2](https://mas.owasp.org/Crackmes/Android#android-uncrackable-l2 "Solutions Android Crackme Level 2") in GitHub.
 
 ### Effectiveness Assessment
 
@@ -1111,7 +1111,7 @@ For a more detailed assessment, you need a detailed understanding of the relevan
 
 You can use [APKiD](0x08a-Testing-Tools.md#apkid) to detect if the app has been obfuscated.
 
-Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-4):
+Example using the [UnCrackable App for Android Level 4](0x08b-Reference-Apps.md#android-uncrackable-l4):
 
 ```sh
 apkid owasp-mastg/Crackmes/Android/Level_04/r2pay-v1.0.apk

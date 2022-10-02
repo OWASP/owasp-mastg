@@ -84,7 +84,7 @@ A special mention goes for the **contribution to the MASVS Refactoring**:
 - Feedback on each category proposal
 - Statistics from internal analysis
 
-In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-4).
+In the past, NowSecure has also contributed to the project, has sponsored it becoming a "God Mode Sponsor" and has donated the [UnCrackable App for Android Level 4: Radare2 Pay](0x08b-Reference-Apps.md#android-uncrackable-l4).
 
 **Spreading the Word:**
 

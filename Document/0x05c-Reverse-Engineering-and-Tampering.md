@@ -42,7 +42,7 @@ Android decompilers go one step further and attempt to convert Android bytecode 
 
 Alternatively you can use the [APKLab](0x08a-Testing-Tools.md#apklab) extension for Visual Studio Code or run [apkx](0x08a-Testing-Tools.md#apkx) on your APK or use the exported files from the previous tools to open the reversed source code on your preferred IDE.
 
-In the following example we'll be using [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1). First, let's install the app on a device or emulator and run it to see what the crackme is about.
+In the following example we'll be using [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1). First, let's install the app on a device or emulator and run it to see what the crackme is about.
 
 <img src="Images/Chapters/0x05c/crackme-1.png" width="400px" />
 
@@ -303,7 +303,7 @@ Remember that in most of the cases, just using static analysis will not be enoug
 
 #### Reviewing Decompiled Java Code
 
-Following the example from ["Decompiling Java Code"](#decompiling-java-code), we assume that you've successfully decompiled and opened the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) in IntelliJ. As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of [obfuscation](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) that makes the bytecode a little more difficult to read, but with a fairly simple app like this one, it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
+Following the example from ["Decompiling Java Code"](#decompiling-java-code), we assume that you've successfully decompiled and opened the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) in IntelliJ. As soon as IntelliJ has indexed the code, you can browse it just like you'd browse any other Java project. Note that many of the decompiled packages, classes, and methods have weird one-letter names; this is because the bytecode has been "minified" with ProGuard at build time. This is a basic type of [obfuscation](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) that makes the bytecode a little more difficult to read, but with a fairly simple app like this one, it won't cause you much of a headache. When you're analyzing a more complex app, however, it can get quite annoying.
 
 When analyzing obfuscated code, annotating class names, method names, and other identifiers as you go along is a good practice. Open the `MainActivity` class in the package `sg.vantagepoint.uncrackable1`. The method `verify` is called when you tap the "verify" button. This method passes the user input to a static method called `a.a`, which returns a boolean value. It seems plausible that `a.a` verifies user input, so we'll refactor the code to reflect this.
 
@@ -352,7 +352,7 @@ public class a {
 
 Now you're getting somewhere: it's simply standard AES-ECB. Looks like the Base64 string stored in `arrby1` in `check_input` is a ciphertext. It is decrypted with 128bit AES, then compared with the user input. As a bonus task, try to decrypt the extracted ciphertext and find the secret value!
 
-A faster way to get the decrypted string is to add dynamic analysis. We'll revisit [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) later to show how (e.g. in the Debugging section), so don't delete the project yet!
+A faster way to get the decrypted string is to add dynamic analysis. We'll revisit [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) later to show how (e.g. in the Debugging section), so don't delete the project yet!
 
 #### Reviewing Disassembled Native Code
 
@@ -504,7 +504,7 @@ Thanks to tools like [objection](0x08a-Testing-Tools.md#objection), you can patc
 
 Now you can use objection to dynamically analyze the application on non-rooted devices.
 
-The following commands summarize how to patch and start dynamic analysis using objection using the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) as an example:
+The following commands summarize how to patch and start dynamic analysis using objection using the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) as an example:
 
 ```bash
 # Download the Uncrackable APK
@@ -619,7 +619,7 @@ Dalvik and ART support the JDWP, a protocol for communication between the debugg
 
 A JDWP debugger allows you to step through Java code, set breakpoints on Java methods, and inspect and modify local and instance variables. You'll use a JDWP debugger most of the time you debug "normal" Android apps (i.e., apps that don't make many calls to native libraries).
 
-In the following section, we'll show how to solve the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) with jdb alone. Note that this is not an _efficient_ way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
+In the following section, we'll show how to solve the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) with jdb alone. Note that this is not an _efficient_ way to solve this crackme. Actually you can do it much faster with Frida and other methods, which we'll introduce later in the guide. This, however, serves as an introduction to the capabilities of the Java debugger.
 
 #### Debugging with jdb
 
@@ -650,7 +650,7 @@ You're now attached to the suspended process and ready to go ahead with the jdb 
 - clear _method_: remove a method breakpoint
 - set _lvalue_ = _expr_:  assign new value to field/variable/array element
 
-Let's revisit the decompiled code from the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
+Let's revisit the decompiled code from the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) and think about possible solutions. A good approach would be suspending the app in a state where the secret string is held in a variable in plain text so you can retrieve it. Unfortunately, you won't get that far unless you deal with the root/tampering detection first.
 
 Review the code and you'll see that the method `sg.vantagepoint.uncrackable1.MainActivity.a` displays the "This in unacceptable..." message box. This method creates an `AlertDialog` and sets a listener class for the `onClick` event. This class (named `b`) has a callback method will terminates the app once the user taps the **OK** button. To prevent the user from simply canceling the dialog, the `setCancelable` method is called.
 
@@ -734,7 +734,7 @@ This is the plaintext string you're looking for!
 
 Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect, it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
-To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" section. On the device, choose the app as **debug app** on the "Developer options" ([UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
+To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" section. On the device, choose the app as **debug app** on the "Developer options" ([UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
 
 Once you tap the app icon from the launcher, it will be suspended in "Wait For Debugger" mode.
 
@@ -1384,7 +1384,7 @@ adb install UnCrackable-Repackaged.apk
 
 #### The "Wait For Debugger" Feature
 
-The [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) is not stupid: it notices that it has been run in debuggable mode and reacts by shutting down. A modal dialog is shown immediately, and the crackme terminates once you tap "OK".
+The [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) is not stupid: it notices that it has been run in debuggable mode and reacts by shutting down. A modal dialog is shown immediately, and the crackme terminates once you tap "OK".
 
 Fortunately, Android's "Developer options" contain the useful "Wait for Debugger" feature, which allows you to automatically suspend an app doing startup until a JDWP debugger connects. With this feature, you can connect the debugger before the detection mechanism runs, and trace, debug, and deactivate that mechanism. It's really an unfair advantage, but, on the other hand, reverse engineers never play fair!
 
@@ -1627,7 +1627,7 @@ Just like regular Android apps, modules for Xposed are developed and deployed wi
 
 ##### Frida
 
-We'll use Frida to solve the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#uncrackable-app-for-android-level-1) and demonstrate how we can easily bypass root detection and extract secret data from the app.
+We'll use Frida to solve the [UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) and demonstrate how we can easily bypass root detection and extract secret data from the app.
 
 When you start the crackme app on an emulator or a rooted device, you'll find that the it presents a dialog box and exits as soon as you press "OK" because it detected root:
 

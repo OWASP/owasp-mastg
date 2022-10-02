@@ -24,7 +24,7 @@ This is the official GitHub Repository of the OWASP Mobile Application Security 
 - ⬇️ [Download the latest PDF](https://github.com/OWASP/owasp-mastg/releases/latest)
 - ✅ [Get the latest Mobile App Security Checklists](https://github.com/OWASP/owasp-mastg/releases/latest)
 - ⚡ [Contribute!](https://mas.owasp.org/contributing)
-- 💥 [Play with our Crackmes](https://github.com/OWASP/owasp-mastg/blob/master/Crackmes/README.md)
+- 💥 [Play with our Crackmes](https://mas.owasp.org/Crackmes)
 
 <br>
 
@@ -118,8 +118,8 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 ### Appendix
 
-- [Testing Tools](https://mas.owasp.org/MASTG/0x08a-Testing-Tools)
-- [Reference Applications](https://mas.owasp.org/MASTG/0x08b-Reference-Apps)
+- [Testing Tools](https://mas.owasp.org/MASTG/Tools/0x08a-Testing-Tools)
+- [Reference Applications](https://mas.owasp.org/MASTG/Tools/0x08b-Reference-Apps)
 - [Suggested Reading](https://mas.owasp.org/MASTG/References/0x09-Suggested-Reading)
 
 <br>
