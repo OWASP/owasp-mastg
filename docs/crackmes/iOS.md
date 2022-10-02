@@ -1,8 +1,10 @@
 # iOS Crackmes
 
-## iOS UnCrackable Level 1
+## iOS UnCrackable L1
 
 A secret string is hidden somewhere in this binary. Find a way to extract it. The app will give you a hint when started.
+
+<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/iOS/Level_01/UnCrackable-Level1.ipa" class="mas-chip">Download</a>
 
 ??? info "Installation"
     Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
@@ -19,11 +21,13 @@ A secret string is hidden somewhere in this binary. Find a way to extract it. Th
 By [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller")
 </i>
 
-## iOS UnCrackable Level 2
+## iOS UnCrackable L2
 
 This app holds a secret inside - and this time it won't be tampered with!
 
 Hint: it is related to alcoholic beverages.
+
+<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/iOS/Level_02/UnCrackable-Level2.ipa" class="mas-chip">Download</a>
 
 ??? info "Installation"
     Open the "Device" window in Xcode and drag the IPA file into the list below "Installed Apps".
