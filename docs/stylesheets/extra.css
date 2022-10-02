@@ -11,8 +11,40 @@
   }
 }
 
+.mas-chip {
+  border: solid 1px var(--md-primary-fg-color);
+  outline:none;
+  text-decoration:none;
+  border-radius: 1.2em;
+  min-width: 5.5em;
+  max-height: 1.6em;
+  padding-left: 0.5em;
+  padding-right: 0.4em;
+}
+
 .md-footer__inner:not([hidden]){
   display: none;
+}
+
+.mas-blue-hue {
+  filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+}
+
+.mas-mini-app {
+  border-radius: 5px;
+}
+
+.mas-app-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1em;
+}
+
+.mas-apps-container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  margin-left: 20px;
 }
 
 .mas-flex-container {

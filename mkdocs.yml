@@ -20,6 +20,10 @@ nav:
       - Controls: MASVS/Controls
       - Appendix: MASVS/Appendix
   - "MAS Checklist": MAS_checklist.md
+  - MAS Crackmes: 
+      - Crackmes.md
+      - Android: crackmes/Android.md
+      - iOS: crackmes/iOS.md
   - news.md
   - talks.md
   - "&#11088; Contributing":
