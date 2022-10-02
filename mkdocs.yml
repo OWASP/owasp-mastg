@@ -20,7 +20,7 @@ nav:
       - Controls: MASVS/Controls
       - Appendix: MASVS/Appendix
   - "MAS Checklist": MAS_checklist.md
-  - MAS Crackmes: 
+  - "MAS Crackmes": 
       - crackmes.md
       - crackmes
   - news.md
