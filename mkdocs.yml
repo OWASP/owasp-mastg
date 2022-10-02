@@ -21,7 +21,7 @@ nav:
       - Appendix: MASVS/Appendix
   - "MAS Checklist": MAS_checklist.md
   - MAS Crackmes: 
-      - Crackmes.md
+      - crackmes.md
       - Android: crackmes/Android.md
       - iOS: crackmes/iOS.md
   - news.md
