@@ -15,8 +15,8 @@ A secret string is hidden somewhere in this app. Find a way to extract it.
 
 ??? danger "SPOILER (Solutions)"
     - [Solution using Frida by c0dmtr1x](https://www.codemetrix.net/hacking-android-apps-with-frida-2/ "Solution by c0dmtr1x")
-    - [Solution using static analysis](../Document/0x05c-Reverse-Engineering-and-Tampering.md#reviewing-decompiled-java-code "Solution using static analysis")
-    - [Solution using jdb](../Document/0x05c-Reverse-Engineering-and-Tampering.md#debugging-with-jdb "Solution using jdb")
+    - [Solution using static analysis](https://mas.owasp.org/MASTG/Android/0x05c-Reverse-Engineering-and-Tampering#reviewing-decompiled-java-code "Solution using static analysis")
+    - [Solution using jdb](https://mas.owasp.org/MASTG/Android/0x05c-Reverse-Engineering-and-Tampering#debugging-with-jdb "Solution using jdb")
     - [Solution using Frida by Eduardo Novella](https://enovella.github.io/android/reverse/2017/05/18/android-owasp-crackmes-level-1.html "Solution by Eduardo Novella")
     - [Solution using Xposed by sh3llc0d3r](https://web.archive.org/web/20210124161121/http://sh3llc0d3r.com/owasp-uncrackable-android-level1/ "Solution by sh3llc0d3r")
     - [Solution using RMS by @mobilesecurity_ (video)](https://youtu.be/P6rNPkM2DdY "Solution by @mobilesecurity_")
@@ -133,7 +133,7 @@ A brand new Android app sparks your interest. Of course, you are planning to pur
     ```
 
 ??? danger "SPOILER (Solutions)"
-    - [Solution using symbolic execution by Bernhard Mueller](../Document/0x05c-Reverse-Engineering-and-Tampering.md#symbolic-execution "Tampering and Reverse Engineering on Android - Symbolic Execution").
+    - [Solution using symbolic execution by Bernhard Mueller](https://mas.owasp.org/MASTG/Android/0x05c-Reverse-Engineering-and-Tampering#symbolic-execution "Tampering and Reverse Engineering on Android - Symbolic Execution").
 
 <i style="color:gray">
 By [Bernhard Mueller](https://github.com/muellerberndt "Bernhard Mueller")

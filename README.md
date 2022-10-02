@@ -118,8 +118,8 @@ MAS Advocates are industry adopters of the OWASP MASVS and MASTG who have invest
 
 ### Appendix
 
-- [Testing Tools](https://mas.owasp.org/MASTG/0x08a-Testing-Tools)
-- [Reference Applications](https://mas.owasp.org/MASTG/0x08b-Reference-Apps)
+- [Testing Tools](https://mas.owasp.org/MASTG/Tools/0x08a-Testing-Tools)
+- [Reference Applications](https://mas.owasp.org/MASTG/Tools/0x08b-Reference-Apps)
 - [Suggested Reading](https://mas.owasp.org/MASTG/References/0x09-Suggested-Reading)
 
 <br>
