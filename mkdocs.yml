@@ -22,8 +22,7 @@ nav:
   - "MAS Checklist": MAS_checklist.md
   - MAS Crackmes: 
       - crackmes.md
-      - Android: crackmes/Android.md
-      - iOS: crackmes/iOS.md
+      - crackmes
   - news.md
   - talks.md
   - "&#11088; Contributing":
