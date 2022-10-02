@@ -6,27 +6,27 @@ The applications listed below can be used as training materials. Note: only the 
 
 ### Android Crackmes
 
-A set of apps to test your Android application hacking skills - <https://mas.owasp.org/Crackmes>
+A set of apps to test your Android application hacking skills - <https://mas.owasp.org/crackmes>
 
 #### Android UnCrackable L1
 
-Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l1>
+Available at <https://mas.owasp.org/crackmes/Android#android-uncrackable-l1>
 
 #### Android UnCrackable L2
 
-Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l2>
+Available at <https://mas.owasp.org/crackmes/Android#android-uncrackable-l2>
 
 #### Android UnCrackable L3
 
-Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l3>
+Available at <https://mas.owasp.org/crackmes/Android#android-uncrackable-l3>
 
 #### Android UnCrackable L4
 
-Available at <https://mas.owasp.org/Crackmes/Android#android-uncrackable-l4>
+Available at <https://mas.owasp.org/crackmes/Android#android-uncrackable-l4>
 
 #### Android License Validator
 
-Available at <https://mas.owasp.org/Crackmes/Android#android-license-validator>
+Available at <https://mas.owasp.org/crackmes/Android#android-license-validator>
 
 ### AndroGoat
 
@@ -68,15 +68,15 @@ Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Andr
 
 ### iOS Crackmes
 
-A set of applications to test your iOS application hacking skills - <https://mas.owasp.org/Crackmes>
+A set of applications to test your iOS application hacking skills - <https://mas.owasp.org/crackmes>
 
 #### iOS UnCrackable L1
 
-Available at <https://mas.owasp.org/Crackmes/iOS#ios-uncrackable-l1>
+Available at <https://mas.owasp.org/crackmes/iOS#ios-uncrackable-l1>
 
 #### iOS UnCrackable L2
 
-Available at <https://mas.owasp.org/Crackmes/iOS#ios-uncrackable-l2>
+Available at <https://mas.owasp.org/crackmes/iOS#ios-uncrackable-l2>
 
 ### Myriam
 

@@ -591,7 +591,7 @@ public class CodeCheck {
     }
 ```
 
-Please see [different proposed solutions for the Android Crackme Level 2](https://mas.owasp.org/Crackmes/Android#android-uncrackable-l2 "Solutions Android Crackme Level 2") in GitHub.
+Please see [different proposed solutions for the Android Crackme Level 2](https://mas.owasp.org/crackmes/Android#android-uncrackable-l2 "Solutions Android Crackme Level 2") in GitHub.
 
 ### Effectiveness Assessment
 

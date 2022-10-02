@@ -4,4 +4,4 @@
 
 These are the UnCrackable Apps for Android and iOS, a collection of mobile reverse engineering challenges. These challenges are used as examples throughout the OWASP MASTG. Of course, you can also solve them for fun.
 
-See <https://mas.owasp.org/Crackmes> for more information.
+See <https://mas.owasp.org/crackmes> for more information.
