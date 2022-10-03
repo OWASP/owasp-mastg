@@ -811,17 +811,7 @@ Alternatively, the developer can use the following constants:
 
 Check the application code to verify that none of the input types are being overwritten. For example, by doing `findViewById(R.id.KeyBoardCache).setInputType(InputType.TYPE_CLASS_TEXT)` the input type of the input field `KeyBoardCache` is set to `text` reenabling the keyboard cache.
 
-In addition to a properly set input type in the layout file, the minimum required SDK version in the app manifest must support it. Otherwise, the compiled app would contain layout versions for older SDKs without unsupported features, i.e., allowing keyboard caching. Android SDK version 11 is required for `textWebPassword` and version 3 for the rest of recommended options.
-
-```xml
-   <uses-sdk android:minSdkVersion="11"/>
-```
-
-Finally, the absence of input type overwriting should be checked in the application source code. In the example below, the input type of the input field `KeyBoardCache` is set to `text` enabling the keyboard cache:
-
-```java
-    findViewById(R.id.KeyBoardCache).setInputType(InputType.TYPE_CLASS_TEXT);
-```
+Finally, check the minimum required SDK version in the Android Manifest (`android:minSdkVersion`) since it must support the used constants (for example, Android SDK version 11 is required for `textWebPassword`). Otherwise, the compiled app would not honor the used input type constants allowing keyboard caching.
 
 ### Dynamic Analysis
 
