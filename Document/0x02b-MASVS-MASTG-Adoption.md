@@ -20,9 +20,9 @@ We thank Google, the ADA and all its members for their support and for their exc
 
 <img src="Images/Other/crest_logo.jpg" width="250px"/>
 
-CREST is an international not-for-profit, membership body who quality assures its members and delivering professional certifications to the cyber security industry. CREST works with governments, regulators, academe, training partners, professional bodies and other stakeholders around the world.
+CREST is an international not-for-profit, membership body who quality assures its members and delivers professional certifications to the cyber security industry. CREST works with governments, regulators, academe, training partners, professional bodies and other stakeholders around the world.
 
-In August 2022, CREST has launched the OWASP Verification Standard (OVS) Programme. CREST OVS sets new standards for application security. Underpinned by OWASP's Application Security Verification Standard (ASVS) and Mobile Application Security Verification Standard (MASVS), CREST is leveraging the open-source community to build and maintain global standards to deliver a global web and mobile application security framework. This will provide assurance to the buying community that developers using CREST OVS accredited providers, always know that they are engaged with ethical and capable organisations with skilled and competent security testers by leveraging the OWASP ASVS and MASVS standards.
+In August 2022, CREST launched the OWASP Verification Standard (OVS) Programme. CREST OVS sets new standards for application security. Underpinned by OWASP's Application Security Verification Standard (ASVS) and Mobile Application Security Verification Standard (MASVS), CREST is leveraging the open-source community to build and maintain global standards to deliver a global web and mobile application security framework. This will provide assurance to the buying community that developers using CREST OVS accredited providers, always know that they are engaged with ethical and capable organisations with skilled and competent security testers by leveraging the OWASP ASVS and MASVS standards.
 
 - [CREST OVS Programme](https://www.crest-approved.org/membership/crest-ovs-programme/)
 - [CREST OVS Accreditation Process](https://www.crest-approved.org/membership/crest-ovs-programme/ovs-programme-accreditation-process/)
@@ -75,10 +75,10 @@ In 2021, ioXt has [extended its security principles through the Mobile Applicati
 
 | Name | Document | Year |
 | -------------- | -------------------- | -- |
+| Leibniz Fachhochschule Hannover, Germany | [Sicherheitsüberprüfung von mobilen iOS Apps nach OWASP (German)](https://leibniz-fh.de/content/uploads/2022/09/27_Arbeitspapier_OWASP.pdf) | 2022 |
 | University of Florida, Florida Institute for Cybersecurity Research, United States | ["SO{U}RCERER : Developer-Driven Security Testing Framework for Android Apps"](https://arxiv.org/pdf/2111.01631.pdf) | 2021 |
 | University of Adelaide, Australia and Queen Mary University of London, United Kingdom | [An Empirical Assessment of Global COVID-19 Contact Tracing Applications](https://arxiv.org/pdf/2006.10933.pdf) | 2021 |
 | School of Information Technology, Mapúa University, Philippines | [A Vulnerability Assessment on the Parental Control Mobile Applications Security: Status based on the OWASP Security Requirements](http://www.ieomsociety.org/singapore2021/papers/1104.pdf) | 2021 |
-| Leibniz Fachhochschule Hannover, Germany | [Sicherheitsüberprüfung von mobilen iOS Apps nach OWASP (German)](https://leibniz-fh.de/content/uploads/2022/09/27_Arbeitspapier_OWASP.pdf) | 2022 |
 
 ## Application in Scientific Research
 
