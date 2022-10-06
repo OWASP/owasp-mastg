@@ -93,7 +93,7 @@ In the past, NowSecure has also contributed to the project, has sponsored it bec
   - [Integrate security into the mobile app software development lifecycle](https://www.scmagazine.com/perspective/devops/integrate-security-into-the-mobile-app-software-development-lifecycle)
   - [OWASP Mobile Security Testing Checklist Aids Compliance](https://www.nowsecure.com/blog/2022/02/23/owasp-mobile-security-testing-checklist-aids-compliance/)
 - **Presentations**:
-  - “Mobile Wanderlust”! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
+  - "Mobile Wanderlust"! Our journey to Version 2.0! (OWASP AppSec EU, Jun 10 2022)
   - Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Toronto Chapter, Feb 10 2022)
   - [Insiders Guide to Mobile AppSec with Latest OWASP MASVS (OWASP Virtual AppSec 2021, Nov 11 2021)](https://www.youtube.com/watch?v=TcYtpUIIMYw)
   - [Insiders Guide to Mobile AppSec with OWASP MASVS (OWASP Northern Virginia Chapter, Oct 8 2021)](https://www.youtube.com/watch?v=fuLo64WH3SU)
