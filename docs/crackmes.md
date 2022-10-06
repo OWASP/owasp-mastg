@@ -11,7 +11,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/Android#android-uncrackable-l1"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>Android UnCrackable L1</div>
+<div><a href="../crackmes/Android#android-uncrackable-l1">Android UnCrackable L1</a></div>
 <div style="color:gray">UnCrackable-Level1.apk</div>
 </div>
 
@@ -24,7 +24,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/Android#android-uncrackable-l2"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>Android UnCrackable L2</div>
+<div><a href="../crackmes/Android#android-uncrackable-l2">Android UnCrackable L2</a></div>
 <div style="color:gray">UnCrackable-Level2.apk</div>
 </div>
 
@@ -37,7 +37,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/Android#android-uncrackable-l3"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>Android UnCrackable L3</div>
+<div><a href="../crackmes/Android#android-uncrackable-l3">Android UnCrackable L3</a></div>
 <div style="color:gray">UnCrackable-Level3.apk</div>
 </div>
 
@@ -50,7 +50,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/Android#android-uncrackable-l4"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>Android UnCrackable L4</div>
+<div><a href="../crackmes/Android#android-uncrackable-l4">Android UnCrackable L4 (easy)</a></div>
 <div style="color:gray">r2pay-v0.9.apk</div>
 </div>
 
@@ -63,7 +63,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/Android#android-uncrackable-l4"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>Android UnCrackable L4</div>
+<div><a href="../crackmes/Android#android-uncrackable-l4">Android UnCrackable L4 (hard)</a></div>
 <div style="color:gray">r2pay-v1.0.apk</div>
 </div>
 
@@ -76,7 +76,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/Android#android-license-validator"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>Android UnCrackable DRM</div>
+<div><a href="../crackmes/Android#android-license-validator">Android UnCrackable DRM</a></div>
 <div style="color:gray">validate (ELF 32-bit)</div>
 </div>
 
@@ -93,7 +93,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/iOS#ios-uncrackable-l1"><img style="max-width: 3em;" class="mas-mini-app grow mas-blue-hue" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>iOS UnCrackable L1</div>
+<div><a href="../crackmes/iOS#ios-uncrackable-l1">iOS UnCrackable L1</a></div>
 <div style="color:gray">UnCrackable-Level1.ipa</div>
 </div>
 
@@ -106,7 +106,7 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 <a href="../crackmes/iOS#ios-uncrackable-l2"><img style="max-width: 3em;" class="mas-mini-app grow mas-blue-hue" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
-<div>iOS UnCrackable L2</div>
+<div><a href="../crackmes/iOS#ios-uncrackable-l2">iOS UnCrackable L2</a></div>
 <div style="color:gray">UnCrackable-Level2.ipa</div>
 </div>
 
