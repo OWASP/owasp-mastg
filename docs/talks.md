@@ -8,6 +8,7 @@ hide:
 
 | Date | Event | Title | Video | Slides |
 |---|-------|------------------|-----|-----|
+| October 2022 | Cybersec Chile | Securing Mobile Apps with the OWASP MASVS and MASTG: Secure Storage and IPC | N/A | [:material-file-presentation-box: Slides](https://docs.google.com/presentation/d/1Rrgj5wiUtOFBD-ZFHj2hLE2vJe-Dbx5UaNJPtUWAxS0/edit?usp=sharing) |
 | September 2022 | OWASP Global AppSec APAC | Securing Mobile Apps with the OWASP MASVS and MASTG. Our journey to Version 2.0! | Soon | [:material-file-presentation-box: Slides](https://drive.google.com/file/d/1jXBIOw0Tqsi2VvumtMHFGhwkh3nzLgS7/view?usp=sharing) |
 | July 2022 | droidCon Berlin | Securing Mobile Apps with the OWASP MASVS & MSTG | [:octicons-play-24: Video](https://www.droidcon.com/2022/08/02/securing-mobile-apps-with-owasp-masvs-mstg-3/) | [:material-file-presentation-box: Slides](https://drive.google.com/file/d/1ZWZ-6W08nMOGpi-7vAhwnS09HvMFqExw/view?usp=sharing) |
 | June 2022 | OWASP Tunisia | Securing Mobile Apps with the MASVS. Our Journey to v2.0 | [:octicons-play-24: Video](https://www.youtube.com/watch?v=mQbYm1UKNXE) | [:material-file-presentation-box: Slides](https://drive.google.com/file/d/1EhRjS8eW8s-RrQRatFXnsoZqNYTZsHm0/view?usp=sharing) |
