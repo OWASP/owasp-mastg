@@ -560,7 +560,6 @@ In addition, non-repudiation mechanisms should be applied to sensitive transacti
 
 In all cases, it should be possible for the user to log out specific open sessions and in some cases it might be interesting to fully block certain devices using a device identifier. See sections ["Testing Device Binding (Android)"](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-device-binding-mstg-resilience-10) and ["Device Binding (iOS)"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#device-binding-mstg-resilience-10) for further details.
 
-
 Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
 Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
 
