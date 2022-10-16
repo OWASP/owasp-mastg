@@ -1993,7 +1993,6 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 - <https://developer.android.com/training/app-links/verify-site-associations>
 - <https://developers.google.com/digital-asset-links/v1/getting-started>
 - <https://pdfs.semanticscholar.org/0415/59c01d5235f8cf38a3c69ccee7e1f1a98067.pdf>
-- <https://blog.oversecured.com/Android-Access-to-app-protected-components/#access-to-arbitrary-components-via-webview>
 
 ### Android App Notifications
 
