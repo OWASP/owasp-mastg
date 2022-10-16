@@ -60,19 +60,6 @@ Welcome to the MAS Crackmes aka. UnCrackable Apps, a collection of mobile revers
 
 <div class="mas-app-row">
 
-<a href="../crackmes/Android#android-uncrackable-l4"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
-
-<div class="mas-apps-container">
-<div><a href="../crackmes/Android#android-uncrackable-l4">Android UnCrackable L4 (hardened)</a></div>
-<div style="color:gray">r2pay-v1.0.apk</div>
-</div>
-
-<a href="https://github.com/OWASP/owasp-mastg/raw/master/Crackmes/Android/Level_04/r2pay-v1.0.apk" class="mas-chip">Download</a>
-
-</div>
-
-<div class="mas-app-row">
-
 <a href="../crackmes/Android#android-license-validator"><img style="max-width: 3em;" class="mas-mini-app grow" src="https://raw.githubusercontent.com/OWASP/owasp-mastg/master/Document/Images/Other/uncrackable-logo.png"></a>
 
 <div class="mas-apps-container">
