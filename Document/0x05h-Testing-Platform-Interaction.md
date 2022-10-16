@@ -913,7 +913,6 @@ Once you identify a list of IPC mechanisms, review the source code to see whethe
 
 In the following, we use two example apps and give examples of identifying vulnerable IPC components:
 
-- ["OVAA"](https://github.com/oversecured/ovaa "Oversecured Vulnerable Android App")
 - ["Sieve"](https://github.com/mwrlabs/drozer/releases/download/2.3.4/sieve.apk "Sieve: Vulnerable Password Manager")
 - ["Android Insecure Bank"](0x08b-Reference-Apps.md#insecurebankv2)
 
@@ -1953,11 +1952,6 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 - <https://developer.android.com/guide/app-bundle/in-app-updates>
 
-### Android Intent redirection and accessing protected components
-
-- <https://blog.oversecured.com/Android-Access-to-app-protected-components/>
-- <https://blog.oversecured.com/Gaining-access-to-arbitrary-Content-Providers/>
-
 ### Android Fragment Injection
 
 - <https://www.synopsys.com/blogs/software-security/fragment-injection/>
@@ -1985,18 +1979,12 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 
-### Mistakes when using permissions in Android
-
-- <https://blog.oversecured.com/Common-mistakes-when-using-permissions-in-Android/>
-
 ### Android WebViews and SafeBrowsing
 
 - <https://developer.android.com/training/articles/security-tips#WebView>
 - <https://developer.android.com/guide/webapps/managing-webview#safe-browsing>
 - <https://developer.android.com/about/versions/oreo/android-8.1#safebrowsing>
 - <https://support.virustotal.com/hc/en-us/articles/115002146549-Mobile-Apps>
-- <https://blog.oversecured.com/Android-security-checklist-webview/>
-- <https://blog.oversecured.com/Android-Exploring-vulnerabilities-in-WebResourceResponse/>
 
 ### Android Custom URL Schemes
 

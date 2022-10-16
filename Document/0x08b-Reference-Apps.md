@@ -64,6 +64,10 @@ Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Andr
 
 Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
 
+### OVAA
+
+An Android app that aggregates all the platform's known and popular security vulnerabilities - <https://github.com/oversecured/ovaa>
+
 ## iOS
 
 ### iOS Crackmes
@@ -97,6 +101,10 @@ An iOS Objective-C app serving as a learning tool for iOS developers (iPhone, iP
 ### iGoat-Swift
 
 A Swift version of original iGoat project - <https://github.com/owasp/igoat-swift>
+
+### OVIA
+
+An iOS app that aggregates all the platform's known and popular security vulnerabilities - <https://github.com/oversecured/ovia>
 
 ### UnSAFE Bank
 
