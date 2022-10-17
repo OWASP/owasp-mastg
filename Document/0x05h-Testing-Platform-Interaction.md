@@ -139,7 +139,7 @@ We recommend using a reverse-domain annotation when registering a permission, as
 
 ## Injection Flaws
 
-[Injection Flaws](https://owasp.org/www-community/Injection_Flaws) allow attackers to leverage the interconnection of applications and pass malicious code between the affected application and either another system (such as a server) or another connected client.
+[Injection Flaws](https://owasp.org/www-community/Injection_Flaws "Injection Flaws") allow attackers to leverage the interconnection of applications and pass malicious code between the affected application and either another system (such as a server) or another connected client.
 
 ### Deep Links
 
@@ -389,7 +389,7 @@ You can find more security best practices when using WebViews on [Android Develo
 
 ### Overview
 
-When testing [app permissions](#app-permissions) the goal is to try and reduce the amount of permissions used by your app to the absolute minimum. While going through each permission, remember that it is best practice first to try and [evaluate whether your app needs to use this permission](https://developer.android.com/training/permissions/evaluating) because many functionalities such as taking a photo can be done without, limiting the amount of access to sensitive data. If permissions are required you will then make sure that the request/response to access the permission is handled handled correctly.
+When testing [app permissions](#app-permissions "App Permissions") the goal is to try and reduce the amount of permissions used by your app to the absolute minimum. While going through each permission, remember that it is best practice first to try and [evaluate whether your app needs to use this permission](https://developer.android.com/training/permissions/evaluating) because many functionalities such as taking a photo can be done without, limiting the amount of access to sensitive data. If permissions are required you will then make sure that the request/response to access the permission is handled handled correctly.
 
 ### Static Analysis
 
@@ -591,7 +591,7 @@ To obtain detail about a specific permission you can refer to the [Android Docum
 
 ### Overview
 
-In order to test for [Injection Flaws](#injection-flaws) the following portions of the source code should be checked for app functionality that has been exposed:
+In order to test for [injection flaws](#injection-flaws "injection flaws") the following portions of the source code should be checked for app functionality that has been exposed:
 
 - Deep Links. Check the test case ["Testing Deep Links"](#testing-deep-links-mstg-platform-3) as well for further test scenarios.
 - IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case ["Testing for Sensitive Functionality Exposure Through IPC"](#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4) as well for further test scenarios.
@@ -685,7 +685,7 @@ SQL injection can be exploited with the following command. Instead of getting th
 
 ### Overview
 
-To prevent [fragment injection](#fragment-injection), a new method called `isValidFragment` was added in Android 4.4 (API level 19). It allows developers to override this method and define the fragments that may be used in this context.
+To prevent [fragment injection](#fragment-injection "fragment injection"), a new method called `isValidFragment` was added in Android 4.4 (API level 19). It allows developers to override this method and define the fragments that may be used in this context.
 
 The default implementation returns `true` on versions older than Android 4.4 (API level 19); it will throw an exception on later versions.
 
@@ -767,7 +767,7 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 ### Overview
 
-In order to test for [URL loading in WebViews](#url-loading-in-webviews) you need to carefully analyze [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation"), especially when users might be able to navigate away from a trusted environment. The default and safest behavior on Android is to let the default web browser open any link that the user might click inside the WebView. However, this default logic can be modified by configuring a `WebViewClient` which allows navigation requests to be handled by the app itself. In order to test for Handling Page navigation and Safe Browsing.
+In order to test for [URL loading in WebViews](#url-loading-in-webviews "URL Loading in WebViews") you need to carefully analyze [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation"), especially when users might be able to navigate away from a trusted environment. The default and safest behavior on Android is to let the default web browser open any link that the user might click inside the WebView. However, this default logic can be modified by configuring a `WebViewClient` which allows navigation requests to be handled by the app itself. In order to test for Handling Page navigation and Safe Browsing.
 
 > When sending URLs or files to be checked for known threats make sure they don't contain sensitive data which could compromise a user's privacy, or expose sensitive content from your application.
 
@@ -806,7 +806,7 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 ### Overview
 
-Any existing [deep links](#deep-links) (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc. The Android version in which the app runs also influences the risk:
+Any existing [deep links](#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc. The Android version in which the app runs also influences the risk:
 
 - Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
@@ -1081,7 +1081,7 @@ In this case we've crafted the deep link including arbitrary parameters (`?messa
 
 ### Overview
 
-To test for [Sensitive Functionality Exposure Through IPC](#sensitive-functionality-exposure-through-ipc) mechanisms we will identify a list of IPC mechanisms our app uses, then review the source code to see whether sensitive data is leaked when the mechanisms are used.
+To test for [sensitive functionality exposure through IPC](#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms we will identify a list of IPC mechanisms our app uses, then review the source code to see whether sensitive data is leaked when the mechanisms are used.
 
 ### Static Analysis
 
@@ -1539,7 +1539,7 @@ Intent { act=theBroadcast flg=0x400010 (has extras) }
 
 ### Overview
 
-To test for [JavaScript Execution in WebViews](#javascript-execution-in-webviews) the source code must be checked for usage and implementations of the WebView class. Then on a case-by-case basis a decision must be made for wheather or not each WebView should allow JavaScript execution. If JavaScript exection is allowed, then a provided list of best practices should be followed.
+To test for [JavaScript execution in WebViews](#javascript-execution-in-webviews "JavaScript Execution in WebViews") the source code must be checked for usage and implementations of the WebView class. Then on a case-by-case basis a decision must be made for wheather or not each WebView should allow JavaScript execution. If JavaScript exection is allowed, then a provided list of best practices should be followed.
 
 ### Static Analysis
 
@@ -1589,7 +1589,7 @@ To address these attack vectors, check the following:
 
 ### Overview
 
-To test for [WebView Protocol Handlers](#webview-protocol-handlers) you will check the source code for any WebView usage. If using WebViews you will then check the current status of the Webviews resource access and determine whether or not the WebView should have resource access. If resource access is necessary you will then verify that it is implemented following best practices.
+To test for [WebView protocol handlers](#webview-protocol-handlers "WebView Protocol Handlers") you will check the source code for any WebView usage. If using WebViews you will then check the current status of the Webviews resource access and determine whether or not the WebView should have resource access. If resource access is necessary you will then verify that it is implemented following best practices.
 
 ### Static Analysis
 
@@ -1643,7 +1643,7 @@ To identify the usage of protocol handlers, look for ways to trigger phone calls
 
 ### Overview
 
-To test for [Java Objects Exposed Through WebViews](#java-objects-exposed-through-webviews) you will need to check the source code for WebView usage. If using WebViews you will then need to check if the WebView has enabled JavaScript through `setJavaScriptEnabled`. If JavaScript is enabled determine whether the method `addJavascriptInterface` is used on the WebView, how it is used, and whether an attacker can inject malicious JavaScript.
+To test for [Java objects exposed through WebViews](#java-objects-exposed-through-webviews "Java Objects Exposed Through WebViews") you will need to check the source code for WebView usage. If using WebViews you will then need to check if the WebView has enabled JavaScript through `setJavaScriptEnabled`. If JavaScript is enabled determine whether the method `addJavascriptInterface` is used on the WebView, how it is used, and whether an attacker can inject malicious JavaScript.
 
 ### Static Analysis
 
@@ -1710,7 +1710,7 @@ A full description of the attack is included in the [blog article by MWR](https:
 
 ### Overview
 
-If [object persistence](#object-persistence) is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md)" for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
+If [object persistence](#object-persistence "Object Persistence") is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md)" for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
 
 There are a few generic remediation steps that you can always take:
 
@@ -1817,7 +1817,7 @@ There are several ways to perform dynamic analysis:
 
 ### Overview
 
-While testing for [overlay attacks](#overlay-attacks) you can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
+While testing for [overlay attacks](#overlay-attacks "Overlay Attacks") you can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
 
 ### Static Analysis
 
@@ -1838,11 +1838,11 @@ Abusing this kind of vulnerability on a dynamic manner can be pretty challenging
 - [Tapjacking POC](https://github.com/FSecureLABS/tapjacking-poc "Tapjacking POC"): This APK creates a simple overlay which sits on top of the testing application.
 - [Invisible Keyboard](https://github.com/DEVizzi/Invisible-Keyboard "Invisible Keyboard"): This APK creates multiple overlays on the keyboard to capture keystrokes. This is one of the exploit demonstrated in Cloak and Dagger attacks.
 
-## Testing enforced updating (MSTG-ARCH-9)
+## Testing Enforced Updating (MSTG-ARCH-9)
 
 ### Overview
 
-When checking for [enforced updating](#enforced-updating) make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
+When checking for [enforced updating](#enforced-updating "Enforced Updating") make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
 Next, pay attention to the `AppUpdateType.IMMEDIATE` use: if a security update comes in, then this flag should be used in order to make sure that the user cannot go forward with using the app without updating it.
 As you can see, in part 3 of the example: make sure that cancellations or errors do end up in re-checks and that a user cannot move forward in case of a critical security update.
 Finally, in part 4: you can see that for every entry point in the application, an update-mechanism should be enforced, so that bypassing it will be harder.
@@ -1929,7 +1929,7 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 ### Overview
 
-When testing for [WebViews Cleanup](#webviews-cleanup) there are a couple of areas where an app can delete WebView related data. You should inspect all related APIs and try to fully track data deletion.
+When testing for [WebViews cleanup](#webviews-cleanup "WebViews Cleanup") there are a couple of areas where an app can delete WebView related data. You should inspect all related APIs and try to fully track data deletion.
 
 - **WebView APIs**:
   - **Initialization**: an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "true".
