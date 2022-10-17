@@ -183,7 +183,7 @@ To test if your own test accounts are prone to brute forcing, append the correct
 Stateful (or "session-based") authentication is characterized by authentication records on both the client and server. The authentication flow is as follows:
 
 1. The app sends a request with the user's credentials to the backend server.
-2. The server verifies the credentials If the credentials are valid, the server creates a new session along with a random session ID.
+2. The server verifies the credentials. If the credentials are valid, the server creates a new session along with a random session ID.
 3. The server sends to the client a response that includes the session ID.
 4. The client sends the session ID with all subsequent requests. The server validates the session ID and retrieves the associated session record.
 5. After the user logs out, the server-side session record is destroyed and the client discards the session ID.
@@ -200,17 +200,17 @@ Make sure that:
 - The IDs can't be guessed easily (use proper length and entropy).
 - Session IDs are always exchanged over secure connections (e.g. HTTPS).
 - The mobile app doesn't save session IDs in permanent storage.
-- The server verifies the session whenever a user tries to access privileged application elements, (a session ID must be valid and must correspond to the proper authorization level).
+- The server verifies the session whenever a user tries to access privileged application elements (a session ID must be valid and must correspond to the proper authorization level).
 - The session is terminated on the server side and session information deleted within the mobile app after it times out or the user logs out.
 
 Authentication shouldn't be implemented from scratch but built on top of proven frameworks. Many popular frameworks provide ready-made authentication and session management functionality. If the app uses framework APIs for authentication, check the framework security documentation for best practices. Security guides for common frameworks are available at the following links:
 
 - [Spring (Java)](https://projects.spring.io/spring-security "Spring (Java)")
 - [Struts (Java)](https://struts.apache.org/security/ "Struts (Java)")
-- [Laravel (PHP)](https://laravel.com/docs/5.4/authentication "Laravel (PHP)")
+- [Laravel (PHP)](https://laravel.com/docs/9.x/authentication "Laravel (PHP)")
 - [Ruby on Rails](https://guides.rubyonrails.org/security.html "Ruby on Rails")
 
-A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/04-Authentication_Testing/README) and [Testing Session Management](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/README) chapters.
+A great resource for testing server-side authentication is the OWASP Web Testing Guide, specifically the [Testing Authentication](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/04-Authentication_Testing/README) and [Testing Session Management](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/06-Session_Management_Testing/README) chapters.
 
 ## Testing Session Timeout (MSTG-AUTH-7)
 
@@ -309,13 +309,13 @@ Transaction signing requires authentication of the user's approval of critical t
 
 ### Static Analysis
 
-There are various two-factor authentication mechanism available which can range from 3rd party libraries, usage of external apps to self implemented checks by the developer(s).
+There are various two-factor authentication mechanisms available which can range from 3rd party libraries, usage of external apps to self implemented checks by the developer(s).
 
 Use the app first and identify where 2FA is needed in the workflows (usually during login or when executing critical transactions). Do also interview the developer(s) and/or architects to understand more about the 2FA implementation. If a 3rd party library or external app is used, verify if the implementation was done accordingly to the security best practices.
 
 ### Dynamic Testing
 
-Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transactions) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
+Use the app extensively (going through all UI flows) while using an interception proxy to capture the requests sent to remote endpoints. Next, replay requests to endpoints that require 2FA (e.g., performing a financial transaction) while using a token or session ID that hasn't yet been elevated via 2FA or step-up authentication. If an endpoint is still sending back requested data that should only be available after 2FA or step-up authentication, authentication checks haven't been properly implemented at that endpoint.
 
 When OTP authentication is used, consider that most OTPs are short numeric values. An attacker can bypass the second factor by brute-forcing the values within the range at the lifespan of the OTP if the accounts aren't locked after N unsuccessful attempts at this stage. The probability of finding a match for 6-digit values with a 30-second time step within 72 hours is more than 90%.
 
@@ -327,7 +327,7 @@ You should check if the app relies on static responses from the remote endpoint 
 
 To prevent these kind of attacks, the application should always verify some kind of user token or other dynamic information related to the user that was previously securely stored (e.g. in the Keychain/KeyStore).
 
-Consult the [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/01-Testing_for_Session_Management_Schema "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
+Consult the [OWASP Testing Guide](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/06-Session_Management_Testing/01-Testing_for_Session_Management_Schema "OWASP Testing Guide V4 (Testing for Session Management)") for more information about testing session management.
 
 ## Testing Stateless (Token-Based) Authentication (MSTG-AUTH-3)
 
@@ -558,15 +558,7 @@ Paid content requires special care, and additional meta-information (e.g., opera
 
 In addition, non-repudiation mechanisms should be applied to sensitive transactions (e.g. paid content access, given consent to Terms and Conditions clauses, etc.) in order to prove that a specific transaction was in fact performed (integrity) and by whom (authentication).
 
-In all cases, you should verify whether different devices are detected correctly. Therefore, the binding of the application to the actual device should be tested.
-In iOS, a developer can use `identifierForVendor`, which is related to the bundle ID: the moment you change a bundle ID, the method will return a different value. When the app is ran for the first time, make sure you store the value returned by `identifierForVendor` to the KeyChain, so that changes to it can be detected at an early stage.
-
-In Android, the developer can use `Settings.Secure.ANDROID_ID` till Android 8.0 (API level 26) to identify an application instance. Note that starting at Android 8.0 (API level 26), `ANDROID_ID` is no longer a device unique ID. Instead, it becomes scoped by the combination of app signing key, user and device. So validating `ANDROID_ID` for device blocking could be tricky for these Android versions. Because if an app changes its signing key, the `ANDROID_ID` will change and it won't be able to recognize old users devices. Therefore, it's better to store the `ANDROID_ID` encrypted and privately in a private a shared preferences file using a randomly generated key from the `AndroidKeyStore` and preferably AES_GCM encryption. The moment the app signature changes, the application can check for a delta and register the new `ANDROID_ID`. The moment this new ID changes without a new application signing key, it should indicate that something else is wrong.
-Next, the device binding can be extended by signing requests with a key stored in the `Keychain` for iOS and in the `KeyStore` in Android can reassure strong device binding.
-You should also test if using different IPs, different locations and/or different time-slots will trigger the right type of information in all scenarios.
-
-Lastly, the blocking of the devices should be tested, by blocking a registered instance of the app and see if it is then no longer allowed to authenticate.
-Note: in case of an application which requires L2 protection, it can be a good idea to warn a user even before the first authentication on a new device. Instead: warn the user already when a second instance of the app is registered.
+Lastly, it should be possible for the user to log out specific open sessions and in some cases it might be interesting to fully block certain devices using a device identifier. See sections ["Testing Device Binding (Android)"](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-device-binding-mstg-resilience-10) and ["Device Binding (iOS)"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#device-binding-mstg-resilience-10) for further details.
 
 ## References
 
