@@ -560,7 +560,6 @@ In addition, non-repudiation mechanisms should be applied to sensitive transacti
 
 Lastly, it should be possible for the user to log out specific open sessions and in some cases it might be interesting to fully block certain devices using a device identifier. See sections ["Testing Device Binding (Android)"](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#testing-device-binding-mstg-resilience-10) and ["Device Binding (iOS)"](0x06j-Testing-Resiliency-Against-Reverse-Engineering.md#device-binding-mstg-resilience-10) for further details.
 
-
 ## References
 
 ### OWASP MASVS
