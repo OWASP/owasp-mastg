@@ -1539,7 +1539,7 @@ Intent { act=theBroadcast flg=0x400010 (has extras) }
 
 ### Overview
 
-To test for [JavaScript execution in WebViews](#javascript-execution-in-webviews "JavaScript Execution in WebViews") the source code must be checked for usage and implementations of the WebView class. Then on a case-by-case basis a decision must be made for wheather or not each WebView should allow JavaScript execution. If JavaScript exection is allowed, then a provided list of best practices should be followed.
+To test for [JavaScript execution in WebViews](#javascript-execution-in-webviews "JavaScript Execution in WebViews") the source code must be checked for usage and implementations of the WebView class. Then on a case-by-case basis a decision must be made for whether or not each WebView should allow JavaScript execution. If JavaScript execution is allowed, then a provided list of best practices should be followed.
 
 ### Static Analysis
 
