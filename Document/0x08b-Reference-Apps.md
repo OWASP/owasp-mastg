@@ -60,7 +60,7 @@ A vulnerable Android app with vulnerabilities similar to the test cases describe
 
 Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Java-App>
 
-### MASTG Hacking Playground (Kotlin)
+#### MASTG Hacking Playground (Kotlin)
 
 Available at <https://github.com/OWASP/MASTG-Hacking-Playground/tree/master/Android/MSTG-Android-Kotlin-App>
 
