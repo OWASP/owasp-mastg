@@ -52,7 +52,6 @@ theme:
     repo: fontawesome/brands/github
   features:
     - search.suggest
-    - search.highlight
     - search.share
     - toc.integrate
     - navigation.instant
