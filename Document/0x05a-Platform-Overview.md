@@ -714,7 +714,7 @@ The Android application attack surface consists of all components of the applica
 
 - Validate all input by means of IPC communication or URL schemes, see also:
   - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
-  - [Testing Custom URL Schemes](0x05h-Testing-Platform-Interaction.md#testing-deep-links-mstg-platform-3)
+  - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-deep-links-mstg-platform-3)
 - Validate all input by the user in input fields.
 - Validate the content loaded inside a WebView, see also:
   - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5)
