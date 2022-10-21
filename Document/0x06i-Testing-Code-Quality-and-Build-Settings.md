@@ -55,7 +55,7 @@ At first you need to determine the mode in which your app is to be generated to 
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
-Alternatively, you can use codesign or [ldid](https://git.saurik.com/ldid.git, "ldid") to show the entitlements of the binary to check if the application is debuggable. if the value of [get-task-allow](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues) key is set to true, other processes (such as debuggers) can attach to that app.
+Alternatively, you can use codesign or ldid to show the entitlements of the binary to check if the application is debuggable. if the value of [get-task-allow](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues) key is set to true, other processes (such as debuggers) can attach to that app.
 
 **codesign**
 
