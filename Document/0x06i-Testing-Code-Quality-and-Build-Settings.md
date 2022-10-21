@@ -55,6 +55,51 @@ At first you need to determine the mode in which your app is to be generated to 
 - Make sure that the "Debug executable" option is not selected.
 - Or in the 'Swift Compiler - Custom Flags' section / 'Other Swift Flags', make sure the '-D DEBUG' entry does not exist.
 
+Alternatively, you can use codesign or [ldid](https://git.saurik.com/ldid.git, "ldid") to show the entitlements of the binary to check if the application is debuggable. if the value of [get-task-allow](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues) key is set to true, other processes (such as debugger) are allowed to attach to the app.
+
+**codesign**
+
+```bash
+$ codesign -d --entitlements - TargetApp.app
+
+Executable=/Users/owasp/TargetApp.app/TargetApp
+[Dict]
+	[Key] application-identifier
+	[Value]
+		[String] XXXXXXXXXX.YY.ZZ.TargetApp
+	[Key] com.apple.developer.team-identifier
+	[Value]
+		[String] XXXXXXXXXX
+	[Key] get-task-allow
+	[Value]
+		[Bool] true
+	[Key] keychain-access-groups
+	[Value]
+		[Array]
+			[String] XXXXXXXXXX.YY.ZZ.TargetApp
+```
+
+**ldid**
+
+```bash
+$ ldid -e TargetApp.app/TargetApp
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>application-identifier</key>
+	<string>XXXXXXXXXX.YY.ZZ.TargetApp</string>
+	<key>com.apple.developer.team-identifier</key>
+	<string>XXXXXXXXXX</string>
+	<key>get-task-allow</key>
+	<true/>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>XXXXXXXXXX.YY.ZZ.TargetApp</string>
+	</array>
+</dict>
+```
+
 ### Dynamic Analysis
 
 Check whether you can attach a debugger directly, using Xcode. Next, check if you can debug the app on a jailbroken device after Clutching it. This is done using the debug-server which comes from the BigBoss repository at Cydia.
