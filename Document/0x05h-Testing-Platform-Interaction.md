@@ -312,7 +312,7 @@ requested permissions:
 install permissions:
   com.google.android.c2dm.permission.RECEIVE: granted=true
   android.permission.USE_CREDENTIALS: granted=true
-  com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true  
+  com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
 ...
 ```
 
@@ -558,7 +558,7 @@ As we mentioned before, [handling page navigation](https://developer.android.com
   - This is not called for `javascript:` or `blob:` URLs, or for assets accessed via `file:///android_asset/` or `file:///android_res/` URLs.
 In the case of redirects, this is only called for the initial resource URL, not any subsequent redirect URLs.
   - When Safe Browsing is enabled, these URLs still undergo Safe Browsing checks but the developer can allow the URL with `setSafeBrowsingWhitelist` or even ignore the warning via the `onSafeBrowsingHit` callback.
-  
+
 As you can see there are a lot of points to consider when testing the security of WebViews that have a WebViewClient configured, so be sure to carefully read and understand all of them by checking the [`WebViewClient` Documentation](https://developer.android.com/reference/android/webkit/WebViewClient "WebViewClient").
 
 While the default value of `EnableSafeBrowsing` is `true`, some applications might opt to disable it. To verify that SafeBrowsing is enabled, inspect the AndroidManifest.xml file and make sure that the configuration below is not present:
@@ -876,7 +876,7 @@ In this case we've crafted the deep link including arbitrary parameters (`?messa
 - File: `WebViewActivity.kt`
 - Class: `com.mstg.deeplinkdemo.WebViewActivity`
 - Method: `onCreate`
-  
+
 > Sometimes you can even take advantage of other applications that you know interact with your target app. You can reverse engineer the app, (e.g. to extract all strings and filter those which include the target deep links, `deeplinkdemo:///load.html` in the previous case), or use them as triggers, while hooking the app as previously discussed.
 
 ## Testing for Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
@@ -1346,6 +1346,109 @@ Intent { act=theBroadcast flg=0x400010 (has extras) }
 144: act=theBroadcast flg=0x400010 (has extras)
 ```
 
+## Testing for Vulnerable Implementation of PendingIntent (MSTG-PLATFORM-4)
+
+### Overview
+
+Often while dealing with complex flows during app development, there are situations where an app A wants another app B to perform a certain action in the future, on app A's behalf. Trying to implement this by only using `Intent`s leads to various security problems, like having multiple exported components. To handle this use case in a secure manner, Android exposes [`PendingIntent`](https://developer.android.com/reference/android/app/PendingIntent "PendingIntent") API.
+
+`PendingIntent` are most commonly used in case of [notification](https://developer.android.com/develop/ui/views/notifications "notification"), [app widgets](https://developer.android.com/develop/ui/views/appwidgets/advanced#user-interaction "app widgets"), [media browser services](https://developer.android.com/guide/topics/media-apps/audio-app/building-a-mediabrowserservice "media browser services") etc. In case of notifications, `PendingIntent` is used in declaring an intent to be executed when a user performs an action with an app's notification. Notification requires a callback into the application, to trigger an action whenever user clicks the notification.
+
+Internally, a `PendingIntent` object wraps a normal `Intent` object (referred as base intent), which will eventually be used for invoking an action. For example, the base intent specifies to start an activity A in an application. The receiving application of the `PendingIntent`, will unwrap and get this base intent, and invoke the activity A, by calling `PendingIntent.send()` function.
+
+A typical implementation for using `PendingIntent` is below:
+
+```java
+Intent intent = new Intent(applicationContext, SomeActivity.class);     // base intent
+
+// create a pending intent
+PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+// send the pending intent to another app
+Intent anotherIntent = new Intent();
+anotherIntent.setClassName("other.app", "other.app.MainActivity");
+anotherIntent.putExtra("pendingIntent", pendingIntent);
+startActivity(anotherIntent);
+```
+
+What makes a `PendingIntent` secure is that, it grants permission to a foreign application to use the contained `Intent` (the base intent) as if it was executed from your app's own process, unlike an ordinary `Intent`. Thus, an application can freely use them for creating callbacks, without a need to create exported activities.
+
+If not implemented properly, a malicious application can **hijack** a `PendingIntent`. For instance, in the notification example above, a malicious application with `android.permission.BIND_NOTIFICATION_LISTENER_SERVICE` can bind to the notification listener service and can fetch the pending intent.
+
+There are certain security pitfalls while implementing `PendingIntent`s, and are listed below:
+
+- **Mutable fields**: A `PendingIntent` can have mutable and unfilled fields, which can be filled by a malicious application. This can lead to leaking access to non-exported app components to malicious application. By using the flag [`PendingIntent.FLAG_IMMUTABLE`](https://developer.android.com/reference/android/app/PendingIntent#FLAG_IMMUTABLE "FLAG_IMMUTABLE"), makes the `PendingIntent` immutable and prevents any changes to the fields. Prior to Android 12 (API level 31) the `PendingIntent`s were mutable by default, while from Android 12 (API 31) onwards, it is changed to [immutable by default](https://developer.android.com/reference/android/app/PendingIntent#FLAG_MUTABLE "immutable by default"). This change prevents any accidental vulnerabilities.
+
+- **Use of implicit intent**: A malicious application can receive a `PendingIntent` and then update the base intent to target the component and package within the malicious app. As a mitigation, ensure to explicitly set the exact package, action and component that will receive the base intent.
+
+The most common case of attacking `PendingIntent` is when a malicious application is able to intercept
+
+For further details, check the Android documentation on [using a pending intent](https://developer.android.com/guide/components/intents-filters#PendingIntent "using a pending intent").
+
+### Static Analysis
+
+To identify vulnerable implementations, static analysis can be performed by looking for API calls used for obtaining a `PendingIntent`. Such APIs are listed below:
+
+```java
+PendingIntent getActivity(Context, int, Intent, int)
+PendingIntent getActivity(Context, int, Intent, int, Bundle)
+PendingIntent getActivities(Context, int, Intent, int, Bundle)
+PendingIntent getActivities(Context, int, Intent, int)
+PendingIntent getForegroundService(Context, int, Intent, int)
+PendingIntent getService(Context, int, Intent, int)
+```
+
+Once any of the above function is spotted, check the implementation of the base intent and the `PendingIntent` for the security pitfalls listed above.
+
+For example, in [A-156959408](https://android.googlesource.com/platform/frameworks/base/+/6ae2bd0e59636254c32896f7f01379d1d704f42d "A-156959408")(CVE-2020-0389), the base intent is implicit and also the `PendingIntent` is mutable, thus making it exploitable.
+
+```java
+private Notification createSaveNotification(Uri uri) {
+    Intent viewIntent = new Intent(Intent.ACTION_VIEW)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            .setDataAndType(uri, "video/mp4"); //Implicit Intent
+
+//... skip ...
+
+
+Notification.Builder builder = new Notification.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentTitle(getResources().getString(R.string.screenrecord_name))
+                .setContentText(getResources().getString(R.string.screenrecord_save_message))
+                .setContentIntent(PendingIntent.getActivity(
+                        this,
+                        REQUEST_CODE,
+                        viewIntent,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION))     // Mutable PendingIntent.
+                .addAction(shareAction)
+                .addAction(deleteAction)
+                .setAutoCancel(true);
+
+```
+
+### Dynamic Analysis
+
+Frida can be used for hooking the APIs used for obtaining a `PendingIntent`. This information can be used in determining the call site, and which can be further used for performing static analysis at the call site, as described above.
+
+A Frida script hooking `PendingIntent.getActivity` function, may look like following:
+
+```javascript
+var pendingIntent = Java.use('android.app.PendingIntent');
+
+var getActivity_1 = pendingIntent.getActivity.overload("android.content.Context", "int", "android.content.Intent", "int");
+
+getActivity_1.implementation = function(context, requestCode, intent, flags){
+    console.log("[*] Calling PendingIntent.getActivity("+intent.getAction()+")");
+    console.log("\t[-] Base Intent toString: " + intent.toString());
+    console.log("\t[-] Base Intent getExtras: " + intent.getExtras());
+    console.log("\t[-] Base Intent getFlags: " + intent.getFlags());
+    return this.getActivity(context, requestCode, intent, flags);
+}
+```
+
+This approach can be helpful when dealing with applications with large code base, where determining the control flow can be tricky sometimes.
+
+
 ## Testing JavaScript Execution in WebViews (MSTG-PLATFORM-5)
 
 ### Overview
@@ -1578,7 +1681,7 @@ class BagOfPrimitives {
 // Serialization
 BagOfPrimitives obj = new BagOfPrimitives();
 Gson gson = new Gson();
-String json = gson.toJson(obj);  
+String json = gson.toJson(obj);
 
 // ==> json is {"value1":1,"value2":"abc"}
 
@@ -1850,7 +1953,7 @@ As a final note, always remember to properly check the API level that app is tar
 
 ### Dynamic Analysis
 
-Abusing this kind of vulnerability on a dynamic manner can be pretty challenging and very specialized as it closely depends on the target Android version. For instance, for versions up to Android 7.0 (API level 24) you can use the following APKs as a proof of concept to identify the existence of the vulnerabilities.  
+Abusing this kind of vulnerability on a dynamic manner can be pretty challenging and very specialized as it closely depends on the target Android version. For instance, for versions up to Android 7.0 (API level 24) you can use the following APKs as a proof of concept to identify the existence of the vulnerabilities.
 
 - [Tapjacking POC](https://github.com/FSecureLABS/tapjacking-poc "Tapjacking POC"): This APK creates a simple overlay which sits on top of the testing application.
 - [Invisible Keyboard](https://github.com/DEVizzi/Invisible-Keyboard "Invisible Keyboard"): This APK creates multiple overlays on the keyboard to capture keystrokes. This is one of the exploit demonstrated in Cloak and Dagger attacks.
