@@ -640,7 +640,7 @@ Each folder has its own purpose:
 
 However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
 
-Refer to the "[Testing Data Storage](https://github.com/OWASP/owasp-mastg/pull/0x05d-Testing-Data-Storage.md "Testing Data Storage")" chapter for more information and best practices on securely storing sensitive data.
+Refer to the "[Testing Data Storage](0x05d-Testing-Data-Storage.md "Testing Data Storage")" chapter for more information and best practices on securely storing sensitive data.
 
 #### Monitoring System Logs
 
