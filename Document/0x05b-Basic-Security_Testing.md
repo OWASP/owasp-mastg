@@ -824,7 +824,7 @@ The following procedure, which works on the Android emulator that ships with And
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 
-A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
+A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and sets a proxy to 127.0.0.1 and port 8080.
 
 ```bash
 emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
@@ -847,7 +847,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
-This installs the certificate in the user certificate store (Tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
+This installs the certificate in the user certificate store (tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
 
 1. Run adb as root with `adb root` and `adb shell`.
 2. Locate the newly installed certificate at `/data/misc/user/0/cacerts-added/`.
@@ -858,12 +858,12 @@ For Android 7.0 (API level 24) and above follow the same procedure described in 
 
 #### Interception Proxy for a Physical Device
 
-The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
+The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://portswigger.net/support/creating-an-ad-hoc-wireless-network-in-os-x "Creating an Ad-hoc Wireless Network in OS X").
 
 Once you've configured the network and established a connection between the testing host computer and the mobile device, several steps remain.
 
-- The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
+- The proxy must be [configured to point to the interception proxy](https://portswigger.net/support/configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp").
+- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://portswigger.net/support/installing-burp-suites-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
 - Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in this [blog post](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
