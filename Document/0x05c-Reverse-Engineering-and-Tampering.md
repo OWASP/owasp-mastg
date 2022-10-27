@@ -34,7 +34,7 @@ If you want to look directly into Java source code on a GUI, simply open your AP
 
 Android decompilers go one step further and attempt to convert Android bytecode back into Java source code, making it more human-readable. Fortunately, Java decompilers generally handle Android bytecode well. The above mentioned tools embed, and sometimes even combine, popular free decompilers such as:
 
-- [JD](http://jd.benow.ca/ "JD")
+- [JD](http://java-decompiler.github.io/ "JD")
 - [JAD](http://www.javadecompilers.com/jad "JAD")
 - [jadx](https://github.com/skylot/jadx "jadx")
 - [Procyon](https://github.com/mstrobel/procyon "Procyon")
@@ -50,7 +50,7 @@ Seems like we're expected to find some kind of secret code!
 
 We're looking for a secret string stored somewhere inside the app, so the next step is to look inside. First, unzip the APK file (`unzip UnCrackable-Level1.apk -d UnCrackable-Level1`) and look at the content. In the standard setup, all the Java bytecode and app data is in the file `classes.dex` in the app root directory (`UnCrackable-Level1/`). This file conforms to the Dalvik Executable Format (DEX), an Android-specific way of packaging Java programs. Most Java decompilers take plain class files or JARs as input, so you need to convert the classes.dex file into a JAR first. You can do this with `dex2jar` or `enjarify`.
 
-Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the [CFR decompiler](https://www.benf.org/other/cfr/ "CFR decompiler"). CFR is under active development, and brand-new releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
+Once you have a JAR file, you can use any free decompiler to produce Java code. In this example, we'll use the [CFR decompiler](https://www.benf.org/other/cfr/ "CFR decompiler"). CFR releases are available on the author's website. CFR was released under an MIT license, so you can use it freely even though its source code is not available.
 
 The easiest way to run CFR is through [apkx](0x08a-Testing-Tools.md#apkx), which also packages `dex2jar` and automates extraction, conversion, and decompilation. Run it on the APK and you should find the decompiled sources in the directory `Uncrackable-Level1/src`. To view the sources, a simple text editor (preferably with syntax highlighting) is fine, but loading the code into a Java IDE makes navigation easier. Let's import the code into IntelliJ, which also provides on-device debugging functionality.
 
@@ -214,13 +214,13 @@ Usage: aa[0*?]   # see also 'af' and 'afna'
 | aav [sat]           find values referencing a specific section or map
 ```
 
-There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from this [article](http://radare.today/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<http://radare.today/>) offers a good summary.
+There is a thing that is worth noticing about radare2 vs other disassemblers like e.g. IDA Pro. The following quote from this [article](https://radareorg.github.io/blog/posts/analysis-by-default/ "radare2 - Analysis By Default") of radare2's blog (<https://radareorg.github.io/blog/>) offers a good summary.
 
 > Code analysis is not a quick operation, and not even predictable or taking a linear time to be processed. This makes starting times pretty heavy, compared to just loading the headers and strings information like it’s done by default.
 >
 > People that are used to [IDA](0x08a-Testing-Tools.md#ida-pro-commercial-tool) or [Hopper](0x08a-Testing-Tools.md#hopper-commercial-tool) just load the binary, go out to make a coffee and then when the analysis is done, they start doing the manual analysis to understand what the program is doing. It’s true that those tools perform the analysis in background, and the GUI is not blocked. But this takes a lot of CPU time, and r2 aims to run in many more platforms than just high-end desktop computers.
 
-This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of an specific function is a trivial task that can be performed in one command.
+This said, please see section "[Reviewing Disassembled Native Code](#reviewing-disassembled-native-code "Reviewing Disassembled Native Code")" to learn more bout how radare2 can help us performing our reversing tasks much faster. For example, getting the disassembly of a specific function is a trivial task that can be performed in one command.
 
 ##### IDA Pro
 
