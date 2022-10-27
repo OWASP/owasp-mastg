@@ -200,7 +200,7 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
+First, connect to the app with Objection as explained in "[Recommended Tools - Objection](0x08a-Testing-Tools.md#objection "Testing Tools - Objection")". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
 ```bash
 $ frida-ps -U | grep -i owasp
@@ -243,7 +243,7 @@ Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
 
 ```
 
-The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of e.g. taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
+The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of for example taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
 
 #### Using Termux
 
@@ -490,8 +490,8 @@ The following files are unpacked:
   - CERT.RSA: the app's certificate(s)
   - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
 - assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager) can retrieve
-- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing 3rd party libraries that are part of the APK.
+- classes.dex: classes compiled in the DEX file format, that Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
@@ -517,10 +517,10 @@ The Android Manifest is the main source of information, it includes a lot of int
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
-- App permissions: `permission` (see "Android Platform APIs")
-- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
-- App components: `activity`, `service`, `provider`, `receiver` (see "Android Platform APIs" and "Data Storage on Android")
-- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+- App permissions: `permission` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")")
+- Backup allowance: `android:allowBackup` (see "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
+- App components: `activity`, `service`, `provider`, `receiver` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")" and "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
+- Debuggable flag: `debuggable` (see "[Code Quality and Build Settings of Android Apps](0x05i-Testing-Code-Quality-and-Build-Settings.md "Testing Code Quality and Build Settings")")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
@@ -640,7 +640,7 @@ Each folder has its own purpose:
 
 However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
 
-Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+Refer to the "[Testing Data Storage](0x05d-Testing-Data-Storage.md "Testing Data Storage")" chapter for more information and best practices on securely storing sensitive data.
 
 #### Monitoring System Logs
 
