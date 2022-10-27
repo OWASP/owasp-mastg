@@ -517,7 +517,7 @@ The Android Manifest is the main source of information, it includes a lot of int
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
-- App permissions: `permission` (see "[Android Platform APIs](https://github.com/OWASP/owasp-mastg/pull/0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")")
+- App permissions: `permission` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")")
 - Backup allowance: `android:allowBackup` (see "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
 - App components: `activity`, `service`, `provider`, `receiver` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")" and "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
 - Debuggable flag: `debuggable` (see "[Code Quality and Build Settings of Android Apps](0x05i-Testing-Code-Quality-and-Build-Settings.md "Testing Code Quality and Build Settings")")
