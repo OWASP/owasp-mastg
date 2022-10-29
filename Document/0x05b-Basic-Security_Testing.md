@@ -56,12 +56,12 @@ Free emulators:
 
 Commercial emulators:
 
-- [Genymotion](https://www.genymotion.com/fun-zone/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
+- [Genymotion](https://www.genymotion.com/download/ "Genymotion") - Mature emulator with many features, both as local and cloud-based solution. Free version available for non-commercial use.
 - [Corellium](https://corellium.com/ "Corellium") - Offers custom device virtualization through a cloud-based or on-prem solution.
 
 Although there exist several free Android emulators, we recommend using AVD as it provides enhanced features appropriate for testing your app compared to the others. In the remainder of this guide, we will use the official AVD to perform tests.
 
-AVD supports some hardware emulation, such as [GPS](https://developer.android.com/studio/run/emulator-commandline.html#geo "GPS Emulation"), [SMS](https://developer.android.com/studio/run/emulator-commandline.html#sms "SMS") and [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
+AVD supports some hardware emulation, such as GPS or SMS through its so-called [Extended Controls](https://developer.android.com/studio/run/advanced-emulator-usage#extended "Extended Controls") as well as [motion sensors](https://developer.android.com/guide/topics/sensors/sensors_overview#test-with-the-android-emulator "Testing motion sensors on emulators").
 
 You can either start an Android Virtual Device (AVD) by using the AVD Manager in Android Studio or start the AVD manager from the command line with the `android` command, which is found in the tools directory of the Android SDK:
 
@@ -98,11 +98,11 @@ To root a mobile device, first unlock its boot loader. The unlocking procedure d
 
 ##### Rooting with Magisk
 
-Magisk ("Magic Mask") is one way to root your Android device. It's specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
+Magisk ("Magic Mask") is one way to root your Android device. Its specialty lies in the way the modifications on the system are performed. While other rooting tools alter the actual data on the system partition, Magisk does not (which is called "systemless"). This enables a way to hide the modifications from root-sensitive applications (e.g. for banking or games) and allows using the official Android OTA upgrades without the need to unroot the device beforehand.
 
 You can get familiar with Magisk reading the official [documentation on GitHub](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you don't have Magisk installed, you can find installation instructions in [the documentation](https://topjohnwu.github.io/Magisk/ "Magisk Documentation"). If you use an official Android version and plan to upgrade it, Magisk provides a [tutorial on GitHub](https://topjohnwu.github.io/Magisk/ota.html "OTA Installation").
 
-Furthermore, developers can use the power of Magisk to create custom modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [Xposed Framework](https://repo.xposed.info/module/de.robv.android.xposed.installer "Xposed Installer (framework)") (available for SDK versions up to 27).
+Furthermore, developers can use the power of Magisk to create custom modules and [submit](https://github.com/Magisk-Modules-Repo/submission "Submission") them to the official [Magisk Modules repository](https://github.com/Magisk-Modules-Repo "Magisk-Modules-Repo"). Submitted modules can then be installed inside the Magisk Manager application. One of these installable modules is a systemless version of the famous [Xposed Framework](0x08a-Testing-Tools.md#xposed) (available for SDK versions up to 27).
 
 ##### Root Detection
 
@@ -169,7 +169,7 @@ If you prefer, you can also enable SSH access. A convenient option is to use [Te
 
 #### On-device Shell App
 
-While usually using an on-device shell (terminal emulator) such as [Termux](0x08a-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or check some configuration.
+While usually using an on-device shell (terminal emulator) such as [Termux](0x08a-Testing-Tools.md#termux) might be very tedious compared to a remote shell, it can prove handy for debugging in case of, for example, network issues or to check some configuration.
 
 ### Host-Device Data Transfer
 
@@ -200,7 +200,7 @@ If you're using a rooted device you can now start exploring the whole file syste
 
 This option is useful when you are working on a specific app and want to copy files you might encounter inside its sandbox (notice that you'll only have access to the files that the target app has access to). This approach works without having to set the app as debuggable, which is otherwise required when using Android Studio's Device File Explorer.
 
-First, connect to the app with Objection as explained in "Recommended Tools - Objection". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
+First, connect to the app with Objection as explained in "[Recommended Tools - Objection](0x08a-Testing-Tools.md#objection "Testing Tools - Objection")". Then, use `ls` and `cd` as you normally would on your terminal to explore the available files:
 
 ```bash
 $ frida-ps -U | grep -i owasp
@@ -243,7 +243,7 @@ Successfully downloaded ... to sg.vp.owasp_mobile.omtg_android_preferences.xml
 
 ```
 
-The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of e.g. taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
+The downside is that, at the time of this writing, objection does not support bulk file transfer yet, so you're restricted to copy individual files. Still, this can come handy in some scenarios where you're already exploring the app using objection anyway and find some interesting file. Instead of for example taking note of the full path of that file and use `adb pull <path_to_some_file>` from a separate terminal, you might just want to directly do `file download <some_file>`.
 
 #### Using Termux
 
@@ -490,8 +490,8 @@ The following files are unpacked:
   - CERT.RSA: the app's certificate(s)
   - CERT.SF: list of resources and the SHA-1 digest of the corresponding lines in the MANIFEST.MF file
 - assets: directory containing app assets (files used within the Android app, such as XML files, JavaScript files, and pictures), which the [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager) can retrieve
-- classes.dex: classes compiled in the DEX file format, the Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
-- lib: directory containing 3rd party libraries that are part of the APK.
+- classes.dex: classes compiled in the DEX file format, that Dalvik virtual machine/Android Runtime can process. DEX is Java bytecode for the Dalvik Virtual Machine. It is optimized for small devices
+- lib: directory containing 3rd party libraries that are part of the APK
 - res: directory containing resources that haven't been compiled into resources.arsc
 - resources.arsc: file containing precompiled resources, such as XML files for the layout
 
@@ -517,10 +517,10 @@ The Android Manifest is the main source of information, it includes a lot of int
 
 Here's a non-exhaustive list of some info and the corresponding keywords that you can easily search for in the Android Manifest by just inspecting the file or by using `grep -i <keyword> AndroidManifest.xml`:
 
-- App permissions: `permission` (see "Android Platform APIs")
-- Backup allowance: `android:allowBackup` (see "Data Storage on Android")
-- App components: `activity`, `service`, `provider`, `receiver` (see "Android Platform APIs" and "Data Storage on Android")
-- Debuggable flag: `debuggable` (see "Code Quality and Build Settings of Android Apps")
+- App permissions: `permission` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")")
+- Backup allowance: `android:allowBackup` (see "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
+- App components: `activity`, `service`, `provider`, `receiver` (see "[Android Platform APIs](0x05h-Testing-Platform-Interaction.md "Testing Platform Interaction")" and "[Data Storage on Android](0x05d-Testing-Data-Storage.md "Testing Data Storage)")
+- Debuggable flag: `debuggable` (see "[Code Quality and Build Settings of Android Apps](0x05i-Testing-Code-Quality-and-Build-Settings.md "Testing Code Quality and Build Settings")")
 
 Please refer to the mentioned chapters to learn more about how to test each of these points.
 
@@ -640,7 +640,7 @@ Each folder has its own purpose:
 
 However, the app might store more data not only inside these folders but also in the parent folder (`/data/data/[package-name]`).
 
-Refer to the "Testing Data Storage" chapter for more information and best practices on securely storing sensitive data.
+Refer to the "[Testing Data Storage](0x05d-Testing-Data-Storage.md "Testing Data Storage")" chapter for more information and best practices on securely storing sensitive data.
 
 #### Monitoring System Logs
 
@@ -824,7 +824,7 @@ The following procedure, which works on the Android emulator that ships with And
 
 HTTP and HTTPS requests should now be routed over the proxy on the host computer. If not, try toggling airplane mode off and on.
 
-A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and setting a proxy to 127.0.0.1 and port 8080.
+A proxy for an AVD can also be configured on the command line by using the [emulator command](https://developer.android.com/studio/run/emulator-commandline "Emulator Command") when starting an AVD. The following example starts the AVD Nexus_5X_API_23 and sets a proxy to 127.0.0.1 and port 8080.
 
 ```bash
 emulator @Nexus_5X_API_23 -http-proxy 127.0.0.1:8080
@@ -847,7 +847,7 @@ An easy way to install a CA certificate is to push the certificate to the device
 
 You should then be prompted to confirm installation of the certificate (you'll also be asked to set a device PIN if you haven't already).
 
-This installs the certificate in the user certificate store (Tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
+This installs the certificate in the user certificate store (tested on Genymotion VM). In order to place the certificate in the root store you can perform the following steps:
 
 1. Run adb as root with `adb root` and `adb shell`.
 2. Locate the newly installed certificate at `/data/misc/user/0/cacerts-added/`.
@@ -858,12 +858,12 @@ For Android 7.0 (API level 24) and above follow the same procedure described in 
 
 #### Interception Proxy for a Physical Device
 
-The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://support.portswigger.net/customer/portal/articles/1841150-Mobile%20Set-up_Ad-hoc%20network_OSX.html "Creating an Ad-hoc Wireless Network in OS X").
+The available network setup options must be evaluated first. The mobile device used for testing and the host computer running the interception proxy must be connected to the same Wi-Fi network. Use either an (existing) access point or create [an ad-hoc wireless network](https://portswigger.net/support/creating-an-ad-hoc-wireless-network-in-os-x "Creating an Ad-hoc Wireless Network in OS X").
 
 Once you've configured the network and established a connection between the testing host computer and the mobile device, several steps remain.
 
-- The proxy must be [configured to point to the interception proxy](https://support.portswigger.net/customer/portal/articles/1841101-Mobile%20Set-up_Android%20Device.html "Configuring an Android Device to Work With Burp").
-- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://support.portswigger.net/customer/portal/articles/1841102-installing-burp-s-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
+- The proxy must be [configured to point to the interception proxy](https://portswigger.net/support/configuring-an-android-device-to-work-with-burp "Configuring an Android Device to Work With Burp").
+- The [interception proxy's CA certificate must be added to the trusted certificates in the Android device's certificate storage](https://portswigger.net/support/installing-burp-suites-ca-certificate-in-an-android-device "Installing Burp\'s CA Certificate in an Android Device"). The location of the menu used to store CA certificates may depend on the Android version and Android OEM modifications of the settings menu.
 - Some application (e.g. the [Chrome browser](https://bugs.chromium.org/p/chromium/issues/detail?id=475745 "Chromium Issue 475745")) may show `NET::ERR_CERT_VALIDITY_TOO_LONG` errors, if the leaf certificate happens to have a validity extending a certain time (39 months in case of Chrome). This happens if the default Burp CA certificate is used, since the Burp Suite issues leaf certificates with the same validity as its CA certificate. You can circumvent this by creating your own CA certificate and import it to the Burp Suite, as explained in this [blog post](https://blog.nviso.be/2018/01/31/using-a-custom-root-ca-with-burp-for-inspecting-android-n-traffic/ "Using a custom root CA with Burp for inspecting Android N traffic").
 
 After completing these steps and starting the app, the requests should show up in the interception proxy.
@@ -1076,7 +1076,7 @@ iptables -t nat -F
 
 ##### bettercap
 
-Read the chapter "Testing Network Communication" and the test case "Simulating a Man-in-the-Middle Attack" for further preparation and instructions for running bettercap.
+Read the chapter "[Testing Network Communication](0x04f-Testing-Network-Communication.md "Testing Network Communication")" and the test case "[Simulating a Man-in-the-Middle Attack](0x04f-Testing-Network-Communication.md#simulating-a-man-in-the-middle-attack-with-bettercap "Simulating a MitM Attack")" for further preparation and instructions for running bettercap.
 
 The host computer where you run your proxy and the Android device must be connected to the same wireless network. Start bettercap with the following command, replacing the IP address below (X.X.X.X) with the IP address of your Android device.
 
@@ -1196,7 +1196,6 @@ Hook each method with Frida and print the arguments. One of them will print out 
 - Custom Trust - <https://developer.android.com/training/articles/security-config#CustomTrust>
 - Android Network Security Configuration training - <https://developer.android.com/training/articles/security-config>
 - Security Analyst’s Guide to Network Security Configuration in Android P - <https://www.nowsecure.com/blog/2018/08/15/a-security-analysts-guide-to-network-security-configuration-in-android-p/>
-- Android developer documentation - <https://developer.android.com/studio/publish/app-signing#signing-manually>
 - Android 8.0 Behavior Changes - <https://developer.android.com/about/versions/oreo/android-8.0-changes>
 - Android 9.0 Behavior Changes - <https://developer.android.com/about/versions/pie/android-9.0-changes-all#device-security-changes>
 - Codenames, Tags and Build Numbers - <https://source.android.com/setup/start/build-numbers>
@@ -1205,7 +1204,7 @@ Hook each method with Frida and print the arguments. One of them will print out 
 - API Levels - <https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels>
 - AssetManager - <https://developer.android.com/reference/android/content/res/AssetManager>
 - SharedPreferences APIs - <https://developer.android.com/training/basics/data-storage/shared-preferences.html>
-- Debugging with Logcat - <https://developer.android.com/tools/debugging/debugging-log.html>
-- Android's APK format - <https://en.wikipedia.org/wiki/Android_application_package>
+- Debugging with Logcat - <https://developer.android.com/studio/command-line/logcat>
+- Android's APK format - <https://en.wikipedia.org/wiki/Apk_(file_format)>
 - Android remote sniffing using Tcpdump, nc and Wireshark - <https://blog.dornea.nu/2015/02/20/android-remote-sniffing-using-tcpdump-nc-and-wireshark/>
 - Wireless Client Isolation - <https://documentation.meraki.com/MR/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation>

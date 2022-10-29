@@ -81,7 +81,7 @@ Android offers a trusted execution environment in dedicated hardware to solve th
 
 #### Verified Boot
 
-We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android introduced the concept of verified boot. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running, passing through and verifying all the required boot phases. When the Android system is finally booted you can rest assure that the system is not tampered with. You have cryptographic proof that the code which is running is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
+We need to have a way to ensure that code that is being executed on Android devices comes from a trusted source and that its integrity is not compromised. In order to achieve this, Android introduced the concept of verified boot. The goal of verified boot is to establish a trust relationship between the hardware and the actual code that executes on this hardware. During the verified boot sequence, a full chain of trust is established starting from the hardware-protected Root-of-Trust (RoT) up until the final system that is running, passing through and verifying all the required boot phases. When the Android system is finally booted you can rest assured that the system is not tampered with. You have cryptographic proof that the code which is running is the one that is intended by the OEM and not one that has been maliciously or accidentally altered.
 
 Further information is available in the [Android documentation](https://source.android.com/security/verifiedboot).
 
@@ -91,17 +91,18 @@ Further information is available in the [Android documentation](https://source.a
 
 Even though the Android operating system is based on Linux, it doesn't implement user accounts in the same way other Unix-like systems do. In Android, the multi-user support of the Linux kernel is used to sandbox apps: with a few exceptions, each app runs as though under a separate Linux user, effectively isolated from other apps and the rest of the operating system.
 
-The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/7.1.1_r6/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
+The file [system/core/include/private/android_filesystem_config.h](http://androidxref.com/9.0.0_r3/xref/system/core/include/private/android_filesystem_config.h "android_filesystem_config.h") includes a list of the predefined users and groups system processes are assigned to. UIDs (userIDs) for other applications are added as the latter are installed. For more details, check out Bin Chen's [blog post](https://pierrchen.blogspot.mk/2016/09/an-walk-through-of-android-uidgid-based.html "Bin Chen - AProgrammer Blog - Android Security: An Overview Of Application Sandbox") on Android sandboxing.
 
-For example, Android 7.0 (API level 24) defines the following system users:
+For example, Android 9.0 (API level 28) defines the following system users:
 
 ```c
     #define AID_ROOT             0  /* traditional unix root user */
+    #...
     #define AID_SYSTEM        1000  /* system server */
     #...
     #define AID_SHELL         2000  /* adb and debug shell user */
     #...
-    #define AID_APP          10000  /* first app user */
+    #define AID_APP_START          10000  /* first app user */
     ...
 ```
 
@@ -117,7 +118,7 @@ Android implements an extensive permissions system that is used as an access con
 
 > Prior to Android 6.0 (API level 23), all permissions an app requested were granted at installation (Install-time permissions). From API level 23 onwards, the user must approve some permissions requests during runtime (Runtime permissions).
 
-Further information is available on the [Android documentation](https://developer.android.com/guide/topics/permissions/overview) including several [considerations](https://developer.android.com/training/permissions/evaluating) and [best practices](https://developer.android.com/training/permissions/usage-notes)
+Further information is available in the [Android documentation](https://developer.android.com/guide/topics/permissions/overview) including several [considerations](https://developer.android.com/training/permissions/evaluating) and [best practices](https://developer.android.com/training/permissions/usage-notes).
 
 To learn how to test app permissions refer to the [Testing App Permissions](0x05h-Testing-Platform-Interaction.md#testing-app-permissions-mstg-platform-1) section in the "Android Platform APIs" chapter.
 
@@ -125,7 +126,7 @@ To learn how to test app permissions refer to the [Testing App Permissions](0x05
 
 #### TLS by Default
 
-By default, since Android 9 (API level 28), all network activity is treated as being executed in a hostile environment. This means that the Android system will allow apps only to communicate over a network channel that is established using the Transport Layer Security (TLS) protocol. This protocol effectively encrypts all network traffic and creates a secure channel to a server. It may be the case that you would want to use clear traffic connections for legacy reasons. This can be achieved by adapting the `res/xml/network_security_config.xml` file in the application.
+By default, since Android 9 (API level 28), all network activity is treated as being executed in a hostile environment. This means that the Android system will only allow apps to communicate over a network channel that is established using the Transport Layer Security (TLS) protocol. This protocol effectively encrypts all network traffic and creates a secure channel to a server. It may be the case that you would want to use clear traffic connections for legacy reasons. This can be achieved by adapting the `res/xml/network_security_config.xml` file in the application.
 
 Further information is available in the [Android documentation](https://developer.android.com/training/articles/security-config.html).
 
@@ -232,7 +233,7 @@ uid=10188(u0_a188) gid=10188(u0_a188) groups=10188(u0_a188),3003(inet),
 
 The relationship between group IDs and permissions is defined in the following file:
 
-[frameworks/base/data/etc/platform.xml](http://androidxref.com/7.1.1_r6/xref/frameworks/base/data/etc/platform.xml "platform.xml")
+[frameworks/base/data/etc/platform.xml](http://androidxref.com/9.0.0_r3/xref/frameworks/base/data/etc/platform.xml "platform.xml")
 
 ```xml
 <permission name="android.permission.INTERNET" >
@@ -444,7 +445,7 @@ The Binder framework includes a client-server communication model. To use IPC, a
 
 <img src="Images/Chapters/0x05a/binder.jpg" width="400px" />
 
-- _Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.6498&rep=rep1&type=pdf "Android Binder")_
+- _Binder Overview - Image source: [Android Binder by Thorsten Schreiber](https://1library.net/document/z33dd47z-android-android-interprocess-communication-thorsten-schreiber-somorovsky-bussmeyer.html "Android Binder")_
 
 Services that allow other applications to bind to them are called _bound services_. These services must provide an IBinder interface to clients. Developers use the Android Interface Descriptor Language (AIDL) to write interfaces for remote services.
 
@@ -659,7 +660,7 @@ It is no longer possible to sign APKs independently, because the proof-of-rotati
 
 #### APK Signature Scheme (v4 Scheme)
 
-The APK Signature Scheme v4 was introduced along with Android 11 (API level 30). which requires all devices launched with it to have [fs-verity](https://kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
+The APK Signature Scheme v4 was introduced along with Android 11 (API level 30) and requires all devices launched with Android 11 and up to have [fs-verity](https://www.kernel.org/doc/html/latest/filesystems/fsverity.html) enabled by default. fs-verity is a Linux kernel feature that is primarily used for file authentication (detection of malicious modifications) due to its extremely efficient file hash calculation. Read requests only will succeed if the content verifies against trusted digital certificates that were loaded to the kernel keyring during boot time.
 
 The v4 signature requires a complementary v2 or v3 signature and in contrast to previous signature schemes, the v4 signature is stored in a separate file `<apk name>.apk.idsig`. Remember to specify it using the `--v4-signature-file` flag when verifying a v4-signed APK with `apksigner verify`.
 
@@ -667,9 +668,9 @@ You can find more detailed information in the [Android developer documentation](
 
 #### Creating Your Certificate
 
-Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important type of this information Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
+Android uses public/private certificates to sign Android apps (.apk files). Certificates are bundles of information; in terms of security, keys are the most important part of that bundle. Public certificates contain users' public keys, and private certificates contain users' private keys. Public and private certificates are linked. Certificates are unique and can't be re-generated. Note that if a certificate is lost, it cannot be recovered, so updating any apps signed with that certificate becomes impossible.
 App creators can either reuse an existing private/public key pair that is in an available KeyStore or generate a new pair.
-In the Android SDK, a new key pair is generated with the `keytool` command. The following command creates a RSA key pair with a key length of 2048 bits and an expiry time of 7300 days = 20 years. The generated key pair is stored in the file 'myKeyStore.jks', which is in the current directory):
+In the Android SDK, a new key pair is generated with the `keytool` command. The following command creates a RSA key pair with a key length of 2048 bits and an expiry time of 7300 days = 20 years. The generated key pair is stored in the file 'myKeyStore.jks', which is in the current directory:
 
 ```bash
 keytool -genkey -alias myDomain -keyalg RSA -keysize 2048 -validity 7300 -keystore myKeyStore.jks -storepass myStrongPassword
@@ -693,7 +694,7 @@ In this example, an unsigned app ('myUnsignedApp.apk') will be signed with a pri
 
 ##### Zipalign
 
-The `zipalign` tool should always be used to align the APK file before distribution. This tool aligns all uncompressed data (such as images, raw files, and 4-byte boundaries) within the APK that helps improve memory management during app runtime.
+The `zipalign` tool should always be used to align the APK file before distribution. This tool aligns all uncompressed data (such as images, raw files, and 4-byte boundaries) within the APK, which helps improve memory management during app runtime.
 
 > Zipalign must be used before the APK file is signed with apksigner.
 
@@ -705,7 +706,7 @@ Apps can be installed on an Android device from a variety of sources: locally vi
 
 Whereas other vendors may review and approve apps before they are actually published, Google will simply scan for known malware signatures; this minimizes the time between the beginning of the publishing process and public app availability.
 
-Publishing an app is quite straightforward; the main operation is making the signed APK file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://developer.android.com/distribute/googleplay/start.html "Review the checklists to plan your launch").
+Publishing an app is quite straightforward; the main operation is making the signed APK file downloadable. On Google Play, publishing starts with account creation and is followed by app delivery through a dedicated interface. Details are available at [the official Android documentation](https://play.google.com/console/about/guides/releasewithconfidence/ "Review the checklists to plan your launch").
 
 ## Android Application Attack Surface
 
@@ -713,7 +714,7 @@ The Android application attack surface consists of all components of the applica
 
 - Validate all input by means of IPC communication or URL schemes, see also:
   - [Testing for Sensitive Functionality Exposure Through IPC](0x05h-Testing-Platform-Interaction.md#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
-  - [Testing Custom URL Schemes](0x05h-Testing-Platform-Interaction.md#testing-custom-url-schemes-mstg-platform-3)
+  - [Testing Deep Links](0x05h-Testing-Platform-Interaction.md#testing-deep-links-mstg-platform-3)
 - Validate all input by the user in input fields.
 - Validate the content loaded inside a WebView, see also:
   - [Testing JavaScript Execution in WebViews](0x05h-Testing-Platform-Interaction.md#testing-javascript-execution-in-webviews-mstg-platform-5)
@@ -723,6 +724,6 @@ The Android application attack surface consists of all components of the applica
   - [Testing Network Communication](0x04f-Testing-Network-Communication.md#testing-network-communication)
   - [Android Network Communication](0x05g-Testing-Network-Communication.md)
 - Securely stores all local data, or loads untrusted data from storage, see also:
-  - [Data Storage on Android](0x05d-Testing-Data-Storage.md#data-storage-on-android)
+  - [Data Storage on Android](0x05d-Testing-Data-Storage.md)
 - Protect itself against compromised environments, repackaging or other local attacks, see also:
-  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md#android-anti-reversing-defenses)
+  - [Android Anti-Reversing Defenses](0x05j-Testing-Resiliency-Against-Reverse-Engineering.md)

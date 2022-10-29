@@ -50,10 +50,10 @@ Most parts of the processes derived from the protection goals are traditionally 
 
 ### The New Approach (Google's and Apple's take on this)
 
-In order to address these challenges and help users easily understand how their data is being collected, handled, and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://www.nist.gov/system/files/documents/2021/11/01/Draft%20Consumer%20Software%20Labeling.pdf):
+In order to address these challenges and help users easily understand how their data is being collected, handled, and shared, Google and Apple introduced new privacy labeling systems (very much along the lines of NIST's proposal for [Consumer Software Cybersecurity Labeling](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.02042022-1.pdf):
 
 - the App Store [Nutrition Labels](https://www.apple.com/privacy/labels/) (since 2020).
-- the Google Play [Data Safety Section](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (since 2021).
+- the Google Play [Data Safety Section](https://developer.android.com/guide/topics/data/collect-share) (since 2021).
 
 As a new requirement on both platforms, it's vital that these labels are accurate in order to provide user assurance and mitigate abuse.
 
@@ -74,7 +74,7 @@ Note that the limited nature of testing does not guarantee complete safety of th
 The following is a list of [common privacy violations](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB#1&2&3&4&5&6&7&87&9&zippy=%2Cexamples-of-common-violations) that you as a security tester should report (although not an exhaustive list):
 
 - Example 1: An app that accesses a user's inventory of installed apps and doesn't treat this data as personal or sensitive data by sending it over the network (violating MSTG-STORAGE-4) or to another app via IPC mechanisms (violating MSTG-STORAGE-6).
-- Example 2: An app displays sensitive data such as credit card details or user passwords without user authorization via e.g. biometrics (violating MSTG-AUTH-10).
+- Example 2: An app displays sensitive data such as credit card details or user passwords without user authorization e.g. biometrics (violating MSTG-AUTH-10).
 - Example 3: An app that accesses a user's phone or contact book data and doesn't treat this data as personal or sensitive data, additionally sending it over an unsecured network connection (violating MSTG-NETWORK-1).
 - Example 4: An app collects device location (which is apparently not required for its proper functioning) and does not have a prominent disclosure explaining which feature uses this data (violating MSTG-PLATFORM-1).
 
@@ -100,17 +100,17 @@ You can learn more about this and other privacy related topics here:
 
 At this point, we're only interested in knowing which privacy-related information is being disclosed by the developers and trying to evaluate if it seems reasonable (similarly as you'd do when testing for permissions).
 
-> It's possible that the developers are not declaring certain information that is indeed being collected and or shared, but that's a topic for a different test extending this one here. As part of this test, you are not supposed to provide privacy violation assurance.
+> It's possible that the developers are not declaring certain information that is indeed being collected and\/or shared, but that's a topic for a different test extending this one here. As part of this test, you are not supposed to provide privacy violation assurance.
 
 ### Static Analysis
 
 You can follow these steps:
 
 1. Search for the app in the corresponding app marketplace (e.g. Google Play, App Store).
-2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://android-developers.googleblog.com/2021/05/new-safety-section-in-google-play-will.html) (Google Play).
+2. Go to the section ["Privacy Details"](https://developer.apple.com/app-store/app-privacy-details/) (App Store) or ["Safety Section"](https://developer.android.com/guide/topics/data/collect-share) (Google Play).
 3. Verify if there's any information available at all.
 
-The test passes if the developer has compiled with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
+The test passes if the developer has complied with the app marketplace guidelines and included the required labels and explanations. Store and provide the information you got from the app marketplace as evidence, so that you can later use it to evaluate potential violations of privacy or data protection.
 
 ### Dynamic analysis
 
