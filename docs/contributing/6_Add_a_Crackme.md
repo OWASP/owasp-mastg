@@ -4,7 +4,7 @@ The MAS project is a powerful learning resource and the MAS Crackmes are no exce
 
 ## Who Can Contribute with a Crackme?
 
-Anyone from individuals to companies. You only hace to read and accepts the Terms and Conditions listed below.
+Anyone from individuals to companies. You only have to read and accepts the Terms and Conditions listed below.
 
 **Before submitting a crackme**, first of all contact the MAS team here: <https://mas.owasp.org/contact/>
 
