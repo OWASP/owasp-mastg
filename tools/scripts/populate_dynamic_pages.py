@@ -18,9 +18,9 @@ def append_to_file(new_content, file_path):
 data = yaml.safe_load(open("docs/assets/data/talks.yaml"))
 
 for element in data:
-    if element['video'].startswith("https://"):
+    if element['video'].startswith("http"):
         element['video'] = f"[:octicons-play-24: Video]({element['video']})"
-    if element['slides'].startswith("https://"):
+    if element['slides'].startswith("http"):
         element['slides'] = f"[:material-file-presentation-box: Slides]({element['slides']})"
 
 append_to_file(dict_to_md(data) + "\n\n<br>\n", "docs/talks.md")
@@ -31,9 +31,22 @@ masvs_full_en = requests.get("https://github.com/OWASP/owasp-mastg/releases/late
 data = yaml.safe_load(masvs_full_en.raw)
 data_list = []
 for _, value in data.items():
+    
+    # levels
+    value['L1'] = "<span class='mas-dot-blue'></span>" if value['L1'] == True else ""
+    value['L2'] = "<span class='mas-dot-green'></span>" if value['L2'] == True else ""
+    value['R'] = "<span class='mas-dot-orange'></span>" if value['R'] == True else ""
+
+    # tests
+    value["common"] = ""
+    value["android"] = ""
+    value["ios"] = ""
     if links:=value.get("links"):
-        value["links"] = " ".join([f"[Test Case]({link})" for link in links])
-    else:
-        value["links"] = "N/A"
+        for link in value.get("links"):
+            value["common"] += f"[Test Case]({link})<br>" if "0x04" in link else ""
+            value["android"] += f"[Test Case]({link})<br>" if "0x05" in link else ""
+            value["ios"] += f"[Test Case]({link})<br>" if "0x06" in link else ""
+        del value["links"]
     data_list.append(value)
+
 append_to_file("\n<br>\n\n" + dict_to_md(data_list) + "\n\n<br>\n", "docs/MAS_checklist.md")
