@@ -234,7 +234,7 @@ If you own an [IDA Pro](0x08a-Testing-Tools.md#ida-pro-commercial-tool) license,
 
 For white-box source code testing, you'll need a setup similar to the developer's setup, including a test environment that includes the Android SDK and an IDE. Access to either a physical device or an emulator (for debugging the app) is recommended.
 
-During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's APK format](https://en.wikipedia.org/wiki/Android_application_package "Android application package"), which can be installed on an Android device or reverse engineered as explained in the section "Disassembling and Decompiling".
+During **black-box testing**, you won't have access to the original form of the source code. You'll usually have the application package in [Android's APK format](https://en.wikipedia.org/wiki/Apk_(file_format) "APK file format"), which can be installed on an Android device or reverse engineered as explained in the section "[Disassembling and Decompiling](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-and-decompiling "Disassembling and Decompiling")".
 
 ### Basic Information Gathering
 
@@ -246,7 +246,7 @@ While performing any kind of binary analysis, strings can be considered as one o
 
 ##### Java and Kotlin Bytecode
 
-As we already know, all the Java and Kotlin bytecode of an Android application is compiled into a DEX file. Each DEX file contains a [list of string identifiers](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids), which contains all the string identifiers used in the binary whenever a string is referred, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hardcoded strings). You can simply dump this list using tools such as Ghidra (GUI based) or [Dextra](http://newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
+As we already know, all the Java and Kotlin bytecode of an Android application is compiled into a DEX file. Each DEX file contains a [list of string identifiers](https://source.android.com/devices/tech/dalvik/dex-format#file-layout "string identifiers list") (strings_ids), which contains all the string identifiers used in the binary whenever a string is referred, including internal naming (e.g, type descriptors) or constant objects referred by the code (e.g hardcoded strings). You can simply dump this list using tools such as Ghidra (GUI based) or [Dextra](http://www.newandroidbook.com/tools/dextra.html "Dextra") (CLI based).
 
 With Ghidra, strings can be obtained by simply loading the DEX file and selecting **Window -> Defined strings** in the menu.
 
@@ -284,18 +284,17 @@ The Android platform provides many in-built libraries for frequently used functi
 
 For instance, if an application is importing `javax.crypto.Cipher`, it indicates that the application will be performing some kind of cryptographic operation. Fortunately, cryptographic calls are very standard in nature, i.e, they need to be called in a particular order to work correctly, this knowledge can be helpful when analyzing cryptography APIs. For example, by looking for the `Cipher.getInstance` function, we can determine the cryptographic algorithm being used. With such an approach we can directly move to analyzing cryptographic assets, which often are very critical in an application. Further information on how to analyze Android's cryptographic APIs is discussed in the section  "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md "Android Cryptographic APIs")".
 
-Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good stating point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class.
+Similarly, the above approach can be used to determine where and how an application is using NFC. For instance, an application using Host-based Card Emulation for performing digital payments must use the `android.nfc` package. Therefore, a good starting point for NFC API analysis would be to consult the [Android Developer Documentation](https://developer.android.com/guide/topics/connectivity/nfc/hce "Host-based card emulation overview") to get some ideas and start searching for critical functions such as `processCommandApdu` from the `android.nfc.cardemulation.HostApduService` class.
 
 #### Network Communication
 
 Most of the apps you might encounter connect to remote endpoints. Even before you perform any dynamic analysis (e.g. traffic capture and analysis), you can obtain some initial inputs or entry points by enumerating the domains to which the application is supposed to communicate to.
 
 Typically these domains will be present as strings within the binary of the application. One way to achieve this is by using automated tools such as [APKEnum](https://github.com/shivsahni/APKEnum "APKEnum: A Python Utility For APK Enumeration") or [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF "MobSF"). Alternatively, you can _grep_ for the domain names by using regular expressions. For this you can target the app binary directly or reverse engineer it and target the disassembled or decompiled code. The latter option has a clear advantage: it can provide you with **context**, as you'll be able to see in which context each domain is being used (e.g. class and method).
-``
 
 From here on you can use this information to derive more insights which might be of use later during your analysis, e.g. you could match the domains to the pinned certificates or the [Network Security Configuration](0x05g-Testing-Network-Communication.md#android-network-security-configuration) file or perform further reconnaissance on domain names to know more about the target environment. When evaluating an application it is important to check the Network Security Configuration file, as often (less secure) debug configurations might be pushed into final release builds by mistake.
 
-The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately having severe logical bugs in its implementation or an inherently wrong security network configuration.
+The implementation and verification of secure connections can be an intricate process and there are numerous aspects to consider. For instance, many applications use other protocols apart from HTTP such as XMPP or plain TCP packets, or perform certificate pinning in an attempt to deter MITM attacks but unfortunately have severe logical bugs in its implementation or an inherently wrong security network configuration.
 
 Remember that in most of the cases, just using static analysis will not be enough and might even turn to be extremely inefficient when compared to the dynamic alternatives which will get much more reliable results (e.g. using an interceptor proxy). In this section we've just slightly touched the surface, please refer to the section "[Basic Network Monitoring/Sniffing](0x05b-Basic-Security_Testing.md#basic-network-monitoringsniffing "Basic Network Monitoring/Sniffing")" in the "Android Basic Security Testing" chapter and also check the test cases in the "[Android Network Communication](0x05g-Testing-Network-Communication.md)" chapter.
 
@@ -412,7 +411,7 @@ $ r2 -qc 'e emu.str=true; s 0x00000e78; af; pdf' HelloWord-JNI/lib/armeabi-v7a/l
 
 Notice that in this case we're not starting with the `-A` flag not running `aaa`. Instead, we just tell radare2 to analyze that one function by using the _analyze function_ `af` command. This is one of those cases where we can speed up our workflow because you're focusing on some specific part of an app.
 
-The workflow can be further improved by using [r2ghidra-dec](https://github.com/radareorg/r2ghidra-dec "r2ghidra-dec"), a deep integration of Ghidra decompiler for radare2. r2ghidra-dec generates decompiled C code, which can aid in quickly analyzing the binary.
+The workflow can be further improved by using [r2ghidra](https://github.com/radareorg/r2ghidra "r2ghidra"), a deep integration of Ghidra decompiler for radare2. r2ghidra generates decompiled C code, which can aid in quickly analyzing the binary.
 
 ##### IDA Pro
 
@@ -482,7 +481,7 @@ Configure the static analyzer properly to reduce the likelihood of false positiv
 There are several open source tools for automated security analysis of an APK.
 
 - [Androbugs](https://github.com/AndroBugs/AndroBugs_Framework "Androbugs")
-- [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS")
+- [JAADAS](https://github.com/flankerhqd/JAADAS "JAADAS") (archived)
 - [MobSF](0x08a-Testing-Tools.md#mobsf)
 - [QARK](https://github.com/linkedin/qark/ "QARK")
 
