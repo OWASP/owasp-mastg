@@ -1,5 +1,7 @@
 # Android Cryptographic APIs
 
+## Overview
+
 In the chapter ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md), we introduced general cryptography best practices and described typical issues that can occur when cryptography is used incorrectly. In this chapter, we'll go into more detail on Android's cryptography APIs. We'll show how to identify usage of those APIs in the source code and how to interpret cryptographic configurations. When reviewing code, make sure to compare the cryptographic parameters used with the current best practices linked from this guide.
 
 We can identify key components of cryptography system in Android:
@@ -43,7 +45,7 @@ Apps that target modern API levels, went through the following changes:
   - The `Crypto` security provider is now removed. Calling it will result in a `NoSuchProviderException`.
 - For Android 10 (API level 29) the [Developer Documentation](https://developer.android.com/about/versions/10/behavior-changes-all#security "Security Changes in Android 10") lists all network security changes.
 
-## Recommendations
+### Recommendations
 
 The following list of recommendations should be considered during app examination:
 
@@ -55,7 +57,7 @@ The following list of recommendations should be considered during app examinatio
 - You should stop using Password-based encryption ciphers without IV.
 - You should use KeyGenParameterSpec instead of KeyPairGeneratorSpec.
 
-### Security provider
+#### Security provider
 
 Android relies on `provider` to implement Java Security services. That is crucial to ensure secure network communications and secure other functionalities which depend on cryptography.  
 
@@ -102,15 +104,15 @@ provider: HarmonyJSSE 1.0(Harmony JSSE Provider)
 provider: AndroidKeyStore 1.0(Android KeyStore security provider)
 ```
 
-#### Updating security provider
+##### Updating security provider
 
 Keeping up-to-date and patched component is one of security principles. The same applies to `provider`. Application should check if used security provider is up-to-date and if not, [update it](https://developer.android.com/training/articles/security-gms-provider "Updating security provider"). It is related to [Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)](0x05i-Testing-Code-Quality-and-Build-Settings.md#checking-for-weaknesses-in-third-party-libraries).
 
-#### Older Android versions
+##### Older Android versions
 
 For some applications that support older versions of Android (e.g.: only used versions lower than Android 7.0 (API level 24)), bundling an up-to-date library may be the only option. Spongy Castle (a repackaged version of Bouncy Castle) is a common choice in these situations. Repackaging is necessary because Bouncy Castle is included in the Android SDK. The latest version of [Spongy Castle](https://rtyley.github.io/spongycastle/ "Spongy Castle") likely fixes issues encountered in the earlier versions of [Bouncy Castle](https://www.cvedetails.com/vulnerability-list/vendor_id-7637/Bouncycastle.html "CVE Details Bouncy Castle") that were included in Android. Note that the Bouncy Castle libraries packed with Android are often not as complete as their counterparts from the [legion of the Bouncy Castle](https://www.bouncycastle.org/java.html "Bouncy Castle in Java"). Lastly: bear in mind that packing large libraries such as Spongy Castle will often lead to a multidexed Android application.
 
-### Key Generation
+#### Key Generation
 
 Android SDK provides mechanisms for specifying secure key generation and use. Android 6.0 (API level 23) introduced the `KeyGenParameterSpec` class that can be used to ensure the correct key usage in the application.
 
@@ -228,7 +230,7 @@ The above method requires a character array containing the password and the need
 
 Note: there is a widespread false believe that the NDK should be used to hide cryptographic operations and hardcoded keys. However, using this mechanism is not effective. Attackers can still use tools to find the mechanism used and make dumps of the key in memory. Next, the control flow can be analyzed with e.g. radare2 and the keys extracted with the help of Frida or the combination of both: [r2frida](0x08a-Testing-Tools.md#r2frida) (see sections "[Disassembling Native Code](0x05c-Reverse-Engineering-and-Tampering.md#disassembling-native-code "Disassembling Native Code")", "[Memory Dump](0x05c-Reverse-Engineering-and-Tampering.md#memory-dump "Memory Dump")" and "[In-Memory Search](0x05c-Reverse-Engineering-and-Tampering.md#in-memory-search "In-Memory Search")" in the chapter "Tampering and Reverse Engineering on Android" for more details). From Android 7.0 (API level 24) onward, it is not allowed to use private APIs, instead: public APIs need to be called, which further impacts the effectiveness of hiding it away as described in the [Android Developers Blog](https://android-developers.googleblog.com/2016/06/android-changes-for-ndk-developers.html "Android changes for NDK developers")
 
-### Random number generation
+#### Random number generation
 
 Cryptography requires secure pseudo random number generation (PRNG). Standard Java classes as `java.util.Random` do not provide sufficient randomness and in fact may make it possible for an attacker to guess the next value that will be generated, and use this guess to impersonate another user or access sensitive information.
 
