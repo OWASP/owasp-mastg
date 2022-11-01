@@ -1,8 +1,10 @@
 # Mobile App Network Communication
 
+## Overview
+
 Practically every network-connected mobile app uses the Hypertext Transfer Protocol (HTTP) or HTTP over Transport Layer Security (TLS), HTTPS, to send and receive data to and from remote endpoints. Consequently, network-based attacks (such as packet sniffing and man-in-the-middle-attacks) are a problem. In this chapter we discuss potential vulnerabilities, testing techniques, and best practices concerning the network communication between mobile apps and their endpoints.
 
-## Secure Connections
+### Secure Connections
 
 The time has long passed since it was reasonable to use cleartext HTTP alone and it's usually trivial to secure HTTP connections using HTTPS. HTTPS is essentially HTTP layered on top of another protocol known as Transport Layer Security (TLS). And TLS performs a handshake using public key cryptography and, when complete, creates a secure connection.
 
@@ -12,7 +14,7 @@ An HTTPS connection is considered secure because of three properties:
 - **Integrity:** the data can't be altered without detection.
 - **Authentication:** the client can validate the identity of the server to make sure the connection is established with the correct server.
 
-## Server Trust Evaluation
+### Server Trust Evaluation
 
 Certificate Authorities (CAs) are an integral part of a secure client server communication and they are predefined in the trust store of each operating system. For instance, on iOS there are more than 200 root certificates installed (see [Apple documentation - Available trusted root certificates for Apple operating systems](https://support.apple.com/en-gb/HT204132 "Lists of available trusted root certificates in iOS"))
 
@@ -26,9 +28,9 @@ An app may want to trust a custom set of CAs instead of the platform default. Th
 - Limiting the set of CAs to a specific list of trusted CAs.
 - Trusting additional CAs not included in the system.
 
-### About Trust Stores
+#### About Trust Stores
 
-### Extending Trust
+#### Extending Trust
 
 Whenever the app connects to a server whose certificate is self-signed or unknown to the system, the secure connection will fail. This is typically the case for any non public CAs, for instance those issued by an organization such as a government, corporation, or education institution for their own use.
 
@@ -38,7 +40,7 @@ However, remember that the device users are always able to include additional CA
 
 For many apps, the "default behavior" provided by the mobile platform will be secure enough for their use case (in the rare case that a system-trusted CA is compromised the data handled by the app is not considered sensitive or other security measures are taken which are resilient even to such a CA breach). However, for other apps such as financial or health apps, the risk of a CA breach, even if rare, must be considered.
 
-### Restricting Trust: Identity Pinning
+#### Restricting Trust: Identity Pinning
 
 Some apps might need to further increase their security by restricting the number of CAs that they trust. Typically only the CAs which are used by the developer are explicitly trusted, while disregarding all others. This trust restriction is known as _Identity Pinning_ usually implemented as _Certificate Pinning_ or _Public Key Pinning_.
 
@@ -46,7 +48,7 @@ Some apps might need to further increase their security by restricting the numbe
 
 Pinning is the process of associating a remote endpoint with a particular identity, such as a X.509 certificate or public key, instead of accepting any certificate signed by a trusted CA. After pinning the server identity (or a certain set, aka. _pinset_), the mobile app will subsequently connect to those remote endpoints only if the identity matches. Withdrawing trust from unnecessary CAs reduces the app's attack surface.
 
-#### General Guidelines
+##### General Guidelines
 
 The [OWASP Certificate Pinning Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html) gives essential guidance on:
 
@@ -68,7 +70,7 @@ Pinning has gained a bad reputation since its introduction several years ago. We
 - Pinning protects against a compromised CA or a malicious CA that is installed on the device. In those cases, pinning will prevent the OS from establishing a secure connection from being established with a malicious server. However, if an attacker is in control of the device, they can easily disable any pinning logic and thus still allow the connection to happen. As a result, this will not prevent an attacker from accessing your backend and abusing server-side vulnerabilities.
 - Pinning in mobile apps is not the same as HTTP Public Key Pinning (HPKP). The HPKP header is no longer recommended on websites as it can lead to users being locked out of the website without any way to revert the lockout. For mobile apps, this is not an issue, as the app can always be updated via an out-of-band channel (i.e. the app store) in case there are any issues.
 
-#### About Pinning Recommendations in Android Developers
+##### About Pinning Recommendations in Android Developers
 
 The [Android Developers](https://developer.android.com/training/articles/security-ssl#Pinning) site includes the following warning:
 
@@ -80,11 +82,11 @@ They also include this [note](https://developer.android.com/training/articles/se
 
 The first statement can be mistakenly interpreted as saying that they "do not recommend certificate pinning". The second statement clarifies this: the actual recommendation is that if developers want to implement pinning they have to take the necessary precautions.
 
-#### About Pinning Recommendations in Apple Developers
+##### About Pinning Recommendations in Apple Developers
 
 Apple recommends [thinking long-term](https://developer.apple.com/news/?id=g9ejcf8y) and [creating a proper server authentication strategy](https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication#2956135).
 
-#### OWASP MASTG Recommendation
+##### OWASP MASTG Recommendation
 
 Pinning is a recommended practice, especially for MASVS-L2 apps. However, developers must implement it exclusively for the endpoints under their control and be sure to include backup keys (aka. backup pins) and have a proper app update strategy.
 
@@ -93,7 +95,7 @@ Pinning is a recommended practice, especially for MASVS-L2 apps. However, develo
 - ["Android Security: SSL Pinning"](https://appmattus.medium.com/android-security-ssl-pinning-1db8acb6621e)
 - [OWASP Certificate Pinning Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html)
 
-## Intercepting HTTP(S) Traffic
+### Intercepting HTTP(S) Traffic
 
 In many cases, it is most practical to configure a system proxy on the mobile device, so that HTTP(S) traffic is redirected through an _interception proxy_ running on your host computer. By monitoring the requests between the mobile app client and the backend, you can easily map the available server-side APIs and gain insight into the communication protocol. Additionally, you can replay and manipulate requests to test for server-side vulnerabilities.
 
@@ -108,7 +110,7 @@ To use the interception proxy, you'll need to run it on your host computer and c
 
 Using a proxy breaks SSL certificate verification and the app will usually fail to initiate TLS connections. To work around this issue, you can install your proxy's CA certificate on the device. We'll explain how to do this in the OS-specific "Basic Security Testing" chapters.
 
-## Intercepting Non-HTTP Traffic
+### Intercepting Non-HTTP Traffic
 
 Interception proxies such as [Burp](0x08a-Testing-Tools.md#burp-suite) and [OWASP ZAP](0x08a-Testing-Tools.md#owasp-zap) won't show non-HTTP traffic, because they aren't capable of decoding it properly by default. There are, however, Burp plugins available such as:
 
@@ -119,7 +121,7 @@ These plugins can visualize non-HTTP protocols and you will also be able to inte
 
 Note that this setup can sometimes become very tedious and is not as straightforward as testing HTTP.
 
-## Intercepting Traffic from the App Process
+### Intercepting Traffic from the App Process
 
 Depending on your goal while testing the app, sometimes it is enough to monitor the traffic before it reaches the network layer or when the responses are received in the app.
 
@@ -137,7 +139,7 @@ See some examples:
 
 > This technique is also useful for other types of traffic such as BLE, NFC, etc. where deploying a MITM attack might be very costly and or complex.
 
-## Intercepting Traffic on the Network Layer
+### Intercepting Traffic on the Network Layer
 
 Dynamic analysis by using an interception proxy can be straight forward if standard libraries are used in the app and all communication is done via HTTP. But there are several cases where this is not working:
 
@@ -153,13 +155,13 @@ In these cases you need to monitor and analyze the network traffic first in orde
 - On a rooted device, you can use hooking or code injection to intercept network-related API calls (e.g. HTTP requests) and dump or even manipulate the arguments of these calls. This eliminates the need to inspect the actual network data. We'll talk in more detail about these techniques in the "Reverse Engineering and Tampering" chapters.
 - On macOS, you can create a "Remote Virtual Interface" for sniffing all traffic on an iOS device. We'll describe this method in the chapter "Basic Security Testing on iOS".
 
-### Simulating a Man-in-the-Middle Attack with bettercap
+#### Simulating a Man-in-the-Middle Attack with bettercap
 
-#### Network Setup
+##### Network Setup
 
 To be able to get a man-in-the-middle position your host computer should be in the same wireless network as the mobile phone and the gateway it communicates to. Once this is done you need the IP address of your mobile phone. For a full dynamic analysis of a mobile app, all network traffic should be intercepted.
 
-#### MITM Attack
+##### MITM Attack
 
 Start your preferred network analyzer tool first, then start [bettercap](0x08a-Testing-Tools.md#bettercap) with the following command and replace the IP address below (X.X.X.X) with the target you want to execute the MITM attack against.
 
@@ -181,9 +183,9 @@ If that's the case, you are now able to see the complete network traffic that is
 
 > Man-in-the-middle attacks work against any device and operating system as the attack is executed on OSI Layer 2 through ARP Spoofing. When you are MITM you might not be able to see clear text data, as the data in transit might be encrypted by using TLS, but it will give you valuable information about the hosts involved, the protocols used and the ports the app is communicating with.
 
-### Simulating a Man-in-the-Middle Attack with an access point
+#### Simulating a Man-in-the-Middle Attack with an access point
 
-#### Network Setup
+##### Network Setup
 
 A simple way to simulate a man-in-the-middle (MITM) attack is to configure a network where all packets between the devices in scope and the target network are going through your host computer. In a mobile penetration test, this can be achieved by using an access point the mobile devices and your host computer are connected to. Your host computer is then becoming a router and an access point.
 
@@ -210,7 +212,7 @@ In both cases the AP needs to be configured to point to your host computer's IP.
 
 <img src="Images/Chapters/0x04f/architecture_MITM_AP.png" width="100%" />
 
-#### Installation
+##### Installation
 
 The following procedure is setting up a man-in-the-middle position using an access point and an additional network interface:
 
@@ -239,7 +241,7 @@ In case of a separate access point, route the traffic to your host computer. In 
 
 Route the incoming traffic coming from the WiFi to the additional network interface where the traffic can reach the target network. Additional network interface can be wired connection or other WiFi card, depending on your setup.
 
-#### Configuration
+##### Configuration
 
 We focus on the configuration files for Kali Linux. Following values need to be defined:
 
@@ -293,7 +295,7 @@ The following configuration files need to be changed and adjusted accordingly:
     listen-address=127.0.0.1
     ```
 
-#### MITM Attack
+##### MITM Attack
 
 To be able to get a man-in-the-middle position you need to run the above configuration. This can be done by using the following commands on Kali Linux:
 
@@ -319,7 +321,7 @@ $ iptables -t nat -A POSTROUTING -j MASQUERADE
 
 Now you can connect your mobile devices to the access point.
 
-### Network Analyzer Tool
+#### Network Analyzer Tool
 
 Install a tool that allows you to monitor and analyze the network traffic that will be redirected to your host computer. The two most common network monitoring (or capturing) tools are:
 
@@ -328,11 +330,11 @@ Install a tool that allows you to monitor and analyze the network traffic that w
 
 Wireshark offers a GUI and is more straightforward if you are not used to the command line. If you are looking for a command line tool you should either use TShark or tcpdump. All of these tools are available for all major Linux and Unix operating systems and should be part of their respective package installation mechanisms.
 
-### Setting a Proxy Through Runtime Instrumentation
+#### Setting a Proxy Through Runtime Instrumentation
 
 On a rooted or jailbroken device, you can also use runtime hooking to set a new proxy or redirect network traffic. This can be achieved with hooking tools like [Inspeckage](https://github.com/ac-pm/Inspeckage "Inspeckage") or code injection frameworks like [Frida](https://www.frida.re "Frida") and [cycript](http://www.cycript.org "cycript"). You'll find more information about runtime instrumentation in the "Reverse Engineering and Tampering" chapters of this guide.
 
-### Example - Dealing with Xamarin
+#### Example - Dealing with Xamarin
 
 As an example, we will now redirect all requests from a Xamarin app to an interception proxy.
 
@@ -380,7 +382,7 @@ When a Xamarin app is configured to use a proxy (e.g. by using `WebRequest.Defau
 
 <img src="Images/Chapters/0x04f/burp_xamarin.png" width="100%" />
 
-#### CA Certificates
+##### CA Certificates
 
 If not already done, install the CA certificates in your mobile device which will allow us to intercept HTTPS requests:
 
@@ -388,7 +390,7 @@ If not already done, install the CA certificates in your mobile device which wil
     > Note that starting with Android 7.0 (API level 24) the OS no longer trusts a user supplied CA certificate unless specified in the app. Bypassing this security measure will be addressed in the "Basic Security Testing" chapters.
 - [Install the CA certificate of your interception proxy into your iOS phone](https://support.portswigger.net/customer/portal/articles/1841108-configuring-an-ios-device-to-work-with-burp "Configuring an iOS Device to Work With Burp")
 
-#### Intercepting Traffic
+##### Intercepting Traffic
 
 Start using the app and trigger its functions. You should see HTTP messages showing up in your interception proxy.
 
