@@ -1,5 +1,7 @@
 # iOS Code Quality and Build Settings
 
+## Overview
+
 ## Making Sure that the App Is Properly Signed (MSTG-CODE-1)
 
 ### Overview
