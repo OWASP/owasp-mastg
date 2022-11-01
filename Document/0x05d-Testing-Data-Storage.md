@@ -1,5 +1,7 @@
 # Android Data Storage
 
+## Overview
+
 Protecting authentication tokens, private information, and other sensitive data is key to mobile security. In this chapter, you will learn about the APIs Android offers for local data storage and best practices for using them.
 
 The guidelines for saving data can be summarized quite easily: Public data should be available to everyone, but sensitive and private data must be protected, or, better yet, kept out of device storage.
@@ -7,8 +9,6 @@ The guidelines for saving data can be summarized quite easily: Public data shoul
 This chapter is broken into two sections, the first of which focuses on the theory of data storage from a security perspective as well as a brief explanation and example of the various methods of data storage on Android.
 
 The second section focuses on the testing of these data storage solutions through the usage of test cases that utilize both static and dynamic analysis.
-
-## Theory Overview
 
 [Storing data](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") is essential to many mobile apps. Conventional wisdom suggests that as little sensitive data as possible should be stored on permanent local storage. In most practical scenarios, however, some type of user data must be stored. For example, asking the user to enter a very complex password every time the app starts isn't a great idea in terms of usability. Most apps must locally cache some kind of authentication token to avoid this. Personally identifiable information (PII) and other types of sensitive data may also be saved if a given scenario calls for it.
 
@@ -20,7 +20,7 @@ Disclosing sensitive information has several consequences, including decrypted i
 
 Next to protecting sensitive data, you need to ensure that data read from any storage source is validated and possibly sanitized. The validation usually ranges from checking for the correct data types to using additional cryptographic controls, such as an HMAC, you can validate the integrity of the data.
 
-## Data Storage Methods Overview
+### Data Storage Methods Overview
 
 Android provides a number of methods for [data storage](https://developer.android.com/guide/topics/data/data-storage.html "Storing Data in Android") depending on the needs of the user, developer, and application. For example, some apps use data storage to keep track of user settings or user-provided data. Data can be stored persistently for this use case in several ways. The following list of persistent storage techniques are widely used on the Android platform:
 
@@ -42,7 +42,7 @@ In addition to this, there are a number of other functions in Android built for 
 
 It is important to understand each relevant data storage function in order to correctly perform the appropriate test cases. This overview aims to provide a brief outline of each of these data storage methods, as well as point testers to further relevant documentation.
 
-### Shared Preferences
+#### Shared Preferences
 
 The [SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences "Shared Preferences") API is commonly used to permanently save small collections of key-value pairs. Data stored in a SharedPreferences object is written to a plain-text XML file. The SharedPreferences object can be declared world-readable (accessible to all apps) or private.
 Misuse of the SharedPreferences API can often lead to exposure of sensitive data. Consider the following example:
@@ -88,11 +88,11 @@ root@hermes:/data/data/sg.vp.owasp_mobile.myfirstapp/shared_prefs # ls -la
 
 > Please note that `MODE_WORLD_READABLE` and `MODE_WORLD_WRITEABLE` were deprecated starting on API level 17. Although newer devices may not be affected by this, applications compiled with an `android:targetSdkVersion` value less than 17 may be affected if they run on an OS version that was released before Android 4.2 (API level 17).
 
-### Databases
+#### Databases
 
 The Android platform provides a number of database options as aforementioned in the previous list. Each database option has its own quirks and methods that need to be understood.
 
-#### SQLite Database (Unencrypted)
+##### SQLite Database (Unencrypted)
 
 SQLite is an SQL database engine that stores data in `.db` files. The Android SDK has [built-in support](https://developer.android.com/training/data-storage/sqlite "SQLite Documentation") for SQLite databases. The main package used to manage the databases is `android.database.sqlite`.
 For example, you may use the following code to store sensitive information within an activity:
@@ -124,7 +124,7 @@ The database's directory may contain several files besides the SQLite database:
 
 Sensitive information should not be stored in unencrypted SQLite databases.
 
-#### SQLite Databases (Encrypted)
+##### SQLite Databases (Encrypted)
 
 With the library [SQLCipher](https://www.zetetic.net/sqlcipher/sqlcipher-for-android/ "SQLCipher"), SQLite databases can be password-encrypted.
 
@@ -151,7 +151,7 @@ Secure ways to retrieve the database key include:
 - Asking the user to decrypt the database with a PIN or password once the app is opened (weak passwords and PINs are vulnerable to brute force attacks)
 - Storing the key on the server and allowing it to be accessed from a web service only (so that the app can be used only when the device is online)
 
-#### Firebase Real-time Databases
+##### Firebase Real-time Databases
 
 Firebase is a development platform with more than 15 products, and one of them is Firebase Real-time Database. It can be leveraged by application developers to store and sync data with a NoSQL cloud-hosted database. The data is stored as JSON and is synchronized in real-time to every connected client and also remains available even when the application goes offline.
 
@@ -167,7 +167,7 @@ python FirebaseScanner.py -p <pathOfAPKFile>
 python FirebaseScanner.py -f <commaSeperatedFirebaseProjectNames>
 ```
 
-#### Realm Databases
+##### Realm Databases
 
 The [Realm Database for Java](https://mongodb.com/docs/realm/sdk/java/ "Realm Database") is becoming more and more popular among developers. The database and its contents can be encrypted with a key stored in the configuration file.
 
@@ -183,7 +183,7 @@ Realm realm = Realm.getInstance(config);
 
 If the database _is not_ encrypted, you should be able to obtain the data. If the database _is_ encrypted, determine whether the key is hard-coded in the source or resources and whether it is stored unprotected in shared preferences or some other location.
 
-### Internal Storage
+#### Internal Storage
 
 You can save files to the device's [internal storage](https://developer.android.com/guide/topics/data/data-storage.html#filesInternal "Using Internal Storage"). Files saved to internal storage are containerized by default and cannot be accessed by other apps on the device. When the user uninstalls your app, these files are removed.
 The following code snippets would persistently store sensitive data to internal storage.
@@ -216,7 +216,7 @@ You should check the file mode to make sure that only the app can access the fil
 
 Search for the class `FileInputStream` to find out which files are opened and read within the app.
 
-### External Storage
+#### External Storage
 
 Every Android-compatible device supports [shared external storage](https://developer.android.com/guide/topics/data/data-storage.html#filesExternal "Using External Storage"). This storage may be removable (such as an SD card) or internal (non-removable).
 Files saved to external storage are world-readable. The user can modify them when USB mass storage is enabled.
@@ -247,7 +247,7 @@ The file will be created and the data will be stored in a clear text file in ext
 It's also worth knowing that files stored outside the application folder (`data/data/<package-name>/`) will not be deleted when the user uninstalls the application.
 Finally, it's worth noting that the external storage can be used by an attacker to allow for arbitrary control of the application in some cases. For more information: [see the blog from Checkpoint](https://blog.checkpoint.com/2018/08/12/man-in-the-disk-a-new-attack-surface-for-android-apps/ "Man in the disk").
 
-### KeyStore
+#### KeyStore
 
 The [Android KeyStore](https://www.androidauthority.com/use-android-keystore-store-passwords-sensitive-information-623779/ "Use Android KeyStore") supports relatively secure credential storage. As of Android 4.3 (API level 18), it provides public APIs for storing and using app-private keys. An app can use a public key to create a new private/public key pair for encrypting application secrets, and it can decrypt the secrets with the private key.
 
@@ -447,7 +447,7 @@ There are several different open-source libraries that offer encryption capabili
 
 > Please keep in mind that as long as the key is not stored in the KeyStore, it is always possible to easily retrieve the key on a rooted device and then decrypt the values you are trying to protect.
 
-### Logs
+#### Logs
 
 There are many legitimate reasons to create log files on a mobile device, such as keeping track of crashes, errors, and usage statistics. Log files can be stored locally when the app is offline and sent to the endpoint once the app is online. However, logging sensitive data may expose the data to attackers or malicious applications, and it might also violate user confidentiality.
 You can create log files in several ways. The following list includes two classes that are available for Android:
@@ -455,7 +455,7 @@ You can create log files in several ways. The following list includes two classe
 - [Log Class](https://developer.android.com/reference/android/util/Log.html "Log Class")
 - [Logger Class](https://developer.android.com/reference/java/util/logging/Logger.html "Logger Class")
 
-### Backups
+#### Backups
 
 Android provides users with an auto-backup feature. The backups usually include copies of data and settings for all installed apps. Given its diverse ecosystem, Android supports many backup options:
 
@@ -472,7 +472,7 @@ Android provides users with an auto-backup feature. The backups usually include 
 
 Apps must carefully ensure that sensitive user data doesn't end within these backups as this may allow an attacker to extract it.
 
-### Process Memory
+#### Process Memory
 
 All applications on Android use memory to perform normal computational operations like any regular modern-day computer. It is of no surprise then that at times sensitive operations will be performed within process memory. For this reason, it is important that once the relevant sensitive data has been processed, it should be disposed from process memory as quickly as possible.
 
