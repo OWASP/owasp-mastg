@@ -38,7 +38,6 @@ More information can be found in ["Memory Corruption Bugs (MSTG-CODE-8)"](#memor
 
 Stack buffer overflow is a type of the more general programming vulnerability known as [buffer overflow](https://en.wikipedia.org/wiki/Buffer_overflow) (or buffer overrun). Overfilling a buffer on the stack is more likely to **derail program execution** than overfilling a buffer on the heap because the stack contains the return addresses for all active function calls.
 
-
 ## Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
 
 An _injection flaw_ describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta-characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
