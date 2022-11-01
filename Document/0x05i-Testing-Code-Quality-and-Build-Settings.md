@@ -1,5 +1,7 @@
 # Android Code Quality and Build Settings
 
+## Overview
+
 ## Making Sure That the App is Properly Signed (MSTG-CODE-1)
 
 ### Overview
