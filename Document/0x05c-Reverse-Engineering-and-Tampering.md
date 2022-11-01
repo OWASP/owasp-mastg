@@ -639,7 +639,7 @@ Initializing jdb ...
 >
 ```
 
-You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class' code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
+You're now attached to the suspended process and ready to go ahead with the jdb commands. Entering `?` prints the complete list of commands. Unfortunately, the Android VM doesn't support all available JDWP features. For example, the `redefine` command, which would let you redefine a class code is not supported. Another important restriction is that line breakpoints won't work because the release bytecode doesn't contain line information. Method breakpoints do work, however. Useful working commands include:
 
 - classes: list all loaded classes
 - class/methods/fields _class id_: Print details about a class and list its methods and fields
@@ -731,7 +731,7 @@ This is the plaintext string you're looking for!
 
 #### Debugging with an IDE
 
-Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect, it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
+Setting up a project in an IDE with the decompiled sources is a neat trick that allows you to set method breakpoints directly in the source code. In most cases, you should be able to single-step through the app and inspect the state of variables with the GUI. The experience won't be perfect, it's not the original source code after all, so you won't be able to set line breakpoints and things will sometimes simply not work correctly. Then again, reversing code is never easy, and efficiently navigating and debugging plain old Java code is a pretty convenient way of doing it. A similar method has been described in the [NetSPI blog](https://blog.netspi.com/attacking-android-applications-with-debuggers/ "NetSPI Blog - Attacking Android Applications with Debuggers").
 
 To set up IDE debugging, first create your Android project in IntelliJ and copy the decompiled Java sources into the source folder as described above in the "[Reviewing Decompiled Java Code](#reviewing-decompiled-java-code "Reviewing Decompiled Java Code")" section. On the device, choose the app as **debug app** on the "Developer options" ([UnCrackable App for Android Level 1](0x08b-Reference-Apps.md#android-uncrackable-l1) in this tutorial), and make sure you've switched on the "Wait For Debugger" feature.
 
@@ -758,8 +758,6 @@ Once you "Force Step Into", the debugger will stop at the beginning of the next 
 <img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="100%" />
 
 This method searches for the "su" binary within a list of directories (`/system/xbin` and others). Since you're running the app on a rooted device/emulator, you need to defeat this check by manipulating variables and/or function return values.
-
-<img src="Images/Chapters/0x05c/fucntion_a_of_class_sg_vantagepoint_a.png" width="100%" />
 
 You can see the directory names inside the "Variables" window by clicking "Step Over" the Debugger view to step into and through the `a` method.
 
