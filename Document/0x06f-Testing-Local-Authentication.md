@@ -1,8 +1,14 @@
 # iOS Local Authentication
 
+## Overview
+
 During local authentication, an app authenticates the user against credentials stored locally on the device. In other words, the user "unlocks" the app or some inner layer of functionality by providing a valid PIN, password or biometric characteristics such as face or fingerprint, which is verified by referencing local data. Generally, this is done so that users can more conveniently resume an existing session with a remote service or as a means of step-up authentication to protect some critical function.
 
 As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Testing-Authentication-and-Session-Management.md)": The tester should be aware that local authentication should always be enforced at a remote endpoint or based on a cryptographic primitive. Attackers can easily bypass local authentication if no data returns from the authentication process.
+
+### Note regarding temporariness of keys in the Keychain
+
+Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an item's accessibility in the keychain: when there is no additional security check when entering the keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
 ## Testing Local Authentication (MSTG-AUTH-8 and MSTG-STORAGE-11)
 
@@ -213,10 +219,6 @@ is accessible.
 ```
 
 If vulnerable, the module will automatically bypass the login form.
-
-## Note regarding temporariness of keys in the Keychain
-
-Unlike macOS and Android, iOS currently (at iOS 12) does not support temporariness of an item's accessibility in the keychain: when there is no additional security check when entering the keychain (e.g. `kSecAccessControlUserPresence` or similar is set), then once the device is unlocked, a key will be accessible.
 
 ## References
 
