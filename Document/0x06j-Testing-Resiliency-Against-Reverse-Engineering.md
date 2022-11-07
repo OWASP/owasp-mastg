@@ -2,9 +2,7 @@
 
 ## Overview
 
-## Jailbreak Detection (MSTG-RESILIENCE-1)
-
-### Overview
+### Jailbreak Detection (MSTG-RESILIENCE-1)
 
 Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. Here's a [list of typical jailbreak detection techniques for iOS](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods").
 
@@ -103,6 +101,265 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
     // Device is jailbroken
 }
 ```
+
+### Anti-Debugging Detection (MSTG-RESILIENCE-2)
+
+Exploring applications using a debugger is a very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
+
+There are several anti-debugging techniques applicable to iOS which can be categorized as preventive or as reactive; a few of them are discussed below. As a first line of defense, you can use preventive techniques to impede the debugger from attaching to the application at all. Additionally, you can also apply reactive techniques which allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior. When properly distributed throughout the app, these techniques act as a secondary or supportive measure to increase the overall resilience.
+
+Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
+
+According to Apple, you should "[restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
+
+#### Using ptrace
+
+As seen in chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
+
+Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
+
+> Before diving into the details, it is important to know that `ptrace` is not part of the public iOS API. Non-public APIs are prohibited, and the App Store may reject apps that include them. Because of this, `ptrace` is not directly called in the code; it's called when a `ptrace` function pointer is obtained via `dlsym`.
+
+The following is an example implementation of the above logic:
+
+```objectivec
+#import <dlfcn.h>
+#import <sys/types.h>
+#import <stdio.h>
+typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
+void anti_debug() {
+  ptrace_ptr_t ptrace_ptr = (ptrace_ptr_t)dlsym(RTLD_SELF, "ptrace");
+  ptrace_ptr(31, 0, 0, 0); // PTRACE_DENY_ATTACH = 31
+}
+```
+
+To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
+
+<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="100%" />
+
+Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
+
+<img src="Images/Chapters/0x06j/ptracePatched.png" width="100%" />
+
+[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
+
+Bypasses for other ptrace-based anti-debugging techniques can be found in ["Defeating Anti-Debug Techniques: macOS ptrace variants" by Alexander O'Mara](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
+
+#### Using sysctl
+
+Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation, it allows processes to set system information (if having the appropriate privileges) or simply to retrieve system information (such as whether or not the process is being debugged). However, note that just the fact that an app uses `sysctl` might be an indicator of anti-debugging controls, though this [won't be always be the case](http://www.cocoawithlove.com/blog/2016/03/08/swift-wrapper-for-sysctl.html "Gathering system information in Swift with sysctl").
+
+The following example from the [Apple Documentation Archive](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?") checks the `info.kp_proc.p_flag` flag returned by the call to `sysctl` with the appropriate parameters:
+
+```c
+#include <assert.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/sysctl.h>
+
+static bool AmIBeingDebugged(void)
+    // Returns true if the current process is being debugged (either
+    // running under the debugger or has a debugger attached post facto).
+{
+    int                 junk;
+    int                 mib[4];
+    struct kinfo_proc   info;
+    size_t              size;
+
+    // Initialize the flags so that, if sysctl fails for some bizarre
+    // reason, we get a predictable result.
+
+    info.kp_proc.p_flag = 0;
+
+    // Initialize mib, which tells sysctl the info we want, in this case
+    // we're looking for information about a specific process ID.
+
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_PROC;
+    mib[2] = KERN_PROC_PID;
+    mib[3] = getpid();
+
+    // Call sysctl.
+
+    size = sizeof(info);
+    junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
+    assert(junk == 0);
+
+    // We're being debugged if the P_TRACED flag is set.
+
+    return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
+}
+```
+
+One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
+
+<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="100%" />
+
+After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
+
+<img src="Images/Chapters/0x06j/sysctlPatched.png" width="100%" />
+
+You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
+
+### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
+
+There are two topics related to file integrity:
+
+ 1. _Application source code integrity checks:_ In the "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
+
+ 2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the Keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
+
+#### Sample Implementation - Application Source Code
+
+Apple takes care of integrity checks with DRM. However, additional controls (such as in the example below) are possible. The `mach_header` is parsed to calculate the start of the instruction data, which is used to generate the signature. Next, the signature is compared to the given signature. Make sure that the generated signature is stored or coded somewhere else.
+
+```c
+int xyz(char *dst) {
+    const struct mach_header * header;
+    Dl_info dlinfo;
+
+    if (dladdr(xyz, &dlinfo) == 0 || dlinfo.dli_fbase == NULL) {
+        NSLog(@" Error: Could not resolve symbol xyz");
+        [NSThread exit];
+    }
+
+    while(1) {
+
+        header = dlinfo.dli_fbase;  // Pointer on the Mach-O header
+        struct load_command * cmd = (struct load_command *)(header + 1); // First load command
+        // Now iterate through load command
+        //to find __text section of __TEXT segment
+        for (uint32_t i = 0; cmd != NULL && i < header->ncmds; i++) {
+            if (cmd->cmd == LC_SEGMENT) {
+                // __TEXT load command is a LC_SEGMENT load command
+                struct segment_command * segment = (struct segment_command *)cmd;
+                if (!strcmp(segment->segname, "__TEXT")) {
+                    // Stop on __TEXT segment load command and go through sections
+                    // to find __text section
+                    struct section * section = (struct section *)(segment + 1);
+                    for (uint32_t j = 0; section != NULL && j < segment->nsects; j++) {
+                        if (!strcmp(section->sectname, "__text"))
+                            break; //Stop on __text section load command
+                        section = (struct section *)(section + 1);
+                    }
+                    // Get here the __text section address, the __text section size
+                    // and the virtual memory address so we can calculate
+                    // a pointer on the __text section
+                    uint32_t * textSectionAddr = (uint32_t *)section->addr;
+                    uint32_t textSectionSize = section->size;
+                    uint32_t * vmaddr = segment->vmaddr;
+                    char * textSectionPtr = (char *)((int)header + (int)textSectionAddr - (int)vmaddr);
+                    // Calculate the signature of the data,
+                    // store the result in a string
+                    // and compare to the original one
+                    unsigned char digest[CC_MD5_DIGEST_LENGTH];
+                    CC_MD5(textSectionPtr, textSectionSize, digest);     // calculate the signature
+                    for (int i = 0; i < sizeof(digest); i++)             // fill signature
+                        sprintf(dst + (2 * i), "%02x", digest[i]);
+
+                    // return strcmp(originalSignature, signature) == 0;    // verify signatures match
+
+                    return 0;
+                }
+            }
+            cmd = (struct load_command *)((uint8_t *)cmd + cmd->cmdsize);
+        }
+    }
+
+}
+```
+
+#### Sample Implementation - Storage
+
+When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device. The CommonCrypto implementation is best for creating an HMAC.
+If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+
+When you generate an HMAC with CC:
+
+1. Get the data as `NSMutableData`.
+2. Get the data key (from the Keychain if possible).
+3. Calculate the hash value.
+4. Append the hash value to the actual data.
+5. Store the results of step 4.
+
+```objectivec
+    // Allocate a buffer to hold the digest and perform the digest.
+    NSMutableData* actualData = [getData];
+    //get the key from the keychain
+    NSData* key = [getKey];
+    NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
+    [actualData appendData: digestBuffer];
+```
+
+Alternatively, you can use NSData for steps 1 and 3, but you'll need to create a new buffer for step 4.
+
+When verifying the HMAC with CC, follow these steps:
+
+1. Extract the message and the hmacbytes as separate `NSData`.
+2. Repeat steps 1-3 of the procedure for generating an HMAC on the `NSData`.
+3. Compare the extracted HMAC bytes to the result of step 1.
+
+```objectivec
+  NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
+  NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
+  NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+  CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
+  return [hmac isEqual: digestBuffer];
+
+```
+
+#### Bypassing File Integrity Checks
+
+##### When you're trying to bypass the application-source integrity checks
+
+1. Patch the anti-debugging functionality and disable the unwanted behavior by overwriting the associated code with NOP instructions.
+2. Patch any stored hash that's used to evaluate the integrity of the code.
+3. Use Frida to hook file system APIs and return a handle to the original file instead of the modified file.
+
+##### When you're trying to bypass the storage integrity checks
+
+1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
+2. Alter the retrieved data and return it to storage.
+
+### Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
+
+The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a jailbroken device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
+
+### Emulator Detection (MSTG-RESILIENCE-5)
+
+The goal of emulator detection is to increase the difficulty of running the app on an emulated device. This forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
+
+As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator, hence _simulation_ protection was not so much a concern regarding iOS apps in contrast to Android with a wide range of _emulation_ choices available.
+
+However, since its release, [Corellium](https://www.corellium.com/) (commercial tool) has enabled real emulation, [setting itself apart from the iOS simulator](https://www.corellium.com/compare/ios-simulator). In addition to that, being a SaaS solution, Corellium enables large-scale device analysis with the limiting factor just being available funds.
+
+With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu)). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
+
+Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
+
+### Obfuscation (MSTG-RESILIENCE-9)
+
+The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
+
+> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
+
+The following techniques can be used to obfuscate an application:
+
+- Name obfuscation
+- Instruction substitution
+- Control flow flattening
+- Dead code injection
+- String encryption
+
+### Device Binding (MSTG-RESILIENCE-10)
+
+The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
+
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "[Remediation](#remediation "Remediation")" section for more details.
+
+## Testing Jailbreak Detection (MSTG-RESILIENCE-1)
 
 ### Bypassing Jailbreak Detection
 
@@ -296,106 +553,6 @@ sys.stdin.read()
 
 ## Testing Anti-Debugging Detection (MSTG-RESILIENCE-2)
 
-### Overview
-
-Exploring applications using a debugger is a very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
-
-There are several anti-debugging techniques applicable to iOS which can be categorized as preventive or as reactive; a few of them are discussed below. As a first line of defense, you can use preventive techniques to impede the debugger from attaching to the application at all. Additionally, you can also apply reactive techniques which allow the application to detect the presence of a debugger and have a chance to diverge from normal behavior. When properly distributed throughout the app, these techniques act as a secondary or supportive measure to increase the overall resilience.
-
-Application developers of apps processing highly sensitive data should be aware of the fact that preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
-
-According to Apple, you should "[restrict use of the above code to the debug build of your program](https://developer.apple.com/library/archive/qa/qa1361/_index.html "Detecting the Debugger")". However, research shows that [many App Store apps often include these checks](https://seredynski.com/articles/a-security-review-of-1300-appstore-applications.html "A security review of 1,300 AppStore applications - 5 April 2020").
-
-#### Using ptrace
-
-As seen in chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)", the iOS XNU kernel implements a `ptrace` system call that's lacking most of the functionality required to properly debug a process (e.g. it allows attaching/stepping but not read/write of memory and registers).
-
-Nevertheless, the iOS implementation of the `ptrace` syscall contains a nonstandard and very useful feature: preventing the debugging of processes. This feature is implemented as the `PT_DENY_ATTACH` request, as described in the [official BSD System Calls Manual](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/ptrace.2.html "PTRACE(2)"). In simple words, it ensures that no other debugger can attach to the calling process; if a debugger attempts to attach, the process will terminate. Using `PT_DENY_ATTACH` is a fairly well-known anti-debugging technique, so you may encounter it often during iOS pentests.
-
-> Before diving into the details, it is important to know that `ptrace` is not part of the public iOS API. Non-public APIs are prohibited, and the App Store may reject apps that include them. Because of this, `ptrace` is not directly called in the code; it's called when a `ptrace` function pointer is obtained via `dlsym`.
-
-The following is an example implementation of the above logic:
-
-```objectivec
-#import <dlfcn.h>
-#import <sys/types.h>
-#import <stdio.h>
-typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
-void anti_debug() {
-  ptrace_ptr_t ptrace_ptr = (ptrace_ptr_t)dlsym(RTLD_SELF, "ptrace");
-  ptrace_ptr(31, 0, 0, 0); // PTRACE_DENY_ATTACH = 31
-}
-```
-
-To demonstrate how to bypass this technique we'll use an example of a disassembled binary that implements this approach:
-
-<img src="Images/Chapters/0x06j/ptraceDisassembly.png" width="100%" />
-
-Let's break down what's happening in the binary. `dlsym` is called with `ptrace` as the second argument (register R1). The return value in register R0 is moved to register R6 at offset 0x1908A. At offset 0x19098, the pointer value in register R6 is called using the BLX R6 instruction. To disable the `ptrace` call, we need to replace the instruction `BLX R6` (`0xB0 0x47` in Little Endian) with the `NOP` (`0x00 0xBF` in Little Endian) instruction. After patching, the code will be similar to the following:
-
-<img src="Images/Chapters/0x06j/ptracePatched.png" width="100%" />
-
-[Armconverter.com](http://armconverter.com/ "Armconverter") is a handy tool for conversion between bytecode and instruction mnemonics.
-
-Bypasses for other ptrace-based anti-debugging techniques can be found in ["Defeating Anti-Debug Techniques: macOS ptrace variants" by Alexander O'Mara](https://alexomara.com/blog/defeating-anti-debug-techniques-macos-ptrace-variants/ "Defeating Anti-Debug Techniques: macOS ptrace variants").
-
-#### Using sysctl
-
-Another approach to detecting a debugger that's attached to the calling process involves `sysctl`. According to the Apple documentation, it allows processes to set system information (if having the appropriate privileges) or simply to retrieve system information (such as whether or not the process is being debugged). However, note that just the fact that an app uses `sysctl` might be an indicator of anti-debugging controls, though this [won't be always be the case](http://www.cocoawithlove.com/blog/2016/03/08/swift-wrapper-for-sysctl.html "Gathering system information in Swift with sysctl").
-
-The following example from the [Apple Documentation Archive](https://developer.apple.com/library/content/qa/qa1361/_index.html "How do I determine if I\'m being run under the debugger?") checks the `info.kp_proc.p_flag` flag returned by the call to `sysctl` with the appropriate parameters:
-
-```c
-#include <assert.h>
-#include <stdbool.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/sysctl.h>
-
-static bool AmIBeingDebugged(void)
-    // Returns true if the current process is being debugged (either
-    // running under the debugger or has a debugger attached post facto).
-{
-    int                 junk;
-    int                 mib[4];
-    struct kinfo_proc   info;
-    size_t              size;
-
-    // Initialize the flags so that, if sysctl fails for some bizarre
-    // reason, we get a predictable result.
-
-    info.kp_proc.p_flag = 0;
-
-    // Initialize mib, which tells sysctl the info we want, in this case
-    // we're looking for information about a specific process ID.
-
-    mib[0] = CTL_KERN;
-    mib[1] = KERN_PROC;
-    mib[2] = KERN_PROC_PID;
-    mib[3] = getpid();
-
-    // Call sysctl.
-
-    size = sizeof(info);
-    junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
-    assert(junk == 0);
-
-    // We're being debugged if the P_TRACED flag is set.
-
-    return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
-}
-```
-
-One way to bypass this check is by patching the binary. When the code above is compiled, the disassembled version of the second half of the code is similar to the following:
-
-<img src="Images/Chapters/0x06j/sysctlOriginal.png" width="100%" />
-
-After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to `MOVNE R0, #0` (0x00 0x20 in in bytecode), the patched code is similar to the following:
-
-<img src="Images/Chapters/0x06j/sysctlPatched.png" width="100%" />
-
-You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
-
 ### Using getppid
 
 Applications on iOS can detect if they have been started by a debugger by checking their parent PID. Normally, an application is started by the [launchd](http://newosxbook.com/articles/Ch07.pdf) process, which is the first process running in the _user mode_ and has PID=1. However, if a debugger starts an application, we can observe that `getppid` returns a PID different than 1. This detection technique can be implemented in native code (via syscalls), using Objective-C or Swift as shown here:
@@ -408,128 +565,7 @@ func AmIBeingDebugged() -> Bool {
 
 Similarly to the other techniques, this has also a trivial bypass (e.g. by patching the binary or by using Frida hooks).
 
-## File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
-
-### Overview
-
-There are two topics related to file integrity:
-
- 1. _Application source code integrity checks:_ In the "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-Engineering-and-Tampering.md#debugging)" chapter, we discussed the iOS IPA application signature check. We also saw that determined reverse engineers can bypass this check by re-packaging and re-signing an app using a developer or enterprise certificate. One way to make this harder is to add a custom check that determines whether the signatures still match at runtime.
-
- 2. _File storage integrity checks:_ When files are stored by the application, key-value pairs in the Keychain, `UserDefaults`/`NSUserDefaults`, a SQLite database, or a Realm database, their integrity should be protected.
-
-#### Sample Implementation - Application Source Code
-
-Apple takes care of integrity checks with DRM. However, additional controls (such as in the example below) are possible. The `mach_header` is parsed to calculate the start of the instruction data, which is used to generate the signature. Next, the signature is compared to the given signature. Make sure that the generated signature is stored or coded somewhere else.
-
-```c
-int xyz(char *dst) {
-    const struct mach_header * header;
-    Dl_info dlinfo;
-
-    if (dladdr(xyz, &dlinfo) == 0 || dlinfo.dli_fbase == NULL) {
-        NSLog(@" Error: Could not resolve symbol xyz");
-        [NSThread exit];
-    }
-
-    while(1) {
-
-        header = dlinfo.dli_fbase;  // Pointer on the Mach-O header
-        struct load_command * cmd = (struct load_command *)(header + 1); // First load command
-        // Now iterate through load command
-        //to find __text section of __TEXT segment
-        for (uint32_t i = 0; cmd != NULL && i < header->ncmds; i++) {
-            if (cmd->cmd == LC_SEGMENT) {
-                // __TEXT load command is a LC_SEGMENT load command
-                struct segment_command * segment = (struct segment_command *)cmd;
-                if (!strcmp(segment->segname, "__TEXT")) {
-                    // Stop on __TEXT segment load command and go through sections
-                    // to find __text section
-                    struct section * section = (struct section *)(segment + 1);
-                    for (uint32_t j = 0; section != NULL && j < segment->nsects; j++) {
-                        if (!strcmp(section->sectname, "__text"))
-                            break; //Stop on __text section load command
-                        section = (struct section *)(section + 1);
-                    }
-                    // Get here the __text section address, the __text section size
-                    // and the virtual memory address so we can calculate
-                    // a pointer on the __text section
-                    uint32_t * textSectionAddr = (uint32_t *)section->addr;
-                    uint32_t textSectionSize = section->size;
-                    uint32_t * vmaddr = segment->vmaddr;
-                    char * textSectionPtr = (char *)((int)header + (int)textSectionAddr - (int)vmaddr);
-                    // Calculate the signature of the data,
-                    // store the result in a string
-                    // and compare to the original one
-                    unsigned char digest[CC_MD5_DIGEST_LENGTH];
-                    CC_MD5(textSectionPtr, textSectionSize, digest);     // calculate the signature
-                    for (int i = 0; i < sizeof(digest); i++)             // fill signature
-                        sprintf(dst + (2 * i), "%02x", digest[i]);
-
-                    // return strcmp(originalSignature, signature) == 0;    // verify signatures match
-
-                    return 0;
-                }
-            }
-            cmd = (struct load_command *)((uint8_t *)cmd + cmd->cmdsize);
-        }
-    }
-
-}
-```
-
-#### Sample Implementation - Storage
-
-When ensuring the integrity of the application storage itself, you can create an HMAC or signature over either a given key-value pair or a file stored on the device. The CommonCrypto implementation is best for creating an HMAC.
-If you need encryption, make sure that you encrypt and then HMAC as described in [Authenticated Encryption](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
-
-When you generate an HMAC with CC:
-
-1. Get the data as `NSMutableData`.
-2. Get the data key (from the Keychain if possible).
-3. Calculate the hash value.
-4. Append the hash value to the actual data.
-5. Store the results of step 4.
-
-```objectivec
-    // Allocate a buffer to hold the digest and perform the digest.
-    NSMutableData* actualData = [getData];
-    //get the key from the keychain
-    NSData* key = [getKey];
-    NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
-    [actualData appendData: digestBuffer];
-```
-
-Alternatively, you can use NSData for steps 1 and 3, but you'll need to create a new buffer for step 4.
-
-When verifying the HMAC with CC, follow these steps:
-
-1. Extract the message and the hmacbytes as separate `NSData`.
-2. Repeat steps 1-3 of the procedure for generating an HMAC on the `NSData`.
-3. Compare the extracted HMAC bytes to the result of step 1.
-
-```objectivec
-  NSData* hmac = [data subdataWithRange:NSMakeRange(data.length - CC_SHA256_DIGEST_LENGTH, CC_SHA256_DIGEST_LENGTH)];
-  NSData* actualData = [data subdataWithRange:NSMakeRange(0, (data.length - hmac.length))];
-  NSMutableData* digestBuffer = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
-  CCHmac(kCCHmacAlgSHA256, [actualData bytes], (CC_LONG)[key length], [actualData bytes], (CC_LONG)[actualData length], [digestBuffer mutableBytes]);
-  return [hmac isEqual: digestBuffer];
-
-```
-
-#### Bypassing File Integrity Checks
-
-##### When you're trying to bypass the application-source integrity checks
-
-1. Patch the anti-debugging functionality and disable the unwanted behavior by overwriting the associated code with NOP instructions.
-2. Patch any stored hash that's used to evaluate the integrity of the code.
-3. Use Frida to hook file system APIs and return a handle to the original file instead of the modified file.
-
-##### When you're trying to bypass the storage integrity checks
-
-1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
-2. Alter the retrieved data and return it to storage.
+## Testing File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
 
 ### Effectiveness Assessment
 
@@ -553,10 +589,6 @@ A similar approach works. Answer the following questions:
 - What is your assessment of the difficulty of bypassing the mechanisms??
 
 ## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
-
-### Overview
-
-The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a jailbroken device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
 ### Detection Methods
 
@@ -633,33 +665,7 @@ Refer to the chapter "[Tampering and Reverse Engineering on iOS](0x06c-Reverse-E
 
 ## Testing Emulator Detection (MSTG-RESILIENCE-5)
 
-### Overview
-
-The goal of emulator detection is to increase the difficulty of running the app on an emulated device. This forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
-
-As discussed in the section [Testing on the iOS Simulator](0x06b-Basic-Security-Testing.md "Testing on the iOS Simulator") in the basic security testing chapter, the only available simulator is the one that ships with Xcode. Simulator binaries are compiled to x86 code instead of ARM code and apps compiled for a real device (ARM architecture) don't run in the simulator, hence _simulation_ protection was not so much a concern regarding iOS apps in contrast to Android with a wide range of _emulation_ choices available.
-
-However, since its release, [Corellium](https://www.corellium.com/) (commercial tool) has enabled real emulation, [setting itself apart from the iOS simulator](https://www.corellium.com/compare/ios-simulator). In addition to that, being a SaaS solution, Corellium enables large-scale device analysis with the limiting factor just being available funds.
-
-With Apple Silicon (ARM) hardware widely available, traditional checks for the presence of x86 / x64 architecture might not suffice. One potential detection strategy is to identify features and limitations available for commonly used emulation solutions. For instance, Corellium doesn't support iCloud, cellular services, camera, NFC, Bluetooth, App Store access or GPU hardware emulation ([Metal](https://developer.apple.com/documentation/metal/gpu_devices_and_work_submission/getting_the_default_gpu)). Therefore, smartly combining checks involving any of these features could be an indicator for the presence of an emulated environment.
-
-Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
-
 ## Testing Obfuscation (MSTG-RESILIENCE-9)
-
-### Overview
-
-The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
-
-> Note: All presented techniques below may not stop reverse engineers, but combining all of those techniques will make their job significantly harder. The aim of those techniques is to discourage reverse engineers from performing further analysis.
-
-The following techniques can be used to obfuscate an application:
-
-- Name obfuscation
-- Instruction substitution
-- Control flow flattening
-- Dead code injection
-- String encryption
 
 ### Name Obfuscation
 
@@ -784,13 +790,7 @@ Attempt to disassemble the Mach-O in the IPA and any included library files in t
 
 For a more detailed assessment, you need a detailed understanding of the relevant threats and the obfuscation methods used.
 
-## Device Binding (MSTG-RESILIENCE-10)
-
-### Overview
-
-The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
-
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits. The ways to bind an application to a device are based on `identifierForVendor`, storing something in the Keychain, or using Google's InstanceID for iOS. See the "[Remediation](#remediation "Remediation")" section for more details.
+## Testing Device Binding (MSTG-RESILIENCE-10)
 
 ### Static Analysis
 
