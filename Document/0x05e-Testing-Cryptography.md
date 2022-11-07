@@ -238,15 +238,41 @@ In general, `SecureRandom` should be used. However, if the Android versions belo
 
 Most developers should instantiate `SecureRandom` via the default constructor without any arguments. Other constructors are for more advanced uses and, if used incorrectly, can lead to decreased randomness and security. The PRNG provider backing `SecureRandom` uses the `SHA1PRNG` from `AndroidOpenSSL` (Conscrypt) provider.
 
-## Testing Symmetric Cryptography (MSTG-CRYPTO-1)
-
-### Overview
+### Symmetric Cryptography (MSTG-CRYPTO-1)
 
 This test case focuses on hardcoded symmetric cryptography as the only method of encryption. The following checks should be performed:
 
 - identify all instances of symmetric cryptography
 - for each identified instance verify if there are any hardcoded symmetric keys
 - verify if hardcoded symmetric cryptography is not used as the only method of encryption
+
+### Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
+
+These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
+
+- identify all instance of cryptography primitives and their implementation (library or custom implementation)
+- verify how cryptography primitives are used and how they are configured
+- verify if cryptographic protocols and algorithms used are not deprecated for security purposes.
+
+### The Purposes of Keys (MSTG-CRYPTO-5)
+
+This test case focuses on verification of purpose and reusage of the same cryptographic keys. The following checks should be performed:
+
+- identify all instances where cryptography is used
+- identify the purpose of the cryptographic material (to protect data in use, in transit or at rest)
+- identify type of cryptography
+- verify if cryptography is used according to its purpose
+
+### Random Number Generation (MSTG-CRYPTO-6)
+
+This test case focuses on random values used by application. The following checks should be performed:
+
+- identify all instances where random values are used
+- verify if random number generators are not considered as being cryptographically secure
+- verify how random number generators are used
+- verify randomness of the generated random values
+
+## Testing Symmetric Cryptography (MSTG-CRYPTO-1)
 
 ### Static Analysis
 
@@ -282,14 +308,6 @@ You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-t
 
 ## Testing the Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
 
-### Overview
-
-These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
-
-- identify all instance of cryptography primitives and their implementation (library or custom implementation)
-- verify how cryptography primitives are used and how they are configured
-- verify if cryptographic protocols and algorithms used are not deprecated for security purposes.
-
 ### Static Analysis
 
 Identify all the instances of the cryptographic primitives in code. Identify all custom cryptography implementations. You can look for:
@@ -309,15 +327,6 @@ Ensure that the best practices outlined in the "[Cryptography for Mobile Apps](0
 You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security).
 
 ## Testing the Purposes of Keys (MSTG-CRYPTO-5)
-
-### Overview
-
-This test case focuses on verification of purpose and reusage of the same cryptographic keys. The following checks should be performed:
-
-- identify all instances where cryptography is used
-- identify the purpose of the cryptographic material (to protect data in use, in transit or at rest)
-- identify type of cryptography
-- verify if cryptography is used according to its purpose
 
 ### Static Analysis
 
@@ -349,15 +358,6 @@ During verification the following checks should be performed:
 You can use [method tracing](0x05c-Reverse-Engineering-and-Tampering.md#method-tracing) on cryptographic methods to determine input / output values such as the keys that are being used. Monitor file system access while cryptographic operations are being performed to assess where key material is written to or read from. For example, monitor the file system by using the [API monitor](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security#8-api-monitor---android-only) of [RMS - Runtime Mobile Security](0x08a-Testing-Tools.md#RMS-Runtime-Mobile-Security).
 
 ## Testing Random Number Generation (MSTG-CRYPTO-6)
-
-### Overview
-
-This test case focuses on random values used by application. The following checks should be performed:
-
-- identify all instances where random values are used
-- verify if random number generators are not considered as being cryptographically secure
-- verify how random number generators are used
-- verify randomness of the generated random values
 
 ### Static Analysis
 
