@@ -167,6 +167,8 @@ By default, WebViews show a warning to users about the security risk with the op
 
 You can use the SafeBrowsing API independently from WebViews using the [SafetyNet library](https://developer.android.com/training/safetynet/safebrowsing), which implements a client for Safe Browsing Network Protocol v4. SafetyNet allows you to analyze all the URLs that your app is supposed load. You can check URLs with different schemes (e.g. http, file) since SafeBrowsing is agnostic to URL schemes, and against `TYPE_POTENTIALLY_HARMFUL_APPLICATION` and `TYPE_SOCIAL_ENGINEERING` threat types.
 
+> When sending URLs or files to be checked for known threats make sure they don't contain sensitive data which could compromise a user's privacy, or expose sensitive content from your application.
+
 #### Virus Total API
 
 Virus Total provides an API for analyzing URLs and local files for known threats. The API Reference is available on [Virus Total developers page](https://developers.virustotal.com/reference#getting-started "Getting Started").
@@ -583,9 +585,9 @@ To obtain detail about a specific permission you can refer to the [Android Docum
 
 To test for [injection flaws](0x04h-Testing-Code-Quality.md#injection-flaws-mstg-arch-2-and-mstg-platform-2 "Injection Flaws") you need to first rely on other tests and check for functionality that might have been exposed:
 
-- Deep Links. Check the test case ["Testing Deep Links"](#testing-deep-links-mstg-platform-3) as well for further test scenarios.
-- IPC Mechanisms (Intents, Binders, Android Shared Memory, or BroadcastReceivers). Check the test case ["Testing for Sensitive Functionality Exposure Through IPC"](#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4) as well for further test scenarios.
-- User interface. Check the test case ["Testing for Overlay Attacks"](#testing-for-overlay-attacks-mstg-platform-9).
+- ["Testing Deep Links"](#testing-deep-links-mstg-platform-3)
+- ["Testing for Sensitive Functionality Exposure Through IPC"](#testing-for-sensitive-functionality-exposure-through-ipc-mstg-platform-4)
+- ["Testing for Overlay Attacks"](#testing-for-overlay-attacks-mstg-platform-9)
 
 ### Static Analysis
 
@@ -757,13 +759,13 @@ The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/m
 
 ### Overview
 
-In order to test for [URL loading in WebViews](#url-loading-in-webviews "URL Loading in WebViews") you need to carefully analyze [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation"), especially when users might be able to navigate away from a trusted environment. The default and safest behavior on Android is to let the default web browser open any link that the user might click inside the WebView. However, this default logic can be modified by configuring a `WebViewClient` which allows navigation requests to be handled by the app itself. In order to test for Handling Page navigation and Safe Browsing.
-
-> When sending URLs or files to be checked for known threats make sure they don't contain sensitive data which could compromise a user's privacy, or expose sensitive content from your application.
+In order to test for [URL loading in WebViews](#url-loading-in-webviews "URL Loading in WebViews") you need to carefully analyze [handling page navigation](https://developer.android.com/guide/webapps/webview#HandlingNavigation "Handling page navigation"), especially when users might be able to navigate away from a trusted environment. The default and safest behavior on Android is to let the default web browser open any link that the user might click inside the WebView. However, this default logic can be modified by configuring a `WebViewClient` which allows navigation requests to be handled by the app itself.
 
 ### Static Analysis
 
-If this is the case, be sure to search for and inspect the following interception callback functions:
+#### Check for Page Navigation Handling Override
+
+To test if the app is overriding the default page navigation logic by configuring a `WebViewClient` you should search for and inspect the following interception callback functions:
 
 - `shouldOverrideUrlLoading` allows your application to either abort loading WebViews with suspicious content by returning `true` or allow the WebView to load the URL by returning `false`. Considerations:
   - This method is not called for POST requests.
@@ -775,6 +777,8 @@ In the case of redirects, this is only called for the initial resource URL, not 
   - When Safe Browsing is enabled, these URLs still undergo Safe Browsing checks but the developer can allow the URL with `setSafeBrowsingWhitelist` or even ignore the warning via the `onSafeBrowsingHit` callback.
 
 As you can see there are a lot of points to consider when testing the security of WebViews that have a WebViewClient configured, so be sure to carefully read and understand all of them by checking the [`WebViewClient` Documentation](https://developer.android.com/reference/android/webkit/WebViewClient "WebViewClient").
+
+#### Check for EnableSafeBrowsing Disabled
 
 While the default value of `EnableSafeBrowsing` is `true`, some applications might opt to disable it. To verify that SafeBrowsing is enabled, inspect the AndroidManifest.xml file and make sure that the configuration below is not present:
 
@@ -807,7 +811,14 @@ None of the input from these sources can be trusted; it must be validated and/or
 
 ### Static Analysis
 
-#### Enumerate Deep Links
+#### Check for Android OS Version
+
+The Android version in which the app runs also influences the risk of using deep links. Inspect the Android Manifest to check if `minSdkVersion` is 31 or higher.
+
+- Before Android 12 (API level 31), if the app has any [non-verifiable deep links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
+- Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
+
+#### Check for Deep Link Usage
 
 **Inspecting the Android Manifest:**
 
@@ -1077,7 +1088,7 @@ To test for [sensitive functionality exposure through IPC](#sensitive-functional
 
 ### Static Analysis
 
-We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the source code must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
+We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the app must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
 
 - [`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
 - [`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
@@ -1813,7 +1824,7 @@ While testing for [overlay attacks](#overlay-attacks "Overlay Attacks") you can 
 
 ### Static Analysis
 
-To start your static analysis you can check the source code for the following methods and attributes (non-exhaustive list):
+To start your static analysis you can check the app for the following methods and attributes (non-exhaustive list):
 
 - Override [`onFilterTouchEventForSecurity`](https://developer.android.com/reference/android/view/View#onFilterTouchEventForSecurity%28android.view.MotionEvent%29 "onFilterTouchEventForSecurity") for more fine-grained control and to implement a custom security policy for views.
 - Set the layout attribute [`android:filterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View#attr_android:filterTouchesWhenObscured "android:filterTouchesWhenObscured") to true or call [`setFilterTouchesWhenObscured`](https://developer.android.com/reference/android/view/View.html#setFilterTouchesWhenObscured%28boolean%29 "setFilterTouchesWhenObscured").
@@ -1923,9 +1934,11 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 When testing for [WebViews cleanup](#webviews-cleanup "WebViews Cleanup") there are a couple of areas where an app can delete WebView related data. You should inspect all related APIs and try to fully track data deletion.
 
-- **WebView APIs**:
-  - **Initialization**: an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "true".
-  - **Cache**: Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache. Check the source code for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
+### Static Analysis
+
+- **Initialization**: an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "true".
+
+- **Cache**: Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache. Check the app for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
 
 - **WebStorage APIs**: [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData) can be also used to clear all storage currently being used by the JavaScript storage APIs, including the Web SQL Database and the HTML5 Web Storage APIs.
   > Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
@@ -1934,9 +1947,7 @@ When testing for [WebViews cleanup](#webviews-cleanup "WebViews Cleanup") there 
 
 - **File APIs**: proper data deletion in certain directories might not be that straightforward, some apps use a pragmatic solution which is to _manually_ delete selected directories known to hold user data. This can be done using the `java.io.File` API such as [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html).
 
-### Static Analysis
-
-**Example:**
+- **Example:**
 
 This example in Kotlin from the [open source Firefox Focus](https://github.com/mozilla-mobile/focus-android/blob/v8.17.1/app/src/main/java/org/mozilla/focus/webview/SystemWebView.kt#L220 "Firefox Focus for Android") app shows different cleanup steps:
 
