@@ -83,6 +83,18 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 </base-config>
 ```
 
+### Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
+
+This test verifies if the app properly implements identity pinning (certificate or public key pinning).
+
+For more details refer to section ["Identity Pinning"](0x04f-Testing-Network-Communication.md#identity-pinning) in the general chapter "Mobile App Network Communication".
+
+### Security Provider (MSTG-NETWORK-6)
+
+Android relies on a security provider to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
+To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
+Since July 11, 2016, Google [has been rejecting Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) that use vulnerable versions of OpenSSL.
+
 ## Testing Data Encryption on the Network (MSTG-NETWORK-1)
 
 ### Static Analysis
@@ -288,12 +300,6 @@ If you're still not able to see any decrypted HTTPS traffic, your application mi
 
 ## Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
 
-### Overview
-
-This test verifies if the app properly implements identity pinning (certificate or public key pinning).
-
-For more details refer to section ["Identity Pinning"](0x04f-Testing-Network-Communication.md#identity-pinning) in the general chapter "Mobile App Network Communication".
-
 ### Static Analysis
 
 #### Certificate Pinning in the Network Security Configuration
@@ -494,12 +500,6 @@ However, keep in mind that:
 In both cases, the app or some of its components might implement custom pinning in a way that is [supported by objection](https://github.com/sensepost/objection/blob/master/agent/src/android/pinning.ts). Please check the static analysis section for specific pinning indicators and more in-depth testing.
 
 ## Testing the Security Provider (MSTG-NETWORK-6)
-
-### Overview
-
-Android relies on a security provider to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
-To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
-Since July 11, 2016, Google [has been rejecting Play Store application submissions](https://support.google.com/faqs/answer/6376725?hl=en "How to address OpenSSL vulnerabilities in your apps") (both new applications and updates) that use vulnerable versions of OpenSSL.
 
 ### Static Analysis
 
