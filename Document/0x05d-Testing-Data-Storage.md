@@ -480,9 +480,7 @@ The investigation of an application's memory can be done from memory dumps, and 
 
 This is further explained in the 'Testing Memory for Sensitive Data' section.
 
-## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
-
-### Overview
+### Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 This test case focuses on identifying potentially sensitive data stored by an application and verifying if it is securely stored. The following checks should be performed:
 
@@ -492,6 +490,77 @@ This test case focuses on identifying potentially sensitive data stored by an ap
   - This includes SharedPreferences, SQL databases, Realm Databases, Internal Storage, External Storage, etc.
   
 In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox. If achievable for the application, sensitive data should be stored off device or, even better, not stored at all.
+
+### Local Storage for Input Validation (MSTG-PLATFORM-2)
+
+For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
+
+> Note: Similar holds for private accessible data on a rooted device
+
+### Logs for Sensitive Data (MSTG-STORAGE-3)
+
+This test case focuses on identifying any sensitive application data within both system and application logs. The following checks should be performed:
+
+- Analyze source code for logging related code.
+- Check application data directory for log files.
+- Gather system messages and logs and analyze for any sensitive data.
+
+As a general recommendation to avoid potential sensitive application data leakage, logging statements should be removed from production releases unless deemed necessary to the application or explicitly identified as safe, e.g. as a result of a security audit.
+
+### Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
+
+Sensitive information might be leaked to third parties by several means.
+
+### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
+
+When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+
+### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
+
+As part of Android's IPC mechanisms, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, these mechanisms may leak sensitive data.
+
+### Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
+
+Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
+
+In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
+
+Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
+
+### Backups for Sensitive Data (MSTG-STORAGE-8)
+
+This test case focuses on ensuring that backups do not store sensitive application specific data. The following checks should be performed:
+
+- Check `AndroidManifest.xml` for relevant backup flags.
+- Attempt to backup the application and inspect the backup for sensitive data.
+
+### Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
+
+Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
+
+For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
+
+### Memory for Sensitive Data (MSTG-STORAGE-10)
+
+Analyzing memory can help developers identify the root causes of several problems, such as application crashes. However, it can also be used to access sensitive data. This section describes how to check for data disclosure via process memory.
+
+First identify sensitive information that is stored in memory. Sensitive assets have likely been loaded into memory at some point. The objective is to verify that this information is exposed as briefly as possible.
+
+To investigate an application's memory, you must first create a memory dump. You can also analyze the memory in real-time, e.g., via a debugger. Regardless of your approach, memory dumping is a very error-prone process in terms of verification because each dump contains the output of executed functions. You may miss executing critical scenarios. In addition, overlooking data during analysis is probable unless you know the data's footprint (either the exact value or the data format). For example, if the app encrypts with a randomly generated symmetric key, you likely won't be able to spot it in memory unless you can recognize the key's value in another context.
+
+Therefore, you are better off starting with static analysis.
+
+### Device-Access-Security Policy (MSTG-STORAGE-11)
+
+Apps that process or query sensitive information should run in a trusted and secure environment. To create this environment, the app can check the device for the following:
+
+- PIN- or password-protected device locking
+- Recent Android OS version
+- USB Debugging activation
+- Device encryption
+- Device rooting (see also "Testing Root Detection")
+
+## Testing Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
 
 ### Static Analysis
 
@@ -614,12 +683,6 @@ Install and use the app, executing all functions at least once. Data can be gene
 
 ## Testing Local Storage for Input Validation (MSTG-PLATFORM-2)
 
-### Overview
-
-For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
-
-> Note: Similar holds for private accessible data on a rooted device
-
 ### Static analysis
 
 #### Using Shared Preferences
@@ -635,16 +698,6 @@ In all cases, having the content HMACed can help to ensure that no additions and
 In case other public storage mechanisms (than the `SharedPreferences.Editor`) are used, the data needs to be validated the moment it is read from the storage mechanism.
 
 ## Testing Logs for Sensitive Data (MSTG-STORAGE-3)
-
-### Overview
-
-This test case focuses on identifying any sensitive application data within both system and application logs. The following checks should be performed:
-
-- Analyze source code for logging related code.
-- Check application data directory for log files.
-- Gather system messages and logs and analyze for any sensitive data.
-
-As a general recommendation to avoid potential sensitive application data leakage, logging statements should be removed from production releases unless deemed necessary to the application or explicitly identified as safe, e.g. as a result of a security audit.
 
 ### Static Analysis
 
@@ -732,11 +785,7 @@ adb logcat | grep "$(adb shell ps | grep <package-name> | awk '{print $2}')"
 
 You may also want to apply further filters or regular expressions (using `logcat`'s regex flags `-e <expr>, --regex=<expr>` for example) if you expect certain strings or patterns to come up in the logs.
 
-## Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
-
-### Overview
-
-Sensitive information might be leaked to third parties by several means, which include but are not limited to the following:
+## Testing Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
 
 ### Third-party Services Embedded in the App
 
@@ -782,11 +831,7 @@ To intercept traffic between the client and server, you can perform dynamic anal
 
 Run the application and start tracing all calls to functions related to the notifications creation, e.g. `setContentTitle` or `setContentText` from [`NotificationCompat.Builder`](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). Observe the trace in the end and evaluate if it contains any sensitive information which another app might have eavesdropped.
 
-## Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
-
-### Overview
-
-When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
+## Testing Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
 
 ### Static Analysis
 
@@ -817,11 +862,7 @@ Finally, check the minimum required SDK version in the Android Manifest (`androi
 
 Start the app and click in the input fields that take sensitive data. If strings are suggested, the keyboard cache has not been disabled for these fields.
 
-## Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
-
-### Overview
-
-As part of Android's IPC mechanisms, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, these mechanisms may leak sensitive data.
+## Testing Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
 
 ### Static Analysis
 
@@ -1068,15 +1109,7 @@ Row: 1 id=2, username=test, password=test
 ...
 ```
 
-## Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
-
-### Overview
-
-Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
-
-In order to prevent disclosure and mitigate risks such as [shoulder surfing](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29) you should verify that no sensitive data is exposed via the user interface unless explicitly required (e.g. a password being entered). For the data required to be present it should be properly masked, typically by showing asterisks or dots instead of clear text.
-
-Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
+## Testing Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
 
 ### Static Analysis
 
@@ -1111,13 +1144,6 @@ To identify the usage of notifications run through the entire application and al
 While running the application you may want to start tracing all calls to functions related to the notifications creation, e.g. `setContentTitle` or `setContentText` from [`NotificationCompat.Builder`](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). Observe the trace in the end and evaluate if it contains any sensitive information.
 
 ## Testing Backups for Sensitive Data (MSTG-STORAGE-8)
-
-### Overview
-
-This test case focuses on ensuring that backups do not store sensitive application specific data. The following checks should be performed:
-
-- Check `AndroidManifest.xml` for relevant backup flags.
-- Attempt to backup the application and inspect the backup for sensitive data.
 
 ### Static Analysis
 
@@ -1221,13 +1247,7 @@ Extract the tar file to your working directory.
 tar xvf mybackup.tar
 ```
 
-## Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
-
-### Overview
-
-Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
-
-For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
+## Testing Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
 
 ### Static Analysis
 
@@ -1267,16 +1287,6 @@ On devices supporting [file-based encryption (FBE)](https://source.android.com/s
 > Accessing these folders and the snapshots requires root.
 
 ## Testing Memory for Sensitive Data (MSTG-STORAGE-10)
-
-### Overview
-
-Analyzing memory can help developers identify the root causes of several problems, such as application crashes. However, it can also be used to access sensitive data. This section describes how to check for data disclosure via process memory.
-
-First identify sensitive information that is stored in memory. Sensitive assets have likely been loaded into memory at some point. The objective is to verify that this information is exposed as briefly as possible.
-
-To investigate an application's memory, you must first create a memory dump. You can also analyze the memory in real-time, e.g., via a debugger. Regardless of your approach, memory dumping is a very error-prone process in terms of verification because each dump contains the output of executed functions. You may miss executing critical scenarios. In addition, overlooking data during analysis is probable unless you know the data's footprint (either the exact value or the data format). For example, if the app encrypts with a randomly generated symmetric key, you likely won't be able to spot it in memory unless you can recognize the key's value in another context.
-
-Therefore, you are better off starting with static analysis.
 
 ### Static Analysis
 
@@ -1669,16 +1679,6 @@ During your analysis, search for:
 Repeating tests and memory dumps will help you obtain statistics about the length of data exposure. Furthermore, observing the way a particular memory segment (e.g., a byte array) changes may lead you to some otherwise unrecognizable sensitive data (more on this in the "Remediation" section below).
 
 ## Testing the Device-Access-Security Policy (MSTG-STORAGE-11)
-
-### Overview
-
-Apps that process or query sensitive information should run in a trusted and secure environment. To create this environment, the app can check the device for the following:
-
-- PIN- or password-protected device locking
-- Recent Android OS version
-- USB Debugging activation
-- Device encryption
-- Device rooting (see also "Testing Root Detection")
 
 ### Static Analysis
 
