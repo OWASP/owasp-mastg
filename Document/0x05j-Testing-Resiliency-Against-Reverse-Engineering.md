@@ -2,13 +2,13 @@
 
 ## Overview
 
-### Root Detection (MSTG-RESILIENCE-1)
+### Root Detection
 
 In the context of anti-reversing, the goal of root detection is to make running the app on a rooted device a bit more difficult, which in turn blocks some of the tools and techniques reverse engineers like to use. Like most other defenses, root detection is not very effective by itself, but implementing multiple root checks that are scattered throughout the app can improve the effectiveness of the overall anti-tampering scheme.
 
 For Android, we define "root detection" a bit more broadly, including custom ROMs detection, i.e., determining whether the device is a stock Android build or a custom build.
 
-### Anti-Debugging Detection (MSTG-RESILIENCE-2)
+### Anti-Debugging Detection
 
 Debugging is a highly effective way to analyze runtime app behavior. It allows the reverse engineer to step through the code, stop app execution at arbitrary points, inspect the state of variables, read and modify memory, and a lot more.
 
@@ -16,7 +16,7 @@ Anti-debugging features can be preventive or reactive. As the name implies, prev
 
 As mentioned in the "Reverse Engineering and Tampering" chapter, we have to deal with two debugging protocols on Android: we can debug on the Java level with JDWP or on the native layer via a ptrace-based debugger. A good anti-debugging scheme should defend against both types of debugging.
 
-### File Integrity Checks (MSTG-RESILIENCE-3)
+### File Integrity Checks
 
 There are two topics related to file integrity:
 
@@ -170,15 +170,15 @@ Refer to the "[Tampering and Reverse Engineering on Android](0x05c-Reverse-Engin
 1. Retrieve the data from the device, as described in the "[Testing Device Binding](#testing-device-binding-mstg-resilience-10 "Testing Device Binding")" section.
 2. Alter the retrieved data and then put it back into storage.
 
-### Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
+### Reverse Engineering Tools Detection
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a rooted device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-### Emulator Detection (MSTG-RESILIENCE-5)
+### Emulator Detection
 
 In the context of anti-reversing, the goal of emulator detection is to increase the difficulty of running the app on an emulated device, which impedes some tools and techniques reverse engineers like to use. This increased difficulty forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
 
-### Runtime Integrity Checks (MSTG-RESILIENCE-6)
+### Runtime Integrity Checks
 
 Controls in this category verify the integrity of the app's memory space to defend the app against memory patches applied during runtime. Such patches include unwanted changes to binary code, bytecode, function pointer tables, and important data structures, as well as rogue code loaded into process memory. Integrity can be verified by:
 
@@ -233,7 +233,7 @@ In contrast to GNU `ld`, which resolves symbol addresses only after they are nee
 
 _Inline hooks_ work by overwriting a few instructions at the beginning or end of the function code. During runtime, this so-called trampoline redirects execution to the injected code. You can detect inline hooks by inspecting the prologues and epilogues of library functions for suspect instructions, such as far jumps to locations outside the library.
 
-### Obfuscation (MSTG-RESILIENCE-9)
+### Obfuscation
 
 The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
@@ -295,7 +295,7 @@ You can define this more granularly on specific classes or libraries in your pro
 
 Obfuscation often carries a cost in runtime performance, therefore it is usually only applied to certain very specific parts of the code, typically those dealing with security and runtime protection.
 
-### Device Binding (MSTG-RESILIENCE-10)
+### Device Binding
 
 The goal of device binding is to impede an attacker who tries to both copy an app and its state from device A to device B and continue executing the app on device B. After device A has been determined trustworthy, it may have more privileges than device B. These differential privileges should not change when an app is copied from device A to device B.
 
