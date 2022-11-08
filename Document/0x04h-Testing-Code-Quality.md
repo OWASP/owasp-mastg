@@ -30,7 +30,7 @@ Unlike tracing garbage collection, ARC does not handle reference cycles automati
 
 [Manual memory management](https://en.wikipedia.org/wiki/Manual_memory_management) is typically required in native libraries written in C/C++ where ARC and GC do not apply. The developer is responsible for doing proper memory management. Manual memory management is known to enable several major classes of bugs into a program when used incorrectly, notably violations of [memory safety](https://en.wikipedia.org/wiki/Memory_safety) or [memory leaks](https://en.wikipedia.org/wiki/Memory_leak).
 
-More information can be found in ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+More information can be found in ["Testing Memory Corruption Bugs (MSTG-CODE-8)"](#testing-memory-corruption-bugs-mstg-code-8).
 
 #### Stack Smashing Protection
 
@@ -38,7 +38,7 @@ More information can be found in ["Memory Corruption Bugs (MSTG-CODE-8)"](#memor
 
 Stack buffer overflow is a type of the more general programming vulnerability known as [buffer overflow](https://en.wikipedia.org/wiki/Buffer_overflow) (or buffer overrun). Overfilling a buffer on the stack is more likely to **derail program execution** than overfilling a buffer on the heap because the stack contains the return addresses for all active function calls.
 
-## Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
+## Testing Injection Flaws (MSTG-ARCH-2 and MSTG-PLATFORM-2)
 
 An _injection flaw_ describes a class of security vulnerability occurring when user input is inserted into backend queries or commands. By injecting meta-characters, an attacker can execute malicious code that is inadvertently interpreted as part of the command or query. For example, by manipulating a SQL query, an attacker could retrieve arbitrary database records or manipulate the content of the backend database.
 
@@ -125,7 +125,7 @@ Verify that the following best practices have been followed:
 
 We will cover details related to input sources and potentially vulnerable APIs for each mobile OS in the OS-specific testing guides.
 
-## Cross-Site Scripting Flaws (MSTG-PLATFORM-2)
+## Testing Cross-Site Scripting Flaws (MSTG-PLATFORM-2)
 
 Cross-site scripting (XSS) issues allow attackers to inject client-side scripts into web pages viewed by users. This type of vulnerability is prevalent in web applications. When a user views the injected script in a browser, the attacker gains the ability to bypass the same origin policy, enabling a wide variety of exploits (e.g. stealing session cookies, logging key presses, performing arbitrary actions, etc.).
 
@@ -238,7 +238,7 @@ XSS issues can be best detected using manual and/or automated input fuzzing, i.e
 
 A [reflected XSS attack](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting.html "Testing for Reflected Cross site scripting") refers to an exploit where malicious code is injected via a malicious link. To test for these attacks, automated input fuzzing is considered to be an effective method. For example, the [BURP Scanner](https://portswigger.net/burp/ "Burp Suite") is highly effective in identifying reflected XSS vulnerabilities. As always with automated analysis, ensure all input vectors are covered with a manual review of testing parameters.
 
-## Memory Corruption Bugs (MSTG-CODE-8)
+## Testing Memory Corruption Bugs (MSTG-CODE-8)
 
 Memory corruption bugs are a popular mainstay with hackers. This class of bug results from a programming error that causes the program to access an unintended memory location. Under the right conditions, attackers can capitalize on this behavior to hijack the execution flow of the vulnerable program and execute arbitrary code. This kind of vulnerability occurs in a number of ways:
 
