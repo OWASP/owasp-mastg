@@ -8,13 +8,13 @@ As stated before in chapter "[Mobile App Authentication Architectures](0x04e-Tes
 
 In Android, there are two mechanisms supported by the Android Runtime for local authentication: the Confirm Credential flow and the Biometric Authentication flow.
 
-### Confirm Credentials (MSTG-AUTH-1 and MSTG-STORAGE-11)
+### Confirm Credentials
 
 The confirm credential flow is available since Android 6.0 and is used to ensure that users do not have to enter app-specific passwords together with the lock screen protection. Instead: if a user has logged in to the device recently, then confirm-credentials can be used to unlock cryptographic materials from the `AndroidKeystore`. That is, if the user unlocked the device within the set time limits (`setUserAuthenticationValidityDurationSeconds`), otherwise the device needs to be unlocked again.
 
 Note that the security of Confirm Credentials is only as strong as the protection set at the lock screen. This often means that simple predictive lock-screen patterns are used and therefore we do not recommend any apps which require L2 of security controls to use Confirm Credentials.
 
-### Biometric Authentication (MSTG-AUTH-8)
+### Biometric Authentication
 
 Biometric authentication is a convenient mechanism for authentication, but also introduces an additional attack surface when using it. The Android developer documentation gives an interesting overview and indicators for [measuring biometric unlock security](https://source.android.com/security/biometric/measure#strong-weak-unlocks "Measuring Biometric Unlock Security").
 
