@@ -2,27 +2,27 @@
 
 ## Overview
 
-### Making Sure that the App Is Properly Signed (MSTG-CODE-1)
+### Making Sure that the App Is Properly Signed
 
 [Code signing](0x06a-Platform-Overview.md#code-signing) your app assures users that the app has a known source and hasn't been modified since it was last signed. Before your app can integrate app services, be installed on a non-jailbroken device, or be submitted to the App Store, it must be signed with a certificate issued by Apple. For more information on how to request certificates and code sign your apps, review the [App Distribution Guide](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html "App Distribution Guide").
 
-### Determining Whether the App is Debuggable (MSTG-CODE-2)
+### Determining Whether the App is Debuggable
 
 Debugging iOS applications can be done using Xcode, which embeds a powerful debugger called lldb. Lldb is the default debugger since Xcode5 where it replaced GNU tools like gdb and is fully integrated in the development environment. While debugging is a useful feature when developing an app, it has to be turned off before releasing apps to the App Store or within an enterprise program.
 
 Generating an app in Build or Release mode depends on build settings in Xcode; when an app is generated in Debug mode, a DEBUG flag is inserted in the generated files.
 
-### Finding Debugging Symbols (MSTG-CODE-3)
+### Finding Debugging Symbols
 
 As a good practice, as little explanatory information as possible should be provided with a compiled binary. The presence of additional metadata such as debug symbols might provide valuable information about the code, e.g. function names leaking information about what a function does. This metadata is not required to execute the binary and thus it is safe to discard it for the release build, which can be done by using proper compiler configurations. As a tester you should inspect all binaries delivered with the app and ensure that no debugging symbols are present (at least those revealing any valuable information about the code).
 
 When an iOS application is compiled, the compiler generates a list of debug symbols for each binary file in an app (the main app executable, frameworks, and app extensions). These symbols include class names, global variables, and method and function names which are mapped to specific files and line numbers where they're defined. Debug builds of an app place the debug symbols in a compiled binary by default, while release builds of an app place them in a companion _Debug Symbol file_ (dSYM) to reduce the size of the distributed app.
 
-### Finding Debugging Code and Verbose Error Logging (MSTG-CODE-4)
+### Finding Debugging Code and Verbose Error Logging
 
 To speed up verification and get a better understanding of errors, developers often include debugging code, such as verbose logging statements (using `NSLog`, `println`, `print`, `dump`, and `debugPrint`) about responses from their APIs and about their application's progress and/or state. Furthermore, there may be debugging code for "management-functionality", which is used by developers to set the application's state or mock responses from an API. Reverse engineers can easily use this information to track what's happening with the application. Therefore, debugging code should be removed from the application's release version.
 
-### Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)
+### Checking for Weaknesses in Third Party Libraries
 
 iOS applications often make use of third party libraries which accelerate development as the developer has to write less code in order to solve a problem. However, third party libraries may contain vulnerabilities, incompatible licensing, or malicious content. Additionally, it is difficult for organizations and developers to manage application dependencies, including monitoring library releases and applying available security patches.
 
@@ -45,7 +45,7 @@ These libraries can lead to unwanted side-effects:
 
 Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
-### Exception Handling (MSTG-CODE-6)
+### Exception Handling
 
 Exceptions often occur after an application enters an abnormal or erroneous state.
 Testing exception handling is about making sure that the application will handle the exception and get into a safe state without exposing any sensitive information via its logging mechanisms or the UI.
@@ -225,11 +225,11 @@ func request(url: URL, completion: @escaping (Result<MSTG, RequestError>) -> Voi
 }
 ```
 
-### Memory Corruption Bugs (MSTG-CODE-8)
+### Memory Corruption Bugs
 
 iOS applications have various ways to run into memory corruption bugs: first there are the native code issues which have been mentioned in the general Memory Corruption Bugs section. Next, there are various unsafe operations with both Objective-C and Swift to actually wrap around native code which can create issues. Last, both Swift and Objective-C implementations can result in memory leaks due to retaining objects which are no longer in use.
 
-### Make Sure That Free Security Features Are Activated (MSTG-CODE-9)
+### Make Sure That Free Security Features Are Activated
 
 The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
@@ -240,7 +240,7 @@ Although Xcode enables all binary security features by default, it may be releva
   - However it's not applicable for libraries (Mach-O type `MH_DYLIB`).
 - [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
   - Both pure Objective-C, Swift and hybrid binaries should have ARC (Automatic Reference Counting) enabled.
-  - For C/C++ libraries, the developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+  - For C/C++ libraries, the developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#testing-memory-corruption-bugs-mstg-code-8).
 - [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection): For pure Objective-C binaries, this should always be enabled. Since Swift is designed to be memory safe, if a library is purely written in Swift, and stack canaries weren’t enabled, the risk will be minimal.
 
 Learn more:
