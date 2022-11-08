@@ -480,7 +480,7 @@ The investigation of an application's memory can be done from memory dumps, and 
 
 This is further explained in the 'Testing Memory for Sensitive Data' section.
 
-### Local Storage for Sensitive Data (MSTG-STORAGE-1 and MSTG-STORAGE-2)
+### Local Storage for Sensitive Data
 
 This test case focuses on identifying potentially sensitive data stored by an application and verifying if it is securely stored. The following checks should be performed:
 
@@ -491,13 +491,13 @@ This test case focuses on identifying potentially sensitive data stored by an ap
   
 In general sensitive data stored locally on the device should always be at least encrypted, and any keys used for encryption methods should be securely stored within the Android Keystore. These files should also be stored within the application sandbox. If achievable for the application, sensitive data should be stored off device or, even better, not stored at all.
 
-### Local Storage for Input Validation (MSTG-PLATFORM-2)
+### Local Storage for Input Validation
 
 For any publicly accessible data storage, any process can override the data. This means that input validation needs to be applied the moment the data is read back again.
 
 > Note: Similar holds for private accessible data on a rooted device
 
-### Logs for Sensitive Data (MSTG-STORAGE-3)
+### Logs for Sensitive Data
 
 This test case focuses on identifying any sensitive application data within both system and application logs. The following checks should be performed:
 
@@ -507,19 +507,19 @@ This test case focuses on identifying any sensitive application data within both
 
 As a general recommendation to avoid potential sensitive application data leakage, logging statements should be removed from production releases unless deemed necessary to the application or explicitly identified as safe, e.g. as a result of a security audit.
 
-### Determining Whether Sensitive Data Is Shared with Third Parties (MSTG-STORAGE-4)
+### Determining Whether Sensitive Data Is Shared with Third Parties
 
 Sensitive information might be leaked to third parties by several means.
 
-### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields (MSTG-STORAGE-5)
+### Determining Whether the Keyboard Cache Is Disabled for Text Input Fields
 
 When users type in input fields, the software automatically suggests data. This feature can be very useful for messaging apps. However, the keyboard cache may disclose sensitive information when the user selects an input field that takes this type of information.
 
-### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms (MSTG-STORAGE-6)
+### Determining Whether Sensitive Stored Data Has Been Exposed via IPC Mechanisms
 
 As part of Android's IPC mechanisms, content providers allow an app's stored data to be accessed and modified by other apps. If not properly configured, these mechanisms may leak sensitive data.
 
-### Checking for Sensitive Data Disclosure Through the User Interface (MSTG-STORAGE-7)
+### Checking for Sensitive Data Disclosure Through the User Interface
 
 Entering sensitive information when, for example, registering an account or making payments, is an essential part of using many apps. This data may be financial information such as credit card data or user account passwords. The data may be exposed if the app doesn't properly mask it while it is being typed.
 
@@ -527,20 +527,20 @@ In order to prevent disclosure and mitigate risks such as [shoulder surfing](htt
 
 Carefully review all UI components that either show such information or take it as input. Search for any traces of sensitive information and evaluate if it should be masked or completely removed.
 
-### Backups for Sensitive Data (MSTG-STORAGE-8)
+### Backups for Sensitive Data
 
 This test case focuses on ensuring that backups do not store sensitive application specific data. The following checks should be performed:
 
 - Check `AndroidManifest.xml` for relevant backup flags.
 - Attempt to backup the application and inspect the backup for sensitive data.
 
-### Finding Sensitive Information in Auto-Generated Screenshots (MSTG-STORAGE-9)
+### Finding Sensitive Information in Auto-Generated Screenshots
 
 Manufacturers want to provide device users with an aesthetically pleasing experience at application startup and exit, so they introduced the screenshot-saving feature for use when the application is backgrounded. This feature may pose a security risk. Sensitive data may be exposed if the user deliberately screenshots the application while sensitive data is displayed. A malicious application that is running on the device and able to continuously capture the screen may also expose data. Screenshots are written to local storage, from which they may be recovered by a rogue application (if the device is rooted) or someone who has stolen the device.
 
 For example, capturing a screenshot of a banking application may reveal information about the user's account, credit, transactions, and so on.
 
-### Memory for Sensitive Data (MSTG-STORAGE-10)
+### Memory for Sensitive Data
 
 Analyzing memory can help developers identify the root causes of several problems, such as application crashes. However, it can also be used to access sensitive data. This section describes how to check for data disclosure via process memory.
 
@@ -550,7 +550,7 @@ To investigate an application's memory, you must first create a memory dump. You
 
 Therefore, you are better off starting with static analysis.
 
-### Device-Access-Security Policy (MSTG-STORAGE-11)
+### Device-Access-Security Policy
 
 Apps that process or query sensitive information should run in a trusted and secure environment. To create this environment, the app can check the device for the following:
 
@@ -674,7 +674,7 @@ Install and use the app, executing all functions at least once. Data can be gene
 - Check both internal and external local storage for any files created by the application that contain sensitive data.
 - Identify development files, backup files, and old files that shouldn't be included with a production release.
 - Determine whether SQLite databases are available and whether they contain sensitive information. SQLite databases are stored in `/data/data/<package-name>/databases`.
-- Identify if SQLite databases are encrypted. If so, determine how the database password is generated and stored and if this is sufficiently protected as described in the "[Storing a Key](#storing-a-key)" section of the Keystore overview.
+- Identify if SQLite databases are encrypted. If so, determine how the database password is generated and stored and if this is sufficiently protected as described in the "[Storing a Key](#storing-a-cryptographic-key-techniques)" section of the Keystore overview.
 - Check Shared Preferences that are stored as XML files (in `/data/data/<package-name>/shared_prefs`) for sensitive information. Shared Preferences are insecure and unencrypted by default. Some apps might opt to use [secure-preferences](https://github.com/scottyab/secure-preferences "Secure-preferences encrypts the values of Shared Preferences") to encrypt the values stored in Shared Preferences.
 - Check the permissions of the files in `/data/data/<package-name>`. Only the user and group created when you installed the app (e.g., u0_a82) should have user read, write, and execute permissions (`rwx`). Other users should not have permission to access files, but they may have execute permissions for directories.
 - Check for the usage of any Firebase Real-time databases and attempt to identify if they are misconfigured by making the following network call:
