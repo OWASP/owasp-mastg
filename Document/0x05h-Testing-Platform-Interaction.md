@@ -94,7 +94,7 @@ the specific URI regardless if it has permissions to access to data from the con
 
 This allows a common capability-style model where user interaction drives ad-hoc granting of fine-grained permission. This can be a key facility for reducing the permissions needed by apps to only those directly related to their behavior. Without this model in place malicious users may access other member's email attachments or harvest contact lists for future use via unprotected URIs. In the manifest the [`android:grantUriPermissions`](https://developer.android.com/guide/topics/manifest/provider-element#gprmsn "android:grantUriPermissions") attribute or the node help restrict the URIs.
 
-**Documentation for URI Permissions:**
+Here you can find more information about APIs related to URI Permissions:
 
 - [grantUriPermission](https://developer.android.com/reference/android/content/Context.html#grantUriPermission%28java.lang.String,%20android.net.Uri,%20int%29 "grantUriPermission")
 - [revokeUriPermission](https://developer.android.com/reference/android/content/Context#revokeUriPermission%28android.net.Uri,%20int%29 "revokeUriPermission")
@@ -800,7 +800,7 @@ A convenient way to dynamically test deep linking is to use Frida or frida-trace
 
 ### Overview
 
-Any existing [deep links](#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc. The Android version in which the app runs also influences the risk:
+Any existing [deep links](#deep-links "Deep Links") (including App Links) can potentially increase the app attack surface. This [includes many risks](https://people.cs.vt.edu/gangwang/deep17.pdf) such as link hijacking, sensitive functionality exposure, etc.
 
 - Before Android 12 (API level 31), if the app has any [non-verifiable links](https://developer.android.com/training/app-links/verify-site-associations#fix-errors), it can cause the system to not verify all Android App Links for that app.
 - Starting on Android 12 (API level 31), apps benefit from a [reduced attack surface](https://developer.android.com/training/app-links/deep-linking). A generic web intent resolves to the user's default browser app unless the target app is approved for the specific domain contained in that web intent.
@@ -1084,7 +1084,7 @@ In this case we've crafted the deep link including arbitrary parameters (`?messa
 
 ### Overview
 
-To test for [sensitive functionality exposure through IPC](#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms we will identify a list of IPC mechanisms our app uses, then review the source code to see whether sensitive data is leaked when the mechanisms are used.
+To test for [sensitive functionality exposure through IPC](#sensitive-functionality-exposure-through-ipc "Sensitive Functionality Exposure Through IPC") mechanisms you should first enumerate all the IPC mechanisms the app uses and then try to identify whether sensitive data is leaked when the mechanisms are used.
 
 ### Static Analysis
 
@@ -1542,11 +1542,11 @@ Intent { act=theBroadcast flg=0x400010 (has extras) }
 
 ### Overview
 
-To test for [JavaScript execution in WebViews](#javascript-execution-in-webviews "JavaScript Execution in WebViews") the source code must be checked for usage and implementations of the WebView class. Then on a case-by-case basis a decision must be made for whether or not each WebView should allow JavaScript execution. If JavaScript execution is allowed, then a provided list of best practices should be followed.
+To test for [JavaScript execution in WebViews](#javascript-execution-in-webviews "JavaScript Execution in WebViews") check the app for WebView usage and evaluate whether or not each WebView should allow JavaScript execution. If JavaScript execution is required for the app to function normally, then you need to ensure that the app follows the all best practices.
 
 ### Static Analysis
 
-To create and use a WebView, you must create an instance of the WebView class.
+To create and use a WebView, an app must create an instance of the `WebView` class.
 
 ```java
 WebView webview = new WebView(this);
@@ -1592,7 +1592,7 @@ To address these attack vectors, check the following:
 
 ### Overview
 
-To test for [WebView protocol handlers](#webview-protocol-handlers "WebView Protocol Handlers") you will check the source code for any WebView usage. If using WebViews you will then check the current status of the Webviews resource access and determine whether or not the WebView should have resource access. If resource access is necessary you will then verify that it is implemented following best practices.
+To test for [WebView protocol handlers](#webview-protocol-handlers "WebView Protocol Handlers") check the app for WebView usage and evaluate whether or not the WebView should have resource access. If resource access is necessary you need to verify that it's implemented following best practices.
 
 ### Static Analysis
 
@@ -1646,7 +1646,7 @@ To identify the usage of protocol handlers, look for ways to trigger phone calls
 
 ### Overview
 
-To test for [Java objects exposed through WebViews](#java-objects-exposed-through-webviews "Java Objects Exposed Through WebViews") you will need to check the source code for WebView usage. If using WebViews you will then need to check if the WebView has enabled JavaScript through `setJavaScriptEnabled`. If JavaScript is enabled determine whether the method `addJavascriptInterface` is used on the WebView, how it is used, and whether an attacker can inject malicious JavaScript.
+To test for [Java objects exposed through WebViews](#java-objects-exposed-through-webviews "Java Objects Exposed Through WebViews") check the app for WebViews having JavaScript enabled and determine whether the WebView is creating any JavaScript interfaces aka. "JavaScript Bridges". Finally, check whether an attacker could potentially inject malicious JavaScript code.
 
 ### Static Analysis
 
@@ -1713,7 +1713,7 @@ A full description of the attack is included in the [blog article by MWR](https:
 
 ### Overview
 
-If [object persistence](#object-persistence "Object Persistence") is used for storing sensitive information on the device, first make sure that the information is encrypted and signed/HMACed. See the chapters "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Android Cryptographic APIs](0x05e-Testing-Cryptography.md)" for more details. Next, make sure that the decryption and verification keys are obtainable only after the user has been authenticated. Security checks should be carried out at the correct positions, as defined in [best practices](https://wiki.sei.cmu.edu/confluence/display/java/SER04-J.%20Do%20not%20allow%20serialization%20and%20deserialization%20to%20bypass%20the%20security%20manager "SER04-J. Do not allow serialization and deserialization to bypass the security manager").
+To test for [object persistence](#object-persistence "Object Persistence") being used for storing sensitive information on the device, first identify all instances of object serialization and check if they carry any sensitive data. If yes, check if is properly protected against eavesdropping or unauthorized modification.
 
 There are a few generic remediation steps that you can always take:
 
@@ -1820,7 +1820,9 @@ There are several ways to perform dynamic analysis:
 
 ### Overview
 
-While testing for [overlay attacks](#overlay-attacks "Overlay Attacks") you can find some general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"), please be sure to read them carefully. For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
+To test for [overlay attacks](#overlay-attacks "Overlay Attacks") you need to check the app for usage of certain APIs and attributed typically used to protect against overlay attacks as well as check the Android version that app is targeting.
+
+To mitigate these attacks please carefully read the general guidelines about Android View security in the [Android Developer Documentation](https://developer.android.com/reference/android/view/View#security "View Security"). For instance, the so-called _touch filtering_ is a common defense against tapjacking, which contributes to safeguarding users against these vulnerabilities, usually in combination with other techniques and considerations as we introduce in this section.
 
 ### Static Analysis
 
@@ -1845,10 +1847,7 @@ Abusing this kind of vulnerability on a dynamic manner can be pretty challenging
 
 ### Overview
 
-When checking for [enforced updating](#enforced-updating "Enforced Updating") make sure the usage of the `AppUpdateManager` is present. If it is not yet, then this means that users might be able to remain on an older version of the application with the given vulnerabilities.
-Next, pay attention to the `AppUpdateType.IMMEDIATE` use: if a security update comes in, then this flag should be used in order to make sure that the user cannot go forward with using the app without updating it.
-As you can see, in part 3 of the example: make sure that cancellations or errors do end up in re-checks and that a user cannot move forward in case of a critical security update.
-Finally, in part 4: you can see that for every entry point in the application, an update-mechanism should be enforced, so that bypassing it will be harder.
+To test for [enforced updating](#enforced-updating "Enforced Updating") you need to check if the app has support for in-app updates and validate if it's properly enforced so that the user is not able to continue using the app without updating it first.
 
 ### Static analysis
 
@@ -1932,20 +1931,23 @@ Lastly, see if you can play with the version number of a man-in-the-middled app 
 
 ### Overview
 
-When testing for [WebViews cleanup](#webviews-cleanup "WebViews Cleanup") there are a couple of areas where an app can delete WebView related data. You should inspect all related APIs and try to fully track data deletion.
+To test for [WebViews cleanup](#webviews-cleanup "WebViews Cleanup") you should inspect all APIs related to WebView data deletion and try to fully track the data deletion process.
 
 ### Static Analysis
 
-- **Initialization**: an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "true".
+Start by identifying the usage of the following APIs and carefully validate the mentioned best practices.
 
-- **Cache**: Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache. Check the app for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
+- **WebView APIs**:
+  - **Initialization**: an app might be initializing the WebView in a way to avoid storing certain information by using `setDomStorageEnabled`, `setAppCacheEnabled` or `setDatabaseEnabled` from [`android.webkit.WebSettings`](https://developer.android.com/reference/android/webkit/WebSettings "WebSettings"). The DOM Storage (for using the HTML5 local storage), Application Caches and Database Storage APIs are disabled by default, but apps might set these settings explicitly to "true".
 
-- **WebStorage APIs**: [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData) can be also used to clear all storage currently being used by the JavaScript storage APIs, including the Web SQL Database and the HTML5 Web Storage APIs.
-  > Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
+  - **Cache**: Android's WebView class offers the [`clearCache`](https://developer.android.com/reference/android/webkit/WebView#clearCache(boolean) "clearCache in WebViews") method which can be used to clear the cache for all WebViews used by the app. It receives a boolean input parameter (`includeDiskFiles`) which will wipe all stored resource including the RAM cache. However if it's set to false, it will only clear the RAM cache. Check the app for usage of the `clearCache` method and verify its input parameter. Additionally, you may also check if the app is overriding `onRenderProcessUnresponsive` for the case when the WebView might become unresponsive, as the `clearCache` method might also be called from there.
 
-- **Cookies**: any existing cookies can be deleted by using [CookieManager.removeAllCookies](https://developer.android.com/reference/android/webkit/CookieManager#removeAllCookies(android.webkit.ValueCallback%3Cjava.lang.Boolean%3E)).
+  - **WebStorage APIs**: [`WebStorage.deleteAllData`](https://developer.android.com/reference/android/webkit/WebStorage#deleteAllData) can be also used to clear all storage currently being used by the JavaScript storage APIs, including the Web SQL Database and the HTML5 Web Storage APIs.
+    > Some apps will _need_ to enable the DOM storage in order to display some HTML5 sites that use local storage. This should be carefully investigated as this might contain sensitive data.
 
-- **File APIs**: proper data deletion in certain directories might not be that straightforward, some apps use a pragmatic solution which is to _manually_ delete selected directories known to hold user data. This can be done using the `java.io.File` API such as [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html).
+  - **Cookies**: any existing cookies can be deleted by using [CookieManager.removeAllCookies](https://developer.android.com/reference/android/webkit/CookieManager#removeAllCookies(android.webkit.ValueCallback%3Cjava.lang.Boolean%3E)).
+
+  - **File APIs**: proper data deletion in certain directories might not be that straightforward, some apps use a pragmatic solution which is to _manually_ delete selected directories known to hold user data. This can be done using the `java.io.File` API such as [`java.io.File.deleteRecursively`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/delete-recursively.html).
 
 - **Example:**
 
