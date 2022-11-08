@@ -396,14 +396,14 @@ Start using the app and trigger its functions. You should see HTTP messages show
 
 > When using bettercap you need to activate "Support invisible proxying" in Proxy Tab / Options / Edit Interface
 
-## Verifying Data Encryption on the Network (MSTG-NETWORK-1)
+## Testing to Verify Data Encryption on the Network (MSTG-NETWORK-1)
 
 Refer to the corresponding chapters for more information:
 
 - [Android Network Communication](0x05g-Testing-Network-Communication.md#testing-data-encryption-on-the-network-mstg-network-1)
 - [iOS Network Communication](0x06g-Testing-Network-Communication.md#testing-data-encryption-on-the-network-mstg-network-1)
 
-## Verifying the TLS Settings (MSTG-NETWORK-2)
+## Testing to Verify the TLS Settings (MSTG-NETWORK-2)
 
 One of the core mobile app functions is sending/receiving data over untrusted networks like the Internet. If the data is not properly protected in transit, an attacker with access to any part of the network infrastructure (e.g., a Wi-Fi access point) may intercept, read, or modify it. This is why plaintext network protocols are rarely advisable.
 
@@ -510,7 +510,7 @@ If you want to verify whether your server supports the right cipher suites, ther
 
 Finally, verify that the server or termination proxy at which the HTTPS connection terminates is configured according to best practices. See also the [OWASP Transport Layer Protection cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.md "Transport Layer Protection Cheat Sheet") and the [Qualys SSL/TLS Deployment Best Practices](https://www.ssllabs.com/projects/best-practices/ "Qualys SSL/TLS Deployment Best Practices").
 
-## Making Sure that Critical Operations Use Secure Communication Channels (MSTG-NETWORK-5)
+## Testing to Make Sure that Critical Operations Use Secure Communication Channels (MSTG-NETWORK-5)
 
 ### Overview
 
