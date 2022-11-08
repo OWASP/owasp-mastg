@@ -2,7 +2,7 @@
 
 ## Overview
 
-### Jailbreak Detection (MSTG-RESILIENCE-1)
+### Jailbreak Detection
 
 Jailbreak detection mechanisms are added to reverse engineering defense to make running the app on a jailbroken device more difficult. This blocks some of the tools and techniques reverse engineers like to use. Like most other types of defense, jailbreak detection is not very effective by itself, but scattering checks throughout the app's source code can improve the effectiveness of the overall anti-tampering scheme. Here's a [list of typical jailbreak detection techniques for iOS](https://www.trustwave.com/Resources/SpiderLabs-Blog/Jailbreak-Detection-Methods/ "Jailbreak Detection Methods").
 
@@ -102,7 +102,7 @@ if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://
 }
 ```
 
-### Anti-Debugging Detection (MSTG-RESILIENCE-2)
+### Anti-Debugging Detection
 
 Exploring applications using a debugger is a very powerful technique during reversing. You can not only track variables containing sensitive data and modify the control flow of the application, but also read and modify memory and registers.
 
@@ -202,7 +202,7 @@ After the instruction at offset 0xC13C, `MOVNE R0, #1` is patched and changed to
 
 You can also bypass a `sysctl` check by using the debugger itself and setting a breakpoint at the call to `sysctl`. This approach is demonstrated in [iOS Anti-Debugging Protections #2](https://www.coredump.gr/articles/ios-anti-debugging-protections-part-2/ "iOS Anti-Debugging Protections #2").
 
-### File Integrity Checks (MSTG-RESILIENCE-3 and MSTG-RESILIENCE-11)
+### File Integrity Checks
 
 There are two topics related to file integrity:
 
@@ -320,14 +320,14 @@ When verifying the HMAC with CC, follow these steps:
 
 ##### When you're trying to bypass the storage integrity checks
 
-1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding-mstg-resilience-10 "Device Binding")" section.
+1. Retrieve the data from the device, as described in the "[Device Binding](#device-binding)" section.
 2. Alter the retrieved data and return it to storage.
 
-### Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
+### Reverse Engineering Tools Detection
 
 The presence of tools, frameworks and apps commonly used by reverse engineers may indicate an attempt to reverse engineer the app. Some of these tools can only run on a jailbroken device, while others force the app into debugging mode or depend on starting a background service on the mobile phone. Therefore, there are different ways that an app may implement to detect a reverse engineering attack and react to it, e.g. by terminating itself.
 
-### Emulator Detection (MSTG-RESILIENCE-5)
+### Emulator Detection
 
 The goal of emulator detection is to increase the difficulty of running the app on an emulated device. This forces the reverse engineer to defeat the emulator checks or utilize the physical device, thereby barring the access required for large-scale device analysis.
 
@@ -339,7 +339,7 @@ With Apple Silicon (ARM) hardware widely available, traditional checks for the p
 
 Pairing these results with the ones from 3rd party frameworks such as [iOS Security Suite](https://github.com/securing/IOSSecuritySuite#emulator-detector-module), [Trusteer](https://www.ibm.com/products/trusteer-mobile-sdk/details) or a no-code solution such as [Appdome](https://www.appdome.com/) (commercial solution) will provide a good line of defense against attacks utilizing emulators.
 
-### Obfuscation (MSTG-RESILIENCE-9)
+### Obfuscation
 
 The chapter ["Mobile App Tampering and Reverse Engineering"](0x04c-Tampering-and-Reverse-Engineering.md#obfuscation) introduces several well-known obfuscation techniques that can be used in mobile apps in general.
 
@@ -353,7 +353,7 @@ The following techniques can be used to obfuscate an application:
 - Dead code injection
 - String encryption
 
-### Device Binding (MSTG-RESILIENCE-10)
+### Device Binding
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
