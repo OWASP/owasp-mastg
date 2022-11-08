@@ -83,13 +83,13 @@ The default configuration for apps targeting Android 6.0 (API level 23) and lowe
 </base-config>
 ```
 
-### Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)
+### Custom Certificate Stores and Certificate Pinning
 
 This test verifies if the app properly implements identity pinning (certificate or public key pinning).
 
 For more details refer to section ["Identity Pinning"](0x04f-Testing-Network-Communication.md#identity-pinning) in the general chapter "Mobile App Network Communication".
 
-### Security Provider (MSTG-NETWORK-6)
+### Security Provider
 
 Android relies on a security provider to provide SSL/TLS-based connections. The problem with this kind of security provider (one example is [OpenSSL](https://www.openssl.org/news/vulnerabilities.html "OpenSSL Vulnerabilities")), which comes with the device, is that it often has bugs and/or vulnerabilities.
 To avoid known vulnerabilities, developers need to make sure that the application will install a proper security provider.
