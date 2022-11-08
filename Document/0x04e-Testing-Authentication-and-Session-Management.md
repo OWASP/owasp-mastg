@@ -61,7 +61,7 @@ Multi-factor Authentication"), which can incorporate:
 
 Ideally, in such a system the user's context is compared to previously recorded data to identify anomalies that might indicate account abuse or potential fraud. This process is transparent to the user, but can become a powerful deterrent to attackers.
 
-## Verifying that Appropriate Authentication is in Place (MSTG-ARCH-2 and MSTG-AUTH-1)
+## Verifying that Appropriate Authentication is in Place
 
 Perform the following steps when testing authentication and authorization:
 
