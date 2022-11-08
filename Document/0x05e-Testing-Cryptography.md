@@ -238,7 +238,7 @@ In general, `SecureRandom` should be used. However, if the Android versions belo
 
 Most developers should instantiate `SecureRandom` via the default constructor without any arguments. Other constructors are for more advanced uses and, if used incorrectly, can lead to decreased randomness and security. The PRNG provider backing `SecureRandom` uses the `SHA1PRNG` from `AndroidOpenSSL` (Conscrypt) provider.
 
-### Symmetric Cryptography (MSTG-CRYPTO-1)
+### Symmetric Cryptography
 
 This test case focuses on hardcoded symmetric cryptography as the only method of encryption. The following checks should be performed:
 
@@ -246,7 +246,7 @@ This test case focuses on hardcoded symmetric cryptography as the only method of
 - for each identified instance verify if there are any hardcoded symmetric keys
 - verify if hardcoded symmetric cryptography is not used as the only method of encryption
 
-### Configuration of Cryptographic Standard Algorithms (MSTG-CRYPTO-2, MSTG-CRYPTO-3 and MSTG-CRYPTO-4)
+### Configuration of Cryptographic Standard Algorithms
 
 These test cases focus on implementation and use of cryptographic primitives. Following checks should be performed:
 
@@ -254,7 +254,7 @@ These test cases focus on implementation and use of cryptographic primitives. Fo
 - verify how cryptography primitives are used and how they are configured
 - verify if cryptographic protocols and algorithms used are not deprecated for security purposes.
 
-### The Purposes of Keys (MSTG-CRYPTO-5)
+### The Purposes of Keys
 
 This test case focuses on verification of purpose and reusage of the same cryptographic keys. The following checks should be performed:
 
@@ -263,7 +263,7 @@ This test case focuses on verification of purpose and reusage of the same crypto
 - identify type of cryptography
 - verify if cryptography is used according to its purpose
 
-### Random Number Generation (MSTG-CRYPTO-6)
+### Random Number Generation
 
 This test case focuses on random values used by application. The following checks should be performed:
 
