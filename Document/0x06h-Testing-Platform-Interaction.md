@@ -2,7 +2,7 @@
 
 ## Overview
 
-### App Permissions (MSTG-PLATFORM-1)
+### App Permissions
 
 In contrast to Android, where each app runs on its own user ID, iOS makes all third-party apps run under the non-privileged `mobile` user. Each app has a unique home directory and is sandboxed, so that they cannot access protected system resources or files stored by the system or by other apps. These restrictions are implemented via sandbox policies (aka. _profiles_), which are enforced by the [Trusted BSD (MAC) Mandatory Access Control Framework](http://www.trustedbsd.org/mac.html "TrustedBSD Mandatory Access Control (MAC) Framework") via a kernel extension. iOS applies a generic sandbox profile to all third-party apps called _container_. Access to protected resources or data (some also known as [app capabilities](https://developer.apple.com/support/app-capabilities/ "Advanced App Capabilities")) is possible, but it's strictly controlled via special permissions known as _entitlements_.
 
@@ -38,7 +38,7 @@ When collecting or simply handling (e.g. caching) sensitive data, an app should 
 
 As you can see, using app capabilities and permissions mostly involve handling personal data, therefore being a matter of protecting the user's privacy. See the articles ["Protecting the User's Privacy"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy "Protecting the User\'s Privacy") and ["Accessing Protected Resources"](https://developer.apple.com/documentation/uikit/core_app/protecting_the_user_s_privacy/accessing_protected_resources?language=objc "Accessing Protected Resources") in Apple Developer Documentation for more details.
 
-### Sensitive Functionality Exposure Through IPC (MSTG-PLATFORM-4)
+### Sensitive Functionality Exposure Through IPC
 
 During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
 
@@ -50,7 +50,7 @@ In contrast to Android's rich Inter-Process Communication (IPC) capability, iOS 
 - App Extensions
 - UIPasteboard
 
-### Custom URL Schemes (MSTG-PLATFORM-3)
+### Custom URL Schemes
 
 Custom URL schemes [allow apps to communicate via a custom protocol](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW1 "Using URL Schemes to Communicate with Apps"). An app must declare support for the schemes and handle incoming URLs that use those schemes.
 
@@ -89,7 +89,7 @@ In addition, an app may also want to send URL requests (aka. queries) to other a
 
 All of this presents a wide attack surface that we will address in the static and dynamic analysis sections.
 
-### iOS WebViews (MSTG-PLATFORM-5)
+### iOS WebViews
 
 WebViews are in-app browser components for displaying interactive web content. They can be used to embed web content directly into an app's user interface. iOS WebViews support JavaScript execution by default, so script injection and Cross-Site Scripting attacks can affect them.
 
@@ -108,7 +108,7 @@ WebViews are in-app browser components for displaying interactive web content. T
 - The `hasOnlySecureContent` property can be used to verify resources loaded by the WebView are retrieved through encrypted connections.
 - `WKWebView` implements out-of-process rendering, so memory corruption bugs won't affect the main app process.
 
-A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](#determining-whether-native-methods-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Native Methods Are Exposed Through WebViews")" below for more information.
+A JavaScript Bridge can be enabled when using `WKWebView`s (and `UIWebView`s). See Section "[Determining Whether Native Methods Are Exposed Through WebViews](#testing-determining-whether-native-methods-are-exposed-through-webviews-mstg-platform-7 "Determining Whether Native Methods Are Exposed Through WebViews")" below for more information.
 
 #### SFSafariViewController
 
@@ -148,7 +148,7 @@ To open the web inspector and debug a WebView:
 
 Now you're able to debug the WebView as you would with a regular web page on your desktop browser.
 
-### WebView Protocol Handlers (MSTG-PLATFORM-6)
+### WebView Protocol Handlers
 
 Several default schemes are available that are being interpreted in a WebView on iOS, for example:
 
@@ -163,11 +163,11 @@ Use the following best practices as defensive-in-depth measures:
 - Create a list that defines local and remote web pages and URL schemes that are allowed to be loaded.
 - Create checksums of the local HTML/JavaScript files and check them while the app is starting up. [Minify JavaScript files](https://en.wikipedia.org/wiki/Minification_%28programming%29) "Minification (programming)") to make them harder to read.
 
-### Determining Whether Native Methods Are Exposed Through WebViews (MSTG-PLATFORM-7)
+### Determining Whether Native Methods Are Exposed Through WebViews
 
 Since iOS 7, Apple introduced APIs that allow communication between the JavaScript runtime in the WebView and the native Swift or Objective-C objects. If these APIs are used carelessly, important functionality might be exposed to attackers who manage to inject malicious scripts into the WebView (e.g., through a successful Cross-Site Scripting attack).
 
-### Object Persistence (MSTG-PLATFORM-8)
+### Object Persistence
 
 There are several ways to persist an object on iOS:
 
@@ -368,7 +368,7 @@ Apple itself supplies `CoreData`, which is well explained in the [Apple Develope
 There have been a few vulnerabilities with Protocol Buffers, such as [CVE-2015-5237](https://www.cvedetails.com/cve/CVE-2015-5237/ "CVE-2015-5237").
 Note that **Protocol Buffers do not provide any protection for confidentiality** as no built-in encryption is available.
 
-### Testing enforced updating (MSTG-ARCH-9)
+### Enforced Updating
 
 Enforced updating can be really helpful when it comes to public key pinning (see the Testing Network communication for more details) when a pin has to be refreshed due to a certificate/public key rotation. Next, vulnerabilities are easily patched by means of forced updates.
 The challenge with iOS however, is that Apple does not provide any APIs yet to automate this process, instead, developers will have to create their own mechanism, such as described at various [blogs](https://mobikul.com/show-update-application-latest-version-functionality-ios-app-swift-3/ "Updating version in Swift 3") which boil down to looking up properties of the app using `http://itunes.apple.com/lookup\?id\<BundleId>` or third party libraries, such as [Siren](https://github.com/ArtSabintsev/Siren "Siren") and [react-native-appstore-version-checker](https://www.npmjs.com/package/react-native-appstore-version-checker "Update checker for React"). Most of these implementations will require a certain given version offered by an API or just "latest in the appstore", which means users can be frustrated with having to update the app, even though no business/security need for an update is truly there.
