@@ -2,7 +2,7 @@
 
 ## Overview
 
-### Making Sure That the App is Properly Signed (MSTG-CODE-1)
+### Making Sure That the App is Properly Signed
 
 Android requires all APKs to be digitally signed with a certificate before they are installed or run. The digital signature is used to verify the owner's identity for application updates. This process can prevent an app from being tampered with or modified to include malicious code.
 
@@ -23,17 +23,17 @@ The V3 signature, which is supported by Android 9 (API level 28) and above, give
 
 For each signing scheme the release builds should always be signed via all its previous schemes as well.
 
-### Whether the App is Debuggable (MSTG-CODE-2)
+### Whether the App is Debuggable
 
 The `android:debuggable` attribute in the [`Application` element](https://developer.android.com/guide/topics/manifest/application-element.html "Application element") that is defined in the Android manifest determines whether the app can be debugged or not.
 
-### Debugging Symbols (MSTG-CODE-3)
+### Debugging Symbols
 
 Generally, you should provide compiled code with as little explanation as possible. Some metadata, such as debugging information, line numbers, and descriptive function or method names, make the binary or bytecode easier for the reverse engineer to understand, but these aren't needed in a release build and can therefore be safely omitted without impacting the app's functionality.
 
 To inspect native binaries, use a standard tool like `nm` or `objdump` to examine the symbol table. A release build should generally not contain any debugging symbols. If the goal is to obfuscate the library, removing unnecessary dynamic symbols is also recommended.
 
-### Debugging Code and Verbose Error Logging (MSTG-CODE-4)
+### Debugging Code and Verbose Error Logging
 
 StrictMode is a developer tool for detecting violations, e.g. accidental disk or network access on the application's main thread. It can also be used to check for good coding practices, such as implementing performant code.
 
@@ -61,7 +61,7 @@ public void onCreate() {
 
 Inserting the policy in the `if` statement with the `DEVELOPER_MODE` condition is recommended. To disable `StrictMode`, `DEVELOPER_MODE` must be disabled for the release build.
 
-### Checking for Weaknesses in Third Party Libraries (MSTG-CODE-5)
+### Checking for Weaknesses in Third Party Libraries
 
 Android apps often make use of third party libraries. These third party libraries accelerate development as the developer has to write less code in order to solve a problem. There are two categories of libraries:
 
@@ -76,18 +76,18 @@ These libraries can lead to unwanted side-effects:
 
 Please note that this issue can hold on multiple levels: When you use webviews with JavaScript running in the webview, the JavaScript libraries can have these issues as well. The same holds for plugins/libraries for Cordova, React-native and Xamarin apps.
 
-### Exception Handling (MSTG-CODE-6 and MSTG-CODE-7)
+### Exception Handling
 
 Exceptions occur when an application gets into an abnormal or error state. Both Java and C++ may throw exceptions. Testing exception handling is about ensuring that the app will handle an exception and transition to a safe state without exposing sensitive information via the UI or the app's logging mechanisms.
 
-### Memory Corruption Bugs (MSTG-CODE-8)
+### Memory Corruption Bugs
 
 Android applications often run on a VM where most of the memory corruption issues have been taken care off.
 This does not mean that there are no memory corruption bugs. Take [CVE-2018-9522](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9522 "CVE in StatsLogEventWrapper") for instance, which is related to serialization issues using Parcels. Next, in native code, we still see the same issues as we explained in the general memory corruption section. Last, we see memory bugs in supporting services, such as with the Stagefright attack as shown [at BlackHat](https://www.blackhat.com/docs/us-15/materials/us-15-Drake-Stagefright-Scary-Code-In-The-Heart-Of-Android.pdf "Stagefright").
 
 A memory leak is often an issue as well. This can happen for instance when a reference to the `Context` object is passed around to non-`Activity` classes, or when you pass references to `Activity` classes to your helper classes.
 
-### Make Sure That Free Security Features Are Activated (MSTG-CODE-9)
+### Make Sure That Free Security Features Are Activated
 
 The tests used to detect the presence of [binary protection mechanisms](0x04h-Testing-Code-Quality.md#binary-protection-mechanisms) heavily depend on the language used for developing the application.
 
@@ -102,7 +102,7 @@ The app's [NDK native libraries](0x05b-Basic-Security_Testing.md#native-librarie
   - With Android 5.0 (API level 21), support for non-PIE enabled native libraries was [dropped](https://source.android.com/security/enhancements/enhancements50) and since then, PIE is [enforced by the linker](https://cs.android.com/android/platform/superproject/+/master:bionic/linker/linker_main.cpp;l=430).
 - [**Memory management**](0x04h-Testing-Code-Quality.md#memory-management):
   - Garbage Collection will simply run for the main binaries and there's nothing to be checked on the binaries themselves.
-  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Memory Corruption Bugs (MSTG-CODE-8)"](#memory-corruption-bugs-mstg-code-8).
+  - Garbage Collection does not apply to Android native libraries. The developer is responsible for doing proper [manual memory management](0x04h-Testing-Code-Quality.md#manual-memory-management). See ["Testing Memory Corruption Bugs (MSTG-CODE-8)"](#testing-memory-corruption-bugs-mstg-code-8).
 - [**Stack Smashing Protection**](0x04h-Testing-Code-Quality.md#stack-smashing-protection):
   - Android apps get compiled to Dalvik bytecode which is considered memory safe (at least for mitigating buffer overflows). Other frameworks such as Flutter will not compile using stack canaries because of the way their language, in this case Dart, mitigates buffer overflows.
   - It must be enabled for Android native libraries but it might be difficult to fully determine it.
