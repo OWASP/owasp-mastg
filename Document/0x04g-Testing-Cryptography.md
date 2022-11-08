@@ -43,7 +43,7 @@ Learn more:
 - [Encryption Control (France)](https://www.ssi.gouv.fr/en/regulation/cryptology/ "Encryption Control")
 - [World map of encryption laws and policies](https://www.gp-digital.org/WORLD-MAP-OF-ENCRYPTION/)
 
-## Identifying Insecure and/or Deprecated Cryptographic Algorithms (MSTG-CRYPTO-4)
+## Testing Identifying Insecure and/or Deprecated Cryptographic Algorithms (MSTG-CRYPTO-4)
 
 When assessing a mobile app, you should make sure that it does not use cryptographic algorithms and protocols that have significant known weaknesses or are otherwise insufficient for modern security requirements. Algorithms that were considered secure in the past may become insecure over time; therefore, it's important to periodically check current best practices and adjust configurations accordingly.
 
@@ -83,7 +83,7 @@ For more information on algorithm choice and best practices, see the following r
 - [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
 
-## Common Configuration Issues (MSTG-CRYPTO-1, MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
+## Testing Common Configuration Issues (MSTG-CRYPTO-1, MSTG-CRYPTO-2 and MSTG-CRYPTO-3)
 
 ### Insufficient Key Length
 
