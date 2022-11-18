@@ -173,46 +173,6 @@ You can use the SafeBrowsing API independently from WebViews using the [SafetyNe
 
 Virus Total provides an API for analyzing URLs and local files for known threats. The API Reference is available on [Virus Total developers page](https://developers.virustotal.com/reference#getting-started "Getting Started").
 
-#### Deep Links
-
-_Deep links_ are URIs of any scheme that take users directly to specific content in an app. An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to navigate users to the correct activity.
-
-Android supports two types of deep links:
-
-- **Custom URL Schemes**, which are deep links that use any custom URL scheme, e.g. `myapp://` (not verified by the OS).
-- **Android App Links** (Android 6.0 (API level 23) and higher), which are deep links that use the `http://` and `https://` schemes and contain the `autoVerify` attribute (which triggers OS verification).
-
-**Deep Link Collision:**
-
-Using unverified deep links can cause a significant issue- any other apps installed on a user's device can declare and try to handle the same intent, which is known as **deep link collision**. Any arbitrary application can declare control over the exact same deep link belonging to another application.
-
-In recent versions of Android this results in a so-called _disambiguation dialog_ shown to the user that asks them to select the application that should handle the deep link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
-
-<img src="Images/Chapters/0x05h/app-disambiguation.png" width="50%" />
-
-**Android App Links:**
-
-In order to solve the deep link collision issue, Android 6.0 (API Level 23) introduced [**Android App Links**](https://developer.android.com/training/app-links), which are [verified deep links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links") based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed.
-
-There are some key differences from unverified deep links:
-
-- App Links only use `http://` and `https://` schemes, any other custom URL schemes are not allowed.
-- App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
-- App Links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
-
-#### Sensitive Functionality Exposure Through IPC
-
-During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
-
-The following is a list of Android IPC Mechanisms that may expose sensitive data:
-
-- [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
-- [Services](https://developer.android.com/guide/components/services.html "IPCServices")
-- [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
-- [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
-- [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
-- [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
-
 #### JavaScript Execution in WebViews
 
 JavaScript can be injected into web applications via reflected, stored, or DOM-based Cross-Site Scripting (XSS). Mobile apps are executed in a sandboxed environment and don't have this vulnerability when implemented natively. Nevertheless, WebViews may be part of a native app to allow web page viewing. Every app has its own WebView cache, which isn't shared with the native Browser or other apps. On Android, WebViews use the WebKit rendering engine to display web pages, but the pages are stripped down to minimal functions, for example, pages don't have address bars. If the WebView implementation is too lax and allows usage of JavaScript, JavaScript can be used to attack the app and gain access to its data.
@@ -244,6 +204,46 @@ As an additional measure, you could use server-side headers such as `no-cache`, 
 > Starting on Android 10 (API level 29) apps are able to detect if a WebView has become [unresponsive](https://developer.android.com/about/versions/10/features?hl=en#webview-hung "WebView hung renderer detection"). If this happens, the OS will automatically call the `onRenderProcessUnresponsive` method.
 
 You can find more security best practices when using WebViews on [Android Developers](https://developer.android.com/training/articles/security-tips?hl=en#WebView "Security Tips - Use WebView").
+
+### Deep Links
+
+_Deep links_ are URIs of any scheme that take users directly to specific content in an app. An app can [set up deep links](https://developer.android.com/training/app-links/deep-linking) by adding _intent filters_ on the Android Manifest and extracting data from incoming intents to navigate users to the correct activity.
+
+Android supports two types of deep links:
+
+- **Custom URL Schemes**, which are deep links that use any custom URL scheme, e.g. `myapp://` (not verified by the OS).
+- **Android App Links** (Android 6.0 (API level 23) and higher), which are deep links that use the `http://` and `https://` schemes and contain the `autoVerify` attribute (which triggers OS verification).
+
+**Deep Link Collision:**
+
+Using unverified deep links can cause a significant issue- any other apps installed on a user's device can declare and try to handle the same intent, which is known as **deep link collision**. Any arbitrary application can declare control over the exact same deep link belonging to another application.
+
+In recent versions of Android this results in a so-called _disambiguation dialog_ shown to the user that asks them to select the application that should handle the deep link. The user could make the mistake of choosing a malicious application instead of the legitimate one.
+
+<img src="Images/Chapters/0x05h/app-disambiguation.png" width="50%" />
+
+**Android App Links:**
+
+In order to solve the deep link collision issue, Android 6.0 (API Level 23) introduced [**Android App Links**](https://developer.android.com/training/app-links), which are [verified deep links](https://developer.android.com/training/app-links/verify-site-associations "Verify Android App Links") based on a website URL explicitly registered by the developer. Clicking on an App Link will immediately open the app if it's installed.
+
+There are some key differences from unverified deep links:
+
+- App Links only use `http://` and `https://` schemes, any other custom URL schemes are not allowed.
+- App Links require a live domain to serve a [Digital Asset Links file](https://developers.google.com/digital-asset-links/v1/getting-started "Digital Asset Link") via HTTPS.
+- App Links do not suffer from deep link collision since they don't show a disambiguation dialog when a user opens them.
+
+### Sensitive Functionality Exposure Through IPC
+
+During implementation of a mobile application, developers may apply traditional techniques for IPC (such as using shared files or network sockets). The IPC system functionality offered by mobile application platforms should be used because it is much more mature than traditional techniques. Using IPC mechanisms with no security in mind may cause the application to leak or expose sensitive data.
+
+The following is a list of Android IPC Mechanisms that may expose sensitive data:
+
+- [Binders](https://developer.android.com/reference/android/os/Binder.html "IPCBinder")
+- [Services](https://developer.android.com/guide/components/services.html "IPCServices")
+- [Bound Services](https://developer.android.com/guide/components/bound-services.html "BoundServices")
+- [AIDL](https://developer.android.com/guide/components/aidl.html "AIDL")
+- [Intents](https://developer.android.com/reference/android/content/Intent.html "IPCIntent")
+- [Content Providers](https://developer.android.com/reference/android/content/ContentProvider.html "IPCContentProviders")
 
 ### Object Persistence
 
