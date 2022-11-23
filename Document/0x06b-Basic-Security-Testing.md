@@ -972,7 +972,7 @@ Note that this binary is signed with a self-signed certificate that has a "wildc
 
 ## Setting Up a Network Testing Environment
 
-In terms of the [OSI model](https://en.wikipedia.org/wiki/OSI_model), iOS apps can be monitored at both the *application layer* via **HTTP proxy** and the *data link layer* (and above) via **network traffic capture**.
+iOS apps can be monitored at both the *application layer* via **HTTP proxy** and the *data link layer* (and above) via **network traffic capture** in terms of the [OSI model](https://en.wikipedia.org/wiki/OSI_model). Testing with an HTTP proxy is sufficient for apps that exclusively utilize REST APIs or other HTTP communications, however a traffic capture is required to validate if that is the only channel in use and to inspect those channels if not.
 
 ### Low Level Network Monitoring
 
@@ -992,7 +992,7 @@ Starting device <UDID> [SUCCEEDED] with interface rvi0
 
 Next, launch Wireshark and select "rvi0" as the capture interface.
 
-#### Network Traffic Capture on a Jailbroken Device
+#### Network Traffic Capture with SSH on a Jailbroken Device
 
 You can remotely sniff traffic in real-time on iOS with [tcpdump and Wireshark](https://blog.jjhayes.net/wp/2019/02/28/capture-iphone-network-traffic-with-tcpdump-and-wireshark/) over the SSH protocol. This method requires a jailbroken iOS device, however it can be performed from any operating system. First, make sure you have [Wireshark](0x08a-Testing-Tools.md#wireshark) installed on your host computer.
 
@@ -1028,6 +1028,8 @@ ip.addr == 192.168.1.1 && http
 <img src="Images/Chapters/0x06b/wireshark_filters.png" width="100%" />
 
 The documentation of Wireshark offers many examples for [Capture Filters](https://wiki.wireshark.org/CaptureFilters "Capture Filters") that should help you to filter the traffic to get the information you want.
+
+To get a statistical summary of your packet capture to identify what to filter for, navigate to Statistics > Conversations and flip through the UDP and TCP tabs. You can quicky identify the most heavily used protocols by sorting this data by columns such as port numbers and number of packets.
 
 ### Setting up an Interception Proxy
 
