@@ -1014,11 +1014,13 @@ You can remotely sniff traffic in real-time on iOS with [tcpdump and Wireshark](
 After testing is complete, click the red "Stop" button and use "File" > "Save As" to retain the capture data as a `PCAP` file for later analysis.
 
 #### Decrypting Captured Packets
+
 HTTPS traffic captured in the PCAP can be decrypted for review within Wireshark if testing was performed with an HTTP proxy supporting `SSLKEYLOGFILE` key logging. This is possible with [mitmproxy](https://docs.mitmproxy.org/stable/howto-wireshark-tls/), but not Burp Suite ([request](https://forum.portswigger.net/thread/option-to-create-nss-key-log-file-d57f526f)) or ZAP ([issue](https://github.com/zaproxy/zaproxy/issues/1630)). Navigate to Wireshark's `Preferences > Protocols > TLS` configuration and use the "(Pre)-Master-Secret log filename" field to browse to the `SSLKEYLOGFILE` file prepared by your HTTP proxy.
 
 Alternatively to generating `SSLKEYLOGFILE` from web proxy, the Frida script ["ios-tls-keylogger.js"](https://codeshare.frida.re/@andydavies/ios-tls-keylogger/) can sometimes be used to generate this file when iOS apps use common SSL/TLS libraries. This is considered a more fragile approach as the `CALLBACK_OFFSET` constant must be [updated in the script](https://www.mustafadur.com/blog/intercepting-ssl-and-https/#sniffing-with-sslkeylogfile) to match your tested iOS version, and not all client-side implementations of SSL/TLS will work.
 
 #### Capture Filters
+
 Filter the traffic with Capture Filters in Wireshark to display what you want to monitor (for example, all HTTP traffic sent/received via the IP address 192.168.1.1).
 
 ```default
