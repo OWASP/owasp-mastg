@@ -969,7 +969,7 @@ As we will discuss shortly in the next section, `frida-trace` offers out-of-the-
 
 #### Native Code Tracing
 
-Native methods tracing can be performed with relative ease than compared to Java method tracing. `frida-trace` is a CLI tool for dynamically tracing function calls. It makes tracing native functions trivial and can be very useful for collecting information about an application.
+Native methods tracing can be performed with relative ease compared to Java method tracing. `frida-trace` is a CLI tool for dynamically tracing function calls. It makes tracing native functions trivial and can be very useful for collecting information about an application.
 
 In order to use `frida-trace`, a Frida server should be running on the device. An example for tracing libc's `open` function using `frida-trace` is demonstrated below, where `-U` connects to the USB device and `-i` specifies the function to be included in the trace.
 
@@ -981,7 +981,7 @@ frida-trace -U -i "open" com.android.chrome
 
 Note how, by default, only the arguments passed to the function are shown, but not the return values. Under the hood, `frida-trace` generates one little JavaScript handler file per matched function in the auto-generated `__handlers__` folder, which Frida then injects into the process. You can edit these files for more advanced usage such as obtaining the return value of the functions, their input parameters, accessing the memory, etc. Check Frida's [JavaScript API](https://www.frida.re/docs/javascript-api/ "JavaScript API") for more details.
 
-In this case, the generated script which traces all calls to the `open` function in `libc.so` is located in is `__handlers__/libc.so/open.js`, it looks as follows:
+In this case, the generated script which traces all calls to the `open` function in `libc.so` is located in `__handlers__/libc.so/open.js`, it looks as follows:
 
 ```javascript
 {
@@ -1026,7 +1026,7 @@ Frida 12.10 introduces a new useful syntax to query Java classes and methods as 
 - In Frida scripts: e.g. `Java.enumerateMethods('*youtube*!on*')` uses globs to take all classes that include "youtube" as part of their name and enumerate all methods starting with "on".
 - In frida-trace: e.g. `-j '*!*certificate*/isu'` triggers a case-insensitive query (`i`), including method signatures (`s`) and excluding system classes (`u`).
 
-Refer to the [Release Notes](https://frida.re/news/2020/06/29/frida-12-10-released/ "Frida 12.10") for more details. To learn more about all options for advanced usage, check the [documentation on the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
+Refer to the [Release Notes](https://frida.re/news/releases/ "Frida releases") for more details. To learn more about all options for advanced usage, check the [documentation on the official Frida website](https://frida.re/docs/frida-trace/ "documentation").
 
 #### JNI Tracing
 
