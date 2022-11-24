@@ -141,7 +141,7 @@ We recommend using a reverse-domain annotation when registering a permission, as
 
 ### Fragment Injection
 
-Android SDK offers developers a way to present a [`Preferences activity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
+Android SDK offers developers a way to present a [`PreferencesActivity`](https://developer.android.com/reference/android/preference/PreferenceActivity.html "Preference Activity") to users, allowing the developers to extend and adapt this abstract class.
 
 This abstract class parses the extra data fields of an Intent, in particular, the `PreferenceActivity.EXTRA_SHOW_FRAGMENT(:android:show_fragment)` and `Preference Activity.EXTRA_SHOW_FRAGMENT_ARGUMENTS(:android:show_fragment_arguments)` fields.
 
@@ -149,7 +149,7 @@ The first field is expected to contain the `Fragment` class name, and the second
 
 Because the `PreferenceActivity` uses reflection to load the fragment, an arbitrary class may be loaded inside the package or the Android SDK. The loaded class runs in the context of the application that exports this activity.
 
-With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a `java.lang.CastException`, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor run.
+With this vulnerability, an attacker can call fragments inside the target application or run the code present in other classes' constructors. Any class that's passed in the Intent and does not extend the Fragment class will cause a `java.lang.CastException`, but the empty constructor will be executed before the exception is thrown, allowing the code present in the class constructor to be executed.
 
 ### WebViews
 
@@ -677,7 +677,7 @@ SQL injection can be exploited with the following command. Instead of getting th
 
 ### Overview
 
-To prevent [fragment injection](#fragment-injection "fragment injection"), a new method called `isValidFragment` was added in Android 4.4 (API level 19). It allows developers to override this method and define the fragments that may be used in this context.
+To prevent [fragment injection](#fragment-injection "fragment injection"), a new method called `isValidFragment` was added in Android 4.4 (API level 19). Developers can override `isValidFragment` and verify that the given fragment is a valid type.
 
 The default implementation returns `true` on versions older than Android 4.4 (API level 19); it will throw an exception on later versions.
 
@@ -1088,7 +1088,7 @@ To test for [sensitive functionality exposure through IPC](#sensitive-functional
 
 ### Static Analysis
 
-We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the app must be declared (otherwise the system won't recognize them and they won't run). Broadcast receivers can be declared in the manifest or created dynamically. You will want to identify elements such as
+We start by looking at the AndroidManifest.xml, where all activities, services, and content providers included in the app must be declared (otherwise the system won't recognize them and they won't run).
 
 - [`<intent-filter>`](https://developer.android.com/guide/topics/manifest/intent-filter-element.html "IntentFilterElement")
 - [`<service>`](https://developer.android.com/guide/topics/manifest/service-element.html "ServiceElement")
