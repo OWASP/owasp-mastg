@@ -122,7 +122,7 @@ Now you can list the binary's symbols using the `is` command and apply a case-in
 ...
 ```
 
-As you can see, there's an instance method with the siganture `-[JailbreakDetectionVC isJailbroken]`.
+As you can see, there's an instance method with the signature `-[JailbreakDetectionVC isJailbroken]`.
 
 **Step 2: Dynamic Hooks:**
 
