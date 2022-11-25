@@ -124,7 +124,7 @@ For more details refer to:
 
 ## Testing the TLS Settings (MSTG-NETWORK-2)
 
-Refer to section ["Verifying the TLS Settings"](0x04f-Testing-Network-Communication.md#verifying-the-tls-settings-mstg-network-2) in chapter "Mobile App Network Communication" for details.
+Refer to section ["TLS Settings"](0x04f-Testing-Network-Communication.md#tls-settings) in chapter "Mobile App Network Communication" for details.
 
 ## Testing Endpoint Identify Verification (MSTG-NETWORK-3)
 
