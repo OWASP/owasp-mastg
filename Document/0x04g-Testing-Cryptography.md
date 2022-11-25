@@ -2,94 +2,147 @@
 
 ## Overview
 
-Cryptography plays an especially important role in securing the user's data - even more so in a mobile environment, where attackers having physical access to the user's device is a likely scenario. This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid independent of the mobile operating system.
+Cryptography plays an especially important role in securing the user's data - even more so in a mobile environment, where attackers having physical access to the user's device is a likely scenario. This chapter provides an outline of cryptographic concepts and best practices relevant to mobile apps. These best practices are valid independently of the mobile operating system.
 
-The goal of cryptography is to provide constant confidentiality, data integrity, and authenticity, even in the face of an attack. Confidentiality involves ensuring data privacy through the use of encryption. Data integrity deals with data consistency and detection of tampering and modification of data through the use of hashing. Authenticity ensures that the data comes from a trusted source.
+The goal of cryptography is to provide constant confidentiality, data integrity, and authenticity, even in the face of an attack.
+
+- **Confidentiality** involves ensuring data secrecy through the use of encryption.
+- **Data integrity** ensures that data has not been modified in an unauthorized manner since it was created, transmitted, or stored. This is usually achieved using message authentication codes or digital signatures.
+- **Authenticity** ensures that the data comes from a trusted source. Commonly, digital signatures, message authentication codes and some key-agreement techniques are used to provide authentication.
+
+These properties are defined by the NIST ["Recommendation for Key Management: Part 1 – General (NIST SP 800-57 Part 1 Rev.5)"](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf) as "Security Services" along with authorization and non-repudiation. In many cases, a combination of security services is desired. For example: a digital signature algorithm can provide authenticity, integrity and non-repudiation.
+
+This chapter focuses on following best practices for the use of cryptography in mobile apps. This includes:
+
+- only use approved cryptographic algorithms (dont't roll your own crypto; assures crypto strength)
+- use validated cryptographic modules (implementation correctness assurance)
+- use the algorithms properly
+- manage keys properly
+
+## Cryptographic Algorithms
+
+We will define Cryptographic Algorithms based on the definitions from the NIST ["Guideline for Using
+Cryptographic Standards in the Federal Government: Cryptographic Mechanisms (NIST SP 800-175B Rev.1)"](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-175Br1.pdf).
+
+### Cryptographic Hash Functions
+
+A hash function (or hash algorithm) is a cryptographic primitive algorithm consisting of a one-way function that takes an input of arbitrary length and outputs a value with a predetermined length called hash value or message digest. It's easy to compute the hash from the input, but extremely difficult to determine the original input. Additionally, the hash will completely change when even a single bit of the input changes.
+
+Hash functions are used for integrity verification, but don't provide an authenticity guarantee. They are usually used in higher-level algorithms, including:
+
+- Keyed-hash message authentication code algorithms
+- Digital signature algorithms
+- Key derivation functions (e.g., for key establishment)
+- Random bit generators
+
+### Symmetric-Key Algorithms
+
+Symmetric-key algorithms (sometimes known as secret-key algorithms) transform data in a way that is fundamentally difficult to undo without knowledge of a secret key. The key is “symmetric” because the same key is used for a cryptographic operation and its inverse (e.g., for both encryption and decryption)
+
+Symmetric-key algorithms are used for:
+
+- Encryption to provide data confidentiality
+- Authentication to provide assurance of data integrity and the source of the data
+- Key derivation
+- Key wrapping
+- Random bit generation
+
+A common use case is **encryption**, the key used to encrypt data is also used to decrypt the encrypted data. In the case of encryption, the original data is called the plaintext, while the encrypted form of the data is called the ciphertext. The key must be kept secret if the data is to remain protected.
+
+Symmetric encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution.
+
+#### Block Cipher Algorithms
 
 Encryption algorithms converts plaintext data into cipher text that conceals the original content. Plaintext data can be restored from the cipher text through decryption. Encryption can be **symmetric** (encryption/decryption with same secret-key) or **asymmetric** (encryption/decryption using a public and private key pair). In general, encryption operations do not protect integrity, but some symmetric encryption modes also feature that protection.
 
-**Symmetric-key encryption algorithms** use the same key for both encryption and decryption. This type of encryption is fast and suitable for bulk data processing. Since everybody who has access to the key is able to decrypt the encrypted content, this method requires careful key management and centralized control over key distribution.
+With a symmetric-key block cipher algorithm, the same input block will always produce the same output block when the same key is used. If the multiple blocks in a typical message are encrypted separately, an adversary can easily substitute individual blocks, possibly without detection. Furthermore, certain kinds of data patterns in the plaintext, such as repeated blocks, would be apparent in the ciphertext. To counteract these properties, **modes of operation** have been specified for using a block cipher algorithm.
 
-**Public-key encryption algorithms** operate with two separate keys: the public key and the private key. The public key can be distributed freely while the private key shouldn't be shared with anyone. A message encrypted with the public key can only be decrypted with the private key and vice-versa. Since asymmetric encryption is several times slower than symmetric operations, it's typically only used to encrypt small amounts of data, such as symmetric keys for bulk encryption.
+These modes combine the cryptographic primitive algorithm with a symmetric key and **variable starting values (commonly known as initialization vectors)** to provide some cryptographic service (e.g., the encryption of a message or the generation of a message authentication code).
 
-**Hashing** isn't a form of encryption, but it does use cryptography. Hash functions deterministically map arbitrary pieces of data into fixed-length values. It's easy to compute the hash from the input, but very difficult (i.e. infeasible) to determine the original input from the hash. Additionally, the hash will completely change when even a single bit of the input changes. Hash functions are used for integrity verification, but don't provide an authenticity guarantee.
+#### Hash-based Symmetric-key Algorithms
 
 **Message Authentication Codes** (MACs) combine other cryptographic mechanisms (such as symmetric encryption or hashes) with secret keys to provide both integrity and authenticity protection. However, in order to verify a MAC, multiple entities have to share the same secret key and any of those entities can generate a valid MAC. HMACs, the most commonly used type of MAC, rely on hashing as the underlying cryptographic primitive. The full name of an HMAC algorithm usually includes the underlying hash function's type (for example, HMAC-SHA256 uses the SHA-256 hash function).
 
-**Signatures** combine asymmetric cryptography (that is, using a public/private key pair) with hashing to provide integrity and authenticity by encrypting the hash of the message with the private key. However, unlike MACs, signatures also provide non-repudiation property as the private key should remain unique to the data signer.
+### Asymmetric-Key Algorithms
 
-**Key Derivation Functions** (KDFs) derive secret keys from a secret value (such as a password) and are used to turn keys into other formats or to increase their length. KDFs are similar to hashing functions but have other uses as well (for example, they are used as components of multi-party key-agreement protocols). While both hashing functions and KDFs must be difficult to reverse, KDFs have the added requirement that the keys they produce must have a level of randomness.
+Asymmetric-key algorithms, commonly known as public-key algorithms, use two related keys (i.e., a key pair) to perform their functions: a _public key_ which may be known by anyone and _private key_ which should be under the sole control of the entity that “owns” the key pair. Even though this keys are related, knowledge of the public key cannot be used to determine the private key.
+
+In contrast to symmetric-key algorithms, one of the keys of the key pair is used to apply cryptographic protection, and the other key is used to remove or verify that protection. For example:
+
+- a digital signature is computed using a **private** key, and the signature is verified using the public key.
+- asymmetric encryption is performed using the public key, and the decryption is performed using the **private** key.
+
+Asymmetric algorithms are used, for example, for:
+
+- Digital signatures to provide source, identity, and integrity authentication services.
+- Key-Establishment using key-agreement and key-transport algorithms.
+- Bulk encryption algorithms to encrypt the symmetric keys that encrypt the payloads (asymmetric encryption is several times slower than symmetric).
+
+#### Digital Signature Algorithms
+
+Digital signatures combine asymmetric cryptography with hash functions to provide integrity and authenticity by encrypting the hash of the message with the private key. However, unlike MACs, signatures also provide non-repudiation property as the private key should remain unique to the data signer.
+
+They can be computed on data of any length (up to a limit that is determined by the hash function).
+
+#### Key-Establishment Schemes
+
+Key establishment is the means by which keys are generated and provided to the entities that are authorized to use them. Scenarios for which key establishment could be performed include the following.
+
+- Key Generation
+- Key Derivation
+- Key Agreement
+- Key Transport/Distribution
+- Key Wrapping
+
+##### Key Derivation
+
+Key Derivation is implemented via **Key Derivation Functions (KDFs)** that generates keys from secret information, which could be a key that is already shared between the entities (i.e., a pre-shared key) or a shared secret that is derived during a key-agreement scheme.
+
+Keys can also be derived from passwords. However, due to the ease of guessing most passwords, keys
+derived in this manner are usually not suitable for most applications. However, [SP 800-132](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf)
+specifies a family of functions, called **Password-Based Key Derivation Functions (PBKDF)** that can be used to derive keying material from a password for electronic storage applications (e.g., when encrypting an entire disk drive).
+
+##### Key Agreement
+
+Key Agreement is a key-establishment procedure in which the resultant keying material is a function of information contributed by all participants in the key-agreement process so that no participant can predetermine the value of the resulting keying material independent of the contributions of the other participants. Key agreement is usually performed using automated protocols.
+
+##### Key Transport
+
+Key transport is a method whereby one party (the sender) generates a key and distributes it to one or more other parties (the receiver(s)). Key transport could be accomplished using manual methods (e.g., using a courier) or performed using automated protocols.
+
+##### Key Wrapping
+
+Key wrapping is a method used to provide confidentiality and integrity protection for keys (and possibly other information) using a symmetric-key block cipher algorithm and
+symmetric key-wrapping keys that are known by both the sender and receiver. The wrapped keying material can then be stored or transmitted (i.e., distributed) securely.
+
+Key wrapping differs from simple encryption in that the wrapping process includes both encryption and integrity protection. During the unwrapping process, a method for integrity verification is used to detect accidental or intentional modifications to the wrapped keying material.
 
 ## Proven Cryptography Implementations
 
-### Platform Provided Cryptographic APIs
+### Validated Cryptographic Modules
 
-While same basic cryptographic principles apply independent of the particular OS, each operating system offers its own implementation and APIs. Platform-specific cryptographic APIs for data storage are covered in greater detail in the "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Testing Data Storage on iOS](0x06d-Testing-Data-Storage.md)" chapters. Encryption of network traffic, especially Transport Layer Security (TLS), is covered in the "[Android Network APIs](0x05g-Testing-Network-Communication.md)" chapter.
+Whenever cryptography is used for the protection of sensitive information, for example encryption, an **approved cryptographic algorithm** (e.g. AES) must be selected and used following the best practices and avoididng common configuration issues. But that's not enough, according to NIST, only cryptographic modules containing validated implementations of these algorithms must be used. The use of a **validated cryptographic module**, such as those validated by [FIPS 140](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-3.pdf), provides a minimum level of assurance that the product's stated security claim is valid.
 
-### Custom Implementations of Cryptography
+This FIPS 140 standard covers implementations of cryptographic modules including, but not limited to, hardware components or modules, software/firmware programs or modules or any combination thereof.
+
+See "5.4.5 Use Validated Algorithms and Cryptographic Modules" in [NIST SP 800-175B Rev. 1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-175Br1.pdf) for more information.
+
+### Platform-Provided Cryptographic APIs vs Custom Implementations of Cryptography
 
 Inventing proprietary cryptographic functions is time consuming, difficult, and likely to fail. Instead, we can use well-known algorithms that are widely regarded as secure. Mobile operating systems offer standard cryptographic APIs that implement those algorithms.
 
-Carefully inspect all the cryptographic methods used within the source code, especially those that are directly applied to sensitive data. All cryptographic operations should use standard cryptographic APIs for Android and iOS. Any cryptographic operations that don't invoke standard routines from known providers should be closely inspected. Pay close attention to standard algorithms that have been modified. Remember that encoding isn't the same as encryption! Always investigate further when you find bit manipulation operators like XOR (exclusive OR).
+When analyzing mobile apps, you must carefully inspect all the cryptographic methods used within the source code, especially those that are directly applied to sensitive data.
+
+- All cryptographic operations should use standard cryptographic APIs for Android and iOS.
+- Any cryptographic operations that don't invoke standard routines from known providers should be closely inspected.
+- Pay close attention to standard algorithms that have been modified.
+- Remember that encoding isn't the same as encryption!
+- Always investigate further when you find bit manipulation operators like XOR (exclusive OR).
 
 At all implementations of cryptography, you need to ensure that the following always takes place:
 
 - Worker keys (like intermediary/derived keys in AES/DES/Rijndael) are properly removed from memory after consumption or in case of error.
 - The inner state of a cipher should be removed from memory as soon as possible.
-
-## Key Management
-
-In larger organizations, or when high-risk applications are created, it can often be a good practice to have a cryptographic policy, based on frameworks such as [NIST Recommendation for Key Management](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf "NIST 800-57 Rev5"). When basic errors are found in the application of cryptography, it can be a good starting point of setting up a lessons learned / cryptographic key management policy.
-
-### Symmetric Cryptography Using Hardcoded Keys
-
-The security of symmetric encryption and keyed hashes (MACs) depends on the secrecy of the key. If the key is disclosed, the security gained by encryption is lost. To prevent this, never store secret keys in the same place as the encrypted data they helped create. A common mistake is encrypting locally stored data with a static, hardcoded encryption key and compiling that key into the app. This makes the key accessible to anyone who can use a disassembler.
-
-For an encryption key, being hardcoded means that the key is:
-
-- part of application resources
-- value which can be derived from known values
-- embedded in the source code
-
-First, ensure that no keys or passwords are stored within the source code. This means you should check native code, JavaScript/Dart code, Java/Kotlin code on Android and Objective-C/Swift in iOS. Note that hardcoded keys are problematic even if the source code is obfuscated since obfuscation is easily bypassed by dynamic instrumentation.
-
-If the app is using two-way TLS (both server and client certificates are validated), make sure that:
-
-- The password to the client certificate isn't stored locally or is locked in the device Keychain.
-- The client certificate isn't shared among all installations.
-
-If the app relies on an additional encrypted container stored in app data, check how the encryption key is used. If a key-wrapping scheme is used, ensure that the master secret is initialized for each user or the container is re-encrypted with new key. If you can use the master secret or previous password to decrypt the container, check how password changes are handled.
-
-Secret keys must be stored in secure device storage whenever symmetric cryptography is used in mobile apps. For more information on the platform-specific APIs, see the "[Data Storage on Android](0x05d-Testing-Data-Storage.md)" and "[Data Storage on iOS](0x06d-Testing-Data-Storage.md)" chapters.
-
-### Protecting Keys in Storage and in Memory
-
-When memory dumping is part of your threat model, then keys can be accessed the moment they are actively used. Memory dumping either requires root-access (e.g. a rooted device or jailbroken device) or it requires a patched application with Frida (so you can use tools like Fridump).
-Therefore it is best to consider the following, if keys are still needed at the device:
-
-- **Keys in a Remote Server**: you can use remote Key vaults such as Amazon KMS or Azure Key Vault. For some use cases, developing an orchestration layer between the app and the remote resource might be a suitable option. For instance, a serverless function running on a Function as a Service (FaaS) system (e.g. AWS Lambda or Google Cloud Functions) which forwards requests to retrieve an API key or secret. There are other alternatives such as Amazon Cognito, Google Identity Platform or Azure Active Directory.
-- **Keys inside Secure Hardware-backed Storage**: make sure that all cryptographic actions and the key itself remain in the Trusted Execution Environment (e.g. use [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android keystore system")) or [Secure Enclave](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Storing Keys in the Secure Enclave") (e.g. use the Keychain). Refer to the [Android Data Storage](0x05d-Testing-Data-Storage.md#storing-keys-using-hardware-backed-android-keystore) and [iOS Data Storage](0x06d-Testing-Data-Storage.md#the-keychain) chapters for more information.
-- **Keys protected by Envelope Encryption**: If keys are stored outside of the TEE / SE, consider using multi-layered encryption: an _envelope encryption_ approach (see [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys"), [Google Cloud Key management guide](https://cloud.google.com/kms/docs/envelope-encryption?hl=en "Google Cloud Key management guide: Envelope encryption"), [AWS Well-Architected Framework guide](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html "AWS Well-Architected Framework")), or [a HPKE approach](https://tools.ietf.org/html/draft-irtf-cfrg-hpke-08 "Hybrid Public Key Encryption") to encrypt data encryption keys with key encryption keys.
-- **Keys in Memory**: make sure that keys live in memory for the shortest time possible and consider zeroing out and nullifying keys after successful cryptographic operations, and in case of error. For general cryptocoding guidelines, refer to [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data"). For more detailed information refer to sections [Testing Memory for Sensitive Data](0x05d-Testing-Data-Storage.md#testing-memory-for-sensitive-data-mstg-storage-10) and [Testing Memory for Sensitive Data](0x06d-Testing-Data-Storage.md#testing-memory-for-sensitive-data-mstg-storage-10) for Android and iOS respectively.
-
-Note: given the ease of memory dumping, never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
-
-### Protecting Keys in Transport
-
-When keys need to be transported from one device to another, or from the app to a backend, make sure that proper key protection is in place, by means of a transport keypair or another mechanism. Often, keys are shared with obfuscation methods which can be easily reversed. Instead, make sure asymmetric cryptography or wrapping keys are used. For example, a symmetric key can be encrypted with the public key from an asymmetric key pair.
-
-## Cryptography Regulations
-
-When you upload the app to the App Store or Google Play, your application is typically stored on a US server. If your app contains cryptography and is distributed to any other country, it is considered a cryptography export. It means that you need to follow US export regulations for cryptography. Also, some countries have import regulations for cryptography.
-
-Learn more:
-
-- [Complying with Encryption Export Regulations (Apple)](https://developer.apple.com/documentation/security/complying_with_encryption_export_regulations "Complying with Encryption Export Regulations")
-- [Export compliance overview (Apple)](https://help.apple.com/app-store-connect/#/dev88f5c7bf9 "Export compliance overview")
-- [Export compliance (Google)](https://support.google.com/googleplay/android-developer/answer/113770?hl=en "Export compliance")
-- [Encryption and Export Administration Regulations (USA)](https://www.bis.doc.gov/index.php/policy-guidance/encryption "Encryption and Export Administration Regulations")
-- [Encryption Control (France)](https://www.ssi.gouv.fr/en/regulation/cryptology/ "Encryption Control")
-- [World map of encryption laws and policies](https://www.gp-digital.org/WORLD-MAP-OF-ENCRYPTION/)
 
 ## Common Cryptography Configuration Issues
 
@@ -189,6 +242,51 @@ For more information on algorithm choice and best practices, see the following r
 - ["Commercial National Security Algorithm Suite and Quantum Computing FAQ"](https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf "Commercial National Security Algorithm Suite and Quantum Computing FAQ")
 - [NIST recommendations (2019)](https://www.keylength.com/en/4/ "NIST recommendations")
 - [BSI recommendations (2019)](https://www.keylength.com/en/8/ "BSI recommendations")
+
+## Key Management
+
+In larger organizations, or when high-risk applications are created, it can often be a good practice to have a cryptographic policy, based on frameworks such as [NIST Recommendation for Key Management](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf "NIST 800-57 Rev5"). When basic errors are found in the application of cryptography, it can be a good starting point of setting up a lessons learned / cryptographic key management policy.
+
+### The Problem with Hardcoded Keys
+
+The security of symmetric encryption and keyed hashes (MACs) depends on the secrecy of the key. If the key is disclosed, the security gained by encryption is lost. To prevent this, never store secret keys in the same place as the encrypted data they helped create. A common mistake is encrypting locally stored data with a static, hardcoded encryption key and compiling that key into the app. This makes the key accessible to anyone who can use a disassembler.
+
+For an encryption key, being hardcoded means that the key is:
+
+- part of application resources
+- value which can be derived from known values
+- embedded in the source code
+
+When analyzing mobiel apps, ensure that no keys or passwords are stored within the source code. This includes native code, JavaScript/Dart code, Java/Kotlin code on Android and Objective-C/Swift in iOS. Note that hardcoded keys are problematic even if the source code is obfuscated since obfuscation is easily bypassed by dynamic instrumentation.
+
+### Protecting Keys in Storage and in Memory
+
+When memory dumping is part of your threat model, then keys can be accessed the moment they are actively used. Memory dumping either requires root-access (e.g. a rooted device or jailbroken device) or it requires a patched application with Frida (so you can use tools like Fridump).
+Therefore it is best to consider the following, if keys are still needed at the device:
+
+- **Keys in a Remote Server**: you can use remote Key vaults such as Amazon KMS or Azure Key Vault. For some use cases, developing an orchestration layer between the app and the remote resource might be a suitable option. For instance, a serverless function running on a Function as a Service (FaaS) system (e.g. AWS Lambda or Google Cloud Functions) which forwards requests to retrieve an API key or secret. There are other alternatives such as Amazon Cognito, Google Identity Platform or Azure Active Directory.
+- **Keys inside Secure Hardware-backed Storage**: make sure that all cryptographic actions and the key itself remain in the Trusted Execution Environment (e.g. use [Android Keystore](https://developer.android.com/training/articles/keystore.html "Android keystore system")) or [Secure Enclave](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave "Storing Keys in the Secure Enclave") (e.g. use the Keychain). Refer to the [Android Data Storage](0x05d-Testing-Data-Storage.md#storing-keys-using-hardware-backed-android-keystore) and [iOS Data Storage](0x06d-Testing-Data-Storage.md#the-keychain) chapters for more information.
+- **Keys protected by Envelope Encryption**: If keys are stored outside of the TEE / SE, consider using multi-layered encryption: an _envelope encryption_ approach (see [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#encrypting-stored-keys "OWASP Cryptographic Storage Cheat Sheet: Encrypting Stored Keys"), [Google Cloud Key management guide](https://cloud.google.com/kms/docs/envelope-encryption?hl=en "Google Cloud Key management guide: Envelope encryption"), [AWS Well-Architected Framework guide](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html "AWS Well-Architected Framework")), or [a HPKE approach](https://tools.ietf.org/html/draft-irtf-cfrg-hpke-08 "Hybrid Public Key Encryption") to encrypt data encryption keys with key encryption keys.
+- **Keys in Memory**: make sure that keys live in memory for the shortest time possible and consider zeroing out and nullifying keys after successful cryptographic operations, and in case of error. For general cryptocoding guidelines, refer to [Clean memory of secret data](https://github.com/veorq/cryptocoding#clean-memory-of-secret-data/ "The Cryptocoding Guidelines by @veorq: Clean memory of secret data"). For more detailed information refer to sections [Testing Memory for Sensitive Data](0x05d-Testing-Data-Storage.md#testing-memory-for-sensitive-data-mstg-storage-10) and [Testing Memory for Sensitive Data](0x06d-Testing-Data-Storage.md#testing-memory-for-sensitive-data-mstg-storage-10) for Android and iOS respectively.
+
+Note: given the ease of memory dumping, never share the same key among accounts and/or devices, other than public keys used for signature verification or encryption.
+
+### Protecting Keys in Transport
+
+When keys need to be transported from one device to another, or from the app to a backend, make sure that proper key protection is in place, by means of a transport keypair or another mechanism. Often, keys are shared with obfuscation methods which can be easily reversed. Instead, make sure asymmetric cryptography or wrapping keys are used. For example, a symmetric key can be encrypted with the public key from an asymmetric key pair.
+
+## Cryptography Regulations
+
+When you upload the app to the App Store or Google Play, your application is typically stored on a US server. If your app contains cryptography and is distributed to any other country, it is considered a cryptography export. It means that you need to follow US export regulations for cryptography. Also, some countries have import regulations for cryptography.
+
+Learn more:
+
+- [Complying with Encryption Export Regulations (Apple)](https://developer.apple.com/documentation/security/complying_with_encryption_export_regulations "Complying with Encryption Export Regulations")
+- [Export compliance overview (Apple)](https://help.apple.com/app-store-connect/#/dev88f5c7bf9 "Export compliance overview")
+- [Export compliance (Google)](https://support.google.com/googleplay/android-developer/answer/113770?hl=en "Export compliance")
+- [Encryption and Export Administration Regulations (USA)](https://www.bis.doc.gov/index.php/policy-guidance/encryption "Encryption and Export Administration Regulations")
+- [Encryption Control (France)](https://www.ssi.gouv.fr/en/regulation/cryptology/ "Encryption Control")
+- [World map of encryption laws and policies](https://www.gp-digital.org/WORLD-MAP-OF-ENCRYPTION/)
 
 ## References
 
