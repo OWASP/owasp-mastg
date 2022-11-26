@@ -1707,7 +1707,7 @@ swift-demangle is an Xcode tool that demangles Swift symbols. For more informati
 
 A sample Swift project is used to demonstrate the usage of SwiftShield.
 
-- Check out <https://github.com/sushi2k/SwiftSecurity>.
+- Check out [sushi2k/SwiftSecurity](https://github.com/sushi2k/SwiftSecurity).
 - Open the project in Xcode and make sure that the project is building successfully (Product / Build or Apple-Key + B).
 - [Download](https://github.com/rockbruno/swiftshield/releases "SwiftShield Download") the latest release of SwiftShield and unzip it.
 - Go to the directory where you downloaded SwiftShield and copy the swiftshield executable to `/usr/local/bin`:
