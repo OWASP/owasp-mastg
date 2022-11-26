@@ -317,6 +317,7 @@ For example, an app might contain the following code to generate an HMAC with `C
 ```
 
 This script performs the following steps:
+
 1. Get the data as `NSMutableData`.
 2. Get the data key (typically from the Keychain).
 3. Calculate the hash value.
