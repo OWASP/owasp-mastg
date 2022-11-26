@@ -16,7 +16,7 @@ The **lack of any of these measures does not cause a vulnerability** - instead, 
 
 None of these measures can assure a 100% effectiveness, as the reverse engineer will always have full access to the device and will therefore always win (given enough time and resources)!
 
-For example, preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device, that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
+For example, preventing debugging is virtually impossible. If the app is publicly available, it can be run on an untrusted device that is under full control of the attacker. A very determined attacker will eventually manage to bypass all the app's anti-debugging controls by patching the app binary or by dynamically modifying the app's behavior at runtime with tools such as Frida.
 
 ### Jailbreak Detection
 
@@ -71,7 +71,7 @@ The app might be checking for files and directories typically associated with ja
 
 **Checking File Permissions:**
 
-The app might be trying to write to a location that's outside the application's sandbox. For instance, it may attempt to create a file in, for example, the `/private directory`. If the file is created successfully, the app  might assume that the device has been jailbroken.
+The app might be trying to write to a location that's outside the application's sandbox. For instance, it may attempt to create a file in, for example, the `/private` directory. If the file is created successfully, the app can assume that the device has been jailbroken.
 
 ```swift
 do {
@@ -100,7 +100,7 @@ The quickest way to bypass common Jailbreak detection mechanisms is [objection](
 
 #### Manual Jailbreak Detection Bypass
 
-If the automated bypasses aren't innefective you need to get your hands dirty and reverse engineer the app binaries until you find the pieces of code responsible for the detection and either patch them by hand or apply runtime hooks to disable them.
+If the automated bypasses aren't effective you need to get your hands dirty and reverse engineer the app binaries until you find the pieces of code responsible for the detection and either patch them statically or apply runtime hooks to disable them.
 
 **Step 1: Reverse Engineering:**
 
@@ -302,9 +302,9 @@ int xyz(char *dst) {
 
 #### File Storage Integrity Checks
 
-Apps might choose to ensure the integrity of the application storage itself, by creating HMAC or signature over either a given key-value pair or a file stored on the device, e.g. in the Keychain, `UserDefaults`/`NSUserDefaults`, or any database.
+Apps might choose to ensure the integrity of the application storage itself, by creating an HMAC or signature over either a given key-value pair or a file stored on the device, e.g. in the Keychain, `UserDefaults`/`NSUserDefaults`, or any database.
 
-For example, an app might do the following to generate an HMAC with `CommonCrypto`:
+For example, an app might contain the following code to generate an HMAC with `CommonCrypto`:
 
 ```objectivec
     // Allocate a buffer to hold the digest and perform the digest.
@@ -316,11 +316,12 @@ For example, an app might do the following to generate an HMAC with `CommonCrypt
     [actualData appendData: digestBuffer];
 ```
 
-1. Gets the data as `NSMutableData`.
-2. Gets the data key (typically from the Keychain).
-3. Calculates the hash value.
-4. Appends the hash value to the actual data.
-5. Stores the results of step 4.
+This script performs the following steps:
+1. Get the data as `NSMutableData`.
+2. Get the data key (typically from the Keychain).
+3. Calculate the hash value.
+4. Append the hash value to the actual data.
+5. Store the results of step 4.
 
 After that, it might be verifying the HMACs by doing the following:
 
@@ -336,7 +337,7 @@ After that, it might be verifying the HMACs by doing the following:
 2. Repeats steps 1-3 of the procedure for generating an HMAC on the `NSData`.
 3. Compares the extracted HMAC bytes to the result of step 1.
 
-Note: if the app also encrypts files, make sure that it encrypts and then calcualtes the HMAC as described in [Authenticated Encryption](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
+Note: if the app also encrypts files, make sure that it encrypts and then calculates the HMAC as described in [Authenticated Encryption](https://web.archive.org/web/20210804035343/https://cseweb.ucsd.edu/~mihir/papers/oem.html "Authenticated Encryption: Relations among notions and analysis of the generic composition paradigm").
 
 **Bypass:**
 
@@ -469,7 +470,7 @@ Learn more about iOS obfuscation techniques [here](https://faculty.ist.psu.edu/w
 
 The purpose of device binding is to impede an attacker who tries to copy an app and its state from device A to device B and continue the execution of the app on device B. After device A has been determined trusted, it may have more privileges than device B. This situation shouldn't change when an app is copied from device A to device B.
 
-[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits but there are othre methods for implementing device binding in iOS:
+[Since iOS 7.0](https://developer.apple.com/library/content/releasenotes/General/RN-iOSSDK-7.0/index.html "iOS 7 release notes"), hardware identifiers (such as MAC addresses) are off-limits but there are other methods for implementing device binding in iOS:
 
 - **`identifierForVendor`**: You can use `[[UIDevice currentDevice] identifierForVendor]` (in Objective-C),  `UIDevice.current.identifierForVendor?.uuidString` (in Swift3), or `UIDevice.currentDevice().identifierForVendor?.UUIDString` (in Swift2). The value of `identifierForVendor` may not be the same if you reinstall the app after other apps from the same vendor are installed and it may change when you update your app bundle's name. Therefore it is best to combine it with something in the Keychain.
 - **Using the Keychain**: You can store something in the Keychain to identify the application's instance. To make sure that this data is not backed up, use `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly` (if you want to secure the data and properly enforce a passcode or Touch ID requirement), `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, or `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
@@ -547,7 +548,7 @@ Next, work on bypassing the defenses and answer the following questions:
 - Can the mechanisms be bypassed trivially (e.g., by changing the contents of a file or a key-value pair)?
 - How difficult is obtaining the HMAC key or the asymmetric private key?
 - Did you need to write custom code to disable the defenses? How much time did you need?
-- What is your assessment of the difficulty of bypassing the mechanisms??
+- What is your assessment of the difficulty of bypassing the mechanisms?
 
 ## Testing Reverse Engineering Tools Detection (MSTG-RESILIENCE-4)
 
