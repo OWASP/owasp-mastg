@@ -10,7 +10,7 @@ In the ["Mobile App Cryptography"](0x04g-Testing-Cryptography.md) chapter, we in
 
 Apple provides libraries that include implementations of most common cryptographic algorithms. [Apple's Cryptographic Services Guide](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/GeneralPurposeCrypto/GeneralPurposeCrypto.html "Apple Cryptographic Services Guide") is a great reference. It contains generalized documentation of how to use standard libraries to initialize and use cryptographic primitives, information that is useful for source code analysis.
 
-Selecting the right API depends on the use case at hand. However, as a rule of thumb you should always prefer the higher-level APIs and libries. But there will be cases where that's not possible, for instance:
+Selecting the right API depends on the use case at hand. However, as a rule of thumb you should always prefer the higher-level APIs and libraries. But there will be cases where that's not possible, for instance:
 
 - Hash Algorithms: CryptoKit supports SHA256, SHA385, and SHA512, and even SHA1, MD5 via its `Insecure` class. So if the app needs to calculate MD2, MD4, or SHA224, you'll have to use CommonCrypto.
 - Asymmetric-Key Algorithms: CryptoKit does not support RSA, so you’ll have to use Security framework via SecKey.
