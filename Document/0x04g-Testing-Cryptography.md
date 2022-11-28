@@ -14,10 +14,10 @@ These properties are defined by the NIST ["Recommendation for Key Management: Pa
 
 This chapter focuses on following best practices for the use of cryptography in mobile apps. This includes:
 
-- only use approved cryptographic algorithms (dont't roll your own crypto; assures crypto strength)
-- use validated cryptographic modules (implementation correctness assurance)
-- use the algorithms properly (avoid common configuration issues)
-- manage keys properly (generate with proper strength, protect in storage or transport, etc.)
+- only use approved [cryptographic algorithms](#cryptographic-algorithms) (don't roll your own crypto; assures crypto strength)
+- use validated [cryptography implementations](#cryptography-implementations) (assurance correctness for cryptography modules)
+- use the algorithms properly (avoid [common configuration issues](#common-cryptography-configuration-issues))
+- [manage keys](#key-management) properly (generate with proper strength, protect in storage or transport, etc.)
 
 ## Cryptographic Algorithms
 
